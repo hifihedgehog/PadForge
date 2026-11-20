@@ -3218,7 +3218,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Скинути діапазон обертання</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Скинути силу автоцентрування</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Скинути LED-індикатори обертів</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Діапазон кермування, автоцентрування та індикатори перемикання передач для керм із силовим зворотним зв'язком.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Діапазон кермування та індикатори перемикання передач для керм із силовим зворотним зв'язком.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Центрування</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Повертає кермо до центру як проста пружина або як кермування автомобіля.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Скинути центрування</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Пружина тягне кермо до центру з однією силою. Автомобіль обчислює крутний момент, який дає кермо автомобіля на його швидкості, за моделлю шин.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Автомобіль</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Автомобіль</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Автомобіль, кермування якого бере кермо. Кожен є опублікованою моделлю автомобіля.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Компакт</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Фургон</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Гоночний автомобіль</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Швидкість</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Із гри бере швидкість автомобіля з телеметрії гри й користується значенням Фіксована швидкість, поки жодна гра її не надсилає. Фіксована завжди користується значенням Фіксована швидкість.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Із гри</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Фіксована</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Вага кермування</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Наскільки важке кермування. 100% це вага самого автомобіля.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Хід керма</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Наскільки це кермо повертається від упору до упору. Вкажіть значення, задане на самому кермі.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Крутний момент керма</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Кут</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момент</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Межа керма {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Крутний момент на ободі залежно від кута повороту. На {0} він сягає піку {1} N·m при {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Відчуття центру</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Як швидко крутний момент зростає від поперечного прискорення біля центру, у N·m на g до 0.05 g. Більше означає стійкіше кермо.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Жорсткість моменту</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Як швидко крутний момент зростає, коли кермо відходить від центру, у N·m на градус.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Лінійність</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Нахил моменту між 0.10 і 0.15 g відносно його нахилу в центрі. Менше означає, що кермо легшає раніше.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Піковий момент</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Найбільший момент, якого автомобіль вимагає від керма, поруч із найбільшим, який кермо дає.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>із {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Цей автомобіль вимагає більшого моменту, ніж має кермо, тому верх кривої зрізано.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Відчуття центру, підсилювач керма, демпфування, тертя, зчеплення, фіксована швидкість, крутний момент керма</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Наскільки сильно кермування тримає центр на малій швидкості. 100% це значення самого автомобіля.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Підсилювач керма</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Скільки зусилля знімає підсилювач керма, коли зростає поперечне прискорення. Більше означає легше кермування поза центром.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Демпфування</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Наскільки сильно кермо опирається швидким поворотам. 100% повертає його без гойдання через центр.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Тертя</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Постійний опір, який заважає повороту в обидва боки.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Зчеплення</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Зчеплення дороги. Кермування легшає там, де передні шини його втрачають.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Суха</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Мокра</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Сніг</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Лід</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Фіксована швидкість</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Швидкість, з якою їде автомобіль, коли Швидкість має значення Фіксована, і поки жодна гра її не надсилає.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Крутний момент керма</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Найбільший момент, який дає це кермо. PadForge заповнює його там, де виробник керма його публікує. Значення вище за власне значення керма послаблює всі сили.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Крутний момент керма для цього керма не задано, тому його сили утримуються низькими. Укажіть його в розділі Більше.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Кермо почало гойдатися саме, тому силу стримано. Запустіть Тест відпускання.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Силу вимкнено, бо кермо не припиняло гойдатися або відійшло від центру. Запустіть Тест відпускання.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Тест відпускання</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Вимірює це кермо й задає демпфування, щоб воно поверталося без перерегулювання</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ще не запускався</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Виміряно</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Приберіть руки з керма. PadForge повертає його на {0}°, відпускає й записує, як воно повертається.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Кут керма за {0} с після кожного відпускання.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>До</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Після</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Вимірювання, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Готово, запусків: 2</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Зупинено</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Кермо не зупинилося. Приберіть із нього руки й запустіть тест ще раз.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Кермо не рушило. Якщо Крутний момент керма задано вище за можливості керма, укажіть власне значення керма й запустіть тест ще раз.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Кермо підійшло близько до краю свого ходу. Поставте його в центр і запустіть тест ще раз.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Рух керма не вдалося прочитати. Запустіть тест ще раз.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Кермо перестало відповідати. Перевірте, що воно підключене і що рушій запущено.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Це кермо не використовується. Призначте його контролеру й запустіть рушій, потім запустіть тест.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Інерція</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>До цього кермо відхилялося на {0}° за центр.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Тепер воно відхиляється на {0}° за центр і зупиняється на {1}° від центру.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Тепер воно повертається без перерегулювання й зупиняється на {0}° від центру.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Запустити знову</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Застосувати</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Скинути відгук на упор керма</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Скинути імпульс вібрації на упорі</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Скинути вібрацію тригерів на упорі</value></data>
@@ -4678,7 +4759,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Структури звітів PlayStation Move, калібрування датчиків і рукостискання аксесуара EXT, від Thomas Perl, звірені з вікі moveonpc. Реалізація PadForge є оригінальним кодом C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Джерела щодо гоночної телеметрії</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Структури спільної пам'яті та UDP для ігрової телеметрії та LED-індикаторів обертів керма, вивчені з assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) і vAzhureRacingHub (GPL-3.0). Код під GPL чи LGPL не постачається.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Структури спільної пам'яті та UDP для ігрової телеметрії та LED-індикаторів обертів керма, вивчені з assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) і vAzhureRacingHub (GPL-3.0). Код під GPL чи LGPL не постачається.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Документація щодо створення пари й звітів DualShock 3 через Bluetooth. GPL-2.0 і GPL-3.0, використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4701,6 +4782,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Діапазон ослаблення 48 dB для мікрофона віртуального DualSense. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Джерела щодо протоколів керм</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Звіти рідного силового зворотного зв'язку та LED-індикаторів обертів для керм Fanatec, Thrustmaster і Logitech, вивчені з hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) і thrustmaster-led-linux (GPL-3.0) та звірені з плагіном SimHub LED від prodigal.knight (MIT) і tm-bt-led (MIT). Лише документація, код під GPL не постачається.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Джерела щодо відчуття керма</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Модель крутного моменту на кермі за режимом «Автомобіль» у картці «Центрування» взята з праці Balachandran і Gerdes «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Параметри автомобіля вивчені з commonroad-vehicle-models (BSD-3-Clause) і global_racetrajectory_optimization (LGPL-3.0). Пневматичний виліт шини взято з книги Pacejka Tire and Vehicle Dynamics, а зчеплення дороги з книги Wong Theory of Ground Vehicles. Лише числові дані, код із цих джерел не постачається.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Джерела щодо аркадних плат вводу-виводу</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Протоколи для драйверів форку SDL для аркадних плат вводу-виводу Namco і Konami та плат JVS, вивчені з arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (ліцензія StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) і TaikoZucchini (MIT). Лише документація, код не постачається.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Джерела щодо контролерів Bluetooth LE</value></data>

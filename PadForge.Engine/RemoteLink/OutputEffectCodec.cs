@@ -162,15 +162,46 @@ namespace PadForge.Engine.RemoteLink
 
         // ── Wheel FFB ───────────────────────────────────────────────────────
 
+        /// <summary>
+        /// Vehicle mode's centering for a shared wheel (#588), a tail on the
+        /// Wheel frame. The consumer composes it, since the settings, the
+        /// game's speed and the wheel's relayed position are all there, and
+        /// the owner sends it with its own writers: the level as a constant
+        /// force beside the game's, and the spring, the damper and the
+        /// friction as effects the wheel runs itself. Coefficients and
+        /// limits are of 10000. A frame with no tail, or an empty one, lets
+        /// go of any centering the wheel holds. An owner from before the
+        /// tail stops reading at the LED mask and never sees it.
+        /// </summary>
+        public readonly record struct CenteringTail(short Level, ushort SpringCoefficient, ushort SpringSaturation,
+            ushort DamperCoefficient, ushort DamperSaturation, ushort FrictionSaturation)
+        {
+            /// <summary>The tail's first byte.</summary>
+            public const byte Tag = 0xCE;
+            /// <summary>Its length, the tag included.</summary>
+            public const int Length = 13;
+
+            /// <summary>Nothing to hold on the wheel.</summary>
+            public bool IsEmpty => Level == 0 && SpringCoefficient == 0 && DamperCoefficient == 0 && FrictionSaturation == 0;
+
+            public static CenteringTail From(in PadForge.Engine.Steering.CenteringFrame frame) => new(
+                frame.Level, Clamp(frame.SpringCoefficient), Clamp(frame.SpringSaturation),
+                Clamp(frame.DamperCoefficient), Clamp(frame.DamperSaturation), Clamp(frame.FrictionSaturation));
+
+            private static ushort Clamp(int value) => (ushort)Math.Clamp(value, 0, 10000);
+        }
+
         /// <summary>The semantic steering-FFB frame (the consumer's WheelFfbSig plus
         /// rotation range and the resolved RPM-LED mask). Owner re-encodes per vendor.
         /// <paramref name="rangeLeftToWheel"/> is flag bit 3: the owner sends the wheel
         /// no range (#512). The range still rides the frame, so an owner from before
-        /// the bit, whose decode reads bits 0 to 2 only, sets the range it always did.</summary>
+        /// the bit, whose decode reads bits 0 to 2 only, sets the range it always did.
+        /// <paramref name="centering"/> rides last, and only when it is not empty.</summary>
         public static byte[] EncodeWheel(
             bool hasCond, bool dir, short force, short peak, int ac, uint effect, int period,
             short pc, short nc, short off, int db, int ps, int ns, int condGain,
-            ushort rangeDeg, ushort ledMask, bool ledValid, bool rangeLeftToWheel = false)
+            ushort rangeDeg, ushort ledMask, bool ledValid, bool rangeLeftToWheel = false,
+            CenteringTail centering = default)
         {
             var w = new Writer(48);
             w.U8((byte)Kind.Wheel);
@@ -189,6 +220,16 @@ namespace PadForge.Engine.RemoteLink
             w.I32(condGain);
             w.U16(rangeDeg);
             w.U16(ledMask);
+            if (!centering.IsEmpty)
+            {
+                w.U8(CenteringTail.Tag);
+                w.I16(centering.Level);
+                w.U16(centering.SpringCoefficient);
+                w.U16(centering.SpringSaturation);
+                w.U16(centering.DamperCoefficient);
+                w.U16(centering.DamperSaturation);
+                w.U16(centering.FrictionSaturation);
+            }
             return w.ToArray();
         }
 
@@ -235,14 +276,19 @@ namespace PadForge.Engine.RemoteLink
             public readonly int Ac, Period, Db, Ps, Ns, CondGain;
             public readonly uint Effect;
             public readonly ushort RangeDeg, LedMask;
+            /// <summary>Vehicle mode's centering (#588), empty from a consumer
+            /// that sent none.</summary>
+            public readonly CenteringTail Centering;
             public WheelFrame(bool hasCond, bool dir, bool ledValid, short force, short peak,
                 short pc, short nc, short off, int ac, int period, int db, int ps, int ns,
-                int condGain, uint effect, ushort rangeDeg, ushort ledMask, bool rangeLeftToWheel = false)
+                int condGain, uint effect, ushort rangeDeg, ushort ledMask, bool rangeLeftToWheel = false,
+                CenteringTail centering = default)
             {
                 HasCond = hasCond; Dir = dir; LedValid = ledValid; Force = force; Peak = peak;
                 Pc = pc; Nc = nc; Off = off; Ac = ac; Period = period; Db = db; Ps = ps; Ns = ns;
                 CondGain = condGain; Effect = effect; RangeDeg = rangeDeg; LedMask = ledMask;
                 RangeLeftToWheel = rangeLeftToWheel;
+                Centering = centering;
             }
         }
 
@@ -268,6 +314,9 @@ namespace PadForge.Engine.RemoteLink
                 GuideLedPercent = guideLedPercent; Falcon = falcon;
             }
         }
+
+        /// <summary>A coefficient or a limit off the wire, held to its 10000.</summary>
+        private static ushort Limit(ushort value) => value > 10000 ? (ushort)10000 : value;
 
         public static bool TryDecode(ReadOnlySpan<byte> payload, out OutputEffect effect)
         {
@@ -351,10 +400,19 @@ namespace PadForge.Engine.RemoteLink
                         int cg = r.I32();
                         ushort range = r.U16();
                         ushort led = r.U16();
+                        // Centering (#588) rides after the LED mask. Bytes there
+                        // without the tag and the tail's full length are not one.
+                        CenteringTail centering = default;
+                        if (r.Remaining >= CenteringTail.Length && r.Peek() == CenteringTail.Tag)
+                        {
+                            r.U8();
+                            centering = new CenteringTail(r.I16(), Limit(r.U16()), Limit(r.U16()), Limit(r.U16()),
+                                Limit(r.U16()), Limit(r.U16()));
+                        }
                         var wf = new WheelFrame(
                             (flags & 1) != 0, (flags & 2) != 0, (flags & 4) != 0,
                             force, peak, pc, nc, off, ac, period, db, ps, ns, cg, eff, range, led,
-                            (flags & 8) != 0);
+                            (flags & 8) != 0, centering);
                         effect = new OutputEffect(kind, null, null, wf);
                         return true;
                     }

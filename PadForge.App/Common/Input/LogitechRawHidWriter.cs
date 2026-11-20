@@ -108,8 +108,15 @@ namespace PadForge.Common.Input
 
         /// <summary>Constant force on a slot. <paramref name="levelS16"/> is the
         /// signed steering-axis force (-0x8000..0x7fff); 0 centers. Returns false
-        /// on write failure or unrecognized path.</summary>
-        public static bool WriteConstantForce(string devicePath, int slot, int levelS16)
+        /// on write failure or unrecognized path.
+        /// <paramref name="levelAtEverySlot"/> writes the level at all four
+        /// slots' bytes, for a constant in a slot other than the first. new-lg4ff
+        /// puts a slot's level at byte 2 plus the slot (lg4ff_update_slot) and only
+        /// ever runs a constant in the first, so nothing on disk shows which byte a
+        /// wheel reads for another slot's constant. With the level at all four it
+        /// reads the right one whichever that is, and the bytes of the slots the
+        /// command does not select are not read.</summary>
+        public static bool WriteConstantForce(string devicePath, int slot, int levelS16, bool levelAtEverySlot = false)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             string key = devicePath + "#" + slot;
@@ -119,6 +126,7 @@ namespace PadForge.Common.Input
             cmd[0] = (byte)((0x10 << slot) | op);
             cmd[1] = 0x00;                                  // FF_CONSTANT effect type
             cmd[2 + slot] = TranslateForce(levelS16);       // force at index 2+slot
+            if (levelAtEverySlot) cmd[2] = cmd[3] = cmd[4] = cmd[5] = cmd[2 + slot];
             bool ok = RawHidOutput.Write(devicePath, BuildReport(cmd));
             if (ok) _loaded[key] = true;
             return ok;

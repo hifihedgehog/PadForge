@@ -1594,4 +1594,5 @@
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Siv</value></data>
 </root>

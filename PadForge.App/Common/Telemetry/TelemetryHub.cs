@@ -6,10 +6,11 @@ namespace PadForge.Common.Telemetry
 {
     /// <summary>
     /// Owns the racing-telemetry sources and publishes a single current snapshot
-    /// for the FFB dispatch to drive wheel RPM LEDs from. Demand-driven: the FFB
-    /// loop calls <see cref="RequestActive"/> each frame a wheel wants LEDs, which
-    /// starts the sources; after a few seconds with no request the hub stops them,
-    /// so no socket is bound and no shared memory is held when the feature is idle.
+    /// for the FFB dispatch to drive wheel RPM LEDs and a wheel's centering
+    /// from. Demand-driven: the FFB loop calls <see cref="RequestActive"/> each
+    /// frame a wheel wants either, which starts the sources. After a few seconds
+    /// with no request the hub stops them, so no socket is bound and no shared
+    /// memory is held when both are idle.
     /// </summary>
     internal static class TelemetryHub
     {
@@ -162,6 +163,15 @@ namespace PadForge.Common.Telemetry
                         }
                         catch { /* a flaky source must not take down the hub */ }
                     }
+                }
+                // The Game Telemetry row with no max RPM yet lights no LEDs, but its speed and its road
+                // still serve a wheel's centering (#588).
+                if (!have && PadForge.Common.Input.Telemetry.GameTelemetryRuntime.TryGetMotion(
+                        Environment.TickCount64, out float rowSpeed, out float rowGrip))
+                {
+                    best = new GameTelemetrySnapshot { Source = "Game Telemetry", Grip = rowGrip };
+                    best.SetSpeed(rowSpeed);
+                    have = true;
                 }
                 lock (_snapLock)
                 {

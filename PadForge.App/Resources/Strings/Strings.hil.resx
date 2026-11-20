@@ -1358,7 +1358,7 @@
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ang mga layout sang shared memory kag UDP sa likod sang telemetry sang dula kag sang RPM shift LED sang manibela, ginbasa halin sa assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) kag vAzhureRacingHub (GPL-3.0). Wala sing GPL ukon LGPL nga code nga ginaupod.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ang mga layout sang shared memory kag UDP sa likod sang telemetry sang dula kag sang RPM shift LED sang manibela, ginbasa halin sa assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) kag vAzhureRacingHub (GPL-3.0). Wala sing GPL ukon LGPL nga code nga ginaupod.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
@@ -1751,4 +1751,5 @@
   <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Pun-on ang screen</value></data>
   <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita ang bug-os nga litrato</value></data>
   <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Iunat sa screen</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>I-apply</value></data>
 </root>

@@ -926,6 +926,128 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The Wheel group's two cards (#588) alone in the Rumble and
+        /// Haptics section, at the width its board draws them, in the states
+        /// the Centering board has: Vehicle mode with the mark on the curve,
+        /// the same with More open, Spring mode, a wheel routed through SDL
+        /// (no Wheel card, the Wheel Range row, no torque set, so the line
+        /// that says so), and a wheel that gives less than the car asks. Then
+        /// the Release Test window as it opens, with a test under way and with
+        /// one done, each from a simulated wheel stepped through the test the
+        /// engine runs.</summary>
+        [Fact]
+        public void DrawCentering()
+        {
+            Run("centering", drawing =>
+            {
+                const double CardWidth = 692.67 + 72;
+                var native = new PadForge.Common.Input.WheelCenteringFacts(true, true, true, 0,
+                    PadForge.Engine.Steering.CenteringEffects.All, PadForge.Engine.Steering.WheelCalibration.FourBitDamperSteps);
+                var generic = new PadForge.Common.Input.WheelCenteringFacts(false, true, true, 0,
+                    PadForge.Engine.Steering.CenteringEffects.Spring | PadForge.Engine.Steering.CenteringEffects.Damper,
+                    PadForge.Engine.Steering.WheelCalibration.FineDamperSteps);
+                // The board's own wheel: a sedan on a wheel of 5 N·m, standing 10 degrees off center,
+                // with a game sending 60 mph.
+                const double SixtyMph = 60 * 0.44704;
+                PadForge.Engine.Data.PadSetting Board() => new() { CenteringMode = "1", CenteringWheelTorque = "50" };
+
+                var vm = new PadViewModel(0);
+                var page = new PadPage { DataContext = vm };
+                page.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
+                var ground = drawing.Ground(page);
+                vm.SelectedConfigTab = PadViewModel.WheelTabIndex;
+                UIElement Part(string name) => (UIElement)page.FindName(name);
+                // A live frame: the game's speed first, which moves the curve, then the mark on that curve.
+                void Mark(double degrees)
+                {
+                    var frame = new PadForge.Engine.Steering.CenteringFrame { AngleDegrees = degrees, Speed = SixtyMph, Grip = 1.0 };
+                    vm.UpdateCenteringLive(new PadForge.Engine.Steering.CenteringLive(true, frame, true, false));
+                    var curve = vm.CenteringPreview.Curve;
+                    frame.TorqueNm = Math.Sign(degrees) * Math.Min(curve.Torque(Math.Abs(degrees) * Math.PI / 180.0), vm.CenteringPreview.WheelTorque);
+                    vm.UpdateCenteringLive(new PadForge.Engine.Steering.CenteringLive(true, frame, true, false));
+                }
+
+                drawing.Picture(ground, "centering-vehicle.png", CardWidth, 900, () =>
+                {
+                    foreach (string name in new[] { "TabForceFeedback", "TabImpulseTriggers", "TabAdaptiveTriggers", "TabBassShakers" })
+                        Part(name).Visibility = Visibility.Collapsed;
+                    Part("TabWheel").Visibility = Visibility.Visible;
+                    Part("WheelCard").Visibility = Visibility.Visible;
+                    vm.LoadCentering(Board(), native);
+                    Mark(10);
+                });
+                var more = (Expander)page.FindName("CenteringMore");
+                drawing.Picture(ground, "centering-vehicle-more.png", CardWidth, 1500, () => more.IsExpanded = true);
+                more.IsExpanded = false;
+                // The foot's row with the lift it takes under the pointer, to see the lift against the card's corners.
+                var foot = (Button)page.FindName("CenteringReleaseTestButton");
+                drawing.Picture(ground, "centering-foot-lift.png", CardWidth, 1150,
+                    () => foot.SetResourceReference(Control.BackgroundProperty, "SteelCardHoverBrush"));
+                foot.ClearValue(Control.BackgroundProperty);
+                // Two cards to a row is 600 wide at the least, the narrowest the card is drawn.
+                drawing.Picture(ground, "centering-vehicle-narrow.png", 600 + 72, 900);
+                // The paper's own test car, which the board's chart was computed for.
+                drawing.Picture(ground, "centering-x1.png", CardWidth, 900, () =>
+                {
+                    vm.CenteringVehicle = PadForge.Engine.Steering.SteeringVehicle.StanfordX1.Id;
+                    Mark(10);
+                });
+                vm.CenteringVehicle = PadForge.Engine.Steering.SteeringVehicle.Sedan.Id;
+                drawing.Picture(ground, "centering-over-limit.png", CardWidth, 900, () =>
+                {
+                    vm.CenteringWheelTorqueNm = 2.3;
+                    Mark(-25);
+                });
+                drawing.Picture(ground, "centering-spring.png", CardWidth, 500, () =>
+                {
+                    vm.UpdateCenteringLive(default);
+                    vm.LoadCentering(new PadForge.Engine.Data.PadSetting(), native);
+                    vm.WheelAutoCenter = 40;
+                });
+                drawing.Picture(ground, "centering-generic.png", CardWidth, 900, () =>
+                {
+                    Part("WheelCard").Visibility = Visibility.Collapsed;
+                    var ps = Board();
+                    ps.CenteringSpeedSource = "1";
+                    ps.CenteringWheelTorque = "0";
+                    ps.CenteringWheelRange = "540";
+                    vm.LoadCentering(ps, generic);
+                    vm.UpdateCenteringLive(default);
+                });
+
+                // The window, on a simulated wheel of 2.2 N·m stepped a millisecond at a time.
+                var deviceVm = new PadViewModel(0);
+                deviceVm.LoadCentering(new PadForge.Engine.Data.PadSetting { CenteringMode = "1", CenteringSpeedSource = "1", CenteringFixedSpeed = "97" },
+                    new PadForge.Common.Input.WheelCenteringFacts(true, true, true, 2.2, PadForge.Engine.Steering.CenteringEffects.All,
+                        PadForge.Engine.Steering.WheelCalibration.FourBitDamperSteps));
+                var settings = deviceVm.CenteringSettingsNow();
+                PadForge.Engine.Data.UserDevice Wheel(int stopAtMs)
+                {
+                    var device = new PadForge.Engine.Data.UserDevice { VendorId = 0x046D, ProdId = 0xC24F, CapType = InputDeviceType.Driving };
+                    var plant = new PadForge.Engine.Steering.WheelPlant();
+                    long start = PadForge.Engine.Steering.WheelCenteringRuntime.NowMs();
+                    device.Centering.Step(settings, string.Empty, 0, -1, 0, start, out _);
+                    if (stopAtMs < 0) return device;
+                    Assert.True(device.Centering.StartTest(settings, string.Empty, start));
+                    for (int ms = 1; ms < stopAtMs; ms++)
+                    {
+                        double axis = Math.Round(plant.Axis * 32767.0) / 32767.0;
+                        var frame = device.Centering.Step(settings, string.Empty, axis, -1, 0, start + ms, out bool testing);
+                        if (!testing) break;
+                        plant.Command(frame);
+                        plant.Advance(0.001);
+                    }
+                    return device;
+                }
+                drawing.PictureWindow(new ReleaseTestDialog(Wheel(-1), deviceVm), "dialog-release-test-ready.png");
+                // Far enough in for the first release to be on the chart.
+                var running = new ReleaseTestDialog(Wheel(15000), deviceVm);
+                drawing.PictureWindow(running, "dialog-release-test-running.png", () => { running.ShowRunning(); running.Poll(); });
+                var done = new ReleaseTestDialog(Wheel(60000), deviceVm);
+                drawing.PictureWindow(done, "dialog-release-test-done.png", () => done.Poll());
+            });
+        }
+
         /// <summary>The mappings list as its boards draw it (keep16): the head
         /// with a column for each device, rows that show what a cell can hold,
         /// and each kind of open row. A controller driven by a DualSense, a

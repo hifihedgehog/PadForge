@@ -2186,7 +2186,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>I-reset ang range sa pagtuyok</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>I-reset ang kusog sa auto centering</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>I-reset ang RPM shift nga mga LED</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Range sa pagmaneho, auto centering, ug shift lights para sa mga manibela nga adunay force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Range sa pagmaneho ug shift lights para sa mga manibela nga adunay force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Pagsentro</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Ibalik ang manibela sa sentro, isip yano nga spring o sama sa steering sa usa ka sakyanan.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>I-reset ang pagsentro</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Ang Spring mobira sa manibela ngadto sa sentro sa usa ka kusog. Ang Sakyanan mokuwenta sa torque nga ihatag sa steering sa usa ka sakyanan sumala sa katulin niini, gikan sa usa ka modelo sa ligid.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Sakyanan</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Sakyanan</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Ang sakyanan nga ang steering niini gisundog sa manibela. Ang matag usa usa ka gipatik nga modelo sa sakyanan.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Compact</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Sakyanan sa karera</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Katulin</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Ang Gikan sa dula mobasa sa katulin sa sakyanan gikan sa telemetry sa dula, ug mogamit sa Pirmi nga katulin samtang walay dula nga nagpadala niini. Ang Pirmi mogamit sa Pirmi nga katulin sa tanang higayon.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Gikan sa dula</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Pirmi</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Bug-at sa steering</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Unsa kabug-at ang steering. Ang 100% mao ang kaugalingon sa sakyanan.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Range sa manibela</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Unsa kalayo motuyok kini nga manibela gikan sa usa ka tumoy ngadto sa pikas. I-set kini sumala sa kaugalingong setting sa manibela.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torque sa steering</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Anggulo</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torque</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limitasyon sa manibela {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torque sa steering sa rim batok sa anggulo sa steering. Sa {0} moabot kini sa kinatas-an nga {1} N·m sa {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Pagbati sa sentro</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Unsa kadali motubo ang torque sa pagliko duol sa sentro, sa N·m matag g hangtod 0.05 g. Ang mas taas mobati nga mas lig-on.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Katig-a sa torque</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Unsa kadali motubo ang torque samtang mobiya ang manibela sa sentro, sa N·m matag degree.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearidad</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Ang slope sa torque tali sa 0.10 ug 0.15 g itandi sa slope niini sa sentro. Ang mas ubos nagpasabot nga mogaan ang steering sa mas sayo.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Kinatas-ang torque</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Ang kinadak-ang torque nga gipangayo sa sakyanan sa manibela, tupad sa kinadak-ang ikahatag sa manibela.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sa {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kini nga sakyanan nangayo og mas daghang torque kaysa anaa sa manibela, mao nga naputol ang ibabaw sa kurba.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Pagbati sa sentro, power assist, damping, friksyon, kapit, pirmi nga katulin, torque sa manibela</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Unsa kakusog ang pagkupot sa steering sa sentro niini sa hinay nga katulin. Ang 100% mao ang kaugalingon sa sakyanan.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Power assist</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Pila ang gikuha sa power steering samtang mosaka ang pagliko. Ang mas daghan mas gaan nga steering layo sa sentro.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Damping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Unsa kakusog nga mosukol ang manibela sa paspas nga pagliko. Ang 100% mao ang mobalik niini nga dili molapas sa sentro.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friksyon</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Usa ka makanunayon nga pagbira nga mosukol sa pagliko sa bisan asa nga direksyon.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Kapit</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Ang kapit sa dalan. Mogaan ang steering kung mahutdan na niini ang atubangang mga ligid.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Uga</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Basa</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Niyebe</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Yelo</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Pirmi nga katulin</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Ang katulin nga giisip nga dagan sa sakyanan kung ang Katulin kay Pirmi, ug samtang walay dula nga nagpadala niini.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torque sa manibela</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Ang kinadak-ang torque nga ihatag niini nga manibela. Pun-on kini sa PadForge kung gipatik kini sa naghimo sa manibela. Ang numero nga labaw sa kaugalingon sa manibela mohuyang sa matag pwersa.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Wala pa ma-set ang Torque sa manibela alang niini nga manibela, mao nga gipaubos ang mga pwersa niini. Isulod kini ubos sa Dugang pa.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Nagsugod sa pag-uyog ang manibela sa kaugalingon, mao nga gipugngan ang pwersa. Padagana ang Pagsulay sa pagbuhi.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Naka-off ang pwersa kay ang manibela padayon nga nag-uyog o mibiya sa sentro. Padagana ang Pagsulay sa pagbuhi.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Pagsulay sa pagbuhi</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Sukdon kini nga manibela ug i-set ang damping aron mobalik kini nga dili molapas sa sentro</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Wala pa mapadagan</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Nasukod</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Kuhaa ang imong mga kamot sa manibela. Tuyokon kini sa PadForge ngadto sa {0}°, buhian, ug irekord kung giunsa kini pagbalik.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ang anggulo sa manibela sulod sa {0} segundo human sa matag pagbuhi.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Una</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Human</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Nagsukod, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Nahuman, 2 ka dagan</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Gihunong</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Wala mohunong ang manibela. Kuhaa ang imong mga kamot niini ug padagana pag-usab ang pagsulay.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Wala molihok ang manibela. Kung ang Torque sa manibela gi-set nga labaw sa ikahatag sa manibela, i-set kini sa kaugalingong numero sa manibela ug padagana pag-usab ang pagsulay.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Haduol na ang manibela sa tumoy sa range niini. I-sentro kini ug padagana pag-usab ang pagsulay.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Dili mabasa ang lihok sa manibela. Padagana pag-usab ang pagsulay.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Mihunong sa pagtubag ang manibela. Susiha nga konektado kini ug nga nagdagan ang engine.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Wala gigamit kini nga manibela. I-assign kini sa usa ka controller ug sugdi ang engine, unya padagana ang pagsulay.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inersya</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Kaniadto, ang manibela milapas og {0}° sa sentro.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Karon molapas kini og {0}° sa sentro ug mopahulay {1}° gikan sa sentro.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Karon mobalik kini nga dili molapas sa sentro ug mopahulay {0}° gikan sa sentro.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Padagana pag-usab</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>I-apply</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>I-reset ang feedback sa lock sa pagmaneho</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>I-reset ang rumble nga pulso sa lock</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>I-reset ang pagkurog sa trigger sa lock</value></data>
@@ -3329,7 +3410,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Mga layout sa report sa PlayStation Move, kalibrasyon sa sensor, ug ang EXT accessory handshake, ni Thomas Perl, gi-cross-check batok sa moveonpc wiki. Ang implementasyon sa PadForge orihinal nga C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Mga reperensya sa racing telemetry</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mga shared-memory ug UDP layout luyo sa Game telemetry ug sa RPM shift LED sa manibela, gibasa gikan sa assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ug vAzhureRacingHub (GPL-3.0). Walay GPL o LGPL code nga gilakip.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mga shared-memory ug UDP layout luyo sa Game telemetry ug sa RPM shift LED sa manibela, gibasa gikan sa assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ug vAzhureRacingHub (GPL-3.0). Walay GPL o LGPL code nga gilakip.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasyon sa Bluetooth pairing ug report sa DualShock 3. GPL-2.0 ug GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -3352,6 +3433,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Ang 48 dB attenuation range sa mikropono sa virtual nga DualSense. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Mga reperensya sa protocol sa manibela</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Mga report sa native nga force feedback ug RPM shift LED para sa mga manibela sa Fanatec, Thrustmaster, ug Logitech, gibasa gikan sa hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), ug thrustmaster-led-linux (GPL-3.0), ug gi-cross-check batok sa SimHub LED plugin ni prodigal.knight (MIT) ug tm-bt-led (MIT). Dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Mga reperensya sa feel sa steering</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Ang modelo sa steering torque luyo sa Sakyanan nga mode sa Pagsentro, gikan kang Balachandran ug Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Ang mga parameter sa sakyanan gibasa gikan sa commonroad-vehicle-models (BSD-3-Clause) ug global_racetrajectory_optimization (LGPL-3.0). Ang trail sa ligid gikan sa Tire and Vehicle Dynamics ni Pacejka, ug ang kapit sa dalan gikan sa Theory of Ground Vehicles ni Wong. Mga numero lang, walay code gikan kanila nga gilakip.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Mga reperensya sa arcade I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Ang mga protocol luyo sa mga driver sa SDL fork para sa mga arcade I/O board sa Namco ug Konami ug mga JVS board, gibasa gikan sa arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ug TaikoZucchini (MIT). Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Mga reperensya sa Bluetooth LE controller</value></data>

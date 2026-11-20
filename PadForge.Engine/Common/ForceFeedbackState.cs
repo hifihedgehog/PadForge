@@ -84,6 +84,10 @@ namespace PadForge.Engine
         private readonly EffectSlot _main = new();
         /// <summary>The auto-center spring's own effect (#572).</summary>
         private readonly EffectSlot _spring = new();
+        /// <summary>Vehicle mode's centering (#588): its force, and the
+        /// spring, the damper and the friction the wheel runs itself.</summary>
+        private readonly EffectSlot _centerForce = new(), _centerSpring = new(), _centerDamper = new(),
+            _centerFriction = new();
 
         /// <summary>What a haptic device turned out to hold. One: a second
         /// effect was refused while the first ran, and the refused one then
@@ -137,6 +141,14 @@ namespace PadForge.Engine
         // Software auto-center spring (generic SDL wheels) change detection
         private bool _autoCenterActive;
         private short _autoCenterCoeff;
+
+        // Vehicle mode's centering (#588): what each effect last took, the
+        // effects the device refused, and the handle both were learned on.
+        private bool _centerHeld;
+        private short _centerLevel;
+        private (int Coefficient, int Saturation) _centerSpringSet, _centerDamperSet, _centerFrictionSet;
+        private PadForge.Engine.Steering.CenteringEffects _centerRefused;
+        private IntPtr _centerHandle;
 
         // ─────────────────────────────────────────────
         //  Public state
@@ -301,6 +313,7 @@ namespace PadForge.Engine
             {
                 StopAndDestroySpring(device);
                 StopAndDestroyHapticEffect(device);
+                ReleaseCentering(device);
             }
             else if (device.HasRumble)
             {
@@ -385,6 +398,22 @@ namespace PadForge.Engine
                 return;
             }
 
+            // Vehicle mode's centering (#588) has effects of its own, made
+            // ahead of the game's and the rumble's. A device with room for
+            // fewer effects than both want gives centering what it has, the
+            // rule the auto-center spring keeps with rumble.
+            if (device.HasHaptic)
+                ApplyCentering(device, v.CenteringActive, v.Centering);
+            SetGameForces(ud, device, ps, v);
+            // Held centering counts, so a wheel unassigned from its slot
+            // still gets the stop that releases it.
+            if (_centerHeld) IsActive = true;
+        }
+
+        /// <summary>The game's force, Constant Force, the auto-center spring
+        /// and rumble.</summary>
+        private void SetGameForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
+        {
             // Parse gain settings from PadSetting.
             int overallGain = TryParseInt(ps.ForceOverall, 100);
             int leftGain = TryParseInt(ps.LeftMotorStrength, 100);
@@ -882,6 +911,10 @@ namespace PadForge.Engine
         {
             if (!IsGenericWheelSpringCapable(device))
                 return 0;
+            // Vehicle mode centers with effects of its own (#588), so the
+            // slider's spring rests while it is on.
+            if (ps.CenteringMode == "1" && IsGenericWheelVehicleCapable(device))
+                return 0;
             int strength = Math.Clamp(TryParseInt(ps.AutoCenterStrength, 0), 0, 100);
             return (short)(strength * 32767 / 100); // 0..100% -> 0..32767
         }
@@ -1022,6 +1055,188 @@ namespace PadForge.Engine
         }
 
         // ─────────────────────────────────────────────
+        //  Vehicle mode's centering (#588)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The least change in the centering force's level that
+        /// is written: a 4000th of the wheel's range. A turning wheel
+        /// changes the level every poll, and each write is a call into the
+        /// wheel's driver.</summary>
+        public const int CenteringLevelStep = 8;
+
+        /// <summary>Whether a wheel routed through SDL can run Vehicle
+        /// mode: a wheel by its device type, with a constant force to set
+        /// the torque curve by. Logitech, Fanatec and Thrustmaster wheels
+        /// take theirs from their native writers.</summary>
+        public static bool IsGenericWheelVehicleCapable(bool hasHaptic, uint hapticFeatures, int inputDeviceType)
+        {
+            return hasHaptic
+                && (hapticFeatures & SDL_HAPTIC_CONSTANT) != 0
+                && inputDeviceType == InputDeviceType.Driving;
+        }
+
+        /// <summary>Overload for a live device.</summary>
+        public static bool IsGenericWheelVehicleCapable(ISdlInputDevice device)
+        {
+            return device != null
+                && IsGenericWheelVehicleCapable(device.HasHaptic, device.HapticFeatures, device.GetInputDeviceType());
+        }
+
+        /// <summary>The effects a wheel routed through SDL runs itself for
+        /// centering: the ones its driver lists, less any it refused when
+        /// asked. Friction counts where the driver lists friction or a
+        /// damper, since a wheel with no friction effect takes its friction
+        /// as a second damper with a full coefficient and a low limit, which
+        /// is what the Linux wheel drivers send such a wheel.</summary>
+        public PadForge.Engine.Steering.CenteringEffects CenteringEffectsOf(ISdlInputDevice device)
+        {
+            var effects = PadForge.Engine.Steering.CenteringEffects.None;
+            if (device == null || !device.HasHaptic) return effects;
+            uint features = device.HapticFeatures;
+            if ((features & SDL_HAPTIC_SPRING) != 0) effects |= PadForge.Engine.Steering.CenteringEffects.Spring;
+            if ((features & SDL_HAPTIC_DAMPER) != 0) effects |= PadForge.Engine.Steering.CenteringEffects.Damper;
+            if ((features & (SDL_HAPTIC_FRICTION | SDL_HAPTIC_DAMPER)) != 0)
+                effects |= PadForge.Engine.Steering.CenteringEffects.Friction;
+            if (device.HapticHandle == _centerHandle) effects &= ~_centerRefused;
+            return effects;
+        }
+
+        /// <summary>Holds Vehicle mode's centering on the wheel: a constant
+        /// force for the torque curve, and a spring, a damper and a friction
+        /// effect the wheel runs itself. Each is written only when it
+        /// changes. An effect the driver refuses is not asked for again
+        /// until centering is let go, and <see cref="CenteringEffectsOf"/>
+        /// then leaves it out, so the next frame is composed without
+        /// it.</summary>
+        private void ApplyCentering(ISdlInputDevice device, bool active, in PadForge.Engine.Steering.CenteringFrame frame)
+        {
+            IntPtr haptic = device.HapticHandle;
+            if (!active || haptic == IntPtr.Zero)
+            {
+                if (_centerHeld) ReleaseCentering(device);
+                return;
+            }
+            if (haptic != _centerHandle)
+            {
+                // A reopened device holds none of the effects made on the old handle.
+                ForgetCentering();
+                _centerHandle = haptic;
+            }
+            _centerHeld = true;
+            uint features = device.HapticFeatures;
+
+            if ((features & SDL_HAPTIC_CONSTANT) != 0)
+            {
+                short level = frame.Level;
+                bool changed = _centerForce.Created
+                    ? Math.Abs(level - _centerLevel) >= CenteringLevelStep || (level == 0 && _centerLevel != 0)
+                    : level != 0;
+                if (changed)
+                {
+                    var effect = new SDL_HapticEffect();
+                    effect.constant.type = (ushort)SDL_HAPTIC_CONSTANT;
+                    effect.constant.length = SDL_HAPTIC_INFINITY;
+                    effect.constant.level = level;
+                    if (device.NumHapticAxes <= 1)
+                    {
+                        effect.constant.direction.type = SDL_HAPTIC_STEERING_AXIS;
+                    }
+                    else
+                    {
+                        // East, the direction whose projection on the steering axis is the level
+                        // itself (SetDirectionalHapticForces takes the sine of the angle).
+                        effect.constant.direction.type = SDL_HAPTIC_POLAR;
+                        effect.constant.direction.dir0 = 9000;
+                    }
+                    if (ApplyEffect(device, ref effect, _centerForce)) _centerLevel = level;
+                }
+            }
+
+            ApplyCenteringCondition(device, _centerSpring, (ushort)SDL_HAPTIC_SPRING,
+                (features & SDL_HAPTIC_SPRING) != 0, frame.SpringCoefficient, frame.SpringSaturation,
+                ref _centerSpringSet, PadForge.Engine.Steering.CenteringEffects.Spring);
+            ApplyCenteringCondition(device, _centerDamper, (ushort)SDL_HAPTIC_DAMPER,
+                (features & SDL_HAPTIC_DAMPER) != 0, frame.DamperCoefficient, frame.DamperSaturation,
+                ref _centerDamperSet, PadForge.Engine.Steering.CenteringEffects.Damper);
+            bool friction = (features & SDL_HAPTIC_FRICTION) != 0;
+            ApplyCenteringCondition(device, _centerFriction, (ushort)(friction ? SDL_HAPTIC_FRICTION : SDL_HAPTIC_DAMPER),
+                (features & (SDL_HAPTIC_FRICTION | SDL_HAPTIC_DAMPER)) != 0,
+                frame.FrictionSaturation > 0 ? 10000 : 0, frame.FrictionSaturation,
+                ref _centerFrictionSet, PadForge.Engine.Steering.CenteringEffects.Friction);
+        }
+
+        /// <summary>One of centering's condition effects, symmetric about
+        /// center on the steering axis. A coefficient or a limit of 0 lets
+        /// the effect go.</summary>
+        private void ApplyCenteringCondition(ISdlInputDevice device, EffectSlot slot, ushort sdlType, bool listed,
+            int coefficient, int saturation, ref (int Coefficient, int Saturation) applied,
+            PadForge.Engine.Steering.CenteringEffects flag)
+        {
+            if (coefficient <= 0 || saturation <= 0)
+            {
+                if (slot.Created) DestroyEffectIn(device, slot);
+                applied = default;
+                return;
+            }
+            if (!listed || (_centerRefused & flag) != 0) return;
+            if (slot.Created && applied == (coefficient, saturation)) return;
+
+            var effect = new SDL_HapticEffect();
+            effect.condition.type = sdlType;
+            // CARTESIAN +X, as the auto-center spring sends it (ApplyAutoCenterSpring).
+            effect.condition.direction.type = SDL_HAPTIC_CARTESIAN;
+            effect.condition.direction.dir0 = 1;
+            effect.condition.length = SDL_HAPTIC_INFINITY;
+            short coeff = (short)Math.Clamp(coefficient * 32767L / 10000, 0, 32767);
+            ushort sat = (ushort)Math.Clamp(saturation * 65535L / 10000, 0, 65535);
+            effect.condition.right_coeff0 = coeff;
+            effect.condition.left_coeff0 = coeff;
+            effect.condition.right_sat0 = sat;
+            effect.condition.left_sat0 = sat;
+            effect.condition.center0 = 0;
+            effect.condition.deadband0 = 0;
+
+            if (ApplyEffect(device, ref effect, slot))
+            {
+                applied = (coefficient, saturation);
+                return;
+            }
+            applied = default;
+            _centerRefused |= flag;
+            SdlDiagLog.WriteLine($"HAPTICDIAG {device.VendorId:X4}:{device.ProductId:X4} refused centering's {flag} effect");
+        }
+
+        /// <summary>Lets go of every centering effect on the wheel.</summary>
+        private void ReleaseCentering(ISdlInputDevice device)
+        {
+            if (device.HapticHandle == _centerHandle)
+            {
+                DestroyEffectIn(device, _centerForce);
+                DestroyEffectIn(device, _centerSpring);
+                DestroyEffectIn(device, _centerDamper);
+                DestroyEffectIn(device, _centerFriction);
+            }
+            ForgetCentering();
+        }
+
+        /// <summary>Forgets centering's effects without a write: the handle
+        /// they were made on is gone, or they were just destroyed.</summary>
+        private void ForgetCentering()
+        {
+            _centerForce.Id = -1; _centerForce.Created = false;
+            _centerSpring.Id = -1; _centerSpring.Created = false;
+            _centerDamper.Id = -1; _centerDamper.Created = false;
+            _centerFriction.Id = -1; _centerFriction.Created = false;
+            _centerLevel = 0;
+            _centerSpringSet = default;
+            _centerDamperSet = default;
+            _centerFrictionSet = default;
+            _centerRefused = PadForge.Engine.Steering.CenteringEffects.None;
+            _centerHandle = IntPtr.Zero;
+            _centerHeld = false;
+        }
+
+        // ─────────────────────────────────────────────
         //  Scalar haptic effect routing (fallback)
         // ─────────────────────────────────────────────
 
@@ -1120,7 +1335,8 @@ namespace PadForge.Engine
         private void Release(ISdlInputDevice device, EffectSlot slot)
         {
             if (slot == _spring) StopAndDestroySpring(device);
-            else StopAndDestroyHapticEffect(device);
+            else if (slot == _main) StopAndDestroyHapticEffect(device);
+            else DestroyEffectIn(device, slot);
         }
 
         /// <summary>
@@ -1244,6 +1460,14 @@ namespace PadForge.Engine
         /// <summary>Per-axis condition coefficients.
         /// Index 0 = X axis, Index 1 = Y axis. Null when no condition data.</summary>
         public ConditionAxisData[] ConditionAxes { get; set; }
+
+        /// <summary>Vehicle mode's centering for a wheel routed through SDL
+        /// (#588), composed in the force feedback pass. Not active lets go
+        /// of whatever centering the wheel holds.</summary>
+        public bool CenteringActive { get; set; }
+
+        /// <summary>The centering frame while <see cref="CenteringActive"/>.</summary>
+        public PadForge.Engine.Steering.CenteringFrame Centering;
 
         /// <summary>Number of valid entries in ConditionAxes (1 for wheels, 2 for joysticks).</summary>
         public int ConditionAxisCount { get; set; }

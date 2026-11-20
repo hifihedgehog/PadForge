@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Dönüş aralığını sıfırla</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Otomatik ortalama gücünü sıfırla</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Devir vites LED'lerini sıfırla</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Kuvvet geri bildirimli direksiyonlar için dönüş aralığı, otomatik ortalama ve vites ışıkları.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Kuvvet geri bildirimli direksiyonlar için dönüş aralığı ve vites ışıkları.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Ortalama</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Direksiyonu merkeze geri getirir, düz bir yay gibi ya da bir aracın direksiyonu gibi.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Ortalamayı sıfırla</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Yay, direksiyonu tek bir güçle merkeze çeker. Araç, bir aracın direksiyonunun kendi hızında verdiği torku bir lastik modelinden hesaplar.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Yay</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Araç</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Araç</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Direksiyonun hissini aldığı araç. Her biri yayımlanmış bir araç modelidir.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Minibüs</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Yarış arabası</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Hız</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Oyundan, aracın hızını oyunun telemetrisinden okur ve hiçbir oyun telemetri göndermiyorsa Sabit hızı kullanır. Sabit, her zaman Sabit hızı kullanır.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Oyundan</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Sabit</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Direksiyon ağırlığı</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Direksiyonun ne kadar ağır olduğu. %100, aracın kendi ağırlığıdır.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Direksiyon aralığı</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Bu direksiyonun kilitten kilide ne kadar döndüğü. Direksiyonun kendi ayarına eşitleyin.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Direksiyon torku eğrisi</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Açı</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Tork</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Direksiyon sınırı {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Direksiyon simidindeki tork, direksiyon açısına karşı. {0} hızında {2}° açıda en çok {1} N·m değerine çıkar.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Merkezde his</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Merkez yakınında viraj ivmesiyle torkun ne kadar hızlı arttığı, 0.05 g'ye kadar g başına N·m olarak. Daha yüksek değer, direksiyonu daha oturaklı hissettirir.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Tork sertliği</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Direksiyon merkezden ayrılırken torkun ne kadar hızlı arttığı, derece başına N·m olarak.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Doğrusallık</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Torkun 0.10 ile 0.15 g arasındaki eğimi, merkezdeki eğimine oranla. Düşük değer, direksiyonun daha erken hafiflediği anlamına gelir.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>En yüksek tork</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Aracın direksiyondan istediği en yüksek tork ile direksiyonun verebildiği en yüksek tork.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Bu araç direksiyonun sahip olduğundan fazla tork istiyor, bu yüzden eğrinin tepesi kesiliyor.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Merkezde his, direksiyon desteği, sönümleme, sürtünme, tutuş, sabit hız, direksiyon torku</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Direksiyonun düşük hızda merkezini ne kadar güçlü tuttuğu. %100, aracın kendi değeridir.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Direksiyon desteği</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Viraj ivmesi arttıkça hidrolik direksiyonun ne kadar yükü aldığı. Yüksek değer, merkezden uzakta daha hafif direksiyon demektir.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Sönümleme</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Direksiyonun hızlı dönüşlere ne kadar direndiği. %100, direksiyonu merkezi aşmadan geri getiren değerdir.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Sürtünme</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Her iki yöne dönmeye de direnen sabit bir direnç.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Tutuş</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Yolun tutuşu. Ön lastikler tutuşu aştığında direksiyon hafifler.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kuru</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Islak</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Kar</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Buz</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Sabit hız</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Hız Sabit olduğunda ve hiçbir oyun hız göndermediği sürece aracın sürüldüğü varsayılan hız.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Direksiyon torku</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Bu direksiyonun verdiği en yüksek tork. PadForge, direksiyonun üreticisi yayımladığında bunu kendisi doldurur. Direksiyonun kendi değerinden yüksek bir değer, her kuvveti zayıflatır.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Bu direksiyon için Direksiyon torku ayarlanmadı, bu yüzden kuvvetleri düşük tutuluyor. Daha fazla bölümünden girin.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Direksiyon kendiliğinden sallanmaya başladı, bu yüzden kuvvet kısıldı. Bırakma testini çalıştırın.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Direksiyon sallanmayı sürdürdüğü ya da merkezden uzaklaştığı için kuvvet kapatıldı. Bırakma testini çalıştırın.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Bırakma testi</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Bu direksiyonu ölçer ve merkezi aşmadan dönmesi için sönümlemeyi ayarlar</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Henüz çalıştırılmadı</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Ölçüldü</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Ellerinizi direksiyondan çekin. PadForge direksiyonu {0}° çevirir, bırakır ve nasıl geri geldiğini kaydeder.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Her bırakmadan sonraki {0} saniye boyunca direksiyonun açısı.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Önce</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Sonra</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Ölçülüyor, %{0}</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Bitti, 2 çalıştırma</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Durduruldu</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Direksiyon duruma gelmedi. Ellerinizi çekin ve testi yeniden çalıştırın.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Direksiyon hareket etmedi. Direksiyon torku direksiyonun verdiğinden yüksek ayarlandıysa, direksiyonun kendi değerine ayarlayın ve testi yeniden çalıştırın.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Direksiyon aralığının sonuna yaklaştı. Direksiyonu ortalayın ve testi yeniden çalıştırın.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Direksiyonun hareketi okunamadı. Testi yeniden çalıştırın.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Direksiyon yanıt vermeyi bıraktı. Bağlı olduğunu ve motorun çalıştığını kontrol edin.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Bu direksiyon kullanımda değil. Bir kontrolcüye atayın ve motoru başlatın, sonra testi çalıştırın.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Eylemsizlik</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Önceden direksiyon merkezi {0}° aşıyordu.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Şimdi merkezi {0}° aşıyor ve merkezden {1}° uzakta duruyor.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Şimdi merkezi aşmadan dönüyor ve merkezden {0}° uzakta duruyor.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Yeniden çalıştır</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Uygula</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Tam kilit geri bildirimini sıfırla</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Tam kilitte titreşim darbesini sıfırla</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Tam kilitte tetik titreşimini sıfırla</value></data>
@@ -4919,7 +5000,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move rapor düzenleri, sensör kalibrasyonu ve EXT aksesuar el sıkışması. Geliştiren: Thomas Perl. moveonpc wiki'siyle çapraz denetlendi. PadForge'un uygulaması özgün C# kodudur. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Yarış telemetrisi referansları</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Oyun telemetrisi ve direksiyon devir vites LED'lerinin arkasındaki paylaşılan bellek ve UDP düzenleri. assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ve vAzhureRacingHub (GPL-3.0) projelerinden okundu. Hiçbir GPL veya LGPL kodu dağıtılmıyor.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Oyun telemetrisi ve direksiyon devir vites LED'lerinin arkasındaki paylaşılan bellek ve UDP düzenleri. assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ve vAzhureRacingHub (GPL-3.0) projelerinden okundu. Hiçbir GPL veya LGPL kodu dağıtılmıyor.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth eşleştirme ve rapor belgeleri. GPL-2.0 ve GPL-3.0, yalnızca belge olarak okundu, hiçbir GPL kodu dağıtılmıyor.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Sanal DualSense mikrofonunun 48 dB'lik zayıflatma aralığı. Yalnızca belge olarak okundu, hiçbir GPL kodu dağıtılmıyor.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Direksiyon protokolü referansları</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster ve Logitech direksiyonları için yerel kuvvet geri bildirimi ve devir vites LED'i raporları. hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ve thrustmaster-led-linux (GPL-3.0) projelerinden okundu ve prodigal.knight'ın SimHub LED eklentisi (MIT) ile tm-bt-led (MIT) ile çapraz denetlendi. Yalnızca belge, hiçbir GPL kodu dağıtılmıyor.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Direksiyon hissi referansları</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Ortalama'nın Araç modunun arkasındaki direksiyon torku modeli. Balachandran ve Gerdes'in “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) makalesinden alındı. Araç parametreleri commonroad-vehicle-models (BSD-3-Clause) ve global_racetrajectory_optimization (LGPL-3.0) projelerinden okundu. Lastiğin izi Pacejka'nın Tire and Vehicle Dynamics kitabından, yol tutuşu Wong'un Theory of Ground Vehicles kitabından alındı. Yalnızca rakamlar, hiçbirinden kod dağıtılmıyor.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade G/Ç referansları</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL çatalının Namco ve Konami arcade G/Ç kartları ile JVS kartları için sürücülerinin arkasındaki protokoller. arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania lisansı), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ve TaikoZucchini (MIT) projelerinden okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE kontrolcü referansları</value></data>

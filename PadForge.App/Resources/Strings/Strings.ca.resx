@@ -3217,7 +3217,88 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Restableix el rang de rotació</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Restableix la força del centrat automàtic</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Restableix els LED de canvi de marxa (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rang de direcció, centrat automàtic i llums de canvi de marxa per a volants amb retroacció de força.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rang de direcció i llums de canvi de marxa per a volants amb retroacció de força.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrat</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Torna el volant al centre, com un moll senzill o com ho fa la direcció d'un cotxe.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Restableix el centrat</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Moll estira el volant cap al centre amb una sola força. Vehicle calcula el parell que dona la direcció d'un cotxe a la seva velocitat, a partir d'un model de pneumàtics.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Moll</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vehicle</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vehicle</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>El cotxe del qual el volant pren la direcció. Cadascun és un model de vehicle publicat.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Berlina</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Compacte</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Furgoneta</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Cotxe de carreres</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Velocitat</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Del joc llegeix la velocitat del cotxe de la telemetria del joc i fa servir Velocitat fixa mentre cap joc n'envia. Fixa fa servir Velocitat fixa en tot moment.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Del joc</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fixa</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Pes de la direcció</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Quant pesa la direcció. El 100% és el del propi cotxe.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Recorregut del volant</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Quant gira aquest volant d'un topall a l'altre. Indica el valor propi del volant.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Parell de direcció</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Angle</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Parell</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Límit del volant {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Parell de direcció a la corona del volant segons l'angle de direcció. A {0} arriba al màxim de {1} N·m a {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sensació al centre</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Amb quina rapidesa creix el parell en corba a prop del centre, en N·m per g fins a 0.05 g. Més vol dir una direcció més ferma.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Rigidesa del parell</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Amb quina rapidesa creix el parell quan el volant s'allunya del centre, en N·m per grau.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linealitat</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>El pendent del parell entre 0.10 i 0.15 g comparat amb el seu pendent al centre. Menys vol dir que la direcció s'alleugereix abans.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Parell màxim</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>El màxim parell que el cotxe demana al volant, al costat del màxim que el volant dona.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>de {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Aquest cotxe demana més parell del que té el volant, per això la part alta de la corba es retalla.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sensació al centre, assistència, amortiment, fricció, adherència, velocitat fixa, parell del volant</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Amb quina força la direcció manté el centre a poca velocitat. El 100% és el del propi cotxe.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Assistència</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Quant esforç treu la direcció assistida a mesura que creix la força en corba. Més vol dir una direcció més lleugera lluny del centre.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Amortiment</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Amb quina força el volant es resisteix als girs ràpids. El 100% és el que el fa tornar sense passar-se del centre.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Fricció</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Un fregament constant que s'oposa al gir en qualsevol sentit.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Adherència</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>L'adherència de la carretera. La direcció s'alleugereix quan els pneumàtics davanters en perden.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Seca</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mullada</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Neu</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Gel</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Velocitat fixa</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>La velocitat a la qual es considera que va el cotxe quan Velocitat és Fixa, i mentre cap joc n'envia.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Parell del volant</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>El màxim parell que dona aquest volant. PadForge l'omple quan el fabricant del volant el publica. Una xifra superior a la del volant afebleix totes les forces.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>El Parell del volant no està definit per a aquest volant, per això les seves forces es mantenen baixes. Introdueix-lo a Més.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>El volant ha començat a oscil·lar tot sol, per això la força es manté reduïda. Executa la Prova d'alliberament.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>La força està desactivada perquè el volant ha continuat oscil·lant o s'ha allunyat del centre. Executa la Prova d'alliberament.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Prova d'alliberament</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mesura aquest volant i ajusta l'amortiment perquè torni sense passar-se del centre</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Encara no s'ha executat</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mesurat</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Treu les mans del volant. PadForge el gira fins a {0}°, l'allibera i registra com torna.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>L'angle del volant durant {0} segons després de cada alliberament.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Abans</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Després</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mesurant, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Fet, 2 execucions</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Aturat</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>El volant no s'ha quedat quiet. Treu-hi les mans i executa la prova de nou.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>El volant no s'ha mogut. Si el Parell del volant està definit per sobre del que dona el volant, posa-hi la xifra pròpia del volant i executa la prova de nou.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>El volant s'ha acostat al final del seu recorregut. Centra'l i executa la prova de nou.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>No s'ha pogut llegir el moviment del volant. Executa la prova de nou.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>El volant ha deixat de respondre. Comprova que estigui connectat i que el motor estigui en marxa.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Aquest volant no s'està fent servir. Assigna'l a un comandament i inicia el motor, i després executa la prova.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inèrcia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Abans, el volant passava {0}° del centre.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Ara passa {0}° del centre i reposa a {1}° del centre.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Ara torna sense passar-se del centre i reposa a {0}° del centre.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Executa de nou</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplica</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Restableix l'avís de tope de direcció</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Restableix el pols de vibració al tope</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Restableix la vibració dels gallets al tope</value></data>
@@ -4678,7 +4759,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Disposició dels informes, calibratge dels sensors i negociació dels accessoris EXT del PlayStation Move, de Thomas Perl, contrastats amb el wiki de moveonpc. La implementació de PadForge és C# original. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referències de telemetria de curses</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Disposicions de memòria compartida i UDP darrere de la telemetria de joc i dels LED de canvi de marxa (RPM) dels volants, extretes d'assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). No s'hi inclou cap codi GPL ni LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Disposicions de memòria compartida i UDP darrere de la telemetria de joc i dels LED de canvi de marxa (RPM) dels volants, extretes d'assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). No s'hi inclou cap codi GPL ni LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Documentació de l'aparellament Bluetooth i dels informes del DualShock 3. GPL-2.0 i GPL-3.0, llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4701,6 +4782,8 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>El rang d'atenuació de 48 dB del micròfon del DualSense virtual. Llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referències de protocols de volants</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Informes nadius de retroacció de força i de LED de canvi de marxa (RPM) per a volants Fanatec, Thrustmaster i Logitech, extrets d'hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) i thrustmaster-led-linux (GPL-3.0), i contrastats amb el connector LED de SimHub de prodigal.knight (MIT) i tm-bt-led (MIT). Només documentació, no s'hi inclou cap codi GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referències de sensació de direcció</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>El model de parell de direcció darrere del mode Vehicle de Centrat, extret de Balachandran i Gerdes, «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Els paràmetres dels vehicles es llegeixen de commonroad-vehicle-models (BSD-3-Clause) i global_racetrajectory_optimization (LGPL-3.0). L'arrossegament del pneumàtic prové de Tire and Vehicle Dynamics de Pacejka, i l'adherència de la carretera de Theory of Ground Vehicles de Wong. Només xifres, no s'hi inclou cap codi d'ells.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referències d'E/S arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Els protocols dels controladors de la bifurcació d'SDL per a les plaques d'E/S arcade de Namco i Konami i les plaques JVS, extrets d'arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (llicència de StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) i TaikoZucchini (MIT). Només documentació, no s'hi inclou cap codi.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referències de comandaments Bluetooth LE</value></data>

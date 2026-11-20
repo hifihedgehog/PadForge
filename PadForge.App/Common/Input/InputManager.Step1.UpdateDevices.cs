@@ -1363,6 +1363,10 @@ namespace PadForge.Common.Input
                 _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
                 LogitechRawHidWriter.ResetDevice(ud.DevicePath);
                 ThrustmasterRawHidWriter.ResetDevice(ud.DevicePath);
+                // A wheel that comes back holds none of the centering it was
+                // sent, and starts centering afresh (#588).
+                WheelCenteringWriter.ResetDevice(ud.DevicePath);
+                ud.Centering.Reset();
                 RawHidOutput.ResetDevice(ud.DevicePath);
             }
 

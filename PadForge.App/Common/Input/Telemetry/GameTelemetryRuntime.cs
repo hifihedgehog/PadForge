@@ -306,10 +306,11 @@ namespace PadForge.Common.Input.Telemetry
         /// the engine stopped reading the row.</summary>
         public const long EngineStaleMs = 1000;
 
-        // The copy the wheel RPM lights read. TelemetryHub polls on its own
-        // thread, so these fields alone take a lock.
+        // The copy the wheel RPM lights and a wheel's centering read.
+        // TelemetryHub polls on its own thread, so these fields alone take a
+        // lock.
         private static readonly object _engineLock = new();
-        private static float _engineRpm, _engineMaxRpm;
+        private static float _engineRpm, _engineMaxRpm, _engineSpeed, _engineGrip;
         private static bool _engineLive, _engineMaxLearned;
         private static long _engineAtMs;
 
@@ -332,6 +333,8 @@ namespace PadForge.Common.Input.Telemetry
                 _engineRpm = frame.Rpm;
                 _engineMaxRpm = frame.MaxRpm;
                 _engineMaxLearned = frame.MaxRpmLearned;
+                _engineSpeed = frame.SpeedMs;
+                _engineGrip = frame.Grip;
                 _engineAtMs = nowMs;
             }
         }
@@ -361,6 +364,22 @@ namespace PadForge.Common.Input.Telemetry
                 maxRpm = _engineMaxRpm;
                 maxLearned = _engineMaxLearned;
                 return _engineLive && maxRpm > 0f && nowMs - _engineAtMs <= EngineStaleMs;
+            }
+        }
+
+        /// <summary>The row's speed in m/s and the road's grip, for a wheel's
+        /// centering (#588). True while the row is live, the game is driving
+        /// and the row published within <see cref="EngineStaleMs"/> of
+        /// <paramref name="nowMs"/>, whether or not a max RPM is known.
+        /// <paramref name="grip"/> is 0 where the game sends no word on the
+        /// road.</summary>
+        internal static bool TryGetMotion(long nowMs, out float speed, out float grip)
+        {
+            lock (_engineLock)
+            {
+                speed = _engineSpeed;
+                grip = _engineGrip;
+                return _engineLive && nowMs - _engineAtMs <= EngineStaleMs;
             }
         }
 

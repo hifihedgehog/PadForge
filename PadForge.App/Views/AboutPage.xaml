@@ -1345,6 +1345,15 @@
                                 <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
                                     <TextBlock common:BidiText.Text="{Binding About_License_Several, Source={x:Static strings:Strings.Instance}}"/>
                                 </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_SteeringRefs, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_SteeringRefsDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Several, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThumbstickDeadzonesDesc, Source={x:Static strings:Strings.Instance}}"/>
                             </DockPanel>

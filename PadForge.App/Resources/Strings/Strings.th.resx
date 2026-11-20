@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>รีเซ็ตช่วงการหมุน</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>รีเซ็ตความแรงการคืนศูนย์อัตโนมัติ</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>รีเซ็ตไฟ LED เปลี่ยนเกียร์ตาม RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ช่วงการบังคับเลี้ยว การคืนศูนย์อัตโนมัติ และไฟเปลี่ยนเกียร์สำหรับพวงมาลัยฟอร์ซฟีดแบ็ก</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ช่วงการบังคับเลี้ยวและไฟเปลี่ยนเกียร์สำหรับพวงมาลัยฟอร์ซฟีดแบ็ก</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>การคืนศูนย์</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>พาพวงมาลัยกลับมาตรงศูนย์ ด้วยสปริงธรรมดาหรือแบบที่ระบบบังคับเลี้ยวของรถทำ</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>รีเซ็ตการคืนศูนย์</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>โหมด</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>สปริงดึงพวงมาลัยเข้าศูนย์ด้วยความแรงค่าเดียว ยานพาหนะคำนวณแรงบิดที่ระบบบังคับเลี้ยวของรถให้ที่ความเร็วนั้น จากแบบจำลองยาง</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>สปริง</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ยานพาหนะ</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ยานพาหนะ</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>รถที่พวงมาลัยจะใช้ระบบบังคับเลี้ยวตาม แต่ละคันเป็นแบบจำลองยานพาหนะที่เผยแพร่แล้ว</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>ซีดาน</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>คอมแพกต์</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>รถตู้</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>รถแข่ง</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>ความเร็ว</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>จากเกมจะอ่านความเร็วของรถจากเทเลเมทรีของเกม และใช้ความเร็วคงที่ขณะที่ไม่มีเกมส่งมา คงที่จะใช้ความเร็วคงที่ตลอดเวลา</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>จากเกม</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>คงที่</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>น้ำหนักพวงมาลัย</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>พวงมาลัยหนักแค่ไหน 100% คือค่าของรถคันนั้นเอง</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ช่วงล็อกถึงล็อก</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>พวงมาลัยตัวนี้หมุนได้กว้างแค่ไหนจากล็อกหนึ่งไปอีกล็อก ตั้งให้ตรงกับค่าของพวงมาลัยเอง</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>แรงบิดการบังคับเลี้ยว</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>มุม</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>แรงบิด</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ขีดจำกัดพวงมาลัย {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>แรงบิดการบังคับเลี้ยวที่ขอบพวงมาลัยเทียบกับมุมเลี้ยว ที่ {0} แรงบิดสูงสุด {1} N·m ที่ {2}°</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>ความรู้สึกช่วงตรงศูนย์</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>แรงบิดเพิ่มขึ้นเร็วแค่ไหนตามแรงเข้าโค้งใกล้ศูนย์ หน่วย N·m ต่อ g จนถึง 0.05 g ยิ่งมากยิ่งรู้สึกนิ่งแน่น</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ความแข็งของแรงบิด</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>แรงบิดเพิ่มขึ้นเร็วแค่ไหนเมื่อพวงมาลัยหมุนออกจากศูนย์ หน่วย N·m ต่อองศา</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>ความเป็นเชิงเส้น</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>ความชันของแรงบิดระหว่าง 0.10 ถึง 0.15 g เทียบกับความชันที่ศูนย์ ยิ่งต่ำพวงมาลัยจะเบาเร็วขึ้น</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>แรงบิดสูงสุด</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>แรงบิดสูงสุดที่รถเรียกจากพวงมาลัย เทียบกับแรงบิดสูงสุดที่พวงมาลัยให้ได้</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>จาก {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>รถคันนี้ต้องการแรงบิดมากกว่าที่พวงมาลัยมี ส่วนบนของเส้นโค้งจึงถูกตัดออก</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ความรู้สึกช่วงตรงศูนย์ ระบบช่วยแรงเลี้ยว การหน่วง แรงเสียดทาน การยึดเกาะ ความเร็วคงที่ แรงบิดมอเตอร์พวงมาลัย</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ระบบบังคับเลี้ยวยึดศูนย์แน่นแค่ไหนที่ความเร็วต่ำ 100% คือค่าของรถคันนั้นเอง</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>ระบบช่วยแรงเลี้ยว</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>พาวเวอร์ช่วยผ่อนแรงออกไปเท่าไรเมื่อแรงเข้าโค้งเพิ่มขึ้น ยิ่งมากพวงมาลัยยิ่งเบาเมื่ออยู่ห่างจากศูนย์</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>การหน่วง</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>พวงมาลัยต้านการหมุนเร็วแค่ไหน 100% คือค่าที่พากลับมาโดยไม่แกว่งเลยศูนย์</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>แรงเสียดทาน</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>แรงฝืดคงที่ที่ต้านการหมุนทั้งสองทิศทาง</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>การยึดเกาะ</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>การยึดเกาะของถนน พวงมาลัยจะเบาลงเมื่อยางหน้าหมดการยึดเกาะ</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>แห้ง</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>เปียก</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>หิมะ</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>น้ำแข็ง</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ความเร็วคงที่</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ความเร็วที่ถือว่ารถวิ่งอยู่ เมื่อความเร็วเป็นคงที่ และขณะที่ไม่มีเกมส่งมา</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>แรงบิดมอเตอร์พวงมาลัย</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>แรงบิดสูงสุดที่พวงมาลัยตัวนี้ให้ได้ PadForge กรอกให้เมื่อผู้ผลิตพวงมาลัยเผยแพร่ค่านี้ ค่าที่สูงกว่าของพวงมาลัยเองจะทำให้แรงทุกอย่างอ่อนลง</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ยังไม่ได้ตั้งแรงบิดมอเตอร์พวงมาลัยสำหรับพวงมาลัยตัวนี้ แรงจึงถูกกดไว้ต่ำ ป้อนค่าได้ใน เพิ่มเติม</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>พวงมาลัยเริ่มแกว่งเอง แรงจึงถูกกดไว้ ให้รันการทดสอบการปล่อย</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>แรงถูกปิดเพราะพวงมาลัยแกว่งไม่หยุดหรือหมุนออกจากศูนย์ ให้รันการทดสอบการปล่อย</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>การทดสอบการปล่อย</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>วัดพวงมาลัยตัวนี้และตั้งการหน่วงให้กลับมาโดยไม่แกว่งเลยศูนย์</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ยังไม่เคยรัน</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>วัดแล้ว</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ปล่อยมือจากพวงมาลัย PadForge จะหมุนไปที่ {0}° ปล่อยให้คืนตัว และบันทึกว่ากลับมาอย่างไร</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>มุมของพวงมาลัยตลอด {0} วินาทีหลังการปล่อยแต่ละครั้ง</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>ก่อน</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>หลัง</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>กำลังวัด {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>เสร็จแล้ว 2 รอบ</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>หยุดแล้ว</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>พวงมาลัยไม่นิ่ง ปล่อยมือจากพวงมาลัยแล้วรันการทดสอบอีกครั้ง</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>พวงมาลัยไม่ขยับ หากตั้งแรงบิดมอเตอร์พวงมาลัยสูงกว่าที่พวงมาลัยให้ได้ ให้ตั้งเป็นค่าของพวงมาลัยเองแล้วรันการทดสอบอีกครั้ง</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>พวงมาลัยหมุนเกือบสุดช่วง ให้หมุนกลับมาตรงกลางแล้วรันการทดสอบอีกครั้ง</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>อ่านการเคลื่อนที่ของพวงมาลัยไม่ได้ ให้รันการทดสอบอีกครั้ง</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>พวงมาลัยหยุดตอบสนอง ตรวจสอบว่าเชื่อมต่ออยู่และเอนจินกำลังทำงาน</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>พวงมาลัยตัวนี้ไม่ได้ใช้งานอยู่ กำหนดให้คอนโทรลเลอร์ แล้วเริ่มเอนจิน จากนั้นรันการทดสอบ</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ความเฉื่อย</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ก่อนหน้านี้ พวงมาลัยแกว่งเลยศูนย์ {0}°</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ตอนนี้แกว่งเลยศูนย์ {0}° และหยุดห่างจากศูนย์ {1}°</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ตอนนี้กลับมาโดยไม่แกว่งเลยศูนย์ และหยุดห่างจากศูนย์ {0}°</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>รันอีกครั้ง</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>ใช้</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>รีเซ็ตการตอบสนองเมื่อเลี้ยวสุด</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>รีเซ็ตพัลส์การสั่นเมื่อเลี้ยวสุด</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>รีเซ็ตการสั่นสะเทือนของทริกเกอร์เมื่อเลี้ยวสุด</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>โครงสร้างรายงานของ PlayStation Move การปรับเทียบเซนเซอร์ และการแฮนด์เชกของอุปกรณ์เสริม EXT โดย Thomas Perl ตรวจสอบเทียบกับวิกิ moveonpc โค้ดของ PadForge เขียนขึ้นใหม่ด้วย C# สัญญาอนุญาต BSD 2-Clause</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>แหล่งอ้างอิงเทเลเมทรีการแข่งรถ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>โครงสร้างหน่วยความจำที่ใช้ร่วมกันและ UDP ที่อยู่เบื้องหลังเทเลเมทรีเกมและไฟ LED เปลี่ยนเกียร์ตาม RPM ของพวงมาลัย อ่านจาก assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) และ vAzhureRacingHub (GPL-3.0) ไม่มีโค้ด GPL หรือ LGPL รวมอยู่ในโปรแกรม</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>โครงสร้างหน่วยความจำที่ใช้ร่วมกันและ UDP ที่อยู่เบื้องหลังเทเลเมทรีเกมและไฟ LED เปลี่ยนเกียร์ตาม RPM ของพวงมาลัย อ่านจาก assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) และ vAzhureRacingHub (GPL-3.0) ไม่มีโค้ด GPL หรือ LGPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>เอกสารอ้างอิงการจับคู่ Bluetooth และรายงานของ DualShock 3 สัญญาอนุญาต GPL-2.0 และ GPL-3.0 ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ช่วงการลดทอน 48 dB ของไมโครโฟน DualSense เสมือน ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>แหล่งอ้างอิงโปรโตคอลพวงมาลัย</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>รายงานฟอร์ซฟีดแบ็กแบบเนทีฟและไฟ LED เปลี่ยนเกียร์ตาม RPM สำหรับพวงมาลัย Fanatec, Thrustmaster และ Logitech อ่านจาก hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) และ thrustmaster-led-linux (GPL-3.0) และตรวจสอบเทียบกับปลั๊กอิน LED ของ SimHub โดย prodigal.knight (MIT) และ tm-bt-led (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>แหล่งอ้างอิงฟีลพวงมาลัย</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>แบบจำลองแรงบิดของระบบบังคับเลี้ยวที่อยู่เบื้องหลังโหมดยานพาหนะของการคืนศูนย์ มาจาก Balachandran และ Gerdes เรื่อง “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) พารามิเตอร์ของยานพาหนะอ่านจาก commonroad-vehicle-models (BSD-3-Clause) และ global_racetrajectory_optimization (LGPL-3.0) ส่วนระยะเทรลของยางมาจากหนังสือ Tire and Vehicle Dynamics ของ Pacejka และการยึดเกาะของถนนมาจากหนังสือ Theory of Ground Vehicles ของ Wong ใช้เฉพาะตัวเลข ไม่มีโค้ดของสิ่งเหล่านี้รวมอยู่ใน PadForge</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>แหล่งอ้างอิง I/O ของเครื่องอาร์เคด</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>โปรโตคอลที่อยู่เบื้องหลังไดรเวอร์ในฟอร์ก SDL สำหรับบอร์ด I/O ของเครื่องอาร์เคด Namco และ Konami และบอร์ด JVS อ่านจาก arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (สัญญาอนุญาต StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) และ TaikoZucchini (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>แหล่งอ้างอิงคอนโทรลเลอร์ Bluetooth LE</value></data>

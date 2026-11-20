@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Επαναφορά εύρους περιστροφής</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Επαναφορά ισχύος αυτόματου κεντραρίσματος</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Επαναφορά LED αλλαγής ταχύτητας (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Εύρος στροφής, αυτόματο κεντράρισμα και φώτα αλλαγής ταχύτητας για τιμονιέρες με ανάδραση δύναμης.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Εύρος στροφής και φώτα αλλαγής ταχύτητας για τιμονιέρες με ανάδραση δύναμης.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Κεντράρισμα</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Επαναφέρει την τιμονιέρα στο κέντρο, ως απλό ελατήριο ή όπως το τιμόνι ενός αυτοκινήτου.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Επαναφορά κεντραρίσματος</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Λειτουργία</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Το Ελατήριο τραβά την τιμονιέρα στο κέντρο με μία ισχύ. Το Όχημα υπολογίζει τη ροπή που δίνει το τιμόνι ενός αυτοκινήτου στην ταχύτητά του, από ένα μοντέλο ελαστικών.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Ελατήριο</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Όχημα</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Όχημα</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Το αυτοκίνητο του οποίου το τιμόνι αναπαράγει η τιμονιέρα. Το καθένα είναι δημοσιευμένο μοντέλο οχήματος.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Σεντάν</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Μικρό αυτοκίνητο</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Βαν</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Αγωνιστικό αυτοκίνητο</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Ταχύτητα</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Το Από το παιχνίδι διαβάζει την ταχύτητα του αυτοκινήτου από την τηλεμετρία του παιχνιδιού και χρησιμοποιεί τη Σταθερή ταχύτητα όσο κανένα παιχνίδι δεν στέλνει τέτοια. Το Σταθερή χρησιμοποιεί πάντα τη Σταθερή ταχύτητα.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Από το παιχνίδι</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Σταθερή</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Βάρος τιμονιού</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Πόσο βαρύ είναι το τιμόνι. Το 100% είναι το βάρος του ίδιου του αυτοκινήτου.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Εύρος τιμονιέρας</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Πόσο στρέφεται αυτή η τιμονιέρα από άκρο σε άκρο. Ορίστε το στη ρύθμιση της ίδιας της τιμονιέρας.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Ροπή τιμονιού</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Γωνία</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Ροπή</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Όριο τιμονιέρας {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Ροπή τιμονιού στο στεφάνι ως προς τη γωνία του τιμονιού. Στα {0} κορυφώνεται στα {1} N·m στις {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Αίσθηση στο κέντρο</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Πόσο γρήγορα χτίζεται η ροπή με την πλευρική επιτάχυνση κοντά στο κέντρο, σε N·m ανά g έως 0.05 g. Όσο περισσότερο, τόσο πιο σταθερό είναι το αίσθημα.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Δυσκαμψία ροπής</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Πόσο γρήγορα χτίζεται η ροπή καθώς η τιμονιέρα απομακρύνεται από το κέντρο, σε N·m ανά μοίρα.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Γραμμικότητα</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Η κλίση της ροπής ανάμεσα σε 0.10 και 0.15 g σε σχέση με την κλίση της στο κέντρο. Όσο χαμηλότερη, τόσο νωρίτερα ελαφραίνει το τιμόνι.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Μέγιστη ροπή</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Η μέγιστη ροπή που ζητά το αυτοκίνητο από την τιμονιέρα, δίπλα στη μέγιστη που δίνει η τιμονιέρα.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>από {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Αυτό το αυτοκίνητο ζητά περισσότερη ροπή από όση έχει η τιμονιέρα, γι' αυτό η κορυφή της καμπύλης κόβεται.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Αίσθηση στο κέντρο, υποβοήθηση, απόσβεση, τριβή, πρόσφυση, σταθερή ταχύτητα, ροπή τιμονιέρας</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Πόσο σταθερά κρατά το τιμόνι το κέντρο του σε χαμηλή ταχύτητα. Το 100% είναι το βάρος του ίδιου του αυτοκινήτου.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Υποβοήθηση</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Πόσο αφαιρεί το υδραυλικό τιμόνι καθώς μεγαλώνει η πλευρική επιτάχυνση. Όσο περισσότερο, τόσο ελαφρύτερο το τιμόνι μακριά από το κέντρο.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Απόσβεση</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Πόσο αντιστέκεται η τιμονιέρα στις γρήγορες στροφές. Το 100% είναι αυτό που την επαναφέρει χωρίς να περάσει το κέντρο.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Τριβή</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Μια σταθερή αντίσταση που εμποδίζει τη στροφή προς οποιαδήποτε κατεύθυνση.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Πρόσφυση</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Η πρόσφυση του δρόμου. Το τιμόνι ελαφραίνει εκεί που τα μπροστινά ελαστικά την χάνουν.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Στεγνός</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Βρεγμένος</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Χιόνι</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Πάγος</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Σταθερή ταχύτητα</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Η ταχύτητα με την οποία θεωρείται ότι οδηγεί το αυτοκίνητο όταν η Ταχύτητα είναι Σταθερή, και όσο κανένα παιχνίδι δεν στέλνει τέτοια.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Ροπή τιμονιέρας</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Η μέγιστη ροπή που δίνει αυτή η τιμονιέρα. Το PadForge την συμπληρώνει όπου την δημοσιεύει ο κατασκευαστής της τιμονιέρας. Μια τιμή πάνω από την πραγματική της τιμονιέρας κάνει κάθε δύναμη ασθενέστερη.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Η Ροπή τιμονιέρας δεν έχει οριστεί για αυτή την τιμονιέρα, γι' αυτό οι δυνάμεις της κρατούνται χαμηλά. Εισαγάγετέ την στα Περισσότερα.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Η τιμονιέρα άρχισε να ταλαντώνεται από μόνη της, γι' αυτό η δύναμη συγκρατείται. Εκτελέστε τη Δοκιμή απελευθέρωσης.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Η δύναμη είναι απενεργοποιημένη επειδή η τιμονιέρα συνέχισε να ταλαντώνεται ή απομακρύνθηκε από το κέντρο. Εκτελέστε τη Δοκιμή απελευθέρωσης.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Δοκιμή απελευθέρωσης</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Μετρά αυτή την τιμονιέρα και ρυθμίζει την απόσβεση ώστε να επανέρχεται χωρίς υπέρβαση</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Δεν έχει εκτελεστεί ακόμα</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Μετρήθηκε</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Αφήστε το τιμόνι. Το PadForge το στρέφει στις {0}°, το αφήνει ελεύθερο και καταγράφει πώς επιστρέφει.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Η γωνία της τιμονιέρας για {0} δευτερόλεπτα μετά από κάθε απελευθέρωση.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Πριν</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Μετά</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Μέτρηση, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Ολοκληρώθηκε, 2 εκτελέσεις</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Διακόπηκε</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Η τιμονιέρα δεν ακινητοποιήθηκε. Αφήστε την και εκτελέστε ξανά τη δοκιμή.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Η τιμονιέρα δεν κινήθηκε. Αν η Ροπή τιμονιέρας έχει οριστεί πάνω από όσο δίνει η τιμονιέρα, ορίστε την στην τιμή της ίδιας της τιμονιέρας και εκτελέστε ξανά τη δοκιμή.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Η τιμονιέρα πλησίασε το άκρο του εύρους της. Κεντράρετέ την και εκτελέστε ξανά τη δοκιμή.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Η κίνηση της τιμονιέρας δεν μπορούσε να διαβαστεί. Εκτελέστε ξανά τη δοκιμή.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Η τιμονιέρα σταμάτησε να ανταποκρίνεται. Ελέγξτε ότι είναι συνδεδεμένη και ότι η μηχανή λειτουργεί.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Αυτή η τιμονιέρα δεν χρησιμοποιείται. Αντιστοιχίστε την σε ένα χειριστήριο, ξεκινήστε τη μηχανή και εκτελέστε τη δοκιμή.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Αδράνεια</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Πριν, η τιμονιέρα περνούσε το κέντρο κατά {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Τώρα περνά το κέντρο κατά {0}° και ακινητοποιείται {1}° από το κέντρο.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Τώρα επιστρέφει χωρίς υπέρβαση και ακινητοποιείται {0}° από το κέντρο.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Εκτέλεση ξανά</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Εφαρμογή</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Επαναφορά ανάδρασης τέρματος τιμονιού</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Επαναφορά παλμού δόνησης στο τέρμα</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Επαναφορά δόνησης σκανδάλης στο τέρμα</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Διατάξεις αναφορών του PlayStation Move, βαθμονόμηση αισθητήρων και η χειραψία των αξεσουάρ EXT, του Thomas Perl, διασταυρωμένα με το wiki του moveonpc. Η υλοποίηση του PadForge είναι πρωτότυπος κώδικας C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Αναφορές τηλεμετρίας αγώνων</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Διατάξεις κοινόχρηστης μνήμης και UDP πίσω από την Τηλεμετρία παιχνιδιών και τα LED αλλαγής ταχύτητας (RPM) των τιμονιερών, όπως διαβάστηκαν από τα assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) και vAzhureRacingHub (GPL-3.0). Δεν διανέμεται κώδικας GPL ή LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Διατάξεις κοινόχρηστης μνήμης και UDP πίσω από την Τηλεμετρία παιχνιδιών και τα LED αλλαγής ταχύτητας (RPM) των τιμονιερών, όπως διαβάστηκαν από τα assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) και vAzhureRacingHub (GPL-3.0). Δεν διανέμεται κώδικας GPL ή LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Τεκμηρίωση της σύζευξης Bluetooth και των αναφορών του DualShock 3. GPL-2.0 και GPL-3.0, μελετήθηκε μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Το εύρος εξασθένησης 48 dB του μικροφώνου του εικονικού DualSense. Μελετήθηκε μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Αναφορές για τα πρωτόκολλα τιμονιερών</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Αναφορές εγγενούς ανάδρασης δύναμης και LED αλλαγής ταχύτητας (RPM) για τιμονιέρες Fanatec, Thrustmaster και Logitech, όπως διαβάστηκαν από τα hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) και thrustmaster-led-linux (GPL-3.0), και διασταυρώθηκαν με το πρόσθετο LED του SimHub από τον prodigal.knight (MIT) και το tm-bt-led (MIT). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Αναφορές για την αίσθηση του τιμονιού</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Το μοντέλο ροπής τιμονιού πίσω από τη λειτουργία Όχημα του Κεντραρίσματος, από τους Balachandran και Gerdes, «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Οι παράμετροι οχήματος διαβάζονται από τα commonroad-vehicle-models (BSD-3-Clause) και global_racetrajectory_optimization (LGPL-3.0). Το ίχνος του ελαστικού προέρχεται από το Tire and Vehicle Dynamics του Pacejka και η πρόσφυση του δρόμου από το Theory of Ground Vehicles του Wong. Μόνο αριθμητικά στοιχεία, δεν διανέμεται κώδικας από αυτά.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Αναφορές για πλακέτες I/O arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Τα πρωτόκολλα πίσω από τα προγράμματα οδήγησης της διακλάδωσης του SDL για πλακέτες I/O arcade των Namco και Konami και για πλακέτες JVS, όπως διαβάστηκαν από τα arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (άδεια StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) και TaikoZucchini (MIT). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Αναφορές για χειριστήρια Bluetooth LE</value></data>

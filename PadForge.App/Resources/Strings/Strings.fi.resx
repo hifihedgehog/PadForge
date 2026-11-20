@@ -3413,7 +3413,88 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Palauta kiertokulma</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Palauta automaattisen keskityksen voimakkuus</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Palauta kierrosluvun vaihtovalot</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Voimapalauterattien kiertokulma, automaattinen keskitys ja vaihtovalot.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Voimapalauterattien kiertokulma ja vaihtovalot.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Keskitys</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Palauttaa ratin keskelle joko tavallisena jousena tai auton ohjauksen tavoin.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Palauta keskitys</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Tila</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Jousi vetää ratin keskelle yhdellä voimalla. Ajoneuvo laskee renkaan mallista sen momentin, jonka auton ohjaus antaa sen nopeudella.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Jousi</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Ajoneuvo</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Ajoneuvo</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Auto, jonka ohjauksen ratti ottaa mallikseen. Jokainen on julkaistu ajoneuvomalli.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Pikkuauto</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Pakettiauto</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Kilpa-auto</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Nopeus</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Pelistä lukee auton nopeuden pelin telemetriasta ja käyttää Kiinteää nopeutta, kun mikään peli ei lähetä sitä. Kiinteä käyttää Kiinteää nopeutta koko ajan.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Pelistä</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Kiinteä</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Ohjauksen painavuus</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Kuinka painava ohjaus on. 100 % on auton oma.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ratin kiertoalue</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Kuinka pitkälle tämä ratti kääntyy ääriasennosta toiseen. Aseta se ratin omaan asetukseen.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Ohjausmomentti</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Kulma</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Momentti</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Ratin raja {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Ohjausmomentti kehällä ohjauskulman funktiona. Nopeudella {0} se saavuttaa huippunsa {1} N·m kulmassa {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Keskitystuntuma</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kuinka nopeasti momentti kasvaa kaarteessa lähellä keskikohtaa, yksikössä N·m per g arvoon 0.05 g asti. Suurempi arvo tuntuu vakaammalta.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Momentin jäykkyys</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kuinka nopeasti momentti kasvaa, kun ratti poistuu keskikohdasta, yksikössä N·m per aste.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Lineaarisuus</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Momentin kulmakerroin välillä 0.10 ja 0.15 g suhteessa sen kulmakertoimeen keskikohdassa. Pienempi arvo tarkoittaa, että ohjaus kevenee aiemmin.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Huippumomentti</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Suurin momentti, jota auto vaatii ratilta, ja sen vieressä suurin momentti, jonka ratti antaa.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ratin enimmäisarvosta {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Tämä auto vaatii enemmän momenttia kuin ratilla on, joten käyrän yläosa leikkautuu pois.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>keskitystuntuma, ohjaustehostus, vaimennus, kitka, pito, kiinteä nopeus, ratin momentti</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kuinka voimakkaasti ohjaus pitää keskikohdan pienellä nopeudella. 100 % on auton oma.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ohjaustehostus</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kuinka paljon ohjaustehostin ottaa pois kaarrevoimien kasvaessa. Suurempi arvo tarkoittaa kevyempää ohjausta kauempana keskikohdasta.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Vaimennus</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Kuinka voimakkaasti ratti vastustaa nopeita käännöksiä. 100 % palauttaa sen keskelle ilman, että se heilahtaa keskikohdan yli.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Kitka</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Tasainen vastus, joka vastustaa kääntämistä kumpaankin suuntaan.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Pito</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Tien pito. Ohjaus kevenee, kun eturenkaat menettävät pitonsa.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kuiva</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Märkä</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Lumi</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Jää</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Kiinteä nopeus</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Nopeus, jolla auton oletetaan ajavan, kun Nopeus on Kiinteä ja silloin, kun mikään peli ei lähetä sitä.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Ratin momentti</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Suurin momentti, jonka tämä ratti antaa. PadForge täyttää sen, kun ratin valmistaja julkaisee sen. Ratin omaa arvoa suurempi luku heikentää kaikkia voimia.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Ratin momenttia ei ole asetettu tälle ratille, joten sen voimat pidetään pieninä. Syötä se kohdassa Lisää.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Ratti alkoi heilua itsestään, joten voimaa on vaimennettu. Suorita Vapautustesti.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Voima on pois päältä, koska ratti jatkoi heilumista tai karkasi keskikohdasta. Suorita Vapautustesti.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Vapautustesti</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mittaa tämän ratin ja asettaa vaimennuksen niin, että se palaa ilman yliheilahdusta</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ei ajettu vielä</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mitattu</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Ota kätesi pois ratilta. PadForge kääntää sen asentoon {0}°, päästää irti ja tallentaa, miten se palaa.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ratin kulma {0} sekunnin ajan jokaisen irti päästämisen jälkeen.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Ennen</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Jälkeen</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mitataan, {0} %</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Valmis, 2 ajoa</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Pysäytetty</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Ratti ei pysähtynyt. Ota kätesi pois ratilta ja suorita testi uudelleen.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Ratti ei liikkunut. Jos Ratin momentti on asetettu suuremmaksi kuin ratti antaa, aseta se ratin omaan arvoon ja suorita testi uudelleen.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Ratti tuli lähelle kiertoalueensa ääripäätä. Keskitä se ja suorita testi uudelleen.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Ratin liikettä ei voitu lukea. Suorita testi uudelleen.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Ratti lakkasi vastaamasta. Tarkista, että se on kytketty ja että moottori on käynnissä.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Tämä ratti ei ole käytössä. Liitä se ohjaimeen ja käynnistä moottori, ja suorita sitten testi.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Hitausmomentti</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Aiemmin ratti heilahti {0}° keskikohdan yli.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nyt se heilahtaa {0}° keskikohdan yli ja pysähtyy {1}° päähän keskikohdasta.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nyt se palaa ilman yliheilahdusta ja pysähtyy {0}° päähän keskikohdasta.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Suorita uudelleen</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Käytä</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Palauta ohjauksen ääriasentopalaute</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Palauta tärinäpulssi ääriasennossa</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Palauta liipaisinvärinä ääriasennossa</value></data>
@@ -4919,7 +5000,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move -ohjaimen raporttirakenteet, anturien kalibrointi ja EXT-lisälaitteen kättely, tekijä Thomas Perl, tarkistettu moveonpc-wikiä vasten. PadForge-sovelluksen toteutus on alkuperäistä C#-koodia. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Ajopelien telemetriaviitteet</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Jaetun muistin ja UDP:n rakenteet Pelitelemetrian ja rattien kierrosluvun vaihtovalojen taustalla, luettu lähteistä assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ja vAzhureRacingHub (GPL-3.0). GPL- tai LGPL-koodia ei toimiteta.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Jaetun muistin ja UDP:n rakenteet Pelitelemetrian ja rattien kierrosluvun vaihtovalojen taustalla, luettu lähteistä assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ja vAzhureRacingHub (GPL-3.0). GPL- tai LGPL-koodia ei toimiteta.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 -ohjaimen Bluetooth-pariliitoksen ja raporttien dokumentaatio. GPL-2.0 ja GPL-3.0, käytetty vain dokumentaationa, GPL-koodia ei toimiteta.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Virtuaalisen DualSense-ohjaimen mikrofonin 48 dB:n vaimennusalue. Käytetty vain dokumentaationa, GPL-koodia ei toimiteta.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Rattiprotokollien viitteet</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec-, Thrustmaster- ja Logitech-rattien oman voimapalautteen ja kierrosluvun vaihto-LED-valojen raportit, luettu lähteistä hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ja thrustmaster-led-linux (GPL-3.0), ja tarkistettu SimHub LED -lisäosaa tekijältä prodigal.knight (MIT) ja tm-bt-led-projektia (MIT) vasten. Vain dokumentaatio, GPL-koodia ei toimiteta.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Ohjaustuntuman viitteet</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Keskitys-kortin Ajoneuvo-tilan taustalla oleva ohjausmomenttimalli, peräisin lähteestä Balachandran ja Gerdes, ”Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Ajoneuvon parametrit on luettu lähteistä commonroad-vehicle-models (BSD-3-Clause) ja global_racetrajectory_optimization (LGPL-3.0). Renkaan jälki on peräisin teoksesta Pacejka, Tire and Vehicle Dynamics, ja tien pito teoksesta Wong, Theory of Ground Vehicles. Vain lukuarvot, koodia niistä ei toimiteta.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Pelikoneiden I/O-viitteet</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL-haaran Namco- ja Konami-pelikoneiden I/O-piirilevyjen ja JVS-piirilevyjen ajurien protokollat, luettu lähteistä arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania-lisenssi), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ja TaikoZucchini (MIT). Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE -ohjainten viitteet</value></data>

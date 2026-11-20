@@ -2687,7 +2687,88 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Lenkbereich zurücksetzen</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Selbstzentrierung zurücksetzen</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Schalt-LEDs zurücksetzen</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lenkbereich, Selbstzentrierung und Schaltanzeige für Force-Feedback-Lenkräder.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lenkbereich und Schaltanzeige für Force-Feedback-Lenkräder.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Zentrierung</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bringt das Lenkrad zurück in die Mitte, als einfache Feder oder wie die Lenkung eines Autos.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Zentrierung zurücksetzen</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Feder zieht das Lenkrad mit einer festen Stärke zur Mitte. Fahrzeug berechnet aus einem Reifenmodell das Moment, das die Lenkung eines Autos bei seiner Geschwindigkeit liefert.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Feder</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Fahrzeug</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Fahrzeug</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Das Auto, dessen Lenkung das Lenkrad übernimmt. Jedes ist ein veröffentlichtes Fahrzeugmodell.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Limousine</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompaktwagen</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Rennwagen</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Geschwindigkeit</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Vom Spiel liest die Geschwindigkeit des Autos aus der Telemetrie des Spiels und nutzt Feste Geschwindigkeit, solange kein Spiel eine sendet. Fest nutzt immer Feste Geschwindigkeit.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Vom Spiel</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fest</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Lenkgewicht</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Wie schwer die Lenkung ist. 100% entspricht dem Auto selbst.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Gesamtdrehwinkel</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Wie weit sich dieses Lenkrad von Anschlag zu Anschlag dreht. Auf die eigene Einstellung des Lenkrads setzen.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Lenkmoment</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Winkel</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Moment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Lenkradgrenze {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Lenkmoment am Kranz über dem Lenkwinkel. Bei {0} erreicht es seinen Höchstwert von {1} N·m bei {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Mittellagengefühl</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Wie schnell das Moment bei Kurvenfahrt nahe der Mitte aufbaut, in N·m pro g bis 0.05 g. Mehr fühlt sich satter an.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Momentsteifigkeit</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Wie schnell das Moment aufbaut, wenn das Lenkrad die Mitte verlässt, in N·m pro Grad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearität</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Die Steigung des Moments zwischen 0.10 und 0.15 g im Verhältnis zur Steigung in der Mitte. Niedriger bedeutet, dass die Lenkung früher leicht wird.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Spitzenmoment</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Das höchste Moment, das das Auto vom Lenkrad verlangt, neben dem höchsten, das das Lenkrad liefert.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>von {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Dieses Auto verlangt mehr Moment, als das Lenkrad hat, daher wird die Spitze der Kurve abgeschnitten.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Mittellagengefühl, Servounterstützung, Dämpfung, Reibung, Grip, Feste Geschwindigkeit, Lenkradmoment</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Wie stark die Lenkung bei niedriger Geschwindigkeit die Mitte hält. 100% entspricht dem Auto selbst.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servounterstützung</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Wie viel die Servolenkung abnimmt, wenn die Kurvenfahrt zunimmt. Mehr bedeutet leichtere Lenkung abseits der Mitte.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dämpfung</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Wie stark das Lenkrad schnellen Drehungen widersteht. 100% bringt es zurück, ohne dass es über die Mitte hinausschwingt.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Reibung</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Ein gleichmäßiger Widerstand gegen das Drehen in beide Richtungen.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Der Grip der Straße. Die Lenkung wird leicht, wo die Vorderreifen ihn verlieren.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Trocken</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Nass</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Schnee</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Eis</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Feste Geschwindigkeit</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Die Geschwindigkeit, mit der das Auto als fahrend angenommen wird, wenn Geschwindigkeit auf Fest steht und solange kein Spiel eine sendet.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Lenkradmoment</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Das höchste Moment, das dieses Lenkrad liefert. PadForge trägt es ein, wo der Hersteller des Lenkrads es veröffentlicht. Ein Wert über dem des Lenkrads macht jede Kraft schwächer.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Das Lenkradmoment ist für dieses Lenkrad nicht gesetzt, daher werden seine Kräfte niedrig gehalten. Unter Mehr eintragen.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Das Lenkrad hat von selbst zu schwingen begonnen, daher wird die Kraft zurückgehalten. Den Loslasstest ausführen.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Die Kraft ist aus, weil das Lenkrad weiter schwang oder aus der Mitte lief. Den Loslasstest ausführen.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Loslasstest</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Misst dieses Lenkrad und stellt die Dämpfung so ein, dass es ohne Überschwingen zurückkehrt</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Noch nicht ausgeführt</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Gemessen</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Nehmen Sie die Hände vom Lenkrad. PadForge dreht es auf {0}°, lässt es los und zeichnet auf, wie es zurückkommt.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Der Winkel des Lenkrads über {0} Sekunden nach jedem Loslassen.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Vorher</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Nachher</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Messung läuft, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Fertig, 2 Läufe</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Gestoppt</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Das Lenkrad ist nicht zur Ruhe gekommen. Nehmen Sie die Hände weg und führen Sie den Test erneut aus.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Das Lenkrad hat sich nicht bewegt. Wenn das Lenkradmoment über dem liegt, was das Lenkrad liefert, setzen Sie es auf den eigenen Wert des Lenkrads und führen Sie den Test erneut aus.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Das Lenkrad ist dem Ende seines Bereichs nahe gekommen. Zentrieren Sie es und führen Sie den Test erneut aus.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Die Bewegung des Lenkrads konnte nicht gelesen werden. Führen Sie den Test erneut aus.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Das Lenkrad antwortet nicht mehr. Prüfen Sie, ob es verbunden ist und die Engine läuft.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Dieses Lenkrad wird nicht verwendet. Weisen Sie es einem Controller zu, starten Sie die Engine und führen Sie dann den Test aus.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Trägheit</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Vorher schwang das Lenkrad {0}° über die Mitte hinaus.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Jetzt schwingt es {0}° über die Mitte hinaus und ruht {1}° von der Mitte entfernt.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Jetzt kehrt es ohne Überschwingen zurück und ruht {0}° von der Mitte entfernt.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Erneut ausführen</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Anwenden</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Lenkanschlag-Feedback zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Vibrationspuls am Anschlag zurücksetzen</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Trigger-Vibration am Anschlag zurücksetzen</value></data>
@@ -4868,7 +4949,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Report-Layouts, Sensorkalibrierung und EXT-Zubehör-Handshake des PlayStation Move, von Thomas Perl, gegengeprüft mit dem moveonpc-Wiki. Die Implementierung von PadForge ist eigenständiger C#-Code. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referenzen zur Renntelemetrie</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-Memory- und UDP-Layouts hinter der Spieltelemetrie und den Schalt-LEDs des Lenkrads, gelesen aus assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) und vAzhureRacingHub (GPL-3.0). Kein GPL- oder LGPL-Code wird ausgeliefert.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-Memory- und UDP-Layouts hinter der Spieltelemetrie und den Schalt-LEDs des Lenkrads, gelesen aus assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) und vAzhureRacingHub (GPL-3.0). Kein GPL- oder LGPL-Code wird ausgeliefert.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentation zu Bluetooth-Kopplung und Reports des DualShock 3. GPL-2.0 und GPL-3.0, nur als Dokumentation gelesen, kein GPL-Code wird ausgeliefert.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4891,6 +4972,8 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Der Dämpfungsbereich von 48 dB des virtuellen DualSense-Mikrofons. Nur als Dokumentation gelesen, kein GPL-Code wird ausgeliefert.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referenzen zu Lenkradprotokollen</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Native Force-Feedback- und Schalt-LED-Reports für Lenkräder von Fanatec, Thrustmaster und Logitech, gelesen aus hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) und thrustmaster-led-linux (GPL-3.0) und gegengeprüft mit dem SimHub-LED-Plugin von prodigal.knight (MIT) und tm-bt-led (MIT). Nur Dokumentation, kein GPL-Code wird ausgeliefert.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referenzen zum Lenkgefühl</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Das Lenkmomentmodell hinter dem Modus „Fahrzeug“ der Zentrierung, von Balachandran und Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Die Fahrzeugparameter stammen aus commonroad-vehicle-models (BSD-3-Clause) und global_racetrajectory_optimization (LGPL-3.0). Der Reifennachlauf stammt aus Pacejkas Tire and Vehicle Dynamics, der Straßengrip aus Wongs Theory of Ground Vehicles. Es werden nur Zahlenwerte übernommen, kein Code davon wird ausgeliefert.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade-I/O-Referenzen</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Die Protokolle hinter den Treibern des SDL-Forks für Namco- und Konami-Arcade-I/O-Boards und JVS-Boards, gelesen aus arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) und TaikoZucchini (MIT). Nur Dokumentation, kein Code wird ausgeliefert.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth-LE-Controller-Referenzen</value></data>

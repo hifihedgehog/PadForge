@@ -106,7 +106,7 @@ namespace PadForge.Tests
                 "PeripheralOutputRefs", "PortMidiRtMidi", "ProfileImportRefs", "Psmoveapi", "TelemetryRefs",
                 "RingConRefs", "Ds3Research", "ScreenColorRefs", "SerialControllerRefs", "SpaceMouseRefs",
                 "SpecialtyUsbRefs", "SteamControllerRefs", "SteamKit2", "ThumbstickDeadzones", "TrainControllerRefs",
-                "TritonLib", "WheelRefs", "XboxControllerRefs",
+                "SteeringRefs", "TritonLib", "WheelRefs", "XboxControllerRefs",
             }),
         };
 
@@ -601,6 +601,79 @@ namespace PadForge.Tests
                     Assert.True(about[locale].Contains(credit, StringComparison.Ordinal),
                         $"{locale}: the About text does not credit {credit}");
             }
+        }
+
+        /// <summary>
+        /// Wheel centering (#588) follows a published steering model, takes
+        /// its cars and its grip figures from published tables, and reads
+        /// two more telemetry layouts, and says so beside the code. Each
+        /// source a file cites is on all three surfaces: the README's table
+        /// row and its license list, the LICENSE entry, and the About text
+        /// of every locale.
+        /// </summary>
+        [Fact]
+        public void TheWheelCenteringSourcesAreCredited()
+        {
+            // What the source cites, and a name its credit carries in every
+            // locale.
+            var steering = new (string InSource, string Credit)[]
+            {
+                ("Balachandran and Gerdes", "Balachandran"), ("Balachandran and Gerdes", "Gerdes"),
+                ("commonroad-vehicle-models", "commonroad-vehicle-models"),
+                ("global_racetrajectory_optimization", "global_racetrajectory_optimization"),
+                ("Pacejka", "Pacejka"), ("Wong", "Wong"),
+            };
+            var telemetry = new (string InSource, string Credit)[]
+            {
+                ("CrewChiefV4", "CrewChiefV4"), ("r3e-api", "r3e-api"),
+            };
+
+            // The claims the credits answer for are still in the source.
+            string steeringSource = string.Concat(new[] { "SteeringModel.cs", "SteeringVehicle.cs", "RoadGrip.cs" }
+                .Select(file => Text("PadForge.Engine", "Common", "Steering", file)));
+            foreach (var (inSource, _) in steering)
+                Assert.True(steeringSource.Contains(inSource, StringComparison.Ordinal),
+                    $"no steering source file cites {inSource} any more");
+            string telemetrySource = string.Concat(new[] { "MadnessTelemetrySource.cs", "RaceRoomTelemetrySource.cs" }
+                .Select(file => Text("PadForge.App", "Common", "Telemetry", file)));
+            foreach (var (inSource, _) in telemetry)
+                Assert.True(telemetrySource.Contains(inSource, StringComparison.Ordinal),
+                    $"no telemetry source file cites {inSource} any more");
+
+            var readme = Text("README.md").Split('\n').Select(l => l.TrimEnd('\r')).ToList();
+            string license = Regex.Replace(Text("LICENSE"), @"\s+", " ");
+
+            void Held((string InSource, string Credit)[] cited, string title, string key, string nextEntry, string rowEnd, string bulletEnd)
+            {
+                string row = readme.Single(l => l.StartsWith("| " + title + " |", StringComparison.Ordinal));
+                string bullet = readme.Single(l => l.StartsWith("- **" + title + "**:", StringComparison.Ordinal));
+                Assert.Contains(rowEnd, row);
+                Assert.EndsWith(bulletEnd, bullet);
+
+                int start = license.IndexOf(title + ":", StringComparison.Ordinal);
+                Assert.True(start >= 0, $"LICENSE has no {title} entry");
+                int end = license.IndexOf(nextEntry, start, StringComparison.Ordinal);
+                Assert.True(end > start, $"the {title} entry is no longer followed by '{nextEntry}'");
+                string entry = license.Substring(start, end - start);
+
+                var about = Locales.ToDictionary(locale => locale,
+                    locale => ResxValue(Text("PadForge.App", "Resources", "Strings", locale), key));
+                foreach (var (_, credit) in cited)
+                {
+                    Assert.True(row.Contains(credit, StringComparison.Ordinal), $"README's table row does not credit {credit}");
+                    Assert.True(bullet.Contains(credit, StringComparison.Ordinal), $"README's license list does not credit {credit}");
+                    Assert.True(entry.Contains(credit, StringComparison.Ordinal), $"LICENSE does not credit {credit}");
+                    foreach (string locale in Locales)
+                        Assert.True(about[locale].Contains(credit, StringComparison.Ordinal),
+                            $"{locale}: the About text does not credit {credit}");
+                }
+            }
+
+            Held(steering, "Steering feel references", "About_SteeringRefsDesc",
+                "Thumbstick Deadzones (https://github.com/Minimuino/thumbstick-deadzones",
+                "Figures only, no code from them ships | BSD-3-Clause, LGPL-3.0 |", "ships none of their code.");
+            Held(telemetry, "Racing telemetry references", "About_TelemetryRefsDesc",
+                "Ring-Con references:", "No GPL or LGPL code ships |", "no GPL or LGPL code ships.");
         }
 
         /// <summary>

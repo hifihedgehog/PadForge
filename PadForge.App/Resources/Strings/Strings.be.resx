@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Скінуць дыяпазон павароту</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Скінуць сілу аўтацэнтравання</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Скінуць LED-індыкатары абаротаў</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Дыяпазон руля, аўтацэнтраванне і індыкатары пераключэння перадач для руляў з сілавой зваротнай сувяззю.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Дыяпазон руля і індыкатары пераключэння перадач для руляў з сілавой зваротнай сувяззю.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Цэнтраванне</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Вяртае руль у цэнтр як простая спружына або як рулявое кіраванне аўтамабіля.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Скінуць цэнтраванне</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Рэжым</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Спружына цягне руль у цэнтр з адной сілай. Аўтамабіль разлічвае момант, які дае рулявое кіраванне машыны на яе хуткасці, па мадэлі шын.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Спружына</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Аўтамабіль</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Аўтамабіль</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Машына, рулявое кіраванне якой бярэ руль. Кожная з іх адпавядае апублікаванай мадэлі аўтамабіля.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Кампакт</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Мінівэн</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Гоначны аўтамабіль</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Хуткасць</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>З гульні бярэ хуткасць машыны з тэлеметрыі гульні і выкарыстоўвае Фіксаваную хуткасць, пакуль гульня яе не адпраўляе. Фіксаваная заўсёды выкарыстоўвае Фіксаваную хуткасць.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>З гульні</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Фіксаваная</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Цяжар руля</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Наколькі цяжкае рулявое кіраванне. 100% адпавядае самой машыне.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ход руля</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Наколькі паварочваецца гэты руль ад упора да ўпора. Задайце значэнне, якое стаіць на самім руле.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Момант на руле</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Вугал</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момант</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Мяжа руля {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Момант на ободзе руля ў залежнасці ад вугла павароту. Пры {0} ён дасягае піка {1} N·m пры {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Адчуванне цэнтра</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Як хутка расце момант пры паварочванні каля цэнтра, у N·m на g да 0.05 g. Чым больш, тым упэўненей трымае руль.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Жорсткасць моманту</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Як хутка расце момант, калі руль адыходзіць ад цэнтра, у N·m на градус.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Лінейнасць</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Нахіл моманту паміж 0.10 і 0.15 g у параўнанні з нахілам у цэнтры. Чым ніжэй, тым раней руль робіцца лёгкім.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Пікавы момант</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Найбольшы момант, якога машына патрабуе ад руля, і найбольшы, які руль можа даць.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>з {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Гэтай машыне патрэбны большы момант, чым ёсць у руля, таму вяршыня крывой абрэзана.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Адчуванне цэнтра, узмацняльнік руля, дэмпфіраванне, трэнне, счапленне, фіксаваная хуткасць, момант руля</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Наколькі моцна руль трымае цэнтр на нізкай хуткасці. 100% адпавядае самой машыне.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Узмацняльнік руля</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Колькі намагання здымае ўзмацняльнік руля, калі расце папярочнае паскарэнне. Чым больш, тым лягчэй руль вышэй за цэнтр.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Дэмпфіраванне</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Наколькі моцна руль супраціўляецца хуткім паваротам. 100% вяртае яго без перабегу праз цэнтр.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Трэнне</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Раўнамернае супраціўленне, якое перашкаджае паваротам у любы бок.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Счапленне</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Счапленне дарогі. Руль робіцца лёгкім там, дзе пярэднія шыны губляюць счапленне.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Сухая</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Мокрая</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Снег</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Лёд</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Фіксаваная хуткасць</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Хуткасць, з якой лічыцца, што едзе машына, калі Хуткасць Фіксаваная і пакуль гульня яе не адпраўляе.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Момант руля</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Найбольшы момант, які дае гэты руль. PadForge запаўняе яго, калі вытворца руля яго публікуе. Значэнне вышэй за заяўленае вытворцам аслабляе ўсе сілы.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Момант руля для гэтага руля не заданы, таму яго сілы трымаюцца нізкімі. Увядзіце яго пад пунктам Больш.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Руль пачаў ківацца сам, таму сіла стрымліваецца. Запусціце Тэст адпускання.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Сіла выключана, бо руль працягваў ківацца або сышоў ад цэнтра. Запусціце Тэст адпускання.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Тэст адпускання</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Вымярае гэты руль і задае дэмпфіраванне, каб ён вяртаўся без перабегу</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Яшчэ не запускаўся</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Вымяраны</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Адпусціце руль. PadForge паварочвае яго на {0}°, адпускае і запісвае, як ён вяртаецца.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Вугал руля на працягу {0} с пасля кожнага адпускання.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Да</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Пасля</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Вымярэнне, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Гатова, 2 запускі</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Спынена</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Руль не супакоіўся. Адпусціце яго і запусціце тэст яшчэ раз.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Руль не рушыў з месца. Калі Момант руля заданы вышэй за магчымасці руля, задайце яго роўным значэнню самога руля і запусціце тэст яшчэ раз.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Руль наблізіўся да канца свайго ходу. Вярніце яго ў цэнтр і запусціце тэст яшчэ раз.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Рух руля не ўдалося прачытаць. Запусціце тэст яшчэ раз.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Руль перастаў адказваць. Праверце, ці падключаны ён і ці працуе рухавік.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Гэты руль не выкарыстоўваецца. Прызначце яго кантролеру, запусціце рухавік і потым запусціце тэст.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Інерцыя</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Раней руль перабягаў цэнтр на {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Цяпер ён перабягае цэнтр на {0}° і спыняецца ў {1}° ад цэнтра.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Цяпер ён вяртаецца без перабегу і спыняецца ў {0}° ад цэнтра.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Запусціць яшчэ раз</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Ужыць</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Скінуць сігнал упора руля</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Скінуць імпульс вібрацыі пры ўпоры</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Скінуць вібрацыю курка пры ўпоры</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Раскладкі справаздач PlayStation Move, каліброўка датчыкаў і абмен звесткамі аксесуара EXT, аўтар Thomas Perl, звераныя з вікі moveonpc. Рэалізацыя ў PadForge — арыгінальны C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Матэрыялы па гоначнай тэлеметрыі</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Раскладкі агульнай памяці і UDP для гульнявой тэлеметрыі і LED-індыкатараў абаротаў руля, прачытаныя з assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) і vAzhureRacingHub (GPL-3.0). Код GPL і LGPL не пастаўляецца.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Раскладкі агульнай памяці і UDP для гульнявой тэлеметрыі і LED-індыкатараў абаротаў руля, прачытаныя з assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) і vAzhureRacingHub (GPL-3.0). Код GPL і LGPL не пастаўляецца.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Дакументацыя па спалучэнні DualShock 3 па Bluetooth і справаздачах. GPL-2.0 і GPL-3.0, чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Дыяпазон аслаблення 48 dB віртуальнага мікрафона DualSense. Чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Матэрыялы па пратаколах руляў</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Справаздачы роднай сілавой зваротнай сувязі і LED-індыкатараў абаротаў для руляў Fanatec, Thrustmaster і Logitech, прачытаныя з hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) і thrustmaster-led-linux (GPL-3.0) і звераныя з убудовы SimHub LED ад prodigal.knight (MIT) і tm-bt-led (MIT). Толькі дакументацыя, код GPL не пастаўляецца.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Матэрыялы па адчуванні руля</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Мадэль рулявога моманту, на якой трымаецца рэжым «Аўтамабіль» у картцы «Цэнтраванне», ад Balachandran і Gerdes, «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Параметры аўтамабіля прачытаныя з commonroad-vehicle-models (BSD-3-Clause) і global_racetrajectory_optimization (LGPL-3.0). След шыны ўзяты з Pacejka, Tire and Vehicle Dynamics, а счапленне з дарогай ад Wong, Theory of Ground Vehicles. Толькі лікі, кода з іх не пастаўляецца.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Матэрыялы па аркадным I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Пратаколы, на якіх трымаюцца драйверы форка SDL для аркадных плат уводу-вываду Namco і Konami і плат JVS, прачытаныя з arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (ліцэнзія StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) і TaikoZucchini (MIT). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Матэрыялы па кантролерах Bluetooth LE</value></data>

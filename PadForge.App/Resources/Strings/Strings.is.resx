@@ -3413,7 +3413,88 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Endurstilla snúningssvið</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Endurstilla styrk sjálfvirkrar miðjunar</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Endurstilla LED-skiptiljós (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stýrissvið, sjálfvirk miðjun og skiptiljós fyrir stýri með kraftsvörun.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stýrissvið og skiptiljós fyrir stýri með kraftsvörun.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Miðjun</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Færir stýrið aftur í miðju, sem einfaldur gormur eða eins og stýri í bíl gerir.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Endurstilla miðjun</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Hamur</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Gormur togar stýrið í miðju með einum styrk. Ökutæki reiknar það tog sem stýri bíls gefur á hraða hans, út frá hjólbarðalíkani.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Gormur</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Ökutæki</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Ökutæki</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Bíllinn sem stýrið tekur stýringu eftir. Hver þeirra er útgefið ökutækjalíkan.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Stallbakur</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Smábíll</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Sendibíll</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Kappakstursbíll</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Hraði</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Úr leiknum les hraða bílsins úr fjarmælingum leiksins og notar gildið í Fastur hraði á meðan enginn leikur sendir hann. Fastur notar alltaf gildið í Fastur hraði.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Úr leiknum</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fastur</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Stýrisþyngd</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Hversu þungt stýrið er. 100% er eigin þyngd bílsins.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Heildarsnúningur stýris</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Hversu langt þetta stýri snýst frá enda til enda. Stilltu það á stillingu stýrisins sjálfs.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Stýristog</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Horn</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Tog</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Hámark stýris {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Stýristog í stýrishring eftir stýrishorni. Við {0} nær það hámarki, {1} N·m, við {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Miðjutilfinning</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Hversu hratt togið vex með beygjuálagi nálægt miðju, í N·m á g upp að 0.05 g. Meira gefur stöðugri tilfinningu.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Togstífni</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Hversu hratt togið vex þegar stýrið fer úr miðju, í N·m á gráðu.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Línuleiki</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Halli togsins milli 0.10 og 0.15 g miðað við halla þess í miðju. Lægra þýðir að stýrið léttist fyrr.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Hámarkstog</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Mesta tog sem bíllinn krefst af stýrinu, ásamt því mesta sem stýrið gefur.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>af {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Þessi bíll krefst meira togs en stýrið hefur, svo toppur ferilsins er skorinn af.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Miðjutilfinning, aflstýri, dempun, núningur, grip, fastur hraði, tog stýris</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hversu fast stýrið heldur miðju á litlum hraða. 100% er eigið gildi bílsins.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Aflstýri</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hversu mikið aflstýrið tekur af þegar beygjuálag eykst. Meira þýðir léttara stýri fjarri miðju.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dempun</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Hversu mikið stýrið veitir viðnám gegn snöggum beygjum. 100% er það sem kemur því aftur án þess að það sveiflist yfir miðju.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Núningur</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Jafnt viðnám sem hamlar snúningi í báðar áttir.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Grip vegarins. Stýrið léttist þar sem framdekkin missa það.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Þurrt</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Blautt</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Snjór</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ís</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fastur hraði</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Hraðinn sem bíllinn er talinn aka á þegar Hraði er stilltur á Fastur og á meðan enginn leikur sendir hann.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Tog stýris</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Mesta tog sem þetta stýri gefur. PadForge fyllir það út þar sem framleiðandi stýrisins birtir það. Gildi yfir því sem stýrið sjálft gefur veikir alla krafta.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Tog stýris er ekki stillt fyrir þetta stýri, svo kröftum þess er haldið lágum. Færðu það inn undir Meira.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Stýrið byrjaði að sveiflast af sjálfu sér, svo krafturinn er takmarkaður. Keyrðu Losunarpróf.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Krafturinn er slökktur því stýrið hélt áfram að sveiflast eða fór frá miðju. Keyrðu Losunarpróf.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Losunarpróf</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mælir þetta stýri og stillir dempun svo það snúi aftur án yfirsveiflu</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ekki keyrt enn</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mælt</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Taktu hendurnar af stýrinu. PadForge snýr því í {0}°, sleppir því og skráir hvernig það snýr aftur.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Horn stýrisins í {0} sekúndur eftir hverja losun.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Áður</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Eftir</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mæli, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Lokið, 2 umferðir</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Stöðvað</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Stýrið kom ekki til hvíldar. Taktu hendurnar af því og keyrðu prófið aftur.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Stýrið hreyfðist ekki. Ef Tog stýris er stillt hærra en stýrið gefur skaltu stilla það á eigið gildi stýrisins og keyra prófið aftur.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Stýrið kom nálægt enda sviðsins. Miðjaðu það og keyrðu prófið aftur.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Ekki tókst að lesa hreyfingu stýrisins. Keyrðu prófið aftur.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Stýrið svaraði ekki lengur. Athugaðu að það sé tengt og að vélin sé í gangi.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Þetta stýri er ekki í notkun. Úthlutaðu því á leikjastýringu, ræstu vélina og keyrðu svo prófið.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Tregða</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Áður sveiflaðist stýrið {0}° yfir miðju.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nú sveiflast það {0}° yfir miðju og hvílir {1}° frá miðju.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nú snýr það aftur án yfirsveiflu og hvílir {0}° frá miðju.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Keyra aftur</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Nota</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Endurstilla svörun við endastopp</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Endurstilla titringspúls við endastopp</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Endurstilla gikkjatitring við endastopp</value></data>
@@ -4919,7 +5000,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Uppsetning skýrslna PlayStation Move, kvörðun skynjara og handaband EXT-aukahluta, eftir Thomas Perl, borið saman við moveonpc-wiki. Útfærsla PadForge er upprunalegur C#-kóði. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Viðmiðanir fyrir fjarmælingar í kappakstri</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Uppsetning sameiginlegs minnis og UDP á bak við Leikjafjarmælingar og LED-skiptiljós stýrisins (RPM), lesið úr assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) og vAzhureRacingHub (GPL-3.0). Enginn GPL- eða LGPL-kóði fylgir.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Uppsetning sameiginlegs minnis og UDP á bak við Leikjafjarmælingar og LED-skiptiljós stýrisins (RPM), lesið úr assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) og vAzhureRacingHub (GPL-3.0). Enginn GPL- eða LGPL-kóði fylgir.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Skjölun á Bluetooth-pörun og skýrslum DualShock 3. GPL-2.0 og GPL-3.0, lesið eingöngu sem skjölun, enginn GPL-kóði fylgir.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Deyfingarsvið sýndarhljóðnema DualSense, 48 dB. Aðeins lesið sem skjöl, enginn GPL-kóði fylgir með.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Heimildir um samskiptareglur stýra</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Innbyggð kraftsvörun og skýrslur um LED-skiptiljós fyrir snúningshraða í stýrum frá Fanatec, Thrustmaster og Logitech, lesnar úr hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) og thrustmaster-led-linux (GPL-3.0), og bornar saman við SimHub LED-viðbótina eftir prodigal.knight (MIT) og tm-bt-led (MIT). Aðeins skjöl, enginn GPL-kóði fylgir með.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Heimildir um stýrisfíling</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Stýristogslíkanið á bak við haminn Ökutæki í Miðjun, úr grein eftir Balachandran og Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Breytur ökutækja eru lesnar úr commonroad-vehicle-models (BSD-3-Clause) og global_racetrajectory_optimization (LGPL-3.0). Eftirdráttur hjólbarðans er úr Tire and Vehicle Dynamics eftir Pacejka og veggrip úr Theory of Ground Vehicles eftir Wong. Aðeins tölur, enginn kóði frá þeim fylgir með.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Heimildir um I/O-búnað spilakassa</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Samskiptareglurnar að baki rekla SDL-afbrigðisins fyrir I/O-spjöld Namco og Konami spilakassa og JVS-spjöld, lesnar úr arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania-leyfið), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) og TaikoZucchini (MIT). Aðeins skjöl, enginn kóði fylgir með.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Heimildir um Bluetooth LE-stýringar</value></data>

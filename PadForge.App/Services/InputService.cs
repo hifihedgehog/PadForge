@@ -7499,6 +7499,7 @@ namespace PadForge.Services
             ps.RotationRangeEnabled = padVm.WheelRotationRangeEnabled ? "1" : "0";
             ps.AutoCenterStrength = padVm.WheelAutoCenter.ToString();
             ps.WheelRpmLeds = padVm.WheelRpmLeds ? "1" : "0";
+            padVm.SaveCentering(ps);
             SaveFalconSettings(padVm, ps);
             ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
             ps.RightMotorStrength = padVm.RightMotorStrength.ToString();
@@ -7906,6 +7907,7 @@ namespace PadForge.Services
             padVm.WheelRotationRangeEnabled = ps.RotationRangeEnabled != "0";
             padVm.WheelAutoCenter = TryParseInt(ps.AutoCenterStrength, 0);
             padVm.WheelRpmLeds = ps.WheelRpmLeds == "1";
+            LoadCenteringSettings(padVm, ps, deviceGuid);
             LoadFalconSettings(padVm, ps);
             padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
             padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
@@ -13822,8 +13824,9 @@ namespace PadForge.Services
 
         /// <summary>A relayed frame that starts nothing: a vibration frame
         /// with every motor at zero and no directional or condition force,
-        /// which a frame with both motor strengths at zero can still carry, or
-        /// a haptic tone at zero amplitude.</summary>
+        /// which a frame with both motor strengths at zero can still carry, a
+        /// haptic tone at zero amplitude, or a wheel frame with no force, no
+        /// condition and no centering (#588).</summary>
         internal static bool IsRelayedStop(OutputEffectCodec.OutputEffect effect)
             => effect.Kind switch
             {
@@ -13832,6 +13835,8 @@ namespace PadForge.Services
                     && v.LeftTriggerMotorSpeed == 0 && v.RightTriggerMotorSpeed == 0
                     && !v.HasDirectionalData && !v.HasConditionData,
                 OutputEffectCodec.Kind.HapticTone => effect.HapticToneAmp <= 0f,
+                OutputEffectCodec.Kind.Wheel => !effect.Wheel.HasCond && effect.Wheel.Force == 0
+                    && effect.Wheel.Peak == 0 && effect.Wheel.Centering.IsEmpty,
                 _ => false,
             };
 
@@ -14072,13 +14077,27 @@ namespace PadForge.Services
             bool isTm   = ThrustmasterRawHidWriter.IsThrustmasterWheel(vid, pid);
             if (!isLogi && !isFan && !isTm) return; // generic SDL wheel would ride Vibration
 
+            // Vehicle mode's centering from the consumer (#588). Its force joins
+            // the game's where the wheel's constant force has one slot, as on
+            // the consumer's own wheels (WheelCenteringWriter.MergedForce).
+            var centering = new PadForge.Engine.Steering.CenteringFrame
+            {
+                Level = w.Centering.Level,
+                SpringCoefficient = w.Centering.SpringCoefficient,
+                SpringSaturation = w.Centering.SpringSaturation,
+                DamperCoefficient = w.Centering.DamperCoefficient,
+                DamperSaturation = w.Centering.DamperSaturation,
+                FrictionSaturation = w.Centering.FrictionSaturation,
+            };
+            short force = WheelCenteringWriter.MergedForce(vid, pid, w.HasCond, w.Force, centering.Level);
+
             // Per-frame FFB (force / condition / periodic).
             if (isLogi)
             {
                 if (w.HasCond)
                     LogitechRawHidWriter.WriteCondition(path, 0, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain, LogitechRawHidWriter.HasFrictionCap(pid));
-                else if (w.Force == 0) LogitechRawHidWriter.WriteStopEffect(path, 0);
-                else LogitechRawHidWriter.WriteConstantForce(path, 0, w.Force);
+                else if (force == 0) LogitechRawHidWriter.WriteStopEffect(path, 0);
+                else LogitechRawHidWriter.WriteConstantForce(path, 0, force);
             }
             else if (isFan)
             {
@@ -14086,8 +14105,12 @@ namespace PadForge.Services
                     FanatecRawHidWriter.WriteWheelCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
                 else
                 {
-                    FanatecRawHidWriter.WriteWheelConstantForce(path, w.Force, pid);
-                    if (w.Ac > 0) FanatecRawHidWriter.WriteAutocenter(path, w.Ac);
+                    FanatecRawHidWriter.WriteWheelConstantForce(path, force, pid);
+                    if (w.Ac > 0)
+                    {
+                        FanatecRawHidWriter.WriteAutocenter(path, w.Ac);
+                        WheelCenteringWriter.SpringSlotWritten(path);
+                    }
                 }
             }
             else // Thrustmaster
@@ -14098,6 +14121,9 @@ namespace PadForge.Services
                     ThrustmasterRawHidWriter.WritePeriodic(path, w.Effect, w.Peak, w.Period);
                 else ThrustmasterRawHidWriter.WriteConstantForce(path, w.Force);
             }
+            // The wheel now holds a peer's force. Once the peer lets go, the
+            // local pass ends it, as it ends its own (StopNativeWheel).
+            _inputManager?.NoteRemoteWheelWrite(path);
 
             // Range, auto-center and RPM LEDs. Each is re-sent only when it changes. A
             // range the consumer leaves to the wheel (#512) is never sent, and
@@ -14108,9 +14134,13 @@ namespace PadForge.Services
             {
                 int acMag = w.Ac;
                 if (isLogi) { if (range != 0) LogitechRawHidWriter.WriteRange(path, range, pid); LogitechRawHidWriter.WriteAutocenter(path, acMag, LogitechRawHidWriter.IsMomo(pid)); }
-                else if (isFan) { if (range != 0) FanatecRawHidWriter.WriteRange(path, range, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); }
+                else if (isFan) { if (range != 0) FanatecRawHidWriter.WriteRange(path, range, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); WheelCenteringWriter.SpringSlotWritten(path); }
                 else { if (range != 0) ThrustmasterRawHidWriter.WriteRange(path, range, pid); ThrustmasterRawHidWriter.WriteAutocenter(path, acMag); }
             }
+            // Centering's effects go after the auto-center above, which on a
+            // Fanatec base is a spring in the slot Vehicle mode's spring uses
+            // (WheelCenteringWriter.Apply).
+            WheelCenteringWriter.Apply(path, vid, pid, centering, w.HasCond ? w.Effect : 0, autoCenterSpring: isFan && w.Ac > 0);
             if (prev.Item3 != w.LedMask || prev.Item4 != w.LedValid)
             {
                 int mask = w.LedValid ? w.LedMask : 0;

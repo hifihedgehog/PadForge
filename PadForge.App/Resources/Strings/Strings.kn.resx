@@ -3200,7 +3200,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>ತಿರುಗುವ ವ್ಯಾಪ್ತಿ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ಸ್ವಯಂ ಕೇಂದ್ರೀಕರಣ ಬಲ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM ಶಿಫ್ಟ್ LED ಗಳನ್ನು ಮರುಹೊಂದಿಸು</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ವೀಲ್‌ಗಳಿಗೆ ಸ್ಟೀರಿಂಗ್ ವ್ಯಾಪ್ತಿ, ಸ್ವಯಂ ಕೇಂದ್ರೀಕರಣ ಮತ್ತು ಶಿಫ್ಟ್ ಲೈಟ್‌ಗಳು.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ವೀಲ್‌ಗಳಿಗೆ ಸ್ಟೀರಿಂಗ್ ವ್ಯಾಪ್ತಿ ಮತ್ತು ಶಿಫ್ಟ್ ಲೈಟ್‌ಗಳು.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ಕೇಂದ್ರೀಕರಣ</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>ವೀಲ್ ಅನ್ನು ಸರಳ ಸ್ಪ್ರಿಂಗ್‌ನಂತೆ ಅಥವಾ ಕಾರಿನ ಸ್ಟೀರಿಂಗ್‌ನಂತೆ ಮಧ್ಯಕ್ಕೆ ಮರಳಿ ತರುತ್ತದೆ.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>ಕೇಂದ್ರೀಕರಣ ಮರುಹೊಂದಿಸು</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>ಮೋಡ್</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ಸ್ಪ್ರಿಂಗ್ ಒಂದೇ ಬಲದಿಂದ ವೀಲ್ ಅನ್ನು ಮಧ್ಯಕ್ಕೆ ಎಳೆಯುತ್ತದೆ. ವಾಹನ ಟೈರ್ ಮಾದರಿಯಿಂದ, ಕಾರಿನ ವೇಗದಲ್ಲಿ ಅದರ ಸ್ಟೀರಿಂಗ್ ನೀಡುವ ಟಾರ್ಕ್ ಅನ್ನು ಲೆಕ್ಕಹಾಕುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ಸ್ಪ್ರಿಂಗ್</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ವಾಹನ</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ವಾಹನ</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>ವೀಲ್ ಯಾವ ಕಾರಿನ ಸ್ಟೀರಿಂಗ್ ಅನ್ನು ಅನುಸರಿಸುತ್ತದೆ. ಪ್ರತಿಯೊಂದೂ ಪ್ರಕಟಿತ ವಾಹನ ಮಾದರಿ.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>ಸೆಡಾನ್</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>ಕಾಂಪ್ಯಾಕ್ಟ್</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ವ್ಯಾನ್</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ರೇಸ್ ಕಾರ್</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>ವೇಗ</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ಆಟದಿಂದ ಎಂದರೆ ಆಟದ ಟೆಲಿಮೆಟ್ರಿಯಿಂದ ಕಾರಿನ ವೇಗವನ್ನು ಓದುತ್ತದೆ, ಯಾವುದೇ ಆಟ ಕಳುಹಿಸದಿದ್ದರೆ ನಿಶ್ಚಿತ ವೇಗವನ್ನು ಬಳಸುತ್ತದೆ. ನಿಶ್ಚಿತ ಎಂದರೆ ಯಾವಾಗಲೂ ನಿಶ್ಚಿತ ವೇಗವನ್ನು ಬಳಸುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ಆಟದಿಂದ</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ನಿಶ್ಚಿತ</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಭಾರ</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಎಷ್ಟು ಭಾರವಾಗಿದೆ. 100% ಎಂದರೆ ಕಾರಿನ ಸ್ವಂತ ಭಾರ.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ವೀಲ್ ವ್ಯಾಪ್ತಿ</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ಈ ವೀಲ್ ಒಂದು ತುದಿಯಿಂದ ಇನ್ನೊಂದು ತುದಿಗೆ ಎಷ್ಟು ತಿರುಗುತ್ತದೆ. ವೀಲ್‌ನ ಸ್ವಂತ ಸೆಟ್ಟಿಂಗ್‌ಗೆ ಹೊಂದಿಸಿ.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಟಾರ್ಕ್</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>ಕೋನ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ಟಾರ್ಕ್</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ವೀಲ್ ಮಿತಿ {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>ರಿಮ್‌ನಲ್ಲಿನ ಸ್ಟೀರಿಂಗ್ ಟಾರ್ಕ್, ಸ್ಟೀರಿಂಗ್ ಕೋನಕ್ಕೆ ಹೋಲಿಸಿ. {0} ವೇಗದಲ್ಲಿ ಅದು {2}° ನಲ್ಲಿ {1} N·m ಗರಿಷ್ಠ ತಲುಪುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>ಕೇಂದ್ರ ಅನುಭವ</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>ಮಧ್ಯದ ಬಳಿ ತಿರುವಿನ ಜೊತೆಗೆ ಟಾರ್ಕ್ ಎಷ್ಟು ವೇಗವಾಗಿ ಏರುತ್ತದೆ, 0.05 g ವರೆಗೆ N·m ಪ್ರತಿ g ನಲ್ಲಿ. ಹೆಚ್ಚಿದಷ್ಟು ಸ್ಟೀರಿಂಗ್ ಹೆಚ್ಚು ಸ್ಥಿರವಾಗಿ ಅನಿಸುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ಟಾರ್ಕ್ ಬಿಗಿತ</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>ವೀಲ್ ಮಧ್ಯದಿಂದ ದೂರ ಸರಿದಂತೆ ಟಾರ್ಕ್ ಎಷ್ಟು ವೇಗವಾಗಿ ಏರುತ್ತದೆ, N·m ಪ್ರತಿ ಡಿಗ್ರಿಯಲ್ಲಿ.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>ರೇಖೀಯತೆ</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 ಮತ್ತು 0.15 g ನಡುವಿನ ಟಾರ್ಕ್‌ನ ಓರೆ, ಮಧ್ಯದಲ್ಲಿನ ಓರೆಗೆ ಹೋಲಿಸಿ. ಕಡಿಮೆಯಾದಷ್ಟು ಸ್ಟೀರಿಂಗ್ ಬೇಗ ಹಗುರವಾಗುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>ಗರಿಷ್ಠ ಟಾರ್ಕ್</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>ಕಾರು ವೀಲ್‌ನಿಂದ ಕೇಳುವ ಗರಿಷ್ಠ ಟಾರ್ಕ್, ವೀಲ್ ನೀಡುವ ಗರಿಷ್ಠದ ಪಕ್ಕದಲ್ಲಿ.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m ರಲ್ಲಿ</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ಈ ಕಾರು ವೀಲ್‌ನಲ್ಲಿರುವುದಕ್ಕಿಂತ ಹೆಚ್ಚು ಟಾರ್ಕ್ ಕೇಳುತ್ತದೆ, ಆದ್ದರಿಂದ ವಕ್ರರೇಖೆಯ ಮೇಲ್ತುದಿ ಕತ್ತರಿಸಲ್ಪಟ್ಟಿದೆ.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ಕೇಂದ್ರ ಅನುಭವ, ಪವರ್ ಅಸಿಸ್ಟ್, ಡ್ಯಾಂಪಿಂಗ್, ಘರ್ಷಣೆ, ಗ್ರಿಪ್, ನಿಶ್ಚಿತ ವೇಗ, ವೀಲ್ ಟಾರ್ಕ್</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ಕಡಿಮೆ ವೇಗದಲ್ಲಿ ಸ್ಟೀರಿಂಗ್ ತನ್ನ ಮಧ್ಯವನ್ನು ಎಷ್ಟು ಬಲವಾಗಿ ಹಿಡಿಯುತ್ತದೆ. 100% ಎಂದರೆ ಕಾರಿನ ಸ್ವಂತ ಬಲ.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>ಪವರ್ ಅಸಿಸ್ಟ್</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ತಿರುವು ಹೆಚ್ಚಾದಂತೆ ಪವರ್ ಸ್ಟೀರಿಂಗ್ ಎಷ್ಟು ಭಾರ ಕಡಿಮೆ ಮಾಡುತ್ತದೆ. ಹೆಚ್ಚಿದಷ್ಟು ಮಧ್ಯದಿಂದ ದೂರ ಸ್ಟೀರಿಂಗ್ ಹಗುರ.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ಡ್ಯಾಂಪಿಂಗ್</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>ವೀಲ್ ವೇಗದ ತಿರುವುಗಳನ್ನು ಎಷ್ಟು ಬಲವಾಗಿ ಪ್ರತಿರೋಧಿಸುತ್ತದೆ. 100% ಎಂದರೆ ಮಧ್ಯವನ್ನು ದಾಟಿ ತೂಗಾಡದೆ ಅದನ್ನು ಮರಳಿ ತರುವ ಮೌಲ್ಯ.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ಘರ್ಷಣೆ</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>ಎರಡೂ ದಿಕ್ಕಿನ ತಿರುಗುವಿಕೆಯನ್ನು ಪ್ರತಿರೋಧಿಸುವ ಸ್ಥಿರ ಎಳೆತ.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ಗ್ರಿಪ್</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>ರಸ್ತೆಯ ಗ್ರಿಪ್. ಮುಂಭಾಗದ ಟೈರ್‌ಗಳಿಗೆ ಗ್ರಿಪ್ ಮುಗಿದಲ್ಲಿ ಸ್ಟೀರಿಂಗ್ ಹಗುರವಾಗುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ಒಣ</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ಒದ್ದೆ</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>ಹಿಮ</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ಮಂಜುಗಡ್ಡೆ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ನಿಶ್ಚಿತ ವೇಗ</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ವೇಗ ನಿಶ್ಚಿತ ಆಗಿರುವಾಗ ಮತ್ತು ಯಾವುದೇ ಆಟ ವೇಗ ಕಳುಹಿಸದಿರುವಾಗ ಕಾರು ಚಲಿಸುತ್ತಿದೆ ಎಂದು ಪರಿಗಣಿಸುವ ವೇಗ.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>ವೀಲ್ ಟಾರ್ಕ್</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>ಈ ವೀಲ್ ನೀಡುವ ಗರಿಷ್ಠ ಟಾರ್ಕ್. ವೀಲ್ ತಯಾರಕರು ಪ್ರಕಟಿಸಿರುವಲ್ಲಿ PadForge ಅದನ್ನು ತುಂಬುತ್ತದೆ. ವೀಲ್‌ನ ಸ್ವಂತ ಮೌಲ್ಯಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಸಂಖ್ಯೆ ಪ್ರತಿ ಬಲವನ್ನೂ ದುರ್ಬಲಗೊಳಿಸುತ್ತದೆ.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ಈ ವೀಲ್‌ಗೆ ವೀಲ್ ಟಾರ್ಕ್ ಹೊಂದಿಸಿಲ್ಲ, ಆದ್ದರಿಂದ ಅದರ ಬಲಗಳನ್ನು ಕಡಿಮೆ ಇರಿಸಲಾಗಿದೆ. ಅದನ್ನು ಇನ್ನಷ್ಟು ಅಡಿಯಲ್ಲಿ ನಮೂದಿಸಿ.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>ವೀಲ್ ತಾನಾಗಿಯೇ ತೂಗಾಡಲು ಪ್ರಾರಂಭಿಸಿತು, ಆದ್ದರಿಂದ ಬಲವನ್ನು ತಡೆಹಿಡಿಯಲಾಗಿದೆ. ಬಿಡುಗಡೆ ಪರೀಕ್ಷೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>ವೀಲ್ ತೂಗಾಡುತ್ತಲೇ ಇದ್ದ ಕಾರಣ ಅಥವಾ ಮಧ್ಯದಿಂದ ದೂರ ಸಾಗಿದ ಕಾರಣ ಬಲವನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ. ಬಿಡುಗಡೆ ಪರೀಕ್ಷೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>ಬಿಡುಗಡೆ ಪರೀಕ್ಷೆ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ಈ ವೀಲ್ ಅನ್ನು ಅಳೆದು, ಮಧ್ಯವನ್ನು ದಾಟದೆ ಮರಳುವಂತೆ ಡ್ಯಾಂಪಿಂಗ್ ಹೊಂದಿಸುತ್ತದೆ</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ಇನ್ನೂ ಚಲಾಯಿಸಿಲ್ಲ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>ಅಳೆಯಲಾಗಿದೆ</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ವೀಲ್‌ನಿಂದ ನಿಮ್ಮ ಕೈಗಳನ್ನು ತೆಗೆಯಿರಿ. PadForge ಅದನ್ನು {0}° ಗೆ ತಿರುಗಿಸಿ, ಬಿಟ್ಟು, ಅದು ಹೇಗೆ ಮರಳುತ್ತದೆ ಎಂಬುದನ್ನು ದಾಖಲಿಸುತ್ತದೆ.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ಪ್ರತಿ ಬಿಡುಗಡೆಯ ನಂತರ {0} ಸೆಕೆಂಡುಗಳಲ್ಲಿ ವೀಲ್‌ನ ಕೋನ.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>ಮೊದಲು</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>ನಂತರ</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>ಅಳೆಯಲಾಗುತ್ತಿದೆ, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>ಮುಗಿದಿದೆ, 2 ರನ್‌ಗಳು</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>ನಿಲ್ಲಿಸಲಾಗಿದೆ</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>ವೀಲ್ ವಿಶ್ರಾಂತಿಗೆ ಬರಲಿಲ್ಲ. ಅದರಿಂದ ಕೈಗಳನ್ನು ತೆಗೆದು ಪರೀಕ್ಷೆಯನ್ನು ಮತ್ತೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>ವೀಲ್ ಚಲಿಸಲಿಲ್ಲ. ವೀಲ್ ಟಾರ್ಕ್ ಅನ್ನು ವೀಲ್ ನೀಡುವುದಕ್ಕಿಂತ ಹೆಚ್ಚು ಹೊಂದಿಸಿದ್ದರೆ, ಅದನ್ನು ವೀಲ್‌ನ ಸ್ವಂತ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸಿ ಪರೀಕ್ಷೆಯನ್ನು ಮತ್ತೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>ವೀಲ್ ತನ್ನ ವ್ಯಾಪ್ತಿಯ ತುದಿಯ ಹತ್ತಿರ ಬಂತು. ಅದನ್ನು ಮಧ್ಯಕ್ಕೆ ತಂದು ಪರೀಕ್ಷೆಯನ್ನು ಮತ್ತೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>ವೀಲ್‌ನ ಚಲನೆಯನ್ನು ಓದಲಾಗಲಿಲ್ಲ. ಪರೀಕ್ಷೆಯನ್ನು ಮತ್ತೆ ಚಲಾಯಿಸಿ.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>ವೀಲ್ ಪ್ರತಿಕ್ರಿಯಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿತು. ಅದು ಸಂಪರ್ಕಗೊಂಡಿದೆಯೇ ಮತ್ತು ಎಂಜಿನ್ ಚಾಲನೆಯಲ್ಲಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ಈ ವೀಲ್ ಬಳಕೆಯಲ್ಲಿಲ್ಲ. ಅದನ್ನು ಕಂಟ್ರೋಲರ್‌ಗೆ ಅಸೈನ್ ಮಾಡಿ ಮತ್ತು ಎಂಜಿನ್ ಪ್ರಾರಂಭಿಸಿ, ನಂತರ ಪರೀಕ್ಷೆಯನ್ನು ಚಲಾಯಿಸಿ.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ಜಡತ್ವ</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ಮೊದಲು, ವೀಲ್ ಮಧ್ಯವನ್ನು ದಾಟಿ {0}° ತೂಗಾಡಿತು.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ಈಗ ಅದು ಮಧ್ಯವನ್ನು ದಾಟಿ {0}° ತೂಗಾಡುತ್ತದೆ ಮತ್ತು ಮಧ್ಯದಿಂದ {1}° ನಲ್ಲಿ ನಿಲ್ಲುತ್ತದೆ.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ಈಗ ಅದು ದಾಟದೆ ಮರಳುತ್ತದೆ ಮತ್ತು ಮಧ್ಯದಿಂದ {0}° ನಲ್ಲಿ ನಿಲ್ಲುತ್ತದೆ.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>ಮತ್ತೆ ಚಲಾಯಿಸಿ</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>ಅನ್ವಯಿಸಿ</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಲಾಕ್ ಪ್ರತಿಕ್ರಿಯೆ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಕಂಪನ ಪಲ್ಸ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ಲಾಕ್‌ನಲ್ಲಿ ಟ್ರಿಗರ್ ಕಂಪನ ಮರುಹೊಂದಿಸು</value></data>
@@ -4659,7 +4740,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move ರಿಪೋರ್ಟ್ ವಿನ್ಯಾಸಗಳು, ಸೆನ್ಸರ್ ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಮತ್ತು EXT ಆಕ್ಸೆಸರಿ ಹ್ಯಾಂಡ್‌ಶೇಕ್, Thomas Perl ಅವರಿಂದ, moveonpc ವಿಕಿಯ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. PadForge ನ ಅನುಷ್ಠಾನ ಮೂಲ C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ರೇಸಿಂಗ್ ಟೆಲಿಮೆಟ್ರಿ ಉಲ್ಲೇಖಗಳು</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಮತ್ತು ಸ್ಟೀರಿಂಗ್ ವೀಲ್ RPM ಶಿಫ್ಟ್ LED ಗಳ ಹಿಂದಿನ ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಮತ್ತು UDP ವಿನ್ಯಾಸಗಳು, assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ಮತ್ತು vAzhureRacingHub (GPL-3.0) ನಿಂದ ಓದಲಾಗಿದೆ. ಯಾವುದೇ GPL ಅಥವಾ LGPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಮತ್ತು ಸ್ಟೀರಿಂಗ್ ವೀಲ್ RPM ಶಿಫ್ಟ್ LED ಗಳ ಹಿಂದಿನ ಹಂಚಿಕೆಯ ಮೆಮೊರಿ ಮತ್ತು UDP ವಿನ್ಯಾಸಗಳು, assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ಮತ್ತು vAzhureRacingHub (GPL-3.0) ನಿಂದ ಓದಲಾಗಿದೆ. ಯಾವುದೇ GPL ಅಥವಾ LGPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 ಬ್ಲೂಟೂತ್ ಜೋಡಣೆ ಮತ್ತು ರಿಪೋರ್ಟ್ ದಾಖಲೆ. GPL-2.0 ಮತ್ತು GPL-3.0, ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4682,6 +4763,8 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ವರ್ಚುವಲ್ DualSense ಮೈಕ್ರೊಫೋನ್‌ನ 48 dB ಕ್ಷೀಣತೆ ವ್ಯಾಪ್ತಿ. ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ವೀಲ್ ಪ್ರೋಟೋಕಾಲ್ ಉಲ್ಲೇಖಗಳು</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster ಮತ್ತು Logitech ವೀಲ್‌ಗಳಿಗೆ ಸ್ಥಳೀಯ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಮತ್ತು RPM ಶಿಫ್ಟ್ LED ರಿಪೋರ್ಟ್‌ಗಳು, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ಮತ್ತು thrustmaster-led-linux (GPL-3.0) ನಿಂದ ಓದಲಾಗಿದೆ, ಮತ್ತು prodigal.knight ಅವರ SimHub LED ಪ್ಲಗಿನ್ (MIT) ಹಾಗೂ tm-bt-led (MIT) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>ಸ್ಟೀರಿಂಗ್ ಫೀಲ್ ಉಲ್ಲೇಖಗಳು</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>ಕೇಂದ್ರೀಕರಣದ ವಾಹನ ಮೋಡ್‌ನ ಹಿಂದಿನ ಸ್ಟೀರಿಂಗ್ ಟಾರ್ಕ್ ಮಾದರಿ, Balachandran ಮತ್ತು Gerdes ಅವರ “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) ನಿಂದ. ವಾಹನದ ನಿಯತಾಂಕಗಳನ್ನು commonroad-vehicle-models (BSD-3-Clause) ಮತ್ತು global_racetrajectory_optimization (LGPL-3.0) ನಿಂದ ಓದಲಾಗಿದೆ. ಟೈರ್‌ನ ಟ್ರೇಲ್ Pacejka ಅವರ Tire and Vehicle Dynamics ನಿಂದ, ರಸ್ತೆಯ ಗ್ರಿಪ್ Wong ಅವರ Theory of Ground Vehicles ನಿಂದ ಪಡೆಯಲಾಗಿದೆ. ಅಂಕಿಅಂಶಗಳು ಮಾತ್ರ, ಅವುಗಳ ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ಆರ್ಕೇಡ್ I/O ಉಲ್ಲೇಖಗಳು</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco ಮತ್ತು Konami ಆರ್ಕೇಡ್ I/O ಬೋರ್ಡ್‌ಗಳು ಹಾಗೂ JVS ಬೋರ್ಡ್‌ಗಳಿಗಾಗಿ SDL ಫೋರ್ಕ್‌ನ ಡ್ರೈವರ್‌ಗಳ ಹಿಂದಿನ ಪ್ರೋಟೋಕಾಲ್‌ಗಳು, arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ಮತ್ತು TaikoZucchini (MIT) ನಿಂದ ಓದಲಾಗಿದೆ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>ಬ್ಲೂಟೂತ್ LE ಕಂಟ್ರೋಲರ್ ಉಲ್ಲೇಖಗಳು</value></data>

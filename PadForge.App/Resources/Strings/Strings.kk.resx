@@ -3218,7 +3218,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Бұру ауқымын қалпына келтіру</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Автоорталау күшін қалпына келтіру</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM беріліс ауыстыру LED шамдарын қалпына келтіру</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Күштік кері байланысы бар рөлдерге арналған бұру ауқымы, автоорталау және беріліс ауыстыру шамдары.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Күштік кері байланысы бар рөлдерге арналған бұру ауқымы және беріліс ауыстыру шамдары.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Орталау</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Рөлді ортаға қайтарады: қарапайым серіппе сияқты немесе көліктің рөлдік басқаруы сияқты.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Орталауды қалпына келтіру</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Серіппе рөлді бір күшпен ортаға тартады. Көлік шина моделі бойынша көліктің рөлдік басқаруы осы жылдамдықта беретін моментті есептейді.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Серіппе</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Көлік</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Көлік</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Рөл басқаруын алатын көлік. Әрқайсысы жарияланған көлік моделі.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Шағын</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Фургон</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Жарыс көлігі</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Жылдамдық</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Ойыннан көліктің жылдамдығын ойын телеметриясынан алады, ал ешбір ойын жібермегенде Тұрақты жылдамдықты қолданады. Тұрақты әрқашан Тұрақты жылдамдықты қолданады.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Ойыннан</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Тұрақты</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Рөл салмағы</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Рөлдің қаншалықты ауыр екені. 100% көліктің өз салмағы.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Рөл жүрісі</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Бұл рөлдің бір шеткі жағдайдан екіншісіне дейін қаншалықты бұрылатыны. Рөлдің өз параметріне сәйкес орнатыңыз.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Рөл моменті</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Бұрыш</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момент</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Рөл шегі {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Рөл жиегіндегі момент рөл бұрышына қарсы. {0} кезінде ол {2}° бұрышта {1} N·m шыңына жетеді.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Орталықтағы сезім</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Центрге жақын маңда бұрылыс күшеюімен момент қаншалықты тез өседі, 0.05 g дейін әр g үшін N·m. Көбірек болса рөл тұрақтырақ сезіледі.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Момент қаттылығы</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Рөл ортадан кеткенде момент қаншалықты тез өседі, әр градус үшін N·m.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Сызықтылық</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 мен 0.15 g арасындағы момент еңісінің ортадағы еңіске қатынасы. Төмен болса рөл ертерек жеңілдейді.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Ең үлкен момент</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Көлік рөлден сұрайтын ең үлкен момент және рөл беретін ең үлкен момент.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m ішінен</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Бұл көлік рөлде бар моменттен көбірек сұрайды, сондықтан қисықтың үстіңгі жағы кесіледі.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Орталықтағы сезім, рөл күшейткіші, демпфирлеу, үйкеліс, ілініс, тұрақты жылдамдық, рөл моменті</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Рөл төмен жылдамдықта ортасын қаншалықты күшті ұстайтыны. 100% көліктің өз мәні.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Рөл күшейткіші</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Бұрылыс күшейген сайын рөл күшейткіші қанша күшті алып тастайды. Көбірек болса ортадан алыстағы рөл жеңілірек.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Демпфирлеу</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Рөлдің жылдам бұрылыстарға қаншалықты қарсы тұратыны. 100% рөлді ортадан асып кетпей қайтаратын мән.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Үйкеліс</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Бұруға кез келген бағытта қарсы тұратын тұрақты кедергі.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Ілініс</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Жолдың ілінісі. Алдыңғы шиналар ілінісін жоғалтқан жерде рөл жеңілдейді.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Құрғақ</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Дымқыл</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Қар</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Мұз</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Тұрақты жылдамдық</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Жылдамдық Тұрақты болғанда және ешбір ойын жібермегенде көлік жүреді деп алынатын жылдамдық.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Рөл моменті</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Бұл рөл беретін ең үлкен момент. PadForge оны рөлді шығарушы жариялаған жерде толтырады. Рөлдің өз мәнінен жоғары мән барлық күштерді әлсіретеді.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Бұл рөл үшін Рөл моменті орнатылмаған, сондықтан оның күштері төмен ұсталады. Оны Қосымша бөлімінде енгізіңіз.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Рөл өздігінен тербеле бастады, сондықтан күш шектелді. Босату сынағын іске қосыңыз.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Рөл тербеліп тұрып қалғандықтан немесе ортадан кетіп қалғандықтан күш өшірілді. Босату сынағын іске қосыңыз.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Босату сынағы</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Бұл рөлді өлшейді және ол ортадан асып кетпей қайтатындай демпфирлеуді орнатады</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Әлі іске қосылмаған</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Өлшенген</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Қолыңызды рөлден алыңыз. PadForge оны {0}° бұрады, жібереді және оның қалай қайтатынын жазады.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Әр босатудан кейінгі {0} секунд ішіндегі рөл бұрышы.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Дейін</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Кейін</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Өлшеу, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Аяқталды, 2 іске қосу</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Тоқтатылды</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Рөл тынышталмады. Қолыңызды алыңыз да, сынақты қайта іске қосыңыз.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Рөл қозғалмады. Егер Рөл моменті рөл беретін мәннен жоғары орнатылса, оны рөлдің өз мәніне орнатып, сынақты қайта іске қосыңыз.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Рөл өз ауқымының шетіне жақындады. Оны ортаға қойып, сынақты қайта іске қосыңыз.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Рөлдің қозғалысын оқу мүмкін болмады. Сынақты қайта іске қосыңыз.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Рөл жауап беруді тоқтатты. Оның қосылғанын және қозғалтқыштың жұмыс істеп тұрғанын тексеріңіз.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Бұл рөл қолданылмайды. Оны контроллерге тағайындап, қозғалтқышты іске қосыңыз, содан кейін сынақты іске қосыңыз.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Инерция</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Бұрын рөл ортадан {0}° асып кететін.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Қазір ол ортадан {0}° асады және ортадан {1}° қашықтықта тоқтайды.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Қазір ол ортадан асып кетпей қайтады және ортадан {0}° қашықтықта тоқтайды.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Қайта іске қосу</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Қолдану</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Рөл шегіндегі кері байланысты қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Шектегі діріл импульсін қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Шектегі триггер дірілін қалпына келтіру</value></data>
@@ -4677,7 +4758,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move есеп орналасулары, сенсорды калибрлеу және EXT қосалқы құралының қол алысуы, автор Thomas Perl, moveonpc уикиімен салыстырылған. PadForge-дың іске асыруы түпнұсқа C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Жарыс телеметриясының сілтемелері</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ойын телеметриясының және рөлдің RPM ауыстыру LED-дерінің астарындағы ортақ жады мен UDP орналасулары. Оқылған көздер: assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) және vAzhureRacingHub (GPL-3.0). GPL немесе LGPL коды жеткізілмейді.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ойын телеметриясының және рөлдің RPM ауыстыру LED-дерінің астарындағы ортақ жады мен UDP орналасулары. Оқылған көздер: assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) және vAzhureRacingHub (GPL-3.0). GPL немесе LGPL коды жеткізілмейді.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth жұптастыруы және есеп құжаттамасы. GPL-2.0 және GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4700,6 +4781,8 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуалды DualSense микрофонының 48 dB әлсіреу диапазоны. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Рөл протоколдарының сілтемелері</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster және Logitech рөлдері үшін төл күштік кері байланыс және RPM ауыстыру LED есептері. Оқылған көздер: hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) және thrustmaster-led-linux (GPL-3.0), prodigal.knight жазған SimHub LED плагині (MIT) және tm-bt-led (MIT) бойынша тексерілген. Тек құжаттама, GPL коды жеткізілмейді.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Рөл басқару сезімінің сілтемелері</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Орталаудың Көлік режимінің астарындағы рөлдік момент моделі. Ол Balachandran және Gerdes жазған «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics) еңбегінен алынған. Көлік параметрлері commonroad-vehicle-models (BSD-3-Clause) және global_racetrajectory_optimization (LGPL-3.0) жобаларынан оқылған. Шинаның іздігі Pacejka жазған Tire and Vehicle Dynamics кітабынан, жолдың ілінісі Wong жазған Theory of Ground Vehicles кітабынан алынған. Тек сандар алынған, олардың коды жеткізілмейді.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Аркадалық I/O сілтемелері</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco және Konami аркадалық I/O тақталарына және JVS тақталарына арналған SDL тармағы драйверлерінің астарындағы протоколдар. Оқылған көздер: arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) және TaikoZucchini (MIT). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE контроллер сілтемелері</value></data>

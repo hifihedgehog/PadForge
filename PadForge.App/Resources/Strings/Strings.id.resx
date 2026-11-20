@@ -3413,7 +3413,88 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Atur ulang rentang rotasi</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Atur ulang kekuatan pemusatan otomatis</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Atur ulang LED perpindahan gigi RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rentang kemudi, pemusatan otomatis, dan lampu perpindahan gigi untuk setir force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rentang kemudi dan lampu perpindahan gigi untuk setir force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Pemusatan</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Mengembalikan setir ke tengah, sebagai pegas biasa atau seperti kemudi mobil.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Atur ulang pemusatan</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Pegas menarik setir ke tengah dengan satu kekuatan. Kendaraan menghitung torsi yang diberikan kemudi mobil pada kecepatannya, dari model ban.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Pegas</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Kendaraan</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Kendaraan</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Mobil yang kemudinya ditiru setir. Masing-masing adalah model kendaraan yang dipublikasikan.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompak</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Mobil balap</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Kecepatan</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Dari game membaca kecepatan mobil dari telemetri game, dan memakai Kecepatan tetap selama tidak ada game yang mengirimkannya. Tetap selalu memakai Kecepatan tetap.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Dari game</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Tetap</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Bobot kemudi</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Seberapa berat kemudinya. 100% adalah bobot bawaan mobil.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Jangkauan setir</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Seberapa jauh setir ini berputar dari kunci ke kunci. Atur sesuai pengaturan bawaan setir.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torsi kemudi</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Sudut</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torsi</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Batas setir {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torsi kemudi di pelek terhadap sudut kemudi. Pada {0} puncaknya {1} N·m pada {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Rasa di tengah</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Seberapa cepat torsi naik saat menikung di dekat tengah, dalam N·m per g hingga 0.05 g. Makin tinggi terasa makin mantap.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Kekakuan torsi</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Seberapa cepat torsi naik saat setir menjauh dari tengah, dalam N·m per derajat.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearitas</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Kemiringan torsi antara 0.10 dan 0.15 g dibandingkan kemiringannya di tengah. Makin rendah, kemudi makin cepat terasa ringan.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Torsi puncak</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Torsi terbesar yang diminta mobil dari setir, di samping torsi terbesar yang bisa diberikan setir.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>dari {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Mobil ini meminta torsi lebih besar daripada yang dimiliki setir, sehingga puncak kurva terpotong.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Rasa di tengah, bantuan tenaga, peredaman, gesekan, cengkeraman, kecepatan tetap, torsi setir</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Seberapa kuat kemudi menahan posisi tengah pada kecepatan rendah. 100% adalah nilai bawaan mobil.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Bantuan tenaga</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Seberapa banyak power steering meringankan saat tikungan makin tajam. Makin tinggi, kemudi makin ringan jauh dari tengah.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Peredaman</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Seberapa kuat setir menahan putaran cepat. 100% adalah nilai yang mengembalikannya tanpa melewati titik tengah.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Gesekan</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Hambatan tetap yang menahan putaran ke kedua arah.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Cengkeraman</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Cengkeraman jalan. Kemudi terasa ringan saat ban depan kehilangan cengkeramannya.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kering</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Basah</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Salju</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Es</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Kecepatan tetap</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Kecepatan yang dianggap sebagai kecepatan mobil saat Kecepatan diatur ke Tetap, dan selama tidak ada game yang mengirimkannya.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torsi setir</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Torsi terbesar yang diberikan setir ini. PadForge mengisinya jika pembuat setir mempublikasikannya. Angka di atas milik setir membuat semua gaya lebih lemah.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Torsi setir belum diatur untuk setir ini, sehingga gayanya ditahan rendah. Masukkan di Lainnya.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Setir mulai berayun sendiri, sehingga gayanya ditahan. Jalankan Release Test.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Gaya dimatikan karena setir terus berayun atau menjauh dari tengah. Jalankan Release Test.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Release Test</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mengukur setir ini dan mengatur peredaman agar kembali tanpa melewati tengah</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Belum dijalankan</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Terukur</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Lepaskan tangan Anda dari setir. PadForge memutarnya ke {0}°, melepaskannya, dan merekam cara setir kembali.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Sudut setir selama {0} detik setelah setiap pelepasan.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Sebelum</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Sesudah</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mengukur, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Selesai, 2 kali jalan</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Dihentikan</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Setir tidak berhenti. Lepaskan tangan Anda dari setir dan jalankan tes lagi.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Setir tidak bergerak. Jika Torsi setir diatur di atas yang diberikan setir, atur ke angka bawaan setir lalu jalankan tes lagi.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Setir mendekati ujung jangkauannya. Pusatkan setir lalu jalankan tes lagi.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Gerakan setir tidak dapat dibaca. Jalankan tes lagi.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Setir berhenti merespons. Periksa apakah setir terhubung dan mesin berjalan.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Setir ini tidak digunakan. Tetapkan ke kontroler dan mulai mesin, lalu jalankan tes.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inersia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Sebelumnya, setir berayun {0}° melewati tengah.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Sekarang setir berayun {0}° melewati tengah dan berhenti {1}° dari tengah.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Sekarang setir kembali tanpa melewati tengah dan berhenti {0}° dari tengah.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Jalankan lagi</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Terapkan</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Atur ulang umpan balik batas kemudi</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Atur ulang denyut getaran di batas kemudi</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Atur ulang getaran pelatuk di batas kemudi</value></data>
@@ -4919,7 +5000,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Tata letak laporan PlayStation Move, kalibrasi sensor, dan handshake aksesori EXT, karya Thomas Perl, diperiksa silang dengan wiki moveonpc. Implementasi PadForge adalah C# orisinal. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referensi telemetri balap</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Tata letak memori bersama dan UDP di balik Telemetri Game dan LED perpindahan gigi RPM setir, dibaca dari assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), dan vAzhureRacingHub (GPL-3.0). Tidak ada kode GPL atau LGPL yang disertakan.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Tata letak memori bersama dan UDP di balik Telemetri Game dan LED perpindahan gigi RPM setir, dibaca dari assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), dan vAzhureRacingHub (GPL-3.0). Tidak ada kode GPL atau LGPL yang disertakan.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasi penyandingan dan laporan Bluetooth DualShock 3. GPL-2.0 dan GPL-3.0, dibaca hanya sebagai dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Rentang atenuasi 48 dB mikrofon DualSense virtual. Dibaca hanya sebagai dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referensi protokol setir</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Laporan force feedback asli dan LED perpindahan gigi RPM untuk setir Fanatec, Thrustmaster, dan Logitech, dibaca dari hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), dan thrustmaster-led-linux (GPL-3.0), serta diperiksa silang dengan plugin LED SimHub karya prodigal.knight (MIT) dan tm-bt-led (MIT). Hanya dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referensi nuansa kemudi</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Model torsi kemudi di balik mode Kendaraan pada Pemusatan, dari Balachandran dan Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Parameter kendaraan dibaca dari commonroad-vehicle-models (BSD-3-Clause) dan global_racetrajectory_optimization (LGPL-3.0). Trail ban berasal dari Tire and Vehicle Dynamics karya Pacejka, dan cengkeraman jalan dari Theory of Ground Vehicles karya Wong. Hanya angka, tidak ada kode dari semuanya yang disertakan.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referensi I/O arkade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokol di balik driver fork SDL untuk papan I/O arkade Namco dan Konami serta papan JVS, dibaca dari arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (lisensi StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0), dan TaikoZucchini (MIT). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referensi kontroler Bluetooth LE</value></data>

@@ -3,12 +3,12 @@ using System;
 namespace PadForge.Common.Telemetry
 {
     /// <summary>
-    /// Normalized engine-telemetry snapshot used to drive wheel RPM/shift LEDs.
-    /// PadForge reads this from whichever racing title is running (each game
-    /// exposes RPM through its own shared-memory or UDP channel) and forwards it
-    /// to the wheel's LED strip, the same way SimHub and the Linux wheel drivers
-    /// do. RPM is the only field the LED feature needs; the rest are kept for
-    /// future dash use.
+    /// Normalized telemetry snapshot. PadForge reads this from whichever
+    /// racing title is running (each game exposes it through its own
+    /// shared-memory or UDP channel). The RPM fields drive a wheel's RPM
+    /// and shift LEDs, the same way SimHub and the Linux wheel drivers do.
+    /// The speed and the grip drive a wheel's centering in Vehicle mode
+    /// (#588).
     /// </summary>
     internal struct GameTelemetrySnapshot
     {
@@ -16,6 +16,26 @@ namespace PadForge.Common.Telemetry
         public float MaxRpm;     // redline RPM
         public float IdleRpm;    // idle RPM (Forza supplies it; 0 when unknown)
         public string Source;    // producing source name (diagnostic)
+
+        /// <summary>The source sent a speed.</summary>
+        public bool HasSpeed;
+
+        /// <summary>The car's speed in meters a second, never negative.</summary>
+        public float Speed;
+
+        /// <summary>The road's grip under the front wheels against dry
+        /// asphalt's (PadForge.Engine.Steering.RoadGrip), or 0 where the
+        /// source sends no word on the road.</summary>
+        public float Grip;
+
+        /// <summary>Sets the speed from a reading in meters a second. A
+        /// reading that is no number leaves the snapshot with none.</summary>
+        public void SetSpeed(float metersPerSecond)
+        {
+            if (!float.IsFinite(metersPerSecond)) return;
+            Speed = Math.Abs(metersPerSecond);
+            HasSpeed = true;
+        }
 
         /// <summary>0..1 shift-light position as a raw fraction of redline. The
         /// LED mapper applies the shift-light thresholds (first LED well above

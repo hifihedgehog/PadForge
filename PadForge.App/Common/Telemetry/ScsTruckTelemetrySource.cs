@@ -15,6 +15,14 @@ namespace PadForge.Common.Telemetry
     /// truck_f.engineRpm(float)@952. (The legacy Funbit map
     /// <c>Local\Ets2TelemetryServer</c> has a different layout and is NOT used.)</para>
     ///
+    /// <para>Speed is truck_f.speed (float, m/s, negative in reverse) at 948,
+    /// the field before the RPM. The ground under a wheel is
+    /// truck_ui.truck_wheelSubstance, sixteen unsigned ints from 120 in the
+    /// header's second zone (it starts at 40, with sixteen ints and the four
+    /// that open truck_ui ahead of the array), each a place in the list of
+    /// substance names, twenty-five of 64 bytes from 4400, the header's 13th
+    /// zone. Wheels 0 and 1 are the front axle's (2026-11-19).</para>
+    ///
     /// <para>PREREQUISITE: the RenCloud plugin DLL must be in
     /// <c>&lt;game&gt;\bin\win_x64\plugins\</c>. No plugin = no map = the source
     /// stays idle via the open backoff.</para>
@@ -28,6 +36,11 @@ namespace PadForge.Common.Telemetry
         private const int OffTime = 8;        // u64 update counter
         private const int OffRpmMax = 740;    // float config_f.engineRpmMax
         private const int OffRpm = 952;       // float truck_f.engineRpm
+        private const int OffSpeed = 948;     // float truck_f.speed
+        private const int OffWheelSubstance = 120; // uint truck_ui.truck_wheelSubstance[16]
+        private const int OffSubstances = 4400, SubstanceCount = 25, SubstanceBytes = 64;
+        private const int MapView = OffSubstances + SubstanceCount * SubstanceBytes;
+        private readonly byte[] _substance = new byte[SubstanceBytes];
 
         private MemoryMappedFile _mmf;
         private MemoryMappedViewAccessor _acc;
@@ -45,7 +58,7 @@ namespace PadForge.Common.Telemetry
             try
             {
                 _mmf = MemoryMappedFile.OpenExisting(MapName, MemoryMappedFileRights.Read);
-                _acc = _mmf.CreateViewAccessor(0, 1024, MemoryMappedFileAccess.Read); // RPM@952 well within 1KB
+                _acc = _mmf.CreateViewAccessor(0, MapView, MemoryMappedFileAccess.Read); // through the substance names
                 _haveTime = false;
                 _staleCount = 0;
                 return true;
@@ -76,7 +89,12 @@ namespace PadForge.Common.Telemetry
                 else { _staleCount = 0; _lastTime = t; _haveTime = true; }
 
                 if (!active || max <= 0f) return false; // engineRpmMax is 0 in menus
-                snap = new GameTelemetrySnapshot { Rpm = rpm, MaxRpm = max, IdleRpm = 0f, Source = Name };
+                snap = new GameTelemetrySnapshot
+                {
+                    Rpm = rpm, MaxRpm = max, IdleRpm = 0f, Source = Name,
+                    Grip = (float)PadForge.Engine.Steering.RoadGrip.FrontAxle(WheelGrip(0), WheelGrip(1)),
+                };
+                snap.SetSpeed(_acc.ReadSingle(OffSpeed));
                 return true;
             }
             catch
@@ -85,6 +103,16 @@ namespace PadForge.Common.Telemetry
                 _nextOpenTick = Environment.TickCount + 1000;
                 return false;
             }
+        }
+
+        /// <summary>The grip of the ground under one wheel, by the name of
+        /// its substance, or 0 where the wheel names none on the list.</summary>
+        private double WheelGrip(int wheel)
+        {
+            uint index = _acc.ReadUInt32(OffWheelSubstance + wheel * 4);
+            if (index >= SubstanceCount) return 0;
+            _acc.ReadArray(OffSubstances + (int)index * SubstanceBytes, _substance, 0, SubstanceBytes);
+            return SurfaceGrips.Scs(_substance);
         }
 
         private void Close()

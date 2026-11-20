@@ -2625,6 +2625,9 @@ namespace PadForge.Common.Input
             // A Falcon (#521) keeps its feel and loses the game's force. Its
             // haptic thread renders the zero at its next pass.
             SilenceFalcons();
+            // A Logitech, a Fanatec or a Thrustmaster wheel holds its last force
+            // and its centering effects in firmware (#588).
+            StopNativeWheels();
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return;
 

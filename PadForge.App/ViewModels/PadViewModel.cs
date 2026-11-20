@@ -173,6 +173,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(GyroSensitivityUnitsOptions));
             OnPropertyChanged(nameof(GyroSpaceOptions));
             OnPropertyChanged(nameof(MotionGripOptions));
+            RaiseCenteringWords();
 
             // Pipeline chip summaries carry localized preset names, so
             // the memo and the cached config both re-localize.
@@ -4747,8 +4748,9 @@ namespace PadForge.ViewModels
         }
 
         private int _wheelAutoCenter;
-        /// <summary>Native-FFB wheel auto-center strength (0–100%; 0 = off).
-        /// Persisted in PadSetting.AutoCenterStrength.</summary>
+        /// <summary>Auto Centering Strength, the Centering card's Spring mode
+        /// (0 to 100%, 0 is off). Persisted in
+        /// PadSetting.AutoCenterStrength.</summary>
         public int WheelAutoCenter { get => _wheelAutoCenter; set => SetProperty(ref _wheelAutoCenter, Math.Clamp(value, 0, 100)); }
 
         private bool _wheelRpmLeds;
@@ -4774,7 +4776,6 @@ namespace PadForge.ViewModels
             {
                 WheelRotationRange = 900;
                 WheelRotationRangeEnabled = true;
-                WheelAutoCenter = 0;
                 WheelRpmLeds = false;
             });
 

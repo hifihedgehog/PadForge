@@ -406,7 +406,6 @@
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar Colour</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Reset Auto Centring Strength</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Steering range, auto centring and shift lights for force feedback wheels.</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colours to step through, one per lock.</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centred</value></data>
   <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>How the aim drives the OS cursor. Mouse points absolutely. FPS Mouse turns the offset from screen centre into smooth cursor velocity. The border modes confine the cursor to a 4:3 or 16:9 region and pin it to the border while you aim outside it.</value></data>
@@ -607,4 +606,22 @@
   <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Border Colour</value></data>
   <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex trigger effect translation and write pacing, the Apex 6 Pro trigger rendering, haptic stream and lighting block and the Apex 5 lighting writes, by ReynArts.</value></data>
   <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>The screen’s port did not appear. Switch the controller off and on with its own switch, connect it by cable and send again.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centring</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Brings the wheel back to centre, as a plain spring or as a car’s steering does.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Reset Centring</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Spring pulls the wheel to centre with one strength. Vehicle works out the torque a car’s steering gives at its speed, from a tire model.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>On-Centre Feel</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>How fast the torque builds with cornering near centre, in N·m per g up to 0.05 g. More feels more planted.</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>How fast the torque builds as the wheel leaves centre, in N·m per degree.</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>The torque’s slope between 0.10 and 0.15 g against its slope at centre. Lower means the steering goes light sooner.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>On-centre feel, power assist, damping, friction, grip, fixed speed, wheel torque</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>How strongly the steering holds its centre at low speed. 100% is the car’s own.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>The force is off because the wheel kept swinging or ran from centre. Run the Release Test.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>The wheel came close to the end of its range. Centre it and run the test again.</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Before, the wheel swung {0}° past centre.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Now it swings {0}° past centre and rests {1}° from centre.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Now it returns with no overshoot and rests {0}° from centre.</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>How much the power steering takes off as cornering builds. More is lighter steering away from centre.</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>How strongly the wheel resists quick turns. 100% is what brings it back without swinging past centre.</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>The steering torque model behind Centring’s Vehicle mode, from Balachandran and Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Vehicle parameters are read from commonroad-vehicle-models (BSD-3-Clause) and global_racetrajectory_optimization (LGPL-3.0). The tire’s trail is from Pacejka’s Tire and Vehicle Dynamics, and road grip is from Wong’s Theory of Ground Vehicles. Figures only, no code from them ships.</value></data>
 </root>

@@ -3100,7 +3100,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Stel rotasiereeks terug</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Stel outo-sentreringsterkte terug</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Stel RPM-skakel-LED's terug</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurreeks, outo-sentrering en skakelligte vir kragterugvoer-stuurwiele.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stuurreeks en skakelligte vir kragterugvoer-stuurwiele.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Sentrering</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bring die stuurwiel terug na die middel, as 'n gewone veer of soos 'n motor se stuur dit doen.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Stel sentrering terug</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Veer trek die stuurwiel met een sterkte na die middel. Voertuig bereken die wringkrag wat 'n motor se stuur by sy spoed gee, uit 'n bandmodel.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Veer</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Voertuig</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Voertuig</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Die motor wie se stuur die stuurwiel oorneem. Elkeen is 'n gepubliseerde voertuigmodel.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompak</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Bussie</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Renmotor</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Spoed</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Uit die speletjie lees die motor se spoed uit die speletjie se telemetrie en gebruik Vaste spoed solank geen speletjie dit stuur nie. Vas gebruik altyd Vaste spoed.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Uit die speletjie</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Vas</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Stuurgewig</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Hoe swaar die stuur is. 100% is die motor se eie.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Wielreeks</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Hoe ver hierdie stuurwiel van slot tot slot draai. Stel dit op die stuurwiel se eie instelling.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Stuurwringkrag</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Hoek</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Wringkrag</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Wielgrens {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Stuurwringkrag by die rand teenoor stuurhoek. By {0} piek dit by {1} N·m by {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sentreergevoel</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Hoe vinnig die wringkrag opbou met kornering naby die middel, in N·m per g tot 0.05 g. Meer voel stabieler.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Wringkragstyfheid</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Hoe vinnig die wringkrag opbou soos die stuurwiel van die middel af draai, in N·m per graad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Lineariteit</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Die wringkrag se helling tussen 0.10 en 0.15 g teenoor sy helling by die middel. Laer beteken die stuur word vroeër lig.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Piekwringkrag</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Die meeste wringkrag wat die motor van die stuurwiel vra, langs die meeste wat die stuurwiel gee.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>van {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Hierdie motor vra meer wringkrag as die stuurwiel het, so die bokant van die kurwe word afgesny.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sentreergevoel, kragbystand, demping, wrywing, greep, vaste spoed, wielwringkrag</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hoe sterk die stuur sy middel by lae spoed hou. 100% is die motor se eie.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Kragbystand</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hoeveel die kragstuur wegneem soos kornering toeneem. Meer is ligter stuur weg van die middel.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Demping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Hoe sterk die stuurwiel vinnige draaie teenstaan. 100% is wat dit terugbring sonder om oor die middel te swaai.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Wrywing</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>'n Bestendige sleur wat draai in albei rigtings teenstaan.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Greep</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Die pad se greep. Die stuur word lig waar die voorbande dit verloor.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Droog</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Nat</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sneeu</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ys</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Vaste spoed</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Die spoed waarteen die motor geag word te ry wanneer Spoed Vas is, en solank geen speletjie een stuur nie.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Wielwringkrag</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Die meeste wringkrag wat hierdie stuurwiel gee. PadForge vul dit in waar die stuurwiel se vervaardiger dit publiseer. 'n Syfer bo die stuurwiel se eie maak elke krag swakker.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Wielwringkrag is nie vir hierdie stuurwiel gestel nie, so sy kragte word laag gehou. Voer dit onder Meer in.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Die stuurwiel het self begin swaai, so die krag word teruggehou. Voer die Loslaattoets uit.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Die krag is af omdat die stuurwiel aanhou swaai het of van die middel af weggeloop het. Voer die Loslaattoets uit.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Loslaattoets</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Meet hierdie stuurwiel en stel demping sodat dit sonder oorswaai terugkeer</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Nog nie uitgevoer nie</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Gemeet</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Haal jou hande van die stuurwiel af. PadForge draai dit na {0}°, laat dit los en teken op hoe dit terugkom.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Die stuurwiel se hoek oor {0} sekondes na elke loslating.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Voor</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Na</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Meet tans, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Klaar, 2 lopies</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Gestop</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Die stuurwiel het nie tot rus gekom nie. Haal jou hande daarvan af en voer die toets weer uit.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Die stuurwiel het nie beweeg nie. As Wielwringkrag hoër as wat die stuurwiel gee gestel is, stel dit op die stuurwiel se eie syfer en voer die toets weer uit.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Die stuurwiel het naby die einde van sy reeks gekom. Sentreer dit en voer die toets weer uit.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Die stuurwiel se beweging kon nie gelees word nie. Voer die toets weer uit.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Die stuurwiel het opgehou antwoord. Kyk dat dit gekoppel is en dat die enjin loop.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Hierdie stuurwiel is nie in gebruik nie. Wys dit aan 'n controller toe en begin die enjin, voer dan die toets uit.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Traagheid</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Voorheen het die stuurwiel {0}° verby die middel geswaai.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nou swaai dit {0}° verby die middel en rus {1}° van die middel af.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nou keer dit sonder oorswaai terug en rus {0}° van die middel af.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Voer weer uit</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Pas toe</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Stel stuurslot-terugvoer terug</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Stel vibrasiepuls by slot terug</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Stel snellervibrasie by slot terug</value></data>
@@ -4488,7 +4569,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_PcscSharpDesc" xml:space="preserve"><value>WinSCard-i signatuurid ja lugeja jälgimise kutsejada, millele tugineb NFC-siltide sisend, autor Daniel Mueller.</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-verslaguitlegte, sensorkalibrasie en die EXT-bykomstigheidshandskudding, deur Thomas Perl, nagegaan teen die moveonpc-wiki. PadForge se implementering is oorspronklike C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Verwysings vir resiestelemetrie</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Gedeeldegeheue- en UDP-uitlegte agter Speletjietelemetrie en die stuurwiel se RPM-skakel-LED's, gelees uit assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) en vAzhureRacingHub (GPL-3.0). Geen GPL- of LGPL-kode word gelewer nie.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Gedeeldegeheue- en UDP-uitlegte agter Speletjietelemetrie en die stuurwiel se RPM-skakel-LED's, gelees uit assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) en vAzhureRacingHub (GPL-3.0). Geen GPL- of LGPL-kode word gelewer nie.</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth-koppeling- en verslagdokumentasie. GPL-2.0 en GPL-3.0, slegs as dokumentasie gelees, geen GPL-kode word gelewer nie.</value></data>
   <data name="About_SipSorceryDesc" xml:space="preserve"><value>STUN-sõnumi paigutus ja XOR-MAPPED-ADDRESS dekodeerimine, millele tugineb kaugühenduse NAT-i läbimine, võetud üle selle C#-lähtekoodist, autor Aaron Clauson. Selle litsents lisab 2. jaotises kasutuspiirangu.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse-verwysings</value></data>
@@ -4504,6 +4585,8 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Virtuaalse DualSense'i mikrofoni 48 dB sumbumisvahemik. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Verwysings vir stuurwielprotokolle</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Inheemse kragterugvoer- en RPM-skakel-LED-verslae vir Fanatec-, Thrustmaster- en Logitech-stuurwiele, gelees uit hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) en thrustmaster-led-linux (GPL-3.0), en nagegaan teen die SimHub LED-inprop deur prodigal.knight (MIT) en tm-bt-led (MIT). Slegs dokumentasie, geen GPL-kode word gelewer nie.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Verwysings vir stuurgevoel</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Die stuurwringkragmodel agter Sentrering se Voertuig-modus, van Balachandran en Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Voertuigparameters word gelees uit commonroad-vehicle-models (BSD-3-Clause) en global_racetrajectory_optimization (LGPL-3.0). Die band se naloop kom uit Pacejka se Tire and Vehicle Dynamics, en die padgreep uit Wong se Theory of Ground Vehicles. Slegs syfers, geen kode daarvan word gelewer nie.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade-I/O-verwysings</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Die protokolle agter die SDL-fork se drywers vir Namco- en Konami-arcade-I/O-borde en JVS-borde, gelees uit arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) en TaikoZucchini (MIT). Slegs dokumentasie, geen kode word gelewer nie.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE-controllerverwysings</value></data>

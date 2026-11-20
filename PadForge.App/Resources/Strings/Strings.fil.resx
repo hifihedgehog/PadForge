@@ -3032,7 +3032,88 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>I-reset ang Saklaw ng Pag-ikot</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>I-reset ang Lakas ng Auto Centering</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>I-reset ang RPM Shift LED</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Saklaw ng steering, auto centering, at shift light para sa mga force feedback wheel.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Saklaw ng steering at shift light para sa mga force feedback wheel.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centering</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Ibinabalik ang wheel sa gitna, bilang simpleng spring o gaya ng steering ng isang kotse.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>I-reset ang Centering</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Hinihila ng Spring ang wheel sa gitna sa iisang lakas. Kinukuwenta ng Sasakyan ang torque na ibinibigay ng steering ng kotse sa bilis nito, mula sa modelo ng gulong.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Sasakyan</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Sasakyan</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Ang kotseng ang steering ay kinukuha ng wheel. Bawat isa ay nailathalang modelo ng sasakyan.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Maliit na Kotse</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Race Car</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Bilis</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Binabasa ng Mula sa Laro ang bilis ng kotse mula sa telemetry ng laro, at ginagamit ang Nakatakdang Bilis habang walang laro na nagpapadala nito. Palaging ginagamit ng Nakatakda ang Nakatakdang Bilis.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Mula sa Laro</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Nakatakda</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Bigat ng Steering</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Gaano kabigat ang steering. Ang 100% ay ang bigat mismo ng kotse.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Saklaw ng Steering Wheel</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Gaano kalayo umiikot ang wheel na ito mula dulo hanggang dulo. Itakda ito ayon sa sariling setting ng wheel.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torque ng Steering</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Anggulo</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torque</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limitasyon ng wheel {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torque ng steering sa rim laban sa anggulo ng steering. Sa {0}, umaabot ito sa pinakamataas na {1} N·m sa {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Pakiramdam sa Gitna</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Gaano kabilis tumataas ang torque habang lumiliko malapit sa gitna, sa N·m bawat g hanggang 0.05 g. Mas mataas, mas matatag ang pakiramdam.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Tigas ng Torque</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Gaano kabilis tumataas ang torque habang lumalayo ang wheel sa gitna, sa N·m bawat degree.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearity</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Ang slope ng torque sa pagitan ng 0.10 at 0.15 g kumpara sa slope nito sa gitna. Mas mababa, mas maagang gumagaan ang steering.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Pinakamataas na Torque</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Ang pinakamataas na torque na hinihingi ng kotse sa wheel, katabi ng pinakamataas na kayang ibigay ng wheel.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sa {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Mas malaki ang torque na hinihingi ng kotseng ito kaysa sa kaya ng wheel, kaya pinutol ang tuktok ng kurba.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>pakiramdam sa gitna, power assist, damping, friction, grip, nakatakdang bilis, torque ng wheel</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Gaano katatag ang steering sa gitna sa mababang bilis. Ang 100% ay ang lakas mismo ng kotse.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Power Assist</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Gaano karami ang inaalis ng power steering habang tumitindi ang pagliko. Mas mataas, mas magaan ang steering malayo sa gitna.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Damping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Gaano katindi lumalaban ang wheel sa mabilis na pag-ikot. Ang 100% ay ang nagbabalik dito nang hindi lumalampas sa gitna.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friction</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Tuloy-tuloy na hatak na lumalaban sa pag-ikot sa alinmang direksyon.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Ang grip ng kalsada. Gumagaan ang steering kapag naubusan ng grip ang mga gulong sa harap.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Tuyo</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Basa</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Niyebe</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Yelo</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Nakatakdang Bilis</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Ang bilis na ipinapalagay na takbo ng kotse kapag Nakatakda ang Bilis, at habang walang laro na nagpapadala nito.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torque ng Wheel</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Ang pinakamataas na torque na ibinibigay ng wheel na ito. Pinupunan ito ng PadForge kapag inilalathala ito ng gumawa ng wheel. Ang numerong higit sa sarili ng wheel ay nagpapahina sa bawat puwersa.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Hindi pa naitatakda ang Torque ng Wheel para sa wheel na ito, kaya pinananatiling mababa ang mga puwersa nito. Ilagay ito sa ilalim ng Higit pa.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Nagsimulang mag-swing nang kusa ang wheel, kaya pinipigilan ang puwersa. Patakbuhin ang Release Test.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Patay ang puwersa dahil patuloy na nag-swing ang wheel o lumayo sa gitna. Patakbuhin ang Release Test.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Release Test</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Sinusukat ang wheel na ito at itinatakda ang damping para bumalik ito nang walang overshoot</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Hindi pa napapatakbo</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Nasukat</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Alisin ang mga kamay mo sa wheel. Iikutin ito ng PadForge sa {0}°, bibitawan, at itatala kung paano ito bumabalik.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ang anggulo ng wheel sa loob ng {0} segundo pagkatapos ng bawat bitaw.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Bago</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Pagkatapos</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Sinusukat, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Tapos na, 2 takbo</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Itinigil</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Hindi tumigil ang wheel. Alisin ang mga kamay mo rito at patakbuhin muli ang test.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Hindi gumalaw ang wheel. Kung nakatakda ang Torque ng Wheel nang higit sa kaya ng wheel, itakda ito sa sariling numero ng wheel at patakbuhin muli ang test.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Lumapit ang wheel sa dulo ng saklaw nito. Ibalik ito sa gitna at patakbuhin muli ang test.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Hindi nabasa ang galaw ng wheel. Patakbuhin muli ang test.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Tumigil sa pagsagot ang wheel. Tiyaking nakakonekta ito at tumatakbo ang engine.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Hindi ginagamit ang wheel na ito. I-assign ito sa isang controller at simulan ang engine, saka patakbuhin ang test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inertia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Bago nito, lumampas ang wheel nang {0}° sa gitna.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Ngayon, lumalampas ito nang {0}° sa gitna at humihinto nang {1}° mula sa gitna.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Ngayon, bumabalik ito nang walang overshoot at humihinto nang {0}° mula sa gitna.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Patakbuhin Muli</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Ilapat</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>I-reset ang Feedback sa Steering Lock</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>I-reset ang Rumble Pulse sa Lock</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>I-reset ang Vibration ng Trigger sa Lock</value></data>
@@ -4493,7 +4574,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Mga layout ng report ng PlayStation Move, sensor calibration, at ang EXT accessory handshake, ni Thomas Perl, na-cross-check sa moveonpc wiki. Orihinal na C# ang implementasyon ng PadForge. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Mga sanggunian sa racing telemetry</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mga layout ng shared-memory at UDP sa likod ng Game Telemetry at ng mga RPM shift LED ng wheel, binasa mula sa assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) at vAzhureRacingHub (GPL-3.0). Walang GPL o LGPL code na kasama.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mga layout ng shared-memory at UDP sa likod ng Game Telemetry at ng mga RPM shift LED ng wheel, binasa mula sa assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) at vAzhureRacingHub (GPL-3.0). Walang GPL o LGPL code na kasama.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasyon sa Bluetooth pairing at report ng DualShock 3. GPL-2.0 at GPL-3.0, binasa bilang dokumentasyon lamang, walang GPL code na kasama.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4516,6 +4597,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Ang 48 dB na attenuation range ng virtual na DualSense microphone. Binasa bilang dokumentasyon lamang, walang GPL code na kasama.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Mga sanggunian sa protocol ng wheel</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Mga report ng native force feedback at RPM shift LED para sa mga wheel ng Fanatec, Thrustmaster, at Logitech, binasa mula sa hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), at thrustmaster-led-linux (GPL-3.0), at na-cross-check sa SimHub LED plugin ni prodigal.knight (MIT) at tm-bt-led (MIT). Dokumentasyon lamang, walang GPL code na kasama.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Mga sanggunian sa steering feel</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Ang modelo ng steering torque sa likod ng Sasakyan mode ng Centering, mula kina Balachandran at Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Ang mga parameter ng sasakyan ay binasa mula sa commonroad-vehicle-models (BSD-3-Clause) at global_racetrajectory_optimization (LGPL-3.0). Ang trail ng gulong ay mula sa Tire and Vehicle Dynamics ni Pacejka, at ang grip ng kalsada ay mula sa Theory of Ground Vehicles ni Wong. Mga numero lamang, walang code mula sa mga ito na kasama.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Mga sanggunian sa Arcade I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Ang mga protocol sa likod ng mga driver ng SDL fork para sa mga Namco at Konami arcade I/O board at JVS board, binasa mula sa arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) at TaikoZucchini (MIT). Dokumentasyon lamang, walang code na kasama.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Mga sanggunian sa Bluetooth LE controller</value></data>

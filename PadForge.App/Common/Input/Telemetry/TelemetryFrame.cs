@@ -54,9 +54,10 @@ namespace PadForge.Common.Input.Telemetry
     /// <summary>
     /// One reading of a game's telemetry (issue #531) in fixed units, the
     /// same for every format: speed in meters per second, RPM, gear with -1
-    /// for reverse and 0 for neutral, the pedals from 0 to 1, and steering
-    /// from -1 (full left) to 1 (full right). A field a game does not send
-    /// stays at its rest value. Reused in place: a decoder writes into it and
+    /// for reverse and 0 for neutral, the pedals from 0 to 1, steering
+    /// from -1 (full left) to 1 (full right), and the road's grip under the
+    /// front wheels against dry asphalt's (#588). A field a game does not
+    /// send stays at its rest value. Reused in place: a decoder writes into it and
     /// the row copies it under its lock.
     /// </summary>
     internal sealed class TelemetryFrame
@@ -75,6 +76,10 @@ namespace PadForge.Common.Input.Telemetry
         public float Clutch;
         public float Handbrake;
         public float Steering;
+        /// <summary>The road's grip under the front wheels against dry
+        /// asphalt's (PadForge.Engine.Steering.RoadGrip), 0 where the game
+        /// sends no word on the road. A wheel's centering reads it.</summary>
+        public float Grip;
         /// <summary>The game's own "driving" flag, meaningful only while
         /// <see cref="DrivingReported"/> is set: Forza's IsRaceOn, Project
         /// CARS 2's playing state, Assetto Corsa's live status.</summary>
@@ -105,6 +110,7 @@ namespace PadForge.Common.Input.Telemetry
             Clutch = 0f;
             Handbrake = 0f;
             Steering = 0f;
+            Grip = 0f;
             Driving = false;
             DrivingReported = false;
             if (Variables.Length != variableCount)
@@ -128,6 +134,7 @@ namespace PadForge.Common.Input.Telemetry
             dst.Clutch = Clutch;
             dst.Handbrake = Handbrake;
             dst.Steering = Steering;
+            dst.Grip = Grip;
             dst.Driving = Driving;
             dst.DrivingReported = DrivingReported;
             if (dst.Variables.Length != Variables.Length)
@@ -150,6 +157,7 @@ namespace PadForge.Common.Input.Telemetry
             Clutch = Unit(Clutch);
             Handbrake = Unit(Handbrake);
             Steering = Math.Clamp(Finite(Steering), -1f, 1f);
+            Grip = Math.Clamp(Finite(Grip), 0f, 1f);
         }
 
         private static float Finite(float v) => float.IsFinite(v) ? v : 0f;

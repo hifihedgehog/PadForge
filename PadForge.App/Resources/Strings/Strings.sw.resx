@@ -3158,7 +3158,88 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Weka Upya Masafa ya Mzunguko</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Weka Upya Nguvu ya Kujielekeza Katikati</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Weka Upya LED za Shift za RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Masafa ya usukani, kujielekeza katikati, na taa za shift kwa usukani wa force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Masafa ya usukani na taa za shift kwa usukani wa force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Kuelekeza Katikati</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Hurudisha usukani katikati, kama chemchemi rahisi au kama usukani wa gari unavyofanya.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Weka Upya Kuelekeza Katikati</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Hali</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Chemchemi huvuta usukani katikati kwa nguvu moja. Gari hukokotoa torki ambayo usukani wa gari hutoa kwa kasi yake, kutoka kwa modeli ya matairi.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Chemchemi</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Gari</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Gari</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Gari ambalo usukani wake unatumiwa. Kila moja ni modeli ya gari iliyochapishwa.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedani</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Ndogo</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Vani</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Gari la Mashindano</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Kasi</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Kutoka Kwenye Mchezo husoma kasi ya gari kutoka telemetria ya mchezo, na hutumia Kasi Isiyobadilika wakati hakuna mchezo unaotuma kasi. Isiyobadilika hutumia Kasi Isiyobadilika wakati wote.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Kutoka Kwenye Mchezo</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Isiyobadilika</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Uzito wa Usukani</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Jinsi usukani ulivyo mzito. 100% ni uzito wa gari lenyewe.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Mzunguko Kamili wa Usukani</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Umbali ambao usukani huu hugeuka kutoka mwisho mmoja hadi mwingine. Uweke kulingana na mpangilio wa usukani wenyewe.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torki ya Uelekezaji</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Pembe</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torki</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Kikomo cha usukani {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torki ya uelekezaji kwenye ukingo dhidi ya pembe ya usukani. Kwa {0} hufikia kilele cha {1} N·m kwa {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Hisia ya Katikati</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Jinsi torki inavyoongezeka haraka kadiri gari linavyopinda karibu na katikati, kwa N·m kwa kila g hadi 0.05 g. Zaidi huhisi imara zaidi barabarani.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Ugumu wa Torki</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Jinsi torki inavyoongezeka haraka usukani unapoondoka katikati, kwa N·m kwa kila digrii.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Unyoofu</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Mteremko wa torki kati ya 0.10 na 0.15 g ukilinganishwa na mteremko wake katikati. Chini humaanisha usukani unakuwa mwepesi mapema zaidi.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Torki ya Kilele</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Torki ya juu zaidi ambayo gari linaomba kutoka kwa usukani, kando ya ya juu zaidi ambayo usukani hutoa.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>kati ya {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Gari hili linaomba torki kubwa kuliko ile ambayo usukani unayo, kwa hiyo sehemu ya juu ya mkunjo imekatwa.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Hisia ya katikati, usaidizi wa nguvu, upunguzaji wa mtikisiko, msuguano, mshiko, kasi isiyobadilika, torki ya usukani</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Jinsi usukani unavyoshika katikati kwa nguvu kwa kasi ndogo. 100% ni ya gari lenyewe.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Usaidizi wa Nguvu</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kiasi ambacho usukani wa nguvu hupunguza juhudi kadiri kupinda kunavyoongezeka. Zaidi ni usukani mwepesi zaidi mbali na katikati.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Upunguzaji wa Mtikisiko</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Jinsi usukani unavyopinga zamu za haraka kwa nguvu. 100% ndiyo huurudisha bila kuvuka katikati.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Msuguano</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Kizuizi cha kudumu kinachopinga kugeuka upande wowote.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Mshiko</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Mshiko wa barabara. Usukani huwa mwepesi pale matairi ya mbele yanapokosa mshiko huo.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kavu</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mvua</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Theluji</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Barafu</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Kasi Isiyobadilika</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Kasi ambayo gari huchukuliwa kuendeshwa nayo wakati Kasi ni Isiyobadilika, na wakati hakuna mchezo unaotuma kasi.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torki ya Usukani</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Torki ya juu zaidi ambayo usukani huu hutoa. PadForge huijaza pale mtengenezaji wa usukani anapoichapisha. Namba iliyo juu ya ya usukani wenyewe hudhoofisha kila nguvu.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Torki ya Usukani haijawekwa kwa usukani huu, kwa hiyo nguvu zake zimeshikiliwa chini. Iweke chini ya Zaidi.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Usukani ulianza kutikisika wenyewe, kwa hiyo nguvu imezuiwa. Endesha Jaribio la Kuachilia.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Nguvu imezimwa kwa sababu usukani uliendelea kutikisika au ulihama kutoka katikati. Endesha Jaribio la Kuachilia.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Jaribio la Kuachilia</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Hupima usukani huu na kuweka upunguzaji wa mtikisiko ili urudi bila kuvuka katikati</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Halijaendeshwa bado</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Imepimwa</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Ondoa mikono yako kwenye usukani. PadForge huugeuza hadi {0}°, huuachilia na kurekodi jinsi unavyorudi.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Pembe ya usukani kwa sekunde {0} baada ya kila kuachilia.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Kabla</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Baada</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Inapima, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Imekamilika, majaribio 2</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Imesimamishwa</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Usukani haukutulia. Ondoa mikono yako juu yake na uendeshe jaribio tena.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Usukani haukusogea. Ikiwa Torki ya Usukani imewekwa juu kuliko usukani unavyotoa, iweke kwa namba ya usukani wenyewe na uendeshe jaribio tena.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Usukani ulikaribia mwisho wa masafa yake. Uuelekeze katikati na uendeshe jaribio tena.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Mwendo wa usukani haukuweza kusomwa. Endesha jaribio tena.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Usukani uliacha kujibu. Hakikisha umeunganishwa na kwamba injini inafanya kazi.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Usukani huu haujatumika. Uweke kwa kidhibiti na uanzishe injini, kisha uendeshe jaribio.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inertia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Kabla, usukani ulivuka katikati kwa {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Sasa unavuka katikati kwa {0}° na kutulia {1}° kutoka katikati.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Sasa unarudi bila kuvuka katikati na kutulia {0}° kutoka katikati.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Endesha Tena</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Tumia</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Weka Upya Mrejesho wa Kufunga Usukani</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Weka Upya Mdundo wa Mtetemo Wakati wa Kufunga</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Weka Upya Mtetemo wa Kichochezi Wakati wa Kufunga</value></data>
@@ -4616,7 +4697,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Mipangilio ya ripoti za PlayStation Move, usawazishaji wa kihisi, na mazungumzo ya awali ya nyongeza ya EXT, na Thomas Perl, yaliyokaguliwa mtambuka dhidi ya wiki ya moveonpc. Utekelezaji wa PadForge ni C# asilia. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Marejeo ya telemetria ya mbio</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mipangilio ya shared-memory na UDP nyuma ya Telemetria ya Michezo na LED za mabadiliko ya RPM za usukani, iliyosomwa kutoka assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) na vAzhureRacingHub (GPL-3.0). Hakuna msimbo wa GPL wala LGPL unaosafirishwa.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Mipangilio ya shared-memory na UDP nyuma ya Telemetria ya Michezo na LED za mabadiliko ya RPM za usukani, iliyosomwa kutoka assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) na vAzhureRacingHub (GPL-3.0). Hakuna msimbo wa GPL wala LGPL unaosafirishwa.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Nyaraka za kuoanisha na ripoti za Bluetooth za DualShock 3. GPL-2.0 na GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4639,6 +4720,8 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Safu ya upunguzaji wa 48 dB ya maikrofoni pepe ya DualSense. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Marejeo ya itifaki ya usukani</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Ripoti za force feedback asilia na LED za mabadiliko ya RPM kwa usukani wa Fanatec, Thrustmaster, na Logitech, zilizosomwa kutoka hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), na thrustmaster-led-linux (GPL-3.0), na kukaguliwa mtambuka dhidi ya programu-jalizi ya SimHub LED na prodigal.knight (MIT) na tm-bt-led (MIT). Nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Marejeo ya hisia ya usukani</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Modeli ya torki ya usukani nyuma ya hali ya Gari ya Kuelekeza Katikati, kutoka kwa Balachandran na Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Vigezo vya gari vinasomwa kutoka commonroad-vehicle-models (BSD-3-Clause) na global_racetrajectory_optimization (LGPL-3.0). Umbali wa nyuma wa tairi unatoka kwa Tire and Vehicle Dynamics ya Pacejka, na mshiko wa barabara unatoka kwa Theory of Ground Vehicles ya Wong. Namba pekee, hakuna msimbo kutoka kwao unaosafirishwa.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Marejeo ya I/O ya arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Itifaki nyuma ya viendeshi vya fork ya SDL kwa bodi za I/O za arcade za Namco na Konami na bodi za JVS, zilizosomwa kutoka arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) na TaikoZucchini (MIT). Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Marejeo ya vidhibiti vya Bluetooth LE</value></data>

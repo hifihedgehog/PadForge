@@ -3181,7 +3181,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Վերականգնել պտտման միջակայքը</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Վերականգնել ինքնակենտրոնացման ուժգնությունը</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Վերականգնել RPM փոխանցման LED-ները</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Ղեկավարման միջակայք, ինքնակենտրոնացում և փոխանցման լույսեր՝ հետադարձ ուժով ղեկերի համար։</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Ղեկավարման միջակայք և փոխանցման լույսեր՝ հետադարձ ուժով ղեկերի համար։</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Կենտրոնացում</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Ղեկը վերադարձնում է կենտրոն՝ պարզ զսպանակի կամ մեքենայի ղեկի նման։</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Վերականգնել կենտրոնացումը</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Ռեժիմ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Զսպանակը ղեկը կենտրոն է քաշում մեկ ուժգնությամբ։ Մեքենան հաշվարկում է այն մոմենտը, որը մեքենայի ղեկը տալիս է իր արագությամբ, անվադողերի մոդելի հիման վրա։</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Զսպանակ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Մեքենա</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Մեքենա</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Մեքենան, որի ղեկի վարքը ղեկն ընդունում է։ Յուրաքանչյուրը հրապարակված մեքենայի մոդել է։</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Սեդան</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Կոմպակտ</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Ֆուրգոն</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Մրցարշավային մեքենա</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Արագություն</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Խաղից տարբերակը մեքենայի արագությունը կարդում է խաղի հեռաչափությունից և օգտագործում է Ֆիքսված արագությունը, քանի դեռ խաղ այն չի ուղարկում։ Ֆիքսված տարբերակը միշտ օգտագործում է Ֆիքսված արագությունը։</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Խաղից</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Ֆիքսված</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Ղեկի ծանրություն</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Որքան ծանր է ղեկը։ 100%-ը մեքենայի սեփական արժեքն է։</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ղեկի պտույտ</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Որքան է ղեկը պտտվում մի ծայրից մյուսը։ Սահմանեք ղեկի սեփական կարգավորման արժեքը։</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Ղեկավարման մոմենտ</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Անկյուն</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Մոմենտ</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Ղեկի սահման {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Ղեկի եզրին ղեկավարման մոմենտը՝ ըստ ղեկավարման անկյան։ {0} արագությամբ այն հասնում է գագաթնակետին՝ {1} N·m, {2}° անկյան տակ։</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Կենտրոնում զգացողություն</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Որքան արագ է մոմենտը մեծանում շրջադարձի ժամանակ կենտրոնի մոտ, N·m մեկ g-ի համար մինչև 0.05 g։ Ավելին նշանակում է ավելի կայուն զգացողություն։</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Մոմենտի կոշտություն</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Որքան արագ է մոմենտը մեծանում, երբ ղեկը հեռանում է կենտրոնից, N·m մեկ աստիճանի համար։</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Գծայնություն</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Մոմենտի թեքությունը 0.10 և 0.15 g միջակայքում՝ համեմատած կենտրոնի թեքության հետ։ Ավելի ցածրը նշանակում է, որ ղեկը ավելի շուտ թեթևանում է։</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Առավելագույն մոմենտ</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Ամենամեծ մոմենտը, որ մեքենան պահանջում է ղեկից, ղեկի տվածի կողքին։</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m-ից</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Այս մեքենան ղեկի ունեցածից ավելի մոմենտ է պահանջում, ուստի կորի վերին մասը կտրվում է։</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>կենտրոնում զգացողություն, ուժային օգնություն, մարում, շփում, կպչունություն, ֆիքսված արագություն, ղեկի շարժիչի մոմենտ</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Որքան ամուր է ղեկը պահում իր կենտրոնը ցածր արագությամբ։ 100%-ը մեքենայի սեփական արժեքն է։</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ուժային օգնություն</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Որքան է ուժային ղեկը հեռացնում շրջադարձի աճի հետ։ Ավելին նշանակում է կենտրոնից հեռու ավելի թեթև ղեկ։</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Մարում</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Որքան ուժեղ է ղեկը դիմադրում արագ պտույտներին։ 100%-ը այն է, ինչ ղեկը կենտրոն է վերադարձնում առանց կենտրոնը անցնելու։</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Շփում</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Հաստատուն դիմադրություն, որը խանգարում է պտտմանը երկու ուղղությամբ։</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Կպչունություն</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Ճանապարհի կպչունությունը։ Ղեկը թեթևանում է այնտեղ, որտեղ առջևի անվադողերը այն կորցնում են։</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Չոր</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Թաց</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Ձյուն</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Սառույց</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Ֆիքսված արագություն</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Արագությունը, որով մեքենան համարվում է շարժվող, երբ Արագությունը Ֆիքսված է, և քանի դեռ խաղ այն չի ուղարկում։</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Ղեկի շարժիչի մոմենտ</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Ամենամեծ մոմենտը, որ այս ղեկը տալիս է։ PadForge-ը լրացնում է այն, երբ ղեկի արտադրողը հրապարակում է այն։ Ղեկի սեփական արժեքից բարձր թիվը թուլացնում է բոլոր ուժերը։</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Ղեկի շարժիչի մոմենտը այս ղեկի համար սահմանված չէ, ուստի նրա ուժերը պահվում են ցածր։ Մուտքագրեք այն Ավելին բաժնում։</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Ղեկը սկսեց ինքն իրեն ճոճվել, ուստի ուժը զսպվում է։ Գործարկեք Բաց թողնելու թեստը։</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Ուժը անջատված է, որովհետև ղեկը շարունակում էր ճոճվել կամ հեռացավ կենտրոնից։ Գործարկեք Բաց թողնելու թեստը։</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Բաց թողնելու թեստ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Չափում է այս ղեկը և սահմանում մարումը, որպեսզի այն վերադառնա առանց կենտրոնը անցնելու</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Դեռ չի գործարկվել</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Չափված է</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Ձեռքերը հեռացրեք ղեկից։ PadForge-ը այն պտտում է մինչև {0}°, բաց է թողնում և գրանցում, թե ինչպես է այն վերադառնում։</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ղեկի անկյունը յուրաքանչյուր բաց թողնելուց հետո {0} վայրկյանի ընթացքում։</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Առաջ</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Հետո</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Չափվում է, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Ավարտվեց, 2 անցում</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Կանգնեցված է</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Ղեկը դադար չառավ։ Ձեռքերը հեռացրեք ղեկից և նորից գործարկեք թեստը։</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Ղեկը չշարժվեց։ Եթե Ղեկի շարժիչի մոմենտը սահմանված է ղեկի տվածից բարձր, սահմանեք ղեկի սեփական արժեքը և նորից գործարկեք թեստը։</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Ղեկը մոտեցավ իր միջակայքի ծայրին։ Կենտրոնացրեք այն և նորից գործարկեք թեստը։</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Ղեկի շարժումը հնարավոր չեղավ կարդալ։ Նորից գործարկեք թեստը։</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Ղեկը դադարեց արձագանքել։ Ստուգեք, որ այն միացված է, և մեխանիզմը աշխատում է։</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Այս ղեկը չի օգտագործվում։ Վերագրեք այն կառավարչին, մեկնարկեք մեխանիզմը, ապա գործարկեք թեստը։</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Իներցիա</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Առաջ ղեկը կենտրոնից անցնում էր {0}°։</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Այժմ այն կենտրոնից անցնում է {0}° և կանգ է առնում կենտրոնից {1}° հեռավորության վրա։</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Այժմ այն վերադառնում է առանց կենտրոնը անցնելու և կանգ է առնում կենտրոնից {0}° հեռավորության վրա։</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Գործարկել նորից</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Կիրառել</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Վերականգնել ղեկի արգելափակման հետադարձ կապը</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Վերականգնել թրթռոցի իմպուլսը արգելափակման ժամանակ</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Վերականգնել ձգանի թրթռումը արգելափակման ժամանակ</value></data>
@@ -4642,7 +4723,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ի ռեպորտների դասավորությունները, սենսորների չափաբերումը և EXT աքսեսուարի ձեռքսեղմումը՝ Thomas Perl, ստուգված moveonpc վիքիով։ PadForge-ի իրականացումը օրիգինալ C# է։ BSD 2-Clause։</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Մրցավազքի հեռաչափության հղումներ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ընդհանուր հիշողության և UDP դասավորությունները խաղի հեռաչափության և ղեկի RPM փոխման LED-ների հիմքում, կարդացված assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) և vAzhureRacingHub (GPL-3.0) նախագծերից։ GPL կամ LGPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ընդհանուր հիշողության և UDP դասավորությունները խաղի հեռաչափության և ղեկի RPM փոխման LED-ների հիմքում, կարդացված assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) և vAzhureRacingHub (GPL-3.0) նախագծերից։ GPL կամ LGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ի Bluetooth զուգակցման և ռեպորտների փաստաթղթավորում։ GPL-2.0 և GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4665,6 +4746,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Վիրտուալ DualSense խոսափողի 48 dB թուլացման տիրույթը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Ղեկերի արձանագրության հղումներ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster և Logitech ղեկերի բնիկ հետադարձ ուժի և RPM փոխման LED ռեպորտները, կարդացված hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) և thrustmaster-led-linux (GPL-3.0) նախագծերից, և ստուգված prodigal.knight-ի SimHub LED պլագինով (MIT) և tm-bt-led-ով (MIT)։ Միայն փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Ղեկի զգացողության հղումներ</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Կենտրոնացում քարտի Մեքենա ռեժիմի հիմքում ընկած ղեկի մոմենտի մոդելը՝ Balachandran-ի և Gerdes-ի «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics) աշխատանքից։ Մեքենայի պարամետրերը կարդացված են commonroad-vehicle-models (BSD-3-Clause) և global_racetrajectory_optimization (LGPL-3.0) նախագծերից։ Անվադողի հետքը վերցված է Pacejka-ի Tire and Vehicle Dynamics գրքից, իսկ ճանապարհի կպչունությունը՝ Wong-ի Theory of Ground Vehicles գրքից։ Միայն թվեր, դրանցից կոդ չի տեղակայվում։</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O-ի հղումներ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL fork-ի դրայվերների արձանագրությունները Namco-ի և Konami-ի arcade I/O տախտակների և JVS տախտակների համար, կարդացված arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) և TaikoZucchini (MIT) նախագծերից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE կառավարիչների հղումներ</value></data>

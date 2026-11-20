@@ -3217,7 +3217,88 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Tetap Semula Julat Putaran</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Tetap Semula Kekuatan Pemusatan Automatik</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Tetap Semula LED Anjakan RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Julat stereng, pemusatan automatik dan lampu anjakan untuk roda maklum balas daya.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Julat stereng dan lampu anjakan untuk roda maklum balas daya.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Pemusatan</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Membawa roda stereng kembali ke tengah, sebagai spring biasa atau seperti stereng kereta.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Tetap Semula Pemusatan</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Spring menarik roda stereng ke tengah dengan satu kekuatan. Kenderaan mengira tork yang diberikan stereng kereta pada kelajuannya, daripada model tayar.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Kenderaan</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Kenderaan</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Kereta yang steringnya diikuti roda stereng. Setiap satu ialah model kenderaan yang diterbitkan.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompak</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Kereta Lumba</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Kelajuan</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Daripada Permainan membaca kelajuan kereta daripada telemetri permainan, dan menggunakan Kelajuan Tetap selagi tiada permainan menghantarnya. Tetap menggunakan Kelajuan Tetap pada setiap masa.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Daripada Permainan</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Tetap</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Berat Stereng</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Seberapa berat stereng itu. 100% ialah berat asal kereta.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Julat Roda Stereng</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Sejauh mana roda stereng ini berputar dari kunci ke kunci. Tetapkan mengikut tetapan roda stereng itu sendiri.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Tork Stereng</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Sudut</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Tork</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Had roda stereng {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Tork stereng pada bibir roda berbanding sudut stereng. Pada {0} ia memuncak pada {1} N·m pada {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Rasa Di Tengah</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kelajuan tork meningkat dengan pembelokan berhampiran tengah, dalam N·m setiap g sehingga 0.05 g. Lebih tinggi terasa lebih mantap.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Kekukuhan Tork</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kelajuan tork meningkat apabila roda stereng meninggalkan tengah, dalam N·m setiap darjah.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Kelinearan</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Kecerunan tork antara 0.10 dan 0.15 g berbanding kecerunannya di tengah. Lebih rendah bermakna stereng menjadi ringan lebih awal.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Tork Puncak</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Tork paling tinggi yang diminta kereta daripada roda stereng, berbanding yang paling tinggi yang diberikan roda stereng.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>daripada {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kereta ini meminta tork lebih daripada yang dimiliki roda stereng, jadi bahagian atas lengkung dipotong.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Rasa di tengah, bantuan kuasa, redaman, geseran, cengkaman, kelajuan tetap, tork roda stereng</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Seberapa kuat stereng mengekalkan tengahnya pada kelajuan rendah. 100% ialah nilai asal kereta.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Bantuan Kuasa</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Seberapa banyak stereng kuasa mengurangkan daya apabila pembelokan meningkat. Lebih tinggi bermakna stereng lebih ringan jauh dari tengah.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Redaman</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Seberapa kuat roda stereng menahan pusingan pantas. 100% ialah nilai yang membawanya kembali tanpa berayun melepasi tengah.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Geseran</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Seretan tetap yang menentang putaran ke mana-mana arah.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Cengkaman</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Cengkaman jalan. Stereng menjadi ringan apabila tayar hadapan kehabisan cengkaman.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kering</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Basah</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Salji</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ais</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Kelajuan Tetap</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Kelajuan yang dianggap sebagai kelajuan pemanduan kereta apabila Kelajuan ialah Tetap, dan selagi tiada permainan menghantarnya.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Tork Roda Stereng</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Tork paling tinggi yang diberikan roda stereng ini. PadForge mengisinya jika pembuat roda stereng menerbitkannya. Angka yang melebihi angka roda stereng itu sendiri melemahkan setiap daya.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Tork Roda Stereng tidak ditetapkan untuk roda stereng ini, jadi dayanya dikekalkan rendah. Masukkannya di bawah Lagi.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Roda stereng mula berayun sendiri, jadi daya ditahan. Jalankan Ujian Lepasan.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Daya dimatikan kerana roda stereng terus berayun atau lari dari tengah. Jalankan Ujian Lepasan.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Ujian Lepasan</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mengukur roda stereng ini dan menetapkan redaman supaya ia kembali tanpa lajak</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Belum dijalankan</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Diukur</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Alihkan tangan anda daripada roda stereng. PadForge memutarkannya ke {0}°, melepaskannya dan merekod cara ia kembali.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Sudut roda stereng selama {0} saat selepas setiap lepasan.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Sebelum</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Selepas</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mengukur, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Selesai, 2 larian</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Dihentikan</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Roda stereng tidak berhenti. Alihkan tangan anda daripadanya dan jalankan ujian sekali lagi.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Roda stereng tidak bergerak. Jika Tork Roda Stereng ditetapkan melebihi yang diberikan roda stereng, tetapkan kepada angka roda stereng itu sendiri dan jalankan ujian sekali lagi.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Roda stereng menghampiri hujung julatnya. Pusatkannya dan jalankan ujian sekali lagi.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Gerakan roda stereng tidak dapat dibaca. Jalankan ujian sekali lagi.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Roda stereng berhenti bertindak balas. Semak bahawa ia disambungkan dan enjin sedang berjalan.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Roda stereng ini tidak digunakan. Umpukkannya kepada pengawal dan mulakan enjin, kemudian jalankan ujian.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inersia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Sebelum ini, roda stereng berayun {0}° melepasi tengah.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Kini ia berayun {0}° melepasi tengah dan berhenti {1}° dari tengah.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Kini ia kembali tanpa lajak dan berhenti {0}° dari tengah.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Jalankan Semula</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Guna</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Tetap Semula Maklum Balas Kunci Stereng</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Tetap Semula Denyut Getaran semasa Kunci</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Tetap Semula Getaran Pencetus semasa Kunci</value></data>
@@ -4678,7 +4759,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Susun atur laporan PlayStation Move, penentukuran penderia dan jabat tangan aksesori EXT, oleh Thomas Perl, disemak silang dengan wiki moveonpc. Pelaksanaan PadForge ialah C# asli. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Rujukan telemetri perlumbaan</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Susun atur memori kongsi dan UDP di sebalik Telemetri Permainan dan LED anjakan RPM roda, dibaca daripada assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) dan vAzhureRacingHub (GPL-3.0). Tiada kod GPL atau LGPL disertakan.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Susun atur memori kongsi dan UDP di sebalik Telemetri Permainan dan LED anjakan RPM roda, dibaca daripada assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) dan vAzhureRacingHub (GPL-3.0). Tiada kod GPL atau LGPL disertakan.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasi penggandingan dan laporan Bluetooth DualShock 3. GPL-2.0 dan GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4701,6 +4782,8 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Julat pelemahan 48 dB mikrofon DualSense maya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Rujukan protokol roda</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Laporan maklum balas daya asli dan LED anjakan RPM untuk roda Fanatec, Thrustmaster, dan Logitech, dibaca daripada hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), dan thrustmaster-led-linux (GPL-3.0), dan disemak silang dengan pemalam LED SimHub oleh prodigal.knight (MIT) dan tm-bt-led (MIT). Dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Rujukan rasa stereng</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Model tork stereng di sebalik mod Kenderaan Pemusatan, daripada Balachandran dan Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Parameter kenderaan dibaca daripada commonroad-vehicle-models (BSD-3-Clause) dan global_racetrajectory_optimization (LGPL-3.0). Trail tayar diambil daripada Tire and Vehicle Dynamics oleh Pacejka, dan cengkaman jalan daripada Theory of Ground Vehicles oleh Wong. Angka sahaja, tiada kod daripadanya disertakan.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Rujukan I/O arked</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokol di sebalik pemacu cabang SDL untuk papan I/O arked Namco dan Konami serta papan JVS, dibaca daripada arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (lesen StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) dan TaikoZucchini (MIT). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Rujukan pengawal Bluetooth LE</value></data>

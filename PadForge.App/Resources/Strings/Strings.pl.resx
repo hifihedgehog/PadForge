@@ -3413,7 +3413,88 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Resetuj zakres obrotu</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Resetuj siłę autocentrowania</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Resetuj diody zmiany biegów (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Zakres skrętu, autocentrowanie i diody zmiany biegów dla kierownic z force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Zakres skrętu i diody zmiany biegów dla kierownic z force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrowanie</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Przywraca kierownicę do środka jako zwykła sprężyna albo tak jak układ kierowniczy samochodu.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Resetuj centrowanie</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Tryb</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Sprężyna ciągnie kierownicę do środka z jedną siłą. Pojazd wylicza moment obrotowy, jaki daje układ kierowniczy samochodu przy jego prędkości, na podstawie modelu opon.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Sprężyna</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Pojazd</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Pojazd</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Samochód, którego układ kierowniczy przejmuje kierownica. Każdy z nich to opublikowany model pojazdu.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Samochód wyścigowy</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Prędkość</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Z gry odczytuje prędkość samochodu z telemetrii gry, a gdy żadna gra jej nie wysyła, używa wartości Stała prędkość. Stała zawsze używa wartości Stała prędkość.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Z gry</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Stała</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Ciężar kierownicy</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Jak ciężki jest układ kierowniczy. 100% to wartość samego samochodu.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Zakres kierownicy</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Jak daleko ta kierownica obraca się od oporu do oporu. Ustaw wartość z własnych ustawień kierownicy.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Moment obrotowy kierownicy</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Kąt</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Moment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limit kierownicy {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Moment obrotowy na wieńcu kierownicy względem kąta skrętu. Przy {0} osiąga szczyt {1} N·m przy {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Odczucie przy środku</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Jak szybko narasta moment obrotowy przy pokonywaniu zakrętu w pobliżu środka, w N·m na g do 0.05 g. Więcej daje bardziej stabilne odczucie.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Sztywność momentu</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Jak szybko narasta moment obrotowy, gdy kierownica oddala się od środka, w N·m na stopień.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Liniowość</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Nachylenie momentu między 0.10 a 0.15 g w porównaniu z nachyleniem przy środku. Mniej oznacza, że układ kierowniczy lżejszy się robi wcześniej.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Moment szczytowy</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Największy moment, jakiego samochód żąda od kierownicy, obok największego, jaki kierownica daje.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>z {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Ten samochód żąda większego momentu, niż ma kierownica, więc szczyt krzywej jest ucięty.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Odczucie przy środku, wspomaganie, tłumienie, tarcie, przyczepność, stała prędkość, moment obrotowy kierownicy</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Jak mocno układ kierowniczy trzyma środek przy niskiej prędkości. 100% to wartość samego samochodu.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Wspomaganie</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>O ile wspomaganie ujmuje siły wraz ze wzrostem przeciążenia w zakręcie. Więcej to lżejszy układ kierowniczy z dala od środka.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Tłumienie</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Jak mocno kierownica opiera się szybkim skrętom. 100% to wartość, przy której wraca bez przeskoczenia środka.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Tarcie</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Stały opór, który przeciwdziała skręcaniu w obie strony.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Przyczepność</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Przyczepność drogi. Układ kierowniczy robi się lekki tam, gdzie przednie opony jej tracą.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Sucho</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mokro</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Śnieg</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Lód</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Stała prędkość</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Prędkość, z jaką jedzie samochód, gdy Prędkość to Stała, oraz gdy żadna gra jej nie wysyła.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Moment obrotowy kierownicy</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Największy moment, jaki daje ta kierownica. PadForge wypełnia go tam, gdzie producent kierownicy go podaje. Wartość wyższa niż własna kierownicy osłabia wszystkie siły.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Moment obrotowy kierownicy nie jest ustawiony dla tej kierownicy, więc jej siły są ograniczone. Wpisz go w sekcji Więcej.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Kierownica zaczęła sama się kołysać, więc siła jest ograniczona. Uruchom Test zwolnienia.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Siła jest wyłączona, bo kierownica wciąż się kołysała lub uciekła od środka. Uruchom Test zwolnienia.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Test zwolnienia</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mierzy tę kierownicę i ustawia tłumienie, aby wracała bez przeregulowania</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Jeszcze nie uruchomiono</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Zmierzono</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Zdejmij ręce z kierownicy. PadForge obraca ją do {0}°, puszcza i rejestruje, jak wraca.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Kąt kierownicy w ciągu {0} sekund po każdym zwolnieniu.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Przed</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Po</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Pomiar, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Gotowe, 2 przebiegi</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Zatrzymano</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Kierownica nie zatrzymała się. Zdejmij z niej ręce i uruchom test ponownie.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Kierownica się nie poruszyła. Jeśli Moment obrotowy kierownicy jest ustawiony powyżej tego, co kierownica daje, ustaw własną wartość kierownicy i uruchom test ponownie.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Kierownica zbliżyła się do końca zakresu. Ustaw ją na środku i uruchom test ponownie.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Nie udało się odczytać ruchu kierownicy. Uruchom test ponownie.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Kierownica przestała odpowiadać. Sprawdź, czy jest podłączona i czy silnik działa.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Ta kierownica nie jest używana. Przypisz ją do kontrolera i uruchom silnik, a potem uruchom test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Bezwładność</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Wcześniej kierownica przeskakiwała środek o {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Teraz przeskakuje środek o {0}° i zatrzymuje się {1}° od środka.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Teraz wraca bez przeregulowania i zatrzymuje się {0}° od środka.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Uruchom ponownie</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Zastosuj</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Resetuj sygnał pełnego skrętu</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Resetuj impuls wibracji przy pełnym skręcie</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Resetuj wibracje spustów przy pełnym skręcie</value></data>
@@ -4919,7 +5000,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Układy raportów PlayStation Move, kalibracja czujników i uzgadnianie akcesorium EXT. Autor: Thomas Perl; zweryfikowane krzyżowo z wiki moveonpc. Implementacja w programie PadForge to własny kod C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Materiały źródłowe telemetrii wyścigowej</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Układy pamięci współdzielonej i UDP stojące za telemetrią gier oraz diodami zmiany biegów (RPM) kierownicy, odczytane z assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). Kod na licencji GPL ani LGPL nie jest rozpowszechniany.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Układy pamięci współdzielonej i UDP stojące za telemetrią gier oraz diodami zmiany biegów (RPM) kierownicy, odczytane z assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). Kod na licencji GPL ani LGPL nie jest rozpowszechniany.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentacja parowania Bluetooth i raportów DualShock 3. GPL-2.0 i GPL-3.0, wykorzystane wyłącznie jako dokumentacja, kod na licencji GPL nie jest rozpowszechniany.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Zakres tłumienia 48 dB mikrofonu wirtualnego kontrolera DualSense. Wykorzystane wyłącznie jako dokumentacja, kod na licencji GPL nie jest rozpowszechniany.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Materiały źródłowe protokołów kierownic</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Raporty natywnego force feedback i diod zmiany biegów (RPM) dla kierownic Fanatec, Thrustmaster i Logitech, odczytane z hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) i thrustmaster-led-linux (GPL-3.0) oraz zweryfikowane krzyżowo z wtyczką LED do SimHub autorstwa prodigal.knight (MIT) i tm-bt-led (MIT). Tylko jako dokumentacja, kod na licencji GPL nie jest rozpowszechniany.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Materiały źródłowe wrażeń z kierowania</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Model momentu obrotowego układu kierowniczego, na którym opiera się tryb Pojazd w karcie Centrowanie, pochodzi z pracy autorstwa Balachandran i Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Parametry pojazdów odczytano z commonroad-vehicle-models (BSD-3-Clause) i global_racetrajectory_optimization (LGPL-3.0). Wleczenie opony pochodzi z książki Pacejka, Tire and Vehicle Dynamics, a przyczepność drogi z książki Wong, Theory of Ground Vehicles. Wzięto z nich tylko wartości liczbowe, żaden ich kod nie jest rozpowszechniany.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Materiały źródłowe płyt I/O automatów</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokoły, na których opierają się sterowniki forka SDL dla płyt I/O automatów Namco i Konami oraz płyt JVS, odczytane z arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (licencja StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) i TaikoZucchini (MIT). Tylko jako dokumentacja, żaden kod nie jest rozpowszechniany.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Materiały źródłowe kontrolerów Bluetooth LE</value></data>

@@ -473,6 +473,18 @@ namespace PadForge.ViewModels
             nameof(TriggerRumbleFold) or
             nameof(SwapMotors) or
             nameof(WheelRotationRangeEnabled) or
+            nameof(CenteringMode) or
+            nameof(CenteringVehicle) or
+            nameof(CenteringSpeedSource) or
+            nameof(CenteringWeight) or
+            nameof(CenteringWheelRange) or
+            nameof(CenteringOnCenter) or
+            nameof(CenteringAssist) or
+            nameof(CenteringDamping) or
+            nameof(CenteringFriction) or
+            nameof(CenteringGrip) or
+            nameof(CenteringFixedSpeed) or
+            nameof(CenteringWheelTorque) or
             nameof(FalconFeel) or
             nameof(FalconKickButton) or
             nameof(FalconBraceButton) or
@@ -583,7 +595,12 @@ namespace PadForge.ViewModels
                     AudioRumbleTriggersEnabled = false;
                     break;
                 }
-                default: return;
+                default:
+                {
+                    // The Centering card's rows (#588), beside their properties.
+                    if (!ResetCenteringSetting(name)) return;
+                    break;
+                }
             }
             // Refresh pending editor text even when the stored value was already the default.
             OnPropertyChanged(name);

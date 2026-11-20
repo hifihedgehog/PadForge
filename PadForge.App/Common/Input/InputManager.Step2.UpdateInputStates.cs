@@ -983,11 +983,12 @@ namespace PadForge.Common.Input
                         if (!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
                             && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
                         {
-                            if (isFanatecPedal) FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, 0, 0);
-                            else if (isLogitechWheel) LogitechRawHidWriter.WriteStopEffect(ud.DevicePath, 0);
-                            else if (isFanatecWheel) FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, 0, ud.ProdId);
-                            else ThrustmasterRawHidWriter.WriteStop(ud.DevicePath);
-                            _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                            if (isFanatecPedal)
+                            {
+                                FanatecRawHidWriter.WritePedalRumble(ud.DevicePath, 0, 0);
+                                _appliedWheelFfb.TryRemove(ud.DevicePath, out _);
+                            }
+                            else StopNativeWheel(ud);
                         }
                     }
                     finally { System.Threading.Monitor.Exit(ud.OutputSync); }
@@ -1009,6 +1010,12 @@ namespace PadForge.Common.Input
             // The setting belonging to whichever device actually produced the
             // directional force, as distinct from the first device processed.
             PadSetting directionalPadSetting = null;
+            // A wheel that centers itself (#588) does so whether or not a slot
+            // gives a force this pass, so it keeps its first slot's settings
+            // through a pass that gives none: a slot with no vibration state
+            // yet, or a test rumble aimed at another device in the slot.
+            bool centersItself = (isVendorFfb && !isFanatecPedal) || ForceFeedbackState.IsGenericWheelVehicleCapable(ud.Device);
+            PadSetting centeringPadSetting = null;
             // #271 item 3 scratch, hoisted out of the loop (stackalloc in
             // a loop accumulates stack per iteration).
             Span<byte> atLeftBlock = stackalloc byte[11];
@@ -1019,6 +1026,7 @@ namespace PadForge.Common.Input
                 var us = _instanceGuidBuffer[i];
                 int padIndex = us.MapTo;
                 if (padIndex < 0 || padIndex >= MaxPads) continue;
+                if (centersItself && centeringPadSetting == null) centeringPadSetting = us.GetPadSetting();
 
                 // If a test rumble targets a specific device in this slot, skip others.
                 Guid targetGuid = TestRumbleTargetGuid[padIndex];
@@ -1186,7 +1194,9 @@ namespace PadForge.Common.Input
                 // would play its last one on, so it loses the game's force
                 // and keeps its feel (#521).
                 if (isFalcon) SilenceFalconGame(ud, falcon);
-                return;
+                // A wheel that centers itself goes on with no game force.
+                if (centeringPadSetting == null) return;
+                firstPadSetting = centeringPadSetting;
             }
 
             // Write combined vibration to a scratch Vibration and apply.
@@ -1195,6 +1205,9 @@ namespace PadForge.Common.Input
             _combinedVibration.RightMotorSpeed = combinedR;
             _combinedVibration.LeftTriggerMotorSpeed = combinedLT;
             _combinedVibration.RightTriggerMotorSpeed = combinedRT;
+            // One instance serves every device, so the last wheel's centering goes.
+            _combinedVibration.CenteringActive = false;
+            _combinedVibration.Centering = default;
 
             // Copy directional/condition FFB data from the first slot that has it.
             // Without this, HasDirectionalData is always false and the haptic path
@@ -1465,14 +1478,50 @@ namespace PadForge.Common.Input
                     // and Thrustmaster use their firmware spring in the one-shot below.
                     int desAc = System.Math.Clamp(TryParseIntStatic(firstPadSetting.AutoCenterStrength, 0), 0, 100);
                     int acMag = desAc * 0xffff / 100; // 0..100% -> 0..0xffff
-                    // Skip the HID write when the force/condition is identical to last poll —
-                    // the wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
+
+                    // Vehicle mode's centering, or a Release Test (#588). The
+                    // range it works in is the one PadForge sends the wheel, held
+                    // to the model's own, or the Wheel Range setting where the
+                    // range is left to the wheel.
+                    bool sendsRange = WheelRangeLimits.SendsRange(firstPadSetting);
+                    int centeringRange = 0;
+                    if (sendsRange)
+                    {
+                        centeringRange = System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520);
+                        var limits = WheelRangeLimits.For(ud.VendorId, ud.ProdId);
+                        if (limits.HasValue) centeringRange = System.Math.Clamp(centeringRange, limits.Value.Min, limits.Value.Max);
+                    }
+                    var centeringFrame = StepWheelCentering(ud, firstPadSetting, centeringRange,
+                        WheelCenteringWriter.EffectsBeside(ud.VendorId, ud.ProdId, hasCond ? cv.EffectType : 0),
+                        WheelCenteringWriter.DamperSteps(ud.VendorId, ud.ProdId), out bool vehicleCentering, out bool wheelTest);
+                    if (wheelTest)
+                    {
+                        // The test owns the wheel while it measures: no game's
+                        // force pushes it, and the test's level is the force.
+                        hasCond = false;
+                        wheelForce = 0;
+                    }
+                    // The wheel's own centering spring would add to the car's, so
+                    // it rests while Vehicle mode centers or a test measures.
+                    if (vehicleCentering || wheelTest)
+                    {
+                        desAc = 0;
+                        acMag = 0;
+                    }
+                    short gameForce = wheelForce;
+                    wheelForce = WheelCenteringWriter.MergedForce(ud.VendorId, ud.ProdId, hasCond, gameForce, centeringFrame.Level);
+                    bool gamePeriodic = !wheelTest && isThrustmasterWheel && !hasCond && cv.HasDirectionalData && cv.Period > 0
+                        && ForceFeedbackState.IsPeriodicEffect(cv.EffectType);
+
+                    // Skip the HID write when the force/condition is identical to last poll.
+                    // The wheel holds it, so re-sending is pure per-poll churn (the 1000->500 Hz
                     // drop with a wheel connected). Active FFB changes the signature each tick
                     // and still writes; only a steady force (idle, held spring) is throttled.
-                    int periodicPeak = (isThrustmasterWheel && !hasCond && cv.HasDirectionalData && cv.Period > 0
-                        && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
-                        ? ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain) : 0;
-                    var ffbSig = new WheelFfbSig(hasCond, cv.HasDirectionalData, wheelForce, periodicPeak, acMag,
+                    // The force is compared as it goes on the wire: a wheel that keeps eight
+                    // bits of it takes the same report for 256 levels in a row.
+                    int periodicPeak = gamePeriodic ? ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain) : 0;
+                    var ffbSig = new WheelFfbSig(hasCond, cv.HasDirectionalData,
+                        WheelCenteringWriter.WireForce(ud.VendorId, ud.ProdId, wheelForce), periodicPeak, acMag,
                         (int)cv.EffectType, (int)cv.Period,
                         hasCond ? (int)ca.PositiveCoefficient : 0, hasCond ? (int)ca.NegativeCoefficient : 0,
                         hasCond ? (int)ca.Offset : 0, hasCond ? (int)ca.DeadBand : 0,
@@ -1500,14 +1549,17 @@ namespace PadForge.Common.Input
                                     : RpmLedMap.Thrustmaster(frac, blinkOn);
                             }
                         }
+                        // The owner adds the centering force to the game's with its own
+                        // writers, so the two ride apart (#588).
                         RemoteLinkOutputRouter.ShipWheel(ud.DevicePath,
-                            hasCond, cv.HasDirectionalData, wheelForce, (short)periodicPeak, acMag,
+                            hasCond, cv.HasDirectionalData && !wheelTest, gameForce, (short)periodicPeak, acMag,
                             cv.EffectType, (int)cv.Period,
                             hasCond ? ca.PositiveCoefficient : (short)0, hasCond ? ca.NegativeCoefficient : (short)0,
                             hasCond ? ca.Offset : (short)0, hasCond ? (int)ca.DeadBand : 0,
                             hasCond ? (int)ca.PositiveSaturation : 0, hasCond ? (int)ca.NegativeSaturation : 0, condGain,
                             (ushort)peerRange, (ushort)ledMask, ledsOn,
-                            rangeLeftToWheel: !WheelRangeLimits.SendsRange(firstPadSetting));
+                            rangeLeftToWheel: !WheelRangeLimits.SendsRange(firstPadSetting),
+                            centering: PadForge.Engine.RemoteLink.OutputEffectCodec.CenteringTail.From(centeringFrame));
                         return;
                     }
 
@@ -1536,7 +1588,11 @@ namespace PadForge.Common.Input
                             FanatecRawHidWriter.WriteWheelConstantForce(ud.DevicePath, wheelForce, ud.ProdId);
                             // Re-assert the software centering spring each frame so it
                             // survives a game-driven condition overwriting slot 1.
-                            if (acMag > 0) FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                            if (acMag > 0)
+                            {
+                                FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);
+                                WheelCenteringWriter.SpringSlotWritten(ud.DevicePath);
+                            }
                         }
                     }
                     else // Thrustmaster wheel
@@ -1545,10 +1601,10 @@ namespace PadForge.Common.Input
                             ThrustmasterRawHidWriter.WriteCondition(ud.DevicePath, cv.EffectType,
                                 ca.PositiveCoefficient, ca.NegativeCoefficient, ca.Offset,
                                 (int)ca.DeadBand, (int)ca.PositiveSaturation, (int)ca.NegativeSaturation, condGain);
-                        else if (cv.HasDirectionalData && cv.Period > 0 && ForceFeedbackState.IsPeriodicEffect(cv.EffectType))
+                        else if (gamePeriodic)
                             // T300 firmware runs the waveform onboard (higher fidelity than
-                            // host sampling). Pass the un-sampled steering peak as the amplitude
-                            // — not the sampled level, which crosses zero mid-waveform.
+                            // host sampling). Pass the un-sampled steering peak as the amplitude,
+                            // not the sampled level, which crosses zero mid-waveform.
                             ThrustmasterRawHidWriter.WritePeriodic(ud.DevicePath, cv.EffectType,
                                 ForceFeedbackState.ComputeWheelSteeringPeak(cv, overallGain), (int)cv.Period);
                         else ThrustmasterRawHidWriter.WriteConstantForce(ud.DevicePath, wheelForce);
@@ -1559,7 +1615,7 @@ namespace PadForge.Common.Input
                     // re-sent only when the persisted value changes. A range
                     // left to the wheel (#512) is never sent, and 0 stands for
                     // it here so turning the range back on sends it again.
-                    bool sendRange = WheelRangeLimits.SendsRange(firstPadSetting);
+                    bool sendRange = sendsRange;
                     int desRange = sendRange ? System.Math.Clamp(TryParseIntStatic(firstPadSetting.RotationRange, 900), 40, 2520) : 0; // per-wheel max enforced in each writer's WriteRange
                     if (!_appliedWheelSettings.TryGetValue(ud.DevicePath, out var prevWs) || prevWs.range != desRange || prevWs.ac != desAc)
                     {
@@ -1575,6 +1631,7 @@ namespace PadForge.Common.Input
                             // so a base whose range is left to it keeps its own centering too.
                             applied  = !sendRange || FanatecRawHidWriter.WriteRange(ud.DevicePath, desRange, ud.ProdId);
                             applied &= FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);          // software centering spring replaces it (slot 1); disables at 0
+                            WheelCenteringWriter.SpringSlotWritten(ud.DevicePath);
                         }
                         else
                         {
@@ -1587,6 +1644,15 @@ namespace PadForge.Common.Input
                         // leaving the wheel at its firmware-default centering spring.
                         if (applied) _appliedWheelSettings[ud.DevicePath] = (desRange, desAc);
                     }
+
+                    // Centering's own effects (#588): the spring, the damper and the
+                    // friction the wheel runs itself, written when they change. An
+                    // empty frame, Spring mode's, lets go of what the wheel holds. It
+                    // comes after the settings above, whose auto-center is a spring in
+                    // a Fanatec base's spring slot: turned off there, Vehicle mode's
+                    // spring goes in after it, and left on, the slot stays its own.
+                    WheelCenteringWriter.Apply(ud.DevicePath, ud.VendorId, ud.ProdId, centeringFrame,
+                        hasCond ? cv.EffectType : 0, autoCenterSpring: isFanatecWheel && acMag > 0);
 
                     // RPM / shift LEDs from the running game's telemetry (Logitech
                     // 5-LED, Fanatec 9-LED rim, Thrustmaster 15-LED rim). Demand-
@@ -1649,9 +1715,148 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Vehicle mode's centering, or a Release Test, on a wheel routed
+            // through SDL (#588). PadForge sets no range on these, so the
+            // Wheel Range setting says how far the wheel turns.
+            if (ForceFeedbackState.IsGenericWheelVehicleCapable(ud.Device))
+            {
+                var genericFrame = StepWheelCentering(ud, firstPadSetting, 0,
+                    ud.ForceFeedbackState.CenteringEffectsOf(ud.Device),
+                    PadForge.Engine.Steering.WheelCalibration.FineDamperSteps, out bool genericVehicle, out bool genericTest);
+                if (genericTest)
+                {
+                    // The test owns the wheel while it measures.
+                    _combinedVibration.LeftMotorSpeed = 0;
+                    _combinedVibration.RightMotorSpeed = 0;
+                    _combinedVibration.HasDirectionalData = false;
+                    _combinedVibration.HasConditionData = false;
+                    _combinedVibration.ConditionAxisCount = 0;
+                }
+                _combinedVibration.CenteringActive = genericVehicle || genericTest;
+                _combinedVibration.Centering = genericFrame;
+            }
+
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
             }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
+        }
+
+        /// <summary>
+        /// One poll of a wheel's centering (#588): reads the wheel's settings,
+        /// the game's speed and grip where the settings ask for them, and the
+        /// steering axis, and steps the wheel's runtime. The frame is Vehicle
+        /// mode's, or a Release Test's while one runs, or empty in Spring mode.
+        /// The steering axis is the device's first, which is the axis every
+        /// wheel's force acts on.
+        /// </summary>
+        /// <param name="setRange">The range PadForge sets on the wheel in
+        /// degrees, or 0 where it sets none.</param>
+        private static PadForge.Engine.Steering.CenteringFrame StepWheelCentering(UserDevice ud, PadSetting ps, double setRange,
+            PadForge.Engine.Steering.CenteringEffects effects, int damperSteps, out bool vehicle, out bool testing)
+        {
+            var settings = PadForge.Engine.Steering.CenteringSettings.From(ps,
+                PadForge.Engine.Steering.WheelTorqueList.For(ud.VendorId, ud.ProdId), setRange, effects, damperSteps);
+            vehicle = settings.Vehicle;
+            double gameSpeed = -1, gameGrip = 0;
+            if (settings.Vehicle && (settings.SpeedFromGame || settings.GripChoice == 0))
+            {
+                TelemetryHub.RequestActive();
+                if (TelemetryHub.TryGetCurrent(out var tel))
+                {
+                    if (tel.HasSpeed) gameSpeed = tel.Speed;
+                    gameGrip = tel.Grip;
+                }
+            }
+            return ud.Centering.Step(settings, ud.WheelCalibration, SteeringAxisOf(ud.InputState), gameSpeed, gameGrip,
+                PadForge.Engine.Steering.WheelCenteringRuntime.NowMs(), out testing);
+        }
+
+        /// <summary>A wheel's steering axis from -1 to 1: its first axis, which
+        /// reads 0 to 65535 with 32768 at center.</summary>
+        internal static double SteeringAxisOf(CustomInputState state)
+        {
+            var axes = state?.Axis;
+            if (axes == null || axes.Length == 0) return 0.0;
+            return System.Math.Clamp((axes[0] - 32768) / 32767.0, -1.0, 1.0);
+        }
+
+        /// <summary>
+        /// Stops a Logitech, a Fanatec or a Thrustmaster wheel's forces: the
+        /// game's, and Vehicle mode's centering with its spring, its damper and
+        /// its friction (#588). The wheel holds each until it is told
+        /// otherwise, so a slot that lets the wheel go, an engine that stops
+        /// and a process that dies all end here. A wheel on another PC is sent
+        /// a frame with no force and no centering. The caller holds the
+        /// device's output gate.
+        /// </summary>
+        private void StopNativeWheel(UserDevice ud)
+        {
+            string path = ud.DevicePath;
+            if (string.IsNullOrEmpty(path)) return;
+            bool logitech = LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId);
+            bool fanatec = FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId);
+            bool thrustmaster = ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
+            if (!logitech && !fanatec && !thrustmaster) return;
+
+            if (RemoteLinkOutputRouter.IsPeerPath(path))
+            {
+                // The auto-center level last shipped rides on, so the stop
+                // changes nothing of the wheel's own centering spring.
+                int ac = _appliedWheelFfb.TryGetValue(path, out var last) ? last.Ac : 0;
+                RemoteLinkOutputRouter.ShipWheel(path, false, false, 0, 0, ac, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, false, rangeLeftToWheel: true);
+            }
+            else
+            {
+                if (logitech) LogitechRawHidWriter.WriteStopEffect(path, 0);
+                else if (fanatec) FanatecRawHidWriter.WriteWheelConstantForce(path, 0, ud.ProdId);
+                else ThrustmasterRawHidWriter.WriteStop(path);
+                // Spring mode's centering spring stays on a Fanatec base, as it
+                // stays in a Logitech's or a Thrustmaster's firmware.
+                bool autoCenter = fanatec && _appliedWheelSettings.TryGetValue(path, out var held) && held.ac > 0;
+                WheelCenteringWriter.Apply(path, ud.VendorId, ud.ProdId, default, 0, autoCenter);
+            }
+            WheelCenteringWriter.ResetDevice(path);
+            _appliedWheelFfb.TryRemove(path, out _);
+            ud.Centering.Reset();
+        }
+
+        /// <summary>A Remote Link peer's wheel frame was just written to a
+        /// wheel on this PC (#588). The wheel holds that force and that
+        /// centering in firmware, so it is noted as holding something this
+        /// engine did not send: the local pass then writes its own force over
+        /// it when it takes the wheel back, and stops the wheel when no slot
+        /// has it and the peer has let go.</summary>
+        public void NoteRemoteWheelWrite(string devicePath)
+        {
+            if (!string.IsNullOrEmpty(devicePath)) _appliedWheelFfb[devicePath] = WheelFfbSig.Unknown;
+        }
+
+        /// <summary>Stops every native wheel this engine has sent a force
+        /// (<see cref="StopNativeWheel"/>), for an engine that stops and a
+        /// process that dies.</summary>
+        private void StopNativeWheels()
+        {
+            var devices = SettingsManager.UserDevices?.Items;
+            if (devices == null) return;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                foreach (var ud in devices)
+                {
+                    if (ud == null || string.IsNullOrEmpty(ud.DevicePath) || !_appliedWheelFfb.ContainsKey(ud.DevicePath))
+                        continue;
+                    // Under the row's output gate when it comes free within 50
+                    // ms, as StopAllForceFeedback takes it.
+                    bool gated = false;
+                    try
+                    {
+                        System.Threading.Monitor.TryEnter(ud.OutputSync, 50, ref gated);
+                        try { StopNativeWheel(ud); }
+                        catch { /* best effort */ }
+                    }
+                    finally { if (gated) System.Threading.Monitor.Exit(ud.OutputSync); }
+                }
+            }
         }
 
         private readonly System.Collections.Generic.Dictionary<Guid, bool> _nintendoRumbleWasHot = new();
@@ -1678,12 +1883,18 @@ namespace PadForge.Common.Input
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, WheelFfbSig> _appliedWheelFfb = new();
         private readonly struct WheelFfbSig : System.IEquatable<WheelFfbSig>
         {
-            public readonly bool HasCond, Dir; public readonly short Force;
+            public readonly bool HasCond, Dir;
+            /// <summary>The force as it goes on the wire
+            /// (WheelCenteringWriter.WireForce).</summary>
+            public readonly int Force;
             public readonly int Peak, Ac, Effect, Period, Pc, Nc, Off, Db, Ps, Ns, CondGain;
-            public WheelFfbSig(bool hasCond, bool dir, short force, int peak, int ac, int effect, int period,
+            public WheelFfbSig(bool hasCond, bool dir, int force, int peak, int ac, int effect, int period,
                 int pc, int nc, int off, int db, int ps, int ns, int condGain)
             { HasCond = hasCond; Dir = dir; Force = force; Peak = peak; Ac = ac; Effect = effect; Period = period;
               Pc = pc; Nc = nc; Off = off; Db = db; Ps = ps; Ns = ns; CondGain = condGain; }
+            /// <summary>What a wheel holds after a writer other than this
+            /// pass wrote to it: no force this pass sends compares equal.</summary>
+            public static readonly WheelFfbSig Unknown = new(false, false, int.MaxValue, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             public bool Equals(WheelFfbSig o) => HasCond == o.HasCond && Dir == o.Dir && Force == o.Force && Peak == o.Peak
                 && Ac == o.Ac && Effect == o.Effect && Period == o.Period && Pc == o.Pc && Nc == o.Nc && Off == o.Off
                 && Db == o.Db && Ps == o.Ps && Ns == o.Ns && CondGain == o.CondGain;

@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Сбросить диапазон поворота</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Сбросить силу автоцентровки</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Сбросить индикаторы оборотов (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Диапазон поворота, автоцентровка и индикаторы переключения передач для рулей с силовой обратной связью.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Диапазон поворота и индикаторы переключения передач для рулей с силовой обратной связью.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Центрирование</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Возвращает руль в центр как простая пружина или как рулевое управление автомобиля.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Сбросить центрирование</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Пружина тянет руль к центру с постоянной силой. Автомобиль рассчитывает момент, который дает рулевое управление машины на ее скорости, по модели шин.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Автомобиль</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Автомобиль</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Автомобиль, рулевое управление которого берет руль. Каждый из них основан на опубликованной модели автомобиля.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Компакт</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Фургон</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Гоночный автомобиль</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Скорость</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>«От игры» берет скорость автомобиля из телеметрии игры и использует «Фиксированная скорость», пока ее не присылает ни одна игра. «Фиксированная» всегда использует «Фиксированная скорость».</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>От игры</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Фиксированная</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Усилие на руле</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Насколько тяжелое рулевое управление. 100% соответствует настоящему автомобилю.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ход руля</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>На сколько поворачивается этот руль от упора до упора. Укажите значение, заданное на самом руле.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Момент на руле</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Угол</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момент</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Предел руля {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Момент на ободе руля в зависимости от угла поворота. При {0} он достигает максимума {1} N·m при {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Ощущение центра</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Как быстро растет момент при поворотах около центра, в N·m на g до 0.05 g. Чем больше, тем увереннее ощущается руль.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Жесткость по моменту</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Как быстро растет момент, когда руль уходит из центра, в N·m на градус.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Линейность</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Наклон момента между 0.10 и 0.15 g относительно его наклона в центре. Чем меньше, тем раньше руль становится легким.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Пиковый момент</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Наибольший момент, который автомобиль требует от руля, рядом с наибольшим, который руль дает.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>из {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Этот автомобиль требует больше момента, чем есть у руля, поэтому вершина кривой срезана.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ощущение центра, усилитель руля, демпфирование, трение, сцепление, фиксированная скорость, момент руля</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Насколько сильно рулевое управление удерживает центр на малой скорости. 100% соответствует настоящему автомобилю.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Усилитель руля</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Насколько усилитель руля снимает нагрузку по мере роста поперечного ускорения. Чем больше, тем легче руль вдали от центра.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Демпфирование</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Насколько сильно руль сопротивляется быстрым поворотам. 100% возвращает его без проскока через центр.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Трение</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Постоянное сопротивление повороту в любую сторону.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Сцепление</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Сцепление дороги. Руль становится легким там, где передние шины его теряют.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Сухо</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Мокро</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Снег</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Лед</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Фиксированная скорость</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Скорость, с которой, как считается, едет автомобиль, когда для параметра «Скорость» выбрано «Фиксированная», а также пока ее не присылает ни одна игра.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Момент руля</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Наибольший момент, который дает этот руль. PadForge заполняет его, если производитель руля публикует это значение. Значение выше собственного для руля ослабляет все усилия.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Для этого руля не задан «Момент руля», поэтому усилия снижены. Введите его в разделе «Дополнительно».</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Руль начал раскачиваться сам, поэтому усилие снижено. Запустите «Тест отпускания».</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Усилие выключено, потому что руль продолжал раскачиваться или уходил от центра. Запустите «Тест отпускания».</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Тест отпускания</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Измеряет этот руль и задает демпфирование, чтобы он возвращался без проскока</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Еще не запускался</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Измерено</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Уберите руки с руля. PadForge повернет его на {0}°, отпустит и запишет, как он возвращается.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Угол руля в течение {0} с после каждого отпускания.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>До</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>После</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Измерение, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Готово, 2 прогона</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Остановлено</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Руль не остановился. Уберите с него руки и запустите тест снова.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Руль не двинулся. Если «Момент руля» задан выше, чем дает руль, укажите собственное значение руля и запустите тест снова.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Руль подошел близко к краю своего хода. Верните его в центр и запустите тест снова.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Не удалось считать движение руля. Запустите тест снова.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Руль перестал отвечать. Проверьте, что он подключен и что движок запущен.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Этот руль не используется. Назначьте его контроллеру и запустите движок, затем запустите тест.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Инерция</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Раньше руль проскакивал центр на {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Теперь он проскакивает центр на {0}° и останавливается в {1}° от центра.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Теперь он возвращается без проскока и останавливается в {0}° от центра.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Запустить снова</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Применить</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Сбросить отдачу на упоре руля</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Сбросить импульс вибрации на упоре</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Сбросить вибрацию триггеров на упоре</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Раскладки отчетов PlayStation Move, калибровка датчиков и рукопожатие с аксессуаром EXT, от Thomas Perl, сверено с вики moveonpc. Реализация в PadForge написана на C# с нуля. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Источники по гоночной телеметрии</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Раскладки общей памяти и UDP для игровой телеметрии и LED-индикаторов оборотов руля (RPM) взяты из assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) и vAzhureRacingHub (GPL-3.0). Код под GPL и LGPL не поставляется.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Раскладки общей памяти и UDP для игровой телеметрии и LED-индикаторов оборотов руля (RPM) взяты из assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) и vAzhureRacingHub (GPL-3.0). Код под GPL и LGPL не поставляется.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Документация по сопряжению DualShock 3 по Bluetooth и по отчетам. GPL-2.0 и GPL-3.0, использована только как документация, код под GPL не поставляется.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Диапазон ослабления 48 dB для микрофона виртуального DualSense. Использована только как документация, код под GPL не поставляется.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Источники по протоколам рулей</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Отчеты собственной силовой обратной связи и LED-индикаторов оборотов (RPM) для рулей Fanatec, Thrustmaster и Logitech взяты из hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) и thrustmaster-led-linux (GPL-3.0) и сверены с плагином SimHub LED от prodigal.knight (MIT) и tm-bt-led (MIT). Только документация, код под GPL не поставляется.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Источники по ощущению руля</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Модель момента на руле для режима «Автомобиль» карточки «Центрирование» взята из работы Balachandran и Gerdes, «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Параметры автомобиля взяты из commonroad-vehicle-models (BSD-3-Clause) и global_racetrajectory_optimization (LGPL-3.0). Плечо шины взято из книги Pacejka, Tire and Vehicle Dynamics, а сцепление дороги из книги Wong, Theory of Ground Vehicles. Только числовые данные, код из них не поставляется.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Источники по аркадным платам ввода-вывода</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Протоколы, на которых основаны драйверы форка SDL для аркадных плат ввода-вывода Namco и Konami и плат JVS, взяты из arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (лицензия StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) и TaikoZucchini (MIT). Только документация, код не поставляется.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Источники по контроллерам Bluetooth LE</value></data>

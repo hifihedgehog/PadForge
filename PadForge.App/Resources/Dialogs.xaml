@@ -437,6 +437,9 @@
     <!-- A tag is the pages' chip, and an input chip the pages' input chip. -->
     <Style x:Key="DialogTag" TargetType="Border" BasedOn="{StaticResource PillChip}"/>
     <Style x:Key="DialogChip" TargetType="Border" BasedOn="{StaticResource InputChip}"/>
+    <!-- A chart's legend in a dialog is the pages' legend pill (#588). -->
+    <Style x:Key="DialogLegendPill" TargetType="Border" BasedOn="{StaticResource LegendPill}"/>
+    <Style x:Key="DialogLegendPillCold" TargetType="Border" BasedOn="{StaticResource LegendPillCold}"/>
     <Style x:Key="DialogSegmentRadio" TargetType="RadioButton" BasedOn="{StaticResource SegmentRadio}">
         <Setter Property="MinHeight" Value="30"/>
         <Setter Property="Padding" Value="14,0"/>

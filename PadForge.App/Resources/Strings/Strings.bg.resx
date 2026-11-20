@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Нулиране на обхвата на въртене</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Нулиране на силата на автоцентрирането</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Нулиране на LED индикаторите за обороти</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Обхват на въртене, автоцентриране и светлини за смяна на предавката за волани със силова обратна връзка.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Обхват на въртене и светлини за смяна на предавката за волани със силова обратна връзка.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Центриране</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Връща волана в центъра като обикновена пружина или както го прави кормилното управление на автомобил.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Нулиране на центрирането</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Пружина дърпа волана към центъра с една и съща сила. Автомобил изчислява въртящия момент, който дава кормилното управление на автомобила при неговата скорост, по модел на гумите.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Пружина</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Автомобил</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Автомобил</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Автомобилът, чието кормилно управление поема волана. Всеки е публикуван модел на автомобил.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Компакт</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Ван</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Състезателен автомобил</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Скорост</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>От играта чете скоростта на автомобила от телеметрията на играта и използва Фиксирана скорост, докато никоя игра не изпраща такава. Фиксирана използва Фиксирана скорост през цялото време.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>От играта</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Фиксирана</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Тежест на волана</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Колко тежко е кормилното управление. 100% е тежестта на самия автомобил.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ход на волана</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Докъде се върти този волан от крайно до крайно положение. Задайте стойността, която е зададена на самия волан.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Въртящ момент на волана</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Ъгъл</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момент</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Граница на волана {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Въртящ момент на ръба на волана според ъгъла на завиване. При {0} достига връх от {1} N·m при {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Усещане в центъра</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Колко бързо нараства въртящият момент със страничното ускорение близо до центъра, в N·m на g до 0.05 g. По голяма стойност дава по стабилно усещане.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Твърдост на момента</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Колко бързо нараства въртящият момент, когато воланът се отдалечава от центъра, в N·m на градус.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Линейност</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Наклонът на въртящия момент между 0.10 и 0.15 g спрямо наклона му в центъра. По малка стойност означава, че кормилото олеква по рано.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Пиков момент</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Най големият въртящ момент, който автомобилът изисква от волана, до най големия, който воланът дава.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>от {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Този автомобил изисква повече въртящ момент, отколкото воланът има, затова върхът на кривата е отрязан.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Усещане в центъра, серво усилване, демпфиране, триене, сцепление, фиксирана скорост, въртящ момент на волана</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Колко здраво кормилното управление държи центъра си при ниска скорост. 100% е стойността на самия автомобил.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Серво усилване</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Колко усилването на кормилото сваля от усилието, когато страничното ускорение нараства. По голяма стойност дава по леко кормилно управление встрани от центъра.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Демпфиране</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Колко силно воланът се съпротивлява на бързо завъртане. 100% е стойността, която го връща без да се прехвърля през центъра.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Триене</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Постоянно съпротивление, което пречи на завъртането във всяка посока.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Сцепление</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Сцеплението на пътя. Кормилото олеква там, където предните гуми го загубят.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Сух</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Мокър</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Сняг</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Лед</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Фиксирана скорост</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Скоростта, с която се приема, че кара автомобилът, когато Скорост е Фиксирана и докато никоя игра не изпраща такава.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Въртящ момент на волана</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Най големият въртящ момент, който дава този волан. PadForge го попълва там, където производителят на волана го публикува. Стойност над собствената на волана отслабва всички сили.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Въртящ момент на волана не е зададен за този волан, затова силите му са ограничени. Въведете го под Още.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Воланът започна да се люлее сам, затова силата е ограничена. Пуснете Тест на отпускане.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Силата е изключена, защото воланът продължи да се люлее или се отдалечи от центъра. Пуснете Тест на отпускане.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Тест на отпускане</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Измерва този волан и задава демпфиране, за да се връща без прехвърляне през центъра</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Още не е пускан</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Измерен</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Вдигнете ръцете от волана. PadForge го завърта на {0}°, пуска го и записва как се връща.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ъгълът на волана в продължение на {0} секунди след всяко пускане.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Преди</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>След</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Измерване, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Готово, 2 пускания</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Спрян</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Воланът не застана неподвижно. Вдигнете ръцете от него и пуснете теста отново.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Воланът не помръдна. Ако Въртящ момент на волана е зададен над това, което воланът дава, задайте собствената стойност на волана и пуснете теста отново.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Воланът се приближи до края на хода си. Центрирайте го и пуснете теста отново.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Движението на волана не можа да се прочете. Пуснете теста отново.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Воланът спря да отговаря. Проверете дали е свързан и дали двигателят работи.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Този волан не се използва. Свържете го с контролер и стартирайте двигателя, после пуснете теста.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Инерция</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Преди воланът се прехвърляше с {0}° през центъра.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Сега се прехвърля с {0}° през центъра и застава на {1}° от центъра.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Сега се връща без прехвърляне и застава на {0}° от центъра.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Пусни отново</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Приложи</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Нулиране на обратната връзка при краен ъгъл на волана</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Нулиране на импулса на вибрация при крайно положение</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Нулиране на вибрацията на спусъка при крайно положение</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Структурите на отчетите на PlayStation Move, калибрирането на сензорите и ръкостискането с аксесоари през EXT, от Thomas Perl, проверени спрямо уикито moveonpc. Реализацията в PadForge е оригинален код на C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Референции за състезателна телеметрия</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Структурите на споделената памет и UDP, на които се основават игровата телеметрия и LED индикаторите за обороти на воланите, взети от assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) и vAzhureRacingHub (GPL-3.0). Не е включен GPL или LGPL код.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Структурите на споделената памет и UDP, на които се основават игровата телеметрия и LED индикаторите за обороти на воланите, взети от assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) и vAzhureRacingHub (GPL-3.0). Не е включен GPL или LGPL код.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Документация за сдвояването и отчетите на DualShock 3 през Bluetooth. GPL-2.0 и GPL-3.0, използвани само като документация, не е включен GPL код.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Обхватът на затихване от 48 dB на микрофона на виртуалния DualSense. Използван само като документация, не е включен GPL код.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Референции за протоколите на воланите</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Отчетите за собствената силова обратна връзка и за LED индикаторите за обороти на воланите Fanatec, Thrustmaster и Logitech, взети от hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) и thrustmaster-led-linux (GPL-3.0) и проверени спрямо приставката SimHub LED от prodigal.knight (MIT) и tm-bt-led (MIT). Само документация, не е включен GPL код.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Референции за усещането на кормилото</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Моделът на въртящия момент на кормилото, на който се основава режимът „Автомобил“ на Центриране, взет от Balachandran и Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Параметрите на автомобила са взети от commonroad-vehicle-models (BSD-3-Clause) и global_racetrajectory_optimization (LGPL-3.0). Следата на гумата е от Pacejka, Tire and Vehicle Dynamics, а сцеплението на пътя е от Wong, Theory of Ground Vehicles. Взети са само числа, код от тях не е включен в PadForge.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Референции за аркадни I/O платки</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Протоколите, на които се основават драйверите в разклонението на SDL за аркадните I/O платки на Namco и Konami и платките JVS, взети от arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (лиценз на StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) и TaikoZucchini (MIT). Само документация, не е включен код.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Референции за Bluetooth LE контролери</value></data>

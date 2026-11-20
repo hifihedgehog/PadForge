@@ -1515,6 +1515,13 @@ namespace PadForge
                         nameof(PadViewModel.WheelRotationRange) or nameof(PadViewModel.WheelRotationRangeEnabled) or
                         nameof(PadViewModel.WheelAutoCenter) or
                         nameof(PadViewModel.WheelRpmLeds) or
+                        // Wheel centering (#588), per-(device, slot).
+                        nameof(PadViewModel.CenteringMode) or nameof(PadViewModel.CenteringVehicle) or
+                        nameof(PadViewModel.CenteringSpeedSource) or nameof(PadViewModel.CenteringFixedSpeed) or
+                        nameof(PadViewModel.CenteringWeight) or nameof(PadViewModel.CenteringOnCenter) or
+                        nameof(PadViewModel.CenteringAssist) or nameof(PadViewModel.CenteringDamping) or
+                        nameof(PadViewModel.CenteringFriction) or nameof(PadViewModel.CenteringGrip) or
+                        nameof(PadViewModel.CenteringWheelTorque) or nameof(PadViewModel.CenteringWheelRange) or
                         nameof(PadViewModel.FalconFeel) or nameof(PadViewModel.FalconSpring) or
                         nameof(PadViewModel.FalconKickButton) or nameof(PadViewModel.FalconKick) or
                         nameof(PadViewModel.FalconShake) or nameof(PadViewModel.FalconBraceButton) or

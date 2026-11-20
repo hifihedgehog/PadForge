@@ -484,7 +484,7 @@ namespace PadForge.Tests
                     {
                         ("sticks", 4, new[] { "TabSticks", "TabTriggers" }, new string[0], new string[0]),
                         ("rumble", 5, new[] { "TabForceFeedback", "TabAdaptiveTriggers", "TabBassShakers" },
-                            new[] { "TabImpulseTriggers", "TabWheel", "WheelRangeRow", "WheelRpmRow", "FalconCard" },
+                            new[] { "TabImpulseTriggers", "TabWheel", "WheelCard", "FalconCard" },
                             new[] { "ForceFeedbackMore", "ImpulseTriggersMore", "BassShakersMore" }),
                         ("motion", 8, new[] { "TabGyro", "TabTouchpad", "GyroCalibrationCard", "GyroSensitivityCard", "GyroEngageCard",
                                 "GyroResponseCard", "GyroSpaceCard", "GyroPassthroughCard", "GyroRatesLive", "GyroSensitivityMore" },

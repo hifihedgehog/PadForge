@@ -365,6 +365,59 @@ namespace PadForge.Engine.Data
         /// rated force.</summary>
         [XmlElement] public string FalconForceCap { get; set; } = "8";
 
+        // ── Wheel centering (#588) ──
+
+        /// <summary>How a force feedback wheel centers: "0" the spring of
+        /// <see cref="AutoCenterStrength"/>, "1" a vehicle's steering
+        /// (PadForge.Engine.Steering).</summary>
+        [XmlElement] public string CenteringMode { get; set; } = "0";
+
+        /// <summary>The key of the car Vehicle mode steers
+        /// (<see cref="Steering.SteeringVehicle.Id"/>).</summary>
+        [XmlElement] public string CenteringVehicle { get; set; } = "sedan";
+
+        /// <summary>Where Vehicle mode takes the car's speed: "0" the game's
+        /// telemetry, with <see cref="CenteringFixedSpeed"/> while no game
+        /// sends one, "1" always the fixed speed.</summary>
+        [XmlElement] public string CenteringSpeedSource { get; set; } = "0";
+
+        /// <summary>The fixed speed in km/h (0 to 320). A wheel starts with
+        /// the speed that reads round in this PC's unit
+        /// (<see cref="Steering.SpeedUnits.DefaultFixedSpeedKmh"/>).</summary>
+        [XmlElement] public string CenteringFixedSpeed { get; set; }
+            = Steering.SpeedUnits.DefaultFixedSpeedKmh.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+        /// <summary>Steering Weight in percent of the car's own (0 to 200):
+        /// the tire moment gain.</summary>
+        [XmlElement] public string CenteringWeight { get; set; } = "100";
+
+        /// <summary>On-Center Feel in percent of the car's own (0 to 200):
+        /// the jacking stiffness.</summary>
+        [XmlElement] public string CenteringOnCenter { get; set; } = "100";
+
+        /// <summary>Power Assist in percent of the car's own (0 to 200).</summary>
+        [XmlElement] public string CenteringAssist { get; set; } = "100";
+
+        /// <summary>Damping in percent (0 to 200) of the damping that
+        /// returns the wheel without overshoot.</summary>
+        [XmlElement] public string CenteringDamping { get; set; } = "100";
+
+        /// <summary>Friction in hundredths of a newton meter (0 to 150).</summary>
+        [XmlElement] public string CenteringFriction { get; set; } = "30";
+
+        /// <summary>The road's grip: "0" from the game's telemetry, dry while
+        /// no game sends one, "1" dry, "2" wet, "3" snow, "4" ice.</summary>
+        [XmlElement] public string CenteringGrip { get; set; } = "0";
+
+        /// <summary>The most torque the wheel gives, in tenths of a newton
+        /// meter. "0" takes the figure listed for the model.</summary>
+        [XmlElement] public string CenteringWheelTorque { get; set; } = "0";
+
+        /// <summary>The rotation range in degrees of a wheel whose range
+        /// PadForge does not set, which Vehicle mode needs to read the
+        /// wheel's angle (40 to 2520).</summary>
+        [XmlElement] public string CenteringWheelRange { get; set; } = "900";
+
         // ─── Steering at-lock feedback (v3.4 #94) ───
         // Per-slot, opt-in haptic feedback when a steering source (winding / 2D
         // angle-to-axis / motion-lean) saturates at full lock. All off by default.
@@ -1631,6 +1684,18 @@ namespace PadForge.Engine.Data
             sb.Append(FalconPreloadButton); sb.Append('|');
             sb.Append(FalconGravity); sb.Append('|');
             sb.Append(FalconForceCap); sb.Append('|');
+            sb.Append(CenteringMode); sb.Append('|');
+            sb.Append(CenteringVehicle); sb.Append('|');
+            sb.Append(CenteringSpeedSource); sb.Append('|');
+            sb.Append(CenteringFixedSpeed); sb.Append('|');
+            sb.Append(CenteringWeight); sb.Append('|');
+            sb.Append(CenteringOnCenter); sb.Append('|');
+            sb.Append(CenteringAssist); sb.Append('|');
+            sb.Append(CenteringDamping); sb.Append('|');
+            sb.Append(CenteringFriction); sb.Append('|');
+            sb.Append(CenteringGrip); sb.Append('|');
+            sb.Append(CenteringWheelTorque); sb.Append('|');
+            sb.Append(CenteringWheelRange); sb.Append('|');
             sb.Append(SteeringAngleRumbleEnabled); sb.Append('|');
             sb.Append(SteeringAngleRumbleAxis); sb.Append('|');
             sb.Append(SteeringAngleRumbleStrength); sb.Append('|');
@@ -2360,6 +2425,10 @@ namespace PadForge.Engine.Data
             nameof(FalconFeel), nameof(FalconSpring), nameof(FalconKickButton), nameof(FalconKick),
             nameof(FalconShake), nameof(FalconBraceButton), nameof(FalconPreloadButton),
             nameof(FalconGravity), nameof(FalconForceCap),
+            // Wheel centering (#588)
+            nameof(CenteringMode), nameof(CenteringVehicle), nameof(CenteringSpeedSource), nameof(CenteringFixedSpeed),
+            nameof(CenteringWeight), nameof(CenteringOnCenter), nameof(CenteringAssist), nameof(CenteringDamping),
+            nameof(CenteringFriction), nameof(CenteringGrip), nameof(CenteringWheelTorque), nameof(CenteringWheelRange),
             nameof(SteeringAngleRumbleEnabled), nameof(SteeringAngleRumbleAxis), nameof(SteeringAngleRumbleStrength), nameof(SteeringAngleRumbleDeadzone),
             nameof(SteeringAngleRumbleMotor),
             // Steering at-lock feedback (#94)

@@ -27,6 +27,13 @@ namespace PadForge.Common.Telemetry
     /// Codemasters EGO/D-BOX format (2026-06-02), and the F1 layouts against
     /// vAzhure F12022.cs to F12025.cs (2026-10-27). EA WRC UDP was not confirmed
     /// and is not claimed here.
+    ///
+    /// <para>Speed: F1's <c>m_speed</c> (u16, km/h) opens the player's Car
+    /// Telemetry entry, and its <c>m_surfaceType[4]</c> closes it at 56, in the
+    /// order rear left, rear right, front left, front right (f1-24-udp
+    /// PacketCarTelemetryData.h and its README, "What is the order of the
+    /// wheel arrays?"). The flat-float datagram's speed is the float at 28, in
+    /// m/s (CMTelemetry codemasters.h), and it has no word on the road.</para>
     /// </summary>
     internal sealed class CodemastersUdpTelemetrySource : IUdpTelemetrySource
     {
@@ -41,7 +48,8 @@ namespace PadForge.Common.Telemetry
         private UdpClient _udp;
         private Thread _thread;
         private volatile bool _run;
-        private volatile float _rpm, _maxRpm, _idleRpm;
+        private volatile float _rpm, _maxRpm, _idleRpm, _speed, _grip;
+        private volatile bool _hasSpeed;
         private volatile int _lastTick;
         private volatile string _label = "Codemasters UDP";
 
@@ -82,7 +90,14 @@ namespace PadForge.Common.Telemetry
         {
             var read = ReadF1(b, out int fmt, out float rpm, out float max, out float idle);
             if (read == F1Read.None) return;
-            if (read == F1Read.Rpm) _rpm = rpm;
+            if (read == F1Read.Rpm)
+            {
+                _rpm = rpm;
+                ReadF1Motion(b, out float speed, out float grip);
+                _speed = speed;
+                _hasSpeed = true;
+                _grip = grip;
+            }
             else { _maxRpm = max; _idleRpm = idle; }
             _label = "F1 " + fmt + " UDP";
             _lastTick = Environment.TickCount;
@@ -125,6 +140,18 @@ namespace PadForge.Common.Telemetry
             return F1Read.MaxAndIdle;
         }
 
+        /// <summary>The speed in m/s and the front wheels' grip from a Car
+        /// Telemetry packet <see cref="ReadF1"/> has taken the RPM from, so
+        /// its format, its size and its player car are already known
+        /// good.</summary>
+        internal static void ReadF1Motion(byte[] b, out float speed, out float grip)
+        {
+            bool f1_22 = BitConverter.ToUInt16(b, 0) == 2022;
+            int entry = (f1_22 ? F1_22Header : F1Header) + b[f1_22 ? 22 : 27] * 60;
+            speed = BitConverter.ToUInt16(b, entry) / 3.6f;
+            grip = (float)PadForge.Engine.Steering.RoadGrip.FrontAxle(SurfaceGrips.F1(b[entry + 58]), SurfaceGrips.F1(b[entry + 59]));
+        }
+
         // DiRT Rally (2.0) classic flat-float, extradata=3 (264 bytes).
         private void ParseDirt(byte[] b)
         {
@@ -132,6 +159,10 @@ namespace PadForge.Common.Telemetry
             float max = BitConverter.ToSingle(b, 252) * 10f;
             float idle = BitConverter.ToSingle(b, 256) * 10f;
             if (max <= 0f || float.IsNaN(max) || float.IsNaN(rpm)) return;
+            float speed = BitConverter.ToSingle(b, 28);
+            _speed = speed;
+            _hasSpeed = float.IsFinite(speed);
+            _grip = 0f;
             _rpm = rpm; _maxRpm = max; _idleRpm = idle;
             _label = "DiRT/GRID UDP";
             _lastTick = Environment.TickCount;
@@ -143,7 +174,8 @@ namespace PadForge.Common.Telemetry
             if (_udp == null) return false;
             if (unchecked(Environment.TickCount - _lastTick) > 1000) return false; // stale
             if (_maxRpm <= 0f) return false;
-            snap = new GameTelemetrySnapshot { Rpm = _rpm, MaxRpm = _maxRpm, IdleRpm = _idleRpm, Source = _label };
+            snap = new GameTelemetrySnapshot { Rpm = _rpm, MaxRpm = _maxRpm, IdleRpm = _idleRpm, Source = _label, Grip = _grip };
+            if (_hasSpeed) snap.SetSpeed(_speed);
             return true;
         }
 

@@ -2745,7 +2745,7 @@
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referénsias di telemetria di korida</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Formatus di memória partilhadu i UDP ki Telemetria di jogu i LEDs di mudansa di RPM di volanti ta uza, lidu di assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). Nenhun kódigu GPL o LGPL ka ta bai djuntu ku PadForge.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Formatus di memória partilhadu i UDP ki Telemetria di jogu i LEDs di mudansa di RPM di volanti ta uza, lidu di assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) i vAzhureRacingHub (GPL-3.0). Nenhun kódigu GPL o LGPL ka ta bai djuntu ku PadForge.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Referénsias di SpaceMouse</value></data>
@@ -3157,4 +3157,6 @@
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplika</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referénsias di sensason di diresãu</value></data>
 </root>

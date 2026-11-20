@@ -3218,7 +3218,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>កំណត់ជួរបង្វិលឡើងវិញ</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>កំណត់កម្លាំងត្រឡប់ទៅកណ្ដាលស្វ័យប្រវត្តិឡើងវិញ</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>កំណត់ LED ប្ដូរលេខតាម RPM ឡើងវិញ</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ជួរបត់ចង្កូត ការត្រឡប់ទៅកណ្ដាលស្វ័យប្រវត្តិ និងភ្លើងប្ដូរលេខ សម្រាប់ចង្កូតដែលមានកម្លាំងតប។</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ជួរបត់ចង្កូត និងភ្លើងប្ដូរលេខ សម្រាប់ចង្កូតដែលមានកម្លាំងតប។</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ការត្រឡប់ទៅកណ្ដាល</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>នាំចង្កូតត្រឡប់ទៅកណ្ដាលវិញ ដូចរ៉ឺស័រធម្មតា ឬដូចចង្កូតរថយន្ត។</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>កំណត់ការត្រឡប់ទៅកណ្ដាលឡើងវិញ</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>របៀប</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>រ៉ឺស័រ ទាញចង្កូតទៅកណ្ដាលដោយកម្លាំងតែមួយ។ យានយន្ត គណនាកម្លាំងបង្វិលដែលចង្កូតរថយន្តផ្ដល់តាមល្បឿនរបស់វា ពីគំរូសំបកកង់។</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>រ៉ឺស័រ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>យានយន្ត</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>យានយន្ត</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>រថយន្តដែលចង្កូតយកលក្ខណៈចង្កូតរបស់វា។ នីមួយៗជាគំរូយានយន្តដែលបានបោះពុម្ពផ្សាយ។</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>រថយន្តសេដង់</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>រថយន្តតូច</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>រថយន្តវ៉ាន</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>រថយន្តប្រណាំង</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>ល្បឿន</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ពីហ្គេម អានល្បឿនរថយន្តពីតេឡេម៉ែត្ររបស់ហ្គេម ហើយប្រើ ល្បឿនថេរ ពេលគ្មានហ្គេមណាផ្ញើល្បឿនមក។ ថេរ ប្រើ ល្បឿនថេរ គ្រប់ពេល។</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ពីហ្គេម</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ថេរ</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ទម្ងន់ចង្កូត</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ចង្កូតធ្ងន់ប៉ុណ្ណា។ 100% គឺទម្ងន់ពិតរបស់រថយន្ត។</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ជួរចង្កូត</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ចង្កូតនេះបង្វិលបានឆ្ងាយប៉ុណ្ណាពីចុងម្ខាងទៅចុងម្ខាងទៀត។ កំណត់វាឱ្យដូចការកំណត់របស់ចង្កូតខ្លួនឯង។</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>កម្លាំងបង្វិលពេលបត់ចង្កូត</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>មុំ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>កម្លាំងបង្វិល</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ដែនកំណត់ចង្កូត {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>កម្លាំងបង្វិលនៅគែមចង្កូត ធៀបនឹងមុំបត់ចង្កូត។ នៅ {0} វាឡើងដល់កំពូល {1} N·m នៅ {2}°។</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>អារម្មណ៍នៅកណ្ដាល</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>កម្លាំងបង្វិលកើនលឿនប៉ុណ្ណាតាមការបត់ជិតកណ្ដាល គិតជា N·m ក្នុងមួយ g រហូតដល់ 0.05 g។ ច្រើនជាង មានអារម្មណ៍នឹងនរជាង។</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ភាពរឹងនៃកម្លាំងបង្វិល</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>កម្លាំងបង្វិលកើនលឿនប៉ុណ្ណា ពេលចង្កូតចេញពីកណ្ដាល គិតជា N·m ក្នុងមួយដឺក្រេ។</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>ភាពលីនេអ៊ែរ</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>ជម្រាលនៃកម្លាំងបង្វិលចន្លោះ 0.10 និង 0.15 g ធៀបនឹងជម្រាលរបស់វានៅកណ្ដាល។ ទាបជាង មានន័យថាចង្កូតស្រាលលឿនជាង។</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>កម្លាំងបង្វិលអតិបរមា</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>កម្លាំងបង្វិលច្រើនបំផុតដែលរថយន្តទាមទារពីចង្កូត ទល់នឹងកម្លាំងច្រើនបំផុតដែលចង្កូតផ្ដល់បាន។</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ក្នុងចំណោម {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>រថយន្តនេះទាមទារកម្លាំងបង្វិលច្រើនជាងចង្កូតមាន ដូច្នេះផ្នែកខាងលើនៃខ្សែកោងត្រូវកាត់ចោល។</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>អារម្មណ៍នៅកណ្ដាល, ជំនួយថាមពល, ការបន្ថយលំយោល, កកិត, ការជាប់ផ្លូវ, ល្បឿនថេរ, កម្លាំងបង្វិលចង្កូត</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ចង្កូតរក្សាកណ្ដាលរបស់វាខ្លាំងប៉ុណ្ណានៅល្បឿនទាប។ 100% គឺកម្រិតពិតរបស់រថយន្ត។</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>ជំនួយថាមពល</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ចង្កូតថាមពលដកកម្លាំងចេញប៉ុណ្ណា ពេលការបត់កើនឡើង។ ច្រើនជាង មានន័យថាចង្កូតស្រាលជាងពេលចេញពីកណ្ដាល។</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ការបន្ថយលំយោល</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>ចង្កូតទប់នឹងការបង្វិលលឿនខ្លាំងប៉ុណ្ណា។ 100% គឺកម្រិតដែលនាំវាត្រឡប់មកវិញដោយមិនហួសកណ្ដាល។</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>កកិត</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>កម្លាំងអូសថេរដែលទប់នឹងការបង្វិលទាំងសងខាង។</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ការជាប់ផ្លូវ</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>ការជាប់ផ្លូវរបស់ផ្លូវ។ ចង្កូតស្រាលទៅវិញ នៅពេលសំបកកង់មុខអស់ការជាប់ផ្លូវ។</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ស្ងួត</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>សើម</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>ព្រិល</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ទឹកកក</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ល្បឿនថេរ</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ល្បឿនដែលរថយន្តត្រូវបានចាត់ទុកថាកំពុងបើក នៅពេល ល្បឿន ជា ថេរ និងពេលគ្មានហ្គេមណាផ្ញើល្បឿនមក។</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>កម្លាំងបង្វិលចង្កូត</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>កម្លាំងបង្វិលច្រើនបំផុតដែលចង្កូតនេះផ្ដល់។ PadForge បំពេញវាដោយខ្លួនឯង កន្លែងដែលក្រុមហ៊ុនផលិតចង្កូតបោះពុម្ពផ្សាយវា។ តួលេខលើសពីតួលេខពិតរបស់ចង្កូត ធ្វើឱ្យកម្លាំងទាំងអស់ខ្សោយជាង។</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>មិនទាន់កំណត់ កម្លាំងបង្វិលចង្កូត សម្រាប់ចង្កូតនេះទេ ដូច្នេះកម្លាំងរបស់វាត្រូវរក្សាទាប។ បញ្ចូលវានៅក្រោម ច្រើនទៀត។</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>ចង្កូតចាប់ផ្ដើមយោលដោយខ្លួនឯង ដូច្នេះកម្លាំងត្រូវបានទប់។ ដំណើរការ តេស្តលែងចង្កូត។</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>កម្លាំងត្រូវបានបិទ ព្រោះចង្កូតបន្តយោល ឬរត់ចេញពីកណ្ដាល។ ដំណើរការ តេស្តលែងចង្កូត។</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>តេស្តលែងចង្កូត</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>វាស់ចង្កូតនេះ ហើយកំណត់ការបន្ថយលំយោល ដើម្បីឱ្យវាត្រឡប់មកវិញដោយមិនហួសកណ្ដាល</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>មិនទាន់ដំណើរការ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>បានវាស់</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ដកដៃរបស់អ្នកចេញពីចង្កូត។ PadForge បង្វិលវាទៅ {0}° លែងវា ហើយកត់ត្រារបៀបដែលវាត្រឡប់មកវិញ។</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>មុំរបស់ចង្កូតក្នុងរយៈពេល {0} វិនាទី ក្រោយការលែងនីមួយៗ។</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>មុន</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>ក្រោយ</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>កំពុងវាស់, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>រួចរាល់, ដំណើរការ 2 ដង</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>បានបញ្ឈប់</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>ចង្កូតមិនបានឈប់នឹងនរទេ។ ដកដៃរបស់អ្នកចេញពីវា ហើយដំណើរការតេស្តម្ដងទៀត។</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>ចង្កូតមិនបានកម្រើកទេ។ បើ កម្លាំងបង្វិលចង្កូត ត្រូវបានកំណត់លើសពីអ្វីដែលចង្កូតផ្ដល់ សូមកំណត់វាឱ្យដូចតួលេខពិតរបស់ចង្កូត ហើយដំណើរការតេស្តម្ដងទៀត។</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>ចង្កូតបានទៅជិតចុងនៃជួររបស់វា។ ដាក់វានៅកណ្ដាល ហើយដំណើរការតេស្តម្ដងទៀត។</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>មិនអាចអានចលនារបស់ចង្កូតបានទេ។ ដំណើរការតេស្តម្ដងទៀត។</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>ចង្កូតឈប់ឆ្លើយតប។ ពិនិត្យថាវាបានភ្ជាប់ ហើយម៉ាស៊ីនកំពុងដំណើរការ។</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ចង្កូតនេះមិនត្រូវបានប្រើទេ។ កំណត់វាទៅឧបករណ៍បញ្ជាមួយ ហើយចាប់ផ្ដើមម៉ាស៊ីន រួចដំណើរការតេស្ត។</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>និចលភាព</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>មុននេះ ចង្កូតបានយោលហួសកណ្ដាល {0}°។</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ឥឡូវវាយោលហួសកណ្ដាល {0}° ហើយឈប់នៅចម្ងាយ {1}° ពីកណ្ដាល។</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ឥឡូវវាត្រឡប់មកវិញដោយមិនហួសកណ្ដាល ហើយឈប់នៅចម្ងាយ {0}° ពីកណ្ដាល។</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>ដំណើរការម្ដងទៀត</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>អនុវត្ត</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>កំណត់សញ្ញាពេលបត់ចង្កូតដល់កំណត់ឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>កំណត់ការញ័រខ្លីពេលដល់កំណត់ឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>កំណត់ការញ័រទ្រីហ្គឺពេលដល់កំណត់ឡើងវិញ</value></data>
@@ -4677,7 +4758,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ PlayStation Move ការក្រិតឧបករណ៍ចាប់សញ្ញា និងការចាប់ដៃគ្នានៃគ្រឿងបន្ថែម EXT ដោយ Thomas Perl ដែលផ្ទៀងផ្ទាត់ជាមួយវិគី moveonpc។ ការអនុវត្តរបស់ PadForge ជា C# ដើម។ BSD 2-Clause។</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ឯកសារយោងតេឡេម៉ែត្រការប្រណាំង</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ប្លង់អង្គចងចាំរួម និង UDP នៅពីក្រោយតេឡេម៉ែត្រហ្គេម និង LED ប្ដូរលេខ RPM នៃចង្កូត ដែលអានពី assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) និង vAzhureRacingHub (GPL-3.0)។ មិនមានកូដ GPL ឬ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ប្លង់អង្គចងចាំរួម និង UDP នៅពីក្រោយតេឡេម៉ែត្រហ្គេម និង LED ប្ដូរលេខ RPM នៃចង្កូត ដែលអានពី assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) និង vAzhureRacingHub (GPL-3.0)។ មិនមានកូដ GPL ឬ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>ឯកសារការផ្គូផ្គង និងរបាយការណ៍ Bluetooth របស់ DualShock 3។ GPL-2.0 និង GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4700,6 +4781,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ជួរការបន្ថយ 48 dB របស់មីក្រូហ្វូន DualSense និម្មិត។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ឯកសារយោងពិធីការចង្កូត</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>របាយការណ៍កម្លាំងតបដើម និង LED ប្ដូរលេខ RPM សម្រាប់ចង្កូត Fanatec, Thrustmaster និង Logitech ដែលអានពី hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) និង thrustmaster-led-linux (GPL-3.0) ហើយផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីជំនួយ LED របស់ SimHub ដោយ prodigal.knight (MIT) និង tm-bt-led (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>ឯកសារយោងអារម្មណ៍ចង្កូត</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>គំរូកម្លាំងបង្វិលចង្កូតនៅពីក្រោយរបៀប យានយន្ត នៃ ការត្រឡប់ទៅកណ្ដាល ដែលយកពី Balachandran និង Gerdes «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics)។ ប៉ារ៉ាម៉ែត្រយានយន្តត្រូវបានអានពី commonroad-vehicle-models (BSD-3-Clause) និង global_racetrajectory_optimization (LGPL-3.0)។ ចម្ងាយខាងក្រោយនៃកម្លាំងចំហៀងរបស់សំបកកង់ យកពី Tire and Vehicle Dynamics របស់ Pacejka ហើយការជាប់ផ្លូវ យកពី Theory of Ground Vehicles របស់ Wong។ ប្រើតែតួលេខប៉ុណ្ណោះ មិនមានកូដពីប្រភពទាំងនេះត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ឯកសារយោង I/O អាខេដ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>ពិធីការនៅពីក្រោយដ្រាយវ័ររបស់កំណែបំបែក SDL សម្រាប់បន្ទះ I/O អាខេដ Namco និង Konami និងបន្ទះ JVS ដែលអានពី arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (អាជ្ញាប័ណ្ណ StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) និង TaikoZucchini (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>ឯកសារយោងឧបករណ៍បញ្ជា Bluetooth LE</value></data>

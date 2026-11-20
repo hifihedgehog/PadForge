@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>بازنشانی محدوده چرخش</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>بازنشانی شدت مرکزگیری خودکار</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>بازنشانی LEDهای تعویض دنده RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>محدوده چرخش فرمان، مرکزگیری خودکار و چراغ‌های تعویض دنده برای فرمان‌های دارای فورس فیدبک.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>محدوده چرخش فرمان و چراغ‌های تعویض دنده برای فرمان‌های دارای فورس فیدبک.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>مرکزگیری</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>فرمان را به مرکز برمی‌گرداند، به‌صورت یک فنر ساده یا مثل فرمان خودرو.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>بازنشانی مرکزگیری</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>حالت</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>«فنر» فرمان را با یک شدت به مرکز می‌کشد. «خودرو» گشتاوری را که فرمان یک خودرو در سرعت آن می‌دهد، از روی مدل تایر محاسبه می‌کند.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>فنر</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>خودرو</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>خودرو</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>خودرویی که فرمان رفتار هدایت آن را می‌گیرد. هر مورد یک مدل خودروی منتشرشده است.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>سدان</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>کوچک</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ون</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>خودروی مسابقه</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>سرعت</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>«از بازی» سرعت خودرو را از تله‌متری بازی می‌خواند و تا وقتی بازی‌ای آن را نفرستد از «سرعت ثابت» استفاده می‌کند. «ثابت» همیشه از «سرعت ثابت» استفاده می‌کند.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>از بازی</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ثابت</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>سنگینی فرمان</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>فرمان چقدر سنگین است. 100% همان سنگینی خود خودرو است.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>برد فرمان</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>فرمان این دستگاه از قفل تا قفل چقدر می‌چرخد. آن را برابر تنظیم خود فرمان بگذارید.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>گشتاور فرمان</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>زاویه</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>گشتاور</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>حد فرمان {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>گشتاور فرمان در لبه فرمان در برابر زاویه فرمان. در {0} به اوج {1} N·m در {2}° می‌رسد.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>حس مرکز</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>گشتاور با افزایش شتاب جانبی نزدیک مرکز چقدر سریع بالا می‌رود، بر حسب N·m بر g تا 0.05 g. مقدار بیشتر فرمان را چسبیده‌تر حس می‌کند.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>سفتی گشتاور</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>گشتاور با دور شدن فرمان از مرکز چقدر سریع بالا می‌رود، بر حسب N·m بر درجه.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>خطی‌بودن</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>شیب گشتاور بین 0.10 و 0.15 g نسبت به شیب آن در مرکز. مقدار کمتر یعنی فرمان زودتر سبک می‌شود.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>گشتاور اوج</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>بیشترین گشتاوری که خودرو از فرمان می‌خواهد، در کنار بیشترین گشتاوری که فرمان می‌دهد.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>از {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>این خودرو گشتاور بیشتری از توان فرمان می‌خواهد، پس بالای منحنی بریده می‌شود.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>حس مرکز، کمک‌فرمان، میرایی، اصطکاک، چسبندگی، سرعت ثابت، گشتاور فرمان</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>فرمان در سرعت کم مرکز خود را چقدر محکم نگه می‌دارد. 100% همان حالت خود خودرو است.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>کمک‌فرمان</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>با افزایش شتاب جانبی، فرمان هیدرولیک چقدر از زحمت فرمان می‌کاهد. مقدار بیشتر یعنی فرمان دور از مرکز سبک‌تر است.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>میرایی</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>فرمان چقدر در برابر چرخش‌های سریع مقاومت می‌کند. 100% مقداری است که فرمان را بدون عبور از مرکز برمی‌گرداند.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>اصطکاک</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>یک کشش ثابت که در برابر چرخش به هر دو سو مقاومت می‌کند.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>چسبندگی</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>چسبندگی جاده. جایی که تایرهای جلو چسبندگی را از دست می‌دهند، فرمان سبک می‌شود.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>خشک</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>خیس</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>برفی</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>یخی</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>سرعت ثابت</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>سرعتی که خودرو با آن در حال حرکت فرض می‌شود، وقتی «سرعت» روی «ثابت» است و تا وقتی بازی‌ای سرعتی نفرستد.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>گشتاور فرمان</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>بیشترین گشتاوری که این فرمان می‌دهد. PadForge آن را در جایی که سازنده فرمان منتشر کرده باشد پر می‌کند. عددی بالاتر از مقدار خود فرمان همه نیروها را ضعیف‌تر می‌کند.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>«گشتاور فرمان» برای این فرمان تنظیم نشده است، پس نیروهای آن کم نگه داشته می‌شود. آن را در «بیشتر» وارد کنید.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>فرمان خودبه‌خود شروع به نوسان کرد، پس نیرو کاهش یافت. «آزمون رهاسازی» را اجرا کنید.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>نیرو خاموش شد، چون فرمان به نوسان ادامه داد یا از مرکز دور شد. «آزمون رهاسازی» را اجرا کنید.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>آزمون رهاسازی</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>این فرمان را اندازه می‌گیرد و میرایی را طوری تنظیم می‌کند که بدون عبور از مرکز برگردد</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>هنوز اجرا نشده</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>اندازه‌گیری شد</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>دست‌هایتان را از فرمان بردارید. PadForge آن را تا {0}° می‌چرخاند، رها می‌کند و برگشتنش را ثبت می‌کند.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>زاویه فرمان در {0} ثانیه پس از هر رهاسازی.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>قبل</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>بعد</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>در حال اندازه‌گیری، {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>انجام شد، 2 اجرا</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>متوقف شد</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>فرمان به حالت سکون نرسید. دست‌هایتان را از آن بردارید و آزمون را دوباره اجرا کنید.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>فرمان حرکت نکرد. اگر «گشتاور فرمان» بالاتر از توان فرمان تنظیم شده، آن را روی مقدار خود فرمان بگذارید و آزمون را دوباره اجرا کنید.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>فرمان به انتهای برد خود نزدیک شد. آن را در مرکز قرار دهید و آزمون را دوباره اجرا کنید.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>حرکت فرمان قابل خواندن نبود. آزمون را دوباره اجرا کنید.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>فرمان دیگر پاسخ نمی‌دهد. بررسی کنید که متصل باشد و موتور در حال اجرا باشد.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>این فرمان در حال استفاده نیست. آن را به یک کنترلر اختصاص دهید و موتور را شروع کنید، سپس آزمون را اجرا کنید.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>لختی</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>پیش از این، فرمان {0}° از مرکز عبور می‌کرد.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>اکنون {0}° از مرکز عبور می‌کند و {1}° از مرکز می‌ایستد.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>اکنون بدون عبور از مرکز برمی‌گردد و {0}° از مرکز می‌ایستد.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>اجرای دوباره</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>اعمال</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>بازنشانی بازخورد قفل هدایت</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>بازنشانی تپش لرزش هنگام قفل</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>بازنشانی لرزش ماشه هنگام قفل</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>چیدمان گزارش‌های PlayStation Move، کالیبراسیون حسگر و دست‌دهی لوازم جانبی EXT، اثر Thomas Perl، تطبیق‌داده‌شده با ویکی moveonpc. پیاده‌سازی PadForge کد C# مستقل است. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>مراجع تله‌متری مسابقه</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>چیدمان‌های حافظه مشترک و UDP که مبنای تله‌متری بازی و LEDهای تعویض دنده RPM در فرمان هستند، خوانده‌شده از assettocorsasharedmemory (MIT)، CMTelemetry، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) و vAzhureRacingHub (GPL-3.0). هیچ کد GPL یا LGPL عرضه نمی‌شود.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>چیدمان‌های حافظه مشترک و UDP که مبنای تله‌متری بازی و LEDهای تعویض دنده RPM در فرمان هستند، خوانده‌شده از assettocorsasharedmemory (MIT)، CMTelemetry، CrewChiefV4 (MIT)، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، r3e-api (Unlicense)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) و vAzhureRacingHub (GPL-3.0). هیچ کد GPL یا LGPL عرضه نمی‌شود.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>مستندات جفت‌سازی بلوتوث و گزارش‌های DualShock 3. GPL-2.0 و GPL-3.0، فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>محدوده تضعیف 48 dB میکروفون DualSense مجازی. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>مراجع پروتکل فرمان‌ها</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>گزارش‌های فورس فیدبک بومی و LED تعویض دنده RPM برای فرمان‌های Fanatec، Thrustmaster و Logitech، خوانده‌شده از hid-fanatecff (GPL-2.0)، hid-tmff2 (GPL-2.0-or-later)، new-lg4ff (GPL-2.0-or-later)، oversteer (GPL-3.0) و thrustmaster-led-linux (GPL-3.0)، و تطبیق‌داده‌شده با افزونه LED برنامه SimHub اثر prodigal.knight (MIT) و tm-bt-led (MIT). فقط مستندات، هیچ کد GPL عرضه نمی‌شود.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>مراجع حس فرمان</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>مدل گشتاور فرمان که مبنای حالت «خودرو» در «مرکزگیری» است، از Balachandran و Gerdes، «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). پارامترهای خودرو از commonroad-vehicle-models (BSD-3-Clause) و global_racetrajectory_optimization (LGPL-3.0) خوانده شده‌اند. تریل تایر از کتاب Tire and Vehicle Dynamics اثر Pacejka و چسبندگی جاده از کتاب Theory of Ground Vehicles اثر Wong گرفته شده است. فقط اعداد، هیچ کدی از آن‌ها عرضه نمی‌شود.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>مراجع I/O آرکید</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>پروتکل‌هایی که مبنای درایورهای انشعاب SDL برای بردهای I/O آرکید Namco و Konami و بردهای JVS هستند، خوانده‌شده از arcade-docs (WTFPL)، bemanitools (Unlicense)، Dolphin (GPL-2.0-or-later)، ITAIKO-firmware (MIT)، JoypadOS (Apache-2.0)، jvsio (BSD-3-Clause)، MAME (BSD-3-Clause)، OpenITG (مجوز StepMania)، p4io-mdxfdrv (GPL-3.0)، RPCS3 (GPL-2.0) و TaikoZucchini (MIT). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>مراجع کنترلرهای بلوتوث LE</value></data>

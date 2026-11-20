@@ -3792,6 +3792,7 @@ namespace PadForge.Services
                 padVm.WheelRotationRangeEnabled = ps.RotationRangeEnabled != "0";
                 padVm.WheelAutoCenter = TryParseInt(ps.AutoCenterStrength, 0);
                 padVm.WheelRpmLeds = ps.WheelRpmLeds == "1";
+                InputService.LoadCenteringSettings(padVm, ps, us.InstanceGuid);
                 InputService.LoadFalconSettings(padVm, ps);
                 padVm.LeftMotorStrength = TryParseInt(ps.LeftMotorStrength, 100);
                 padVm.RightMotorStrength = TryParseInt(ps.RightMotorStrength, 100);
@@ -5820,6 +5821,7 @@ namespace PadForge.Services
                     ps.RotationRangeEnabled = padVm.WheelRotationRangeEnabled ? "1" : "0";
                     ps.AutoCenterStrength = padVm.WheelAutoCenter.ToString();
                     ps.WheelRpmLeds = padVm.WheelRpmLeds ? "1" : "0";
+                    padVm.SaveCentering(ps);
                     InputService.SaveFalconSettings(padVm, ps);
                     ps.LeftMotorStrength = padVm.LeftMotorStrength.ToString();
                     ps.RightMotorStrength = padVm.RightMotorStrength.ToString();

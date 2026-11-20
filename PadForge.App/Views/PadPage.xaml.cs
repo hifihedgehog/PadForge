@@ -487,6 +487,7 @@ namespace PadForge.Views
             PadForge.Common.IconPackageManager.RegistryChanged += OnIconPackageRegistryChanged;
             RefreshIconPackages();
             SyncBassShakerMeterTimer();
+            SyncCenteringLiveTimer();
             // Peripheral outputs (#494): a mouse found to have haptics gains
             // its Force Feedback tab, and a path that starts answering
             // changes the tab's line.
@@ -510,6 +511,7 @@ namespace PadForge.Views
             _screenColorStatusTimer?.Stop();
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             _bassShakerMeterTimer?.Stop();
+            _centeringLiveTimer?.Stop();
             PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
@@ -696,6 +698,7 @@ namespace PadForge.Views
             // Slot switch: the meter timer follows the NEW slot's selected
             // tab (a different slot may sit on a different tab).
             SyncBassShakerMeterTimer();
+            SyncCenteringLiveTimer();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
             // populates. WPF's ComboBox with SelectedValuePath can land on a
@@ -940,6 +943,10 @@ namespace PadForge.Views
             bool hasTouchpad = false;
             bool hasWheel = false;
             bool hasGenericWheel = false;
+            // The selected device's row and what its wheel can do for
+            // centering (#588), for the Centering card.
+            PadForge.Engine.Data.UserDevice selectedRow = null;
+            PadForge.Common.Input.WheelCenteringFacts wheelFacts = default;
             // Controller speaker audio is a Sony-only feature: only the DualSense
             // family and the DualShock 4 have a speaker. Same gating shape as
             // adaptive triggers (DualSense) or impulse triggers (Xbox One+).
@@ -1003,27 +1010,26 @@ namespace PadForge.Views
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
                          || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId)
                          || PadForge.Common.Input.SwitchHomeLedSetter.IsSwitchHomeLedDevice(ud.VendorId, ud.ProdId);
-                        // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
-                        // RPM LEDs). Same VID/PID gates the wheel HID writers use.
-                        hasWheel =
-                            PadForge.Common.Input.LogitechRawHidWriter.IsLogitechWheel(ud.VendorId, ud.ProdId)
-                         || PadForge.Common.Input.FanatecRawHidWriter.IsFanatecWheel(ud.VendorId, ud.ProdId)
-                         || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
-                        // Generic (non-vendor) FFB wheel routed through SDL: no native range
-                        // or RPM-LED support, but a spring-capable haptic still self-centers
-                        // from the Auto Centering slider (ForceFeedbackState.HoldsOnlyTheSpring).
-                        // Show the Wheel tab with only the auto-center row in that case.
+                        // A Logitech, a Fanatec or a Thrustmaster wheel gets the Wheel
+                        // group with both of its cards: Wheel (rotation range, RPM LEDs)
+                        // and Centering. The gates are the wheel writers' own.
                         //
-                        // The haptic half of the gate is the ENGINE's predicate, shared with
-                        // the spring itself, so the tab and the spring cannot drift apart
-                        // (#282). The old inline copy also required NumHapticAxes <= 1, which
-                        // hid the tab for wheelbase-plus-pedals composites reporting two axes
-                        // (Moza). CapType == Driving stays as the belt on the persisted row.
-                        hasGenericWheel =
-                            !hasWheel
-                         && ud.CapType == InputDeviceType.Driving
-                         && ud.Device != null
-                         && PadForge.Engine.ForceFeedbackState.IsGenericWheelSpringCapable(ud.Device);
+                        // A wheel routed through SDL has no range and no RPM LEDs to
+                        // set, and still centers, so it gets the group with the
+                        // Centering card alone: Spring mode where its driver lists a
+                        // spring (ForceFeedbackState.HoldsOnlyTheSpring), Vehicle mode
+                        // where it lists a constant force (#588).
+                        //
+                        // What a wheel can do is asked of the ENGINE's predicates, shared
+                        // with the forces themselves, so the card and the forces cannot
+                        // drift apart (#282). An inline copy once also required
+                        // NumHapticAxes <= 1, which hid the group for a wheelbase with
+                        // pedals that reports two axes (Moza). The saved row's type,
+                        // Driving, stays as the belt (WheelCenteringFacts.Of).
+                        selectedRow = ud;
+                        wheelFacts = PadForge.Common.Input.WheelCenteringFacts.Of(ud);
+                        hasWheel = wheelFacts.NativeWheel;
+                        hasGenericWheel = !hasWheel && wheelFacts.HasCard;
                         // Pad count drives the Touchpad tab's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.
@@ -1250,12 +1256,17 @@ namespace PadForge.Views
                 TabMouse.Visibility = hasMouse ? Visibility.Visible : Visibility.Collapsed;
             if (TabWheel != null)
                 TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
-            // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
-            // SDL wheel that only supports the software auto-center spring.
-            if (WheelRangeRow != null)
-                WheelRangeRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
-            if (WheelRpmRow != null)
-                WheelRpmRow.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
+            // The rotation range and the RPM LEDs are the native writers', so
+            // the Wheel card shows for their wheels alone. The Centering card
+            // shows for every wheel the group shows for.
+            if (WheelCard != null)
+                WheelCard.Visibility = hasWheel ? Visibility.Visible : Visibility.Collapsed;
+            // The card follows the wheel as it is now: one routed through SDL
+            // that connects after its settings loaded has its modes from here.
+            _centeringRow = hasWheel || hasGenericWheel ? selectedRow : null;
+            if (selectedRow != null && DataContext is PadViewModel centeringVm)
+                centeringVm.SetCenteringWheel(wheelFacts);
+            SyncCenteringLiveTimer();
             if (IndicatorLedsCard != null)
                 IndicatorLedsCard.Visibility = hasIndicatorLeds ? Visibility.Visible : Visibility.Collapsed;
 
@@ -2480,6 +2491,80 @@ namespace PadForge.Views
         /// picker (#236).</summary>
         private void RumbleAudioEndpoint_DropDownOpened(object sender, EventArgs e)
             => _currentPadVm?.RefreshRumbleAudioEndpoints();
+
+        // ─────────────────────────────────────────────
+        //  Centering card (#588)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The selected device's row while it is a wheel with a
+        /// Centering card, or null. Set by SyncTabVisibility.</summary>
+        private PadForge.Engine.Data.UserDevice _centeringRow;
+
+        /// <summary>Drives the card's live view: the mark on the chart, the
+        /// angle and the torque, a game's speed, and the line that says what
+        /// holds the force back. Runs only while the page is loaded, the
+        /// selected device is a wheel in Vehicle mode and its group shows.
+        /// Every other state stops the timer, as the Bass Shakers meters'
+        /// does.</summary>
+        private System.Windows.Threading.DispatcherTimer _centeringLiveTimer;
+
+        private void SyncCenteringLiveTimer()
+        {
+            var vm = _currentPadVm;
+            bool wanted = IsLoaded && vm != null && _centeringRow != null
+                && vm.CenteringIsVehicle
+                && vm.IsTabShown(PadViewModel.WheelTabIndex);
+            if (!wanted)
+            {
+                _centeringLiveTimer?.Stop();
+                // Nothing is live on a card that does not show: the mark and
+                // the readouts rest, and the curve goes back to the settings'
+                // own speed.
+                vm?.UpdateCenteringLive(default);
+                return;
+            }
+            if (_centeringLiveTimer == null)
+            {
+                _centeringLiveTimer = new System.Windows.Threading.DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(33),
+                };
+                _centeringLiveTimer.Tick += (s, e) =>
+                {
+                    // Iconic gate: the tab flag does not flip on minimize.
+                    if (PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+                    UpdateCenteringLive();
+                };
+            }
+            _centeringLiveTimer.Start();
+            UpdateCenteringLive();
+        }
+
+        private void UpdateCenteringLive()
+        {
+            var vm = _currentPadVm;
+            var row = _centeringRow;
+            if (vm == null || row == null)
+            {
+                _centeringLiveTimer?.Stop();
+                return;
+            }
+            vm.UpdateCenteringLive(row.Centering.Live(PadForge.Engine.Steering.WheelCenteringRuntime.NowMs()));
+        }
+
+        /// <summary>Opens the Release Test on the selected wheel. Apply keeps
+        /// the measurement with the wheel's row, where Vehicle mode reads it
+        /// on its next poll.</summary>
+        private void CenteringReleaseTest_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = _currentPadVm;
+            var row = _centeringRow;
+            if (vm == null || row == null) return;
+            var dialog = new ReleaseTestDialog(row, vm) { Owner = Window.GetWindow(this) };
+            if (dialog.ShowDialog() != true) return;
+            vm.CenteringMeasured = true;
+            (Application.Current.MainWindow as MainWindow)?.SettingsService?.MarkDirty();
+        }
 
         // ─────────────────────────────────────────────
         //  Bass Shakers meters (#236)
@@ -4115,8 +4200,10 @@ namespace PadForge.Views
             {
                 SyncSectionSelection();
                 // Bass Shakers meters (#236) run only while their group
-                // shows.
+                // shows, and the Centering card's live view (#588) while its
+                // does.
                 SyncBassShakerMeterTimer();
+                SyncCenteringLiveTimer();
                 // A tab selected from outside this page is a jump to its
                 // group. One selected here keeps the column where it was.
                 if (!_keepScroll && sender is PadViewModel tabVm)
@@ -4179,6 +4266,11 @@ namespace PadForge.Views
                 SyncSectionVisibility();
                 EnsureSelectedTabAvailable();
                 SyncBassShakerMeterTimer();
+            }
+            else if (e.PropertyName == nameof(PadViewModel.CenteringIsVehicle))
+            {
+                // The live view runs in Vehicle mode alone (#588).
+                SyncCenteringLiveTimer();
             }
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {

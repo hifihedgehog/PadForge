@@ -3413,7 +3413,88 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Resetare unghi de rotație</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Resetare forță de centrare automată</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Resetare LED-uri RPM pentru schimbarea treptei</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Unghi de rotație, centrare automată și lumini de schimbare a treptei pentru volanele cu force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Unghi de rotație și lumini de schimbare a treptei pentru volanele cu force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrare</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Readuce volanul în centru, ca un arc simplu sau ca direcția unei mașini.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Resetare centrare</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Arc trage volanul spre centru cu o singură forță. Vehicul calculează cuplul pe care îl dă direcția unei mașini la viteza ei, pe baza unui model de pneuri.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Arc</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vehicul</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vehicul</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Mașina a cărei direcție o preia volanul. Fiecare este un model de vehicul publicat.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Compactă</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Mașină de curse</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Viteză</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Din joc citește viteza mașinii din telemetria jocului și folosește Viteză fixă cât timp niciun joc nu trimite una. Fixă folosește Viteză fixă permanent.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Din joc</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fixă</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Greutatea direcției</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Cât de grea este direcția. 100% este greutatea mașinii reale.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Cursa volanului</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Cât se rotește acest volan de la un capăt la celălalt. Setați valoarea setării proprii a volanului.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Cuplul direcției</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Unghi</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Cuplu</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limita volanului {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Cuplul direcției la coroana volanului în funcție de unghiul de virare. La {0} atinge maximul de {1} N·m la {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Senzație la centru</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Cât de repede crește cuplul odată cu accelerația laterală în viraj lângă centru, în N·m per g până la 0.05 g. Mai mult înseamnă o direcție mai stabilă.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Rigiditatea cuplului</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Cât de repede crește cuplul pe măsură ce volanul se îndepărtează de centru, în N·m per grad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Liniaritate</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Panta cuplului între 0.10 și 0.15 g față de panta lui la centru. Mai puțin înseamnă că direcția devine ușoară mai devreme.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Cuplu maxim</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Cel mai mare cuplu cerut de mașină volanului, alături de cel mai mare pe care îl dă volanul.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>din {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Această mașină cere mai mult cuplu decât are volanul, așa că vârful curbei este tăiat.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Senzație la centru, servodirecție, amortizare, frecare, aderență, viteză fixă, cuplu volan</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Cât de ferm își ține direcția centrul la viteză mică. 100% este valoarea mașinii reale.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servodirecție</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Cât de mult efort ia servodirecția pe măsură ce crește accelerația în viraj. Mai mult înseamnă o direcție mai ușoară departe de centru.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Amortizare</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Cât de tare se opune volanul rotirilor rapide. 100% este valoarea care îl readuce fără să depășească centrul.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Frecare</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>O frânare constantă care se opune rotirii în ambele sensuri.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Aderență</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Aderența drumului. Direcția devine ușoară acolo unde pneurile din față pierd aderența.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Uscat</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Ud</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Zăpadă</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Gheață</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Viteză fixă</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Viteza la care se consideră că merge mașina când Viteză este Fixă și cât timp niciun joc nu trimite una.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Cuplu volan</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Cel mai mare cuplu pe care îl dă acest volan. PadForge îl completează acolo unde producătorul volanului îl publică. O valoare peste cea a volanului slăbește toate forțele.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Cuplu volan nu este setat pentru acest volan, deci forțele lui sunt menținute scăzute. Introduceți valoarea la Mai multe.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Volanul a început să oscileze singur, așa că forța este redusă. Rulați Test de eliberare.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Forța este oprită deoarece volanul a continuat să oscileze sau s-a îndepărtat de centru. Rulați Test de eliberare.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Test de eliberare</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Măsoară acest volan și setează amortizarea astfel încât să revină fără depășire</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Încă nerulat</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Măsurat</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Luați mâinile de pe volan. PadForge îl rotește la {0}°, îl eliberează și înregistrează cum revine.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Unghiul volanului în {0} secunde după fiecare eliberare.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Înainte</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>După</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Se măsoară, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Gata, 2 rulări</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Oprit</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Volanul nu s-a oprit. Luați mâinile de pe el și rulați din nou testul.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Volanul nu s-a mișcat. Dacă Cuplu volan este setat peste ce dă volanul, setați valoarea proprie a volanului și rulați din nou testul.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Volanul s-a apropiat de capătul cursei. Centrați volanul și rulați din nou testul.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Mișcarea volanului nu a putut fi citită. Rulați din nou testul.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Volanul nu mai răspunde. Verificați dacă este conectat și dacă motorul este pornit.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Acest volan nu este folosit. Atribuiți volanul unui controler și porniți motorul, apoi rulați testul.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inerție</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Înainte, volanul depășea centrul cu {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Acum depășește centrul cu {0}° și se oprește la {1}° de centru.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Acum revine fără depășire și se oprește la {0}° de centru.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Rulați din nou</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplicare</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Resetare feedback la limita direcției</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Resetare impuls de vibrație la limită</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Resetare vibrație în trăgaci la limită</value></data>
@@ -4919,7 +5000,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Structura rapoartelor PlayStation Move, calibrarea senzorilor și negocierea cu accesoriile EXT, de Thomas Perl, verificate cu wiki-ul moveonpc. Implementarea din PadForge este cod C# original. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referințe pentru telemetria de curse</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Structurile de memorie partajată și UDP din spatele Telemetriei de joc și al LED-urilor RPM de schimbare a treptei ale volanului, citite din assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) și vAzhureRacingHub (GPL-3.0). Nu este inclus niciun cod GPL sau LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Structurile de memorie partajată și UDP din spatele Telemetriei de joc și al LED-urilor RPM de schimbare a treptei ale volanului, citite din assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) și vAzhureRacingHub (GPL-3.0). Nu este inclus niciun cod GPL sau LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Documentație despre asocierea Bluetooth și rapoartele DualShock 3. GPL-2.0 și GPL-3.0, citit doar ca documentație, nu este inclus niciun cod GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Intervalul de atenuare de 48 dB al microfonului DualSense virtual. Citit doar ca documentație, nu este inclus niciun cod GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referințe pentru protocoalele volanelor</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Rapoartele native de force feedback și de LED-uri RPM pentru schimbarea treptei la volanele Fanatec, Thrustmaster și Logitech, citite din hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) și thrustmaster-led-linux (GPL-3.0) și verificate cu pluginul LED SimHub de prodigal.knight (MIT) și tm-bt-led (MIT). Doar documentație, nu este inclus niciun cod GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referințe pentru senzația direcției</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Modelul cuplului de direcție din spatele modului Vehicul din Centrare, de la Balachandran și Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Parametrii vehiculului sunt citiți din commonroad-vehicle-models (BSD-3-Clause) și global_racetrajectory_optimization (LGPL-3.0). Avansul pneului provine din Tire and Vehicle Dynamics de Pacejka, iar aderența drumului din Theory of Ground Vehicles de Wong. Sunt luate doar valori, nu este inclus niciun cod din ele.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referințe I/O pentru automate arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protocoalele din spatele driverelor din forkul SDL pentru plăcile I/O arcade Namco și Konami și pentru plăcile JVS, citite din arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (licența StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) și TaikoZucchini (MIT). Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referințe pentru controlerele Bluetooth LE</value></data>

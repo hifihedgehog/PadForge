@@ -1170,7 +1170,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Reset renj bilong tanim</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Reset strong bilong go bek long namel</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Reset ol LED bilong RPM shift</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Renj bilong stiaring, go bek long namel, na ol lait bilong shift bilong ol stiaring wil i gat force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Renj bilong stiaring na ol lait bilong shift bilong ol stiaring wil i gat force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Go bek long namel</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bringim stiaring wil i go bek long namel, olsem wanpela spring nating o olsem stiaring bilong ka.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Reset go bek long namel</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Spring i pulim wil i go long namel wantaim wanpela strong tasol. Ka i wokim torque we stiaring bilong ka i givim long spit bilong en, long wanpela model bilong ol taia.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Ka</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Ka</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Ka we wil i kisim stiaring bilong en. Olgeta wan wan em i model bilong ka ol inginia i bin putim aut.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Liklik ka</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Ven</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Ka bilong resis</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Spit</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Long gem i ritim spit bilong ka long telemetry bilong gem, na i yusim Fiks spit taim i no gat gem i salim. Fiks i yusim Fiks spit oltaim.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Long gem</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fiks</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Hevi bilong stiaring</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Hamas stiaring i hevi. 100% em i hevi bilong ka yet.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Renj bilong wil</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Hamas dispela wil i tanim long wanpela en i go long narapela en. Setim long seting bilong wil yet.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torque bilong stiaring</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Engel</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torque</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Mak bilong wil {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torque bilong stiaring long rim long engel bilong stiaring. Long {0} em i go antap tru long {1} N·m long {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Pilim long namel</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Hamas torque i kamap kwik taim ka i tanim klostu long namel, long N·m long wan wan g i go inap long 0.05 g. Moa i pilim strongpela moa long rot.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Strong bilong torque</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Hamas torque i kamap kwik taim wil i lusim namel, long N·m long wan wan digri.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Stret lain</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Hamas torque i go antap namel long 0.10 na 0.15 g wantaim hamas em i go antap long namel. Daunbilo i min stiaring i kamap isi kwik moa.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Torque antap tru</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Torque antap tru we ka i askim long wil, klostu long antap tru we wil i givim.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>long {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Dispela ka i askim moa torque long wil i gat, olsem na antap bilong lain i katim.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Pilim long namel, pawa halivim, damping, friction, grip, fiks spit, torque bilong wil</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hamas stiaring i holim namel strong taim spit i daun. 100% em i bilong ka yet.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Pawa halivim</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hamas pawa stiaring i rausim hevi taim ka i tanim moa. Moa i min stiaring i isi moa longwe long namel.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Damping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Hamas wil i pait strong long tanim kwik. 100% em i bringim wil i go bek na i no abrusim namel.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friction</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Wanpela strong i pul oltaim i pait long tanim long wanpela sait o narapela sait.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Grip bilong rot. Stiaring i kamap isi taim ol taia long pes i no gat grip moa.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Drai</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Wetpela</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sno</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ais</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fiks spit</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Spit ka i ran long en taim Spit i Fiks, na taim i no gat gem i salim.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torque bilong wil</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Torque antap tru dispela wil i givim. PadForge i putim long en taim kampani i wokim wil i putim aut. Namba i winim namba bilong wil yet i mekim olgeta strong i kamap malolo.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Torque bilong wil i no setim yet long dispela wil, olsem na strong bilong en i stap daun. Putim long Moa.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Wil i stat long seksek em yet, olsem na strong i stap daun. Ranim Test bilong lusim.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Strong i of long wanem wil i seksek yet o i ranawe long namel. Ranim Test bilong lusim.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Test bilong lusim</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mesarim dispela wil na setim damping long em i go bek na i no abrusim namel</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>I no ranim yet</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mesarim pinis</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Rausim han bilong yu long wil. PadForge i tanim em i go long {0}°, lusim em na raitim olsem wanem em i kam bek.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Engel bilong wil long {0} sekon bihain long olgeta taim em i lus.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Bipo</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Bihain</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mesarim, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Pinis, 2 ran</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Stop pinis</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Wil i no malolo. Rausim han bilong yu long em na ranim test gen.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Wil i no muv. Sapos Torque bilong wil i antap long wanem wil i givim, setim long namba bilong wil yet na ranim test gen.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Wil i kam klostu long pinis bilong renj bilong en. Putim em long namel na ranim test gen.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>I no inap ritim muv bilong wil. Ranim test gen.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Wil i no bekim moa. Lukim olsem em i konek na ensin i ran.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Dispela wil i no wok. Putim em long wanpela kontrola na kirapim ensin, na bihain ranim test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inertia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Bipo, wil i abrusim namel long {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nau em i abrusim namel long {0}° na i malolo {1}° longwe long namel.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nau em i go bek na i no abrusim namel na i malolo {0}° longwe long namel.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Ranim gen</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Yusim</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Nois</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Namel</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Antap long skrin</value></data>

@@ -3186,7 +3186,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>ഭ്രമണ പരിധി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ഓട്ടോ സെന്ററിംഗ് ശക്തി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM ഷിഫ്റ്റ് LED-കൾ പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ഫോഴ്സ് ഫീഡ്ബാക്ക് വീലുകൾക്കുള്ള സ്റ്റിയറിംഗ് പരിധി, ഓട്ടോ സെന്ററിംഗ്, ഷിഫ്റ്റ് ലൈറ്റുകൾ.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ഫോഴ്സ് ഫീഡ്ബാക്ക് വീലുകൾക്കുള്ള സ്റ്റിയറിംഗ് പരിധിയും ഷിഫ്റ്റ് ലൈറ്റുകളും.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>സെന്ററിംഗ്</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>വീലിനെ ഒരു സാധാരണ സ്പ്രിംഗ് പോലെയോ കാറിന്റെ സ്റ്റിയറിംഗ് പോലെയോ മധ്യത്തിലേക്ക് തിരികെ കൊണ്ടുവരുന്നു.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>സെന്ററിംഗ് പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>മോഡ്</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>സ്പ്രിംഗ് ഒറ്റ ശക്തിയിൽ വീലിനെ മധ്യത്തിലേക്ക് വലിക്കുന്നു. വാഹനം ഒരു ടയർ മോഡലിൽ നിന്ന് കാറിന്റെ വേഗതയിൽ അതിന്റെ സ്റ്റിയറിംഗ് നൽകുന്ന ടോർക്ക് കണക്കാക്കുന്നു.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>സ്പ്രിംഗ്</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>വാഹനം</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>വാഹനം</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>വീൽ ഏതു കാറിന്റെ സ്റ്റിയറിംഗ് സ്വീകരിക്കണമെന്ന് ഇവിടെ തിരഞ്ഞെടുക്കുന്നു. ഓരോന്നും പ്രസിദ്ധീകരിക്കപ്പെട്ട ഒരു വാഹന മോഡലാണ്.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>സെഡാൻ</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>കോംപാക്റ്റ്</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>വാൻ</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>റേസ് കാർ</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>വേഗത</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ഗെയിമിൽ നിന്ന് എന്നത് ഗെയിമിന്റെ ടെലിമെട്രിയിൽ നിന്ന് കാറിന്റെ വേഗത വായിക്കുന്നു, ഒരു ഗെയിമും അത് അയയ്ക്കാത്തപ്പോൾ സ്ഥിര വേഗത ഉപയോഗിക്കുന്നു. സ്ഥിരം എപ്പോഴും സ്ഥിര വേഗത ഉപയോഗിക്കുന്നു.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ഗെയിമിൽ നിന്ന്</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>സ്ഥിരം</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ഭാരം</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>സ്റ്റിയറിംഗിന് എത്ര ഭാരമുണ്ടെന്ന് നിശ്ചയിക്കുന്നു. 100% എന്നത് കാറിന്റേതുതന്നെയാണ്.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>വീൽ പരിധി</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ഈ വീൽ ഒരറ്റത്തുനിന്ന് മറ്റേ അറ്റം വരെ എത്ര തിരിയുന്നു. വീലിന്റെ സ്വന്തം ക്രമീകരണത്തിനൊത്ത് ഇത് സജ്ജമാക്കുക.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ടോർക്ക്</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>കോൺ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ടോർക്ക്</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>വീലിന്റെ പരിധി {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>റിമ്മിലെ സ്റ്റിയറിംഗ് ടോർക്ക്, സ്റ്റിയറിംഗ് കോണിനെതിരെ. {0} വേഗതയിൽ അത് {2}° കോണിൽ {1} N·m എന്ന ഉയർന്ന മൂല്യത്തിലെത്തുന്നു.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>സെന്റർ ഫീൽ</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>മധ്യത്തിനടുത്ത് കോർണറിംഗിനനുസരിച്ച് ടോർക്ക് എത്ര വേഗത്തിൽ കൂടുന്നു, 0.05 g വരെ ഓരോ g-യ്ക്കും N·m എന്ന കണക്കിൽ. കൂടുതലായാൽ സ്റ്റിയറിംഗ് കൂടുതൽ ഉറച്ചതായി തോന്നും.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ടോർക്ക് കാഠിന്യം</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>വീൽ മധ്യത്തിൽ നിന്ന് മാറുമ്പോൾ ടോർക്ക് എത്ര വേഗത്തിൽ കൂടുന്നു, ഓരോ ഡിഗ്രിക്കും N·m എന്ന കണക്കിൽ.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>രേഖീയത</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 മുതൽ 0.15 g വരെയുള്ള ടോർക്കിന്റെ ചരിവ്, മധ്യത്തിലെ ചരിവുമായി താരതമ്യം ചെയ്തത്. കുറവായാൽ സ്റ്റിയറിംഗ് വേഗത്തിൽ ലഘുവാകും.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>പരമാവധി ടോർക്ക്</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>കാർ വീലിനോട് ആവശ്യപ്പെടുന്ന പരമാവധി ടോർക്ക്, വീൽ നൽകുന്ന പരമാവധിക്കൊപ്പം.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m ൽ</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ഈ കാർ വീലിനുള്ളതിലും കൂടുതൽ ടോർക്ക് ആവശ്യപ്പെടുന്നതിനാൽ വക്രത്തിന്റെ മുകൾഭാഗം മുറിഞ്ഞുപോകുന്നു.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>സെന്റർ ഫീൽ, പവർ അസിസ്റ്റ്, ഡാംപിംഗ്, ഘർഷണം, ഗ്രിപ്പ്, സ്ഥിര വേഗത, വീൽ ടോർക്ക്</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>കുറഞ്ഞ വേഗതയിൽ സ്റ്റിയറിംഗ് മധ്യത്തെ എത്ര ശക്തമായി പിടിക്കുന്നു. 100% എന്നത് കാറിന്റേതുതന്നെയാണ്.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>പവർ അസിസ്റ്റ്</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>കോർണറിംഗ് കൂടുമ്പോൾ പവർ സ്റ്റിയറിംഗ് എത്ര ഭാരം കുറയ്ക്കുന്നു. കൂടുതലായാൽ മധ്യത്തിൽ നിന്ന് അകലെ സ്റ്റിയറിംഗ് ലഘുവാകും.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ഡാംപിംഗ്</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>വേഗത്തിലുള്ള തിരിവുകളെ വീൽ എത്ര ശക്തമായി ചെറുക്കുന്നു. 100% ആയാൽ വീൽ മധ്യം കടന്ന് ആടാതെ തിരികെ വരും.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ഘർഷണം</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>ഏതു ദിശയിലും തിരിയുന്നതിനെ ചെറുക്കുന്ന സ്ഥിരമായ വലി.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ഗ്രിപ്പ്</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>റോഡിന്റെ ഗ്രിപ്പ്. മുൻ ടയറുകളുടെ ഗ്രിപ്പ് തീരുന്നിടത്ത് സ്റ്റിയറിംഗ് ലഘുവാകും.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>വരണ്ടത്</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>നനഞ്ഞത്</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>മഞ്ഞ്</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ഐസ്</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>സ്ഥിര വേഗത</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>വേഗത സ്ഥിരം ആയിരിക്കുമ്പോഴും ഒരു ഗെയിമും വേഗത അയയ്ക്കാത്തപ്പോഴും കാർ ഓടുന്നതായി കണക്കാക്കുന്ന വേഗത.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>വീൽ ടോർക്ക്</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>ഈ വീൽ നൽകുന്ന പരമാവധി ടോർക്ക്. വീലിന്റെ നിർമ്മാതാവ് പ്രസിദ്ധീകരിച്ചിട്ടുള്ളിടത്ത് PadForge അത് സ്വയം നൽകുന്നു. വീലിന്റെ സ്വന്തം മൂല്യത്തിലും കൂടുതലായാൽ എല്ലാ ബലങ്ങളും ദുർബലമാകും.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ഈ വീലിന് വീൽ ടോർക്ക് സജ്ജമാക്കിയിട്ടില്ലാത്തതിനാൽ അതിന്റെ ബലങ്ങൾ കുറച്ചാണ് നിലനിർത്തുന്നത്. കൂടുതൽ എന്നതിന് കീഴിൽ അത് നൽകുക.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>വീൽ സ്വയം ആടാൻ തുടങ്ങിയതിനാൽ ബലം പിടിച്ചുനിർത്തിയിരിക്കുന്നു. റിലീസ് ടെസ്റ്റ് പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>വീൽ ആടിക്കൊണ്ടിരുന്നതിനാലോ മധ്യത്തിൽ നിന്ന് അകന്നുപോയതിനാലോ ബലം ഓഫ് ആക്കി. റിലീസ് ടെസ്റ്റ് പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>റിലീസ് ടെസ്റ്റ്</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ഈ വീൽ അളന്ന് മധ്യം കടന്ന് ആടാതെ തിരികെ വരാൻ ഡാംപിംഗ് സജ്ജമാക്കുന്നു</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ഇതുവരെ പ്രവർത്തിപ്പിച്ചിട്ടില്ല</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>അളന്നു</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>വീലിൽ നിന്ന് കൈകൾ എടുക്കുക. PadForge അതിനെ {0}° വരെ തിരിച്ച് വിട്ടശേഷം അത് തിരികെ വരുന്നത് രേഖപ്പെടുത്തുന്നു.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ഓരോ വിടലിനും ശേഷമുള്ള {0} സെക്കൻഡിൽ വീലിന്റെ കോൺ.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>മുമ്പ്</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>ശേഷം</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>അളക്കുന്നു, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>പൂർത്തിയായി, 2 റൺ</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>നിർത്തി</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>വീൽ നിശ്ചലമായില്ല. അതിൽ നിന്ന് കൈകൾ എടുത്ത് ടെസ്റ്റ് വീണ്ടും പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>വീൽ അനങ്ങിയില്ല. വീൽ ടോർക്ക് വീൽ നൽകുന്നതിലും കൂടുതലായി സജ്ജമാക്കിയിട്ടുണ്ടെങ്കിൽ, അത് വീലിന്റെ സ്വന്തം മൂല്യമായി സജ്ജമാക്കി ടെസ്റ്റ് വീണ്ടും പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>വീൽ അതിന്റെ പരിധിയുടെ അറ്റത്തോട് അടുത്തു. അതിനെ മധ്യത്തിലാക്കി ടെസ്റ്റ് വീണ്ടും പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>വീലിന്റെ ചലനം വായിക്കാൻ കഴിഞ്ഞില്ല. ടെസ്റ്റ് വീണ്ടും പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>വീൽ പ്രതികരിക്കുന്നത് നിർത്തി. അത് കണക്റ്റ് ചെയ്തിട്ടുണ്ടെന്നും എഞ്ചിൻ പ്രവർത്തിക്കുന്നുണ്ടെന്നും പരിശോധിക്കുക.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ഈ വീൽ ഉപയോഗത്തിലില്ല. അതിനെ ഒരു കൺട്രോളറിന് നൽകി എഞ്ചിൻ ആരംഭിച്ചശേഷം ടെസ്റ്റ് പ്രവർത്തിപ്പിക്കുക.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ജഡത്വം</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>മുമ്പ് വീൽ മധ്യം കടന്ന് {0}° ആടി.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ഇപ്പോൾ അത് മധ്യം കടന്ന് {0}° ആടുകയും മധ്യത്തിൽ നിന്ന് {1}° അകലെ നിൽക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ഇപ്പോൾ അത് ആടാതെ തിരികെ വരികയും മധ്യത്തിൽ നിന്ന് {0}° അകലെ നിൽക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>വീണ്ടും പ്രവർത്തിപ്പിക്കുക</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>പ്രയോഗിക്കുക</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ലോക്ക് ഫീഡ്ബാക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ലോക്കിൽ റംബിൾ പൾസ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ലോക്കിൽ ട്രിഗർ വൈബ്രേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
@@ -4647,7 +4728,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Thomas Perl-ന്റെ PlayStation Move റിപ്പോർട്ട് ലേഔട്ടുകൾ, സെൻസർ കാലിബ്രേഷൻ, EXT ആക്സസറി ഹാൻഡ്ഷേക്ക്, moveonpc വിക്കിയുമായി പരിശോധിച്ചത്. PadForge-ന്റെ നിർവഹണം സ്വന്തമായി എഴുതിയ C# ആണ്. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>റേസിംഗ് ടെലിമെട്രി റഫറൻസുകൾ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രിക്കും വീൽ RPM ഷിഫ്റ്റ് LED-കൾക്കും പിന്നിലെ ഷെയേർഡ്-മെമ്മറി, UDP ലേഔട്ടുകൾ, assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0) എന്നിവയിൽ നിന്ന് വായിച്ചത്. GPL അല്ലെങ്കിൽ LGPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രിക്കും വീൽ RPM ഷിഫ്റ്റ് LED-കൾക്കും പിന്നിലെ ഷെയേർഡ്-മെമ്മറി, UDP ലേഔട്ടുകൾ, assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0) എന്നിവയിൽ നിന്ന് വായിച്ചത്. GPL അല്ലെങ്കിൽ LGPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 ബ്ലൂടൂത്ത് ജോടിയാക്കൽ, റിപ്പോർട്ട് ഡോക്യുമെന്റേഷൻ. GPL-2.0, GPL-3.0, ഡോക്യുമെന്റേഷനായി മാത്രം വായിച്ചത്, GPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4670,6 +4751,8 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>വെർച്വൽ DualSense മൈക്രോഫോണിന്റെ 48 dB അറ്റെന്യുവേഷൻ പരിധി. ഡോക്യുമെന്റേഷനായി മാത്രം വായിച്ചത്, GPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>വീൽ പ്രോട്ടോക്കോൾ റഫറൻസുകൾ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, Logitech വീലുകൾക്കുള്ള നേറ്റീവ് ഫോഴ്സ് ഫീഡ്ബാക്ക്, RPM ഷിഫ്റ്റ് LED റിപ്പോർട്ടുകൾ, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), thrustmaster-led-linux (GPL-3.0) എന്നിവയിൽ നിന്ന് വായിച്ചത്, prodigal.knight-ന്റെ SimHub LED പ്ലഗിൻ (MIT), tm-bt-led (MIT) എന്നിവയുമായി പരിശോധിച്ചത്. ഡോക്യുമെന്റേഷൻ മാത്രം, GPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>സ്റ്റിയറിംഗ് ഫീൽ റഫറൻസുകൾ</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>സെന്ററിംഗിന്റെ വാഹനം മോഡിന് പിന്നിലെ സ്റ്റിയറിംഗ് ടോർക്ക് മോഡൽ, Balachandran, Gerdes എന്നിവരുടെ “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) എന്ന പ്രബന്ധത്തിൽ നിന്നുള്ളതാണ്. വാഹന പാരാമീറ്ററുകൾ commonroad-vehicle-models (BSD-3-Clause), global_racetrajectory_optimization (LGPL-3.0) എന്നിവയിൽ നിന്ന് വായിച്ചത്. ടയറിന്റെ ട്രെയിൽ Pacejka-യുടെ Tire and Vehicle Dynamics-ൽ നിന്നും, റോഡ് ഗ്രിപ്പ് Wong-ന്റെ Theory of Ground Vehicles-ൽ നിന്നുമാണ്. കണക്കുകൾ മാത്രം, ഇവയിലെ കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ആർക്കേഡ് I/O റഫറൻസുകൾ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco, Konami ആർക്കേഡ് I/O ബോർഡുകൾക്കും JVS ബോർഡുകൾക്കുമുള്ള SDL ഫോർക്കിന്റെ ഡ്രൈവറുകൾക്ക് പിന്നിലെ പ്രോട്ടോക്കോളുകൾ, arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0), TaikoZucchini (MIT) എന്നിവയിൽ നിന്ന് വായിച്ചത്. ഡോക്യുമെന്റേഷൻ മാത്രം, കോഡ് ഉൾപ്പെടുന്നില്ല.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>ബ്ലൂടൂത്ത് LE കൺട്രോളർ റഫറൻസുകൾ</value></data>

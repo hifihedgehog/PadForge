@@ -30,12 +30,35 @@ namespace PadForge.Common.Input
         private static readonly ConcurrentDictionary<string, CachedIo> s_ioCache =
             new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>Where <see cref="Write"/> hands its reports on this
+        /// thread while a test reads what a writer sends. Bound to the
+        /// thread, so tests that run side by side never see each other's
+        /// reports.</summary>
+        [ThreadStatic] private static Func<string, byte[], bool> t_captureForTest;
+
+        /// <summary>For a test that reads what a writer sends: until the
+        /// returned scope is disposed, <see cref="Write"/> on this thread
+        /// hands each report to <paramref name="sink"/>, takes its answer
+        /// as the write's, and opens nothing.</summary>
+        internal static IDisposable CaptureForTest(Func<string, byte[], bool> sink)
+        {
+            t_captureForTest = sink;
+            return new CaptureScope();
+        }
+
+        private sealed class CaptureScope : IDisposable
+        {
+            public void Dispose() => t_captureForTest = null;
+        }
+
         /// <summary>Writes a raw output report (caller includes the leading
         /// report-ID byte). Returns false on open or write failure.</summary>
         public static bool Write(string devicePath, byte[] buf)
         {
             if (string.IsNullOrEmpty(devicePath) || buf == null || buf.Length == 0)
                 return false;
+            var capture = t_captureForTest;
+            if (capture != null) return capture(devicePath, (byte[])buf.Clone());
             // The test host writes to no device (RealHidAccess).
             if (RealHidAccess.Refused) return false;
 

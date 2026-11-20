@@ -2,6 +2,8 @@ using System;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Text.Json;
+using PadForge.Common.Telemetry;
+using PadForge.Engine.Steering;
 
 namespace PadForge.Common.Input.Telemetry
 {
@@ -41,7 +43,9 @@ namespace PadForge.Common.Input.Telemetry
         /// Horizon packet carries 12 more bytes from 232 on, so its Dash
         /// fields sit 12 later. Gear 0 is reverse and 11 neutral. A Sled
         /// packet has no Dash fields, so its speed comes from the local
-        /// velocity at 32.
+        /// velocity at 32. The front wheels' puddle depths at 132 and 136
+        /// (FMData.cs WheelInPuddleFl, Fr) are in every layout, and are the
+        /// game's one word on the road.
         /// </summary>
         internal static bool TryForza(ReadOnlySpan<byte> p, TelemetryFrame f)
         {
@@ -59,6 +63,7 @@ namespace PadForge.Common.Input.Telemetry
             f.DrivingReported = true;
             f.MaxRpm = F32(p, 8);
             f.Rpm = F32(p, 16);
+            f.Grip = (float)RoadGrip.FrontAxle(SurfaceGrips.Forza(F32(p, 132)), SurfaceGrips.Forza(F32(p, 136)));
             if (shift < 0)
             {
                 float vx = F32(p, 32), vy = F32(p, 36), vz = F32(p, 40);
@@ -139,8 +144,11 @@ namespace PadForge.Common.Input.Telemetry
         /// their own (f1-24-udp README, "Will my old app still work"), and
         /// then the byte names the game or reads 0. It names the game on the
         /// status line when it is not 0. Car Telemetry (6) holds
-        /// 22 entries of 60 bytes. Car Status (7) entries are 47 bytes in
-        /// F1 22 and 55 later, max RPM at 17. Every F1 packet is claimed, so
+        /// 22 entries of 60 bytes, each closing with the surface under its
+        /// four wheels at 56, rear left, rear right, front left, front right
+        /// (PacketCarTelemetryData.h m_surfaceType, and the README's "What
+        /// is the order of the wheel arrays?"). Car Status (7) entries are
+        /// 47 bytes in F1 22 and 55 later, max RPM at 17. Every F1 packet is claimed, so
         /// a packet of another type never falls through to a rule that only
         /// knows lengths (format 2024's Motion Ex is 237 bytes, EA SPORTS
         /// WRC's length).
@@ -185,6 +193,7 @@ namespace PadForge.Common.Input.Telemetry
             f.Gear = gear < 0 ? -1 : gear;
             f.Rpm = U16(p, e + 16);
             f.MaxRpm = state.MaxRpm;
+            f.Grip = (float)RoadGrip.FrontAxle(SurfaceGrips.F1(p[e + 58]), SurfaceGrips.F1(p[e + 59]));
             return TelemetryDecode.Frame;
         }
 
@@ -304,10 +313,12 @@ namespace PadForge.Common.Input.Telemetry
         //  Project CARS 2, Automobilista 2
         // ─────────────────────────────────────────────
 
-        /// <summary>The last game state Project CARS 2 sent, -1 before any.</summary>
+        /// <summary>The last game state Project CARS 2 sent, -1 before any,
+        /// and the rain density that came with it, from 0 to 1.</summary>
         internal sealed class ProjectCars2State
         {
             public int GameState = -1;
+            public float Rain;
         }
 
         /// <summary>The packet sizes of Project CARS 2's UDP version 2
@@ -321,8 +332,11 @@ namespace PadForge.Common.Input.Telemetry
         /// Telemetry (0, 559 bytes): brake, throttle and clutch at 29 to 31,
         /// speed in m/s at 36, RPM and max RPM at 40 and 42, steering at 44,
         /// gear in the low nibble of 45 with 15 meaning reverse (tm-bt-led
-        /// projectcars2.js 87-88), handbrake at 370. Game State (4, 24
-        /// bytes): the low three bits of 14, 2 while playing.
+        /// projectcars2.js 87-88), the terrain under each tire at 140 with
+        /// the front left first (tm-bt-led SMS_UDP_Definitions.hpp
+        /// sTerrain), handbrake at 370. Game State (4, 24 bytes): the low
+        /// three bits of 14, 2 while playing, and the rain density at 17,
+        /// 0 to 255 (PacketGameStateData.h sRainDensity).
         /// </summary>
         internal static TelemetryDecode TryProjectCars2(ReadOnlySpan<byte> p, ProjectCars2State state, TelemetryFrame f)
         {
@@ -332,6 +346,7 @@ namespace PadForge.Common.Input.Telemetry
             if (type == 4 && p.Length == 24)
             {
                 state.GameState = p[14] & 7;
+                state.Rain = p[17] / 255f;
                 return TelemetryDecode.Claimed;
             }
             if (type != 0 || p.Length != 559) return TelemetryDecode.Claimed;
@@ -346,6 +361,7 @@ namespace PadForge.Common.Input.Telemetry
             int gear = p[45] & 15;
             f.Gear = gear == 15 ? -1 : gear;
             f.Handbrake = p[370] / 255f;
+            f.Grip = (float)RoadGrip.FrontAxle(SurfaceGrips.Madness(p[140], state.Rain), SurfaceGrips.Madness(p[141], state.Rain));
             if (state.GameState >= 0)
             {
                 f.DrivingReported = true;
@@ -361,7 +377,12 @@ namespace PadForge.Common.Input.Telemetry
         /// <summary>The bytes each page needs for the fields read below.</summary>
         internal const int KunosPhysicsBytes = 368;
         internal const int KunosStaticBytes = 416;
-        internal const int KunosGraphicsBytes = 8;
+        /// <summary>What the reader copies of the graphics page: through
+        /// Competizione's surface grip. The decoder needs the status alone,
+        /// <see cref="KunosGraphicsLeastBytes"/>, and reads the grip from a
+        /// page long enough to hold it.</summary>
+        internal const int KunosGraphicsBytes = AssettoCorsaTelemetrySource.CompetizioneSurfaceGripOffset + 4;
+        internal const int KunosGraphicsLeastBytes = 8;
 
         /// <summary>
         /// The three shared memory pages both games write (tm-bt-led
@@ -370,14 +391,21 @@ namespace PadForge.Common.Input.Telemetry
         /// 20, steerAngle 24, speedKmh 28, clutch 364, which reads 1 at rest
         /// (vAzhure GameListener.cs 221 inverts it). Static: smVersion at 0,
         /// 1.8 and later for ACC, maxRpm at 412. Graphics: status at 4, 2
-        /// while live.
+        /// while live, and surfaceGrip at 280 in Assetto Corsa and 1240 in
+        /// Competizione, whose page holds sixty cars ahead of it
+        /// (AssettoCorsaTelemetrySource).
         /// </summary>
         internal static bool TryKunos(ReadOnlySpan<byte> physics, ReadOnlySpan<byte> statics,
             ReadOnlySpan<byte> graphics, TelemetryFrame f)
         {
             if (physics.Length < KunosPhysicsBytes || statics.Length < KunosStaticBytes
-                || graphics.Length < KunosGraphicsBytes) return false;
-            f.Source = IsCompetizione(statics) ? TelemetrySource.AssettoCorsaCompetizione : TelemetrySource.AssettoCorsa;
+                || graphics.Length < KunosGraphicsLeastBytes) return false;
+            bool competizione = IsCompetizione(statics);
+            f.Source = competizione ? TelemetrySource.AssettoCorsaCompetizione : TelemetrySource.AssettoCorsa;
+            int gripAt = competizione
+                ? AssettoCorsaTelemetrySource.CompetizioneSurfaceGripOffset
+                : AssettoCorsaTelemetrySource.SurfaceGripOffset;
+            f.Grip = graphics.Length >= gripAt + 4 ? (float)SurfaceGrips.AssettoCorsa(F32(graphics, gripAt)) : 0f;
             f.Throttle = F32(physics, 4);
             f.Brake = F32(physics, 8);
             int gear = I32(physics, 16);

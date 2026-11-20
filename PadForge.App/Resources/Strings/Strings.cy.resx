@@ -3217,7 +3217,88 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ailosod amrediad cylchdroi</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Ailosod cryfder canoli awtomatig</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Ailosod goleuadau LED shifft RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Amrediad llywio, canoli awtomatig a goleuadau shifft ar gyfer olwynion llywio adborth grym.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Amrediad llywio a goleuadau shifft ar gyfer olwynion llywio adborth grym.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Canoli</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Yn dod â'r olwyn yn ôl i'r canol, fel sbring syml neu fel llywio car.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Ailosod Canoli</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modd</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Mae Sbring yn tynnu'r olwyn i'r canol ag un cryfder. Mae Cerbyd yn cyfrifo'r trorym y mae llywio car yn ei roi ar ei gyflymder, o fodel teiars.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Sbring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Cerbyd</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Cerbyd</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Y car y mae'r olwyn yn cymryd ei lywio. Mae pob un yn fodel cerbyd cyhoeddedig.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Saloon</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Cryno</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Fan</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Car Rasio</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Cyflymder</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Mae O'r Gêm yn darllen cyflymder y car o telemetreg y gêm, ac yn defnyddio Cyflymder Sefydlog tra nad oes gêm yn anfon un. Mae Sefydlog yn defnyddio Cyflymder Sefydlog bob amser.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>O'r Gêm</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Sefydlog</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Pwysau Llywio</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Pa mor drwm yw'r llywio. 100% yw pwysau'r car ei hun.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Amrediad yr Olwyn</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Pa mor bell y mae'r olwyn hon yn troi o'r clo i'r clo. Gosodwch ef i osodiad yr olwyn ei hun.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Trorym Llywio</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Ongl</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Trorym</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Terfyn yr olwyn {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Trorym llywio wrth y cylch yn erbyn ongl llywio. Ar {0} mae'n cyrraedd ei uchafbwynt o {1} N·m ar {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Teimlad Canol</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Pa mor gyflym y mae'r trorym yn cynyddu wrth gornelu ger y canol, mewn N·m y g hyd at 0.05 g. Mae mwy yn teimlo'n fwy sad.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Stiffrwydd Trorym</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Pa mor gyflym y mae'r trorym yn cynyddu wrth i'r olwyn adael y canol, mewn N·m y radd.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Llinoledd</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Goleddf y trorym rhwng 0.10 a 0.15 g o'i gymharu â'i oleddf yn y canol. Mae is yn golygu bod y llywio'n mynd yn ysgafn yn gynt.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Trorym Brig</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Y trorym mwyaf y mae'r car yn ei ofyn gan yr olwyn, wrth ymyl y mwyaf y mae'r olwyn yn ei roi.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>o {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Mae'r car hwn yn gofyn am fwy o drorym nag sydd gan yr olwyn, felly torrir pen uchaf y gromlin.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Teimlad canol, cymorth pŵer, dampio, ffrithiant, gafael, cyflymder sefydlog, trorym yr olwyn</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Pa mor gryf y mae'r llywio'n dal ei ganol ar gyflymder isel. 100% yw pwysau'r car ei hun.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Cymorth Pŵer</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Faint y mae'r llywio pŵer yn ei dynnu i ffwrdd wrth i gornelu gynyddu. Mae mwy yn golygu llywio ysgafnach i ffwrdd o'r canol.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dampio</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Pa mor gryf y mae'r olwyn yn gwrthsefyll troadau cyflym. 100% yw'r hyn sy'n ei dod yn ôl heb siglo heibio'r canol.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Ffrithiant</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Llusgiad cyson sy'n gwrthsefyll troi i'r naill gyfeiriad neu'r llall.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Gafael</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Gafael y ffordd. Mae'r llywio'n mynd yn ysgafn lle mae'r teiars blaen yn colli eu gafael.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Sych</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Gwlyb</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Eira</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Iâ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Cyflymder Sefydlog</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Y cyflymder y tybir bod y car yn gyrru arno pan fo Cyflymder yn Sefydlog, a thra nad oes gêm yn anfon un.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Trorym yr Olwyn</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Y trorym mwyaf y mae'r olwyn hon yn ei roi. Mae PadForge yn ei lenwi lle mae gwneuthurwr yr olwyn yn ei gyhoeddi. Mae ffigur uwchlaw ffigur yr olwyn ei hun yn gwneud pob grym yn wannach.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Nid yw Trorym yr Olwyn wedi'i osod ar gyfer yr olwyn hon, felly cedwir ei grymoedd yn isel. Rhowch ef o dan Mwy.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Dechreuodd yr olwyn siglo ohoni ei hun, felly cedwir y grym yn ôl. Rhedwch y Prawf Rhyddhau.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Mae'r grym i ffwrdd oherwydd bod yr olwyn wedi dal ati i siglo neu wedi crwydro o'r canol. Rhedwch y Prawf Rhyddhau.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Prawf Rhyddhau</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Yn mesur yr olwyn hon ac yn gosod dampio fel ei bod yn dychwelyd heb or-siglo</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Heb ei redeg eto</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mesurwyd</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Tynnwch eich dwylo oddi ar yr olwyn. Mae PadForge yn ei throi i {0}°, yn ei gollwng ac yn cofnodi sut mae'n dod yn ôl.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ongl yr olwyn dros {0} eiliad ar ôl pob rhyddhad.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Cyn</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Ar Ôl</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Yn mesur, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Wedi gorffen, 2 rediad</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Wedi stopio</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Ni ddaeth yr olwyn i orffwys. Tynnwch eich dwylo oddi arni a rhedwch y prawf eto.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Ni symudodd yr olwyn. Os yw Trorym yr Olwyn wedi'i osod uwchlaw'r hyn y mae'r olwyn yn ei roi, gosodwch ef i ffigur yr olwyn ei hun a rhedwch y prawf eto.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Daeth yr olwyn yn agos at ben ei hamrediad. Canolwch hi a rhedwch y prawf eto.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Ni ellid darllen symudiad yr olwyn. Rhedwch y prawf eto.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Peidiodd yr olwyn ag ateb. Gwiriwch ei bod wedi'i chysylltu a bod yr injan yn rhedeg.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Nid yw'r olwyn hon yn cael ei defnyddio. Neilltuwch hi i reolydd a chychwynnwch yr injan, yna rhedwch y prawf.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Syrthni</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Cyn hynny, siglodd yr olwyn {0}° heibio'r canol.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nawr mae'n siglo {0}° heibio'r canol ac yn gorffwys {1}° o'r canol.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nawr mae'n dychwelyd heb or-siglo ac yn gorffwys {0}° o'r canol.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Rhedeg Eto</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Cymhwyso</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Ailosod adborth clo llywio</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Ailosod pwls dirgryniad wrth glo</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Ailosod dirgrynu'r sbardun wrth glo</value></data>
@@ -4665,7 +4746,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Cynlluniau adroddiad PlayStation Move, graddnodi synhwyrydd, a chyfarchiad ategolyn EXT, gan Thomas Perl, wedi'i groeswirio yn erbyn wici moveonpc. C# gwreiddiol yw gweithrediad PadForge. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Cyfeiriadau telemetreg rasio</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Cynlluniau cof a rennir a UDP y tu ôl i Telemetreg Gêm a goleuadau LED shifft RPM yr olwyn lywio, wedi'u darllen o assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Nid oes unrhyw god GPL nac LGPL yn cael ei gynnwys.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Cynlluniau cof a rennir a UDP y tu ôl i Telemetreg Gêm a goleuadau LED shifft RPM yr olwyn lywio, wedi'u darllen o assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Nid oes unrhyw god GPL nac LGPL yn cael ei gynnwys.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dogfennaeth paru ac adroddiadau Bluetooth DualShock 3. GPL-2.0 a GPL-3.0, wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -5061,4 +5142,5 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Cyfrinair</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Chwyddwr (Tra'n Cael ei Ddal)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Yn dangos y chwyddwr tra bydd y macro hwn yn cael ei ddal, ar gyfer anelu drwy'r cwmpas. Gosodwch ef ar dudalen y Chwyddwr.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Cyfeiriadau teimlad llywio</value></data>
 </root>

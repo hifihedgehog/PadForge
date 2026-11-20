@@ -3413,7 +3413,88 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Resetovať rozsah otáčania</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Resetovať silu automatického centrovania</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Resetovať LED kontrolky otáčok</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rozsah riadenia, automatické centrovanie a kontrolky preradenia pre volanty so silovou spätnou väzbou.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rozsah riadenia a kontrolky preradenia pre volanty so silovou spätnou väzbou.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrovanie</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Vracia volant do stredu ako obyčajná pružina alebo ako riadenie auta.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Resetovať centrovanie</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Režim</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Pružina ťahá volant do stredu jednou silou. Vozidlo vypočíta moment, aký dáva riadenie auta pri jeho rýchlosti, z modelu pneumatík.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Pružina</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vozidlo</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vozidlo</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Auto, ktorého riadenie volant preberá. Každé je zverejnený model vozidla.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Dodávka</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Pretekárske auto</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Rýchlosť</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Z hry preberá rýchlosť auta z telemetrie hry a kým ju žiadna hra neposiela, platí hodnota v riadku Pevná rýchlosť. Pevná používa hodnotu z riadku Pevná rýchlosť stále.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Z hry</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Pevná</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Ťažkosť riadenia</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Aké ťažké je riadenie. 100% je ťažkosť samotného auta.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Rozsah volantu</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Ako ďaleko sa tento volant otočí od dorazu po doraz. Nastavte ho podľa vlastného nastavenia volantu.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Krútiaci moment riadenia</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Uhol</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Moment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limit volantu {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Krútiaci moment riadenia na venci podľa uhla riadenia. Pri {0} dosahuje špičku {1} N·m pri {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Pocit v strede</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Ako rýchlo narastá moment pri zatáčaní blízko stredu, v N·m na g do 0.05 g. Vyššia hodnota znamená stabilnejší pocit.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Tuhosť momentu</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Ako rýchlo narastá moment, keď volant opúšťa stred, v N·m na stupeň.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearita</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Sklon momentu medzi 0.10 a 0.15 g voči jeho sklonu v strede. Nižšia hodnota znamená, že riadenie odľahne skôr.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Špičkový moment</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Najväčší moment, ktorý auto žiada od volantu, popri najväčšom, aký volant dá.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>z {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Toto auto žiada väčší moment, než má volant, preto je vrchol krivky odrezaný.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Pocit v strede, posilňovač riadenia, tlmenie, trenie, priľnavosť, pevná rýchlosť, moment volantu</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Ako silno riadenie drží stred pri nízkej rýchlosti. 100% je hodnota samotného auta.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Posilňovač riadenia</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Koľko posilňovač riadenia ubratia, keď zatáčanie narastá. Vyššia hodnota znamená ľahšie riadenie mimo stredu.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Tlmenie</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Ako silno volant odoláva rýchlym otočeniam. 100% je hodnota, ktorá ho vráti bez prekmitnutia cez stred.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Trenie</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Stály odpor, ktorý bráni otáčaniu na obe strany.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Priľnavosť</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Priľnavosť vozovky. Riadenie odľahne tam, kde predným pneumatikám priľnavosť dochádza.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Suchá</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mokrá</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sneh</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ľad</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Pevná rýchlosť</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Rýchlosť, pri ktorej sa auto považuje za idúce, keď je Rýchlosť nastavená na Pevná a kým žiadna hra žiadnu neposiela.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Moment volantu</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Najväčší moment, ktorý tento volant dá. PadForge ho vyplní tam, kde ho výrobca volantu zverejňuje. Hodnota nad vlastnou hodnotou volantu oslabí všetky sily.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Moment volantu nie je pre tento volant nastavený, preto sú jeho sily udržiavané nízko. Zadajte ho v časti Viac.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Volant sa začal sám kmitať, preto je sila obmedzená. Spustite Test uvoľnenia.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Sila je vypnutá, pretože volant stále kmitá alebo ušiel zo stredu. Spustite Test uvoľnenia.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Test uvoľnenia</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Zmeria tento volant a nastaví tlmenie tak, aby sa vrátil bez prekmitnutia</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ešte nespustený</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Zmerané</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Pusťte volant. PadForge ho otočí na {0}°, pustí ho a zaznamená, ako sa vráti.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Uhol volantu počas {0} sekúnd po každom uvoľnení.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Pred</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Po</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Meranie, {0} %</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Hotovo, 2 behy</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Zastavené</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Volant sa neustálil. Pusťte ho a spustite test znova.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Volant sa nepohol. Ak je Moment volantu nastavený nad hodnotu, akú volant dá, nastavte ho na vlastnú hodnotu volantu a spustite test znova.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Volant sa priblížil ku koncu svojho rozsahu. Vycentrujte ho a spustite test znova.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Pohyb volantu sa nepodarilo prečítať. Spustite test znova.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Volant prestal odpovedať. Skontrolujte, či je pripojený a či beží jadro.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Tento volant sa nepoužíva. Priraďte ho k ovládaču, spustite jadro a potom spustite test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Zotrvačnosť</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Predtým sa volant prekmitol o {0}° za stred.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Teraz sa prekmitne o {0}° za stred a zastaví sa {1}° od stredu.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Teraz sa vráti bez prekmitnutia a zastaví sa {0}° od stredu.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Spustiť znova</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Použiť</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Resetovať odozvu pri plnom natočení</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Resetovať impulz vibrácií na doraze</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Resetovať vibrácie spúšte na doraze</value></data>
@@ -4919,7 +5000,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Rozloženia hlásení PlayStation Move, kalibrácia senzorov a nadviazanie spojenia s príslušenstvom EXT od autora Thomas Perl, overené voči wiki moveonpc. Implementácia v programe PadForge je pôvodný kód v C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referencie pre pretekársku telemetriu</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Rozloženia zdieľanej pamäte a UDP, na ktorých stoja herná telemetria a LED kontrolky otáčok volantu, prevzaté z assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Nedodáva sa žiadny kód GPL ani LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Rozloženia zdieľanej pamäte a UDP, na ktorých stoja herná telemetria a LED kontrolky otáčok volantu, prevzaté z assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Nedodáva sa žiadny kód GPL ani LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentácia párovania a hlásení DualShock 3 cez Bluetooth. GPL-2.0 a GPL-3.0, použité iba ako dokumentácia, nedodáva sa žiadny kód GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Rozsah útlmu 48 dB virtuálneho mikrofónu DualSense. Použité iba ako dokumentácia, nedodáva sa žiadny kód GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referencie protokolov volantov</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Hlásenia natívnej silovej spätnej väzby a LED kontroliek otáčok pre volanty Fanatec, Thrustmaster a Logitech, prevzaté z hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) a thrustmaster-led-linux (GPL-3.0) a overené voči doplnku SimHub LED od autora prodigal.knight (MIT) a tm-bt-led (MIT). Iba dokumentácia, nedodáva sa žiadny kód GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referencie pre pocit z riadenia</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Model momentu riadenia, na ktorom stojí režim Vozidlo karty Centrovanie, z práce autorov Balachandran a Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Parametre vozidiel sú prevzaté z commonroad-vehicle-models (BSD-3-Clause) a global_racetrajectory_optimization (LGPL-3.0). Závlek pneumatiky pochádza z knihy Pacejka, Tire and Vehicle Dynamics, a priľnavosť vozovky z knihy Wong, Theory of Ground Vehicles. Ide iba o čísla, nedodáva sa žiadny kód z nich.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referencie arkádových I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokoly, na ktorých stoja ovládače zariadení vo forku SDL pre arkádové I/O dosky Namco a Konami a dosky JVS, prevzaté z arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (licencia StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) a TaikoZucchini (MIT). Iba dokumentácia, nedodáva sa žiadny kód.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referencie ovládačov Bluetooth LE</value></data>

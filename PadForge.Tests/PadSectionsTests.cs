@@ -1860,7 +1860,8 @@ namespace PadForge.Tests
             Assert.Equal(new[]
                 {
                     "Pad_Falcon_Header=Pad_Scope_Device", "Pad_ForceFeedback_Header=Pad_Scope_Device", "Pad_ImpulseTriggers_Header=Pad_Scope_Device",
-                    "Pad_AdaptiveTriggers_Header=Pad_Scope_Device", "Pad_Wheel=Pad_Scope_Device", "Pad_RumbleAudio_Header=Pad_Scope_Controller",
+                    "Pad_AdaptiveTriggers_Header=Pad_Scope_Device", "Pad_Wheel=Pad_Scope_Device", "Pad_Centering=Pad_Scope_Device",
+                    "Pad_RumbleAudio_Header=Pad_Scope_Controller",
                 },
                 tags.Select(t => KeyOf((string)t.ElementsBeforeSelf().Last().Attribute("Text")) + "=" + KeyOf((string)Assert.Single(t.Elements()).Attribute("Text"))));
             Assert.All(tags, t =>
@@ -1915,6 +1916,7 @@ namespace PadForge.Tests
             foreach (string side in new[] { "Left", "Right" })
                 Assert.Equal("TriggerEffectGraph", Named(page, side + "TriggerModePicker").ElementsAfterSelf().First().Name.LocalName);
             PartCard(CardOf("Pad_Wheel"), "Viewbox", Title("Pad_Wheel"), "Pad_Wheel_Subtitle", "Pad_Scope_Device", "ResetWheelAllCommand");
+            PartCard(CardOf("Pad_Centering"), "Viewbox", Title("Pad_Centering"), "Pad_Centering_Subtitle", "Pad_Scope_Device", "ResetCenteringAllCommand");
             PartCard(CardOf("Pad_RumbleAudio_Header"), "", Title("Pad_RumbleAudio_Header"), null, "Pad_Scope_Controller", "ResetRumbleAudioAllCommand");
 
             // A tone: its row, then its gain set in under it.

@@ -3181,7 +3181,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>භ්‍රමණ පරාසය යළි සකසන්න</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ස්වයං මධ්‍යගත කිරීමේ ශක්තිය යළි සකසන්න</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM ෂිෆ්ට් LED යළි සකසන්න</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>බල ප්‍රතිපෝෂණ සුක්කානම් සඳහා සුක්කානම් පරාසය, ස්වයං මධ්‍යගත කිරීම සහ ෂිෆ්ට් ලයිට්.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>බල ප්‍රතිපෝෂණ සුක්කානම් සඳහා සුක්කානම් පරාසය සහ ෂිෆ්ට් ලයිට්.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>මධ්‍යගත කිරීම</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>සරල ස්ප්‍රිංගයක් ලෙස හෝ මෝටර් රථයක සුක්කානම මෙන්, සුක්කානම නැවත මැදට ගෙන එයි.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>මධ්‍යගත කිරීම යළි සකසන්න</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>ප්‍රකාරය</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ස්ප්‍රිංගය එක් ශක්තියකින් සුක්කානම මැදට අදියි. වාහනය ටයර් ආකෘතියකින්, මෝටර් රථයක සුක්කානම එහි වේගයේදී දෙන ව්‍යාවර්තය ගණනය කරයි.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ස්ප්‍රිංගය</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>වාහනය</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>වාහනය</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>සුක්කානම අනුකරණය කරන සුක්කානම් පද්ධතිය ඇති මෝටර් රථය. සෑම එකක්ම ප්‍රකාශිත වාහන ආකෘතියකි.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>සෙඩාන්</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>කොම්පැක්ට්</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>වෑන්</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ධාවන රථය</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>වේගය</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>“ක්‍රීඩාවෙන්” ක්‍රීඩාවේ ටෙලිමෙට්‍රියෙන් මෝටර් රථයේ වේගය කියවන අතර, කිසිදු ක්‍රීඩාවක් වේගයක් නොයවන අතරතුර “ස්ථිර වේගය” භාවිත කරයි. “ස්ථිර” සෑම විටම “ස්ථිර වේගය” භාවිත කරයි.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ක්‍රීඩාවෙන්</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ස්ථිර</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>සුක්කානම් බර</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>සුක්කානම කෙතරම් බරද යන්න. 100% යනු මෝටර් රථයේම බරයි.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>සුක්කානම් හැරවුම් පරාසය</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>මෙම සුක්කානම එක් කෙළවරක සිට අනෙක් කෙළවරට කොපමණ කරකැවෙනවාද යන්න. එය සුක්කානමේම සැකසුමට සකසන්න.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>සුක්කානම් ව්‍යාවර්තය</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>කෝණය</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ව්‍යාවර්තය</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>සුක්කානම් සීමාව {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>සුක්කානම් වළල්ලේ ව්‍යාවර්තය සුක්කානම් කෝණයට එදිරිව. {0} හිදී එය {2}° හිදී {1} N·m උපරිමයට ළඟා වේ.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>මධ්‍ය දැනීම</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>මැද අසල හැරවීම වැඩි වන විට ව්‍යාවර්තය කෙතරම් වේගයෙන් වැඩි වේද යන්න, 0.05 g දක්වා g එකකට N·m වලින්. වැඩි අගයක් වඩාත් ස්ථාවර බවක් දැනේ.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ව්‍යාවර්ත දෘඪතාව</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>සුක්කානම මැදින් ඉවතට යන විට ව්‍යාවර්තය කෙතරම් වේගයෙන් වැඩි වේද යන්න, අංශකයකට N·m වලින්.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>රේඛීයතාව</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 සහ 0.15 g අතර ව්‍යාවර්තයේ බෑවුම, මැදදී එහි බෑවුමට සාපේක්ෂව. අඩු අගයක් යනු සුක්කානම ඉක්මනින් සැහැල්ලු වන බවයි.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>උපරිම ව්‍යාවර්තය</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>මෝටර් රථය සුක්කානමෙන් ඉල්ලන උපරිම ව්‍යාවර්තය, සුක්කානම දෙන උපරිමය සමඟ.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>මෙම මෝටර් රථය සුක්කානමට ඇති ප්‍රමාණයට වඩා ව්‍යාවර්තයක් ඉල්ලයි, එබැවින් වක්‍රයේ ඉහළ කොටස කපා හැරේ.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>මධ්‍ය දැනීම, බල සහාය, අවමන්දනය, ඝර්ෂණය, ග්‍රහණය, ස්ථිර වේගය, සුක්කානම් ව්‍යාවර්තය</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>අඩු වේගයේදී සුක්කානම එහි මැද කෙතරම් තදින් රඳවා ගනීද යන්න. 100% යනු මෝටර් රථයේම අගයයි.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>බල සහාය</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>හැරවීම වැඩි වන විට බල සුක්කානම කොපමණ උත්සාහයක් ඉවත් කරනවාද යන්න. වැඩි අගයක් යනු මැදින් ඉවතදී සැහැල්ලු සුක්කානමකි.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>අවමන්දනය</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>සුක්කානම ඉක්මන් හැරවීම්වලට කෙතරම් තදින් ප්‍රතිරෝධය දක්වයිද යන්න. 100% යනු මැද පසු කර නොපැද්දී එය නැවත ගෙන එන අගයයි.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ඝර්ෂණය</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>ඕනෑම දිශාවකට හැරවීමට ප්‍රතිරෝධය දක්වන ස්ථාවර ඇදීමක්.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ග්‍රහණය</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>මාර්ගයේ ග්‍රහණය. ඉදිරි ටයර්වල ග්‍රහණය අවසන් වන තැන සුක්කානම සැහැල්ලු වේ.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>වියළි</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>තෙත්</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>හිම</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>අයිස්</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ස්ථිර වේගය</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>“වේගය” “ස්ථිර” වන විට සහ කිසිදු ක්‍රීඩාවක් වේගයක් නොයවන අතරතුර මෝටර් රථය ධාවනය වන බව සලකන වේගය.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>සුක්කානම් ව්‍යාවර්තය</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>මෙම සුක්කානම දෙන උපරිම ව්‍යාවර්තය. සුක්කානමේ නිෂ්පාදකයා එය ප්‍රකාශ කරන විට PadForge එය පුරවයි. සුක්කානමේම අගයට වඩා වැඩි අගයක් සෑම බලයක්ම දුර්වල කරයි.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>මෙම සුක්කානම සඳහා “සුක්කානම් ව්‍යාවර්තය” සකසා නැත, එබැවින් එහි බල අඩුවෙන් තබා ඇත. එය “තවත්” යටතේ ඇතුළත් කරන්න.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>සුක්කානම තනිවම පැද්දීමට පටන් ගත්තේය, එබැවින් බලය අඩු කර ඇත. “මුදාහැරීමේ පරීක්ෂණය” ධාවනය කරන්න.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>සුක්කානම දිගටම පැද්දුණු නිසා හෝ මැදින් ඉවතට ගිය නිසා බලය ක්‍රියාවිරහිතයි. “මුදාහැරීමේ පරීක්ෂණය” ධාවනය කරන්න.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>මුදාහැරීමේ පරීක්ෂණය</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>මෙම සුක්කානම මැන, එය මැද පසු නොකර ආපසු පැමිණෙන ලෙස අවමන්දනය සකසයි</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>තවම ධාවනය කර නැත</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>මනින ලදී</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ඔබේ අත් සුක්කානමෙන් ඉවත් කරන්න. PadForge එය {0}° දක්වා කරකවා, නිදහස් කර, එය ආපසු එන ආකාරය සටහන් කරයි.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>එක් එක් මුදාහැරීමෙන් පසු තත්පර {0} ක් පුරා සුක්කානමේ කෝණය.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>පෙර</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>පසු</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>මනිමින්, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>අවසන්, ධාවන 2</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>නවත්වා ඇත</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>සුක්කානම නිශ්චල වූයේ නැත. ඔබේ අත් එයින් ඉවත් කර පරීක්ෂණය නැවත ධාවනය කරන්න.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>සුක්කානම චලනය වූයේ නැත. “සුක්කානම් ව්‍යාවර්තය” සුක්කානම දෙන ප්‍රමාණයට වඩා ඉහළින් සකසා ඇත්නම්, එය සුක්කානමේම අගයට සකසා පරීක්ෂණය නැවත ධාවනය කරන්න.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>සුක්කානම එහි පරාසයේ කෙළවරට ළං විය. එය මැදට ගෙන පරීක්ෂණය නැවත ධාවනය කරන්න.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>සුක්කානමේ චලනය කියවිය නොහැකි විය. පරීක්ෂණය නැවත ධාවනය කරන්න.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>සුක්කානම ප්‍රතිචාර දැක්වීම නැවැත්වීය. එය සම්බන්ධ කර ඇති බවත් එන්ජිම ධාවනය වන බවත් පරීක්ෂා කරන්න.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>මෙම සුක්කානම භාවිතයේ නැත. එය පාලකයකට පවරා එන්ජිම ආරම්භ කර, පසුව පරීක්ෂණය ධාවනය කරන්න.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>අවස්ථිතිය</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>පෙර, සුක්කානම මැදෙන් {0}° ඔබ්බට පැද්දුණි.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>දැන් එය මැදෙන් {0}° ඔබ්බට පැද්දී මැද සිට {1}° දුරින් නිශ්චල වේ.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>දැන් එය මැද පසු නොකර ආපසු පැමිණ මැද සිට {0}° දුරින් නිශ්චල වේ.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>නැවත ධාවනය කරන්න</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>යොදන්න</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>සුක්කානම් අගුළු ප්‍රතිපෝෂණය යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>අගුලේදී කම්පන ස්පන්දනය යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>අගුලේදී ට්‍රිගර කම්පනය යළි සකසන්න</value></data>
@@ -4638,7 +4719,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move වාර්තා පිරිසැලසුම්, සංවේදක ක්‍රමාංකනය, සහ EXT අමතර උපාංග හෑන්ඩ්ෂේක් එක, Thomas Perl විසින්, moveonpc wiki සමඟ හරස් පරීක්ෂා කරන ලදී. PadForge හි ක්‍රියාත්මක කිරීම මුල් C# වේ. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>රේසිං ටෙලිමෙට්‍රි මූලාශ්‍ර</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ක්‍රීඩා ටෙලිමෙට්‍රි සහ සුක්කානම් RPM ගියර් මාරු LED පිටුපස ඇති හවුල් මතක සහ UDP පිරිසැලසුම්, assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) සහ vAzhureRacingHub (GPL-3.0) වෙතින් කියවන ලදී. කිසිදු GPL හෝ LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ක්‍රීඩා ටෙලිමෙට්‍රි සහ සුක්කානම් RPM ගියර් මාරු LED පිටුපස ඇති හවුල් මතක සහ UDP පිරිසැලසුම්, assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) සහ vAzhureRacingHub (GPL-3.0) වෙතින් කියවන ලදී. කිසිදු GPL හෝ LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth යුගල කිරීම සහ වාර්තා ලේඛන. GPL-2.0 සහ GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4661,6 +4742,8 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>අතථ්‍ය DualSense මයික්‍රෆෝනයේ 48 dB දුර්වල කිරීමේ පරාසය. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>සුක්කානම් ප්‍රොටෝකෝල මූලාශ්‍ර</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, සහ Logitech සුක්කානම් සඳහා ස්වදේශීය බල ප්‍රතිපෝෂණ සහ RPM ගියර් මාරු LED වාර්තා, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), සහ thrustmaster-led-linux (GPL-3.0) වෙතින් කියවා, prodigal.knight විසින් SimHub LED ප්ලගිනය (MIT) සහ tm-bt-led (MIT) සමඟ හරස් පරීක්ෂා කරන ලදී. ලේඛන පමණි, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>සුක්කානම් හැඟීම් මූලාශ්‍ර</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>මධ්‍යගත කිරීම කාඩ්පතේ වාහනය ප්‍රකාරය පිටුපස ඇති සුක්කානම් ව්‍යාවර්ත ආකෘතිය, Balachandran සහ Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) වෙතින් ගන්නා ලදී. වාහන පරාමිතීන් commonroad-vehicle-models (BSD-3-Clause) සහ global_racetrajectory_optimization (LGPL-3.0) වෙතින් කියවන ලදී. ටයරයේ ට්‍රේල් දුර Pacejka ගේ Tire and Vehicle Dynamics වෙතින් ද, මාර්ග ග්‍රහණය Wong ගේ Theory of Ground Vehicles වෙතින් ද ගන්නා ලදී. සංඛ්‍යා පමණි, ඒවායේ කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ආකේඩ් I/O මූලාශ්‍ර</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco සහ Konami ආකේඩ් I/O පුවරු සහ JVS පුවරු සඳහා SDL ෆෝක් එකේ ධාවක පිටුපස ඇති ප්‍රොටෝකෝල, arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania බලපත්‍රය), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) සහ TaikoZucchini (MIT) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE පාලක මූලාශ්‍ර</value></data>

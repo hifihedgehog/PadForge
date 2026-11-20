@@ -2687,7 +2687,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>회전 범위 재설정</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>자동 센터링 강도 재설정</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM 시프트 LED 재설정</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>포스 피드백 휠의 조향 범위, 자동 센터링, 시프트 라이트.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>포스 피드백 휠의 조향 범위, 시프트 라이트.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>센터링</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>휠을 단순한 스프링처럼, 또는 자동차의 조향처럼 중앙으로 되돌립니다.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>센터링 재설정</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>모드</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>스프링은 일정한 강도로 휠을 중앙으로 당깁니다. 차량은 타이어 모델로 자동차의 조향이 그 속도에서 내는 토크를 계산합니다.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>스프링</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>차량</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>차량</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>휠이 조향을 따라갈 자동차입니다. 각 항목은 공개된 차량 모델입니다.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>세단</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>소형차</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>밴</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>레이스카</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>속도</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>게임에서는 게임의 텔레메트리에서 자동차 속도를 읽고, 속도를 보내는 게임이 없으면 고정 속도를 사용합니다. 고정은 항상 고정 속도를 사용합니다.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>게임에서</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>고정</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>조향 무게</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>조향이 얼마나 무거운지 정합니다. 100%는 자동차 본래의 무게입니다.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>휠 최대 회전각</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>이 휠이 한쪽 끝에서 반대쪽 끝까지 도는 각도입니다. 휠 자체의 설정과 같게 입력하세요.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>조향 토크</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>각도</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>토크</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>휠 한계 {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>림에서의 조향 토크와 조향 각도의 관계입니다. {0}일 때 {2}°에서 {1} N·m로 최대가 됩니다.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>중앙 조향감</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>중앙 부근에서 코너링에 따라 토크가 얼마나 빨리 커지는지를 0.05 g까지 g당 N·m로 나타냅니다. 높을수록 안정감이 더 느껴집니다.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>토크 강성</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>휠이 중앙에서 벗어날 때 토크가 얼마나 빨리 커지는지를 도당 N·m로 나타냅니다.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>선형성</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10에서 0.15 g 사이의 토크 기울기를 중앙에서의 기울기와 비교한 값입니다. 낮을수록 조향이 더 일찍 가벼워집니다.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>최대 토크</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>자동차가 휠에 요구하는 최대 토크와 휠이 낼 수 있는 최대 토크입니다.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>중 {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>이 자동차는 휠이 낼 수 있는 것보다 큰 토크를 요구하므로 곡선의 윗부분이 잘립니다.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>중앙 조향감, 파워 어시스트, 댐핑, 마찰, 그립, 고정 속도, 휠 토크</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>저속에서 조향이 중앙을 얼마나 강하게 유지하는지 정합니다. 100%는 자동차 본래의 값입니다.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>파워 어시스트</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>코너링이 커질수록 파워 스티어링이 덜어 주는 힘의 크기입니다. 높을수록 중앙에서 멀어진 조향이 가벼워집니다.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>댐핑</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>휠이 빠른 회전에 얼마나 강하게 저항하는지 정합니다. 100%는 중앙을 넘어 흔들리지 않고 돌아오게 하는 값입니다.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>마찰</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>어느 방향으로 돌려도 일정하게 저항하는 힘입니다.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>그립</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>노면의 그립입니다. 앞 타이어가 그립을 잃는 지점에서 조향이 가벼워집니다.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>건조</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>젖음</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>눈길</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>빙판</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>고정 속도</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>속도가 고정일 때, 그리고 속도를 보내는 게임이 없는 동안 자동차가 달리는 것으로 간주하는 속도입니다.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>휠 토크</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>이 휠이 낼 수 있는 최대 토크입니다. 휠 제조사가 공개한 값이 있으면 PadForge가 채워 넣습니다. 휠 자체의 값보다 큰 수치를 입력하면 모든 힘이 약해집니다.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>이 휠의 휠 토크가 설정되지 않아 힘이 낮게 제한됩니다. 더 보기에서 입력하세요.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>휠이 스스로 흔들리기 시작해 힘을 억제했습니다. 릴리스 테스트를 실행하세요.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>휠이 계속 흔들리거나 중앙에서 벗어나 힘이 꺼졌습니다. 릴리스 테스트를 실행하세요.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>릴리스 테스트</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>이 휠을 측정하고 오버슈트 없이 돌아오도록 댐핑을 설정합니다</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>아직 실행하지 않음</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>측정됨</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>휠에서 손을 떼세요. PadForge가 휠을 {0}°까지 돌린 뒤 놓고 돌아오는 과정을 기록합니다.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>매번 놓은 뒤 {0}초 동안의 휠 각도입니다.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>이전</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>이후</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>측정 중, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>완료, 2회 실행</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>중지됨</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>휠이 멈추지 않았습니다. 휠에서 손을 떼고 테스트를 다시 실행하세요.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>휠이 움직이지 않았습니다. 휠 토크가 휠이 낼 수 있는 값보다 높게 설정되어 있다면 휠 자체의 값으로 설정한 뒤 테스트를 다시 실행하세요.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>휠이 회전 범위의 끝에 가까워졌습니다. 휠을 중앙에 맞추고 테스트를 다시 실행하세요.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>휠의 움직임을 읽을 수 없었습니다. 테스트를 다시 실행하세요.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>휠이 응답하지 않습니다. 연결되어 있는지, 엔진이 실행 중인지 확인하세요.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>이 휠은 사용 중이 아닙니다. 컨트롤러에 할당하고 엔진을 시작한 뒤 테스트를 실행하세요.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>관성</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>이전에는 휠이 중앙을 {0}° 넘어 흔들렸습니다.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>지금은 중앙을 {0}° 넘어 흔들리고 중앙에서 {1}° 지점에 멈춥니다.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>지금은 오버슈트 없이 돌아오고 중앙에서 {0}° 지점에 멈춥니다.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>다시 실행</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>적용</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백 재설정</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>끝점에서 진동 펄스 재설정</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>끝점에서 트리거 진동 재설정</value></data>
@@ -4868,7 +4949,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move 리포트 레이아웃, 센서 보정, EXT 액세서리 핸드셰이크. Thomas Perl 제작. moveonpc 위키와 교차 확인. PadForge의 구현은 독자적인 C#입니다. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>레이싱 텔레메트리 참조</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>게임 텔레메트리와 휠 RPM 시프트 LED를 뒷받침하는 공유 메모리 및 UDP 레이아웃으로, assettocorsasharedmemory(MIT), CMTelemetry, dirt-rally-telemetry-dashboard(MIT), ets2-telemetry-udp(MIT), f1-24-udp(MIT), fh6-tel(MIT), forza-data-web(Apache-2.0), forza-telemetry(MIT), Forza-Telemetry-Splitter(MIT), InSim.NET(LGPL-2.1), irsdkSharp(MIT), IRSDKSharper(GPL-3.0), out-gauge-cluster(Apache-2.0), PCars2UdpNet(MIT), project-cars-2-udp(MIT), pyirsdk(MIT), rF2SharedMemoryMapPlugin(GPL-3.0), rFactorSharedMemoryMap(GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin(MIT), simapi(LGPL-3.0), tm-bt-led(MIT), vAzhureRacingHub(GPL-3.0)에서 읽었습니다. GPL 및 LGPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>게임 텔레메트리와 휠 RPM 시프트 LED를 뒷받침하는 공유 메모리 및 UDP 레이아웃으로, assettocorsasharedmemory(MIT), CMTelemetry, CrewChiefV4(MIT), dirt-rally-telemetry-dashboard(MIT), ets2-telemetry-udp(MIT), f1-24-udp(MIT), fh6-tel(MIT), forza-data-web(Apache-2.0), forza-telemetry(MIT), Forza-Telemetry-Splitter(MIT), InSim.NET(LGPL-2.1), irsdkSharp(MIT), IRSDKSharper(GPL-3.0), out-gauge-cluster(Apache-2.0), PCars2UdpNet(MIT), project-cars-2-udp(MIT), pyirsdk(MIT), r3e-api(Unlicense), rF2SharedMemoryMapPlugin(GPL-3.0), rFactorSharedMemoryMap(GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin(MIT), simapi(LGPL-3.0), tm-bt-led(MIT), vAzhureRacingHub(GPL-3.0)에서 읽었습니다. GPL 및 LGPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth 페어링 및 리포트 문서. GPL-2.0 및 GPL-3.0, 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4891,6 +4972,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>가상 DualSense 마이크의 48 dB 감쇠 범위. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>휠 프로토콜 참조</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, Logitech 휠용 네이티브 포스 피드백 및 RPM 시프트 LED 리포트로, hid-fanatecff(GPL-2.0), hid-tmff2(GPL-2.0-or-later), new-lg4ff(GPL-2.0-or-later), oversteer(GPL-3.0), thrustmaster-led-linux(GPL-3.0)에서 읽고 prodigal.knight의 SimHub LED 플러그인(MIT)과 tm-bt-led(MIT)로 교차 확인했습니다. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>조향 느낌 참조</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>센터링의 차량 모드를 뒷받침하는 조향 토크 모델은 Balachandran과 Gerdes의 “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures”(IEEE/ASME Transactions on Mechatronics)에서 가져왔습니다. 차량 매개변수는 commonroad-vehicle-models(BSD-3-Clause)와 global_racetrajectory_optimization(LGPL-3.0)에서 읽었습니다. 타이어의 트레일은 Pacejka의 Tire and Vehicle Dynamics에서, 노면 그립은 Wong의 Theory of Ground Vehicles에서 가져왔습니다. 수치만 참고했으며 그 어느 것의 코드도 포함하지 않습니다.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>아케이드 I/O 참조</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco·Konami 아케이드 I/O 보드와 JVS 보드용 SDL 포크 드라이버의 프로토콜로, arcade-docs(WTFPL), bemanitools(Unlicense), Dolphin(GPL-2.0-or-later), ITAIKO-firmware(MIT), JoypadOS(Apache-2.0), jvsio(BSD-3-Clause), MAME(BSD-3-Clause), OpenITG(StepMania license), p4io-mdxfdrv(GPL-3.0), RPCS3(GPL-2.0), TaikoZucchini(MIT)에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE 컨트롤러 참조</value></data>

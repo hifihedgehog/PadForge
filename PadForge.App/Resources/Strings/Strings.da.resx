@@ -3413,7 +3413,88 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Nulstil rotationsområde</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Nulstil styrke for autocentrering</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Nulstil gearskiftlys (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Styreområde, autocentrering og gearskiftlys for rat med force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Styreområde og gearskiftlys for rat med force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrering</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bringer rattet tilbage til midten, som en almindelig fjeder eller som en bils styretøj gør.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Nulstil centrering</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Tilstand</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Fjeder trækker rattet mod midten med én styrke. Køretøj beregner det moment, en bils styretøj giver ved dens hastighed, ud fra en dækmodel.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Fjeder</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Køretøj</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Køretøj</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Den bil, hvis styretøj rattet overtager. Hver af dem er en offentliggjort køretøjsmodel.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Varevogn</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Racerbil</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Hastighed</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Fra spillet læser bilens hastighed fra spillets telemetri og bruger Fast hastighed, så længe intet spil sender den. Fast bruger altid Fast hastighed.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Fra spillet</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fast</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Styrevægt</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Hvor tungt styretøjet er. 100 % er bilens egen værdi.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Ratvinkelområde</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Hvor langt dette rat drejer fra anslag til anslag. Indstil det til ratets egen indstilling.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Styremoment</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Vinkel</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Drejningsmoment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Ratgrænse {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Styremoment ved rattets kant mod styrevinkel. Ved {0} topper det på {1} N·m ved {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Følelse ved midten</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Hvor hurtigt momentet vokser med sidekraft nær midten, i N·m pr. g op til 0.05 g. Mere føles mere stabilt.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Momentstivhed</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Hvor hurtigt momentet vokser, når rattet forlader midten, i N·m pr. grad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearitet</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Momentets stigning mellem 0.10 og 0.15 g i forhold til stigningen ved midten. Lavere betyder, at styretøjet bliver let tidligere.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Maksimalt moment</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Det største moment, bilen kræver af rattet, ved siden af det største, rattet giver.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>af {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Denne bil kræver mere moment, end rattet har, så toppen af kurven er skåret af.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Følelse ved midten, servohjælp, dæmpning, friktion, vejgreb, fast hastighed, ratmoment</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hvor stærkt styretøjet holder sin midte ved lav hastighed. 100 % er bilens egen værdi.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servohjælp</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hvor meget servostyringen tager af, når sidekraften vokser. Mere giver lettere styring væk fra midten.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dæmpning</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Hvor kraftigt rattet modstår hurtige drej. 100 % er det, der bringer det tilbage uden at svinge forbi midten.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friktion</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Et jævnt modstand, der modvirker drejning begge veje.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Vejgreb</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Vejens greb. Styretøjet bliver let, hvor forhjulene mister det.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Tør</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Våd</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sne</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Is</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fast hastighed</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Den hastighed, bilen antages at køre med, når Hastighed er Fast, og mens intet spil sender en.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Ratmoment</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Det største moment, dette rat giver. PadForge udfylder det, hvor ratproducenten offentliggør det. Et tal over ratets eget gør alle kræfter svagere.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Ratmoment er ikke indstillet for dette rat, så dets kræfter holdes lave. Angiv det under Mere.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Rattet begyndte at svinge af sig selv, så kraften holdes tilbage. Kør Frigivelsestest.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Kraften er slået fra, fordi rattet blev ved med at svinge eller drev væk fra midten. Kør Frigivelsestest.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Frigivelsestest</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Måler dette rat og indstiller dæmpning, så det vender tilbage uden at svinge forbi</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ikke kørt endnu</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Målt</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Slip rattet. PadForge drejer det til {0}°, slipper det og registrerer, hvordan det vender tilbage.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Rattets vinkel over {0} sekunder efter hver frigivelse.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Før</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Efter</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Måler, {0} %</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Færdig, 2 kørsler</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Stoppet</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Rattet kom ikke til ro. Slip det, og kør testen igen.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Rattet bevægede sig ikke. Hvis Ratmoment er sat højere end det, rattet giver, så sæt det til ratets egen værdi, og kør testen igen.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Rattet kom tæt på enden af sit område. Centrer det, og kør testen igen.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Rattets bevægelse kunne ikke aflæses. Kør testen igen.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Rattet holdt op med at svare. Kontroller, at det er tilsluttet, og at motoren kører.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Dette rat er ikke i brug. Tildel det til en controller, og start motoren, og kør derefter testen.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inerti</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Før svingede rattet {0}° forbi midten.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nu svinger det {0}° forbi midten og hviler {1}° fra midten.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nu vender det tilbage uden overshoot og hviler {0}° fra midten.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Kør igen</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Anvend</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Nulstil feedback ved fuldt styreudslag</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Nulstil vibrationspuls ved fuldt udslag</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Nulstil triggervibration ved fuldt udslag</value></data>
@@ -4919,7 +5000,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Report-layouts for PlayStation Move, sensorkalibrering og håndtrykket med EXT-tilbehør, af Thomas Perl, krydstjekket mod moveonpc-wikien. Implementeringen i PadForge er original C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referencer til racertelemetri</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Layouts for delt hukommelse og UDP bag spiltelemetri og rattets gearskiftlys (RPM), læst fra assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) og vAzhureRacingHub (GPL-3.0). Ingen GPL- eller LGPL-kode følger med.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Layouts for delt hukommelse og UDP bag spiltelemetri og rattets gearskiftlys (RPM), læst fra assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) og vAzhureRacingHub (GPL-3.0). Ingen GPL- eller LGPL-kode følger med.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentation af Bluetooth-parring og reports for DualShock 3. GPL-2.0 og GPL-3.0, kun læst som dokumentation, ingen GPL-kode følger med.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Dæmpningsområdet på 48 dB for mikrofonen i den virtuelle DualSense. Kun læst som dokumentation, ingen GPL-kode følger med.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referencer til ratprotokoller</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Rapporter for indbygget force feedback og gearskiftlys (RPM LED) til rat fra Fanatec, Thrustmaster og Logitech, læst fra hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) og thrustmaster-led-linux (GPL-3.0) og krydstjekket mod SimHub LED-plugin af prodigal.knight (MIT) og tm-bt-led (MIT). Kun dokumentation, ingen GPL-kode følger med.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referencer til styrefølelse</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Momentmodellen for styringen bag tilstanden Køretøj i Centrering, fra Balachandran og Gerdes, »Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures« (IEEE/ASME Transactions on Mechatronics). Køretøjsparametre læses fra commonroad-vehicle-models (BSD-3-Clause) og global_racetrajectory_optimization (LGPL-3.0). Dækkets efterløb stammer fra Tire and Vehicle Dynamics af Pacejka, og vejgrebet fra Theory of Ground Vehicles af Wong. Kun tal, ingen kode fra dem følger med.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referencer til arkade-I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokollerne bag driverne i SDL-forken til arkade-I/O-kort fra Namco og Konami og JVS-kort, læst fra arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania-licens), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) og TaikoZucchini (MIT). Kun dokumentation, ingen kode følger med.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referencer til Bluetooth LE-controllere</value></data>

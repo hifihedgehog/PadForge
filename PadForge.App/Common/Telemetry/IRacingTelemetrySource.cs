@@ -19,6 +19,12 @@ namespace PadForge.Common.Telemetry
     /// sessLen@16, sessOff@20, numVars@24, varHdrOff@28, numBuf@32; varBuf[] at 48
     /// stride 16 {tickCount, bufOffset}; var header stride 144 {type, offset@4,
     /// count, name[32]@16}.</para>
+    ///
+    /// <para>Speed is the float var "Speed", in m/s. The road's wetness is the
+    /// int var "TrackWetness", 1 for dry through 7 for extremely wet
+    /// (IRSDKSharper EventSystem.cs and IRacingSdkEnum.TrackWetness,
+    /// 2026-11-19). Both are found by name like the RPM, and a build of the
+    /// game with neither still gives the RPM.</para>
     /// </summary>
     internal sealed class IRacingTelemetrySource : ITelemetrySource
     {
@@ -32,7 +38,7 @@ namespace PadForge.Common.Telemetry
 
         private MemoryMappedFile _mmf;
         private MemoryMappedViewAccessor _acc;
-        private int _rpmVarOffset = -1;
+        private int _rpmVarOffset = -1, _speedVarOffset = -1, _wetnessVarOffset = -1;
         private int _lastSessUpd = int.MinValue;
         private float _maxRpm, _idleRpm;
         private int _nextOpenTick;
@@ -48,6 +54,8 @@ namespace PadForge.Common.Telemetry
                 _mmf = MemoryMappedFile.OpenExisting(MapName, MemoryMappedFileRights.Read);
                 _acc = _mmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
                 _rpmVarOffset = -1;
+                _speedVarOffset = -1;
+                _wetnessVarOffset = -1;
                 _lastSessUpd = int.MinValue;
                 return true;
             }
@@ -70,6 +78,8 @@ namespace PadForge.Common.Telemetry
                 {
                     _rpmVarOffset = FindVarOffset("RPM");
                     if (_rpmVarOffset < 0) return false;
+                    _speedVarOffset = FindVarOffset("Speed");
+                    _wetnessVarOffset = FindVarOffset("TrackWetness");
                 }
 
                 // Most-recent data buffer = highest tickCount.
@@ -83,6 +93,8 @@ namespace PadForge.Common.Telemetry
                 }
 
                 float rpm = _acc.ReadSingle(bestOff + _rpmVarOffset);
+                float speed = _speedVarOffset >= 0 ? _acc.ReadSingle(bestOff + _speedVarOffset) : float.NaN;
+                int wetness = _wetnessVarOffset >= 0 ? _acc.ReadInt32(bestOff + _wetnessVarOffset) : 0;
                 // Tear guard (pyirsdk pattern): if the buffer was recycled mid-read
                 // its tickCount changed — discard this frame, the next poll is fine.
                 if (_acc.ReadInt32(VarBufBase + bestBuf * VarBufStride) != bestTick) return false;
@@ -94,7 +106,9 @@ namespace PadForge.Common.Telemetry
                     MaxRpm = _maxRpm > 0f ? _maxRpm : 8000f,
                     IdleRpm = _idleRpm,
                     Source = Name,
+                    Grip = (float)SurfaceGrips.IRacing(wetness),
                 };
+                snap.SetSpeed(speed);
                 return true;
             }
             catch

@@ -3413,7 +3413,88 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Elfordulási tartomány visszaállítása</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Automatikus középre állítás erősségének visszaállítása</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Fordulatszám-váltásjelző LED-ek visszaállítása</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Kormányzási tartomány, automatikus középre állítás és váltásjelző fények az erő-visszacsatolásos kormányokhoz.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Kormányzási tartomány és váltásjelző fények az erő-visszacsatolásos kormányokhoz.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Középre állítás</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Visszaállítja a kormányt középre, egyszerű rugóként vagy úgy, ahogy egy autó kormányzása teszi.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Középre állítás visszaállítása</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mód</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>A Rugó egyetlen erősséggel húzza középre a kormányt. A Jármű gumiabroncsmodellből számítja ki azt a nyomatékot, amelyet egy autó kormányzása adna az adott sebességnél.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Rugó</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Jármű</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Jármű</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Az az autó, amelynek kormányzását a kormány átveszi. Mindegyik közzétett járműmodell.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Szedán</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Kisbusz</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Versenyautó</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Sebesség</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>A Játékból az autó sebességét a játék telemetriájából olvassa, és a Rögzített sebességet használja, amíg egyetlen játék sem küld ilyet. A Rögzített mindig a Rögzített sebességet használja.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Játékból</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Rögzített</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Kormány nehézsége</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Mennyire nehéz a kormányzás. A 100% az autó saját értéke.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Kormány szögtartománya</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Ennyit fordul a kormány végállástól végállásig. Állítsa be a kormány saját beállításának megfelelően.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Kormányzási nyomaték</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Szög</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Nyomaték</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Kormányhatár {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Kormányzási nyomaték a kormánykoszorún a kormányszög függvényében. {0} sebességnél a csúcs {1} N·m, {2}°-nál.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Középhelyzeti érzet</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Milyen gyorsan épül fel a nyomaték a kanyarodással középhelyzet közelében, N·m/g egységben, 0.05 g-ig. A nagyobb érték stabilabb érzetet ad.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Nyomatékmerevség</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Milyen gyorsan épül fel a nyomaték, ahogy a kormány elhagyja a középhelyzetet, N·m/fok egységben.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearitás</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>A nyomaték meredeksége 0.10 és 0.15 g között a középhelyzeti meredekséghez képest. Az alacsonyabb érték azt jelenti, hogy a kormányzás hamarabb könnyül meg.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Csúcsnyomaték</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>A legnagyobb nyomaték, amelyet az autó kér a kormánytól, a kormány által adható legnagyobb mellett.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>a maximális {0} N·m-ből</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Ez az autó több nyomatékot kér, mint amennyi a kormánynak van, ezért a görbe teteje le van vágva.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Középhelyzeti érzet, szervótámogatás, csillapítás, súrlódás, tapadás, rögzített sebesség, kormánynyomaték</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Mennyire erősen tartja a kormányzás a középhelyzetet alacsony sebességnél. A 100% az autó saját értéke.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Szervótámogatás</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Mennyit vesz le a szervokormány, ahogy a kanyarodás erősödik. A nagyobb érték könnyebb kormányzást jelent a középhelyzettől távol.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Csillapítás</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Mennyire erősen áll ellen a kormány a gyors fordításoknak. A 100% az az érték, amely a középhelyzeten való túllendülés nélkül hozza vissza.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Súrlódás</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Állandó fékezőerő, amely mindkét irányban ellenáll az elfordításnak.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Tapadás</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Az út tapadása. A kormányzás megkönnyebbül, ahol az első gumik elveszítik a tapadást.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Száraz</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Nedves</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Hó</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Jég</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Rögzített sebesség</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Az a sebesség, amellyel az autó haladónak számít, ha a Sebesség Rögzített, és amíg egyetlen játék sem küld ilyet.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Kormánynyomaték</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>A kormány által adott legnagyobb nyomaték. A PadForge kitölti, ha a kormány gyártója közzéteszi. A kormány saját értékénél nagyobb szám minden erőt gyengébbé tesz.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>A Kormánynyomaték nincs beállítva ehhez a kormányhoz, ezért az erői alacsonyan vannak tartva. Adja meg a Továbbiak alatt.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>A kormány magától lengeni kezdett, ezért az erő vissza van fogva. Futtassa az Elengedési tesztet.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Az erő ki van kapcsolva, mert a kormány tovább lengett, vagy eltávolodott a középhelyzettől. Futtassa az Elengedési tesztet.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Elengedési teszt</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Megméri a kormányt, és úgy állítja be a csillapítást, hogy túllendülés nélkül térjen vissza</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Még nem futott le</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Megmérve</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Vegye le a kezét a kormányról. A PadForge {0}°-ra fordítja, elengedi, és rögzíti, hogyan tér vissza.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>A kormány szöge az egyes elengedések után {0} másodpercen át.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Előtte</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Utána</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mérés, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Kész, 2 futtatás</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Leállítva</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>A kormány nem állt meg. Vegye le róla a kezét, és futtassa újra a tesztet.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>A kormány nem mozdult. Ha a Kormánynyomaték nagyobb a kormány által adhatónál, állítsa a kormány saját értékére, és futtassa újra a tesztet.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>A kormány közel került a tartománya végéhez. Állítsa középre, és futtassa újra a tesztet.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>A kormány mozgását nem sikerült beolvasni. Futtassa újra a tesztet.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>A kormány nem válaszol többé. Ellenőrizze, hogy csatlakoztatva van-e, és hogy a motor fut-e.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Ez a kormány nincs használatban. Rendelje hozzá egy kontrollerhez, és indítsa el a motort, majd futtassa a tesztet.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Tehetetlenség</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Korábban a kormány {0}°-kal lendült túl a középhelyzeten.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Most {0}°-kal lendül túl a középhelyzeten, és {1}°-ra áll meg a középhelyzettől.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Most túllendülés nélkül tér vissza, és {0}°-ra áll meg a középhelyzettől.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Futtatás újra</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Alkalmaz</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Kormányvégállás-visszajelzés visszaállítása</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>A Rezgésimpulzus végállásnál visszaállítása</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>A Ravaszvibráció végállásnál visszaállítása</value></data>
@@ -4919,7 +5000,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>A PlayStation Move jelentésfelépítései, érzékelőkalibrálása és az EXT kiegészítő kézfogása, készítette: Thomas Perl, a moveonpc wiki alapján ellenőrizve. A PadForge implementációja eredeti C# kód. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Versenyzési telemetriai referenciák</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>A játéktelemetria és a kormány fordulatszám-váltásjelző LED-jei mögötti megosztott memória- és UDP-felépítések, a következő forrásokból: assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) és vAzhureRacingHub (GPL-3.0). A program nem tartalmaz GPL- vagy LGPL-kódot.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>A játéktelemetria és a kormány fordulatszám-váltásjelző LED-jei mögötti megosztott memória- és UDP-felépítések, a következő forrásokból: assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) és vAzhureRacingHub (GPL-3.0). A program nem tartalmaz GPL- vagy LGPL-kódot.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>A DualShock 3 Bluetooth-párosításának és jelentéseinek dokumentációja. GPL-2.0 és GPL-3.0, kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>A virtuális DualSense mikrofonjának 48 dB-es csillapítási tartománya. Kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Kormányprotokoll-referenciák</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>A Fanatec, a Thrustmaster és a Logitech kormányok natív erő-visszacsatolási és fordulatszám-váltásjelző LED-jelentései, a következő forrásokból: hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) és thrustmaster-led-linux (GPL-3.0), a prodigal.knight által készített SimHub LED-bővítmény (MIT) és a tm-bt-led (MIT) alapján ellenőrizve. Csak dokumentációként, a program nem tartalmaz GPL-kódot.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Kormányérzet-referenciák</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>A Középre állítás Jármű módja mögötti kormánynyomaték-modell Balachandran és Gerdes „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) című tanulmányából származik. A járműparaméterek a commonroad-vehicle-models (BSD-3-Clause) és a global_racetrajectory_optimization (LGPL-3.0) projektből származnak. A gumi utánfutása Pacejka Tire and Vehicle Dynamics, az út tapadása Wong Theory of Ground Vehicles című könyvéből származik. Csak számértékeket vesz át, egyikükből sem tartalmaz kódot a program.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Játéktermi I/O-referenciák</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Az SDL-fork Namco és Konami játéktermi I/O-paneljeihez és JVS-paneljeihez készült illesztőprogramjai mögötti protokollok, a következő forrásokból: arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania-licenc), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) és TaikoZucchini (MIT). Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE kontrollerek referenciái</value></data>

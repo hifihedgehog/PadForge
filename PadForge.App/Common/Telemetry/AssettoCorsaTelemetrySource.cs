@@ -13,6 +13,16 @@ namespace PadForge.Common.Telemetry
     /// Unicode string fields ahead of MaxRpm make a hand-offset fragile, so the
     /// layout up to MaxRpm is described faithfully and let the marshaler place it.
     /// Struct verified against mdjarv/assettocorsasharedmemory (2026-06-02).
+    ///
+    /// <para>Speed is <c>Physics.SpeedKmh</c> (float) at byte 28. The track's
+    /// grip is <c>Graphics.SurfaceGrip</c> (float) on the
+    /// <c>Local\acpmf_graphics</c> page, at byte 280 in Assetto Corsa and at
+    /// 1240 in Competizione, whose page holds sixty cars' coordinates and ids
+    /// ahead of it. Both by Marshal.OffsetOf on assettocorsasharedmemory's
+    /// structs and by count of tm-bt-led's SharedFileOut.h, which has the two
+    /// layouts side by side (2026-11-19). Competizione is told by the static
+    /// page's version, 1.8 and later (tm-bt-led assetto.js 89). The graphics
+    /// page is read when it opens and is not needed for the rest.</para>
     /// </summary>
     internal sealed class AssettoCorsaTelemetrySource : ITelemetrySource
     {
@@ -20,11 +30,15 @@ namespace PadForge.Common.Telemetry
 
         private const string PhysicsName = "Local\\acpmf_physics";
         private const string StaticName = "Local\\acpmf_static";
+        private const string GraphicsName = "Local\\acpmf_graphics";
         private const int RpmsOffset = 20;
+        private const int SpeedKmhOffset = 28;
+        internal const int SurfaceGripOffset = 280, CompetizioneSurfaceGripOffset = 1240;
 
-        private MemoryMappedFile _physMmf, _statMmf;
-        private MemoryMappedViewAccessor _physAcc, _statAcc;
+        private MemoryMappedFile _physMmf, _statMmf, _graphMmf;
+        private MemoryMappedViewAccessor _physAcc, _statAcc, _graphAcc;
         private int _maxRpm;
+        private bool _competizione;
         private int _staticCountdown;
         private int _nextOpenTick;   // Environment.TickCount before which open is skipped
         private int _lastPacketId;   // physics PacketId (@0); advances each physics tick
@@ -68,6 +82,18 @@ namespace PadForge.Common.Telemetry
                 _physAcc = _physMmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
                 _statAcc = _statMmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
                 _staticCountdown = 0;
+                // The graphics page gives the track's grip alone, so a failure to open it costs only that.
+                try
+                {
+                    _graphMmf = MemoryMappedFile.OpenExisting(GraphicsName, MemoryMappedFileRights.Read);
+                    _graphAcc = _graphMmf.CreateViewAccessor(0, CompetizioneSurfaceGripOffset + 4, MemoryMappedFileAccess.Read);
+                }
+                catch
+                {
+                    try { _graphMmf?.Dispose(); } catch { }
+                    _graphMmf = null;
+                    _graphAcc = null;
+                }
                 return true;
             }
             catch
@@ -86,7 +112,7 @@ namespace PadForge.Common.Telemetry
             {
                 if (_staticCountdown <= 0)
                 {
-                    _maxRpm = ReadMaxRpm();
+                    _maxRpm = ReadStatic(out _competizione);
                     _staticCountdown = 200; // re-read redline ~every 200 polls (car change)
                 }
                 else _staticCountdown--;
@@ -114,6 +140,10 @@ namespace PadForge.Common.Telemetry
                 int rpms = _physAcc.ReadInt32(RpmsOffset);
                 if (rpms < 0) rpms = 0;
                 snap = new GameTelemetrySnapshot { Rpm = rpms, MaxRpm = _maxRpm, IdleRpm = 0f, Source = Name };
+                snap.SetSpeed(_physAcc.ReadSingle(SpeedKmhOffset) / 3.6f);
+                if (_graphAcc != null)
+                    snap.Grip = (float)SurfaceGrips.AssettoCorsa(
+                        _graphAcc.ReadSingle(_competizione ? CompetizioneSurfaceGripOffset : SurfaceGripOffset));
                 return true;
             }
             catch
@@ -124,7 +154,9 @@ namespace PadForge.Common.Telemetry
             }
         }
 
-        private int ReadMaxRpm()
+        /// <summary>The static page's max RPM, and whether its version is
+        /// Competizione's.</summary>
+        private int ReadStatic(out bool competizione)
         {
             int size = Marshal.SizeOf<AcStaticHead>();
             byte[] buf = new byte[size];
@@ -133,18 +165,26 @@ namespace PadForge.Common.Telemetry
             try
             {
                 AcStaticHead head = Marshal.PtrToStructure<AcStaticHead>(h.AddrOfPinnedObject());
+                competizione = IsCompetizione(head.SMVersion);
                 return head.MaxRpm;
             }
             finally { h.Free(); }
         }
 
+        /// <summary>Competizione's pages report version 1.8 or later.</summary>
+        internal static bool IsCompetizione(string smVersion)
+            => double.TryParse(smVersion, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double v) && v >= 1.8;
+
         private void Close()
         {
             try { _physAcc?.Dispose(); } catch { }
             try { _statAcc?.Dispose(); } catch { }
+            try { _graphAcc?.Dispose(); } catch { }
             try { _physMmf?.Dispose(); } catch { }
             try { _statMmf?.Dispose(); } catch { }
-            _physAcc = null; _statAcc = null; _physMmf = null; _statMmf = null;
+            try { _graphMmf?.Dispose(); } catch { }
+            _physAcc = null; _statAcc = null; _graphAcc = null; _physMmf = null; _statMmf = null; _graphMmf = null;
             _maxRpm = 0;
             _havePacket = false;
         }

@@ -3194,7 +3194,88 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Dréiberäich zrécksetzen</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Stäerkt vun der Autozentréierung zrécksetzen</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>LEDs fir d'Schalten (RPM) zrécksetzen</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Dréiberäich, Autozentréierung a Schaltliichter fir Force-Feedback-Steierrieder.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Dréiberäich a Schaltliichter fir Force-Feedback-Steierrieder.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Zentréierung</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bréngt d'Steierrad an d'Mëtt zréck, als einfach Fieder oder wéi d'Steierung vun engem Auto.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Zentréierung zrécksetzen</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Fieder zitt d'Steierrad mat enger eenzeger Stäerkt an d'Mëtt. Gefier rechent aus engem Pneusmodell den Dréimoment aus, deen d'Steierung vun engem Auto bei senger Vitess gëtt.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Fieder</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Gefier</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Gefier</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Den Auto, deem seng Steierung d'Steierrad iwwerhëlt. All Auto ass e publizéiert Gefiermodell.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Limousine</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Klengwon</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Minibus</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Rennauto</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Vitess</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Vum Spill liest d'Vitess vum Auto aus der Telemetrie vum Spill a benotzt Fix Vitess, soulaang kee Spill eng schéckt. Fix benotzt ëmmer Fix Vitess.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Vum Spill</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fix</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Steierwiicht</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Wéi schwéier d'Steierung ass. 100% ass dat vum Auto selwer.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Steierradberäich</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Wéi wäit dëst Steierrad vun Uschlag zu Uschlag dréit. Setz et op d'Astellung vum Steierrad selwer.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Steierdréimoment</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Wénkel</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Dréimoment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limit vum Steierrad {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Steierdréimoment um Kranz géint de Steierwénkel. Bei {0} erreecht et säi Maximum vun {1} N·m bei {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Mëttegefill</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Wéi séier den Dréimoment no bei der Mëtt mat der Kurvebeschleunegung wiisst, an N·m pro g bis 0.05 g. Méi fillt sech méi stabil un.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Dréimomentsteifheet</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Wéi séier den Dréimoment wiisst, wann d'Steierrad d'Mëtt verléisst, an N·m pro Grad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearitéit</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>D'Steigung vum Dréimoment tëscht 0.10 an 0.15 g par rapport zu senger Steigung an der Mëtt. Méi niddreg heescht, d'Steierung gëtt méi fréi liicht.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Spëtzendréimoment</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>De gréissten Dréimoment, deen den Auto vum Steierrad freet, nieft dem gréissten, deen d'Steierrad gëtt.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>vun {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Dësen Auto freet méi Dréimoment, wéi d'Steierrad huet, dofir ass den Uewerdeel vun der Kurv ofgeschnidden.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Mëttegefill, Servounterstëtzung, Dämpung, Reiwung, Haftung, Fix Vitess, Dréimoment vum Steierrad</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Wéi staark d'Steierung bei niddreger Vitess hir Mëtt hält. 100% ass dat vum Auto selwer.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servounterstëtzung</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Wéi vill d'Servosteierung ofhëlt, wann d'Kurvebeschleunegung wiisst. Méi heescht méi liicht Steierung ewech vun der Mëtt.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dämpung</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Wéi staark d'Steierrad sech géint séier Dréiunge wiert. 100% ass dat, wat et zréckbréngt, ouni iwwer d'Mëtt erauszeschwéngen.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Reiwung</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>E stännege Widderstand, deen dem Dréien an all Richtung entgéintwierkt.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Haftung</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>D'Haftung vun der Strooss. D'Steierung gëtt liicht, wou d'Virderpneuen hir Haftung verléieren.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Dréchen</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Naass</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Schnéi</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Äis</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fix Vitess</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>D'Vitess, mat där den Auto ugeholl gëtt ze fueren, wann Vitess op Fix steet, a soulaang kee Spill eng schéckt.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Dréimoment vum Steierrad</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>De gréissten Dréimoment, deen dëst Steierrad gëtt. PadForge fëllt en aus, wou den Hiersteller vum Steierrad en publizéiert. Eng Zuel iwwer där vum Steierrad selwer mécht all Kraaft méi schwaach.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Dréimoment vum Steierrad ass fir dëst Steierrad net agestallt, dofir ginn seng Kräften niddreg gehalen. Gëff en ënner Méi an.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>D'Steierrad huet ugefaang, vu selwer ze schwéngen, dofir gëtt d'Kraaft zréckgehalen. Start de Lassloostest.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>D'Kraaft ass aus, well d'Steierrad weider geschwongen huet oder vun der Mëtt fortgelaf ass. Start de Lassloostest.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Lassloostest</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Moosst dëst Steierrad a stellt d'Dämpung an, sou datt et ouni Iwwerschwénger zréckkënnt</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Nach net gemaach</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Gemooss</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Huel Är Hänn vum Steierrad. PadForge dréit et op {0}°, léisst et lass a hält fest, wéi et zréckkënnt.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>De Wénkel vum Steierrad iwwer {0} Sekonnen no all Lassloossen.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Virdrun</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Duerno</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Gëtt gemooss, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Fäerdeg, 2 Duerchgäng</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Gestoppt</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>D'Steierrad ass net zur Rou komm. Huel Är Hänn dovun a start den Test nach eng Kéier.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>D'Steierrad huet sech net beweegt. Wann Dréimoment vum Steierrad méi héich agestallt ass, wéi d'Steierrad gëtt, setz en op d'Zuel vum Steierrad selwer a start den Test nach eng Kéier.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>D'Steierrad ass bal un d'Enn vu sengem Beräich komm. Riicht et an d'Mëtt a start den Test nach eng Kéier.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>D'Beweegung vum Steierrad konnt net gelies ginn. Start den Test nach eng Kéier.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>D'Steierrad äntwert net méi. Kuck, ob et verbonnen ass an ob d'Engine leeft.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Dëst Steierrad gëtt net benotzt. Weis et engem Controller zou a start d'Engine, duerno start den Test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Trägheet</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Virdrun ass d'Steierrad {0}° iwwer d'Mëtt erausgeschwongen.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Elo schwéngt et {0}° iwwer d'Mëtt eraus a bleift {1}° vun der Mëtt stoen.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Elo kënnt et ouni Iwwerschwénger zréck a bleift {0}° vun der Mëtt stoen.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Nach eng Kéier starten</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Uwenden</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Feedback um Steieruschlag zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Vibratiounspuls um Uschlag zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Trigger-Vibratioun um Uschlag zrécksetzen</value></data>
@@ -4653,7 +4734,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Report-Layouten, Sensorkalibréierung an EXT-Zubehéier-Handshake vum PlayStation Move, vum Thomas Perl, mam moveonpc-Wiki iwwerpréift. D'Implementatioun vu PadForge ass originale C#-Code. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referenze fir Renntelemetrie</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-Memory- an UDP-Layouten hannert der Spill-Telemetrie an den RPM-Schalt-LEDe vum Steierrad, gelies aus assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Et gëtt kee GPL- oder LGPL-Code matgeliwwert.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-Memory- an UDP-Layouten hannert der Spill-Telemetrie an den RPM-Schalt-LEDe vum Steierrad, gelies aus assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) a vAzhureRacingHub (GPL-3.0). Et gëtt kee GPL- oder LGPL-Code matgeliwwert.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentatioun zum Bluetooth-Koppelen an zu de Reporte vum DualShock 3. GPL-2.0 a GPL-3.0, nëmmen als Dokumentatioun gelies, et gëtt kee GPL-Code matgeliwwert.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4676,6 +4757,8 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>De Beräich vun der Ofschwächung vu 48 dB vum virtuellen DualSense-Mikrofon. Nëmmen als Dokumentatioun gelies, et gëtt kee GPL-Code matgeliwwert.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referenze fir Steierrad-Protokoller</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Nativ Force-Feedback- an RPM-Schalt-LED-Reporte fir Steierrieder vu Fanatec, Thrustmaster a Logitech, gelies aus hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) an thrustmaster-led-linux (GPL-3.0), a verglach mam SimHub-LED-Plugin vum prodigal.knight (MIT) an tm-bt-led (MIT). Nëmmen Dokumentatioun, et gëtt kee GPL-Code matgeliwwert.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referenze fir d'Steiergefill</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>D'Modell vum Steierdréimoment hannert dem Modus Gefier vun der Zentréierung, vum Balachandran a Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). D'Gefierparameter si gelies aus commonroad-vehicle-models (BSD-3-Clause) a global_racetrajectory_optimization (LGPL-3.0). De Nolaf vum Pneu ass aus dem Pacejka sengem Tire and Vehicle Dynamics, an d'Haftung vun der Strooss aus dem Wong sengem Theory of Ground Vehicles. Nëmmen Zuelen, et gëtt kee Code vun hinne matgeliwwert.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade-I/O-Referenzen</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>D'Protokoller hannert den Treiber vum SDL-Fork fir Arcade-I/O-Boards vu Namco a Konami a fir JVS-Boards, gelies aus arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) an TaikoZucchini (MIT). Nëmmen Dokumentatioun, et gëtt kee Code matgeliwwert.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referenze fir Bluetooth-LE-Controller</value></data>

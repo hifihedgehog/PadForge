@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>重設旋轉範圍</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>重設自動回正強度</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>重設轉速換檔 LED</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>力回饋方向盤的轉向範圍、自動回正和換檔指示燈。</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>力回饋方向盤的轉向範圍和換檔指示燈。</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>回中</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>讓方向盤回到中心，可用單純的彈簧，也可模擬車輛的轉向。</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>重設回中</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>彈簧以單一強度把方向盤拉回中心。車輛則依輪胎模型，算出車輛在該車速下轉向所給的扭力。</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>彈簧</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>車輛</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>車輛</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>方向盤採用其轉向特性的車輛。每一款都是已公開發表的車輛模型。</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>房車</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>小型車</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>廂型車</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>賽車</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>速度</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>「來自遊戲」會從遊戲的遙測讀取車速，在沒有遊戲傳送車速時改用固定速度。「固定」則一律使用固定速度。</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>來自遊戲</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>轉向重量</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>轉向的沉重程度。100% 就是該車原本的重量。</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>方向盤總轉角</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>這支方向盤從一端轉到另一端的總角度。請設成方向盤本身的設定值。</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>轉向扭力</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>角度</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>扭力</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>方向盤上限 {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>輪圈處的轉向扭力與轉向角度的關係。在 {0} 時，於 {2}° 達到峰值 {1} N·m。</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>中心手感</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>接近中心時，扭力隨側向加速度增加的速度，單位為 N·m 每 g，範圍到 0.05 g。數值越高，手感越穩。</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>扭力剛度</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>方向盤離開中心時扭力增加的速度，單位為 N·m 每度。</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>線性度</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 到 0.15 g 之間的扭力斜率，相對於中心處的斜率。數值越低，轉向越早變輕。</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>峰值扭力</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>車輛對方向盤要求的最大扭力，以及方向盤能給的最大扭力。</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>上限 {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>這款車要求的扭力超過方向盤所能給的，所以曲線頂端被截斷。</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>中心手感、動力輔助、阻尼、摩擦、抓地力、固定速度、方向盤扭力</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>低速時轉向保持中心的力道。100% 就是該車原本的力道。</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>動力輔助</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>隨著側向加速度增加，動力轉向減去的力道多寡。數值越高，離開中心後的轉向越輕。</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>阻尼</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>方向盤抵抗快速轉動的力道。100% 能讓它回到中心而不會越過中心擺動。</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>摩擦</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>對兩個方向的轉動都產生的穩定阻力。</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>抓地力</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>路面的抓地力。前輪抓地力用盡之處，轉向會變輕。</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>乾燥</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>濕滑</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>積雪</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>結冰</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>固定速度</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>當速度設為「固定」，以及沒有遊戲傳送車速時，車輛被視為行駛的速度。</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>方向盤扭力</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>這支方向盤能給的最大扭力。方向盤製造商有公布時，PadForge 會自動填入。填入高於方向盤本身的數值，會讓所有力道變弱。</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>這支方向盤尚未設定方向盤扭力，因此力道被壓低。請在「更多」中輸入。</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>方向盤自行開始擺動，因此力道被收回。請執行釋放測試。</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>由於方向盤持續擺動或偏離中心，力道已關閉。請執行釋放測試。</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>釋放測試</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>測量這支方向盤並設定阻尼，讓它回正時不會過衝</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>尚未執行</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>已測量</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>請雙手離開方向盤。PadForge 會把它轉到 {0}°，放開後記錄它如何回來。</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>每次放開後 {0} 秒內方向盤的角度。</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>之前</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>之後</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>測量中，{0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>完成，共 2 次</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>已停止</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>方向盤沒有靜止下來。請雙手離開方向盤，再執行一次測試。</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>方向盤沒有動。若方向盤扭力設得高於方向盤所能給的，請改成方向盤本身的數值，再執行一次測試。</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>方向盤轉到接近行程的盡頭。請先回到中心，再執行一次測試。</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>無法讀取方向盤的動作。請再執行一次測試。</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>方向盤不再回應。請確認它已連接，且引擎正在執行。</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>這支方向盤未在使用中。請將它指派給控制器並啟動引擎，然後執行測試。</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>慣量</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>之前，方向盤越過中心擺動了 {0}°。</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>現在它越過中心擺動 {0}°，並停在離中心 {1}° 處。</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>現在它回正時不再過衝，並停在離中心 {0}° 處。</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>再執行一次</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>套用</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>重設轉向極限回饋</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>重設到達極限時震動脈衝</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>重設到達極限時扳機震動</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move 的報告配置、感應器校正和 EXT 配件交握，作者：Thomas Perl，並與 moveonpc wiki 交叉比對。PadForge 的實作是原創的 C# 程式碼。BSD 2-Clause。</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>賽車遙測參考資料</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>遊戲遙測和方向盤轉速換檔 LED 所用的共用記憶體與 UDP 配置，讀自 assettocorsasharedmemory (MIT)、CMTelemetry、dirt-rally-telemetry-dashboard (MIT)、ets2-telemetry-udp (MIT)、f1-24-udp (MIT)、fh6-tel (MIT)、forza-data-web (Apache-2.0)、forza-telemetry (MIT)、Forza-Telemetry-Splitter (MIT)、InSim.NET (LGPL-2.1)、irsdkSharp (MIT)、IRSDKSharper (GPL-3.0)、out-gauge-cluster (Apache-2.0)、PCars2UdpNet (MIT)、project-cars-2-udp (MIT)、pyirsdk (MIT)、rF2SharedMemoryMapPlugin (GPL-3.0)、rFactorSharedMemoryMap (GPL-2.0)、rust_ams2_sharedmem、scs-sdk-plugin (MIT)、simapi (LGPL-3.0)、tm-bt-led (MIT)和 vAzhureRacingHub (GPL-3.0)。未隨附任何 GPL 或 LGPL 程式碼。</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>遊戲遙測和方向盤轉速換檔 LED 所用的共用記憶體與 UDP 配置，讀自 assettocorsasharedmemory (MIT)、CMTelemetry、CrewChiefV4 (MIT)、dirt-rally-telemetry-dashboard (MIT)、ets2-telemetry-udp (MIT)、f1-24-udp (MIT)、fh6-tel (MIT)、forza-data-web (Apache-2.0)、forza-telemetry (MIT)、Forza-Telemetry-Splitter (MIT)、InSim.NET (LGPL-2.1)、irsdkSharp (MIT)、IRSDKSharper (GPL-3.0)、out-gauge-cluster (Apache-2.0)、PCars2UdpNet (MIT)、project-cars-2-udp (MIT)、pyirsdk (MIT)、r3e-api (Unlicense)、rF2SharedMemoryMapPlugin (GPL-3.0)、rFactorSharedMemoryMap (GPL-2.0)、rust_ams2_sharedmem、scs-sdk-plugin (MIT)、simapi (LGPL-3.0)、tm-bt-led (MIT)和 vAzhureRacingHub (GPL-3.0)。未隨附任何 GPL 或 LGPL 程式碼。</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 藍牙配對和報告的參考文件。GPL-2.0 和 GPL-3.0，僅作為文件閱讀，未隨附任何 GPL 程式碼。</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>虛擬 DualSense 麥克風的 48 dB 衰減範圍。僅作為文件閱讀，未隨附任何 GPL 程式碼。</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>方向盤通訊協定參考資料</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec、Thrustmaster 和 Logitech 方向盤的原生力回饋和轉速換檔 LED 報告，讀自 hid-fanatecff(GPL-2.0)、hid-tmff2(GPL-2.0-or-later)、new-lg4ff(GPL-2.0-or-later)、oversteer(GPL-3.0)和 thrustmaster-led-linux(GPL-3.0)，並與 prodigal.knight 的 SimHub LED 外掛程式(MIT)和 tm-bt-led(MIT)交叉比對。僅作為文件參考，未隨附任何 GPL 程式碼。</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>轉向手感參考資料</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>回中的車輛模式所用的轉向扭力模型，出自 Balachandran 和 Gerdes 的「Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures」(IEEE/ASME Transactions on Mechatronics)。車輛參數讀自 commonroad-vehicle-models(BSD-3-Clause)和 global_racetrajectory_optimization(LGPL-3.0)。輪胎的拖距取自 Pacejka 的 Tire and Vehicle Dynamics，路面抓地力取自 Wong 的 Theory of Ground Vehicles。PadForge 只取用其中的數據，未隨附任何程式碼。</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>街機 I/O 參考資料</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL 分支中 Namco 和 Konami 街機 I/O 基板及 JVS 基板驅動程式所用的通訊協定，讀自 arcade-docs(WTFPL)、bemanitools(Unlicense)、Dolphin(GPL-2.0-or-later)、ITAIKO-firmware(MIT)、JoypadOS(Apache-2.0)、jvsio(BSD-3-Clause)、MAME(BSD-3-Clause)、OpenITG(StepMania license)、p4io-mdxfdrv(GPL-3.0)、RPCS3(GPL-2.0)和 TaikoZucchini(MIT)。僅作為文件參考，未隨附任何程式碼。</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>藍牙 LE 控制器參考資料</value></data>

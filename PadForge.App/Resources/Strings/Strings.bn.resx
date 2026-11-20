@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>ঘূর্ণনের পরিসর রিসেট করুন</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>স্বয়ংক্রিয় কেন্দ্রে ফেরার শক্তি রিসেট করুন</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM শিফট LED রিসেট করুন</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ফোর্স ফিডব্যাক হুইলের জন্য স্টিয়ারিংয়ের পরিসর, স্বয়ংক্রিয় কেন্দ্রে ফেরা ও শিফট লাইট।</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ফোর্স ফিডব্যাক হুইলের জন্য স্টিয়ারিংয়ের পরিসর ও শিফট লাইট।</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>কেন্দ্রে ফেরা</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>হুইলকে সাধারণ স্প্রিংয়ের মতো বা গাড়ির স্টিয়ারিংয়ের মতো কেন্দ্রে ফিরিয়ে আনে।</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>কেন্দ্রে ফেরা রিসেট করুন</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>মোড</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>স্প্রিং একই শক্তিতে হুইলকে কেন্দ্রে টানে। যান টায়ার মডেল থেকে গাড়ির গতি অনুযায়ী স্টিয়ারিংয়ের টর্ক হিসাব করে।</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>স্প্রিং</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>যান</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>যান</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>হুইল যে গাড়ির স্টিয়ারিং অনুসরণ করবে। প্রতিটি একটি প্রকাশিত যান মডেল।</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>সেডান</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>কমপ্যাক্ট</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ভ্যান</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>রেস কার</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>গতি</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>গেম থেকে গেমের টেলিমেট্রি থেকে গাড়ির গতি পড়ে, আর কোনো গেম গতি না পাঠালে স্থির গতি ব্যবহার করে। স্থির সব সময় স্থির গতি ব্যবহার করে।</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>গেম থেকে</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>স্থির</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>স্টিয়ারিংয়ের ভার</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>স্টিয়ারিং কতটা ভারী। 100% হলো গাড়ির নিজস্ব ভার।</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>হুইলের ঘূর্ণন সীমা</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>এই হুইল এক প্রান্ত থেকে অন্য প্রান্ত পর্যন্ত কতটা ঘোরে। হুইলের নিজস্ব সেটিংয়ের সমান রাখুন।</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>স্টিয়ারিং টর্ক</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>কোণ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>টর্ক</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>হুইলের সীমা {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>রিমে স্টিয়ারিং টর্ক বনাম স্টিয়ারিং কোণ। {0} গতিতে এটি {2}° কোণে সর্বোচ্চ {1} N·m হয়।</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>কেন্দ্রে স্থিরতার অনুভূতি</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>কেন্দ্রের কাছে কর্নারিংয়ের সঙ্গে টর্ক কত দ্রুত বাড়ে, 0.05 g পর্যন্ত N·m প্রতি g হিসাবে। বেশি হলে স্টিয়ারিং বেশি স্থির মনে হয়।</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>টর্ক দৃঢ়তা</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>হুইল কেন্দ্র ছাড়ার সঙ্গে টর্ক কত দ্রুত বাড়ে, N·m প্রতি ডিগ্রি হিসাবে।</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>রৈখিকতা</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 থেকে 0.15 g এর মধ্যে টর্কের ঢাল, কেন্দ্রের ঢালের তুলনায়। কম হলে স্টিয়ারিং আগে হালকা হয়ে যায়।</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>সর্বোচ্চ টর্ক</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>গাড়ি হুইলের কাছে সর্বোচ্চ যে টর্ক চায়, এবং পাশে হুইল সর্বোচ্চ যা দিতে পারে।</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>এর মধ্যে {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>এই গাড়ি হুইলের সামর্থ্যের চেয়ে বেশি টর্ক চায়, তাই বক্ররেখার উপরের অংশ কেটে যায়।</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>কেন্দ্রে স্থিরতার অনুভূতি, পাওয়ার অ্যাসিস্ট, ড্যাম্পিং, ঘর্ষণ, গ্রিপ, স্থির গতি, হুইল টর্ক</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>কম গতিতে স্টিয়ারিং কতটা জোরে কেন্দ্র ধরে রাখে। 100% হলো গাড়ির নিজস্ব মান।</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>পাওয়ার অ্যাসিস্ট</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>কর্নারিং বাড়লে পাওয়ার স্টিয়ারিং কতটা ভার কমায়। বেশি হলে কেন্দ্র থেকে দূরে স্টিয়ারিং হালকা হয়।</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ড্যাম্পিং</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>হুইল দ্রুত ঘোরানোয় কতটা বাধা দেয়। 100% হলে হুইল কেন্দ্র পেরিয়ে না দুলে ফিরে আসে।</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ঘর্ষণ</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>একটানা টান যা যেকোনো দিকে ঘোরানোয় বাধা দেয়।</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>গ্রিপ</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>রাস্তার গ্রিপ। সামনের টায়ার গ্রিপ হারালে স্টিয়ারিং হালকা হয়ে যায়।</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>শুকনো</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ভেজা</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>তুষার</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>বরফ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>স্থির গতি</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>গতি স্থির হলে এবং কোনো গেম গতি না পাঠালে গাড়ি যে গতিতে চলছে ধরা হয়।</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>হুইল টর্ক</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>এই হুইল সর্বোচ্চ যে টর্ক দেয়। হুইলের নির্মাতা প্রকাশ করলে PadForge তা নিজেই বসিয়ে দেয়। হুইলের নিজস্ব মানের চেয়ে বেশি দিলে সব বল দুর্বল হয়ে যায়।</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>এই হুইলের জন্য হুইল টর্ক নির্ধারণ করা নেই, তাই এর বল কম রাখা হয়েছে। এটি আরও অংশে দিন।</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>হুইল নিজে নিজেই দুলতে শুরু করেছিল, তাই বল কমিয়ে রাখা হয়েছে। ছাড়ার পরীক্ষা চালান।</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>হুইল দুলতে থেকেছে বা কেন্দ্র থেকে সরে গেছে, তাই বল বন্ধ করা হয়েছে। ছাড়ার পরীক্ষা চালান।</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>ছাড়ার পরীক্ষা</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>এই হুইল মেপে ড্যাম্পিং ঠিক করে, যাতে হুইল কেন্দ্র পেরিয়ে না গিয়ে ফেরে</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>এখনও চালানো হয়নি</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>পরিমাপ হয়েছে</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>হুইল থেকে হাত সরান। PadForge এটিকে {0}° ঘুরিয়ে ছেড়ে দেয় এবং ফিরে আসার গতি রেকর্ড করে।</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>প্রতিটি ছাড়ার পর {0} সেকেন্ড ধরে হুইলের কোণ।</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>আগে</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>পরে</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>পরিমাপ চলছে, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>সম্পন্ন, 2 বার চালানো হয়েছে</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>থামানো হয়েছে</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>হুইল স্থির হয়নি। হাত সরিয়ে আবার পরীক্ষা চালান।</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>হুইল নড়েনি। হুইল টর্ক হুইলের সামর্থ্যের চেয়ে বেশি দেওয়া থাকলে সেটি হুইলের নিজস্ব মানে নামিয়ে আবার পরীক্ষা চালান।</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>হুইল তার সীমার প্রান্তের কাছে চলে গিয়েছিল। এটি কেন্দ্রে এনে আবার পরীক্ষা চালান।</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>হুইলের গতি পড়া যায়নি। আবার পরীক্ষা চালান।</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>হুইল সাড়া দেওয়া বন্ধ করেছে। এটি সংযুক্ত আছে কিনা এবং ইঞ্জিন চালু আছে কিনা দেখুন।</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>এই হুইল ব্যবহারে নেই। এটিকে একটি কন্ট্রোলারে অ্যাসাইন করে ইঞ্জিন চালু করুন, তারপর পরীক্ষা চালান।</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>জড়তা</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>আগে হুইল কেন্দ্র পেরিয়ে {0}° দুলত।</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>এখন এটি কেন্দ্র পেরিয়ে {0}° দোলে এবং কেন্দ্র থেকে {1}° দূরে থামে।</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>এখন এটি কেন্দ্র না পেরিয়ে ফেরে এবং কেন্দ্র থেকে {0}° দূরে থামে।</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>আবার চালান</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>প্রয়োগ করুন</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>স্টিয়ারিং লক ফিডব্যাক রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>লকে রাম্বল পালস রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>লকে ট্রিগার কম্পন রিসেট করুন</value></data>
@@ -4919,7 +5000,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-এর রিপোর্ট লেআউট, সেন্সর ক্যালিব্রেশন ও EXT অ্যাক্সেসরির হ্যান্ডশেক, নির্মাতা Thomas Perl, moveonpc উইকির সঙ্গে মিলিয়ে দেখা। PadForge-এর ইমপ্লিমেন্টেশন মৌলিক C#। BSD 2-Clause।</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>রেসিং টেলিমেট্রির রেফারেন্স</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>গেম টেলিমেট্রি ও হুইলের RPM শিফট LED-এর পেছনের শেয়ার্ড মেমরি ও UDP লেআউট, যা assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ও vAzhureRacingHub (GPL-3.0) থেকে পড়া হয়েছে। কোনো GPL বা LGPL কোড সঙ্গে আসে না।</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>গেম টেলিমেট্রি ও হুইলের RPM শিফট LED-এর পেছনের শেয়ার্ড মেমরি ও UDP লেআউট, যা assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ও vAzhureRacingHub (GPL-3.0) থেকে পড়া হয়েছে। কোনো GPL বা LGPL কোড সঙ্গে আসে না।</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth পেয়ারিং ও রিপোর্টের ডকুমেন্টেশন। GPL-2.0 ও GPL-3.0, কেবল ডকুমেন্টেশন হিসেবে পড়া হয়েছে, কোনো GPL কোড সঙ্গে আসে না।</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ভার্চুয়াল DualSense মাইক্রোফোনের 48 dB অ্যাটেনুয়েশন পরিসর। কেবল ডকুমেন্টেশন হিসেবে পড়া হয়েছে, কোনো GPL কোড সঙ্গে আসে না।</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>হুইল প্রোটোকলের রেফারেন্স</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster ও Logitech হুইলের নিজস্ব ফোর্স ফিডব্যাক ও RPM শিফট LED রিপোর্ট, যা hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ও thrustmaster-led-linux (GPL-3.0) থেকে পড়া এবং prodigal.knight (MIT)-এর SimHub LED প্লাগইন ও tm-bt-led (MIT)-এর সঙ্গে মিলিয়ে দেখা হয়েছে। কেবল ডকুমেন্টেশন, কোনো GPL কোড সঙ্গে আসে না।</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>স্টিয়ারিং ফিলের রেফারেন্স</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>কেন্দ্রে ফেরার যান মোডের পেছনের স্টিয়ারিং টর্ক মডেল, যা Balachandran ও Gerdes-এর “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) থেকে নেওয়া। যানের প্যারামিটার পড়া হয়েছে commonroad-vehicle-models (BSD-3-Clause) ও global_racetrajectory_optimization (LGPL-3.0) থেকে। টায়ারের ট্রেইল এসেছে Pacejka-র Tire and Vehicle Dynamics থেকে, আর রাস্তার গ্রিপ Wong-এর Theory of Ground Vehicles থেকে। কেবল সংখ্যা নেওয়া হয়েছে, এগুলোর কোনো কোড সঙ্গে আসে না।</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>আর্কেড I/O রেফারেন্স</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco ও Konami আর্কেড I/O বোর্ড এবং JVS বোর্ডের জন্য SDL ফর্কের ড্রাইভারগুলোর পেছনের প্রোটোকল, যা arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania লাইসেন্স), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ও TaikoZucchini (MIT) থেকে পড়া হয়েছে। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE কন্ট্রোলারের রেফারেন্স</value></data>

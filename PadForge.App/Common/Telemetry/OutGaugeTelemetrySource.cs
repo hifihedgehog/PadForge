@@ -24,13 +24,14 @@ namespace PadForge.Common.Telemetry
         public string Name => "OutGauge";
 
         private const int RpmOffset = 16;
+        private const int SpeedOffset = 12; // f32, m/s
 
         private readonly int _port;
         public int Port => _port;
         private UdpClient _udp;
         private Thread _thread;
         private volatile bool _run;
-        private volatile float _rpm, _peak;
+        private volatile float _rpm, _peak, _speed;
         private volatile int _lastTick;
 
         public OutGaugeTelemetrySource(int port = 4444) { _port = port; }
@@ -62,6 +63,7 @@ namespace PadForge.Common.Telemetry
                     float rpm = BitConverter.ToSingle(b, RpmOffset);
                     if (float.IsNaN(rpm) || rpm < 0f || rpm > 30000f) continue;
                     _rpm = rpm;
+                    _speed = BitConverter.ToSingle(b, SpeedOffset);
                     if (rpm > _peak) _peak = rpm;
                     _lastTick = Environment.TickCount;
                 }
@@ -81,6 +83,7 @@ namespace PadForge.Common.Telemetry
             float max = Math.Max(_peak, _rpm * 1.05f);
             if (max <= 0f) return false;
             snap = new GameTelemetrySnapshot { Rpm = _rpm, MaxRpm = max, IdleRpm = 0f, Source = Name };
+            snap.SetSpeed(_speed);
             return true;
         }
 

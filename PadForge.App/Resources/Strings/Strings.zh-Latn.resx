@@ -3196,7 +3196,88 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Chóngzhì xuánzhuǎn fànwéi</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Chóngzhì zìdòng huízhōng qiángdù</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Chóngzhì RPM huàndǎng LED</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lìfǎnkuì fāngxiàngpán de zhuǎnxiàng fànwéi, zìdòng huízhōng hé huàndǎng dēng.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Lìfǎnkuì fāngxiàngpán de zhuǎnxiàng fànwéi hé huàndǎng dēng.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Huízhōng</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Ràng fāngxiàngpán huídào zhōngwèi, kě xiàng pǔtōng tánhuáng, yě kě xiàng qìchē de zhuǎnxiàng nàyàng.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Chóngzhì huízhōng</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Móshì</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Tánhuáng yǐ tóngyī qiángdù bǎ fāngxiàngpán lā huí zhōngwèi. Chēliàng gēnjù lúntāi móxíng suànchū qìchē zhuǎnxiàng zài dāngqián chēsù xià de niǔjǔ.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Tánhuáng</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Chēliàng</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Chēliàng</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Fāngxiàngpán suǒ mófǎng de zhuǎnxiàng suǒshǔ de qìchē. Měi yì kuǎn dōu shì yǐ gōngkāi fābiǎo de chēliàng móxíng.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Jiàochē</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Xiǎoxíngchē</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Miànbāochē</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Sàichē</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Sùdù</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Láizì yóuxì huì cóng yóuxì de yáocè shùjù zhōng dúqǔ chēsù, méiyǒu yóuxì fāsòng chēsù shí shǐyòng Gùdìng sùdù. Gùdìng shǐzhōng shǐyòng Gùdìng sùdù.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Láizì yóuxì</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Gùdìng</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Zhuǎnxiàng lìdù</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Zhuǎnxiàng yǒu duō chén. 100% jí gāi chē zìshēn de lìdù.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Fāngxiàngpán fànwéi</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Cǐ fāngxiàngpán cóng yì duān dǎ dào lìng yì duān de zhuǎndòng fànwéi. Qǐng shèwéi fāngxiàngpán zìshēn de shèzhì.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Zhuǎnxiàng niǔjǔ</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Jiǎodù</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Niǔjǔ</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Fāngxiàngpán shàngxiàn {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Fāngxiàngpán lúnyuán shàng de zhuǎnxiàng niǔjǔ yǔ zhuǎnxiàng jiǎodù de guānxì. Zài {0} shí, niǔjǔ zài {2}° chù dádào fēngzhí {1} N·m.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Zhōngwèi shǒugǎn</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Zhōngwèi fùjìn niǔjǔ suí zhuǎnwān jiāsùdù zēngzhǎng de kuàimàn, dānwèi wéi N·m měi g, zhídào 0.05 g. Shùzhí yuè dà, shǒugǎn yuè wěn.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Niǔjǔ gāngdù</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Fāngxiàngpán líkāi zhōngwèi shí niǔjǔ zēngzhǎng de kuàimàn, dānwèi wéi N·m měi dù.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Xiànxìngdù</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Niǔjǔ zài 0.10 zhì 0.15 g zhījiān de xiélǜ yǔ zhōngwèi xiélǜ zhī bǐ. Shùzhí yuè dī, zhuǎnxiàng yuè zǎo biàn qīng.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Fēngzhí niǔjǔ</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Qìchē duì fāngxiàngpán yāoqiú de zuìdà niǔjǔ, yǐjí fāngxiàngpán néng tígōng de zuìdà niǔjǔ.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Cǐ chē yāoqiú de niǔjǔ chāoguò fāngxiàngpán suǒ néng tígōng de, yīncǐ qūxiàn dǐngbù bèi jiéduàn.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Zhōngwèi shǒugǎn, zhùlì, zǔní, mócā, zhuādìlì, gùdìng sùdù, fāngxiàngpán niǔjǔ</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Dīsù shí zhuǎnxiàng bǎochí zhōngwèi de lìdù. 100% jí gāi chē zìshēn de shuǐpíng.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Zhùlì</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Suízhe zhuǎnwān jiāsùdù zēngdà, zhùlì zhuǎnxiàng jiǎnqù duōshǎo lìdù. Shùzhí yuè dà, líkāi zhōngwèi hòu zhuǎnxiàng yuè qīng.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Zǔní</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Fāngxiàngpán dǐkàng kuàisù zhuǎndòng de qiángdù. 100% shì ràng tā huízhèng ér bù chāoguò zhōngwèi de shùzhí.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Mócā</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Yì zhǒng chíxù de zǔlì, wúlùn xiàng nǎ biān zhuǎn dōu huì dǐkàng.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Zhuādìlì</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Lùmiàn de zhuādìlì. Qiánlún shīqù zhuādìlì shí, zhuǎnxiàng huì biàn qīng.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Gānzào</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Cháoshī</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Xuědì</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Bīngmiàn</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Gùdìng sùdù</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Dāng Sùdù wéi Gùdìng shí, yǐjí méiyǒu yóuxì fāsòng chēsù shí, jiǎdìng de qìchē xíngshǐ sùdù.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Fāngxiàngpán niǔjǔ</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Cǐ fāngxiàngpán néng tígōng de zuìdà niǔjǔ. Ruò zhìzàoshāng gōngbùle gāi shùzhí, PadForge huì zìdòng tiánrù. Shùzhí gāoyú fāngxiàngpán zìshēn de shùzhí huì shǐ suǒyǒu lìdù biàn ruò.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Wèi wèi cǐ fāngxiàngpán shèzhì Fāngxiàngpán niǔjǔ, yīncǐ qí lìdù bèi xiànzhì zài dī shuǐpíng. Qǐng zài Gèngduō zhōng shūrù.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Fāngxiàngpán kāishǐ zìxíng bǎidòng, yīncǐ lìdù yǐ bèi yāzhì. Qǐng yùnxíng Sōngshǒu cèshì.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Yóuyú fāngxiàngpán chíxù bǎidòng huò piānlí zhōngwèi, lìdù yǐ guānbì. Qǐng yùnxíng Sōngshǒu cèshì.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Sōngshǒu cèshì</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Cèliáng cǐ fāngxiàngpán bìng shèzhì zǔní, shǐ qí huízhèng shí bù chāotiáo</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Shàngwèi yùnxíng</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Yǐ cèliáng</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Qǐng sōngkāi fāngxiàngpán. PadForge huì bǎ tā zhuǎn dào {0}°, ránhòu fàngkāi, bìng jìlù tā rúhé huízhèng.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Měi cì sōngshǒu hòu {0} miǎo nèi de fāngxiàngpán jiǎodù.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Zhīqián</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Zhīhòu</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Zhèngzài cèliáng, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Wánchéng, 2 cì</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Yǐ tíngzhǐ</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Fāngxiàngpán wèinéng tíngwěn. Qǐng sōngkāi shuāngshǒu hòu chóngxīn yùnxíng cèshì.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Fāngxiàngpán méiyǒu zhuǎndòng. Rúguǒ Fāngxiàngpán niǔjǔ shè dé gāoyú fāngxiàngpán suǒ néng tígōng de, qǐng shèwéi fāngxiàngpán zìshēn de shùzhí, ránhòu chóngxīn yùnxíng cèshì.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Fāngxiàngpán jiējìn qí fànwéi de jìntóu. Qǐng jiāng qí bǎizhèng hòu chóngxīn yùnxíng cèshì.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Wúfǎ dúqǔ fāngxiàngpán de yùndòng. Qǐng chóngxīn yùnxíng cèshì.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Fāngxiàngpán tíngzhǐle xiǎngyìng. Qǐng jiǎnchá tā shìfǒu yǐ liánjiē, yǐjí yǐnqíng shìfǒu zhèngzài yùnxíng.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Cǐ fāngxiàngpán wèi zài shǐyòng zhōng. Qǐng jiāng qí fēnpèi gěi yí gè kòngzhìqì bìng qǐdòng yǐnqíng, ránhòu yùnxíng cèshì.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Guànliàng</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Zhīqián, fāngxiàngpán chāoguò zhōngwèi {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Xiànzài tā chāoguò zhōngwèi {0}°, tíng zài lí zhōngwèi {1}° chù.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Xiànzài tā huízhèng shí wú chāotiáo, tíng zài lí zhōngwèi {0}° chù.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Zàicì yùnxíng</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Yìngyòng</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Chóngzhì zhuǎnxiàng jíxiàn fǎnkuì</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Chóngzhì dádào jíxiàn shí zhèndòng màichōng</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Chóngzhì dádào jíxiàn shí bānjī zhèndòng</value></data>
@@ -4592,7 +4673,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC biāoqiān shūrù bèihòu de WinSCard hánshù qiānmíng yǔ dúkǎqì jiānshì diàoyòng shùnxù, yóu Daniel Mueller tígōng.</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move bàogào bùjú, chuángǎnqì jiàozhǔn hé EXT pèijiàn wòshǒu, yóu Thomas Perl tígōng, bìng yǔ moveonpc wiki jiāochā héduì. PadForge de shíxiàn shì yuánchuàng de C# dàimǎ. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Sàichē yáocè cānkǎo láiyuán</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Yóuxì yáocè hé fāngxiàngpán zhuànsù huàndǎng LED dēng bèihòu de gòngxiǎng nèicún hé UDP bùjú, qǔ zì assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) hé vAzhureRacingHub (GPL-3.0). Bù suí fù rènhé GPL huò LGPL dàimǎ.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Yóuxì yáocè hé fāngxiàngpán zhuànsù huàndǎng LED dēng bèihòu de gòngxiǎng nèicún hé UDP bùjú, qǔ zì assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) hé vAzhureRacingHub (GPL-3.0). Bù suí fù rènhé GPL huò LGPL dàimǎ.</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Lányá pèiduì yǔ bàogào wéndàng. GPL-2.0 hé GPL-3.0, jǐn zuòwéi wéndàng yuèdú, bù suí fù rènhé GPL dàimǎ.</value></data>
   <data name="About_SipSorceryDesc" xml:space="preserve"><value>Remote Link NAT chuāntòu bèihòu de STUN xiāoxi bùjú yǔ XOR-MAPPED-ADDRESS jiěmǎ, qǔ zì qí C# yuánmǎ, yóu Aaron Clauson tígōng. Qí xǔkězhèng dì 2 jié fùjiā le shǐyòng xiànzhì.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse cānkǎo láiyuán</value></data>
@@ -4609,6 +4690,8 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Xūnǐ DualSense màikèfēng 48 dB de shuāijiǎn fànwéi. Jǐn zuòwéi wéndàng yuèdú, bù suí fù rènhé GPL dàimǎ.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Fāngxiàngpán xiéyì cānkǎo láiyuán</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster hé Logitech fāngxiàngpán de yuánshēng lìfǎnkuì hé zhuànsù huàndǎng LED bàogào, qǔ zì hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) hé thrustmaster-led-linux (GPL-3.0), bìng yǔ prodigal.knight de SimHub LED chājiàn (MIT) hé tm-bt-led (MIT) jiāochā héduì. Jǐn wéndàng cānkǎo, bù suí fù rènhé GPL dàimǎ.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Zhuǎnxiàng shǒugǎn cānkǎo láiyuán</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Huízhōng kǎpiàn de Chēliàng móshì bèihòu de zhuǎnxiàng niǔjǔ móxíng, qǔ zì Balachandran hé Gerdes de “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Chēliàng cānshù qǔ zì commonroad-vehicle-models (BSD-3-Clause) hé global_racetrajectory_optimization (LGPL-3.0). Lúntāi tuōjù qǔ zì Pacejka de Tire and Vehicle Dynamics, lùmiàn zhuādìlì qǔ zì Wong de Theory of Ground Vehicles. Jǐn cǎiyòng qízhōng de shùjù, bù suí fù tāmen de rènhé dàimǎ.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Jiējī I/O cānkǎo láiyuán</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL fēnzhī zhōng Namco hé Konami jiējī I/O bǎn jí JVS bǎn qūdòng suǒ yījù de xiéyì, qǔ zì arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) hé TaikoZucchini (MIT). Jǐn wéndàng cānkǎo, bù suí fù dàimǎ.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Lányá LE kòngzhìqì cānkǎo láiyuán</value></data>

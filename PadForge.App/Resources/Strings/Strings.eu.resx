@@ -3213,7 +3213,88 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Berrezarri biraketa-heina</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Berrezarri zentratze automatikoaren indarra</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Berrezarri abiadura-aldaketako LED-ak (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Gidatze-heina, zentratze automatikoa eta abiadura-aldaketako argiak indar-atzeraelikadura duten bolanteetarako.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Gidatze-heina eta abiadura-aldaketako argiak indar-atzeraelikadura duten bolanteetarako.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Zentratzea</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Bolantea erdira itzularazten du, malguki soil gisa edo auto baten gidatzeak egiten duen bezala.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Berrezarri zentratzea</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modua</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Malgukiak bolantea erdira tiratzen du indar bakar batekin. Ibilgailuak auto baten gidatzeak bere abiaduran ematen duen momentua kalkulatzen du, pneumatikoen eredu batetik.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Malgukia</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Ibilgailua</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Ibilgailua</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Bolanteak gidatzea hartzen duen autoa. Bakoitza argitaratutako ibilgailu-eredu bat da.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Berlina</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Konpaktua</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Furgoneta</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Lasterketa-autoa</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Abiadura</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Jokotik jokoaren telemetriatik irakurtzen du autoaren abiadura, eta Abiadura finkoa erabiltzen du jokorik bidaltzen ez duen bitartean. Finkoak Abiadura finkoa erabiltzen du une oro.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Jokotik</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Finkoa</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Gidatzearen pisua</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Gidatzea zein astuna den. 100% autoaren berezkoa da.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Bolantearen ibilbidea</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Bolante honek muturretik muturrera zenbat biratzen duen. Ezarri bolantearen beraren ezarpenaren arabera.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Gidatze-momentua</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Angelua</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Momentua</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Bolantearen muga {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Gidatze-momentua ertzean gidatze-angeluaren aurrean. {0} abiaduran gailurra {1} N·m da, {2}° angeluan.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Erdiguneko sentsazioa</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Momentua zein azkar sortzen den kurbetan erdiguneetik gertu, g bakoitzeko N·m-tan, 0.05 g arte. Gehiagok finkoago sentiarazten du.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Momentuaren zurruntasuna</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Momentua zein azkar sortzen den bolantea erditik aldentzean, N·m gradu bakoitzeko.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linealtasuna</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Momentuaren malda 0.10 eta 0.15 g artean, erdiguneko maldaren aldean. Txikiagoak esan nahi du gidatzea lehenago arintzen dela.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Gailur-momentua</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Autoak bolanteari eskatzen dion momentu handiena, bolanteak ematen duen handienaren ondoan.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m-tik</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Auto honek bolanteak baino momentu handiagoa eskatzen du, beraz kurbaren goiko aldea moztu egiten da.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Erdiguneko sentsazioa, laguntza elektrikoa, moteltzea, marruskadura, atxikitasuna, abiadura finkoa, bolantearen momentua</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Gidatzeak abiadura txikian erdigunea zein indartsu mantentzen duen. 100% autoaren berezkoa da.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Laguntza elektrikoa</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Zenbat arintzen duen servogidaketak kurbetan indarra handitu ahala. Gehiagok gidatze arinagoa esan nahi du erditik aldenduta.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Moteltzea</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Bolanteak biraketa azkarrei zein indartsu eusten dien. 100% da erdia gainditu gabe itzularazten duena.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Marruskadura</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Edozein norabidetan biratzeari eusten dion marruskadura konstantea.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Atxikitasuna</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Errepidearen atxikitasuna. Gidatzea arintzen da aurreko pneumatikoek atxikitasuna galtzen duten tokian.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Lehorra</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Bustia</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Elurra</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Izotza</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Abiadura finkoa</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Autoak daramala uste den abiadura, Abiadura Finkoa denean, eta jokorik abiadurarik bidaltzen ez duen bitartean.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Bolantearen momentua</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Bolante honek ematen duen momentu handiena. PadForge-k betetzen du bolantearen fabrikatzaileak argitaratzen duen tokian. Bolantearen berezkoa baino zifra handiagoak indar guztiak ahultzen ditu.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Bolantearen momentua ez dago ezarrita bolante honetarako, beraz bere indarrak txikian mantentzen dira. Sartu Gehiago atalean.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Bolantea berez astintzen hasi da, beraz indarra mugatu egin da. Exekutatu Askatze-proba.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Indarra itzalita dago, bolanteak astintzen jarraitu duelako edo erditik aldendu delako. Exekutatu Askatze-proba.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Askatze-proba</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Bolante hau neurtzen du eta moteltzea ezartzen du, gainditu gabe itzul dadin</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Oraindik ez da exekutatu</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Neurtuta</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Kendu eskuak bolantetik. PadForge-k {0}° biratzen du, askatu egiten du eta nola itzultzen den grabatzen du.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Bolantearen angelua askatze bakoitzaren ondoren {0} segundotan.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Lehen</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Gero</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Neurtzen, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Eginda, 2 exekuzio</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Geldituta</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Bolantea ez da geldirik gelditu. Kendu eskuak bolantetik eta exekutatu proba berriro.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Bolantea ez da mugitu. Bolantearen momentua bolanteak ematen duena baino handiagoa bada, ezarri bolantearen beraren zifrara eta exekutatu proba berriro.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Bolantea bere ibilbidearen amaierara hurbildu da. Zentratu eta exekutatu proba berriro.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Ezin izan da bolantearen mugimendua irakurri. Exekutatu proba berriro.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Bolanteak erantzuteari utzi dio. Egiaztatu konektatuta dagoela eta motorra martxan dagoela.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Bolante hau ez dago erabiltzen. Esleitu kontrolagailu bati eta abiarazi motorra, gero exekutatu proba.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inertzia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Lehen, bolantea erditik {0}° pasatzen zen.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Orain erditik {0}° pasatzen da eta erditik {1}°-ra gelditzen da.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Orain pasatu gabe itzultzen da eta erditik {0}°-ra gelditzen da.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Exekutatu berriro</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplikatu</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Berrezarri bolantearen muturraren erantzuna</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Berrezarri bibrazio-pultsua muturrean</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Berrezarri katuaren bibrazioa muturrean</value></data>
@@ -4674,7 +4755,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ren txosten-antolaketak, sentsoreen kalibrazioa eta EXT osagarrien handshake-a, egilea: Thomas Perl, moveonpc wikiarekin gurutzatuta egiaztatuak. PadForge-ren inplementazioa C# jatorrizkoa da. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Lasterketen telemetria-erreferentziak</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Jokoaren telemetriaren eta bolantearen RPM aldaketa-LEDen atzean dauden memoria partekatuko eta UDP antolaketak, hauetatik irakurriak: assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) eta vAzhureRacingHub (GPL-3.0). Ez da GPL ez LGPL koderik banatzen.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Jokoaren telemetriaren eta bolantearen RPM aldaketa-LEDen atzean dauden memoria partekatuko eta UDP antolaketak, hauetatik irakurriak: assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) eta vAzhureRacingHub (GPL-3.0). Ez da GPL ez LGPL koderik banatzen.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ren Bluetooth parekatze- eta txosten-dokumentazioa. GPL-2.0 eta GPL-3.0, dokumentazio gisa soilik irakurria, ez da GPL koderik banatzen.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4697,6 +4778,8 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>DualSense birtualaren mikrofonoaren 48 dB-ko atenuazio-tartea. Dokumentazio gisa soilik irakurria, ez da GPL koderik banatzen.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Bolanteen protokolo-erreferentziak</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster eta Logitech bolanteen jatorrizko indar-atzeraelikadura eta RPM aldaketa-LED txostenak, hauetatik irakurriak: hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) eta thrustmaster-led-linux (GPL-3.0), eta hauekin gurutzatuta egiaztatuak: prodigal.knight-en SimHub LED plugina (MIT) eta tm-bt-led (MIT). Dokumentazioa soilik, ez da GPL koderik banatzen.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Gidatze-sentsazioaren erreferentziak</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Zentratzea txartelaren Ibilgailua moduaren atzean dagoen gidatze-momentuaren eredua, Balachandran eta Gerdes autoreen «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» lanetik (IEEE/ASME Transactions on Mechatronics). Ibilgailuaren parametroak hauetatik irakurriak: commonroad-vehicle-models (BSD-3-Clause) eta global_racetrajectory_optimization (LGPL-3.0). Pneumatikoaren trail-a Pacejka autorearen Tire and Vehicle Dynamics liburutik dator, eta errepidearen atxikitasuna Wong autorearen Theory of Ground Vehicles liburutik. Zifrak soilik hartu dira, ez da haien koderik banatzen.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade sarrera/irteerako erreferentziak</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL fork-aren Namco eta Konami arcade sarrera/irteera plaketarako eta JVS plaketarako kontrolatzaileen atzean dauden protokoloak, hauetatik irakurriak: arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) eta TaikoZucchini (MIT). Dokumentazioa soilik, ez da koderik banatzen.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE kontrolagailuen erreferentziak</value></data>

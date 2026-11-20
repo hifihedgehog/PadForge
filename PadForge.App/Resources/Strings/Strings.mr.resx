@@ -3211,7 +3211,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>फिरण्याची श्रेणी रीसेट करा</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ऑटो सेंटरिंग ताकद रीसेट करा</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM शिफ्ट LED रीसेट करा</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>फोर्स फीडबॅक व्हीलसाठी स्टीअरिंग श्रेणी, ऑटो सेंटरिंग आणि शिफ्ट लाइट.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>फोर्स फीडबॅक व्हीलसाठी स्टीअरिंग श्रेणी आणि शिफ्ट लाइट.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>सेंटरिंग</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>व्हील मध्यावर परत आणते, साध्या स्प्रिंगप्रमाणे किंवा गाडीच्या स्टीअरिंगप्रमाणे.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>सेंटरिंग रीसेट करा</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>मोड</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>स्प्रिंग एकाच ताकदीने व्हील मध्यावर ओढते. वाहन टायर मॉडेलवरून गाडीच्या वेगानुसार गाडीच्या स्टीअरिंगचा टॉर्क काढते.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>स्प्रिंग</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>वाहन</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>वाहन</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>व्हील ज्या गाडीचे स्टीअरिंग घेते ती गाडी. प्रत्येक गाडी प्रकाशित वाहन मॉडेल आहे.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>सेडान</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>कॉम्पॅक्ट</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>व्हॅन</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>रेस कार</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>गती</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>गेमकडून हा पर्याय गाडीचा वेग गेमच्या टेलिमेट्रीतून वाचतो आणि कोणताही गेम तो पाठवत नसताना स्थिर गती वापरतो. स्थिर हा पर्याय नेहमी स्थिर गती वापरतो.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>गेमकडून</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>स्थिर</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>स्टीअरिंगचे वजन</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>स्टीअरिंग किती जड आहे ते ठरवते. 100% म्हणजे गाडीचे स्वतःचे वजन.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>व्हीलची श्रेणी</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>हे व्हील एका टोकापासून दुसऱ्या टोकापर्यंत किती फिरते. ते व्हीलच्या स्वतःच्या सेटिंगनुसार ठेवा.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>स्टीअरिंग टॉर्क</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>कोन</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>टॉर्क</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>व्हील मर्यादा {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>रिमवरील स्टीअरिंग टॉर्क विरुद्ध स्टीअरिंग कोन. {0} वर तो {2}° वर {1} N·m च्या शिखरावर पोहोचतो.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>सेंटरवरील अनुभव</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>सेंटरजवळ वळताना टॉर्क किती वेगाने वाढतो, 0.05 g पर्यंत N·m प्रति g मध्ये. जास्त म्हणजे स्टीअरिंग अधिक स्थिर वाटते.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>टॉर्क कठोरता</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>व्हील सेंटरपासून दूर जाताना टॉर्क किती वेगाने वाढतो, N·m प्रति अंश मध्ये.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>रेषीयता</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>टॉर्कचा 0.10 ते 0.15 g मधील चढ आणि सेंटरवरील चढ यांचे गुणोत्तर. कमी म्हणजे स्टीअरिंग लवकर हलके होते.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>कमाल टॉर्क</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>गाडी व्हीलकडून मागते तो कमाल टॉर्क, व्हील देऊ शकणाऱ्या कमाल टॉर्कसह.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>पैकी {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ही गाडी व्हीलकडे आहे त्यापेक्षा जास्त टॉर्क मागते, म्हणून वक्राचा वरचा भाग कापला जातो.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>सेंटरवरील अनुभव, पॉवर असिस्ट, डॅम्पिंग, घर्षण, पकड, स्थिर गती, व्हील टॉर्क</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>कमी वेगात स्टीअरिंग आपले मध्य किती ठामपणे धरते. 100% म्हणजे गाडीचे स्वतःचे.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>पॉवर असिस्ट</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>वळण वाढत जाताना पॉवर स्टीअरिंग किती भार कमी करते. जास्त म्हणजे सेंटरपासून दूर स्टीअरिंग हलके.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>डॅम्पिंग</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>व्हील जलद वळणांना किती विरोध करते. 100% म्हणजे ते मध्य ओलांडून पुढे न जाता परत येते.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>घर्षण</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>दोन्ही दिशांनी वळण्याला विरोध करणारा स्थिर ताण.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>पकड</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>रस्त्याची पकड. पुढचे टायर ती गमावतात तिथे स्टीअरिंग हलके होते.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>कोरडा</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ओला</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>बर्फ</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>गोठलेला बर्फ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>स्थिर गती</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>गती स्थिर असताना आणि कोणताही गेम ती पाठवत नसताना गाडी ज्या वेगाने चालत असल्याचे धरले जाते तो वेग.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>व्हील टॉर्क</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>हे व्हील देऊ शकणारा कमाल टॉर्क. व्हीलचा निर्माता तो प्रकाशित करतो तिथे PadForge तो भरतो. व्हीलच्या स्वतःच्या आकड्यापेक्षा जास्त आकडा प्रत्येक फोर्स कमकुवत करतो.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>या व्हीलसाठी व्हील टॉर्क सेट केलेला नाही, म्हणून त्याचे फोर्स कमी ठेवले आहेत. त्यासाठी अधिक मध्ये तो भरा.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>व्हील स्वतःहून हलू लागले, म्हणून फोर्स रोखून धरला आहे. रिलीज टेस्ट चालवा.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>व्हील हलत राहिले किंवा मध्यापासून दूर गेले, म्हणून फोर्स बंद आहे. रिलीज टेस्ट चालवा.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>रिलीज टेस्ट</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>हे व्हील मोजते आणि ते मध्य ओलांडल्याशिवाय परत यावे म्हणून डॅम्पिंग सेट करते</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>अजून चालवलेली नाही</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>मोजले</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>व्हीलवरून हात काढा. PadForge ते {0}° वर फिरवते, सोडून देते आणि ते कसे परत येते ते नोंदवते.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>प्रत्येक सोडल्यानंतर {0} सेकंदांत व्हीलचा कोन.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>आधी</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>नंतर</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>मोजत आहे, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>पूर्ण, 2 फेऱ्या</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>थांबवली</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>व्हील स्थिर झाले नाही. त्यावरून हात काढा आणि टेस्ट पुन्हा चालवा.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>व्हील हलले नाही. व्हील टॉर्क व्हील देते त्यापेक्षा जास्त सेट केला असल्यास तो व्हीलच्या स्वतःच्या आकड्यावर सेट करा आणि टेस्ट पुन्हा चालवा.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>व्हील आपल्या श्रेणीच्या टोकाजवळ आले. ते मध्यावर आणा आणि टेस्ट पुन्हा चालवा.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>व्हीलची हालचाल वाचता आली नाही. टेस्ट पुन्हा चालवा.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>व्हीलने प्रतिसाद देणे थांबवले. ते जोडलेले आहे आणि इंजिन चालू आहे हे तपासा.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>हे व्हील वापरात नाही. ते कंट्रोलरला असाइन करा आणि इंजिन सुरू करा, मग टेस्ट चालवा.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>जडत्व</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>आधी व्हील मध्याच्या पलीकडे {0}° गेले.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>आता ते मध्याच्या पलीकडे {0}° जाते आणि मध्यापासून {1}° वर थांबते.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>आता ते मध्य न ओलांडता परत येते आणि मध्यापासून {0}° वर थांबते.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>पुन्हा चालवा</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>लागू करा</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>स्टीअरिंग लॉक फीडबॅक रीसेट करा</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>लॉकवर कंपन पल्स रीसेट करा</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>लॉकवर ट्रिगर कंपन रीसेट करा</value></data>
@@ -4669,7 +4750,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move रिपोर्ट मांडणी, सेन्सर कॅलिब्रेशन आणि EXT ॲक्सेसरी हँडशेक, Thomas Perl यांचे, moveonpc विकीशी पडताळलेले. PadForge ची अंमलबजावणी मूळ C# आहे. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>रेसिंग टेलिमेट्री संदर्भ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>गेम टेलिमेट्री आणि व्हील RPM शिफ्ट LED मागील शेअर्ड-मेमरी आणि UDP मांडणी, assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) आणि vAzhureRacingHub (GPL-3.0) मधून वाचली. कोणताही GPL किंवा LGPL कोड समाविष्ट नाही.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>गेम टेलिमेट्री आणि व्हील RPM शिफ्ट LED मागील शेअर्ड-मेमरी आणि UDP मांडणी, assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) आणि vAzhureRacingHub (GPL-3.0) मधून वाचली. कोणताही GPL किंवा LGPL कोड समाविष्ट नाही.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 ब्लूटूथ पेअरिंग आणि रिपोर्ट दस्तऐवजीकरण. GPL-2.0 आणि GPL-3.0, फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4692,6 +4773,8 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>व्हर्च्युअल DualSense मायक्रोफोनची 48 dB क्षीणन श्रेणी. फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>व्हील प्रोटोकॉल संदर्भ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster आणि Logitech व्हीलसाठी नेटिव्ह फोर्स फीडबॅक आणि RPM शिफ्ट LED रिपोर्ट, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) आणि thrustmaster-led-linux (GPL-3.0) मधून वाचले, आणि prodigal.knight यांचे SimHub LED प्लगइन (MIT) आणि tm-bt-led (MIT) शी पडताळले. फक्त दस्तऐवजीकरण, कोणताही GPL कोड समाविष्ट नाही.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>स्टीअरिंग फील संदर्भ</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>सेंटरिंगच्या वाहन मोडमागील स्टीअरिंग टॉर्क मॉडेल, Balachandran आणि Gerdes यांच्या “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) मधून घेतले. वाहनाचे पॅरामीटर commonroad-vehicle-models (BSD-3-Clause) आणि global_racetrajectory_optimization (LGPL-3.0) मधून वाचले. टायरचा ट्रेल Pacejka यांच्या Tire and Vehicle Dynamics मधून आणि रस्त्याची पकड Wong यांच्या Theory of Ground Vehicles मधून घेतली. फक्त आकडे घेतले, त्यांचा कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>आर्केड I/O संदर्भ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco आणि Konami आर्केड I/O बोर्ड आणि JVS बोर्डसाठीच्या SDL फोर्कच्या ड्रायव्हरमागील प्रोटोकॉल, arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) आणि TaikoZucchini (MIT) मधून वाचले. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>ब्लूटूथ LE कंट्रोलर संदर्भ</value></data>

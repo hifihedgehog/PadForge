@@ -1077,8 +1077,9 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/schmaldeo/DS4Windows, GPL-3.0-or-later).
   Racing telemetry references: the shared-memory and UDP layouts behind Game
   Telemetry and the wheel RPM shift LEDs, read from CMTelemetry
-  (https://github.com/gazz/CMTelemetry, no license published),
-  dirt-rally-telemetry-dashboard
+  (https://github.com/gazz/CMTelemetry, no license published), CrewChiefV4
+  (https://gitlab.com/mr_belowski/CrewChiefV4, MIT, Copyright (c) 2019-2024
+  Britton IT Ltd), dirt-rally-telemetry-dashboard
   (https://github.com/gabrielgouv/dirt-rally-telemetry-dashboard, MIT),
   ets2-telemetry-udp (https://github.com/MrHokss/ets2-telemetry-udp, MIT),
   f1-24-udp (https://github.com/MacManley/f1-24-udp, MIT), fh6-tel
@@ -1093,7 +1094,9 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/fuelsoft/out-gauge-cluster, Apache-2.0), PCars2UdpNet
   (https://github.com/RacingSimTools/PCars2UdpNet, MIT), project-cars-2-udp
   (https://github.com/MacManley/project-cars-2-udp, MIT), pyirsdk
-  (https://github.com/kutu/pyirsdk, MIT), rF2SharedMemoryMapPlugin
+  (https://github.com/kutu/pyirsdk, MIT), r3e-api
+  (https://github.com/sector3studios/r3e-api, Unlicense),
+  rF2SharedMemoryMapPlugin
   (https://github.com/TheIronWolfModding/rF2SharedMemoryMapPlugin, GPL-3.0),
   rFactorSharedMemoryMap
   (https://github.com/dallongo/rFactorSharedMemoryMap, GPL-2.0),
@@ -1188,6 +1191,23 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/mitchmikusek/steam_controller_tools, GPL-2.0) and
   SteamlessController (https://github.com/ddeverill/SteamlessController,
   MIT).
+  Steering feel references: the steering torque model behind Centering's
+  Vehicle mode, from Avinash Balachandran and J. Christian Gerdes,
+  "Designing Steering Feel for Steer-by-Wire Vehicles Using Objective
+  Measures" (IEEE/ASME Transactions on Mechatronics, vol. 20, no. 1, 2015),
+  whose Table I also gives the Stanford X1's parameters. The compact, sedan
+  and van parameters and the tire's cornering stiffness per load, read from
+  commonroad-vehicle-models 3.0.2
+  (https://gitlab.lrz.de/tum-cps/commonroad-vehicle-models, BSD-3-Clause,
+  Copyright 2020 Technical University of Munich, Professorship of
+  Cyber-Physical Systems). The race car's parameters, read from
+  global_racetrajectory_optimization
+  (https://github.com/TUMFTM/global_racetrajectory_optimization, LGPL-3.0,
+  TUM Institute of Automotive Technology). The tire's trail, from Hans B.
+  Pacejka, Tire and Vehicle Dynamics. The road grip figures, from J. Y. Wong,
+  Theory of Ground Vehicles, 2nd ed. (1993), as reproduced at
+  https://hpwizard.com/tire-friction-coefficient.html. PadForge takes
+  figures from them and ships none of their code.
   Thumbstick Deadzones (https://github.com/Minimuino/thumbstick-deadzones,
   GFDL-1.3-or-later for its article and GPL-3.0-or-later for its code, Carlos
   Pérez Ramil): the six deadzone shapes.

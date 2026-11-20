@@ -7644,13 +7644,18 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- ═══ Wheel (Tag 11). Native-FFB wheels only ═══ -->
+            <!-- ═══ Wheel (Tag 11): a force feedback wheel's two cards ═══
+                 Wheel is the range and the shift lights, which only a
+                 Logitech, a Fanatec or a Thrustmaster wheel takes, so the
+                 card shows for those. Centering shows for every wheel
+                 that can center: those three makes, and a wheel routed
+                 through SDL that has a spring or a constant force. -->
                     <GroupBox x:Name="TabWheel" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.AutomationId="TabWheel"
                               AutomationProperties.Name="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
 
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="WheelCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,2,0,4">
                                     <Viewbox Width="26" Height="26" VerticalAlignment="Center" Margin="1,0,13,0">
@@ -7671,12 +7676,11 @@
                                             ToolTip="{Binding Pad_ResetWheel, Source={x:Static strings:Strings.Instance}}"/>
                                 </DockPanel>
 
-                                <!-- Rotation range. The wheel's hardware steering lock, not a force.
-                                     A native HID command, vendor wheels only. Hidden for generic
-                                     SDL wheels, which expose no set-range API. Set Rotation
-                                     Range off leaves the range to the wheel and its own
-                                     software, and the slider rests (discussion #512). -->
-                                <StackPanel x:Name="WheelRangeRow">
+                                <!-- Rotation range. The wheel's hardware steering lock, not a force,
+                                     sent by the wheel's own writer. Set Rotation Range off leaves the
+                                     range to the wheel and its own software, and the slider rests
+                                     (discussion #512). -->
+                                <StackPanel>
                                     <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Wheel_SetRotationRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" x:Name="WheelRangeEnabledCheckBox" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -7697,26 +7701,352 @@
                                     </controls:SettingRow>
                                 </StackPanel>
 
-                                <!-- Auto-center. Centering spring force -->
-                                <controls:SettingRow MinHeight="44">
-                                    <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" Style="{StaticResource DzSlider}"/>
-                                    <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource DzValueEdit}"/>
-                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
-                                </controls:SettingRow>
-
-                                <!-- RPM shift LEDs. Telemetry-driven rev display.
-                                     Native HID command (vendor wheels only). Hidden for generic
-                                     SDL wheels, which have no addressable rev strip. -->
-                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44" x:Name="WheelRpmRow">
+                                <!-- RPM shift LEDs. The rev display, lit from a game's
+                                     telemetry by the wheel's own writer. -->
+                                <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
                                     <TextBlock Text="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                     <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
                                               Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
                                     <ui:Button Command="{Binding ResetWheelRpmLedsCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRpmLeds, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"/>
                                 </controls:SettingRow>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Centering (#588): what brings the wheel back to center.
+                             Spring is the wheel's own spring at one strength. Vehicle is
+                             the torque a car's steering gives, from a tire model, drawn in
+                             the well as it runs, with the rest of its settings under More
+                             and the Release Test, which measures the wheel, at the card's
+                             foot. A wheel that cannot run Vehicle shows no Mode row. -->
+                        <Border x:Name="CenteringCard" Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <DockPanel LastChildFill="False" Margin="0,2,0,4">
+                                    <Viewbox Width="26" Height="26" VerticalAlignment="Center" Margin="1,0,13,0">
+                                        <Canvas FlowDirection="LeftToRight" Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.8"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  Data="M12,3 L12,21 M2,12 L8.5,12 M6,9.5 L8.5,12 L6,14.5 M22,12 L15.5,12 M18,9.5 L15.5,12 L18,14.5"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Pad_Centering, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource HeroCardTitle}"
+                                               ToolTip="{Binding Pad_Centering_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Border Style="{StaticResource ChipSteel}" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Pad_Scope_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ui:Button Command="{Binding ResetCenteringAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
+                                            ToolTip="{Binding Pad_ResetCentering, Source={x:Static strings:Strings.Instance}}"/>
+                                </DockPanel>
+
+                                <!-- Mode. Its first choice reads Off on a wheel with no spring. -->
+                                <controls:SettingRow MinHeight="44"
+                                            Visibility="{Binding CenteringVehicleAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Centering_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Centering_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedIndex="{Binding CenteringMode, Mode=TwoWay}" MinWidth="220" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Centering_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding CenteringModeSpringLabel}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Centering_Mode_Vehicle, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringMode" SettingLabel="{Binding Pad_Centering_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringMode"/>
+                                </controls:SettingRow>
+
+                                <!-- Spring mode: the wheel's own spring at one strength. -->
+                                <controls:SettingRow MinHeight="44"
+                                            Visibility="{Binding CenteringStrengthShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Wheel_Autocenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding WheelAutoCenter, Mode=TwoWay}" TickFrequency="1" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding WheelAutoCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetWheelAutoCenterCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAutocenter, Source={x:Static strings:Strings.Instance}}"/>
+                                </controls:SettingRow>
+
+                                <!-- Vehicle mode. -->
+                                <StackPanel Visibility="{Binding CenteringIsVehicle, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Centering_Vehicle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Centering_Vehicle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox ItemsSource="{Binding CenteringVehicleOptions}"
+                                                  SelectedValue="{Binding CenteringVehicle, Mode=TwoWay}"
+                                                  SelectedValuePath="Value" DisplayMemberPath="Display"
+                                                  MinWidth="220" VerticalAlignment="Center"
+                                                  ToolTip="{Binding Pad_Centering_Vehicle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringVehicle" SettingLabel="{Binding Pad_Centering_Vehicle, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringVehicle"/>
+                                    </controls:SettingRow>
+
+                                    <!-- Speed: where it comes from, then the speed the car is
+                                         taken to drive at now, lit while a game sends it. -->
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Centering_Speed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Centering_Speed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox SelectedIndex="{Binding CenteringSpeedSource, Mode=TwoWay}" MinWidth="220" VerticalAlignment="Center"
+                                                  ToolTip="{Binding Pad_Centering_Speed_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Pad_Centering_FromGame, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Centering_Speed_Fixed, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                                            <TextBlock Text="{Binding CenteringSpeedText}" FontSize="13" Typography.NumeralAlignment="Tabular" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding CenteringSpeedIsLive}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding CenteringSpeedUnit}" FontSize="13" Margin="4,0,0,0" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        </StackPanel>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringSpeedSource" SettingLabel="{Binding Pad_Centering_Speed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringSpeedSource"/>
+                                    </controls:SettingRow>
+
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Centering_Weight, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Centering_Weight_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding CenteringWeight, Mode=TwoWay}" Minimum="0" Maximum="200" TickFrequency="1"
+                                                Style="{StaticResource DzSlider}"
+                                                ToolTip="{Binding Pad_Centering_Weight_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding CenteringWeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringWeight" SettingLabel="{Binding Pad_Centering_Weight, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringWeight"/>
+                                    </controls:SettingRow>
+
+                                    <!-- Wheel Range: how far the wheel turns, where PadForge
+                                         does not set it. -->
+                                    <controls:SettingRow MinHeight="44"
+                                                Visibility="{Binding CenteringWheelRangeShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Pad_Centering_WheelRange, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Centering_WheelRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding CenteringWheelRange, Mode=TwoWay}" Minimum="40" Maximum="2520" TickFrequency="10"
+                                                Style="{StaticResource DzSlider}"
+                                                ToolTip="{Binding Pad_Centering_WheelRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding CenteringWheelRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringWheelRange" SettingLabel="{Binding Pad_Centering_WheelRange, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringWheelRange"/>
+                                    </controls:SettingRow>
+
+                                    <!-- What holds the force back, while something does. -->
+                                    <TextBlock x:Name="CenteringStatusLine" Text="{Binding CenteringStatusText}" common:LiveText.Polite="True"
+                                               Visibility="{Binding CenteringHasStatus, Converter={StaticResource BoolToVisibilityConverter}}"
+                                               FontSize="13" TextWrapping="Wrap" Margin="0,2,8,6"
+                                               Foreground="{DynamicResource WaitBrush}"/>
+
+                                    <!-- The well: the torque the car's steering gives against
+                                         the wheel's angle, and the measures read off the curve. -->
+                                    <Border x:Name="CenteringWell" Style="{StaticResource LiveWell}" Margin="0,6,8,10">
+                                        <StackPanel>
+                                            <controls:FlexLinePanel Gap="8" LineGap="6" EndsApart="True" MinLineHeight="20">
+                                                <TextBlock Text="{Binding Pad_Centering_Chart, Source={x:Static strings:Strings.Instance}}" FontSize="12" FontWeight="SemiBold" Margin="0,0,6,0"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                                <Border Style="{StaticResource LegendPillEmber}">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Ellipse Width="6" Height="6" Fill="{DynamicResource EmberBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                        <TextBlock Text="{Binding CenteringSpeedLegend}" Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <Border Style="{StaticResource LegendPill}">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Rectangle Width="10" Height="2" RadiusX="1" RadiusY="1" Fill="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                        <TextBlock Text="{Binding CenteringReferenceLegend}" Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <!-- The wheel's angle and the torque on it, while Vehicle mode runs. -->
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" controls:FlexLinePanel.AtEnd="True"
+                                                            Visibility="{Binding CenteringLiveShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               VerticalAlignment="Center">
+                                                        <Run Text="{Binding Pad_Centering_Angle, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding CenteringAngleText, Mode=OneWay}" Foreground="{DynamicResource ColdBrush}"/><Run Text="&#176;"/>
+                                                    </TextBlock>
+                                                    <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               VerticalAlignment="Center" Margin="10,0,0,0">
+                                                        <Run Text="{Binding Pad_Centering_Torque, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding CenteringTorqueText, Mode=OneWay}" Foreground="{DynamicResource EmberHotBrush}"/><Run Text=" N&#183;m"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </controls:FlexLinePanel>
+
+                                            <controls:SteeringTorqueChart x:Name="CenteringChart" Height="132" Margin="0,6,0,0"
+                                                                          Preview="{Binding CenteringPreview}"
+                                                                          LiveShown="{Binding CenteringLiveShown}"
+                                                                          LiveAngle="{Binding CenteringLiveAngle}"
+                                                                          LiveTorque="{Binding CenteringLiveTorque}"
+                                                                          LimitLabelFormat="{Binding Pad_Centering_WheelLimit_Format, Source={x:Static strings:Strings.Instance}}"
+                                                                          AutomationProperties.Name="{Binding CenteringChartName, TargetNullValue=''}"/>
+
+                                            <UniformGrid Columns="4" Margin="0,8,0,0">
+                                                <StackPanel Margin="0,0,12,0" ToolTip="{Binding Pad_Centering_OnCenterFeel_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                    <TextBlock Text="{Binding Pad_Centering_OnCenterFeel, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                                                        <Run Text="{Binding CenteringOnCenterFeelText, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" "/><Run Text="N&#183;m/g" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,12,0" ToolTip="{Binding Pad_Centering_TorqueStiffness_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                    <TextBlock Text="{Binding Pad_Centering_TorqueStiffness, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                                                        <Run Text="{Binding CenteringStiffnessText, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" "/><Run Text="N&#183;m/deg" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,12,0" ToolTip="{Binding Pad_Centering_Linearity_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                    <TextBlock Text="{Binding Pad_Centering_Linearity, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                                                        <Run Text="{Binding CenteringLinearityText, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" "/><Run Text="%" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                <!-- Peak Torque is gold while the car asks more than the wheel has. -->
+                                                <StackPanel>
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="StackPanel">
+                                                            <Setter Property="ToolTip" Value="{Binding Pad_Centering_PeakTorque_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CenteringPeakOverLimit}" Value="True">
+                                                                    <Setter Property="ToolTip" Value="{Binding Pad_Centering_PeakOver, Source={x:Static strings:Strings.Instance}}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </StackPanel.Style>
+                                                    <TextBlock Text="{Binding Pad_Centering_PeakTorque, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding CenteringPeakOverLimit}" Value="True">
+                                                                        <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                        <Run Text="{Binding CenteringPeakText, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" "/><Run Text="{Binding CenteringPeakOfText, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </UniformGrid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- More (#574): the settings fewer people change, opened in place. -->
+                                    <controls:MoreRow IsFoot="False" x:Name="CenteringMore" StateKey="Pad.Rumble.Centering.More"
+                                                      AutomationProperties.AutomationId="Pad_More_Centering"
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                      Hint="{Binding Pad_More_Centering, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_OnCenterFeel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_OnCenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding CenteringOnCenter, Mode=TwoWay}" Minimum="0" Maximum="200" TickFrequency="1"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_Centering_OnCenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringOnCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringOnCenter" SettingLabel="{Binding Pad_Centering_OnCenterFeel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringOnCenter"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_Assist, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_Assist_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding CenteringAssist, Mode=TwoWay}" Minimum="0" Maximum="200" TickFrequency="1"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_Centering_Assist_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringAssist, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringAssist" SettingLabel="{Binding Pad_Centering_Assist, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringAssist"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_Damping, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_Damping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding CenteringDamping, Mode=TwoWay}" Minimum="0" Maximum="200" TickFrequency="1"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_Centering_Damping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringDamping, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringDamping" SettingLabel="{Binding Pad_Centering_Damping, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringDamping"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_Friction, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_Friction_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding CenteringFrictionNm, Mode=TwoWay}" Minimum="0" Maximum="1.5" TickFrequency="0.05"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_Centering_Friction_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringFrictionNm, Mode=TwoWay, StringFormat=F2, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="N&#183;m" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringFriction" SettingLabel="{Binding Pad_Centering_Friction, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringFriction"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_Grip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_Grip_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ComboBox SelectedIndex="{Binding CenteringGrip, Mode=TwoWay}" MinWidth="220" VerticalAlignment="Center"
+                                                          ToolTip="{Binding Pad_Centering_Grip_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                    <ComboBoxItem Content="{Binding Pad_Centering_FromGame, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Centering_Grip_Dry, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Centering_Grip_Wet, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Centering_Grip_Snow, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Centering_Grip_Ice, Source={x:Static strings:Strings.Instance}}"/>
+                                                </ComboBox>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringGrip" SettingLabel="{Binding Pad_Centering_Grip, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringGrip"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_FixedSpeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_FixedSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding CenteringFixedSpeedShown, Mode=TwoWay}" Minimum="0" Maximum="{Binding CenteringFixedSpeedMost}" TickFrequency="1"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_Centering_FixedSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringFixedSpeedShown, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="{Binding CenteringSpeedUnit}" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringFixedSpeed" SettingLabel="{Binding Pad_Centering_FixedSpeed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringFixedSpeed"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Centering_WheelTorque, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_Centering_WheelTorque_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding CenteringWheelTorqueNm, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"
+                                                         Margin="0"
+                                                         ToolTip="{Binding Pad_Centering_WheelTorque_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Text="N&#183;m" Style="{StaticResource DzPercent}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenteringWheelTorque" SettingLabel="{Binding Pad_Centering_WheelTorque, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_CenteringWheelTorque"/>
+                                            </controls:SettingRow>
+                                        </StackPanel>
+                                    </controls:MoreRow>
+
+                                    <!-- The Release Test: the card's foot, which opens its window. -->
+                                    <Button x:Name="CenteringReleaseTestButton" Style="{StaticResource CardFootLink}" Click="CenteringReleaseTest_Click"
+                                            AutomationProperties.AutomationId="Pad_Centering_ReleaseTest"
+                                            AutomationProperties.Name="{Binding Pad_Centering_ReleaseTest, Source={x:Static strings:Strings.Instance}}"
+                                            AutomationProperties.HelpText="{Binding Pad_Centering_ReleaseTest_Desc, Source={x:Static strings:Strings.Instance}}"
+                                            AutomationProperties.ItemStatus="{Binding CenteringReleaseStatus}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Path Grid.Column="0" FlowDirection="LeftToRight" Width="18" Height="18"
+                                                  Data="M3.5,6.5 A6,6 0 1 1 3,9.5 M3,3 L3,6.8 L6.8,6.8 M9,5.5 L9,9 L11.3,10.6"
+                                                  Stroke="{DynamicResource TextFillColorTertiaryBrush}" StrokeThickness="1.3"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Pad_Centering_ReleaseTest, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Pad_Centering_ReleaseTest_Desc, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center" Margin="12,0,12,0"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding CenteringReleaseStatus}" FontSize="13"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       VerticalAlignment="Center" Margin="0,0,14,0"/>
+                                            <Path Grid.Column="4" FlowDirection="LeftToRight" Data="M 3,1 L 7,5 L 3,9" Width="10" Height="10"
+                                                  Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>

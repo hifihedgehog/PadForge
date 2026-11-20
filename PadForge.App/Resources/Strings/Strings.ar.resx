@@ -3222,7 +3222,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>إعادة ضبط نطاق الدوران</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>إعادة ضبط شدة التوسيط التلقائي</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>إعادة ضبط مصابيح RPM لتبديل السرعة</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>نطاق التوجيه والتوسيط التلقائي ومصابيح تبديل السرعة لعجلات القيادة ذات ردود فعل القوة.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>نطاق التوجيه ومصابيح تبديل السرعة لعجلات القيادة ذات ردود فعل القوة.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>التوسيط</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>يعيد العجلة إلى المركز، كزنبرك بسيط أو كما يفعل توجيه السيارة.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>إعادة ضبط التوسيط</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>الوضع</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>الزنبرك يسحب العجلة إلى المركز بقوة واحدة. المركبة تحسب العزم الذي يعطيه توجيه السيارة عند سرعتها، من نموذج للإطارات.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>الزنبرك</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>المركبة</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>المركبة</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>السيارة التي تأخذ العجلة توجيهها. كل واحدة منها نموذج مركبة منشور.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>سيدان</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>صغيرة</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>فان</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>سيارة سباق</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>السرعة</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>من اللعبة تقرأ سرعة السيارة من بيانات القياس في اللعبة، وتستخدم السرعة الثابتة ما دامت لا ترسلها أي لعبة. ثابتة تستخدم السرعة الثابتة دائمًا.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>من اللعبة</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ثابتة</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ثقل التوجيه</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>مدى ثقل التوجيه. 100% هو ثقل السيارة نفسها.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>مدى العجلة</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>المسافة التي تدورها هذه العجلة من أقصى طرف إلى الطرف الآخر. اضبطه على إعداد العجلة نفسها.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>عزم التوجيه</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>الزاوية</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>العزم</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>حد العجلة {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>عزم التوجيه عند حافة العجلة مقابل زاوية التوجيه. عند {0} يبلغ ذروته {1} N·m عند {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>الإحساس عند المركز</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>سرعة تزايد العزم مع الانعطاف قرب المركز، بوحدة N·m لكل g حتى 0.05 g. كلما زاد شعرت بثبات أكبر.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>صلابة العزم</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>سرعة تزايد العزم عند ابتعاد العجلة عن المركز، بوحدة N·m لكل درجة.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>الخطية</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>ميل العزم بين 0.10 و0.15 g مقارنة بميله عند المركز. القيمة الأقل تعني أن التوجيه يخف أبكر.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>ذروة العزم</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>أقصى عزم تطلبه السيارة من العجلة، بجانب أقصى ما تعطيه العجلة.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>من {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>تطلب هذه السيارة عزمًا أكبر مما تملكه العجلة، لذا يُقطع أعلى المنحنى.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>الإحساس عند المركز، مساعدة التوجيه، التخميد، الاحتكاك، التماسك، السرعة الثابتة، عزم العجلة</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>مدى قوة تمسك التوجيه بمركزه عند السرعة المنخفضة. 100% هو ما في السيارة نفسها.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>مساعدة التوجيه</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>مقدار ما يخففه التوجيه المعزز مع تزايد الانعطاف. القيمة الأكبر تعني توجيهًا أخف بعيدًا عن المركز.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>التخميد</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>مدى مقاومة العجلة للدوران السريع. 100% هو ما يعيدها دون أن تتأرجح متجاوزة المركز.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>الاحتكاك</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>سحب ثابت يقاوم الدوران في الاتجاهين.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>التماسك</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>تماسك الطريق. يخف التوجيه حيث تفقد الإطارات الأمامية تماسكها.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>جاف</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>مبلل</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>ثلج</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>جليد</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>السرعة الثابتة</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>السرعة التي تُعد السيارة سائرة بها عندما تكون السرعة ثابتة، وما دامت لا ترسلها أي لعبة.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>عزم العجلة</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>أقصى عزم تعطيه هذه العجلة. يملؤه PadForge حيث تنشره الشركة المصنّعة للعجلة. أي رقم أعلى من رقم العجلة نفسها يُضعف كل القوى.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>لم يُضبط عزم العجلة لهذه العجلة، لذا تبقى قواها منخفضة. أدخله ضمن المزيد.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>بدأت العجلة تتأرجح من تلقاء نفسها، لذا خُفضت القوة. شغّل اختبار الإفلات.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>القوة متوقفة لأن العجلة استمرت في التأرجح أو ابتعدت عن المركز. شغّل اختبار الإفلات.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>اختبار الإفلات</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>يقيس هذه العجلة ويضبط التخميد لتعود دون تجاوز المركز</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>لم يُشغَّل بعد</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>تم القياس</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ارفع يديك عن العجلة. يديرها PadForge إلى {0}° ثم يتركها ويسجل كيف تعود.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>زاوية العجلة خلال {0} ثانية بعد كل إفلات.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>قبل</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>بعد</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>جارٍ القياس، {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>اكتمل، تشغيلان</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>أُوقف</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>لم تستقر العجلة. ارفع يديك عنها وشغّل الاختبار مرة أخرى.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>لم تتحرك العجلة. إذا كان عزم العجلة مضبوطًا فوق ما تعطيه العجلة، فاضبطه على رقم العجلة نفسها وشغّل الاختبار مرة أخرى.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>اقتربت العجلة من نهاية مداها. أعدها إلى المركز وشغّل الاختبار مرة أخرى.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>تعذرت قراءة حركة العجلة. شغّل الاختبار مرة أخرى.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>توقفت العجلة عن الاستجابة. تحقق من اتصالها ومن أن المحرك يعمل.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>هذه العجلة غير مستخدمة. عيّنها إلى وحدة تحكم وشغّل المحرك ثم شغّل الاختبار.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>القصور الذاتي</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>قبل ذلك، تأرجحت العجلة {0}° متجاوزة المركز.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>الآن تتأرجح {0}° متجاوزة المركز وتستقر على بعد {1}° من المركز.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>الآن تعود دون تجاوز للمركز وتستقر على بعد {0}° من المركز.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>تشغيل مرة أخرى</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>تطبيق</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>إعادة ضبط ردود فعل أقصى انعطاف</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>إعادة ضبط نبضة الاهتزاز عند أقصى انعطاف</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>إعادة ضبط اهتزاز الزناد عند أقصى انعطاف</value></data>
@@ -4683,7 +4764,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>تخطيطات تقارير PlayStation Move، ومعايرة المستشعرات، ومصافحة ملحق EXT، من إعداد Thomas Perl، مع المطابقة مع ويكي moveonpc. تنفيذ PadForge مكتوب بلغة C# أصلية. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>مراجع بيانات القياس في ألعاب السباق</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>تخطيطات الذاكرة المشتركة و UDP التي تقف وراء بيانات قياس الألعاب ومصابيح LED لتبديل السرعة حسب RPM في عجلة القيادة، تمت قراءتها من assettocorsasharedmemory (MIT) وCMTelemetry وdirt-rally-telemetry-dashboard (MIT) وets2-telemetry-udp (MIT) وf1-24-udp (MIT) وfh6-tel (MIT) وforza-data-web (Apache-2.0) وforza-telemetry (MIT) وForza-Telemetry-Splitter (MIT) وInSim.NET (LGPL-2.1) وirsdkSharp (MIT) وIRSDKSharper (GPL-3.0) وout-gauge-cluster (Apache-2.0) وPCars2UdpNet (MIT) وproject-cars-2-udp (MIT) وpyirsdk (MIT) وrF2SharedMemoryMapPlugin (GPL-3.0) وrFactorSharedMemoryMap (GPL-2.0) وrust_ams2_sharedmem وscs-sdk-plugin (MIT) وsimapi (LGPL-3.0) وtm-bt-led (MIT) وvAzhureRacingHub (GPL-3.0). لا يتضمن البرنامج أي شيفرة GPL أو LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>تخطيطات الذاكرة المشتركة و UDP التي تقف وراء بيانات قياس الألعاب ومصابيح LED لتبديل السرعة حسب RPM في عجلة القيادة، تمت قراءتها من assettocorsasharedmemory (MIT) وCMTelemetry وCrewChiefV4 (MIT) وdirt-rally-telemetry-dashboard (MIT) وets2-telemetry-udp (MIT) وf1-24-udp (MIT) وfh6-tel (MIT) وforza-data-web (Apache-2.0) وforza-telemetry (MIT) وForza-Telemetry-Splitter (MIT) وInSim.NET (LGPL-2.1) وirsdkSharp (MIT) وIRSDKSharper (GPL-3.0) وout-gauge-cluster (Apache-2.0) وPCars2UdpNet (MIT) وproject-cars-2-udp (MIT) وpyirsdk (MIT) وr3e-api (Unlicense) وrF2SharedMemoryMapPlugin (GPL-3.0) وrFactorSharedMemoryMap (GPL-2.0) وrust_ams2_sharedmem وscs-sdk-plugin (MIT) وsimapi (LGPL-3.0) وtm-bt-led (MIT) وvAzhureRacingHub (GPL-3.0). لا يتضمن البرنامج أي شيفرة GPL أو LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>توثيق إقران DualShock 3 عبر Bluetooth وتقاريره. GPL-2.0 و GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4706,6 +4787,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>نطاق التوهين 48 dB لميكروفون DualSense الظاهري. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>مراجع بروتوكولات عجلات القيادة</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>تقارير ردود فعل القوة الأصلية ومصابيح LED لتبديل السرعة بحسب RPM لعجلات Fanatec وThrustmaster وLogitech، تمت قراءتها من hid-fanatecff (GPL-2.0) وhid-tmff2 (GPL-2.0-or-later) وnew-lg4ff (GPL-2.0-or-later) وoversteer (GPL-3.0) وthrustmaster-led-linux (GPL-3.0)، ومطابقتها مع إضافة SimHub LED من إعداد prodigal.knight (MIT) وtm-bt-led (MIT). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>مراجع الإحساس بالتوجيه</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>نموذج عزم التوجيه الذي يقف وراء وضع «المركبة» في «التوسيط»، من Balachandran وGerdes، «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). تمت قراءة معاملات المركبة من commonroad-vehicle-models (BSD-3-Clause) وglobal_racetrajectory_optimization (LGPL-3.0). أما أثر الإطار فمن كتاب Pacejka، Tire and Vehicle Dynamics، وتماسك الطريق من كتاب Wong، Theory of Ground Vehicles. أخذ PadForge منها أرقامًا فقط، ولا يتضمن أي شيفرة منها.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>مراجع إدخال/إخراج الأركيد</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>البروتوكولات التي تقف وراء برامج تشغيل تفرع SDL للوحات الإدخال/الإخراج في أجهزة أركيد Namco وKonami ولوحات JVS، تمت قراءتها من arcade-docs (WTFPL) وbemanitools (Unlicense) وDolphin (GPL-2.0-or-later) وITAIKO-firmware (MIT) وJoypadOS (Apache-2.0) وjvsio (BSD-3-Clause) وMAME (BSD-3-Clause) وOpenITG (ترخيص StepMania) وp4io-mdxfdrv (GPL-3.0) وRPCS3 (GPL-2.0) وTaikoZucchini (MIT). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>مراجع وحدات تحكم Bluetooth LE</value></data>

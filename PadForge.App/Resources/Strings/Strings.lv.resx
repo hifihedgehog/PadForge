@@ -3413,7 +3413,88 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Atiestatīt rotācijas diapazonu</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Atiestatīt automātiskās centrēšanas stiprumu</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Atiestatīt RPM pārnesumu maiņas LED</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stūrēšanas diapazons, automātiskā centrēšana un pārnesumu maiņas gaismas stūrēm ar spēka atgriezenisko saiti.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Stūrēšanas diapazons un pārnesumu maiņas gaismas stūrēm ar spēka atgriezenisko saiti.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrēšana</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Atgriež stūri centrā kā vienkārša atspere vai kā automašīnas stūrēšana.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Atiestatīt centrēšanu</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Režīms</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Atspere velk stūri uz centru ar vienu stiprumu. Automašīna aprēķina griezes momentu, ko automašīnas stūrēšana dod savā ātrumā, pēc riepu modeļa.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Atspere</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Automašīna</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Automašīna</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Automašīna, kuras stūrēšanu stūre pārņem. Katra ir publicēts transportlīdzekļa modelis.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedans</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompaktā</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Furgons</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Sacīkšu auto</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Ātrums</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>No spēles nolasa automašīnas ātrumu no spēles telemetrijas un izmanto fiksēto ātrumu, kamēr neviena spēle to nesūta. Fiksēts vienmēr izmanto fiksēto ātrumu.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>No spēles</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fiksēts</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Stūrēšanas smagums</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Cik smaga ir stūrēšana. 100% ir pašas automašīnas smagums.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Stūres pagrieziena leņķis</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Cik tālu šī stūre pagriežas no vienas atdures līdz otrai. Iestatiet to uz stūres paša iestatījumu.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Stūrēšanas griezes moments</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Leņķis</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Griezes moments</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Stūres robeža {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Stūrēšanas griezes moments uz stūres loka atkarībā no stūrēšanas leņķa. Pie {0} maksimums ir {1} N·m pie {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sajūta centrā</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Cik ātri griezes moments aug līdz ar sānu paātrinājumu tuvu centram, N·m uz g līdz 0.05 g. Jo vairāk, jo stabilāka sajūta.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Griezes momenta stingrība</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Cik ātri griezes moments aug, stūrei attālinoties no centra, N·m uz grādu.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearitāte</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Griezes momenta slīpums starp 0.10 un 0.15 g salīdzinājumā ar slīpumu centrā. Jo mazāk, jo ātrāk stūrēšana kļūst viegla.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Maksimālais griezes moments</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Lielākais griezes moments, ko automašīna prasa no stūres, līdzās lielākajam, ko stūre dod.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>no {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Šī automašīna prasa lielāku griezes momentu, nekā stūrei ir, tāpēc līknes augšdaļa ir nogriezta.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sajūta centrā, stūres pastiprinātājs, slāpēšana, berze, saķere, fiksētais ātrums, stūres griezes moments</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Cik stingri stūrēšana tur centru mazā ātrumā. 100% ir pašas automašīnas stingrība.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Stūres pastiprinātājs</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Cik daudz pastiprinātājs noņem, augot sānu paātrinājumam. Jo vairāk, jo vieglāka stūrēšana tālāk no centra.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Slāpēšana</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Cik stipri stūre pretojas ātriem pagriezieniem. 100% ir tas, kas to atgriež, neaizsvārstoties garām centram.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Berze</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Vienmērīga pretestība, kas pretojas pagriešanai uz abām pusēm.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Saķere</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Ceļa saķere. Stūrēšana kļūst viegla, kad priekšējām riepām tās vairs nepietiek.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Sauss</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Slapjš</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sniegs</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ledus</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fiksētais ātrums</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Ātrums, ar kādu automašīna tiek uzskatīta par braucošu, ja ātrums ir fiksēts un kamēr neviena spēle to nesūta.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Stūres griezes moments</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Lielākais griezes moments, ko dod šī stūre. PadForge to aizpilda, ja stūres ražotājs to publicē. Vērtība, kas pārsniedz stūres paša, vājina visus spēkus.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Stūres griezes moments šai stūrei nav iestatīts, tāpēc tās spēki ir ierobežoti. Ievadiet to sadaļā Vairāk.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Stūre sāka svārstīties pati, tāpēc spēks tiek ierobežots. Palaidiet atlaišanas testu.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Spēks ir izslēgts, jo stūre turpināja svārstīties vai aizgāja no centra. Palaidiet atlaišanas testu.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Atlaišanas tests</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Izmēra šo stūri un iestata slāpēšanu, lai tā atgrieztos bez pārsvārstīšanās</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Vēl nav palaists</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Izmērīts</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Noņemiet rokas no stūres. PadForge pagriež to līdz {0}°, atlaiž un ieraksta, kā tā atgriežas.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Stūres leņķis {0} sekundēs pēc katras atlaišanas.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Pirms</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Pēc</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mērīšana, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Pabeigts, 2 mēģinājumi</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Apturēts</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Stūre neapstājās. Noņemiet rokas no tās un palaidiet testu vēlreiz.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Stūre nekustējās. Ja stūres griezes moments ir iestatīts virs tā, ko stūre dod, iestatiet stūres paša vērtību un palaidiet testu vēlreiz.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Stūre pietuvojās diapazona galam. Centrējiet to un palaidiet testu vēlreiz.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Stūres kustību neizdevās nolasīt. Palaidiet testu vēlreiz.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Stūre pārstāja atbildēt. Pārbaudiet, vai tā ir pievienota un vai dzinējs darbojas.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Šī stūre netiek izmantota. Piešķiriet to kontrolleram, palaidiet dzinēju un tad palaidiet testu.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inerce</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Pirms tam stūre aizsvārstījās {0}° aiz centra.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Tagad tā aizsvārstās {0}° aiz centra un apstājas {1}° no centra.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Tagad tā atgriežas bez pārsvārstīšanās un apstājas {0}° no centra.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Palaist vēlreiz</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Lietot</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Atiestatīt stūres galējā stāvokļa atgriezenisko saiti</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Atiestatīt vibrācijas impulsu galējā stāvoklī</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Atiestatīt mēlīšu vibrāciju galējā stāvoklī</value></data>
@@ -4919,7 +5000,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move ziņojumu izkārtojumi, sensoru kalibrēšana un EXT piederumu rokasspiediens, autors Thomas Perl, pārbaudīti ar moveonpc wiki. PadForge implementācija ir oriģināls C# kods. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Sacīkšu telemetrijas atsauces</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Koplietojamās atmiņas un UDP izkārtojumi, uz kuriem balstās spēļu telemetrija un stūres RPM pārnesumu maiņas LED, iegūti no assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) un vAzhureRacingHub (GPL-3.0). GPL vai LGPL kods netiek izplatīts.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Koplietojamās atmiņas un UDP izkārtojumi, uz kuriem balstās spēļu telemetrija un stūres RPM pārnesumu maiņas LED, iegūti no assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) un vAzhureRacingHub (GPL-3.0). GPL vai LGPL kods netiek izplatīts.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth savienošanas pārī un ziņojumu dokumentācija. GPL-2.0 un GPL-3.0, izmantota tikai kā dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Virtuālā DualSense mikrofona 48 dB vājinājuma diapazons. Izmantots tikai kā dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Stūru protokolu atsauces</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster un Logitech stūru iebūvētās spēka atgriezeniskās saites un RPM pārnesumu maiņas LED ziņojumi, iegūti no hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) un thrustmaster-led-linux (GPL-3.0) un pārbaudīti ar prodigal.knight SimHub LED spraudni (MIT) un tm-bt-led (MIT). Tikai dokumentācija, GPL kods netiek izplatīts.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Stūrēšanas sajūtas atsauces</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Stūrēšanas griezes momenta modelis, uz kura balstās Centrēšanas režīms Automašīna, no Balachandran un Gerdes raksta „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Transportlīdzekļa parametri ņemti no commonroad-vehicle-models (BSD-3-Clause) un global_racetrajectory_optimization (LGPL-3.0). Riepas pēdas nobīde ir no Pacejka grāmatas Tire and Vehicle Dynamics, bet ceļa saķere no Wong grāmatas Theory of Ground Vehicles. Tikai skaitļi, kods no tiem netiek izplatīts.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arkādes I/O atsauces</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokoli, uz kuriem balstās SDL atzarojuma draiveri Namco un Konami arkādes I/O platēm un JVS platēm, iegūti no arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania licence), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) un TaikoZucchini (MIT). Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE kontrolleru atsauces</value></data>

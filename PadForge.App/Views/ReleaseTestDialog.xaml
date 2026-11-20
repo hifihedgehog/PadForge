@@ -1,0 +1,98 @@
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ReleaseTestDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        Title="{Binding Pad_Centering_ReleaseTest, Source={x:Static strings:Strings.Instance}}">
+
+    <!-- The Release Test (#588), as its board draws it: the wheel's angle
+         after each of the two releases, the state of the test with the
+         chart's legend, what was measured, and what the measurement
+         changed in a sentence. The window opens ready, with Start. While
+         the test runs the foot offers Stop. Done, Run Again leads the foot
+         and Apply keeps the measurement. The line under the title names
+         the angle the wheel is let go from, so it is written when the
+         window opens (ReleaseTestDialog.xaml.cs). -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="RunAgainBtn" Style="{StaticResource DialogQuietButton}" Visibility="Collapsed"
+                    Content="{Binding ReleaseTest_RunAgain, Source={x:Static strings:Strings.Instance}}"
+                    Click="Start_Click"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="StartBtn" Style="{StaticResource DialogPrimaryButton}"
+                    Content="{Binding Common_Start, Source={x:Static strings:Strings.Instance}}"
+                    Click="Start_Click"/>
+            <Button x:Name="StopBtn" Style="{StaticResource DialogPrimaryButton}" Visibility="Collapsed"
+                    Content="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"
+                    Click="Stop_Click"/>
+            <Button x:Name="ApplyBtn" Style="{StaticResource DialogPrimaryButton}" Visibility="Collapsed"
+                    Content="{Binding Common_Apply, Source={x:Static strings:Strings.Instance}}"
+                    Click="Apply_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <StackPanel>
+        <!-- The two releases. -->
+        <Border CornerRadius="8" BorderThickness="1" Padding="0,12,6,6"
+                Background="{DynamicResource SteelFieldBrush}"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}">
+            <controls:ReleaseTraceChart x:Name="Chart" Height="172"/>
+        </Border>
+
+        <!-- The test's state, and what each line is. -->
+        <controls:FlexLinePanel Gap="8" LineGap="6" EndsApart="True" MinLineHeight="20" Margin="0,8,0,0">
+            <TextBlock x:Name="StatusText" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center"
+                       common:LiveText.Polite="True" controls:FlexLinePanel.Grow="1" controls:FlexLinePanel.Basis="200"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Border Style="{StaticResource DialogLegendPill}" controls:FlexLinePanel.AtEnd="True">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Rectangle Width="10" Height="2" RadiusX="1" RadiusY="1" VerticalAlignment="Center" Margin="0,0,6,0"
+                               Fill="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock Text="{Binding ReleaseTest_Before, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource DialogLegendPillCold}" controls:FlexLinePanel.AtEnd="True">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Rectangle Width="10" Height="2" RadiusX="1" RadiusY="1" VerticalAlignment="Center" Margin="0,0,6,0"
+                               Fill="{DynamicResource ColdBrush}"/>
+                    <TextBlock Text="{Binding ReleaseTest_After, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </controls:FlexLinePanel>
+
+        <!-- What the test measured. Until there is a measurement the three
+             keep their room and show nothing, so the window does not grow
+             when the test ends. -->
+        <UniformGrid x:Name="Figures" Columns="3" Margin="0,14,0,0" Visibility="Hidden">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock Text="{Binding Pad_Centering_Friction, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                    <Run x:Name="FrictionFigure" FontWeight="SemiBold"/><Run Text=" "/><Run Text="N&#183;m" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock Text="{Binding ReleaseTest_Inertia, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                    <Run x:Name="InertiaFigure" FontWeight="SemiBold"/><Run Text=" "/><Run Text="kg&#183;m&#178;" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding Pad_Centering_Damping, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextTrimming="CharacterEllipsis"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <TextBlock Typography.NumeralAlignment="Tabular" TextTrimming="CharacterEllipsis">
+                    <Run x:Name="DampingFigure" FontWeight="SemiBold"/><Run Text=" "/><Run Text="N&#183;m&#183;s/rad" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </TextBlock>
+            </StackPanel>
+        </UniformGrid>
+
+        <!-- What the measurement changed. It keeps room for two lines, so
+             the window does not grow when the test ends. -->
+        <TextBlock x:Name="ResultText" Margin="0,12,0,0" MinHeight="40" TextWrapping="Wrap" common:LiveText.Polite="True"
+                   Foreground="{DynamicResource SubRowTextBrush}"/>
+    </StackPanel>
+</views:DialogWindow>

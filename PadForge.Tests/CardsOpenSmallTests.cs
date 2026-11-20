@@ -109,6 +109,15 @@ namespace PadForge.Tests
             ("Pad_More_BassShakers", "Pad.Rumble.BassShakers.More", "Pad_More_BassShakers",
                 new[] { "{Binding RumbleAudioEnabled, Mode=TwoWay}" },
                 new[] { "RumbleAudioEndpointId", "RumbleAudioChannelMode", "RumbleAudioMasterGain" }),
+            // Centering in Vehicle mode opens on the car, where its speed comes
+            // from, the steering's weight, the wheel's range where PadForge
+            // sets none, and the chart (#588).
+            ("Pad_More_Centering", "Pad.Rumble.Centering.More", "Pad_More_Centering",
+                new[] { "{Binding CenteringVehicle, Mode=TwoWay}", "{Binding CenteringSpeedSource, Mode=TwoWay}",
+                        "{Binding CenteringWeight, Mode=TwoWay}", "{Binding CenteringWheelRange, Mode=TwoWay}", "SteeringTorqueChart" },
+                new[] { "{Binding CenteringOnCenter, Mode=TwoWay}", "{Binding CenteringAssist, Mode=TwoWay}", "{Binding CenteringDamping, Mode=TwoWay}",
+                        "{Binding CenteringFrictionNm, Mode=TwoWay}", "{Binding CenteringGrip, Mode=TwoWay}",
+                        "{Binding CenteringFixedSpeedShown, Mode=TwoWay}", "{Binding CenteringWheelTorqueNm, Mode=TwoWay" }),
             // The Gyro card opens on Motion Passthrough, the calibration, the
             // sensitivity and what the gyro reports now (the sections pass).
             ("Pad_More_GyroSensitivity", "Pad.Motion.Sensitivity.More", "Pad_More_GyroSensitivity",
@@ -318,13 +327,17 @@ namespace PadForge.Tests
                 }
                 // The More row is the last thing in its panel and the card's
                 // foot, or it stands right over its card's tray (the
-                // sections pass), where it is not the foot.
+                // sections pass) or over the row that opens a window (#588,
+                // the Release Test), where it is not the foot.
                 var after = row.ElementsAfterSelf().ToList();
                 if (after.Count == 0)
                     Assert.Null(row.Attribute("IsFoot"));
                 else
                 {
-                    Assert.Equal("FoldList", Assert.Single(after).Name.LocalName);
+                    var foot = Assert.Single(after);
+                    Assert.True(foot.Name.LocalName == "FoldList"
+                        || (foot.Name.LocalName == "Button" && (string)foot.Attribute("Style") == "{StaticResource CardFootLink}"),
+                        want.Id + " stands over a " + foot.Name.LocalName);
                     Assert.Equal("False", (string)row.Attribute("IsFoot"));
                 }
             }

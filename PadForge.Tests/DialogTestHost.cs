@@ -64,7 +64,7 @@ namespace PadForge.Tests
             foreach (string key in new[] { "EmberAccentButton", "EmberDestructiveButton", "QuietPlainButton" })
                 resources[key] = new Style(typeof(Button));
             resources["SegmentRadio"] = new Style(typeof(RadioButton));
-            foreach (string key in new[] { "SegmentTrack", "PillChip", "InputChip" })
+            foreach (string key in new[] { "SegmentTrack", "PillChip", "InputChip", "LegendPill", "LegendPillCold" })
                 resources[key] = new Style(typeof(Border));
             resources["SwitchCheckBox"] = new Style(typeof(CheckBox));
             resources["EmberSlider"] = new Style(typeof(Slider));

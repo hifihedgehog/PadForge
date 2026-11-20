@@ -3167,7 +3167,88 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Rivendos diapazonin e rrotullimit</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Rivendos fuqinë e qendërzimit automatik</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Rivendos LED-et e ndërrimit të RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Diapazoni i drejtimit, qendërzimi automatik dhe dritat e ndërrimit për timonët me force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Diapazoni i drejtimit dhe dritat e ndërrimit për timonët me force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Qendërzimi</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>E kthen timonin në qendër, si një sustë e thjeshtë ose si drejtimi i një makine.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Rivendos qendërzimin</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mënyra</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Susta e tërheq timonin në qendër me një forcë të vetme. Automjeti llogarit momentin që jep drejtimi i një makine me shpejtësinë e saj, nga një model gomash.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Susta</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Automjeti</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Automjeti</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Makina, drejtimin e së cilës e merr timoni. Secila është një model automjeti i botuar.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompakte</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Furgon</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Makinë garash</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Shpejtësia</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Nga loja e lexon shpejtësinë e makinës nga telemetria e lojës, dhe kur asnjë lojë nuk e dërgon, vlen Shpejtësia fikse. Fikse vlen gjithmonë Shpejtësia fikse.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Nga loja</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fikse</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Pesha e drejtimit</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Sa i rëndë është drejtimi. 100% është ai i vetë makinës.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Diapazoni i timonit</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Sa rrotullohet ky timon nga një skaj në tjetrin. Vendose sipas cilësimit të vetë timonit.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Momenti i drejtimit</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Këndi</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Momenti</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Kufiri i timonit {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Momenti i drejtimit në kurorë kundrejt këndit të drejtimit. Në {0} arrin kulmin në {1} N·m në {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Ndjesia në qendër</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Sa shpejt rritet momenti me forcën e kthesës pranë qendrës, në N·m për g deri në 0.05 g. Më shumë ndihet më i qëndrueshëm.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Ngurtësia e momentit</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Sa shpejt rritet momenti ndërsa timoni largohet nga qendra, në N·m për gradë.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Lineariteti</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Pjerrësia e momentit midis 0.10 dhe 0.15 g krahasuar me pjerrësinë në qendër. Më e ulët do të thotë se drejtimi bëhet i lehtë më herët.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Momenti maksimal</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Momenti më i madh që makina kërkon nga timoni, krahas më të madhit që jep timoni.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>nga {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kjo makinë kërkon më shumë moment sesa ka timoni, ndaj maja e kurbës pritet.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Ndjesia në qendër, ndihma e drejtimit, amortizimi, fërkimi, ngjitja, shpejtësia fikse, momenti i timonit</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Sa fort e mban drejtimi qendrën me shpejtësi të ulët. 100% është ai i vetë makinës.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ndihma e drejtimit</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Sa e lehtëson drejtimi me ndihmë timonin ndërsa forca e kthesës rritet. Më shumë do të thotë drejtim më i lehtë larg qendrës.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Amortizimi</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Sa fort i reziston timoni kthesave të shpejta. 100% është ajo që e kthen pa kaluar përtej qendrës.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Fërkimi</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Një rezistencë e vazhdueshme që i kundërvihet rrotullimit në të dyja drejtimet.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Ngjitja</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Ngjitja e rrugës. Drejtimi bëhet i lehtë aty ku gomat e përparme e humbasin atë.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>E thatë</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>E lagur</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Borë</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Akull</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Shpejtësia fikse</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Shpejtësia me të cilën merret se vozit makina kur Shpejtësia është Fikse, dhe derisa asnjë lojë nuk e dërgon.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Momenti i timonit</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Momenti më i madh që jep ky timon. PadForge e plotëson aty ku prodhuesi i timonit e publikon. Një shifër mbi atë të vetë timonit i dobëson të gjitha forcat.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Momenti i timonit nuk është caktuar për këtë timon, ndaj forcat e tij mbahen të ulëta. Fute te Më shumë.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Timoni filloi të lëkundet vetë, ndaj forca mbahet pas. Hap dritaren Testi i lëshimit.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Forca është e fikur sepse timoni vazhdoi të lëkundet ose u largua nga qendra. Hap dritaren Testi i lëshimit.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Testi i lëshimit</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>E mat këtë timon dhe cakton amortizimin që të kthehet pa tejkalim</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Ende pa u kryer</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Matur</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Hiqi duart nga timoni. PadForge e kthen në {0}°, e lëshon dhe regjistron si kthehet.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Këndi i timonit gjatë {0} sekondave pas çdo lëshimi.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Para</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Pas</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Duke matur, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>U krye, 2 ekzekutime</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Ndalur</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Timoni nuk ndaloi. Hiqi duart prej tij dhe nise testin përsëri.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Timoni nuk lëvizi. Nëse Momenti i timonit është caktuar mbi atë që jep timoni, caktoje në shifrën e vetë timonit dhe nise testin përsëri.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Timoni iu afrua fundit të rrugës së tij. Qendroje dhe nise testin përsëri.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Lëvizja e timonit nuk u lexua dot. Nise testin përsëri.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Timoni pushoi së përgjigjuri. Kontrollo që është i lidhur dhe që motori është në punë.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Ky timon nuk është në përdorim. Cakto te një kontrollues dhe nise motorin, pastaj nise testin.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inercia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Më parë, timoni kaloi {0}° përtej qendrës.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Tani kalon {0}° përtej qendrës dhe ndalon {1}° nga qendra.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Tani kthehet pa tejkalim dhe ndalon {0}° nga qendra.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Nise përsëri</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Zbato</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Rivendos reagimin e kyçjes së drejtimit</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Rivendos pulsin e dridhjes në kyçje</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Rivendos dridhjen e këmbëzës në kyçje</value></data>
@@ -4628,7 +4709,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Strukturat e raporteve të PlayStation Move, kalibrimi i sensorit dhe shtrëngimi i duarve i aksesorit EXT, nga Thomas Perl, kryqkontrolluar me wiki-n moveonpc. Implementimi i PadForge është C# origjinal. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referencat e telemetrisë së garave</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Strukturat e memories së përbashkët dhe UDP pas telemetrisë së lojës dhe LED-ve të ndërrimit të RPM-së së timonit, lexuar nga assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) dhe vAzhureRacingHub (GPL-3.0). Nuk përfshihet kod GPL ose LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Strukturat e memories së përbashkët dhe UDP pas telemetrisë së lojës dhe LED-ve të ndërrimit të RPM-së së timonit, lexuar nga assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) dhe vAzhureRacingHub (GPL-3.0). Nuk përfshihet kod GPL ose LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentim për çiftimin Bluetooth dhe raportet e DualShock 3. GPL-2.0 dhe GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4651,6 +4732,8 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Diapazoni i zbutjes 48 dB i mikrofonit virtual të DualSense. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referencat e protokollit të timonit</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Raportet e native force feedback dhe të LED-ve të ndërrimit të RPM-së për timonat Fanatec, Thrustmaster dhe Logitech, lexuar nga hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) dhe thrustmaster-led-linux (GPL-3.0), dhe kryqkontrolluar me shtojcën SimHub LED nga prodigal.knight (MIT) dhe tm-bt-led (MIT). Vetëm dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referencat e ndjesisë së drejtimit</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Modeli i momentit të drejtimit pas mënyrës Automjeti të Qendërzimit, nga Balachandran dhe Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Parametrat e automjetit lexohen nga commonroad-vehicle-models (BSD-3-Clause) dhe global_racetrajectory_optimization (LGPL-3.0). Zvarritja e gomës është nga Pacejka, Tire and Vehicle Dynamics, dhe ngjitja e rrugës nga Wong, Theory of Ground Vehicles. Vetëm shifra, nuk përfshihet kod prej tyre.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referencat Arcade I/O</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokollet pas drajverëve të fork-ut SDL për pllakat Namco dhe Konami arcade I/O dhe pllakat JVS, lexuar nga arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (licenca StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) dhe TaikoZucchini (MIT). Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referencat e kontrolluesve Bluetooth LE</value></data>

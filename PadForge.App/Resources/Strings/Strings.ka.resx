@@ -3219,7 +3219,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>ბრუნვის დიაპაზონის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ავტოცენტრირების ძალის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM გადაცემის LED-ების საწყისზე დაბრუნება</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>მართვის დიაპაზონი, ავტოცენტრირება და გადაცემის შუქები ძალისმიერი უკუკავშირის მქონე საჭეებისთვის.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>მართვის დიაპაზონი და გადაცემის შუქები ძალისმიერი უკუკავშირის მქონე საჭეებისთვის.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ცენტრირება</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>აბრუნებს საჭეს ცენტრში, უბრალო ზამბარის ან მანქანის საჭის მსგავსად.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>ცენტრირების საწყისზე დაბრუნება</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>რეჟიმი</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ზამბარა საჭეს ცენტრისკენ ერთი ძალით ექაჩება. ავტომობილი ითვლის მომენტს, რომელსაც მანქანის საჭე იძლევა მის სიჩქარეზე, საბურავების მოდელის მიხედვით.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ზამბარა</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ავტომობილი</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ავტომობილი</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>მანქანა, რომლის საჭის ქცევას იღებს საჭე. თითოეული გამოქვეყნებული ავტომობილის მოდელია.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>სედანი</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>კომპაქტური</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ფურგონი</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>სარბოლო მანქანა</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>სიჩქარე</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>თამაშიდან კითხულობს მანქანის სიჩქარეს თამაშის ტელემეტრიიდან, ხოლო სანამ თამაში მას არ აგზავნის, იყენებს პარამეტრს ფიქსირებული სიჩქარე. ფიქსირებული ყოველთვის პარამეტრს ფიქსირებული სიჩქარე იყენებს.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>თამაშიდან</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ფიქსირებული</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>საჭის სიმძიმე</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>რამდენად მძიმეა საჭე. 100% მანქანის საკუთარი სიმძიმეა.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>საჭის დიაპაზონი</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>რამდენად ბრუნავს ეს საჭე ერთი ბოლოდან მეორემდე. მიუთითეთ საჭის საკუთარი პარამეტრი.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>მართვის მომენტი</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>კუთხე</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>მომენტი</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>საჭის ზღვარი {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>მართვის მომენტი საჭის რგოლზე მართვის კუთხის მიხედვით. {0} სიჩქარეზე მაქსიმუმს აღწევს {1} N·m, {2}° კუთხეზე.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>ცენტრის შეგრძნება</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>რა სისწრაფით იზრდება მომენტი მოსახვევში ცენტრთან ახლოს, N·m ერთ g ზე, 0.05 g მდე. მეტი ნიშნავს უფრო მყარ შეგრძნებას.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>მომენტის სიხისტე</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>რა სისწრაფით იზრდება მომენტი, როცა საჭე ცენტრს შორდება, N·m ერთ გრადუსზე.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>წრფივობა</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>მომენტის დახრილობა 0.10 და 0.15 g შორის ცენტრთან მის დახრილობასთან შედარებით. რაც ნაკლებია, მით ადრე მსუბუქდება საჭე.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>მაქსიმალური მომენტი</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>მაქსიმალური მომენტი, რომელსაც მანქანა საჭისგან მოითხოვს, საჭის მაქსიმალურ მომენტთან ერთად.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>მაქსიმუმიდან {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ეს მანქანა საჭეზე მეტ მომენტს მოითხოვს, ვიდრე საჭეს აქვს, ამიტომ მრუდის ზედა ნაწილი ჩამოჭრილია.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ცენტრის შეგრძნება, საჭის გამაძლიერებელი, ჩახშობა, ხახუნი, მოჭიდება, ფიქსირებული სიჩქარე, საჭის მომენტი</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>რამდენად მყარად ინარჩუნებს საჭე ცენტრს დაბალ სიჩქარეზე. 100% მანქანის საკუთარი მნიშვნელობაა.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>საჭის გამაძლიერებელი</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>რამდენს იღებს გამაძლიერებელი მოსახვევის ზრდასთან ერთად. მეტი ნიშნავს უფრო მსუბუქ საჭეს ცენტრიდან მოშორებით.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ჩახშობა</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>რამდენად ეწინააღმდეგება საჭე სწრაფ მოტრიალებებს. 100% არის მნიშვნელობა, რომელიც საჭეს ცენტრის გადაცილების გარეშე აბრუნებს.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ხახუნი</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>მუდმივი წინააღმდეგობა, რომელიც ორივე მიმართულებით ბრუნვას ეწინააღმდეგება.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>მოჭიდება</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>გზის მოჭიდება. საჭე მსუბუქდება იქ, სადაც წინა საბურავებს მოჭიდება ეკარგებათ.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>მშრალი</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>სველი</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>თოვლი</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ყინული</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ფიქსირებული სიჩქარე</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>სიჩქარე, რომლითაც მანქანა მოძრაობს, როცა სიჩქარე ფიქსირებულია და სანამ თამაში მას არ აგზავნის.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>საჭის მომენტი</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>მაქსიმალური მომენტი, რომელსაც ეს საჭე იძლევა. PadForge ავსებს მას, როცა საჭის მწარმოებელი აქვეყნებს. საჭის საკუთარ მნიშვნელობაზე მეტი რიცხვი ყველა ძალას ასუსტებს.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ამ საჭისთვის საჭის მომენტი არ არის მითითებული, ამიტომ ძალები დაბალია. შეიყვანეთ ის განყოფილებაში მეტი.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>საჭემ თავისით რყევა დაიწყო, ამიტომ ძალა შეზღუდულია. გაუშვით გამოშვების ტესტი.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>ძალა გამორთულია, რადგან საჭე რყევას აგრძელებდა ან ცენტრს გაშორდა. გაუშვით გამოშვების ტესტი.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>გამოშვების ტესტი</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ზომავს ამ საჭეს და ადგენს ჩახშობას, რომ ის გადაცილების გარეშე დაბრუნდეს</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ჯერ არ გაშვებულა</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>გაზომილია</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>აიღეთ ხელები საჭიდან. PadForge მას {0}° ზე მოაბრუნებს, გაუშვებს და ჩაწერს, როგორ ბრუნდება.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>საჭის კუთხე თითოეული გაშვების შემდეგ {0} წამის განმავლობაში.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>ადრე</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>შემდეგ</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>იზომება, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>დასრულდა, 2 გაშვება</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>გაჩერდა</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>საჭე უძრავად არ დადგა. აიღეთ ხელები საჭიდან და გაუშვით ტესტი ხელახლა.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>საჭე არ განძრეულა. თუ საჭის მომენტი საჭის შესაძლებლობაზე მეტია, დააყენეთ საჭის საკუთარი მნიშვნელობა და გაუშვით ტესტი ხელახლა.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>საჭე დიაპაზონის ბოლოსთან მიუახლოვდა. დააბრუნეთ ცენტრში და გაუშვით ტესტი ხელახლა.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>საჭის მოძრაობის წაკითხვა ვერ მოხერხდა. გაუშვით ტესტი ხელახლა.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>საჭემ პასუხი შეწყვიტა. შეამოწმეთ, რომ ის დაკავშირებულია და ძრავა მუშაობს.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ეს საჭე არ გამოიყენება. მიაბით კონტროლერს, გაუშვით ძრავა და შემდეგ გაუშვით ტესტი.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ინერცია</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ადრე საჭე ცენტრს {0}° ით სცილდებოდა.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ახლა ის ცენტრს {0}° ით სცილდება და ცენტრიდან {1}° ზე ჩერდება.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ახლა ის გადაცილების გარეშე ბრუნდება და ცენტრიდან {0}° ზე ჩერდება.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>ხელახლა გაშვება</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>გამოყენება</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>მართვის ზღვარზე უკუკავშირის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ვიბრაციის იმპულსის ზღვარზე საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ტრიგერის ვიბრაციის ზღვარზე საწყისზე დაბრუნება</value></data>
@@ -4676,7 +4757,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ის ანგარიშების განლაგება, სენსორის კალიბრაცია და EXT აქსესუარის ხელის ჩამორთმევა, ავტორი Thomas Perl, გადამოწმებულია moveonpc wiki-სთან. PadForge-ის იმპლემენტაცია ორიგინალური C#-ია. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>რბოლის ტელემეტრიის წყაროები</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>გაზიარებული მეხსიერებისა და UDP განლაგებები თამაშის ტელემეტრიისა და საჭის RPM-ის გადართვის LED-ების უკან, წაკითხულია assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) და vAzhureRacingHub (GPL-3.0) წყაროებიდან. GPL ან LGPL კოდი არ შედის.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>გაზიარებული მეხსიერებისა და UDP განლაგებები თამაშის ტელემეტრიისა და საჭის RPM-ის გადართვის LED-ების უკან, წაკითხულია assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) და vAzhureRacingHub (GPL-3.0) წყაროებიდან. GPL ან LGPL კოდი არ შედის.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ის Bluetooth დაწყვილებისა და ანგარიშების დოკუმენტაცია. GPL-2.0 და GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4699,6 +4780,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ვირტუალური DualSense მიკროფონის 48 dB შესუსტების დიაპაზონი. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>საჭის პროტოკოლის წყაროები</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ძალისმიერი უკუკავშირისა და RPM-ის გადართვის LED ანგარიშები Fanatec-ის, Thrustmaster-ისა და Logitech-ის საჭეებისთვის, წაკითხულია hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) და thrustmaster-led-linux (GPL-3.0) წყაროებიდან და გადამოწმებულია SimHub-ის LED დანამატთან, ავტორი prodigal.knight (MIT), და tm-bt-led-თან (MIT). მხოლოდ დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>საჭის შეგრძნების წყაროები</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>საჭის მომენტის მოდელი ცენტრირების ავტომობილის რეჟიმისთვის აღებულია ნაშრომიდან „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics), ავტორები Balachandran და Gerdes. ავტომობილის პარამეტრები წაკითხულია commonroad-vehicle-models (BSD-3-Clause) და global_racetrajectory_optimization (LGPL-3.0) პროექტებიდან. საბურავის კვალი აღებულია წიგნიდან Tire and Vehicle Dynamics (ავტორი Pacejka), გზის მოჭიდება კი წიგნიდან Theory of Ground Vehicles (ავტორი Wong). აღებულია მხოლოდ რიცხვები, მათი კოდი არ შედის.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O-ს წყაროები</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>პროტოკოლები SDL ფორკის დრაივერების უკან Namco-სა და Konami-ს arcade I/O დაფებისთვის და JVS დაფებისთვის, წაკითხულია arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) და TaikoZucchini (MIT) წყაროებიდან. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE კონტროლერების წყაროები</value></data>

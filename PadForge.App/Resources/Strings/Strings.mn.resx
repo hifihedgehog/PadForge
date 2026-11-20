@@ -3223,7 +3223,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Эргэлтийн мужийг дахин тохируулах</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Автомат төвлөрлийн хүчийг дахин тохируулах</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM шилжүүлэх LED-ийг дахин тохируулах</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Хүчний эргэх холботой жолоонуудын жолоодлогын муж, автомат төвлөрөл, шилжүүлэх гэрэл.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Хүчний эргэх холботой жолоонуудын жолоодлогын муж, шилжүүлэх гэрэл.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Төвлөрөл</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Жолоог энгийн пүрш шиг эсвэл машины жолоо шиг төв рүү нь буцаана.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Төвлөрлийг дахин тохируулах</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Горим</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Пүрш нь жолоог нэг хүчээр төв рүү татна. Машин нь дугуйн загвараас машины жолооны өгөх эргүүлэх моментыг хурдад нь тохируулан тооцоолно.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Пүрш</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Машин</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Машин</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Жолоо аль машины жолоог дуурайхыг сонгоно. Тус бүр нь нийтлэгдсэн машины загвар юм.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Седан</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Жижиг тэрэг</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Микроавтобус</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Уралдааны машин</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Хурд</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Тоглоомоос нь машины хурдыг тоглоомын телеметрээс уншиж, ямар ч тоглоом хурд илгээхгүй үед Тогтмол хурдыг ашиглана. Тогтмол нь үргэлж Тогтмол хурдыг ашиглана.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Тоглоомоос</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Тогтмол</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Жолооны жин</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Жолоо хэр хүнд байхыг заана. 100% нь машины өөрийнх.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Жолооны хүрээ</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Энэ жолоо нэг захаас нөгөө зах хүртэл хэр их эргэхийг заана. Жолооны өөрийн тохиргоотой ижил болгоно уу.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Жолооны эргүүлэх момент</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Өнцөг</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Момент</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Жолооны дээд хязгаар {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Жолооны хүрдэн дээрх эргүүлэх момент жолооны өнцгөөс хамаарах нь. {0} хурдад оргил нь {2}° дээр {1} N·m байна.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Төв орчмын мэдрэмж</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Төвийн ойролцоо эргэлтийн хурдатгал өсөхөд эргүүлэх момент хэр хурдан нэмэгдэхийг 0.05 g хүртэл g тутамд N·m-ээр заана. Их байх тусам илүү тогтвортой мэдрэгдэнэ.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Моментийн хатуулаг</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Жолоо төвөөс холдоход эргүүлэх момент хэр хурдан нэмэгдэхийг градус тутамд N·m-ээр заана.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Шугаман чанар</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 ба 0.15 g хоорондох эргүүлэх моментийн налууг төв дээрх налуутай нь харьцуулна. Бага байх тусам жолоо эрт хөнгөрнө.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Оргил момент</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Машины жолооноос шаардах хамгийн их эргүүлэх момент, жолооны өгөх хамгийн их моментийн хажууд.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Энэ машин жолооны өгч чадахаас их эргүүлэх момент шаарддаг тул муруйн оргил хэсэг тасарна.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Төв орчмын мэдрэмж, хүчлүүрийн туслалцаа, сааруулалт, үрэлт, барьц, тогтмол хурд, жолооны момент</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Бага хурдад жолоо төвөө хэр хүчтэй барихыг заана. 100% нь машины өөрийнх.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Хүчлүүрийн туслалцаа</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Эргэлт ихсэх тусам жолооны хүчлүүр хүчин чармайлтыг хэр их хасахыг заана. Их байх тусам төвөөс холдоход жолоо хөнгөн болно.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Сааруулалт</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Жолоо хурдан эргэлтийг хэр хүчтэй эсэргүүцэхийг заана. 100% нь жолоог төвөөс нь хэтрүүлэлгүй буцаадаг хэмжээ.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Үрэлт</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Аль ч зүг рүү эргэхийг эсэргүүцэх тогтмол чирэлт.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Барьц</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Замын барьц. Урд дугуйнууд барьцаа алдах үед жолоо хөнгөрнө.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Хуурай</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Нойтон</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Цас</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Мөс</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Тогтмол хурд</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Хурд Тогтмол байх үед болон ямар ч тоглоом хурд илгээхгүй үед машины явж буй гэж тооцох хурд.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Жолооны момент</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Энэ жолооны өгөх хамгийн их эргүүлэх момент. Жолооны үйлдвэрлэгч үүнийг нийтэлсэн бол PadForge автоматаар бөглөнө. Жолооны өөрийнхөөс их тоо оруулбал бүх хүч сулрана.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Энэ жолоонд Жолооны момент тохируулаагүй тул хүчийг бага барьж байна. Бусад хэсэгт оруулна уу.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Жолоо өөрөө савлаж эхэлсэн тул хүчийг сааруулсан. Суллах туршилтыг ажиллуулна уу.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Жолоо савлалтаа зогсоогоогүй эсвэл төвөөсөө холдсон тул хүчийг унтраасан. Суллах туршилтыг ажиллуулна уу.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Суллах туршилт</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Энэ жолоог хэмжиж, хэтрэлтгүй буцахаар сааруулалтыг тохируулна</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Хараахан ажиллуулаагүй</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Хэмжсэн</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Гараа жолооноос авна уу. PadForge жолоог {0}° эргүүлээд, сулалж, хэрхэн буцаж байгааг бичнэ.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Суллалт бүрийн дараах {0} секундын турш жолооны өнцөг.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Өмнө</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Дараа</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Хэмжиж байна, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Дууссан, 2 удаа</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Зогсоосон</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Жолоо тогтворжсонгүй. Гараа жолооноос аваад туршилтыг дахин ажиллуулна уу.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Жолоо хөдөлсөнгүй. Жолооны момент жолооны өгөхөөс их тохируулагдсан бол жолооны өөрийн тоонд тааруулж, туршилтыг дахин ажиллуулна уу.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Жолоо эргэлтийнхээ зах руу ойртсон. Төвд нь тавиад туршилтыг дахин ажиллуулна уу.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Жолооны хөдөлгөөнийг уншиж чадсангүй. Туршилтыг дахин ажиллуулна уу.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Жолоо хариу өгөхөө больсон. Холбогдсон эсэх, хөдөлгүүр ажиллаж байгаа эсэхийг шалгана уу.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Энэ жолоо ашиглагдаагүй байна. Үүнийг контроллерт оноож, хөдөлгүүрийг эхлүүлээд туршилтыг ажиллуулна уу.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Инерц</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Өмнө нь жолоо төвөөсөө {0}° хэтэрч савласан.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Одоо төвөөсөө {0}° хэтэрч савлаад, төвөөс {1}° зайд тогтоно.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Одоо хэтрэлтгүй буцаж, төвөөс {0}° зайд тогтоно.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Дахин ажиллуулах</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Хэрэглэх</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Жолооны хязгаарын эргэх холбоог дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Хязгаарт чичиргээний импульсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Хязгаарт гохны чичиргээг дахин тохируулах</value></data>
@@ -4664,7 +4745,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ийн тайлангийн бүтэц, мэдрэгчийн калибровк, EXT дагалдах хэрэгслийн холболт тогтоох дараалал, Thomas Perl-ийн бүтээл, moveonpc вики-тэй тулган шалгасан. PadForge-ийн хэрэгжүүлэлт нь эх C# код. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Уралдааны телеметрийн эх сурвалжууд</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Тоглоомын телеметр болон жолооны RPM шилжүүлэх LED-ийн ард байгаа хуваалцсан санах ой ба UDP бүтцүүдийг assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0)-аас уншсан. GPL эсвэл LGPL код багтаагүй.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Тоглоомын телеметр болон жолооны RPM шилжүүлэх LED-ийн ард байгаа хуваалцсан санах ой ба UDP бүтцүүдийг assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0)-аас уншсан. GPL эсвэл LGPL код багтаагүй.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ын Bluetooth хослуулалт ба тайлангийн баримт бичиг. GPL-2.0 ба GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4687,6 +4768,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуал DualSense микрофоны 48 dB сулруулалтын муж. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Жолооны протоколын эх сурвалжууд</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, Logitech жолоонуудын уугуул хүчний эргэх холбоо ба RPM шилжүүлэх LED тайлангуудыг hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), thrustmaster-led-linux (GPL-3.0)-аас уншиж, prodigal.knight-ийн SimHub LED плагин (MIT) ба tm-bt-led (MIT)-тэй тулган шалгасан. Зөвхөн баримт бичиг, GPL код багтаагүй.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Жолооны мэдрэмжийн эх сурвалжууд</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Төвлөрөл картын Машин горимын ард байгаа жолооны эргүүлэх моментын загварыг Balachandran, Gerdes нарын «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics) өгүүллээс авсан. Машины параметрүүдийг commonroad-vehicle-models (BSD-3-Clause) ба global_racetrajectory_optimization (LGPL-3.0)-аас уншсан. Дугуйн хоцрох зайг Pacejka-гийн Tire and Vehicle Dynamics номоос, замын барьцыг Wong-ийн Theory of Ground Vehicles номоос авсан. Зөвхөн тоон утгууд, тэдгээрийн код багтаагүй.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Аркад I/O эх сурвалжууд</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL салааны Namco ба Konami аркад I/O самбарууд болон JVS самбаруудын драйверуудын ард байгаа протоколуудыг arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania лиценз), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0), TaikoZucchini (MIT)-ээс уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE контроллерын эх сурвалжууд</value></data>

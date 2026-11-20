@@ -3413,7 +3413,88 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Ponastavi obseg vrtenja</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Ponastavi moč samodejnega središčenja</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Ponastavi lučke za prestavljanje (RPM)</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Obseg krmiljenja, samodejno središčenje in lučke za prestavljanje za volane s povratno silo.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Obseg krmiljenja in lučke za prestavljanje za volane s povratno silo.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Središčenje</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Vrne volan v središče, kot navadna vzmet ali kot krmiljenje avtomobila.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Ponastavi središčenje</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Način</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Vzmet vleče volan v središče z enako močjo. Vozilo izračuna navor, ki ga krmiljenje avtomobila daje pri njegovi hitrosti, na podlagi modela pnevmatik.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Vzmet</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vozilo</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vozilo</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Avtomobil, katerega krmiljenje prevzame volan. Vsak je objavljen model vozila.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Limuzina</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompaktni</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Kombi</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Dirkalnik</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Hitrost</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Iz igre prebere hitrost avtomobila iz telemetrije igre in uporabi Stalna hitrost, dokler nobena igra ne pošilja hitrosti. Stalno uporablja Stalna hitrost ves čas.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Iz igre</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Stalno</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Teža krmiljenja</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Kako težko je krmiljenje. 100 % je izvirna vrednost avtomobila.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Obseg volana</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Koliko se ta volan zavrti od skrajne do skrajne lege. Nastavite ga na lastno nastavitev volana.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Navor krmiljenja</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Kot</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Navor</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Meja volana {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Navor krmiljenja na obodu glede na kot krmiljenja. Pri {0} doseže vrh {1} N·m pri {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Občutek v sredini</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kako hitro navor naraste ob zavijanju blizu središča, v N·m na g do 0.05 g. Več pomeni bolj stabilen občutek.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Togost navora</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kako hitro navor naraste, ko volan zapušča središče, v N·m na stopinjo.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearnost</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Naklon navora med 0.10 in 0.15 g glede na njegov naklon v središču. Nižje pomeni, da krmiljenje prej postane lahkotno.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Največji navor</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Največji navor, ki ga avtomobil zahteva od volana, ob največjem, ki ga volan daje.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>od {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Ta avtomobil zahteva več navora, kot ga ima volan, zato je vrh krivulje odrezan.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Občutek v sredini, servo podpora, dušenje, trenje, oprijem, stalna hitrost, navor volana</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kako močno krmiljenje drži središče pri nizki hitrosti. 100 % je izvirna vrednost avtomobila.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servo podpora</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Koliko servo krmiljenje odvzame, ko narašča zavijanje. Več pomeni lažje krmiljenje stran od središča.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Dušenje</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Kako močno se volan upira hitrim zasukom. 100 % ga vrne brez nihanja čez središče.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Trenje</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Enakomeren upor, ki se upira vrtenju v obe smeri.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Oprijem</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Oprijem cestišča. Krmiljenje postane lahkotno, ko sprednjim pnevmatikam zmanjka oprijema.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Suho</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mokro</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sneg</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Led</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Stalna hitrost</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Hitrost, s katero naj bi vozil avtomobil, ko je Hitrost nastavljena na Stalno, in dokler nobena igra ne pošilja hitrosti.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Navor volana</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Največji navor, ki ga da ta volan. PadForge ga izpolni, kjer ga proizvajalec volana objavi. Vrednost nad lastno vrednostjo volana oslabi vse sile.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Navor volana ni nastavljen za ta volan, zato so njegove sile zadržane na nizki ravni. Vnesite ga pod Več.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Volan se je začel nihati sam od sebe, zato je sila zadržana. Zaženite Preizkus sprostitve.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Sila je izklopljena, ker je volan nenehno nihal ali se je odmaknil od središča. Zaženite Preizkus sprostitve.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Preizkus sprostitve</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Izmeri ta volan in nastavi dušenje, da se vrne brez prenihaja</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Še ni zagnan</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Izmerjeno</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Umaknite roke z volana. PadForge ga zavrti na {0}°, ga spusti in zabeleži, kako se vrne.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Kot volana v {0} sekundah po vsaki sprostitvi.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Prej</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Potem</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Merjenje, {0} %</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Končano, 2 zagona</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Ustavljeno</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Volan ni obmiroval. Umaknite roke z njega in ponovno zaženite preizkus.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Volan se ni premaknil. Če je Navor volana nastavljen nad vrednostjo, ki jo volan daje, ga nastavite na lastno vrednost volana in ponovno zaženite preizkus.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Volan se je približal koncu svojega obsega. Postavite ga v središče in ponovno zaženite preizkus.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Gibanja volana ni bilo mogoče prebrati. Ponovno zaženite preizkus.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Volan se ne odziva več. Preverite, ali je priključen in ali mehanizem deluje.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Ta volan ni v uporabi. Dodelite ga krmilniku, zaženite mehanizem in nato zaženite preizkus.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Vztrajnost</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Prej je volan nihal {0}° čez središče.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Zdaj niha {0}° čez središče in obmiruje {1}° od središča.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Zdaj se vrne brez prenihaja in obmiruje {0}° od središča.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Ponovno zaženi</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Uporabi</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Ponastavi odziv ob skrajnem zasuku</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Ponastavi utrip vibriranja ob skrajnem zasuku</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Ponastavi vibriranje sprožilca ob skrajnem zasuku</value></data>
@@ -4919,7 +5000,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Razporeditve poročil PlayStation Move, umerjanje senzorjev in rokovanje z dodatki EXT avtorja Thomas Perl, preverjeno z wikijem moveonpc. Implementacija v programu PadForge je izvirna koda C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Reference za dirkalno telemetrijo</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Razporeditve skupnega pomnilnika in UDP za telemetrijo iger ter lučke za prestavljanje (RPM) na volanu, prebrane iz assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) in vAzhureRacingHub (GPL-3.0). Nobena koda GPL ali LGPL ni vključena.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Razporeditve skupnega pomnilnika in UDP za telemetrijo iger ter lučke za prestavljanje (RPM) na volanu, prebrane iz assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) in vAzhureRacingHub (GPL-3.0). Nobena koda GPL ali LGPL ni vključena.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentacija seznanjanja in poročil DualShock 3 prek Bluetootha. GPL-2.0 in GPL-3.0, prebrano le kot dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Obseg dušenja 48 dB navideznega mikrofona DualSense. Prebrano le kot dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Reference za protokole volanov</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Izvorna povratna sila in poročila lučk LED za prestavljanje (RPM) za volane Fanatec, Thrustmaster in Logitech, prebrano iz hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) in thrustmaster-led-linux (GPL-3.0) ter preverjeno z vtičnikom SimHub LED avtorja prodigal.knight (MIT) in tm-bt-led (MIT). Samo dokumentacija, nobena koda GPL ni vključena.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Reference za občutek krmiljenja</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Model navora krmiljenja za način Vozilo pri Središčenju, po avtorjih Balachandran in Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Parametri vozila so prebrani iz commonroad-vehicle-models (BSD-3-Clause) in global_racetrajectory_optimization (LGPL-3.0). Sled pnevmatike izhaja iz knjige Tire and Vehicle Dynamics avtorja Pacejka, oprijem cestišča pa iz knjige Theory of Ground Vehicles avtorja Wong. Samo številke, nobena koda iz njih ni vključena.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Reference za arkadne V/I</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokoli za gonilnike izpeljanke SDL za arkadne vhodno-izhodne plošče Namco in Konami ter plošče JVS, prebrani iz arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) in TaikoZucchini (MIT). Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Reference za krmilnike Bluetooth LE</value></data>

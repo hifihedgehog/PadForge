@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>சுழற்சி வீச்சை மீட்டமை</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>தானியங்கி மையப்படுத்தல் வலிமையை மீட்டமை</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM ஷிஃப்ட் LED-களை மீட்டமை</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக் வீல்களுக்கான ஸ்டீயரிங் வீச்சு, தானியங்கி மையப்படுத்தல், ஷிஃப்ட் விளக்குகள்.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக் வீல்களுக்கான ஸ்டீயரிங் வீச்சு, ஷிஃப்ட் விளக்குகள்.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>மையப்படுத்தல்</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>வீலை எளிய ஸ்பிரிங் போலவோ, காரின் ஸ்டீயரிங் போலவோ மையத்துக்குத் திரும்பக் கொண்டுவரும்.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>மையப்படுத்தலை மீட்டமை</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>பயன்முறை</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ஸ்பிரிங் வீலை ஒரே வலிமையில் மையத்துக்கு இழுக்கும். வாகனம், டயர் மாதிரியிலிருந்து காரின் ஸ்டீயரிங் அதன் வேகத்தில் தரும் டார்க்கைக் கணக்கிடும்.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ஸ்பிரிங்</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>வாகனம்</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>வாகனம்</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>வீல் எடுத்துக்கொள்ளும் காரின் ஸ்டீயரிங். ஒவ்வொன்றும் வெளியிடப்பட்ட வாகன மாதிரி.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>செடான்</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>காம்பாக்ட்</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>வேன்</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ரேஸ் கார்</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>வேகம்</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>கேமிலிருந்து என்பது கேமின் டெலிமெட்ரியிலிருந்து காரின் வேகத்தைப் படிக்கும், எந்த கேமும் அனுப்பாதபோது நிலையான வேகத்தைப் பயன்படுத்தும். நிலையானது எப்போதும் நிலையான வேகத்தைப் பயன்படுத்தும்.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>கேமிலிருந்து</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>நிலையானது</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ஸ்டீயரிங் எடை</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ஸ்டீயரிங் எவ்வளவு கனமாக இருக்கும் என்பது. 100% என்பது காரின் சொந்த எடை.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>வீல் திருப்ப வீச்சு</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>இந்த வீல் ஒரு முனையிலிருந்து மறு முனை வரை எவ்வளவு திரும்பும் என்பது. வீலின் சொந்த அமைப்பில் உள்ளபடி அமைக்கவும்.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>ஸ்டீயரிங் டார்க்</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>கோணம்</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>டார்க்</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>வீல் வரம்பு {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>விளிம்பில் ஸ்டீயரிங் டார்க், ஸ்டீயரிங் கோணத்துக்கு எதிராக. {0} வேகத்தில் அது {2}° கோணத்தில் {1} N·m உச்சத்தை அடையும்.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>மைய உணர்வு</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>மையத்துக்கு அருகில் கார்னரிங்குடன் டார்க் எவ்வளவு வேகமாக உயர்கிறது, 0.05 g வரை g ஒன்றுக்கு N·m அளவில். அதிகமானால் ஸ்டீயரிங் உறுதியாகப் பதிந்ததாக உணரும்.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>டார்க் இறுக்கம்</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>வீல் மையத்தை விட்டு விலகும்போது டார்க் எவ்வளவு வேகமாக உயர்கிறது, ஒரு டிகிரிக்கு N·m அளவில்.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>நேர்கோட்டுத்தன்மை</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>மையத்தில் உள்ள சரிவுடன் ஒப்பிட, 0.10 முதல் 0.15 g வரை டார்க்கின் சரிவு. குறைவாக இருந்தால் ஸ்டீயரிங் விரைவில் இலகுவாகும்.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>உச்ச டார்க்</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>கார் வீலிடம் கேட்கும் அதிகபட்ச டார்க், வீல் தரக்கூடிய அதிகபட்சத்துடன்.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>இந்த கார் வீலில் உள்ளதை விட அதிக டார்க் கேட்கிறது, அதனால் வளைவின் மேல்பகுதி வெட்டப்படுகிறது.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>மைய உணர்வு, பவர் அசிஸ்ட், டேம்பிங், உராய்வு, பிடிப்பு, நிலையான வேகம், வீல் டார்க்</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>குறைந்த வேகத்தில் ஸ்டீயரிங் தன் மையத்தை எவ்வளவு உறுதியாகப் பிடித்திருக்கும். 100% என்பது காரின் சொந்த அளவு.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>பவர் அசிஸ்ட்</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>கார்னரிங் கூடும்போது பவர் ஸ்டீயரிங் எவ்வளவு குறைக்கிறது. அதிகமானால் மையத்திலிருந்து விலகும்போது ஸ்டீயரிங் இலகுவாகும்.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>டேம்பிங்</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>வீல் விரைவான திருப்பங்களை எவ்வளவு எதிர்க்கிறது. 100% என்பது மையத்தைத் தாண்டி ஆடாமல் அதைத் திரும்பக் கொண்டுவருவது.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>உராய்வு</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>இரு திசையிலும் திருப்பத்தை எதிர்க்கும் நிலையான இழுவை.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>பிடிப்பு</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>சாலையின் பிடிப்பு. முன் டயர்களுக்குப் பிடிப்பு தீரும் இடத்தில் ஸ்டீயரிங் இலகுவாகும்.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>உலர்</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ஈரம்</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>பனி</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>பனிக்கட்டி</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>நிலையான வேகம்</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>வேகம் நிலையானது என்று இருக்கும்போதும், எந்த கேமும் வேகத்தை அனுப்பாதபோதும் கார் ஓடுவதாகக் கொள்ளப்படும் வேகம்.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>வீல் டார்க்</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>இந்த வீல் தரும் அதிகபட்ச டார்க். வீலின் தயாரிப்பாளர் வெளியிட்டிருந்தால் PadForge அதை நிரப்பும். வீலின் சொந்த அளவை விட அதிக எண் ஒவ்வொரு விசையையும் பலவீனப்படுத்தும்.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>இந்த வீலுக்கு வீல் டார்க் அமைக்கப்படவில்லை, அதனால் அதன் விசைகள் குறைவாக வைக்கப்படுகின்றன. அதை மேலும் என்பதன் கீழ் உள்ளிடவும்.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>வீல் தானாக ஆடத் தொடங்கியது, அதனால் விசை கட்டுப்படுத்தப்பட்டது. விடுவிப்புச் சோதனையை இயக்கவும்.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>வீல் தொடர்ந்து ஆடியதாலோ மையத்திலிருந்து விலகி ஓடியதாலோ விசை நிறுத்தப்பட்டது. விடுவிப்புச் சோதனையை இயக்கவும்.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>விடுவிப்புச் சோதனை</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>இந்த வீலை அளந்து, மையத்தைத் தாண்டாமல் திரும்பும்படி டேம்பிங்கை அமைக்கிறது</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>இன்னும் இயக்கப்படவில்லை</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>அளக்கப்பட்டது</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>வீலிலிருந்து கையை எடுங்கள். PadForge அதை {0}° திருப்பி, விடுவித்து, அது எப்படித் திரும்பி வருகிறது என்பதைப் பதிவு செய்யும்.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ஒவ்வொரு விடுவிப்புக்குப் பிறகும் வீலின் கோணம், விநாடிகளில்: {0}.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>முன்</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>பின்</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>அளக்கிறது, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>முடிந்தது, 2 முறை</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>நிறுத்தப்பட்டது</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>வீல் ஓய்வுக்கு வரவில்லை. அதிலிருந்து கையை எடுத்து சோதனையை மீண்டும் இயக்கவும்.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>வீல் நகரவில்லை. வீல் டார்க் வீல் தருவதை விட அதிகமாக அமைக்கப்பட்டிருந்தால், அதை வீலின் சொந்த அளவுக்கு அமைத்து சோதனையை மீண்டும் இயக்கவும்.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>வீல் அதன் வீச்சின் முனைக்கு அருகில் வந்தது. அதை மையப்படுத்தி சோதனையை மீண்டும் இயக்கவும்.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>வீலின் இயக்கத்தைப் படிக்க முடியவில்லை. சோதனையை மீண்டும் இயக்கவும்.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>வீல் பதிலளிப்பதை நிறுத்தியது. அது இணைக்கப்பட்டுள்ளதா, இன்ஜின் இயங்குகிறதா என்று சரிபார்க்கவும்.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>இந்த வீல் பயன்பாட்டில் இல்லை. அதை ஒரு மெய்நிகர் கட்டுப்படுத்திக்கு ஒதுக்கி, இன்ஜினைத் தொடங்கி, பிறகு சோதனையை இயக்கவும்.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>நிலைமம்</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>முன்பு, வீல் மையத்தைத் தாண்டி {0}° ஆடியது.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>இப்போது அது மையத்தைத் தாண்டி {0}° ஆடி, மையத்திலிருந்து {1}° இல் நிற்கிறது.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>இப்போது அது தாண்டி ஆடாமல் திரும்பி, மையத்திலிருந்து {0}° இல் நிற்கிறது.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>மீண்டும் இயக்கு</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>பயன்படுத்து</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ஸ்டீயரிங் லாக் ஃபீட்பேக்கை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>லாக்கில் அதிர்வுத் துடிப்பை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>லாக்கில் டிரிகர் அதிர்வை மீட்டமை</value></data>
@@ -4919,7 +5000,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move ரிப்போர்ட் அமைப்புகள், சென்சார் அளவுத்திருத்தம், EXT துணைக்கருவி ஹேண்ட்ஷேக், Thomas Perl உருவாக்கியவை, moveonpc விக்கியுடன் சரிபார்க்கப்பட்டவை. PadForge-இன் செயலாக்கம் புதிதாக எழுதப்பட்ட C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ரேசிங் டெலிமெட்ரி மேற்கோள்கள்</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>கேம் டெலிமெட்ரி மற்றும் வீல் RPM ஷிஃப்ட் LED-களுக்குப் பின்னால் உள்ள பகிர்ந்த நினைவக மற்றும் UDP அமைப்புகள், இவற்றிலிருந்து படிக்கப்பட்டவை: assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0). GPL அல்லது LGPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>கேம் டெலிமெட்ரி மற்றும் வீல் RPM ஷிஃப்ட் LED-களுக்குப் பின்னால் உள்ள பகிர்ந்த நினைவக மற்றும் UDP அமைப்புகள், இவற்றிலிருந்து படிக்கப்பட்டவை: assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT), vAzhureRacingHub (GPL-3.0). GPL அல்லது LGPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth இணைசேர்ப்பு மற்றும் ரிப்போர்ட் ஆவணம். GPL-2.0 மற்றும் GPL-3.0, ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>மெய்நிகர் DualSense மைக்ரோஃபோனின் 48 dB ஒலிக்குறைப்பு வீச்சு. ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>வீல் நெறிமுறை மேற்கோள்கள்</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, Logitech வீல்களுக்கான நேட்டிவ் ஃபோர்ஸ் ஃபீட்பேக் மற்றும் RPM ஷிஃப்ட் LED ரிப்போர்ட்கள், hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), thrustmaster-led-linux (GPL-3.0) ஆகியவற்றிலிருந்து படிக்கப்பட்டு, prodigal.knight உருவாக்கிய SimHub LED ப்ளகின் (MIT) மற்றும் tm-bt-led (MIT) ஆகியவற்றுடன் சரிபார்க்கப்பட்டவை. ஆவணமாக மட்டும், GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>ஸ்டீயரிங் உணர்வு மேற்கோள்கள்</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>மையப்படுத்தலின் வாகனம் பயன்முறைக்குப் பின்னால் உள்ள ஸ்டீயரிங் டார்க் மாதிரி, Balachandran மற்றும் Gerdes எழுதிய “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) என்பதிலிருந்து எடுக்கப்பட்டது. வாகன அளவுருக்கள் commonroad-vehicle-models (BSD-3-Clause) மற்றும் global_racetrajectory_optimization (LGPL-3.0) ஆகியவற்றிலிருந்து படிக்கப்பட்டவை. டயரின் ட்ரெயில் Pacejka எழுதிய Tire and Vehicle Dynamics நூலிலிருந்தும், சாலைப் பிடிப்பு Wong எழுதிய Theory of Ground Vehicles நூலிலிருந்தும் எடுக்கப்பட்டவை. எண் அளவுகள் மட்டுமே, அவற்றிலிருந்து குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ஆர்கேட் I/O மேற்கோள்கள்</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco மற்றும் Konami ஆர்கேட் I/O போர்டுகளுக்கும் JVS போர்டுகளுக்குமான SDL ஃபோர்க்கின் இயக்கிகளுக்குப் பின்னால் உள்ள நெறிமுறைகள், இவற்றிலிருந்து படிக்கப்பட்டவை: arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania உரிமம்), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0), TaikoZucchini (MIT). ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE கட்டுப்படுத்தி மேற்கோள்கள்</value></data>

@@ -57,66 +57,93 @@ namespace PadForge.Common.Input
         }
 
         private const byte ReportId = 0x60;
-        private const byte HeaderId = 0x01;          // effect.id 0 -> header id (+1)
 
-        // Per-device armed state: which effect kind is currently uploaded + playing
-        // in the wheel's single effect slot (id 0). The kind matters because the wheel
-        // slot holds one effect at a time; switching kind (constant <-> condition <->
-        // periodic) must re-upload, not send a same-kind update to a slot of a
-        // different shape. Within a kind, updates only modify the live parameters.
+        /// <summary>The effects PadForge keeps on the wheel, by id. The wheel
+        /// holds sixteen at once and plays them together (hid-tmt300rs.c
+        /// T300RS_MAX_EFFECTS, with the kernel handing each uploaded effect
+        /// its own id). The game's force has the first. Vehicle mode's
+        /// centering (#588) has the four after it: its spring, its damper,
+        /// its friction and its own constant force, so the wheel adds it to
+        /// whatever the game plays.</summary>
+        public const int GameEffect = 0, CenteringSpring = 1, CenteringDamper = 2, CenteringFriction = 3,
+            CenteringForce = 4;
+
+        /// <summary>The ids in use, for <see cref="ResetDevice"/>.</summary>
+        private const int EffectIds = 5;
+
+        /// <summary>The header's id byte: the effect's id plus one
+        /// (t300rs_fill_header, hid-tmt300rs.c:487).</summary>
+        private static byte HeaderIdOf(int effectId) => (byte)(effectId + 1);
+
+        // Per-effect armed state: which effect kind is currently uploaded + playing
+        // under an id. The kind matters because an id holds one effect at a time.
+        // Switching kind (constant <-> condition <-> periodic) must re-upload, not
+        // send a same-kind update to an effect of a different shape. Within a kind,
+        // updates only modify the live parameters.
         private const int KindNone = 0, KindConstant = 1, KindCondition = 2, KindPeriodic = 3;
         private static readonly ConcurrentDictionary<string, int> _armedKind = new();
 
+        private static string Key(string devicePath, int effectId)
+            => effectId == GameEffect ? devicePath : devicePath + "#" + effectId;
+
         /// <summary>Clears the upload/play armed state for a device. Called on
         /// unplug/reassign so the next force re-uploads + re-plays instead of sending an
-        /// update to a slot the power-cycled firmware no longer holds.</summary>
+        /// update to an effect the power-cycled firmware no longer holds.</summary>
         public static void ResetDevice(string devicePath)
         {
-            if (!string.IsNullOrEmpty(devicePath)) _armedKind.TryRemove(devicePath, out _);
+            if (string.IsNullOrEmpty(devicePath)) return;
+            for (int id = 0; id < EffectIds; id++) _armedKind.TryRemove(Key(devicePath, id), out _);
         }
 
         /// <summary>Constant force from the shared signed steering level
         /// (-0x8000..0x7fff). Halved to the Thrustmaster range. 0 stops the
         /// effect. Uploads + plays on first arm, then updates magnitude.</summary>
-        public static bool WriteConstantForce(string devicePath, int steeringLevelS16)
+        public static bool WriteConstantForce(string devicePath, int steeringLevelS16, int effectId = GameEffect)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             // Halved to the wheel's [-16383..] force range, matching the reference
             // (t300rs_calculate_constant_level: "the Windows driver uses the range
             // [-16385;16381]", hid-tmt300rs.c:347-356). 0 stops the effect.
-            short level = (short)(Math.Clamp(steeringLevelS16, -0x7ffe, 0x7ffe) / 2);
-            if (level == 0) return WriteStop(devicePath);
+            short level = ConstantLevel(steeringLevelS16);
+            if (level == 0) return WriteStop(devicePath, effectId);
 
-            int kind = _armedKind.TryGetValue(devicePath, out int v) ? v : KindNone;
+            string key = Key(devicePath, effectId);
+            int kind = _armedKind.TryGetValue(key, out int v) ? v : KindNone;
             if (kind != KindConstant)
             {
-                // Slot is empty or holds a different effect kind — upload + play.
-                if (!Send(devicePath, BuildUpload(level))) return false;
-                if (!Send(devicePath, BuildPlay())) return false;
-                _armedKind[devicePath] = KindConstant;
+                // The id is empty or holds a different effect kind. Upload and play.
+                if (!Send(devicePath, BuildUpload(level, effectId))) return false;
+                if (!Send(devicePath, BuildPlay(effectId))) return false;
+                _armedKind[key] = KindConstant;
                 return true;
             }
-            // Already a constant effect — modify the live magnitude.
-            return Send(devicePath, BuildUpdate(level));
+            // Already a constant effect. Modify the live magnitude.
+            return Send(devicePath, BuildUpdate(level, effectId));
         }
 
-        /// <summary>Stops the active effect and disarms.</summary>
-        public static bool WriteStop(string devicePath)
+        /// <summary>The level a constant force goes on the wire with: half
+        /// the steering level. Two steering levels that give the same wire
+        /// level are one force to the wheel.</summary>
+        internal static short ConstantLevel(int steeringLevelS16)
+            => (short)(Math.Clamp(steeringLevelS16, -0x7ffe, 0x7ffe) / 2);
+
+        /// <summary>Stops the effect under an id and disarms it.</summary>
+        public static bool WriteStop(string devicePath, int effectId = GameEffect)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
-            _armedKind[devicePath] = KindNone;
-            return Send(devicePath, BuildStop());
+            _armedKind[Key(devicePath, effectId)] = KindNone;
+            return Send(devicePath, BuildStop(effectId));
         }
 
         // ── packet builders (payload only; Send prepends report ID + pads) ──
 
         // Upload: header{id,0x6a} + level(LE16) + envelope(8=0) + zero(1) +
         // timing{0x4f, duration(LE16)=0xffff infinite, offset(LE16)=0, end 0xffff}.
-        private static byte[] BuildUpload(short level)
+        internal static byte[] BuildUpload(short level, int effectId = GameEffect)
         {
             return new byte[]
             {
-                0x00, HeaderId, 0x6a,          // header: zero1, id (effect.id+1), code
+                0x00, HeaderIdOf(effectId), 0x6a, // header: zero1, id (effect.id+1), code
                 (byte)(level & 0xff), (byte)((level >> 8) & 0xff),
                 0, 0, 0, 0, 0, 0, 0, 0,        // envelope (attack/fade len+level), none
                 0x00,                          // zero separator
@@ -130,19 +157,19 @@ namespace PadForge.Common.Input
         }
 
         // Play: header{id,0x89} + 0x41 + count(LE16)=0 (infinite).
-        private static byte[] BuildPlay()
+        internal static byte[] BuildPlay(int effectId = GameEffect)
         {
-            return new byte[] { 0x00, HeaderId, 0x89, 0x41, 0x00, 0x00 };
+            return new byte[] { 0x00, HeaderIdOf(effectId), 0x89, 0x41, 0x00, 0x00 };
         }
 
         // Update: header{id,0x6a} + magnitude(LE16) + envelope(8=0) +
         // effect_type(0x00 constant) + update_type(0x45) + duration(LE16)=0xffff
         // + offset(LE16)=0.
-        private static byte[] BuildUpdate(short level)
+        internal static byte[] BuildUpdate(short level, int effectId = GameEffect)
         {
             return new byte[]
             {
-                0x00, HeaderId, 0x6a,          // header: zero1, id, code
+                0x00, HeaderIdOf(effectId), 0x6a, // header: zero1, id, code
                 (byte)(level & 0xff), (byte)((level >> 8) & 0xff),
                 0, 0, 0, 0, 0, 0, 0, 0,        // envelope, none
                 0x00,                          // effect_type = constant
@@ -153,9 +180,9 @@ namespace PadForge.Common.Input
         }
 
         // Stop: header{id,0x89} + value(0).
-        private static byte[] BuildStop()
+        internal static byte[] BuildStop(int effectId = GameEffect)
         {
-            return new byte[] { 0x00, HeaderId, 0x89, 0x00 };
+            return new byte[] { 0x00, HeaderIdOf(effectId), 0x89, 0x00 };
         }
 
         /// <summary>The rotation range a model takes, in degrees, which both
@@ -236,10 +263,11 @@ namespace PadForge.Common.Input
         /// ±10000; deadband/satPos/satNeg 0..10000. <paramref name="ffbType"/> is a
         /// PadForge FfbEffectTypes value (8=Spring else damper/friction/inertia).</summary>
         public static bool WriteCondition(string devicePath, uint ffbType,
-            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct)
+            int coeffPos, int coeffNeg, int offset, int deadband, int satPos, int satNeg, int gainPct,
+            int effectId = GameEffect)
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
-            if (coeffPos == 0 && coeffNeg == 0) return WriteStop(devicePath);
+            if (coeffPos == 0 && coeffNeg == 0) return WriteStop(devicePath, effectId);
 
             bool isSpring = ffbType == 8;
             int maxSat = isSpring ? 0x6aa6 : 0x7ffc;
@@ -258,14 +286,15 @@ namespace PadForge.Common.Input
             int lSat = satNeg == 0 ? maxSat : (int)((long)satNeg * 0xffff / 10000) * maxSat / 0xffff;
 
             byte[] payload = BuildConditionUpload((short)rCoeff, (short)lCoeff, (short)rBand, (short)lBand,
-                (ushort)rSat, (ushort)lSat, (ushort)maxSat, type);
+                (ushort)rSat, (ushort)lSat, (ushort)maxSat, type, effectId);
 
-            int kind = _armedKind.TryGetValue(devicePath, out int v) ? v : KindNone;
+            string key = Key(devicePath, effectId);
+            int kind = _armedKind.TryGetValue(key, out int v) ? v : KindNone;
             if (!Send(devicePath, payload)) return false;            // upload (0x64) sets all params
             if (kind != KindCondition)
             {
-                if (!Send(devicePath, BuildPlay())) return false;
-                _armedKind[devicePath] = KindCondition;
+                if (!Send(devicePath, BuildPlay(effectId))) return false;
+                _armedKind[key] = KindCondition;
             }
             return true;
         }
@@ -309,7 +338,7 @@ namespace PadForge.Common.Input
             ushort mag = (ushort)signed;
             ushort period = (ushort)Math.Clamp(periodMs, 1, 0xffff);
 
-            int kind = _armedKind.TryGetValue(devicePath, out int v) ? v : KindNone;
+            int kind = _armedKind.TryGetValue(Key(devicePath, GameEffect), out int v) ? v : KindNone;
             if (kind != KindPeriodic)
             {
                 // First arm (or switching from another kind): upload + play. Re-uploading
@@ -317,7 +346,7 @@ namespace PadForge.Common.Input
                 // UPDATE instead (the wheel keeps advancing the onboard waveform).
                 if (!Send(devicePath, BuildPeriodicUpload(mag, phase, period, (byte)waveform))) return false;
                 if (!Send(devicePath, BuildPlay())) return false;
-                _armedKind[devicePath] = KindPeriodic;
+                _armedKind[Key(devicePath, GameEffect)] = KindPeriodic;
                 return true;
             }
             return Send(devicePath, BuildPeriodicUpdate(mag, phase, period, (byte)waveform));
@@ -330,7 +359,7 @@ namespace PadForge.Common.Input
         {
             var p = new byte[32];
             int i = 0;
-            p[i++] = 0x00; p[i++] = HeaderId; p[i++] = 0x6b;   // header: zero1, id (effect.id+1), code
+            p[i++] = 0x00; p[i++] = HeaderIdOf(GameEffect); p[i++] = 0x6b;   // header: zero1, id (effect.id+1), code
             void W16(int x) { p[i++] = (byte)(x & 0xff); p[i++] = (byte)((x >> 8) & 0xff); }
             W16(magnitude);
             W16(0);             // periodic_offset (DC offset) = 0
@@ -352,7 +381,7 @@ namespace PadForge.Common.Input
         {
             var p = new byte[26];
             int i = 0;
-            p[i++] = 0x00; p[i++] = HeaderId; p[i++] = 0x6e;   // header
+            p[i++] = 0x00; p[i++] = HeaderIdOf(GameEffect); p[i++] = 0x6e;   // header
             p[i++] = 0x0f;                                     // type
             void W16(int x) { p[i++] = (byte)(x & 0xff); p[i++] = (byte)((x >> 8) & 0xff); }
             W16(magnitude);
@@ -367,13 +396,13 @@ namespace PadForge.Common.Input
             return p;
         }
 
-        private static byte[] BuildConditionUpload(short rCoeff, short lCoeff, short rBand, short lBand,
-            ushort rSat, ushort lSat, ushort maxSat, byte type)
+        internal static byte[] BuildConditionUpload(short rCoeff, short lCoeff, short rBand, short lBand,
+            ushort rSat, ushort lSat, ushort maxSat, byte type, int effectId = GameEffect)
         {
             // header(3) + 6×i16(12) + hardcoded(8) + 2×u16(4) + type(1) + timing(10) = 38
             var p = new byte[38];
             int i = 0;
-            p[i++] = 0x00; p[i++] = HeaderId; p[i++] = 0x64; // header: zero1, id, code
+            p[i++] = 0x00; p[i++] = HeaderIdOf(effectId); p[i++] = 0x64; // header: zero1, id, code
             void W16(int x) { p[i++] = (byte)(x & 0xff); p[i++] = (byte)((x >> 8) & 0xff); }
             W16(rCoeff); W16(lCoeff); W16(rBand); W16(lBand); W16(rSat); W16(lSat);
             Array.Copy(ConditionValues, 0, p, i, ConditionValues.Length); i += ConditionValues.Length;

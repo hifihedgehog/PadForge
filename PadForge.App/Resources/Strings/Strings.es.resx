@@ -2687,7 +2687,88 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Restablecer rango de rotación</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Restablecer autocentrado</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Restablecer LED de cambio</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rango de dirección, autocentrado y luces de cambio para volantes con force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Rango de dirección y luces de cambio para volantes con force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centrado</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Devuelve el volante al centro, como un resorte simple o como lo hace la dirección de un coche.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Restablecer centrado</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Resorte tira del volante hacia el centro con una sola intensidad. Vehículo calcula el par que da la dirección de un coche a su velocidad, a partir de un modelo de neumáticos.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Resorte</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vehículo</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vehículo</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>El coche cuya dirección adopta el volante. Cada uno es un modelo de vehículo publicado.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedán</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Compacto</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Furgoneta</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Coche de carreras</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Velocidad</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Del juego lee la velocidad del coche en la telemetría del juego y usa Velocidad fija mientras ningún juego la envía. Fija usa Velocidad fija en todo momento.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Del juego</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fija</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Peso de la dirección</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Lo pesada que es la dirección. 100% es la del propio coche.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Recorrido del volante</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Cuánto gira este volante de tope a tope. Ponlo igual al ajuste del propio volante.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Par de dirección</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Ángulo</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Par</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Límite del volante {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Par de dirección en el aro frente al ángulo de dirección. A {0} alcanza un máximo de {1} N·m a {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sensación en el centro</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Con qué rapidez crece el par con la aceleración lateral cerca del centro, en N·m por g hasta 0.05 g. Más da una sensación más asentada.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Rigidez del par</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Con qué rapidez crece el par al alejarse el volante del centro, en N·m por grado.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linealidad</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>La pendiente del par entre 0.10 y 0.15 g frente a su pendiente en el centro. Menos significa que la dirección se aligera antes.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Par máximo</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>El mayor par que el coche exige al volante, junto al mayor que da el volante.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>de {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Este coche exige más par del que tiene el volante, así que la parte alta de la curva queda recortada.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sensación en el centro, asistencia de dirección, amortiguación, fricción, agarre, velocidad fija, par del volante</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Con qué fuerza mantiene la dirección su centro a baja velocidad. 100% es la del propio coche.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Asistencia de dirección</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Cuánto quita la servodirección a medida que crece la aceleración lateral. Más es una dirección más ligera lejos del centro.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Amortiguación</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Con qué fuerza resiste el volante los giros rápidos. 100% es lo que lo devuelve sin pasarse del centro.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Fricción</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Un rozamiento constante que resiste el giro en ambos sentidos.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Agarre</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>El agarre de la carretera. La dirección se aligera donde los neumáticos delanteros lo pierden.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Seco</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mojado</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Nieve</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Hielo</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Velocidad fija</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>La velocidad a la que se supone que circula el coche cuando Velocidad es Fija y mientras ningún juego la envía.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Par del volante</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>El mayor par que da este volante. PadForge lo rellena cuando el fabricante del volante lo publica. Una cifra superior a la del propio volante debilita todas las fuerzas.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Par del volante no está definido para este volante, así que sus fuerzas se mantienen bajas. Introdúcelo en Más.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>El volante empezó a oscilar solo, así que se contiene la fuerza. Ejecuta la Prueba de liberación.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>La fuerza está desactivada porque el volante siguió oscilando o se alejó del centro. Ejecuta la Prueba de liberación.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Prueba de liberación</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mide este volante y ajusta la amortiguación para que vuelva sin sobreoscilación</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Aún sin ejecutar</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Medido</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Quita las manos del volante. PadForge lo gira hasta {0}°, lo suelta y registra cómo vuelve.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>El ángulo del volante durante {0} segundos tras cada suelta.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Antes</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Después</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Midiendo, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Listo, 2 ejecuciones</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Detenido</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>El volante no se detuvo. Quita las manos y ejecuta la prueba de nuevo.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>El volante no se movió. Si Par del volante está por encima de lo que da el volante, ponlo en la cifra del propio volante y ejecuta la prueba de nuevo.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>El volante llegó cerca del final de su recorrido. Céntralo y ejecuta la prueba de nuevo.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>No se pudo leer el movimiento del volante. Ejecuta la prueba de nuevo.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>El volante dejó de responder. Comprueba que está conectado y que el motor está en marcha.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Este volante no está en uso. Asígnalo a un controlador e inicia el motor, y luego ejecuta la prueba.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inercia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Antes, el volante se pasaba {0}° del centro.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Ahora se pasa {0}° del centro y queda a {1}° del centro.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Ahora vuelve sin sobreoscilación y queda a {0}° del centro.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Ejecutar de nuevo</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplicar</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Restablecer respuesta al tope del volante</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Restablecer pulso de vibración al llegar al tope</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Restablecer vibración del gatillo al llegar al tope</value></data>
@@ -4868,7 +4949,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Disposición de los informes, calibración de sensores y negociación de accesorios EXT del PlayStation Move, de Thomas Perl, contrastadas con la wiki de moveonpc. La implementación de PadForge es C# original. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referencias de telemetría de carreras</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Disposiciones de memoria compartida y UDP detrás de la telemetría de juego y de los LED de cambio del volante, leídas de assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) y vAzhureRacingHub (GPL-3.0). No se distribuye código GPL ni LGPL.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Disposiciones de memoria compartida y UDP detrás de la telemetría de juego y de los LED de cambio del volante, leídas de assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) y vAzhureRacingHub (GPL-3.0). No se distribuye código GPL ni LGPL.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Documentación del emparejamiento Bluetooth y los informes del DualShock 3. GPL-2.0 y GPL-3.0, leído solo como documentación, no se distribuye código GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4891,6 +4972,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>El rango de atenuación de 48 dB del micrófono del DualSense virtual. Leído solo como documentación, no se distribuye código GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referencias de protocolos de volantes</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Informes nativos de retroalimentación de fuerza y de LED de cambio para volantes Fanatec, Thrustmaster y Logitech, leídos de hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) y thrustmaster-led-linux (GPL-3.0), y contrastados con el plugin de LED para SimHub de prodigal.knight (MIT) y tm-bt-led (MIT). Solo documentación, no se distribuye código GPL.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referencias de tacto de la dirección</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>El modelo de par de dirección detrás del modo Vehículo de Centrado, de Balachandran y Gerdes, «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). Los parámetros del vehículo se leen de commonroad-vehicle-models (BSD-3-Clause) y global_racetrajectory_optimization (LGPL-3.0). El avance del neumático procede de Tire and Vehicle Dynamics de Pacejka, y el agarre de la carretera de Theory of Ground Vehicles de Wong. Solo cifras, no se distribuye código de ninguna de ellas.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referencias de E/S arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Los protocolos detrás de los controladores del fork de SDL para las placas de E/S arcade de Namco y Konami y las placas JVS, leídos de arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) y TaikoZucchini (MIT). Solo documentación, no se distribuye código.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referencias de controles Bluetooth LE</value></data>

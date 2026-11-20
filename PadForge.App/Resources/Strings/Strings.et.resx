@@ -3222,7 +3222,88 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Lähtesta pöördenurga vahemik</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Lähtesta automaatse tsentreerimise tugevus</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Lähtesta käiguvahetuse pöörete LED-id</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Jõutagasisidega roolide pöördenurk, automaatne tsentreerimine ja käiguvahetustuled.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Jõutagasisidega roolide pöördenurk ja käiguvahetustuled.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Tsentreerimine</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Toob rooli tagasi keskele, kas lihtsa vedruna või nii, nagu auto rooliseade seda teeb.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Lähtesta tsentreerimine</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Režiim</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Vedru tõmbab rooli keskele ühe tugevusega. Sõiduk arvutab rehvimudeli põhjal pöördemomendi, mida auto rooliseade selle kiirusel annab.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Vedru</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Sõiduk</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Sõiduk</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Auto, mille rooliseadet rool järgib. Iga valik on avaldatud sõidukimudel.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedaan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Väikeauto</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Kaubik</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Võistlusauto</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Kiirus</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Valik Mängust loeb auto kiiruse mängu telemeetriast ja kasutab kiirust Fikseeritud kiirus seni, kuni ükski mäng seda ei saada. Valik Fikseeritud kasutab kogu aeg kiirust Fikseeritud kiirus.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Mängust</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fikseeritud</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Rooli raskus</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Kui raske rooliseade on. 100% on auto enda raskus.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Rooli pöördevahemik</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Kui kaugele see rool pöördub äärmisest asendist äärmiseni. Määrake see rooli enda seadistuse järgi.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Rooli pöördemoment</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Nurk</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Pöördemoment</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Rooli piir {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Rooli pöördemoment rooliveljel sõltuvalt rooli nurgast. Kiirusel {0} saavutab see tipu {1} N·m juures {2}° juures.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Keskasendi tunnetus</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kui kiiresti pöördemoment kasvab kurvis keskasendi lähedal, ühikutes N·m g kohta kuni 0.05 g. Suurem väärtus annab kindlama tunnetuse.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Pöördemomendi jäikus</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kui kiiresti pöördemoment kasvab, kui rool keskasendist eemaldub, ühikutes N·m kraadi kohta.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Lineaarsus</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Pöördemomendi tõus vahemikus 0.10 kuni 0.15 g võrreldes tõusuga keskasendis. Madalam väärtus tähendab, et rool muutub varem kergeks.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Tippmoment</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Suurim pöördemoment, mida auto rooli käest nõuab, ja kõrval suurim, mida rool annab.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>kui rool annab {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>See auto nõuab suuremat pöördemomenti, kui rool suudab, seega kõvera tipp lõigatakse ära.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Keskasendi tunnetus, roolivõimendus, summutus, hõõrdumine, haardumine, fikseeritud kiirus, rooli pöördemoment</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kui kindlalt rooliseade madalal kiirusel keskasendis püsib. 100% on auto enda väärtus.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Roolivõimendus</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kui palju roolivõimendi kurvi tugevnedes vaeva vähendab. Suurem väärtus tähendab keskasendist eemal kergemat rooli.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Summutus</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Kui tugevalt rool kiiretele pööretele vastu seisab. 100% toob rooli tagasi ilma keskasendist mööda kõikumata.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Hõõrdumine</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Ühtlane takistus, mis seisab pööramisele vastu kumbagi pidi.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Haardumine</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Tee haardumine. Rool muutub kergeks, kui esirehvid haardumise kaotavad.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Kuiv</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Märg</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Lumi</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Jää</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fikseeritud kiirus</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Kiirus, millega auto loetakse sõitvat, kui Kiirus on Fikseeritud ja seni, kuni ükski mäng seda ei saada.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Rooli pöördemoment</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Suurim pöördemoment, mida see rool annab. PadForge täidab selle, kui rooli tootja selle avaldab. Rooli enda väärtusest suurem arv nõrgendab kõiki jõude.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Selle rooli jaoks pole Rooli pöördemoment määratud, seepärast hoitakse jõud madalad. Sisestage see jaotises Rohkem.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Rool hakkas ise kõikuma, seepärast jõudu piiratakse. Käivitage Vabastustest.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Jõud on välja lülitatud, sest rool kõikus edasi või läks keskasendist eemale. Käivitage Vabastustest.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Vabastustest</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mõõdab selle rooli ja määrab summutuse nii, et see naaseb ilma keskasendist mööda kõikumata</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Pole veel käivitatud</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mõõdetud</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Võtke käed roolilt ära. PadForge pöörab selle {0}° juurde, laseb lahti ja salvestab, kuidas see tagasi tuleb.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Rooli nurk {0} sekundi jooksul pärast iga vabastamist.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Enne</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Pärast</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Mõõtmine, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Valmis, 2 käivitust</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Peatatud</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Rool ei jäänud seisma. Võtke käed selle küljest ära ja käivitage test uuesti.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Rool ei liikunud. Kui Rooli pöördemoment on määratud suuremaks, kui rool annab, määrake see rooli enda väärtuseks ja käivitage test uuesti.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Rool jõudis oma vahemiku lõpu lähedale. Seadke see keskele ja käivitage test uuesti.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Rooli liikumist ei saanud lugeda. Käivitage test uuesti.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Rool lõpetas vastamise. Kontrollige, et see on ühendatud ja et mootor töötab.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Seda rooli ei kasutata. Määrake see kontrollerile, käivitage mootor ja seejärel käivitage test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inerts</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Enne kõikus rool keskasendist {0}° mööda.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Nüüd kõigub see keskasendist {0}° mööda ja peatub {1}° kaugusel keskasendist.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Nüüd naaseb see ilma mööda kõikumata ja peatub {0}° kaugusel keskasendist.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Käivita uuesti</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Rakenda</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Lähtesta roolilukuni jõudmise tagasiside</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Lähtesta vibratsiooniimpulss lõppasendis</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Lähtesta päästikuvibratsioon lõppasendis</value></data>
@@ -4680,7 +4761,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move'i aruannete paigutused, andurite kalibreerimine ja EXT-lisaseadme kätlus, autor Thomas Perl, võrreldud moveonpc wikiga. PadForge'i teostus on originaalne C#-kood. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Võidusõidu telemeetria viited</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ühismälu ja UDP paigutused, millele tuginevad mängu telemeetria ja rooli käiguvahetuse pöörete LED-id, loetud projektidest assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ja vAzhureRacingHub (GPL-3.0). GPL- ega LGPL-koodi ei levitata.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Ühismälu ja UDP paigutused, millele tuginevad mängu telemeetria ja rooli käiguvahetuse pöörete LED-id, loetud projektidest assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ja vAzhureRacingHub (GPL-3.0). GPL- ega LGPL-koodi ei levitata.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetoothi sidumise ja aruannete dokumentatsioon. GPL-2.0 ja GPL-3.0, kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4703,6 +4784,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Virtuaalse DualSense'i mikrofoni 48 dB sumbumisvahemik. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Roolide protokollide viited</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanateci, Thrustmasteri ja Logitechi roolide algne jõutagasiside ja käiguvahetuse pöörete LED-aruanded, loetud projektidest hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ja thrustmaster-led-linux (GPL-3.0) ning võrreldud kasutaja prodigal.knight SimHub LED-pistikprogrammiga (MIT) ja projektiga tm-bt-led (MIT). Ainult dokumentatsioon, GPL-koodi ei levitata.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Rooli tunnetuse viited</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Rooli pöördemomendi mudel, millele Tsentreerimise režiim Sõiduk tugineb, pärineb autoritelt Balachandran ja Gerdes, „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Sõiduki parameetrid on loetud projektidest commonroad-vehicle-models (BSD-3-Clause) ja global_racetrajectory_optimization (LGPL-3.0). Rehvi järelejooks pärineb raamatust Pacejka, Tire and Vehicle Dynamics, ja teepinna haardumine raamatust Wong, Theory of Ground Vehicles. Võetud on ainult arvud, nende koodi ei levitata.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Mänguautomaatide I/O viited</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokollid, millele tuginevad SDL-i haru draiverid Namco ja Konami mänguautomaatide I/O-plaatide ja JVS-plaatide jaoks, loetud projektidest arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ja TaikoZucchini (MIT). Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE kontrollerite viited</value></data>

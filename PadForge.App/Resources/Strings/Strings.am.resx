@@ -3184,7 +3184,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>የማዞሪያ ክልልን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>የራስ-ሰር ማዕከል ማድረጊያ ጥንካሬን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM የማርሽ LED መብራቶችን ዳግም አስጀምር</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>የኃይል ግብረመልስ ላላቸው መሪዎች የማዞሪያ ክልል፣ ራስ-ሰር ማዕከል ማድረግ እና የማርሽ መብራቶች።</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>የኃይል ግብረመልስ ላላቸው መሪዎች የማዞሪያ ክልል እና የማርሽ መብራቶች።</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ማዕከል ማድረጊያ</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>መሪውን እንደ ቀላል ስፕሪንግ ወይም እንደ መኪና መሪ ወደ መሃል ይመልሳል።</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>ማዕከል ማድረጊያን ዳግም አስጀምር</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>ሁነታ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ስፕሪንግ መሪውን በአንድ ጥንካሬ ወደ መሃል ይጎትታል። ተሽከርካሪ የመኪና መሪ በፍጥነቱ የሚሰጠውን ቶርክ ከጎማ ሞዴል ያሰላል።</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ስፕሪንግ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ተሽከርካሪ</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ተሽከርካሪ</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>መሪው መሪነቱን የሚወስድበት መኪና። እያንዳንዱ የታተመ የተሽከርካሪ ሞዴል ነው።</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>ሰዳን</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>አነስተኛ መኪና</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ቫን</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>የውድድር መኪና</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>ፍጥነት</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ከጨዋታው የመኪናውን ፍጥነት ከጨዋታው ቴሌሜትሪ ያነባል፣ ምንም ጨዋታ ፍጥነት በማይልክበት ጊዜ ደግሞ ቋሚ ፍጥነትን ይጠቀማል። ቋሚ ሁልጊዜ ቋሚ ፍጥነትን ይጠቀማል።</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ከጨዋታው</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ቋሚ</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>የመሪ ክብደት</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>መሪው ምን ያህል ከባድ እንደሆነ። 100% የመኪናው የራሱ ነው።</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>የመሪ ክልል</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ይህ መሪ ከአንዱ ጫፍ እስከ ሌላው ጫፍ ምን ያህል እንደሚዞር። ከመሪው የራሱ ቅንብር ጋር እኩል ያዘጋጁት።</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>የመሪ ቶርክ</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>ማዕዘን</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ቶርክ</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>የመሪ ገደብ {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>በመሪው ጠርዝ ላይ ያለው የመሪ ቶርክ ከመሪ ማዕዘን አንጻር። ፍጥነቱ {0} ሲሆን ቶርኩ {2}° ላይ ከፍተኛው {1} N·m ይደርሳል።</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>የመሃል ስሜት</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>በመሃል አቅራቢያ መታጠፍ ሲጨምር ቶርኩ ምን ያህል በፍጥነት እንደሚጨምር፣ በ N·m ለእያንዳንዱ g እስከ 0.05 g። ብዙ ሲሆን የበለጠ የተረጋጋ ስሜት ይሰጣል።</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>የቶርክ ግትርነት</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>መሪው ከመሃል ሲርቅ ቶርኩ ምን ያህል በፍጥነት እንደሚጨምር፣ በ N·m ለእያንዳንዱ ዲግሪ።</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>ቀጥተኛነት</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>በ 0.10 እና 0.15 g መካከል ያለው የቶርክ ተዳፋት ከመሃል ላይ ካለው ተዳፋት አንጻር። ዝቅተኛ ሲሆን መሪው ቶሎ ይቀላል።</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>ከፍተኛ ቶርክ</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>መኪናው ከመሪው የሚጠይቀው ከፍተኛ ቶርክ፣ መሪው ከሚሰጠው ከፍተኛ ቶርክ ጎን።</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ከ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ይህ መኪና መሪው ካለው በላይ ቶርክ ይጠይቃል፣ ስለዚህ የኩርባው ጫፍ ተቆርጧል።</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>የመሃል ስሜት፣ የኃይል ድጋፍ፣ ማርገቢያ፣ ሰበቃ፣ ቁርኝት፣ ቋሚ ፍጥነት፣ የመሪ ሞተር ቶርክ</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>በዝቅተኛ ፍጥነት መሪው መሃሉን ምን ያህል አጥብቆ እንደሚይዝ። 100% የመኪናው የራሱ ነው።</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>የኃይል ድጋፍ</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>መታጠፍ ሲጨምር የኃይል መሪው ምን ያህል ጥረት እንደሚቀንስ። ብዙ ሲሆን ከመሃል ርቆ መሪው ቀላል ይሆናል።</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ማርገቢያ</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>መሪው ፈጣን መዞርን ምን ያህል አጥብቆ እንደሚቋቋም። 100% መሪውን ከመሃል ሳያልፍ የሚመልሰው ነው።</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ሰበቃ</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>በሁለቱም አቅጣጫ መዞርን የሚቋቋም ቋሚ መጎተት።</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ቁርኝት</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>የመንገዱ ቁርኝት። የፊት ጎማዎች ቁርኝት ሲያጡ መሪው ይቀላል።</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ደረቅ</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>እርጥብ</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>በረዶ</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ግግር በረዶ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ቋሚ ፍጥነት</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ፍጥነት ቋሚ ሲሆን እና ምንም ጨዋታ ፍጥነት በማይልክበት ጊዜ መኪናው እንደሚነዳ የሚወሰደው ፍጥነት።</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>የመሪ ሞተር ቶርክ</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>ይህ መሪ የሚሰጠው ከፍተኛ ቶርክ። የመሪው አምራች ካተመው PadForge ይሞላዋል። ከመሪው የራሱ በላይ የሆነ ቁጥር እያንዳንዱን ኃይል ያደክማል።</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>የመሪ ሞተር ቶርክ ለዚህ መሪ አልተዘጋጀም፣ ስለዚህ ኃይሎቹ ዝቅ ብለው ተይዘዋል። በተጨማሪ ስር ያስገቡት።</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>መሪው በራሱ መወዛወዝ ጀመረ፣ ስለዚህ ኃይሉ ተገድቧል። የመልቀቅ ሙከራን ያሂዱ።</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>መሪው መወዛወዙን ስለቀጠለ ወይም ከመሃል ስለራቀ ኃይሉ ጠፍቷል። የመልቀቅ ሙከራን ያሂዱ።</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>የመልቀቅ ሙከራ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ይህን መሪ ይለካል እና ከመሃል ሳያልፍ እንዲመለስ ማርገቢያን ያዘጋጃል</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ገና አልተሞከረም</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>ተለክቷል</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>እጆችዎን ከመሪው ያንሱ። PadForge መሪውን ወደ {0}° ያዞረዋል፣ ይለቀዋል እና እንዴት እንደሚመለስ ይመዘግባል።</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ከእያንዳንዱ መልቀቅ በኋላ ለ {0} ሰከንድ የመሪው ማዕዘን።</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>በፊት</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>በኋላ</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>በመለካት ላይ፣ {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>ተጠናቋል፣ 2 ሙከራዎች</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>ቆሟል</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>መሪው አልቆመም። እጆችዎን ከመሪው ያንሱ እና ሙከራውን እንደገና ያሂዱ።</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>መሪው አልተንቀሳቀሰም። የመሪ ሞተር ቶርክ መሪው ከሚሰጠው በላይ ከተዘጋጀ፣ በመሪው የራሱ ቁጥር ያዘጋጁት እና ሙከራውን እንደገና ያሂዱ።</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>መሪው ወደ ክልሉ መጨረሻ ተቃረበ። መሃል ላይ ያድርጉት እና ሙከራውን እንደገና ያሂዱ።</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>የመሪው እንቅስቃሴ ሊነበብ አልቻለም። ሙከራውን እንደገና ያሂዱ።</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>መሪው ምላሽ መስጠት አቆመ። መገናኘቱን እና ሞተሩ እየሰራ መሆኑን ያረጋግጡ።</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ይህ መሪ ጥቅም ላይ አይደለም። ለመቆጣጠሪያ ይመድቡት እና ሞተሩን ያስጀምሩ፣ ከዚያ ሙከራውን ያሂዱ።</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ኢነርሺያ</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ከዚህ በፊት መሪው ከመሃል {0}° አልፎ ተወዛወዘ።</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>አሁን ከመሃል {0}° አልፎ ይወዛወዛል እና ከመሃል {1}° ርቆ ያርፋል።</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>አሁን ከመሃል ሳያልፍ ይመለሳል እና ከመሃል {0}° ርቆ ያርፋል።</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>እንደገና አሂድ</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>ተግብር</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>የመሪ መቆለፊያ ግብረመልስን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>በመቆለፊያ ላይ የንዝረት ምትን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>በመቆለፊያ ላይ የትሪገር ንዝረትን ዳግም አስጀምር</value></data>
@@ -4645,7 +4726,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>የPlayStation Move ሪፖርት አቀማመጦች፣ የዳሳሽ ማስተካከያ እና የEXT ተቀጥላ የእጅ መጨባበጥ፣ በThomas Perl፣ ከmoveonpc ዊኪ ጋር የተረጋገጡ። የPadForge ትግበራ ኦሪጅናል C# ነው። BSD 2-Clause።</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>የእሽቅድምድም ቴሌሜትሪ ማጣቀሻዎች</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ከጨዋታ ቴሌሜትሪ እና ከመሪው RPM የማርሽ መቀየሪያ LED መብራቶች በስተጀርባ ያሉት የጋራ ማህደረ ትውስታ እና የUDP አቀማመጦች፣ ከassettocorsasharedmemory (MIT)፣ CMTelemetry፣ dirt-rally-telemetry-dashboard (MIT)፣ ets2-telemetry-udp (MIT)፣ f1-24-udp (MIT)፣ fh6-tel (MIT)፣ forza-data-web (Apache-2.0)፣ forza-telemetry (MIT)፣ Forza-Telemetry-Splitter (MIT)፣ InSim.NET (LGPL-2.1)፣ irsdkSharp (MIT)፣ IRSDKSharper (GPL-3.0)፣ out-gauge-cluster (Apache-2.0)፣ PCars2UdpNet (MIT)፣ project-cars-2-udp (MIT)፣ pyirsdk (MIT)፣ rF2SharedMemoryMapPlugin (GPL-3.0)፣ rFactorSharedMemoryMap (GPL-2.0)፣ rust_ams2_sharedmem፣ scs-sdk-plugin (MIT)፣ simapi (LGPL-3.0)፣ tm-bt-led (MIT) እና vAzhureRacingHub (GPL-3.0) የተነበቡ። ምንም የGPL ወይም LGPL ኮድ አይካተትም።</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ከጨዋታ ቴሌሜትሪ እና ከመሪው RPM የማርሽ መቀየሪያ LED መብራቶች በስተጀርባ ያሉት የጋራ ማህደረ ትውስታ እና የUDP አቀማመጦች፣ ከassettocorsasharedmemory (MIT)፣ CMTelemetry፣ CrewChiefV4 (MIT)፣ dirt-rally-telemetry-dashboard (MIT)፣ ets2-telemetry-udp (MIT)፣ f1-24-udp (MIT)፣ fh6-tel (MIT)፣ forza-data-web (Apache-2.0)፣ forza-telemetry (MIT)፣ Forza-Telemetry-Splitter (MIT)፣ InSim.NET (LGPL-2.1)፣ irsdkSharp (MIT)፣ IRSDKSharper (GPL-3.0)፣ out-gauge-cluster (Apache-2.0)፣ PCars2UdpNet (MIT)፣ project-cars-2-udp (MIT)፣ pyirsdk (MIT)፣ r3e-api (Unlicense)፣ rF2SharedMemoryMapPlugin (GPL-3.0)፣ rFactorSharedMemoryMap (GPL-2.0)፣ rust_ams2_sharedmem፣ scs-sdk-plugin (MIT)፣ simapi (LGPL-3.0)፣ tm-bt-led (MIT) እና vAzhureRacingHub (GPL-3.0) የተነበቡ። ምንም የGPL ወይም LGPL ኮድ አይካተትም።</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>የDualShock 3 Bluetooth ማጣመር እና የሪፖርት ሰነዶች። GPL-2.0 እና GPL-3.0፣ እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4668,6 +4749,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>የምናባዊው DualSense ማይክሮፎን 48 dB የማዳከም ክልል። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>የመሪ ፕሮቶኮል ማጣቀሻዎች</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ለFanatec፣ Thrustmaster እና Logitech መሪዎች ቤተኛ የኃይል ግብረመልስ እና የRPM የማርሽ መቀየሪያ LED ሪፖርቶች፣ ከhid-fanatecff (GPL-2.0)፣ hid-tmff2 (GPL-2.0-or-later)፣ new-lg4ff (GPL-2.0-or-later)፣ oversteer (GPL-3.0) እና thrustmaster-led-linux (GPL-3.0) የተነበቡ፣ እና በprodigal.knight ከተሠራው የSimHub LED ተሰኪ (MIT) እና ከtm-bt-led (MIT) ጋር የተረጋገጡ። ሰነድ ብቻ፣ ምንም የGPL ኮድ አይካተትም።</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>የመሪ ስሜት ማጣቀሻዎች</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>ከማዕከል ማድረጊያ ካርድ የተሽከርካሪ ሁነታ በስተጀርባ ያለው የመሪ ቶርክ ሞዴል፣ ከBalachandran እና Gerdes «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics) የተወሰደ ነው። የተሽከርካሪ መለኪያዎች ከcommonroad-vehicle-models (BSD-3-Clause) እና global_racetrajectory_optimization (LGPL-3.0) የተነበቡ ናቸው። የጎማው ትሬይል ርቀት ከPacejka መጽሐፍ Tire and Vehicle Dynamics፣ የመንገድ ቁርኝት ደግሞ ከWong መጽሐፍ Theory of Ground Vehicles የተወሰዱ ናቸው። ቁጥሮች ብቻ፣ ከእነሱ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>የአርኬድ I/O ማጣቀሻዎች</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>ለNamco እና Konami የአርኬድ I/O ሰሌዳዎች እና ለJVS ሰሌዳዎች ከSDL ቅርንጫፉ አሽከርካሪዎች በስተጀርባ ያሉት ፕሮቶኮሎች፣ ከarcade-docs (WTFPL)፣ bemanitools (Unlicense)፣ Dolphin (GPL-2.0-or-later)፣ ITAIKO-firmware (MIT)፣ JoypadOS (Apache-2.0)፣ jvsio (BSD-3-Clause)፣ MAME (BSD-3-Clause)፣ OpenITG (የStepMania ፈቃድ)፣ p4io-mdxfdrv (GPL-3.0)፣ RPCS3 (GPL-2.0) እና TaikoZucchini (MIT) የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>የBluetooth LE መቆጣጠሪያ ማጣቀሻዎች</value></data>

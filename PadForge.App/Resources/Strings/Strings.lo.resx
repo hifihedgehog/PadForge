@@ -3204,7 +3204,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>ຄືນຄ່າຂອບເຂດການໝຸນ</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>ຄືນຄ່າຄວາມແຮງການກັບຄືນຈຸດກາງອັດຕະໂນມັດ</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>ຄືນຄ່າ LED ບອກປ່ຽນເກຍ RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ຂອບເຂດການລ້ຽວ, ການກັບຄືນຈຸດກາງອັດຕະໂນມັດ ແລະ ໄຟບອກປ່ຽນເກຍ ສຳລັບພວງມາໄລທີ່ມີແຮງສະທ້ອນກັບ.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>ຂອບເຂດການລ້ຽວ ແລະ ໄຟບອກປ່ຽນເກຍ ສຳລັບພວງມາໄລທີ່ມີແຮງສະທ້ອນກັບ.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ການກັບຈຸດກາງ</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>ພາພວງມາໄລກັບຄືນຈຸດກາງ ແບບສະປິງທຳມະດາ ຫຼື ແບບພວງມາໄລຂອງລົດແທ້.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>ຄືນຄ່າການກັບຈຸດກາງ</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>ໂໝດ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>ສະປິງ ດຶງພວງມາໄລກັບຈຸດກາງດ້ວຍຄວາມແຮງດຽວ. ພາຫະນະ ຄຳນວນແຮງບິດທີ່ພວງມາໄລຂອງລົດໃຫ້ຢູ່ທີ່ຄວາມໄວຂອງມັນ ຈາກແບບຈຳລອງຢາງລົດ.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>ສະປິງ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ພາຫະນະ</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ພາຫະນະ</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>ລົດທີ່ພວງມາໄລນີ້ຈະໃຊ້ການລ້ຽວຂອງມັນ. ແຕ່ລະຄັນເປັນແບບຈຳລອງພາຫະນະທີ່ໄດ້ຖືກເຜີຍແຜ່.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>ລົດເກັງ</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>ລົດຂະໜາດນ້ອຍ</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ລົດຕູ້</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ລົດແຂ່ງ</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>ຄວາມໄວ</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ຈາກເກມ ອ່ານຄວາມໄວຂອງລົດຈາກເທເລເມທຣີຂອງເກມ ແລະ ໃຊ້ ຄວາມໄວຄົງທີ່ ໃນຂະນະທີ່ບໍ່ມີເກມໃດສົ່ງມາ. ຄົງທີ່ ໃຊ້ ຄວາມໄວຄົງທີ່ ຕະຫຼອດເວລາ.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ຈາກເກມ</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ຄົງທີ່</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ນ້ຳໜັກພວງມາໄລ</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ພວງມາໄລໜັກເທົ່າໃດ. 100% ແມ່ນນ້ຳໜັກຂອງລົດແທ້.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ຂອບເຂດພວງມາໄລ</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ພວງມາໄລນີ້ໝຸນໄດ້ໄກເທົ່າໃດຈາກສຸດທາງໜຶ່ງຫາສຸດອີກທາງໜຶ່ງ. ຕັ້ງໃຫ້ກົງກັບການຕັ້ງຄ່າຂອງພວງມາໄລເອງ.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>ແຮງບິດການລ້ຽວ</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>ມຸມ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ແຮງບິດ</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ຂີດຈຳກັດພວງມາໄລ {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>ແຮງບິດການລ້ຽວທີ່ຂອບພວງມາໄລທຽບກັບມຸມລ້ຽວ. ທີ່ {0} ມັນສູງສຸດ {1} N·m ທີ່ {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>ຄວາມຮູ້ສຶກຢູ່ຈຸດກາງ</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>ແຮງບິດເພີ່ມຂຶ້ນໄວເທົ່າໃດຕາມການເຂົ້າໂຄ້ງໃກ້ຈຸດກາງ ເປັນ N·m ຕໍ່ g ເຖິງ 0.05 g. ຄ່າຫຼາຍຂຶ້ນຮູ້ສຶກໝັ້ນຄົງຂຶ້ນ.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ຄວາມແຂງຂອງແຮງບິດ</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>ແຮງບິດເພີ່ມຂຶ້ນໄວເທົ່າໃດເມື່ອພວງມາໄລອອກຈາກຈຸດກາງ ເປັນ N·m ຕໍ່ອົງສາ.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>ຄວາມເປັນເສັ້ນຊື່</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>ຄວາມຊັນຂອງແຮງບິດລະຫວ່າງ 0.10 ຫາ 0.15 g ທຽບກັບຄວາມຊັນທີ່ຈຸດກາງ. ຄ່າຕ່ຳລົງໝາຍຄວາມວ່າພວງມາໄລເບົາລົງໄວຂຶ້ນ.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>ແຮງບິດສູງສຸດ</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>ແຮງບິດສູງສຸດທີ່ລົດຕ້ອງການຈາກພວງມາໄລ ທຽບກັບແຮງບິດສູງສຸດທີ່ພວງມາໄລໃຫ້ໄດ້.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ຈາກ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ລົດຄັນນີ້ຕ້ອງການແຮງບິດຫຼາຍກວ່າທີ່ພວງມາໄລມີ ສະນັ້ນສ່ວນເທິງສຸດຂອງເສັ້ນໂຄ້ງຈຶ່ງຖືກຕັດອອກ.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ຄວາມຮູ້ສຶກຢູ່ຈຸດກາງ, ແຮງຊ່ວຍພວງມາໄລ, ການໜ່ວງ, ແຮງສຽດທານ, ການຍຶດເກາະ, ຄວາມໄວຄົງທີ່, ແຮງບິດພວງມາໄລ</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ພວງມາໄລຍຶດຈຸດກາງແໜ້ນເທົ່າໃດທີ່ຄວາມໄວຕ່ຳ. 100% ແມ່ນຄ່າຂອງລົດແທ້.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>ແຮງຊ່ວຍພວງມາໄລ</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ພວງມາໄລເພົາເວີຊ່ວຍຜ່ອນແຮງໄດ້ເທົ່າໃດເມື່ອການເຂົ້າໂຄ້ງເພີ່ມຂຶ້ນ. ຄ່າຫຼາຍຂຶ້ນເຮັດໃຫ້ພວງມາໄລເບົາຂຶ້ນເມື່ອຫ່າງຈາກຈຸດກາງ.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ການໜ່ວງ</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>ພວງມາໄລຕ້ານການໝຸນໄວແຮງເທົ່າໃດ. 100% ແມ່ນຄ່າທີ່ພາມັນກັບຄືນໂດຍບໍ່ແກວ່ງເລີຍຈຸດກາງ.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ແຮງສຽດທານ</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>ແຮງຖ່ວງຄົງທີ່ທີ່ຕ້ານການໝຸນທັງສອງທາງ.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ການຍຶດເກາະ</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>ການຍຶດເກາະຂອງຖະໜົນ. ພວງມາໄລຈະເບົາລົງເມື່ອຢາງໜ້າໝົດການຍຶດເກາະ.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ແຫ້ງ</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ປຽກ</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>ຫິມະ</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ນ້ຳກ້ອນ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ຄວາມໄວຄົງທີ່</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ຄວາມໄວທີ່ຖືວ່າລົດກຳລັງແລ່ນ ເມື່ອ ຄວາມໄວ ເປັນ ຄົງທີ່ ແລະ ໃນຂະນະທີ່ບໍ່ມີເກມໃດສົ່ງມາ.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>ແຮງບິດພວງມາໄລ</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>ແຮງບິດສູງສຸດທີ່ພວງມາໄລນີ້ໃຫ້ໄດ້. PadForge ຈະໃສ່ໃຫ້ເອງເມື່ອຜູ້ຜະລິດພວງມາໄລເຜີຍແຜ່ຄ່ານີ້. ຕົວເລກທີ່ສູງກວ່າຄ່າຂອງພວງມາໄລເອງຈະເຮັດໃຫ້ທຸກແຮງອ່ອນລົງ.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ຍັງບໍ່ໄດ້ຕັ້ງ ແຮງບິດພວງມາໄລ ສຳລັບພວງມາໄລນີ້ ສະນັ້ນແຮງຂອງມັນຈຶ່ງຖືກຈຳກັດໄວ້ຕ່ຳ. ໃສ່ຄ່າໄດ້ທີ່ ເພີ່ມເຕີມ.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>ພວງມາໄລເລີ່ມແກວ່ງເອງ ສະນັ້ນແຮງຈຶ່ງຖືກຫຼຸດລົງ. ໃຫ້ແລ່ນ ການທົດສອບການປ່ອຍ.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>ແຮງຖືກປິດ ເພາະພວງມາໄລແກວ່ງບໍ່ຢຸດ ຫຼື ໝຸນອອກຈາກຈຸດກາງ. ໃຫ້ແລ່ນ ການທົດສອບການປ່ອຍ.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>ການທົດສອບການປ່ອຍ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ວັດແທກພວງມາໄລນີ້ ແລະ ຕັ້ງການໜ່ວງ ເພື່ອໃຫ້ມັນກັບຄືນໂດຍບໍ່ແກວ່ງເລີຍຈຸດກາງ</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ຍັງບໍ່ໄດ້ແລ່ນ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>ວັດແທກແລ້ວ</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ເອົາມືອອກຈາກພວງມາໄລ. PadForge ຈະໝຸນມັນໄປ {0}° ແລ້ວປ່ອຍ ແລະ ບັນທຶກວ່າມັນກັບຄືນມາແນວໃດ.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ມຸມຂອງພວງມາໄລໃນໄລຍະ {0} ວິນາທີຫຼັງຈາກການປ່ອຍແຕ່ລະຄັ້ງ.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>ກ່ອນ</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>ຫຼັງ</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>ກຳລັງວັດແທກ, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>ສຳເລັດ, 2 ຄັ້ງ</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>ຢຸດແລ້ວ</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>ພວງມາໄລບໍ່ຢຸດນິ່ງ. ເອົາມືອອກຈາກມັນ ແລ້ວແລ່ນການທົດສອບອີກຄັ້ງ.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>ພວງມາໄລບໍ່ເຄື່ອນທີ່. ຖ້າ ແຮງບິດພວງມາໄລ ຖືກຕັ້ງສູງກວ່າທີ່ພວງມາໄລໃຫ້ໄດ້ ໃຫ້ຕັ້ງເປັນຕົວເລກຂອງພວງມາໄລເອງ ແລ້ວແລ່ນການທົດສອບອີກຄັ້ງ.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>ພວງມາໄລໄປໃກ້ສຸດຂອບເຂດຂອງມັນ. ໝຸນມັນກັບຈຸດກາງ ແລ້ວແລ່ນການທົດສອບອີກຄັ້ງ.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>ອ່ານການເຄື່ອນທີ່ຂອງພວງມາໄລບໍ່ໄດ້. ແລ່ນການທົດສອບອີກຄັ້ງ.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>ພວງມາໄລຢຸດຕອບສະໜອງ. ກວດເບິ່ງວ່າມັນເຊື່ອມຕໍ່ຢູ່ ແລະ ເອັນຈິນກຳລັງເຮັດວຽກ.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ພວງມາໄລນີ້ບໍ່ໄດ້ຖືກໃຊ້ງານ. ກຳນົດມັນໃຫ້ກັບຕົວຄວບຄຸມ ແລະ ເລີ່ມເອັນຈິນ ແລ້ວແລ່ນການທົດສອບ.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ຄວາມເສື່ອຍ</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ກ່ອນໜ້ານີ້ ພວງມາໄລແກວ່ງເລີຍຈຸດກາງ {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ຕອນນີ້ມັນແກວ່ງເລີຍຈຸດກາງ {0}° ແລະ ຢຸດຫ່າງຈາກຈຸດກາງ {1}°.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ຕອນນີ້ມັນກັບຄືນໂດຍບໍ່ແກວ່ງເລີຍຈຸດກາງ ແລະ ຢຸດຫ່າງຈາກຈຸດກາງ {0}°.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>ແລ່ນອີກຄັ້ງ</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>ນຳໃຊ້</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ຄືນຄ່າການແຈ້ງເຕືອນເມື່ອລ້ຽວສຸດ</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ຄືນຄ່າສັ່ນເປັນຈັງຫວະເມື່ອລ້ຽວສຸດ</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີສັ່ນເມື່ອລ້ຽວສຸດ</value></data>
@@ -4662,7 +4743,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານ PlayStation Move, ການປັບທຽບເຊັນເຊີ ແລະ ການຈັບມືຂອງອຸປະກອນເສີມ EXT ໂດຍ Thomas Perl ກວດທຽບກັບວິກິ moveonpc ການຈັດຕັ້ງປະຕິບັດຂອງ PadForge ເປັນ C# ທີ່ຂຽນຂຶ້ນເອງ BSD 2-Clause</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ telemetry ຂອງເກມແຂ່ງລົດ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ໂຄງສ້າງໜ່ວຍຄວາມຈຳຮ່ວມ ແລະ UDP ທີ່ຢູ່ເບື້ອງຫຼັງ ເທເລເມທຣີເກມ ແລະ ໄຟ LED ບອກການປ່ຽນເກຍຕາມ RPM ຂອງພວງມາໄລ ອ້າງອີງຈາກ assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ແລະ vAzhureRacingHub (GPL-3.0) ບໍ່ມີໂຄດ GPL ຫຼື LGPL ຖືກລວມມາ</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ໂຄງສ້າງໜ່ວຍຄວາມຈຳຮ່ວມ ແລະ UDP ທີ່ຢູ່ເບື້ອງຫຼັງ ເທເລເມທຣີເກມ ແລະ ໄຟ LED ບອກການປ່ຽນເກຍຕາມ RPM ຂອງພວງມາໄລ ອ້າງອີງຈາກ assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ແລະ vAzhureRacingHub (GPL-3.0) ບໍ່ມີໂຄດ GPL ຫຼື LGPL ຖືກລວມມາ</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>ເອກະສານການຈັບຄູ່ Bluetooth ແລະ ລາຍງານຂອງ DualShock 3 GPL-2.0 ແລະ GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4685,6 +4766,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ຊ່ວງການຫຼຸດທອນ 48 dB ຂອງໄມໂຄຣໂຟນ DualSense ສະເໝືອນ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂປຣໂຕຄອນພວງມາໄລ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ລາຍງານແຮງສະທ້ອນກັບແບບເນທີຟ ແລະ ໄຟ LED ປ່ຽນເກຍຕາມ RPM ສຳລັບພວງມາໄລ Fanatec, Thrustmaster ແລະ Logitech ອ້າງອີງຈາກ hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ແລະ thrustmaster-led-linux (GPL-3.0) ແລະ ກວດທຽບກັບປລັກອິນ SimHub LED ໂດຍ prodigal.knight (MIT) ແລະ tm-bt-led (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງຄວາມຮູ້ສຶກຂອງພວງມາໄລ</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>ແບບຈຳລອງແຮງບິດຂອງພວງມາໄລທີ່ຢູ່ເບື້ອງຫຼັງໂໝດ ພາຫະນະ ຂອງ ການກັບຈຸດກາງ ມາຈາກ Balachandran ແລະ Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). ຄ່າຕົວແປຂອງພາຫະນະອ້າງອີງຈາກ commonroad-vehicle-models (BSD-3-Clause) ແລະ global_racetrajectory_optimization (LGPL-3.0). ໄລຍະເທຣວຂອງຢາງມາຈາກ Tire and Vehicle Dynamics ຂອງ Pacejka ແລະ ການຍຶດເກາະຂອງຖະໜົນມາຈາກ Theory of Ground Vehicles ຂອງ Wong. ໃຊ້ສະເພາະຕົວເລກເທົ່ານັ້ນ, ບໍ່ມີໂຄດຈາກແຫຼ່ງເຫຼົ່ານີ້ຖືກລວມມາ.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ I/O ອາເຄດ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>ໂປຣໂຕຄອນທີ່ຢູ່ເບື້ອງຫຼັງໄດຣເວີຂອງ fork SDL ສຳລັບບອດ I/O ອາເຄດຂອງ Namco ແລະ Konami ແລະ ບອດ JVS ອ້າງອີງຈາກ arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (ໃບອະນຸຍາດ StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ແລະ TaikoZucchini (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງຕົວຄວບຄຸມ Bluetooth LE</value></data>

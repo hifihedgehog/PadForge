@@ -2689,7 +2689,88 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Reyinisyalize volan</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Reyinisyalize plaj wotasyon</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Reyinisyalize fòs santraj otomatik</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Plaj direksyon, santraj otomatik ak limyè pou chanje vitès pou volan ak retou fòs.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Plaj direksyon ak limyè pou chanje vitès pou volan ak retou fòs.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Santraj</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Mennen volan an tounen nan sant, tankou yon resò senp oswa tankou direksyon yon machin.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Reyinisyalize santraj</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mòd</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Resò rale volan an nan sant ak yon sèl fòs. Veyikil kalkile kouple direksyon yon machin bay selon vitès li, apati yon modèl kawotchou.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Resò</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Veyikil</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Veyikil</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Machin volan an pran direksyon li. Chak se yon modèl veyikil ki pibliye.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Konpak</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Kamyonèt</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Machin kous</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Vitès</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Soti nan jwèt la li vitès machin nan nan telemetri jwèt la, epi li sèvi ak Vitès fiks pandan okenn jwèt pa voye youn. Fiks sèvi ak Vitès fiks tout tan.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Soti nan jwèt la</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fiks</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Pwa direksyon</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Konbyen direksyon an lou. 100% se pwa pwòp machin nan.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Amplitid volan</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Konbyen volan sa a vire soti nan yon bout rive nan lòt bout la. Mete l menm jan ak paramèt pwòp volan an.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Kouple direksyon</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Ang</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Kouple</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limit volan {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Kouple direksyon nan jant volan an selon ang direksyon. A {0} li rive nan pi wo pwen li a {1} N·m a {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sansasyon nan sant</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Konbyen vit kouple a monte ak viraj toupre sant la, an N·m pa g jiska 0.05 g. Plis bay yon direksyon ki pi estab.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Rijidite kouple</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Konbyen vit kouple a monte pandan volan an kite sant la, an N·m pa degre.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearite</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Pant kouple a ant 0.10 ak 0.15 g konpare ak pant li nan sant. Pi ba vle di direksyon an vin lejè pi bonè.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Kouple maksimòm</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Pi plis kouple machin nan mande volan an, akote pi plis volan an ka bay.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sou {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Machin sa a mande plis kouple pase volan an genyen, kidonk tèt koub la koupe.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sansasyon nan sant, asistans direksyon, amòtisman, friksyon, adeyans, vitès fiks, kouple volan</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Konbyen fò direksyon an kenbe sant li a ba vitès. 100% se sa pwòp machin nan genyen.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Asistans direksyon</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Konbyen efò direksyon asiste a retire pandan viraj la ap monte. Plis bay yon direksyon pi lejè lwen sant la.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Amòtisman</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Konbyen fò volan an reziste kont vire rapid. 100% se sa ki fè l tounen san l pa depase sant la.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friksyon</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Yon frenaj konstan ki reziste kont vire nan tou de bò.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Adeyans</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Adeyans wout la. Direksyon an vin lejè lè kawotchou devan yo pa gen adeyans ankò.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Sèk</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Mouye</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Nèj</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Glas</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Vitès fiks</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Vitès yo konsidere machin nan ap woule lè Vitès se Fiks, ak pandan okenn jwèt pa voye youn.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Kouple volan</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Pi plis kouple volan sa a bay. PadForge ranpli l lè fabrikan volan an pibliye l. Yon chif ki pi wo pase pa volan an fè tout fòs yo pi fèb.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Kouple volan pa regle pou volan sa a, kidonk fòs li yo rete ba. Antre l anba Plis.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Volan an te kòmanse balanse pou kont li, kidonk fòs la limite. Lanse Tès lage.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Fòs la dezaktive paske volan an te kontinye balanse oswa li te kite sant la. Lanse Tès lage.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Tès lage</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Mezire volan sa a epi regle amòtisman an pou l tounen san l pa depase sant la</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Poko lanse</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Mezire</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Retire men ou sou volan an. PadForge vire l rive {0}°, lage l epi anrejistre kijan li tounen.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Ang volan an pandan {0} segonn apre chak lage.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Anvan</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Apre</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Ap mezire, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Fini, 2 esè</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Kanpe</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Volan an pa t estabilize. Retire men ou sou li epi lanse tès la ankò.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Volan an pa t bouje. Si Kouple volan regle pi wo pase sa volan an bay, mete l sou chif pwòp volan an epi lanse tès la ankò.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Volan an te rive toupre bout plaj li. Mete l nan sant epi lanse tès la ankò.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Mouvman volan an pa t ka li. Lanse tès la ankò.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Volan an sispann reponn. Verifye li konekte epi motè a ap mache.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Volan sa a pa itilize. Asiyen l bay yon kontwolè epi demare motè a, apre sa lanse tès la.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inèsi</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Anvan, volan an te depase sant la ak {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Kounye a li depase sant la ak {0}° epi li kanpe a {1}° de sant la.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Kounye a li tounen san l pa depase sant la epi li kanpe a {0}° de sant la.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Relanse</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Aplike</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Reyinisyalize siyal limit direksyon</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Reyinisyalize vibrasyon kout nan limit</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Reyinisyalize vibrasyon gachèt nan limit</value></data>
@@ -3873,7 +3954,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Dispozisyon rapò PlayStation Move, kalibrasyon detektè, ak echanj idantifikasyon akseswa EXT, pa Thomas Perl, verifye ak wiki moveonpc la. Aplikasyon PadForge la se C# orijinal. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referans telemetri kous</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Dispozisyon memwa pataje ak UDP ki dèyè Telemetri jwèt ak LED chanjman vitès RPM volan an, li nan assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ak vAzhureRacingHub (GPL-3.0). Okenn kòd GPL oswa LGPL pa enkli.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Dispozisyon memwa pataje ak UDP ki dèyè Telemetri jwèt ak LED chanjman vitès RPM volan an, li nan assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ak vAzhureRacingHub (GPL-3.0). Okenn kòd GPL oswa LGPL pa enkli.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokimantasyon asosyasyon Bluetooth ak rapò DualShock 3. GPL-2.0 ak GPL-3.0, li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -3896,6 +3977,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Plaj atenyasyon 48 dB mikwofòn DualSense vityèl la. Li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referans pwotokòl volan</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Rapò natif retou fòs ak LED chanjman vitès RPM pou volan Fanatec, Thrustmaster, ak Logitech, li nan hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), ak thrustmaster-led-linux (GPL-3.0), epi verifye ak plugin LED SimHub pa prodigal.knight (MIT) ak tm-bt-led (MIT). Dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referans sansasyon direksyon</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Modèl kouple direksyon ki dèyè mòd Veyikil nan Santraj, soti nan Balachandran ak Gerdes, « Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures » (IEEE/ASME Transactions on Mechatronics). Paramèt veyikil yo li nan commonroad-vehicle-models (BSD-3-Clause) ak global_racetrajectory_optimization (LGPL-3.0). Chas kawotchou a soti nan Tire and Vehicle Dynamics pa Pacejka, epi adeyans wout la soti nan Theory of Ground Vehicles pa Wong. Chif sèlman, okenn kòd ki soti nan yo pa enkli.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referans antre/sòti akad</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Pwotokòl ki dèyè pilòt fork SDL la pou kat antre/sòti akad Namco ak Konami ak kat JVS, li nan arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (lisans StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ak TaikoZucchini (MIT). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referans kontwolè Bluetooth LE</value></data>

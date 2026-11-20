@@ -3212,7 +3212,88 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Nustatyti sukimo diapazoną iš naujo</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Nustatyti automatinio centravimo stiprumą iš naujo</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Nustatyti RPM pavarų perjungimo LED iš naujo</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Jėgos grįžtamojo ryšio vairų sukimo diapazonas, automatinis centravimas ir pavarų perjungimo lemputės.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Jėgos grįžtamojo ryšio vairų sukimo diapazonas ir pavarų perjungimo lemputės.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centravimas</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Grąžina vairą į centrą kaip paprasta spyruoklė arba kaip automobilio vairas.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Nustatyti centravimą iš naujo</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Režimas</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Spyruoklė traukia vairą į centrą vienodu stiprumu. Automobilis pagal padangų modelį apskaičiuoja sukimo momentą, kurį automobilio vairas duoda esant jo greičiui.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spyruoklė</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Automobilis</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Automobilis</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Automobilis, kurio vairavimą perima vairas. Kiekvienas yra paskelbtas transporto priemonės modelis.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedanas</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompaktinis</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Mikroautobusas</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Lenktyninis automobilis</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Greitis</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Iš žaidimo skaito automobilio greitį iš žaidimo telemetrijos, o kol žaidimas jo nesiunčia, naudoja Pastovus greitis. Pastovus visada naudoja Pastovus greitis.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Iš žaidimo</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Pastovus</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Vairo sunkumas</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Kokio sunkumo vairas. 100% yra paties automobilio sunkumas.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Vairo eiga</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Kiek šis vairas pasisuka nuo vieno galo iki kito. Nustatykite pagal paties vairo nustatymą.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Vairo sukimo momentas</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Kampas</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Momentas</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Vairo riba {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Sukimo momentas vairo ratlankyje priklausomai nuo vairo kampo. Esant {0} jis pasiekia {1} N·m ties {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Pojūtis centre</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kaip greitai sukimo momentas auga didėjant posūkio apkrovai šalia centro, N·m kiekvienam g iki 0.05 g. Daugiau reiškia stabilesnį pojūtį.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Momento standumas</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kaip greitai sukimo momentas auga vairui tolstant nuo centro, N·m vienam laipsniui.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Tiesiškumas</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Momento nuolydis tarp 0.10 ir 0.15 g, palyginti su nuolydžiu centre. Mažesnė reikšmė reiškia, kad vairas palengvėja anksčiau.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Didžiausias momentas</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Didžiausias momentas, kurio automobilis reikalauja iš vairo, greta didžiausio, kurį vairas gali duoti.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>iš {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Šis automobilis reikalauja didesnio momento, nei turi vairas, todėl kreivės viršus nukerpamas.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Pojūtis centre, vairo stiprintuvas, slopinimas, trintis, sukibimas, pastovus greitis, vairo momentas</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kaip stipriai vairas laikosi centre mažu greičiu. 100% yra paties automobilio reikšmė.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Vairo stiprintuvas</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kiek vairo stiprintuvas palengvina vairavimą didėjant posūkio apkrovai. Daugiau reiškia lengvesnį vairą toliau nuo centro.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Slopinimas</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Kaip stipriai vairas priešinasi staigiems posūkiams. 100% grąžina jį be persvyravimo pro centrą.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Trintis</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Pastovus pasipriešinimas sukimui į abi puses.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Sukibimas</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Kelio sukibimas. Vairas palengvėja, kai priekinės padangos jo netenka.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Sausa</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Šlapia</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Sniegas</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ledas</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Pastovus greitis</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Greitis, kuriuo laikoma, kad automobilis važiuoja, kai Greitis yra Pastovus, ir kol žaidimas jo nesiunčia.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Vairo momentas</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Didžiausias momentas, kurį duoda šis vairas. „PadForge“ jį įrašo, kai vairo gamintojas jį skelbia. Didesnė už paties vairo reikšmė susilpnina visas jėgas.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Vairo momentas nenustatytas šiam vairui, todėl jo jėgos sumažintos. Įveskite jį skiltyje Daugiau.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Vairas pradėjo svyruoti pats, todėl jėga sumažinta. Paleiskite „Atleidimo testas“.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Jėga išjungta, nes vairas nesiliovė svyravęs arba nuklydo nuo centro. Paleiskite „Atleidimo testas“.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Atleidimo testas</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Išmatuoja šį vairą ir nustato slopinimą, kad jis grįžtų be persvyravimo</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Dar nepaleista</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Išmatuota</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Atleiskite vairą. „PadForge“ pasuka jį {0}°, paleidžia ir užrašo, kaip jis grįžta.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Vairo kampas per {0} s po kiekvieno atleidimo.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Prieš</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Po</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Matuojama, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Baigta, 2 bandymai</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Sustabdyta</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Vairas nesustojo. Atleiskite jį ir paleiskite testą dar kartą.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Vairas nejudėjo. Jei „Vairo momentas“ nustatytas didesnis, nei vairas gali duoti, nustatykite paties vairo reikšmę ir paleiskite testą dar kartą.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Vairas priartėjo prie savo eigos galo. Nustatykite jį į centrą ir paleiskite testą dar kartą.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Nepavyko nuskaityti vairo judėjimo. Paleiskite testą dar kartą.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Vairas nustojo atsakyti. Patikrinkite, ar jis prijungtas ir ar variklis veikia.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Šis vairas nenaudojamas. Priskirkite jį valdikliui, paleiskite variklį ir tada paleiskite testą.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inercija</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Anksčiau vairas persvyravo {0}° pro centrą.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Dabar jis persvyra {0}° pro centrą ir sustoja {1}° nuo centro.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Dabar jis grįžta be persvyravimo ir sustoja {0}° nuo centro.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Paleisti dar kartą</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Taikyti</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Nustatyti kraštinės vairo padėties signalą iš naujo</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Nustatyti vibracijos impulsą kraštinėje padėtyje iš naujo</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Nustatyti gaiduko vibraciją kraštinėje padėtyje iš naujo</value></data>
@@ -4673,7 +4754,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>„PlayStation Move“ ataskaitų struktūros, jutiklių kalibravimas ir EXT priedo užmezgimo procedūra, autorius Thomas Perl, patikrinta pagal moveonpc wiki. „PadForge“ realizacija – originalus C# kodas. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Lenktynių telemetrijos šaltiniai</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Bendrosios atminties ir UDP struktūros, kuriomis grindžiama žaidimų telemetrija ir vairo RPM pavarų perjungimo LED, perskaitytos iš assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ir vAzhureRacingHub (GPL-3.0). Joks GPL ar LGPL kodas neplatinamas.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Bendrosios atminties ir UDP struktūros, kuriomis grindžiama žaidimų telemetrija ir vairo RPM pavarų perjungimo LED, perskaitytos iš assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) ir vAzhureRacingHub (GPL-3.0). Joks GPL ar LGPL kodas neplatinamas.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>„DualShock 3“ „Bluetooth“ susiejimo ir ataskaitų dokumentacija. GPL-2.0 ir GPL-3.0, skaityta tik kaip dokumentacija, joks GPL kodas neplatinamas.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4696,6 +4777,8 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Virtualaus DualSense mikrofono 48 dB slopinimo diapazonas. Skaitoma tik kaip dokumentacija, jokio GPL kodo neįtraukiama.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Vairų protokolų nuorodos</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Savosios jėgos grįžtamojo ryšio ir RPM perjungimo LED ataskaitos Fanatec, Thrustmaster ir Logitech vairams, perskaitytos iš hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ir thrustmaster-led-linux (GPL-3.0) bei patikrintos pagal SimHub LED papildinį, kurį sukūrė prodigal.knight (MIT), ir tm-bt-led (MIT). Tik dokumentacija, joks GPL kodas neįtraukiamas.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Vairo pojūčio šaltiniai</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Vairo sukimo momento modelis, kuriuo grindžiamas Centravimo režimas Automobilis, paimtas iš Balachandran ir Gerdes straipsnio „Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures“ (IEEE/ASME Transactions on Mechatronics). Transporto priemonės parametrai perskaityti iš commonroad-vehicle-models (BSD-3-Clause) ir global_racetrajectory_optimization (LGPL-3.0). Padangos pėdsakas paimtas iš Pacejka knygos Tire and Vehicle Dynamics, o kelio sukibimas iš Wong knygos Theory of Ground Vehicles. Naudojami tik skaičiai, joks jų kodas neįtraukiamas.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arkadinių I/O nuorodos</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Protokolai, kuriais remiasi SDL šakos tvarkyklės Namco ir Konami arkadinėms I/O plokštėms bei JVS plokštėms, perskaityti iš arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania licencija), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) ir TaikoZucchini (MIT). Tik dokumentacija, joks kodas neįtraukiamas.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE valdiklių nuorodos</value></data>

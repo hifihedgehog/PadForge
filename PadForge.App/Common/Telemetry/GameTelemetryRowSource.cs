@@ -46,6 +46,11 @@ namespace PadForge.Common.Telemetry
                 return false;
             if (learned) maxRpm = Math.Max(maxRpm, rpm * LearnedHeadroom);
             snap = new GameTelemetrySnapshot { Rpm = rpm, MaxRpm = maxRpm, IdleRpm = 0f, Source = Name };
+            if (GameTelemetryRuntime.TryGetMotion(Environment.TickCount64, out float speed, out float grip))
+            {
+                snap.SetSpeed(speed);
+                snap.Grip = grip;
+            }
             return true;
         }
     }

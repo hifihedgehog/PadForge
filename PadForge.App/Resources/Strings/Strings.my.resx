@@ -3216,7 +3216,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>လည်ပတ်မှု အပိုင်းအခြား ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>အလိုအလျောက် ဗဟိုပြန်ခြင်း အား ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM ဂီယာပြောင်း LED များ ပြန်လည်သတ်မှတ်</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု စတီယာရင်ဘီးများအတွက် လှည့်အပိုင်းအခြား၊ အလိုအလျောက် ဗဟိုပြန်ခြင်း နှင့် ဂီယာပြောင်း မီးများ။</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု စတီယာရင်ဘီးများအတွက် လှည့်အပိုင်းအခြား နှင့် ဂီယာပြောင်း မီးများ။</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ဗဟိုပြန်ခြင်း</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>စတီယာရင်ဘီးကို ရိုးရိုးစပရိန်ကဲ့သို့ သို့မဟုတ် ကား၏ စတီယာရင်ကဲ့သို့ ဗဟိုသို့ ပြန်ယူသည်။</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>ဗဟိုပြန်ခြင်း ပြန်လည်သတ်မှတ်</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>မုဒ်</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>စပရိန်သည် စတီယာရင်ဘီးကို အားတစ်မျိုးတည်းဖြင့် ဗဟိုသို့ ဆွဲသည်။ ယာဉ်သည် ကား၏ စတီယာရင်က ၎င်း၏ အမြန်နှုန်းတွင် ပေးသော လှည့်အားကို တာယာမော်ဒယ်မှ တွက်ချက်သည်။</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>စပရိန်</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ယာဉ်</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ယာဉ်</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>စတီယာရင်ဘီးက ယူသော စတီယာရင်ကို ပိုင်သည့် ကား။ တစ်ခုစီသည် ထုတ်ပြန်ထားသော ယာဉ်မော်ဒယ် ဖြစ်သည်။</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>ဆီဒန်</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>ကားငယ်</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ဗန်</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ပြိုင်ကား</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>အမြန်နှုန်း</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ဂိမ်းမှ သည် ကား၏ အမြန်နှုန်းကို ဂိမ်း၏ တယ်လီမီထရီမှ ဖတ်ပြီး မည်သည့်ဂိမ်းမျှ မပို့သည့်အခါ ပုံသေ အမြန်နှုန်းကို သုံးသည်။ ပုံသေ သည် ပုံသေ အမြန်နှုန်းကို အမြဲ သုံးသည်။</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ဂိမ်းမှ</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>ပုံသေ</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>စတီယာရင် အလေးချိန်</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>စတီယာရင် မည်မျှ လေးသည်။ 100% သည် ကား၏ ကိုယ်ပိုင် အလေးချိန် ဖြစ်သည်။</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ဘီး လှည့်ထောင့်</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ဤစတီယာရင်ဘီး တစ်ဖက်အဆုံးမှ အခြားတစ်ဖက်အဆုံးအထိ မည်မျှ လှည့်သည်။ ဘီး၏ ကိုယ်ပိုင် ဆက်တင်အတိုင်း သတ်မှတ်ပါ။</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>စတီယာရင် လှည့်အား</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>ထောင့်</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>လှည့်အား</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ဘီး ကန့်သတ်ချက် {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>စတီယာရင်ထောင့်နှင့် နှိုင်းယှဉ်ထားသော ဘီးကွင်းရှိ စတီယာရင် လှည့်အား။ {0} တွင် {2}° ၌ အမြင့်ဆုံး {1} N·m ရှိသည်။</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>ဗဟိုနား ခံစားမှု</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>ဗဟိုအနီးတွင် ကွေ့မှု တိုးလာသည်နှင့်အမျှ လှည့်အား မည်မျှ မြန်မြန် တက်လာသည်၊ 0.05 g အထိ g တစ်ခုလျှင် N·m ဖြင့်။ ပိုများလျှင် ပိုခိုင်မြဲသည်ဟု ခံစားရသည်။</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>လှည့်အား တောင့်တင်းမှု</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>စတီယာရင်ဘီး ဗဟိုမှ ခွာလာသည်နှင့်အမျှ လှည့်အား မည်မျှ မြန်မြန် တက်လာသည်၊ ဒီဂရီ တစ်ခုလျှင် N·m ဖြင့်။</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>မျဉ်းဖြောင့်ညီမှု</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 နှင့် 0.15 g ကြားရှိ လှည့်အား၏ စောင်းနှုန်းကို ဗဟိုရှိ စောင်းနှုန်းနှင့် နှိုင်းယှဉ်ခြင်း။ နိမ့်လေ စတီယာရင် စောစော ပေါ့သွားလေ ဖြစ်သည်။</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>အမြင့်ဆုံး လှည့်အား</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>ကားက စတီယာရင်ဘီးထံ တောင်းသော အမြင့်ဆုံး လှည့်အားနှင့် ဘီး ပေးနိုင်သော အမြင့်ဆုံး လှည့်အား။</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m အနက်</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ဤကားသည် စတီယာရင်ဘီးတွင် ရှိသည်ထက် လှည့်အား ပိုတောင်းသဖြင့် မျဉ်းကွေး၏ ထိပ်ပိုင်းကို ဖြတ်ထားသည်။</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>ဗဟိုနား ခံစားမှု၊ ပါဝါ အကူအညီ၊ ဒမ်ပင်း၊ ပွတ်တိုက်အား၊ ဆွဲကိုင်အား၊ ပုံသေ အမြန်နှုန်း၊ ဘီး လှည့်အား</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>အမြန်နှုန်း နိမ့်ချိန်တွင် စတီယာရင်က ဗဟိုကို မည်မျှ ခိုင်ခိုင် ထိန်းထားသည်။ 100% သည် ကား၏ ကိုယ်ပိုင် အတိုင်း ဖြစ်သည်။</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>ပါဝါ အကူအညီ</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ကွေ့မှု တိုးလာသည်နှင့်အမျှ ပါဝါစတီယာရင်က အား မည်မျှ လျှော့ပေးသည်။ ပိုများလျှင် ဗဟိုမှ ခွာရာတွင် စတီယာရင် ပိုပေါ့သည်။</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ဒမ်ပင်း</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>စတီယာရင်ဘီးက လျင်မြန်သော လှည့်မှုများကို မည်မျှ ခိုင်ခိုင် ခုခံသည်။ 100% သည် ဗဟိုကို မကျော်ဘဲ ပြန်ရောက်စေသော အဆင့် ဖြစ်သည်။</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>ပွတ်တိုက်အား</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>မည်သည့်ဘက်သို့ လှည့်သည်ဖြစ်စေ ခုခံသော တည်ငြိမ်သည့် ဆွဲအား။</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>ဆွဲကိုင်အား</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>လမ်း၏ ဆွဲကိုင်အား။ ရှေ့တာယာများ ဆွဲကိုင်အား ကုန်သည့်နေရာတွင် စတီယာရင် ပေါ့သွားသည်။</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ခြောက်</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>စို</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>နှင်း</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>ရေခဲ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>ပုံသေ အမြန်နှုန်း</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>အမြန်နှုန်း သည် ပုံသေ ဖြစ်သည့်အခါနှင့် မည်သည့်ဂိမ်းမျှ မပို့သည့်အခါ ကား မောင်းသည်ဟု ယူဆသော အမြန်နှုန်း။</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>ဘီး လှည့်အား</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>ဤစတီယာရင်ဘီး ပေးသော အမြင့်ဆုံး လှည့်အား။ ဘီး၏ ထုတ်လုပ်သူက ထုတ်ပြန်ထားလျှင် PadForge က ဖြည့်ပေးသည်။ ဘီး၏ ကိုယ်ပိုင် တန်ဖိုးထက် မြင့်သော ကိန်းဂဏန်းသည် အားတိုင်းကို ပိုအားနည်းစေသည်။</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>ဤစတီယာရင်ဘီးအတွက် ဘီး လှည့်အား မသတ်မှတ်ရသေးသဖြင့် ၎င်း၏ အားများကို နိမ့်နိမ့် ထားသည်။ နောက်ထပ် အောက်တွင် ထည့်ပါ။</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>စတီယာရင်ဘီး အလိုလို လွှဲစလာသဖြင့် အားကို လျှော့ထားသည်။ လွှတ်ချ စမ်းသပ်မှု ကို လုပ်ဆောင်ပါ။</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>စတီယာရင်ဘီး ဆက်တိုက် လွှဲနေခြင်း သို့မဟုတ် ဗဟိုမှ လွင့်ထွက်ခြင်းကြောင့် အားကို ပိတ်ထားသည်။ လွှတ်ချ စမ်းသပ်မှု ကို လုပ်ဆောင်ပါ။</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>လွှတ်ချ စမ်းသပ်မှု</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ဤစတီယာရင်ဘီးကို တိုင်းတာပြီး ဗဟိုကို မကျော်ဘဲ ပြန်ရောက်စေရန် ဒမ်ပင်း သတ်မှတ်သည်</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>မလုပ်ဆောင်ရသေး</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>တိုင်းတာပြီး</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>စတီယာရင်ဘီးမှ လက်ကို ဖယ်ပါ။ PadForge က ၎င်းကို {0}° အထိ လှည့်ပြီး လွှတ်ချကာ မည်သို့ ပြန်လာသည်ကို မှတ်တမ်းတင်သည်။</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>လွှတ်ချမှု တစ်ခုစီ၏ နောက် {0} စက္ကန့်အတွင်း စတီယာရင်ဘီး၏ ထောင့်။</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>မတိုင်မီ</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>ပြီးနောက်</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>တိုင်းတာနေသည်၊ {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>ပြီးပါပြီ၊ အကြိမ် 2 ကြိမ်</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>ရပ်ထားသည်</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>စတီယာရင်ဘီး ငြိမ်မသွားပါ။ ၎င်းမှ လက်ကို ဖယ်ပြီး စမ်းသပ်မှုကို ထပ်မံ လုပ်ဆောင်ပါ။</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>စတီယာရင်ဘီး မလှုပ်ပါ။ ဘီး လှည့်အား ကို ဘီး ပေးနိုင်သည်ထက် မြင့်စွာ သတ်မှတ်ထားလျှင် ဘီး၏ ကိုယ်ပိုင် ကိန်းဂဏန်းအတိုင်း သတ်မှတ်ပြီး စမ်းသပ်မှုကို ထပ်မံ လုပ်ဆောင်ပါ။</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>စတီယာရင်ဘီး ၎င်း၏ လှည့်နိုင်သည့် အဆုံးနားသို့ ရောက်သွားသည်။ ဗဟိုသို့ ပြန်ထားပြီး စမ်းသပ်မှုကို ထပ်မံ လုပ်ဆောင်ပါ။</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>စတီယာရင်ဘီး၏ လှုပ်ရှားမှုကို ဖတ်၍ မရပါ။ စမ်းသပ်မှုကို ထပ်မံ လုပ်ဆောင်ပါ။</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>စတီယာရင်ဘီး တုံ့ပြန်မှု ရပ်သွားသည်။ ချိတ်ဆက်ထားကြောင်းနှင့် အင်ဂျင် လည်ပတ်နေကြောင်း စစ်ဆေးပါ။</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ဤစတီယာရင်ဘီးကို အသုံးမပြုသေးပါ။ ကွန်ထရိုလာတစ်ခုသို့ သတ်မှတ်ပြီး အင်ဂျင်ကို စတင်ကာ စမ်းသပ်မှုကို လုပ်ဆောင်ပါ။</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>အင်နားရှား</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>ယခင်က စတီယာရင်ဘီးသည် ဗဟိုကို {0}° ကျော်လွှဲခဲ့သည်။</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ယခု ၎င်းသည် ဗဟိုကို {0}° ကျော်လွှဲပြီး ဗဟိုမှ {1}° တွင် ရပ်သည်။</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ယခု ၎င်းသည် ဗဟိုကို မကျော်ဘဲ ပြန်လာပြီး ဗဟိုမှ {0}° တွင် ရပ်သည်။</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>ထပ်မံ လုပ်ဆောင်</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>အသုံးပြု</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>စတီယာရင် အဆုံးထိ တုံ့ပြန်မှု ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>အဆုံးထိရောက်ချိန် တုန်ခါမှု အချက်ပြ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>အဆုံးထိရောက်ချိန် ထရီဂါ တုန်ခါမှု ပြန်လည်သတ်မှတ်</value></data>
@@ -4672,7 +4753,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move report အပြင်အဆင်များ၊ အာရုံခံကိရိယာ ချိန်ညှိခြင်းနှင့် EXT accessory handshake၊ ရေးသားသူ Thomas Perl၊ moveonpc wiki နှင့် အပြန်အလှန်စစ်ဆေးထားသည်။ PadForge ၏ အကောင်အထည်ဖော်မှုသည် မူရင်း C# ဖြစ်သည်။ BSD 2-Clause။</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ကားပြိုင် telemetry ကိုးကားချက်များ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ဂိမ်း တယ်လီမီထရီနှင့် စတီယာရင်ဘီး RPM shift LED များ နောက်ကွယ်ရှိ shared-memory နှင့် UDP အပြင်အဆင်များကို assettocorsasharedmemory (MIT)၊ CMTelemetry၊ dirt-rally-telemetry-dashboard (MIT)၊ ets2-telemetry-udp (MIT)၊ f1-24-udp (MIT)၊ fh6-tel (MIT)၊ forza-data-web (Apache-2.0)၊ forza-telemetry (MIT)၊ Forza-Telemetry-Splitter (MIT)၊ InSim.NET (LGPL-2.1)၊ irsdkSharp (MIT)၊ IRSDKSharper (GPL-3.0)၊ out-gauge-cluster (Apache-2.0)၊ PCars2UdpNet (MIT)၊ project-cars-2-udp (MIT)၊ pyirsdk (MIT)၊ rF2SharedMemoryMapPlugin (GPL-3.0)၊ rFactorSharedMemoryMap (GPL-2.0)၊ rust_ams2_sharedmem၊ scs-sdk-plugin (MIT)၊ simapi (LGPL-3.0)၊ tm-bt-led (MIT) နှင့် vAzhureRacingHub (GPL-3.0) မှ ဖတ်ရှုထားသည်။ GPL သို့မဟုတ် LGPL ကုဒ် မပါဝင်ပါ။</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ဂိမ်း တယ်လီမီထရီနှင့် စတီယာရင်ဘီး RPM shift LED များ နောက်ကွယ်ရှိ shared-memory နှင့် UDP အပြင်အဆင်များကို assettocorsasharedmemory (MIT)၊ CMTelemetry၊ CrewChiefV4 (MIT)၊ dirt-rally-telemetry-dashboard (MIT)၊ ets2-telemetry-udp (MIT)၊ f1-24-udp (MIT)၊ fh6-tel (MIT)၊ forza-data-web (Apache-2.0)၊ forza-telemetry (MIT)၊ Forza-Telemetry-Splitter (MIT)၊ InSim.NET (LGPL-2.1)၊ irsdkSharp (MIT)၊ IRSDKSharper (GPL-3.0)၊ out-gauge-cluster (Apache-2.0)၊ PCars2UdpNet (MIT)၊ project-cars-2-udp (MIT)၊ pyirsdk (MIT)၊ r3e-api (Unlicense)၊ rF2SharedMemoryMapPlugin (GPL-3.0)၊ rFactorSharedMemoryMap (GPL-2.0)၊ rust_ams2_sharedmem၊ scs-sdk-plugin (MIT)၊ simapi (LGPL-3.0)၊ tm-bt-led (MIT) နှင့် vAzhureRacingHub (GPL-3.0) မှ ဖတ်ရှုထားသည်။ GPL သို့မဟုတ် LGPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth တွဲချိတ်ခြင်းနှင့် report စာရွက်စာတမ်း။ GPL-2.0 နှင့် GPL-3.0၊ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4695,6 +4776,8 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ဗာချွယ် DualSense မိုက်ခရိုဖုန်း၏ 48 dB လျှော့ချမှု အပိုင်းအခြား။ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>စတီယာရင်ဘီး ပရိုတိုကော ကိုးကားချက်များ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec၊ Thrustmaster နှင့် Logitech စတီယာရင်ဘီးများအတွက် ကိုယ်ပိုင် အားပြန်တုံ့ပြန်မှုနှင့် RPM shift LED report များကို hid-fanatecff (GPL-2.0)၊ hid-tmff2 (GPL-2.0-or-later)၊ new-lg4ff (GPL-2.0-or-later)၊ oversteer (GPL-3.0) နှင့် thrustmaster-led-linux (GPL-3.0) မှ ဖတ်ရှုပြီး prodigal.knight ၏ SimHub LED plugin (MIT) နှင့် tm-bt-led (MIT) တို့နှင့် အပြန်အလှန်စစ်ဆေးထားသည်။ စာရွက်စာတမ်းအဖြစ်သာ၊ GPL ကုဒ် မပါဝင်ပါ။</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>စတီယာရင် ခံစားမှု ကိုးကားချက်များ</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>ဗဟိုပြန်ခြင်း ကတ်၏ ယာဉ် မုဒ် နောက်ကွယ်ရှိ စတီယာရင် လှည့်အား မော်ဒယ်ကို Balachandran နှင့် Gerdes တို့၏ “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) မှ ယူထားသည်။ ယာဉ် ကိန်းဂဏန်းများကို commonroad-vehicle-models (BSD-3-Clause) နှင့် global_racetrajectory_optimization (LGPL-3.0) မှ ဖတ်ရှုထားသည်။ တာယာ၏ trail ကို Pacejka ၏ Tire and Vehicle Dynamics မှ ယူထားပြီး လမ်း၏ ဆွဲကိုင်အားကို Wong ၏ Theory of Ground Vehicles မှ ယူထားသည်။ ကိန်းဂဏန်းများသာ ယူထားပြီး ၎င်းတို့၏ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O ကိုးကားချက်များ</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Namco နှင့် Konami arcade I/O ဘုတ်များနှင့် JVS ဘုတ်များအတွက် SDL fork ၏ ဒရိုက်ဗာများ နောက်ကွယ်ရှိ ပရိုတိုကောများကို arcade-docs (WTFPL)၊ bemanitools (Unlicense)၊ Dolphin (GPL-2.0-or-later)၊ ITAIKO-firmware (MIT)၊ JoypadOS (Apache-2.0)၊ jvsio (BSD-3-Clause)၊ MAME (BSD-3-Clause)၊ OpenITG (StepMania license)၊ p4io-mdxfdrv (GPL-3.0)၊ RPCS3 (GPL-2.0) နှင့် TaikoZucchini (MIT) မှ ဖတ်ရှုထားသည်။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE ကွန်ထရိုလာ ကိုးကားချက်များ</value></data>

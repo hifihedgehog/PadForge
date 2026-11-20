@@ -2687,7 +2687,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>回転範囲をリセット</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>オートセンター強度をリセット</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPMシフトLEDをリセット</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲、オートセンター、シフトランプ。</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>フォースフィードバック対応ステアリングの回転範囲とシフトランプ。</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>センタリング</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>ステアリングを中央に戻します。単純なバネとして、または実際の車のステアリングのように戻せます。</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>センタリングをリセット</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>バネは、一定の強さでステアリングを中央へ引き戻します。車両は、タイヤモデルから、その速度で実際の車のステアリングが生むトルクを算出します。</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>バネ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>車両</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>車両</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>ステアリングの特性を借りる車です。どれも公表されている車両モデルです。</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>セダン</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>コンパクトカー</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>バン</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>レーシングカー</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>速度</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>ゲームからは、ゲームのテレメトリーから車の速度を読み取り、ゲームが速度を送らない間は固定速度を使います。固定は、常に固定速度を使います。</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>ゲームから</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>ステアリングの重さ</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ステアリングの重さです。100% が実際の車と同じ重さです。</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>ステアリングの切れ角</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>このステアリングが端から端まで回る角度です。ステアリング本体の設定に合わせてください。</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>ステアリングトルク</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>角度</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>トルク</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>ステアリング上限 {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>ステアリング角に対するリムのステアリングトルク。{0} では {2}° で {1} N·m のピークになります。</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>オンセンター特性</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>中央付近で、コーナリングに応じてトルクが立ち上がる速さです。0.05 g まで、N·m/g で表します。大きいほど接地感が増します。</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>トルク剛性</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>ステアリングが中央から離れるにつれてトルクが立ち上がる速さです。1度あたりの N·m で表します。</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>リニアリティ</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 から 0.15 g でのトルクの傾きを、中央での傾きと比べた値です。小さいほど、ステアリングが早く軽くなります。</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>ピークトルク</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>車がステアリングに求める最大トルクと、ステアリングが出せる最大トルクです。</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>この車はステアリングが出せる以上のトルクを求めるため、カーブの頂点が頭打ちになります。</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>オンセンター特性、パワーアシスト、ダンピング、フリクション、グリップ、固定速度、ステアリングトルク上限</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>低速でステアリングが中央をどれだけ強く保つかです。100% が実際の車と同じ強さです。</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>パワーアシスト</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>コーナリングが強まるにつれて、パワーステアリングがどれだけ操舵力を軽くするかです。大きいほど、中央から離れたときのステアリングが軽くなります。</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ダンピング</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>ステアリングを素早く回したときの抵抗の強さです。100% で、中央を行き過ぎずに戻ります。</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>フリクション</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>どちらに回しても働く、一定の抵抗です。</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>グリップ</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>路面のグリップです。前輪のグリップが尽きると、ステアリングが軽くなります。</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>ドライ</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>ウェット</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>雪道</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>氷上</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>固定速度</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>速度が固定のとき、およびゲームが速度を送らない間に、車が走っているものとみなす速度です。</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>ステアリングトルク上限</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>このステアリングが出せる最大トルクです。メーカーが公表している場合は PadForge が入力します。ステアリング本体の値より大きくすると、すべてのフォースが弱くなります。</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>このステアリングのステアリングトルク上限が未設定のため、フォースを低く抑えています。その他で入力してください。</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>ステアリングが勝手に揺れ始めたため、フォースを抑えています。リリーステストを実行してください。</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>ステアリングが揺れ続けた、または中央から外れたため、フォースをオフにしました。リリーステストを実行してください。</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>リリーステスト</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>このステアリングを測定し、オーバーシュートせずに戻るようダンピングを設定します</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>未実行</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>測定済み</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>ステアリングから手を離してください。PadForge がステアリングを {0}° まで回して放し、戻る様子を記録します。</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>各リリース後 {0} 秒間のステアリング角です。</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>前</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>後</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>測定中、{0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>完了、2 回実行</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>停止</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>ステアリングが静止しませんでした。手を離して、もう一度テストを実行してください。</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>ステアリングが動きませんでした。ステアリングトルク上限がステアリングの出力より大きい場合は、ステアリング本体の値に設定してから、もう一度テストを実行してください。</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>ステアリングが回転範囲の端に近づきました。中央に戻してから、もう一度テストを実行してください。</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>ステアリングの動きを読み取れませんでした。もう一度テストを実行してください。</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>ステアリングからの応答が止まりました。接続されていること、エンジンが動作していることを確認してください。</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>このステアリングは使用されていません。コントローラーに割り当ててエンジンを開始してから、テストを実行してください。</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>慣性</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>以前は、ステアリングが中央を {0}° 行き過ぎていました。</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>現在は中央を {0}° 行き過ぎ、中央から {1}° の位置で止まります。</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>現在はオーバーシュートせずに戻り、中央から {0}° の位置で止まります。</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>もう一度実行</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>適用</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバックをリセット</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>ロック時にランブルパルスをリセット</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>ロック時にトリガー振動をリセット</value></data>
@@ -4868,7 +4949,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move のレポートレイアウト、センサーキャリブレーション、EXT アクセサリーのハンドシェイク。Thomas Perl 製。moveonpc wiki と照合。PadForge の実装は独自の C# です。BSD 2-Clause。</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>レーステレメトリーの参照元</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ゲームテレメトリーとステアリングホイールの RPM シフト LED を支える共有メモリーと UDP のレイアウト。assettocorsasharedmemory (MIT)、CMTelemetry、dirt-rally-telemetry-dashboard (MIT)、ets2-telemetry-udp (MIT)、f1-24-udp (MIT)、fh6-tel (MIT)、forza-data-web (Apache-2.0)、forza-telemetry (MIT)、Forza-Telemetry-Splitter (MIT)、InSim.NET (LGPL-2.1)、irsdkSharp (MIT)、IRSDKSharper (GPL-3.0)、out-gauge-cluster (Apache-2.0)、PCars2UdpNet (MIT)、project-cars-2-udp (MIT)、pyirsdk (MIT)、rF2SharedMemoryMapPlugin (GPL-3.0)、rFactorSharedMemoryMap (GPL-2.0)、rust_ams2_sharedmem、scs-sdk-plugin (MIT)、simapi (LGPL-3.0)、tm-bt-led (MIT)、vAzhureRacingHub (GPL-3.0) から読み取り。GPL および LGPL のコードは同梱しません。</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ゲームテレメトリーとステアリングホイールの RPM シフト LED を支える共有メモリーと UDP のレイアウト。assettocorsasharedmemory (MIT)、CMTelemetry、CrewChiefV4 (MIT)、dirt-rally-telemetry-dashboard (MIT)、ets2-telemetry-udp (MIT)、f1-24-udp (MIT)、fh6-tel (MIT)、forza-data-web (Apache-2.0)、forza-telemetry (MIT)、Forza-Telemetry-Splitter (MIT)、InSim.NET (LGPL-2.1)、irsdkSharp (MIT)、IRSDKSharper (GPL-3.0)、out-gauge-cluster (Apache-2.0)、PCars2UdpNet (MIT)、project-cars-2-udp (MIT)、pyirsdk (MIT)、r3e-api (Unlicense)、rF2SharedMemoryMapPlugin (GPL-3.0)、rFactorSharedMemoryMap (GPL-2.0)、rust_ams2_sharedmem、scs-sdk-plugin (MIT)、simapi (LGPL-3.0)、tm-bt-led (MIT)、vAzhureRacingHub (GPL-3.0) から読み取り。GPL および LGPL のコードは同梱しません。</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 の Bluetooth ペアリングとレポートに関するドキュメント。GPL-2.0 および GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4891,6 +4972,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>仮想 DualSense マイクの 48 dB の減衰範囲。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ステアリングホイールのプロトコルの参照元</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec、Thrustmaster、Logitech のホイール向けのネイティブなフォースフィードバックと RPM シフト LED のレポート。hid-fanatecff (GPL-2.0)、hid-tmff2 (GPL-2.0-or-later)、new-lg4ff (GPL-2.0-or-later)、oversteer (GPL-3.0)、thrustmaster-led-linux (GPL-3.0) から読み取り、prodigal.knight の SimHub LED プラグイン (MIT) と tm-bt-led (MIT) で照合。ドキュメントのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>ステアリングフィールの参照元</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>センタリングの車両モードを支えるステアリングトルクのモデルは、Balachandran と Gerdes の「Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures」(IEEE/ASME Transactions on Mechatronics) から。車両パラメーターは commonroad-vehicle-models (BSD-3-Clause) と global_racetrajectory_optimization (LGPL-3.0) から読み取り、タイヤのトレールは Pacejka の Tire and Vehicle Dynamics、路面のグリップは Wong の Theory of Ground Vehicles から取っています。数値のみ参照し、これらのコードは一切同梱しません。</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>アーケード I/O の参照元</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL フォークの Namco・Konami 製アーケード I/O ボードと JVS ボード用ドライバーの背後にあるプロトコル。arcade-docs (WTFPL)、bemanitools (Unlicense)、Dolphin (GPL-2.0-or-later)、ITAIKO-firmware (MIT)、JoypadOS (Apache-2.0)、jvsio (BSD-3-Clause)、MAME (BSD-3-Clause)、OpenITG (StepMania license)、p4io-mdxfdrv (GPL-3.0)、RPCS3 (GPL-2.0)、TaikoZucchini (MIT) から読み取り。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE コントローラーの参照元</value></data>

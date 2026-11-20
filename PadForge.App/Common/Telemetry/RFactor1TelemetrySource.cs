@@ -13,6 +13,13 @@ namespace PadForge.Common.Telemetry
     /// (rfSharedStruct.hpp, pack(1)) and corroborated by Spacefreak18/simapi
     /// (rfdata.h, same struct), 2026-06-02: engineRPM(f32)@188, engineMaxRPM(f32)@228.</para>
     ///
+    /// <para>Speed is <c>speed</c> (f32, m/s) at 180, the field ahead of the
+    /// gear and the RPM. The four wheels start at 263 and are 67 bytes each,
+    /// front left first, with <c>surfaceType</c> (byte) at 64 of a wheel, so
+    /// the front wheels' are at 327 and 394. Counted from the clone of
+    /// dallongo/rFactorSharedMemoryMap's rfSharedStruct.hpp, whose count
+    /// also lands on 188 and 228 above (2026-11-19).</para>
+    ///
     /// <para>FRAGMENTED LANDSCAPE: multiple rF1 plugins publish the same
     /// <c>$rFactorShared$</c> map with DIFFERENT layouts (CrewChief's variant drops
     /// the version[8] header and adds a vehicleName[64] field, shifting engineRPM
@@ -31,7 +38,9 @@ namespace PadForge.Common.Telemetry
         private const string MapName = "$rFactorShared$";
         private const int OffEngineRpm = 188;     // f32 engineRPM
         private const int OffEngineMaxRpm = 228;  // f32 engineMaxRPM
-        private const int MapView = 512;          // covers both fields
+        private const int OffSpeed = 180;         // f32 speed, m/s
+        private const int OffFrontLeftSurface = 327, OffFrontRightSurface = 394; // u8 wheel[0..1].surfaceType
+        private const int MapView = 512;          // covers every field read
 
         private MemoryMappedFile _mmf;
         private MemoryMappedViewAccessor _acc;
@@ -81,7 +90,15 @@ namespace PadForge.Common.Telemetry
                 else if (unchecked(now - _lastChangeTick) > 2000) return false;
 
                 if (rpm < 0f) rpm = 0f;
-                snap = new GameTelemetrySnapshot { Rpm = rpm, MaxRpm = max, IdleRpm = 0f, Source = Name };
+                snap = new GameTelemetrySnapshot
+                {
+                    Rpm = rpm, MaxRpm = max, IdleRpm = 0f, Source = Name,
+                    Grip = (float)PadForge.Engine.Steering.RoadGrip.FrontAxle(
+                        SurfaceGrips.RFactor(_acc.ReadByte(OffFrontLeftSurface), 0), SurfaceGrips.RFactor(_acc.ReadByte(OffFrontRightSurface), 0)),
+                };
+                // The same gate as the RPM's: a wrong layout's speed is no speed.
+                float speed = _acc.ReadSingle(OffSpeed);
+                if (speed >= 0f && speed < 200f) snap.SetSpeed(speed);
                 return true;
             }
             catch

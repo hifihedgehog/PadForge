@@ -3427,7 +3427,88 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Reset Rotation Range</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Reset Auto Centering Strength</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Reset RPM Shift LEDs</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Steering range, auto centering, and shift lights for force feedback wheels.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Steering range and shift lights for force feedback wheels.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Centering</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Brings the wheel back to center, as a plain spring or as a car’s steering does.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Reset Centering</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Spring pulls the wheel to center with one strength. Vehicle works out the torque a car’s steering gives at its speed, from a tire model.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Spring</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vehicle</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vehicle</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>The car whose steering the wheel takes. Each is a published vehicle model.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Compact</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Race Car</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Speed</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>From the Game reads the car’s speed from the game’s telemetry, and uses Fixed Speed while no game sends one. Fixed uses Fixed Speed at all times.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>From the Game</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fixed</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Steering Weight</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>How heavy the steering is. 100% is the car’s own.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Wheel Range</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>How far this wheel turns from lock to lock. Set it to the wheel’s own setting.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Steering Torque</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Angle</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torque</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Wheel limit {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Steering torque at the rim against steering angle. At {0} it peaks at {1} N·m at {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>On-Center Feel</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>How fast the torque builds with cornering near center, in N·m per g up to 0.05 g. More feels more planted.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Torque Stiffness</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>How fast the torque builds as the wheel leaves center, in N·m per degree.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearity</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>The torque’s slope between 0.10 and 0.15 g against its slope at center. Lower means the steering goes light sooner.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Peak Torque</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>The most torque the car asks of the wheel, beside the most the wheel gives.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>of {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>This car asks more torque than the wheel has, so the top of the curve is cut off.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>On-center feel, power assist, damping, friction, grip, fixed speed, wheel torque</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>How strongly the steering holds its center at low speed. 100% is the car’s own.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Power Assist</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>How much the power steering takes off as cornering builds. More is lighter steering away from center.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Damping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>How strongly the wheel resists quick turns. 100% is what brings it back without swinging past center.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Friction</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>A steady drag that resists turning either way.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>The road’s grip. The steering goes light where the front tires run out of it.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Dry</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Wet</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Snow</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Ice</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Fixed Speed</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>The speed the car is taken to drive at when Speed is Fixed, and while no game sends one.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Wheel Torque</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>The most torque this wheel gives. PadForge fills it in where the wheel’s maker publishes it. A figure above the wheel’s own makes every force weaker.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Wheel Torque is not set for this wheel, so its forces are held low. Enter it under More.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>The wheel started to swing by itself, so the force is held back. Run the Release Test.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>The force is off because the wheel kept swinging or ran from center. Run the Release Test.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Release Test</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Measures this wheel and sets damping so it returns without overshoot</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Not run yet</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Measured</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Take your hands off the wheel. PadForge turns it to {0}°, lets it go and records how it comes back.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>The wheel’s angle over {0} seconds after each release.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Before</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>After</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Measuring, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Done, 2 runs</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Stopped</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>The wheel did not come to rest. Take your hands off it and run the test again.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>The wheel did not move. If Wheel Torque is set above what the wheel gives, set it to the wheel’s own figure and run the test again.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>The wheel came close to the end of its range. Center it and run the test again.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>The wheel’s motion could not be read. Run the test again.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>The wheel stopped answering. Check that it is connected and that the engine is running.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>This wheel is not in use. Assign it to a controller and start the engine, then run the test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inertia</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Before, the wheel swung {0}° past center.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Now it swings {0}° past center and rests {1}° from center.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Now it returns with no overshoot and rests {0}° from center.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Run Again</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Apply</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Reset Steering Lock Feedback</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Reset Rumble Pulse on Lock</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Reset Trigger Vibration on Lock</value></data>
@@ -4966,7 +5047,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move report layouts, sensor calibration, and the EXT accessory handshake, by Thomas Perl, cross-checked against the moveonpc wiki. PadForge’s implementation is original C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Racing telemetry references</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-memory and UDP layouts behind Game Telemetry and the wheel RPM shift LEDs, read from assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) and vAzhureRacingHub (GPL-3.0). No GPL or LGPL code ships.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Shared-memory and UDP layouts behind Game Telemetry and the wheel RPM shift LEDs, read from assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) and vAzhureRacingHub (GPL-3.0). No GPL or LGPL code ships.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth pairing and report documentation. GPL-2.0 and GPL-3.0, read as documentation only, no GPL code ships.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4989,6 +5070,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>The virtual DualSense microphone’s 48 dB attenuation range. Read as documentation only, no GPL code ships.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Wheel protocol references</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Native force feedback and RPM shift LED reports for Fanatec, Thrustmaster, and Logitech wheels, read from hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), and thrustmaster-led-linux (GPL-3.0), and cross-checked against the SimHub LED plugin by prodigal.knight (MIT) and tm-bt-led (MIT). Documentation only, no GPL code ships.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Steering feel references</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>The steering torque model behind Centering’s Vehicle mode, from Balachandran and Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Vehicle parameters are read from commonroad-vehicle-models (BSD-3-Clause) and global_racetrajectory_optimization (LGPL-3.0). The tire’s trail is from Pacejka’s Tire and Vehicle Dynamics, and road grip is from Wong’s Theory of Ground Vehicles. Figures only, no code from them ships.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O references</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>The protocols behind the SDL fork’s drivers for Namco and Konami arcade I/O boards and JVS boards, read from arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (StepMania license), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) and TaikoZucchini (MIT). Documentation only, no code ships.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Bluetooth LE controller references</value></data>

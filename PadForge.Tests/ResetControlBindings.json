@@ -373,6 +373,78 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringMode",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringVehicle",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringVehicle"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringSpeedSource",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringSpeedSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringWeight",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringWeight"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringWheelRange",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringWheelRange"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringOnCenter",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringOnCenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringAssist",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringAssist"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringDamping",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringDamping"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringFriction",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringFriction"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringGrip",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringGrip"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringFixedSpeed",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringFixedSpeed"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_CenteringWheelTorque",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "CenteringWheelTorque"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_DeviceSlotConfig_MicLedFollowDeviceId_9489",
     "Owner": "PadForge.ViewModels.DeviceSlotConfig",
     "Property": "MicLedFollowDeviceId"

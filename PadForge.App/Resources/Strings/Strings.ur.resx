@@ -3413,7 +3413,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>گردش کی رینج ری سیٹ کریں</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>خودکار مرکز کی طاقت ری سیٹ کریں</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>RPM شفٹ LED ری سیٹ کریں</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>فورس فیڈبیک اسٹیئرنگ وہیلز کے لیے اسٹیئرنگ رینج، خودکار مرکز اور شفٹ لائٹس۔</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>فورس فیڈبیک اسٹیئرنگ وہیلز کے لیے اسٹیئرنگ رینج اور شفٹ لائٹس۔</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>مرکز پر واپسی</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>وہیل کو مرکز پر واپس لاتا ہے، سادہ اسپرنگ کی طرح یا گاڑی کی اسٹیئرنگ کی طرح۔</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>مرکز پر واپسی ری سیٹ کریں</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>موڈ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>اسپرنگ وہیل کو ایک ہی طاقت سے مرکز کی طرف کھینچتا ہے۔ گاڑی ٹائر کے ماڈل سے وہ ٹارک نکالتی ہے جو کار کی اسٹیئرنگ اپنی رفتار پر دیتی ہے۔</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>اسپرنگ</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>گاڑی</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>گاڑی</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>وہ کار جس کی اسٹیئرنگ وہیل اپناتا ہے۔ ہر ایک شائع شدہ گاڑی کا ماڈل ہے۔</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>سیڈان</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>کومپیکٹ</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>وین</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ریس کار</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>رفتار</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>گیم سے کار کی رفتار گیم کی ٹیلی میٹری سے پڑھتا ہے، اور جب کوئی گیم رفتار نہ بھیجے تو مقررہ رفتار استعمال کرتا ہے۔ مقررہ ہر وقت مقررہ رفتار استعمال کرتا ہے۔</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>گیم سے</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>مقررہ</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>اسٹیئرنگ کا وزن</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>اسٹیئرنگ کتنی بھاری ہے۔ 100% وہی ہے جو کار کا اپنا ہے۔</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>وہیل کی حد</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>یہ وہیل ایک سرے سے دوسرے سرے تک کتنا گھومتا ہے۔ اسے وہیل کی اپنی سیٹنگ کے مطابق رکھیں۔</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>اسٹیئرنگ ٹارک</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>زاویہ</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>ٹارک</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>وہیل کی حد {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>رم پر اسٹیئرنگ ٹارک بمقابلہ اسٹیئرنگ زاویہ۔ {0} پر یہ {2}° پر {1} N·m کی چوٹی تک پہنچتا ہے۔</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>مرکز پر محسوس</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>مرکز کے قریب موڑ کاٹنے کے ساتھ ٹارک کتنی تیزی سے بڑھتا ہے، 0.05 g تک N·m فی g میں۔ زیادہ ہو تو اسٹیئرنگ زیادہ جمی ہوئی لگتی ہے۔</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ٹارک کی سختی</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>وہیل کے مرکز سے ہٹتے ہی ٹارک کتنی تیزی سے بڑھتا ہے، N·m فی ڈگری میں۔</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>خطیت</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>0.10 اور 0.15 g کے درمیان ٹارک کی ڈھلان، مرکز پر اس کی ڈھلان کے مقابلے میں۔ کم ہو تو اسٹیئرنگ جلد ہلکی ہو جاتی ہے۔</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>چوٹی کا ٹارک</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>کار وہیل سے زیادہ سے زیادہ جتنا ٹارک مانگتی ہے، اور وہیل زیادہ سے زیادہ جتنا دیتا ہے۔</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>از {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>یہ کار وہیل کے پاس موجود ٹارک سے زیادہ مانگتی ہے، اس لیے منحنی کا اوپری حصہ کٹ جاتا ہے۔</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>مرکز پر محسوس، پاور اسسٹ، ڈیمپنگ، رگڑ، گرفت، مقررہ رفتار، وہیل ٹارک</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>کم رفتار پر اسٹیئرنگ اپنا مرکز کتنی مضبوطی سے تھامتی ہے۔ 100% وہی ہے جو کار کا اپنا ہے۔</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>پاور اسسٹ</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>موڑ کاٹنے کے بڑھنے پر پاور اسٹیئرنگ کتنا بوجھ ہٹاتی ہے۔ زیادہ ہو تو مرکز سے ہٹ کر اسٹیئرنگ ہلکی ہوتی ہے۔</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>ڈیمپنگ</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>وہیل تیز موڑوں کی کتنی مزاحمت کرتا ہے۔ 100% وہ ہے جو اسے مرکز سے آگے نکلے بغیر واپس لاتا ہے۔</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>رگڑ</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>مسلسل رگڑ جو کسی بھی طرف گھمانے کی مزاحمت کرتی ہے۔</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>گرفت</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>سڑک کی گرفت۔ جہاں اگلے ٹائروں کی گرفت ختم ہو جاتی ہے وہاں اسٹیئرنگ ہلکی ہو جاتی ہے۔</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>خشک</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>گیلی</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>برف</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>یخ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>مقررہ رفتار</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>وہ رفتار جس پر کار چلتی مانی جاتی ہے جب رفتار مقررہ ہو، اور جب تک کوئی گیم رفتار نہ بھیجے۔</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>وہیل ٹارک</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>اس وہیل کا زیادہ سے زیادہ ٹارک۔ جہاں وہیل بنانے والا اسے شائع کرتا ہے وہاں PadForge اسے خود بھر دیتا ہے۔ وہیل کی اپنی قدر سے زیادہ عدد ہر فورس کو کمزور کر دیتا ہے۔</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>اس وہیل کے لیے وہیل ٹارک سیٹ نہیں ہے، اس لیے اس کی فورس کم رکھی گئی ہے۔ اسے مزید میں درج کریں۔</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>وہیل خود بخود جھولنے لگا، اس لیے فورس روک دی گئی ہے۔ ریلیز ٹیسٹ چلائیں۔</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>فورس بند ہے کیونکہ وہیل جھولتا رہا یا مرکز سے دور چلا گیا۔ ریلیز ٹیسٹ چلائیں۔</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>ریلیز ٹیسٹ</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>اس وہیل کو ناپتا ہے اور ڈیمپنگ اس طرح سیٹ کرتا ہے کہ یہ حد سے آگے نکلے بغیر واپس آئے</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>ابھی چلایا نہیں گیا</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>ناپا گیا</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>وہیل سے ہاتھ ہٹا لیں۔ PadForge اسے {0}° تک گھماتا ہے، چھوڑ دیتا ہے اور ریکارڈ کرتا ہے کہ یہ کیسے واپس آتا ہے۔</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>ہر ریلیز کے بعد {0} سیکنڈ تک وہیل کا زاویہ۔</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>پہلے</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>بعد</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>پیمائش جاری ہے، {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>مکمل، 2 بار</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>روکا گیا</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>وہیل ساکن نہیں ہوا۔ اس سے ہاتھ ہٹائیں اور ٹیسٹ دوبارہ چلائیں۔</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>وہیل حرکت میں نہیں آیا۔ اگر وہیل ٹارک وہیل کی دی ہوئی قدر سے زیادہ سیٹ ہے تو اسے وہیل کی اپنی قدر پر سیٹ کریں اور ٹیسٹ دوبارہ چلائیں۔</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>وہیل اپنی رینج کے سرے کے قریب پہنچ گیا۔ اسے مرکز پر لائیں اور ٹیسٹ دوبارہ چلائیں۔</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>وہیل کی حرکت پڑھی نہیں جا سکی۔ ٹیسٹ دوبارہ چلائیں۔</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>وہیل نے جواب دینا بند کر دیا۔ دیکھیں کہ وہ جڑا ہوا ہے اور انجن چل رہا ہے۔</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>یہ وہیل استعمال میں نہیں ہے۔ اسے کسی کنٹرولر کو تفویض کریں اور انجن شروع کریں، پھر ٹیسٹ چلائیں۔</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>جمود</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>پہلے وہیل مرکز سے {0}° آگے نکل جاتا تھا۔</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>اب یہ مرکز سے {0}° آگے نکلتا ہے اور مرکز سے {1}° پر ٹھہرتا ہے۔</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>اب یہ آگے نکلے بغیر واپس آتا ہے اور مرکز سے {0}° پر ٹھہرتا ہے۔</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>دوبارہ چلائیں</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>لاگو کریں</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>اسٹیئرنگ لاک فیڈبیک ری سیٹ کریں</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>لاک پر رمبل پلس ری سیٹ کریں</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>لاک پر ٹرگر وائبریشن ری سیٹ کریں</value></data>
@@ -4919,7 +5000,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move کی رپورٹ لے آؤٹس، سینسر کیلیبریشن اور EXT ایکسیسری ہینڈ شیک، از Thomas Perl، جن کی moveonpc wiki سے جانچ کی گئی۔ PadForge کی امپلیمنٹیشن اصل C# ہے۔ BSD 2-Clause۔</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ریسنگ ٹیلی میٹری کے حوالے</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>گیم ٹیلی میٹری اور اسٹیئرنگ وہیل کے RPM شفٹ LED کے پیچھے شیئرڈ میموری اور UDP لے آؤٹس، جو assettocorsasharedmemory (MIT)، CMTelemetry، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) اور vAzhureRacingHub (GPL-3.0) سے پڑھے گئے۔ کوئی GPL یا LGPL کوڈ شامل نہیں۔</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>گیم ٹیلی میٹری اور اسٹیئرنگ وہیل کے RPM شفٹ LED کے پیچھے شیئرڈ میموری اور UDP لے آؤٹس، جو assettocorsasharedmemory (MIT)، CMTelemetry، CrewChiefV4 (MIT)، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، r3e-api (Unlicense)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) اور vAzhureRacingHub (GPL-3.0) سے پڑھے گئے۔ کوئی GPL یا LGPL کوڈ شامل نہیں۔</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 بلوٹوتھ کے جوڑا بنانے اور رپورٹ کی دستاویزات۔ GPL-2.0 اور GPL-3.0، صرف بطور دستاویز پڑھا گیا، کوئی GPL کوڈ شامل نہیں۔</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ورچوئل DualSense مائیکروفون کی 48 dB تخفیف کی رینج۔ صرف بطور دستاویز پڑھا گیا، کوئی GPL کوڈ شامل نہیں۔</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>اسٹیئرنگ وہیل پروٹوکول کے حوالے</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec، Thrustmaster اور Logitech اسٹیئرنگ وہیلز کے لیے اصل فورس فیڈبیک اور RPM شفٹ LED رپورٹس، جو hid-fanatecff (GPL-2.0)، hid-tmff2 (GPL-2.0-or-later)، new-lg4ff (GPL-2.0-or-later)، oversteer (GPL-3.0) اور thrustmaster-led-linux (GPL-3.0) سے پڑھی گئیں، اور SimHub LED پلگ ان از prodigal.knight (MIT) اور tm-bt-led (MIT) سے جانچی گئیں۔ صرف دستاویزات، کوئی GPL کوڈ شامل نہیں۔</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>اسٹیئرنگ فیل کے حوالے</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>مرکز پر واپسی کے گاڑی موڈ کے پیچھے اسٹیئرنگ ٹارک ماڈل، جو Balachandran اور Gerdes کے “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics) سے لیا گیا ہے۔ گاڑی کے پیرامیٹرز commonroad-vehicle-models (BSD-3-Clause) اور global_racetrajectory_optimization (LGPL-3.0) سے پڑھے گئے ہیں۔ ٹائر کا ٹریل Pacejka کی Tire and Vehicle Dynamics سے اور سڑک کی گرفت Wong کی Theory of Ground Vehicles سے لی گئی ہے۔ صرف اعداد و شمار، ان میں سے کوئی کوڈ شامل نہیں۔</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>آرکیڈ I/O کے حوالے</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>SDL فورک کے ان ڈرائیورز کے پیچھے پروٹوکولز جو Namco اور Konami کے آرکیڈ I/O بورڈز اور JVS بورڈز کے لیے ہیں، جو arcade-docs (WTFPL)، bemanitools (Unlicense)، Dolphin (GPL-2.0-or-later)، ITAIKO-firmware (MIT)، JoypadOS (Apache-2.0)، jvsio (BSD-3-Clause)، MAME (BSD-3-Clause)، OpenITG (StepMania لائسنس)، p4io-mdxfdrv (GPL-3.0)، RPCS3 (GPL-2.0) اور TaikoZucchini (MIT) سے پڑھے گئے۔ صرف دستاویزات، کوئی کوڈ شامل نہیں۔</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>بلوٹوتھ LE کنٹرولر کے حوالے</value></data>

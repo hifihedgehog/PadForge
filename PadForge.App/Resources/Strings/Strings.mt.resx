@@ -3161,7 +3161,88 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Irrisettja l-firxa tar-rotazzjoni</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Irrisettja s-saħħa taċ-ċentrar awtomatiku</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Irrisettja l-LED tal-gerijiet RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Firxa tas-sewqan, ċentrar awtomatiku u dwal tal-gerijiet għal roti tas-sewqan b'force feedback.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Firxa tas-sewqan u dwal tal-gerijiet għal roti tas-sewqan b'force feedback.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Ċentrar</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Iġib ir-rota lura fiċ-ċentru, bħala molla sempliċi jew kif jagħmel it-tmun ta' karozza.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Irrisettja ċ-ċentrar</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Molla tiġbed ir-rota lejn iċ-ċentru b'saħħa waħda. Vettura tikkalkula t-torque li jagħti t-tmun ta' karozza fil-veloċità tagħha, minn mudell tat-tajers.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Molla</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Vettura</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Vettura</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Il-karozza li t-tmun tagħha tieħu r-rota. Kull waħda hija mudell ta' vettura ppubblikat.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Kompatta</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Karozza tat-tlielaq</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Veloċità</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Mill-logħba taqra l-veloċità tal-karozza mit-telemetrija tal-logħba, u tuża Veloċità fissa sakemm ebda logħba ma tibgħat waħda. Fiss dejjem juża Veloċità fissa.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Mill-logħba</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Fiss</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Piż tat-tmun</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Kemm it-tmun huwa tqil. 100% huwa dak tal-karozza stess.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Firxa tar-rota</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Kemm din ir-rota ddur minn tarf sa tarf. Issettjaha skont is-setting tar-rota stess.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Torque tat-tmun</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Angolu</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Torque</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Limitu tar-rota {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Torque tat-tmun fit-tarf tar-rota kontra l-angolu tat-tmun. F'{0} jilħaq quċċata ta' {1} N·m f'{2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Sensazzjoni fiċ-ċentru</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Kemm malajr jinbena t-torque mat-tiswir ħdejn iċ-ċentru, f'N·m għal kull g sa 0.05 g. Aktar tħoss aktar stabbli.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Ebusija tat-torque</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Kemm malajr jinbena t-torque hekk kif ir-rota titlaq miċ-ċentru, f'N·m għal kull grad.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Linearità</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>L-inklinazzjoni tat-torque bejn 0.10 u 0.15 g kontra l-inklinazzjoni tiegħu fiċ-ċentru. Aktar baxx ifisser li t-tmun jilmaħ eħfef aktar kmieni.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Torque massimu</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>L-akbar torque li l-karozza titlob mir-rota, ħdejn l-akbar li r-rota tagħti.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>minn {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Din il-karozza titlob aktar torque minn dak li għandha r-rota, għalhekk il-quċċata tal-kurva titqatta'.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Sensazzjoni fiċ-ċentru, assistenza tat-tmun, damping, frizzjoni, grip, veloċità fissa, torque tar-rota</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kemm it-tmun iżomm iċ-ċentru tiegħu f'veloċità baxxa. 100% huwa dak tal-karozza stess.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Assistenza tat-tmun</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kemm l-assistenza tat-tmun tneħħi hekk kif jikber it-tiswir. Aktar ifisser tmun eħfef 'il bogħod miċ-ċentru.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Damping</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Kemm ir-rota tirreżisti dawriet mgħaġġla. 100% huwa dak li jirritornaha mingħajr ma taqbeż iċ-ċentru.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Frizzjoni</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Reżistenza kostanti li topponi d-dawran fiż-żewġ direzzjonijiet.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Grip</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Il-grip tat-triq. It-tmun jilmaħ eħfef fejn it-tajers ta' quddiem jispiċċaw minnu.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Niexef</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Imxarrab</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Borra</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Silġ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Veloċità fissa</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Il-veloċità li biha l-karozza titqies li tinsaq meta l-Veloċità tkun Fiss, u sakemm ebda logħba ma tibgħat waħda.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Torque tar-rota</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>L-akbar torque li tagħti din ir-rota. PadForge jimlieh fejn il-manifattur tar-rota jippubblikah. Ċifra ogħla minn dik tar-rota stess tgħaddaf il-forzi kollha.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>It-Torque tar-rota mhuwiex issettjat għal din ir-rota, għalhekk il-forzi tagħha jinżammu baxxi. Daħħlu taħt Aktar.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Ir-rota bdiet titqanqal waħedha, għalhekk il-forza tinżamm lura. Mexxi t-Test tal-ħelsien.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Il-forza mitfija għax ir-rota baqgħet titqanqal jew marret 'il bogħod miċ-ċentru. Mexxi t-Test tal-ħelsien.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Test tal-ħelsien</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Ikejjel din ir-rota u jissettja d-damping biex tirritorna mingħajr ma taqbeż iċ-ċentru</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Għadu ma tmexxiex</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Imkejjel</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Neħħi idejk mir-rota. PadForge idawwarha sa {0}°, iħalliha u jirreġistra kif tirritorna.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>L-angolu tar-rota fuq {0} sekondi wara kull ħelsien.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Qabel</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Wara</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Qed ikejjel, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Lest, 2 ġiri</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Waqaf</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Ir-rota ma waqfitx. Neħħi idejk minnha u mexxi t-test mill-ġdid.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Ir-rota ma ċċaqlqitx. Jekk it-Torque tar-rota huwa ssettjat ogħla minn dak li tagħti r-rota, issettjah għaċ-ċifra tar-rota stess u mexxi t-test mill-ġdid.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Ir-rota resqet qrib it-tarf tal-firxa tagħha. Ċentraha u mexxi t-test mill-ġdid.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Il-moviment tar-rota ma setax jinqara. Mexxi t-test mill-ġdid.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Ir-rota waqfet twieġeb. Iċċekkja li hija konnessa u li l-magna qed taħdem.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Din ir-rota mhijiex qed tintuża. Assenjaha lil kontrollur virtwali u ibda l-magna, imbagħad mexxi t-test.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Inerzja</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Qabel, ir-rota qabżet {0}° 'il hemm miċ-ċentru.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Issa taqbeż {0}° 'il hemm miċ-ċentru u tistrieħ {1}° miċ-ċentru.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Issa tirritorna mingħajr overshoot u tistrieħ {0}° miċ-ċentru.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Mexxi mill-ġdid</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Applika</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Irrisettja l-feedback fil-limitu tas-sewqan</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Irrisettja l-polz ta' rumble fil-limitu</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Irrisettja l-vibrazzjoni tat-trigger fil-limitu</value></data>
@@ -4613,7 +4694,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>It-tqassim tar-reports tal-PlayStation Move, il-kalibrazzjoni tas-sensuri u l-handshake tal-aċċessorju EXT, minn Thomas Perl, iċċekkjati mal-wiki moveonpc. L-implimentazzjoni ta' PadForge hija C# oriġinali. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referenzi tat-telemetrija tat-tlielaq</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>It-tqassim tal-memorja kondiviża u tal-UDP wara t-Telemetrija tal-logħob u l-LEDs tal-bdil tal-gerijiet skont l-RPM tar-rota tas-sewqan, moqri minn assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) u vAzhureRacingHub (GPL-3.0). L-ebda kodiċi GPL jew LGPL ma jiġi inkluż.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>It-tqassim tal-memorja kondiviża u tal-UDP wara t-Telemetrija tal-logħob u l-LEDs tal-bdil tal-gerijiet skont l-RPM tar-rota tas-sewqan, moqri minn assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) u vAzhureRacingHub (GPL-3.0). L-ebda kodiċi GPL jew LGPL ma jiġi inkluż.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentazzjoni dwar it-tqabbil Bluetooth u r-reports tad-DualShock 3. GPL-2.0 u GPL-3.0, moqrija biss bħala dokumentazzjoni, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4636,6 +4717,8 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Il-firxa ta' attenwazzjoni ta' 48 dB tal-mikrofonu tad-DualSense virtwali. Moqrija biss bħala dokumentazzjoni, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referenzi tal-protokoll tar-roti tas-sewqan</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Ir-reports tal-force feedback nattiv u tal-LEDs tal-bdil skont l-RPM għar-roti tas-sewqan Fanatec, Thrustmaster u Logitech, moqrija minn hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) u thrustmaster-led-linux (GPL-3.0), u ċċekkjati mal-plugin LED ta' SimHub minn prodigal.knight (MIT) u ma' tm-bt-led (MIT). Dokumentazzjoni biss, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Referenzi tas-sens tat-tmun</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Il-mudell tat-torque tat-tmun wara l-modalità Vettura ta' Ċentrar, minn Balachandran u Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Il-parametri tal-vettura jinqraw minn commonroad-vehicle-models (BSD-3-Clause) u global_racetrajectory_optimization (LGPL-3.0). It-trail tat-tajer huwa minn Tire and Vehicle Dynamics ta' Pacejka, u l-grip tat-triq minn Theory of Ground Vehicles ta' Wong. Ċifri biss, l-ebda kodiċi minnhom ma jiġi inkluż.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referenzi tal-I/O tal-arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Il-protokolli wara d-drivers tal-fork tal-SDL għall-bordijiet I/O tal-arcade ta' Namco u Konami u għall-bordijiet JVS, moqrija minn arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (liċenzja ta' StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) u TaikoZucchini (MIT). Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Referenzi tal-kontrolluri Bluetooth LE</value></data>

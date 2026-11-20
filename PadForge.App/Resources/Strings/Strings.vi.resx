@@ -3413,7 +3413,88 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Đặt lại phạm vi xoay</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>Đặt lại lực tự về tâm</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>Đặt lại đèn LED báo sang số theo RPM</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Phạm vi lái, tự về tâm và đèn báo sang số cho các vô lăng có phản hồi lực.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>Phạm vi lái và đèn báo sang số cho các vô lăng có phản hồi lực.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>Về tâm</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>Đưa vô lăng về tâm, như một lò xo thường hoặc như hệ thống lái của xe.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>Đặt lại về tâm</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>Chế độ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>Lò xo kéo vô lăng về tâm với một lực duy nhất. Xe tính mô-men mà hệ thống lái của xe tạo ra ở tốc độ của nó, từ mô hình lốp.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>Lò xo</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>Xe</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>Xe</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>Chiếc xe có hệ thống lái mà vô lăng sẽ mô phỏng. Mỗi xe là một mô hình xe đã được công bố.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>Sedan</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>Cỡ nhỏ</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>Xe van</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>Xe đua</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>Tốc độ</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>Từ trò chơi đọc tốc độ xe từ telemetry của trò chơi và dùng Tốc độ cố định khi chưa có trò chơi nào gửi đến. Cố định luôn dùng Tốc độ cố định.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>Từ trò chơi</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>Cố định</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>Độ nặng tay lái</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>Tay lái nặng đến mức nào. 100% là độ nặng của chính chiếc xe.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>Hành trình vô lăng</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>Vô lăng này quay được bao xa từ đầu này đến đầu kia. Hãy đặt bằng thiết lập của chính vô lăng.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>Mô-men lái</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>Góc</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>Mô-men</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>Giới hạn vô lăng {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>Mô-men lái tại vành vô lăng theo góc lái. Ở {0}, mô-men đạt đỉnh {1} N·m tại {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>Cảm giác ở tâm</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>Mô-men tăng nhanh đến mức nào theo lực ngang khi vào cua gần tâm, tính bằng N·m trên g đến 0.05 g. Càng cao càng thấy xe bám đường chắc.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>Độ cứng mô-men</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>Mô-men tăng nhanh đến mức nào khi vô lăng rời khỏi tâm, tính bằng N·m trên độ.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>Độ tuyến tính</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>Độ dốc của mô-men giữa 0.10 và 0.15 g so với độ dốc ở tâm. Càng thấp thì tay lái nhẹ đi càng sớm.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>Mô-men cực đại</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>Mô-men lớn nhất mà xe yêu cầu ở vô lăng, bên cạnh mô-men lớn nhất mà vô lăng cho được.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>trên {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Xe này yêu cầu mô-men lớn hơn vô lăng có, nên phần đỉnh của đường cong bị cắt bớt.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>Cảm giác ở tâm, trợ lực lái, giảm chấn, ma sát, độ bám, tốc độ cố định, mô-men vô lăng</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Tay lái giữ tâm chắc đến mức nào ở tốc độ thấp. 100% là độ chắc của chính chiếc xe.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>Trợ lực lái</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Trợ lực lái giảm bớt bao nhiêu lực khi lực ngang tăng dần. Càng cao thì tay lái càng nhẹ khi xa tâm.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>Giảm chấn</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>Vô lăng chống lại các cú xoay nhanh mạnh đến mức nào. 100% là mức đưa vô lăng về mà không vượt quá tâm.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>Ma sát</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>Một lực cản đều chống lại việc xoay theo cả hai chiều.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>Độ bám</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>Độ bám của mặt đường. Tay lái nhẹ đi khi lốp trước hết độ bám.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>Khô</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>Ướt</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>Tuyết</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>Băng</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>Tốc độ cố định</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>Tốc độ mà xe được coi là đang chạy khi Tốc độ là Cố định, và khi chưa có trò chơi nào gửi tốc độ đến.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>Mô-men vô lăng</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>Mô-men lớn nhất mà vô lăng này cho được. PadForge tự điền khi nhà sản xuất vô lăng công bố con số này. Con số cao hơn mức của chính vô lăng sẽ làm mọi lực yếu đi.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>Mô-men vô lăng chưa được đặt cho vô lăng này, nên các lực được giữ ở mức thấp. Hãy nhập nó trong Thêm.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>Vô lăng bắt đầu tự dao động, nên lực bị giữ lại. Hãy chạy Thử thả tay.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>Lực đã tắt vì vô lăng cứ dao động hoặc trôi khỏi tâm. Hãy chạy Thử thả tay.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>Thử thả tay</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>Đo vô lăng này và đặt giảm chấn để nó trở về mà không vượt quá tâm</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>Chưa chạy</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>Đã đo</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>Hãy bỏ tay khỏi vô lăng. PadForge xoay nó đến {0}°, thả ra và ghi lại cách nó trở về.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>Góc của vô lăng trong {0} giây sau mỗi lần thả.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>Trước</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>Sau</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>Đang đo, {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>Xong, 2 lần chạy</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>Đã dừng</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>Vô lăng không đứng yên. Hãy bỏ tay khỏi vô lăng và chạy lại phép thử.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>Vô lăng không chuyển động. Nếu Mô-men vô lăng được đặt cao hơn mức vô lăng cho được, hãy đặt về con số của chính vô lăng và chạy lại phép thử.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>Vô lăng đã đến gần cuối hành trình. Hãy đưa nó về tâm và chạy lại phép thử.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>Không đọc được chuyển động của vô lăng. Hãy chạy lại phép thử.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>Vô lăng ngừng phản hồi. Hãy kiểm tra xem nó đã được kết nối chưa và bộ máy có đang chạy không.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>Vô lăng này chưa được sử dụng. Hãy gán nó cho một tay cầm và khởi động bộ máy, rồi chạy phép thử.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>Quán tính</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>Trước đó, vô lăng vượt quá tâm {0}°.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>Giờ nó vượt quá tâm {0}° và dừng cách tâm {1}°.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>Giờ nó trở về không vượt quá tâm và dừng cách tâm {0}°.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>Chạy lại</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>Áp dụng</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>Đặt lại phản hồi khi hết lái</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Đặt lại xung rung khi hết lái</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Đặt lại rung cò khi hết lái</value></data>
@@ -4919,7 +5000,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Bố cục report của PlayStation Move, hiệu chỉnh cảm biến và quy trình bắt tay với phụ kiện EXT, của Thomas Perl, được đối chiếu với wiki moveonpc. Bản triển khai của PadForge là mã C# tự viết. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Tài liệu tham chiếu về telemetry đua xe</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Các bố cục bộ nhớ dùng chung và UDP đứng sau Telemetry trò chơi và đèn LED báo sang số theo RPM của vô lăng, được đọc từ assettocorsasharedmemory (MIT), CMTelemetry, dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) và vAzhureRacingHub (GPL-3.0). Không có mã GPL hay LGPL nào được phát hành kèm.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>Các bố cục bộ nhớ dùng chung và UDP đứng sau Telemetry trò chơi và đèn LED báo sang số theo RPM của vô lăng, được đọc từ assettocorsasharedmemory (MIT), CMTelemetry, CrewChiefV4 (MIT), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem, scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) và vAzhureRacingHub (GPL-3.0). Không có mã GPL hay LGPL nào được phát hành kèm.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Tài liệu về ghép đôi Bluetooth và report của DualShock 3. GPL-2.0 và GPL-3.0, chỉ được đọc làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4942,6 +5023,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Phạm vi suy giảm 48 dB của micrô DualSense ảo. Chỉ được đọc làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Tài liệu tham chiếu về giao thức vô lăng</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Các report phản hồi lực gốc và đèn LED báo sang số theo RPM cho vô lăng Fanatec, Thrustmaster và Logitech, được đọc từ hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) và thrustmaster-led-linux (GPL-3.0), và được đối chiếu với plugin LED cho SimHub của prodigal.knight (MIT) và tm-bt-led (MIT). Chỉ dùng làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>Tài liệu tham chiếu về cảm giác lái</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>Mô hình mô-men lái đứng sau chế độ Xe của Về tâm, từ Balachandran và Gerdes, “Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures” (IEEE/ASME Transactions on Mechatronics). Các thông số xe được đọc từ commonroad-vehicle-models (BSD-3-Clause) và global_racetrajectory_optimization (LGPL-3.0). Độ trễ của lốp lấy từ Tire and Vehicle Dynamics của Pacejka, còn độ bám đường lấy từ Theory of Ground Vehicles của Wong. Chỉ lấy số liệu, không có mã nào của chúng được phát hành kèm.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Tài liệu tham chiếu về I/O arcade</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>Các giao thức đứng sau trình điều khiển của bản fork SDL dành cho bo mạch I/O arcade của Namco và Konami cùng bo mạch JVS, được đọc từ arcade-docs (WTFPL), bemanitools (Unlicense), Dolphin (GPL-2.0-or-later), ITAIKO-firmware (MIT), JoypadOS (Apache-2.0), jvsio (BSD-3-Clause), MAME (BSD-3-Clause), OpenITG (giấy phép StepMania), p4io-mdxfdrv (GPL-3.0), RPCS3 (GPL-2.0) và TaikoZucchini (MIT). Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>Tài liệu tham chiếu tay cầm Bluetooth LE</value></data>

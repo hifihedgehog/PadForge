@@ -674,6 +674,13 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public string FalconCalibration { get; set; } = string.Empty;
 
+        /// <summary>What the Release Test measured on a force feedback
+        /// wheel (#588), in the form Steering.WheelCalibration.Format
+        /// writes. Empty means the wheel has not been measured. It belongs
+        /// to the wheel, so it is kept per device.</summary>
+        [XmlElement]
+        public string WheelCalibration { get; set; } = string.Empty;
+
         /// <summary>Quick Charge edge memory (#372): the last charging read,
         /// so the drop fires only on the false-to-true edge. Deliberately
         /// NOT reset on a fresh connection: a user who re-links Bluetooth
@@ -786,6 +793,17 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public ForceFeedbackState ForceFeedbackState { get; set; }
+
+        private PadForge.Engine.Steering.WheelCenteringRuntime _centering;
+
+        /// <summary>A wheel's centering as it runs (#588): the composer, a
+        /// Release Test while one runs and the last frame. Made the first
+        /// time it is asked for, by the force feedback pass on the polling
+        /// thread or by the Centering card on the UI thread, whichever
+        /// comes first.</summary>
+        [XmlIgnore]
+        public PadForge.Engine.Steering.WheelCenteringRuntime Centering
+            => System.Threading.LazyInitializer.EnsureInitialized(ref _centering);
 
         // ─────────────────────────────────────────────────────────────
         //  Convenience properties

@@ -3208,7 +3208,88 @@
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>گەڕاندنەوەی مەودای سووڕانەوە</value></data>
   <data name="Pad_ResetAutocenter" xml:space="preserve"><value>گەڕاندنەوەی هێزی گەڕانەوەی خۆکار بۆ ناوەند</value></data>
   <data name="Pad_ResetRpmLeds" xml:space="preserve"><value>گەڕاندنەوەی LEDی RPM بۆ گۆڕینی گێڕ</value></data>
-  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>مەودای ئاراستەکردن، گەڕانەوەی خۆکار بۆ ناوەند و ڕووناکییەکانی گۆڕینی گێڕ بۆ سوکانەکانی فیدباکی هێز.</value></data>
+  <data name="Pad_Wheel_Subtitle" xml:space="preserve"><value>مەودای ئاراستەکردن و ڕووناکییەکانی گۆڕینی گێڕ بۆ سوکانەکانی فیدباکی هێز.</value></data>
+  <data name="Pad_Centering" xml:space="preserve"><value>ناوەندکردن</value></data>
+  <data name="Pad_Centering_Subtitle" xml:space="preserve"><value>سوکانەکە دەگەڕێنێتەوە بۆ ناوەند، وەک فەنەرێکی سادە یان وەک ئاراستەکردنی ئۆتۆمبێلێک.</value></data>
+  <data name="Pad_ResetCentering" xml:space="preserve"><value>گەڕاندنەوەی ناوەندکردن</value></data>
+  <data name="Pad_Centering_Mode" xml:space="preserve"><value>دۆخ</value></data>
+  <data name="Pad_Centering_Mode_Tooltip" xml:space="preserve"><value>فەنەر سوکانەکە بە یەک هێز بەرەو ناوەند ڕادەکێشێت. ئۆتۆمبێل لە مۆدێلێکی تایەوە ئەو تۆرکە دەژمێرێت کە ئاراستەکردنی ئۆتۆمبێلێک لە خێرایی خۆیدا دەیدات.</value></data>
+  <data name="Pad_Centering_Mode_Spring" xml:space="preserve"><value>فەنەر</value></data>
+  <data name="Pad_Centering_Mode_Vehicle" xml:space="preserve"><value>ئۆتۆمبێل</value></data>
+  <data name="Pad_Centering_Vehicle" xml:space="preserve"><value>ئۆتۆمبێل</value></data>
+  <data name="Pad_Centering_Vehicle_Tooltip" xml:space="preserve"><value>ئەو ئۆتۆمبێلەی سوکانەکە ئاراستەکردنەکەی وەردەگرێت. هەریەکەیان مۆدێلێکی بڵاوکراوەی ئۆتۆمبێلە.</value></data>
+  <data name="Pad_Centering_Car_Sedan" xml:space="preserve"><value>سیدان</value></data>
+  <data name="Pad_Centering_Car_Compact" xml:space="preserve"><value>بچووک</value></data>
+  <data name="Pad_Centering_Car_Van" xml:space="preserve"><value>ڤان</value></data>
+  <data name="Pad_Centering_Car_Race" xml:space="preserve"><value>ئۆتۆمبێلی پێشبڕکێ</value></data>
+  <data name="Pad_Centering_Car_X1" xml:space="preserve"><value>Stanford X1</value></data>
+  <data name="Pad_Centering_Speed" xml:space="preserve"><value>خێرایی</value></data>
+  <data name="Pad_Centering_Speed_Tooltip" xml:space="preserve"><value>لە یارییەکەوە خێرایی ئۆتۆمبێلەکە لە تێلێمەتری یارییەکەوە دەخوێنێتەوە، و تا هیچ یارییەک نەینێرێت خێرایی جێگیر بەکاردەهێنێت. جێگیر هەمیشە خێرایی جێگیر بەکاردەهێنێت.</value></data>
+  <data name="Pad_Centering_FromGame" xml:space="preserve"><value>لە یارییەکەوە</value></data>
+  <data name="Pad_Centering_Speed_Fixed" xml:space="preserve"><value>جێگیر</value></data>
+  <data name="Pad_Centering_Weight" xml:space="preserve"><value>قورسایی ئاراستەکردن</value></data>
+  <data name="Pad_Centering_Weight_Tooltip" xml:space="preserve"><value>ئاراستەکردن چەندە قورسە. 100% قورسایی خودی ئۆتۆمبێلەکەیە.</value></data>
+  <data name="Pad_Centering_WheelRange" xml:space="preserve"><value>مەودای سوکان</value></data>
+  <data name="Pad_Centering_WheelRange_Tooltip" xml:space="preserve"><value>ئەم سوکانە لە کۆتاییەکەوە بۆ کۆتاییەکەی تر چەند دەسووڕێتەوە. لەسەر ڕێکخستنی خودی سوکانەکە دایبنێ.</value></data>
+  <data name="Pad_Centering_Chart" xml:space="preserve"><value>تۆرکی ئاراستەکردن</value></data>
+  <data name="Pad_Centering_Angle" xml:space="preserve"><value>گۆشە</value></data>
+  <data name="Pad_Centering_Torque" xml:space="preserve"><value>تۆرک</value></data>
+  <data name="Pad_Centering_WheelLimit_Format" xml:space="preserve"><value>سنووری سوکان {0} N·m</value></data>
+  <data name="Pad_Centering_Chart_Name_Format" xml:space="preserve"><value>تۆرکی ئاراستەکردن لەسەر لێواری سوکان بەرامبەر گۆشەی ئاراستەکردن. لە {0} دەگاتە لووتکەی {1} N·m لە {2}°.</value></data>
+  <data name="Pad_Centering_OnCenterFeel" xml:space="preserve"><value>هەستی ناوەند</value></data>
+  <data name="Pad_Centering_OnCenterFeel_Tooltip" xml:space="preserve"><value>تۆرک چەند خێرا زیاد دەکات لەگەڵ پێچکردنەوە لە نزیک ناوەند، بە N·m بۆ هەر g تا 0.05 g. زیاتر هەستێکی جێگیرتر دەدات.</value></data>
+  <data name="Pad_Centering_TorqueStiffness" xml:space="preserve"><value>ڕەقی تۆرک</value></data>
+  <data name="Pad_Centering_TorqueStiffness_Tooltip" xml:space="preserve"><value>تۆرک چەند خێرا زیاد دەکات کاتێک سوکانەکە لە ناوەند دوور دەکەوێتەوە، بە N·m بۆ هەر پلەیەک.</value></data>
+  <data name="Pad_Centering_Linearity" xml:space="preserve"><value>هێڵیبوون</value></data>
+  <data name="Pad_Centering_Linearity_Tooltip" xml:space="preserve"><value>لاری تۆرک لە نێوان 0.10 و 0.15 g بەراورد بە لارییەکەی لە ناوەند. کەمتر واتە ئاراستەکردن زووتر سووک دەبێت.</value></data>
+  <data name="Pad_Centering_PeakTorque" xml:space="preserve"><value>لووتکەی تۆرک</value></data>
+  <data name="Pad_Centering_PeakTorque_Tooltip" xml:space="preserve"><value>زۆرترین تۆرک کە ئۆتۆمبێلەکە لە سوکانەکە داوای دەکات، لە تەنیشت زۆرترین تۆرک کە سوکانەکە دەیدات.</value></data>
+  <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>لە {0} N·m</value></data>
+  <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ئەم ئۆتۆمبێلە تۆرکی زیاتر لەوەی سوکانەکە هەیەتی داوا دەکات، بۆیە سەرەوەی چەماوەکە دەبڕدرێت.</value></data>
+  <data name="Pad_More_Centering" xml:space="preserve"><value>هەستی ناوەند، یارمەتی هێز، کپکردنەوە، لێکخشان، گرتن، خێرایی جێگیر، تۆرکی سوکان</value></data>
+  <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ئاراستەکردن لە خێرایی نزمدا چەندە بە هێز ناوەندەکەی دەگرێت. 100% هی خودی ئۆتۆمبێلەکەیە.</value></data>
+  <data name="Pad_Centering_Assist" xml:space="preserve"><value>یارمەتی هێز</value></data>
+  <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ئاراستەکردنی هێزدار چەند لە هەوڵ کەم دەکاتەوە کاتێک پێچکردنەوە زیاد دەکات. زیاتر واتە ئاراستەکردنی سووکتر دوور لە ناوەند.</value></data>
+  <data name="Pad_Centering_Damping" xml:space="preserve"><value>کپکردنەوە</value></data>
+  <data name="Pad_Centering_Damping_Tooltip" xml:space="preserve"><value>سوکانەکە چەندە بە هێز بەرگری لە سووڕانەوەی خێرا دەکات. 100% ئەوەیە کە دەیگەڕێنێتەوە بەبێ ئەوەی بە ناوەنددا تێپەڕێت.</value></data>
+  <data name="Pad_Centering_Friction" xml:space="preserve"><value>لێکخشان</value></data>
+  <data name="Pad_Centering_Friction_Tooltip" xml:space="preserve"><value>ڕاکێشانێکی بەردەوام کە بەرگری لە سووڕانەوە دەکات بۆ هەر لایەک.</value></data>
+  <data name="Pad_Centering_Grip" xml:space="preserve"><value>گرتن</value></data>
+  <data name="Pad_Centering_Grip_Tooltip" xml:space="preserve"><value>گرتنی ڕێگاکە. ئاراستەکردن سووک دەبێت لەو شوێنەی تایەکانی پێشەوە گرتنیان نامێنێت.</value></data>
+  <data name="Pad_Centering_Grip_Dry" xml:space="preserve"><value>وشک</value></data>
+  <data name="Pad_Centering_Grip_Wet" xml:space="preserve"><value>تەڕ</value></data>
+  <data name="Pad_Centering_Grip_Snow" xml:space="preserve"><value>بەفر</value></data>
+  <data name="Pad_Centering_Grip_Ice" xml:space="preserve"><value>سەهۆڵ</value></data>
+  <data name="Pad_Centering_FixedSpeed" xml:space="preserve"><value>خێرایی جێگیر</value></data>
+  <data name="Pad_Centering_FixedSpeed_Tooltip" xml:space="preserve"><value>ئەو خێراییەی وا دادەنرێت ئۆتۆمبێلەکە پێی دەڕوات کاتێک خێرایی لەسەر جێگیرە، و تا هیچ یارییەک خێرایی نەنێرێت.</value></data>
+  <data name="Pad_Centering_WheelTorque" xml:space="preserve"><value>تۆرکی سوکان</value></data>
+  <data name="Pad_Centering_WheelTorque_Tooltip" xml:space="preserve"><value>زۆرترین تۆرک کە ئەم سوکانە دەیدات. PadForge پڕی دەکاتەوە لەو شوێنەی دروستکەری سوکانەکە بڵاوی دەکاتەوە. ژمارەیەک لە سەرووی هی خودی سوکانەکەوە هەموو هێزێک لاوازتر دەکات.</value></data>
+  <data name="Pad_Centering_Status_TorqueUnset" xml:space="preserve"><value>تۆرکی سوکان بۆ ئەم سوکانە دانەنراوە، بۆیە هێزەکانی نزم دەهێڵدرێنەوە. لە ژێر زیاتر دایبنێ.</value></data>
+  <data name="Pad_Centering_Status_HeldBack" xml:space="preserve"><value>سوکانەکە خۆی دەستی کرد بە لەرینەوە، بۆیە هێزەکە کەم کرایەوە. تاقیکردنەوەی بەردان ئەنجام بدە.</value></data>
+  <data name="Pad_Centering_Status_Stopped" xml:space="preserve"><value>هێزەکە کوژاوەتەوە چونکە سوکانەکە بەردەوام لەرییەوە یان لە ناوەند دوور کەوتەوە. تاقیکردنەوەی بەردان ئەنجام بدە.</value></data>
+  <data name="Pad_Centering_ReleaseTest" xml:space="preserve"><value>تاقیکردنەوەی بەردان</value></data>
+  <data name="Pad_Centering_ReleaseTest_Desc" xml:space="preserve"><value>ئەم سوکانە دەپێوێت و کپکردنەوە ڕێکدەخات تا بەبێ تێپەڕین بە ناوەنددا بگەڕێتەوە</value></data>
+  <data name="Pad_Centering_ReleaseTest_NotRun" xml:space="preserve"><value>هێشتا ئەنجام نەدراوە</value></data>
+  <data name="Pad_Centering_ReleaseTest_Measured" xml:space="preserve"><value>پێوراوە</value></data>
+  <data name="ReleaseTest_Subtitle_Format" xml:space="preserve"><value>دەستەکانت لە سوکانەکە لابە. PadForge دەیسووڕێنێت بۆ {0}°، بەری دەدات و تۆمار دەکات چۆن دەگەڕێتەوە.</value></data>
+  <data name="ReleaseTest_Chart_Name_Format" xml:space="preserve"><value>گۆشەی سوکانەکە بە درێژایی {0} چرکە دوای هەر بەردانێک.</value></data>
+  <data name="ReleaseTest_Before" xml:space="preserve"><value>پێشتر</value></data>
+  <data name="ReleaseTest_After" xml:space="preserve"><value>دواتر</value></data>
+  <data name="ReleaseTest_Running_Format" xml:space="preserve"><value>پێوانکردن، {0}%</value></data>
+  <data name="ReleaseTest_Done" xml:space="preserve"><value>تەواو بوو، 2 جار</value></data>
+  <data name="ReleaseTest_Stopped" xml:space="preserve"><value>وەستێنرا</value></data>
+  <data name="ReleaseTest_Fail_Moving" xml:space="preserve"><value>سوکانەکە نەوەستا. دەستەکانت لێی لابە و تاقیکردنەوەکە دووبارە ئەنجام بدە.</value></data>
+  <data name="ReleaseTest_Fail_NoMotion" xml:space="preserve"><value>سوکانەکە نەجووڵا. ئەگەر تۆرکی سوکان لە سەرووی ئەوەی سوکانەکە دەیدات دانراوە، لەسەر ژمارەی خودی سوکانەکە دایبنێ و تاقیکردنەوەکە دووبارە ئەنجام بدە.</value></data>
+  <data name="ReleaseTest_Fail_NearLock" xml:space="preserve"><value>سوکانەکە لە کۆتایی مەوداکەی نزیک بووەوە. بیخەرە ناوەند و تاقیکردنەوەکە دووبارە ئەنجام بدە.</value></data>
+  <data name="ReleaseTest_Fail_Unreadable" xml:space="preserve"><value>جووڵەی سوکانەکە نەخوێنرایەوە. تاقیکردنەوەکە دووبارە ئەنجام بدە.</value></data>
+  <data name="ReleaseTest_Fail_Stalled" xml:space="preserve"><value>سوکانەکە وەڵامی نەدایەوە. دڵنیابە کە پەیوەستە و بزوێنەر کار دەکات.</value></data>
+  <data name="ReleaseTest_Fail_NotInUse" xml:space="preserve"><value>ئەم سوکانە بەکارنەهاتووە. بیدە بە کۆنترۆڵەرێکی مەجازی و بزوێنەر دەست پێبکە، پاشان تاقیکردنەوەکە ئەنجام بدە.</value></data>
+  <data name="ReleaseTest_Inertia" xml:space="preserve"><value>ئینێرشیا</value></data>
+  <data name="ReleaseTest_Result_Before_Format" xml:space="preserve"><value>پێشتر، سوکانەکە {0}° بە ناوەنددا تێپەڕی.</value></data>
+  <data name="ReleaseTest_Result_After_Format" xml:space="preserve"><value>ئێستا {0}° بە ناوەنددا تێدەپەڕێت و {1}° لە ناوەندەوە دەوەستێت.</value></data>
+  <data name="ReleaseTest_Result_AfterNone_Format" xml:space="preserve"><value>ئێستا بەبێ تێپەڕین بە ناوەنددا دەگەڕێتەوە و {0}° لە ناوەندەوە دەوەستێت.</value></data>
+  <data name="ReleaseTest_RunAgain" xml:space="preserve"><value>دووبارە ئەنجامدان</value></data>
+  <data name="Common_Apply" xml:space="preserve"><value>جێبەجێکردن</value></data>
   <data name="Pad_Steering_Reset_LockFeedback" xml:space="preserve"><value>گەڕاندنەوەی فیدباکی کۆتایی ئاراستەکردن</value></data>
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>گەڕاندنەوەی ترپەی لەرزین لە کۆتایی</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>گەڕاندنەوەی لەرینەوەی تریگەر لە کۆتایی</value></data>
@@ -4668,7 +4749,7 @@
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>ڕیزبەندیی ڕاپۆرتەکانی PlayStation Move، کالیبرەکردنی هەستەوەر، و دەستتەوقەی پاشکۆی EXT، لەلایەن Thomas Perl، بەراورد کراو لەگەڵ ویکیی moveonpc. جێبەجێکردنی PadForge کۆدی C# ی ڕەسەنە. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>سەرچاوەکانی تێلێمەتریی پێشبڕکێ</value></data>
-  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ڕیزبەندییەکانی بیرگەی هاوبەش و UDP لە پشت تێلێمەتریی یاری و LEDەکانی گۆڕینی گێڕی RPMی سوکان، خوێندراوە لە assettocorsasharedmemory (MIT)، CMTelemetry، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) و vAzhureRacingHub (GPL-3.0). هیچ کۆدێکی GPL یان LGPL لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_TelemetryRefsDesc" xml:space="preserve"><value>ڕیزبەندییەکانی بیرگەی هاوبەش و UDP لە پشت تێلێمەتریی یاری و LEDەکانی گۆڕینی گێڕی RPMی سوکان، خوێندراوە لە assettocorsasharedmemory (MIT)، CMTelemetry، CrewChiefV4 (MIT)، dirt-rally-telemetry-dashboard (MIT)، ets2-telemetry-udp (MIT)، f1-24-udp (MIT)، fh6-tel (MIT)، forza-data-web (Apache-2.0)، forza-telemetry (MIT)، Forza-Telemetry-Splitter (MIT)، InSim.NET (LGPL-2.1)، irsdkSharp (MIT)، IRSDKSharper (GPL-3.0)، out-gauge-cluster (Apache-2.0)، PCars2UdpNet (MIT)، project-cars-2-udp (MIT)، pyirsdk (MIT)، r3e-api (Unlicense)، rF2SharedMemoryMapPlugin (GPL-3.0)، rFactorSharedMemoryMap (GPL-2.0)، rust_ams2_sharedmem، scs-sdk-plugin (MIT)، simapi (LGPL-3.0)، tm-bt-led (MIT) و vAzhureRacingHub (GPL-3.0). هیچ کۆدێکی GPL یان LGPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>بەڵگەنامەی جووتکردن و ڕاپۆرتی Bluetooth ی DualShock 3. GPL-2.0 و GPL-3.0، تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
@@ -4691,6 +4772,8 @@
   <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>مەودای کەمکردنەوەی 48 dB ی مایکرۆفۆنی DualSense ی مەجازی. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>سەرچاوەکانی پرۆتۆکۆلی سوکان</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ڕاپۆرتەکانی فیدباکی هێزی خۆماڵی و LED ی گۆڕینی گێڕی RPM بۆ سوکانەکانی Fanatec، Thrustmaster و Logitech، خوێندراوە لە hid-fanatecff (GPL-2.0)، hid-tmff2 (GPL-2.0-or-later)، new-lg4ff (GPL-2.0-or-later)، oversteer (GPL-3.0) و thrustmaster-led-linux (GPL-3.0)، و بەراورد کراوە لەگەڵ پێوەکراوی LED ی SimHub لەلایەن prodigal.knight (MIT) و tm-bt-led (MIT). تەنها بەڵگەنامە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_SteeringRefs" xml:space="preserve"><value>سەرچاوەکانی هەستی ئاراستەکردن</value></data>
+  <data name="About_SteeringRefsDesc" xml:space="preserve"><value>مۆدێلی تۆرکی ئاراستەکردن لە پشت دۆخی ئۆتۆمبێلی ناوەندکردن، لە Balachandran و Gerdes، «Designing Steering Feel for Steer-by-Wire Vehicles Using Objective Measures» (IEEE/ASME Transactions on Mechatronics). پارامەتەرەکانی ئۆتۆمبێل خوێندراونەتەوە لە commonroad-vehicle-models (BSD-3-Clause) و global_racetrajectory_optimization (LGPL-3.0). دووریی شوێنکەوتنی تایە لە Tire and Vehicle Dynamics ی Pacejka وەرگیراوە، و گرتنی ڕێگا لە Theory of Ground Vehicles ی Wong وەرگیراوە. تەنها ژمارەکان، هیچ کۆدێک لەوانە لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>سەرچاوەکانی I/O ی ئارکەید</value></data>
   <data name="About_ArcadeIoRefsDesc" xml:space="preserve"><value>پرۆتۆکۆلەکانی پشت درایڤەرەکانی لقی SDL بۆ تەختەکانی I/O ی ئارکەیدی Namco و Konami و تەختەکانی JVS، خوێندراوە لە arcade-docs (WTFPL)، bemanitools (Unlicense)، Dolphin (GPL-2.0-or-later)، ITAIKO-firmware (MIT)، JoypadOS (Apache-2.0)، jvsio (BSD-3-Clause)، MAME (BSD-3-Clause)، OpenITG (مۆڵەتی StepMania)، p4io-mdxfdrv (GPL-3.0)، RPCS3 (GPL-2.0) و TaikoZucchini (MIT). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_BleControllerRefs" xml:space="preserve"><value>سەرچاوەکانی کۆنترۆڵەری Bluetooth LE</value></data>

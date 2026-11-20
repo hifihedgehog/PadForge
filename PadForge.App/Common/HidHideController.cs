@@ -74,6 +74,30 @@ namespace PadForge.Common
         private const uint PROCESS_NAME_NATIVE = 0x00000001;
         private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
 
+        // An image mapping of this process's own file (AnnounceThisProcess).
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern IntPtr CreateFileMappingW(
+            SafeFileHandle hFile, IntPtr lpFileMappingAttributes, uint flProtect,
+            uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr MapViewOfFile(
+            IntPtr hFileMappingObject, uint dwDesiredAccess,
+            uint dwFileOffsetHigh, uint dwFileOffsetLow, UIntPtr dwNumberOfBytesToMap);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnmapViewOfFile(IntPtr lpBaseAddress);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool CloseHandle(IntPtr hObject);
+
+        private const uint FILE_SHARE_DELETE = 0x4;
+        private const uint PAGE_READONLY = 0x02;
+        private const uint SEC_IMAGE = 0x01000000;
+        private const uint FILE_MAP_READ = 0x0004;
+
         // SetupAPI for enumerating HID devices by VID/PID.
         [DllImport("setupapi.dll", SetLastError = true)]
         private static extern IntPtr SetupDiGetClassDevsW(
@@ -762,6 +786,164 @@ namespace PadForge.Common
                 return false;
             }
             return true;
+        }
+
+        /// <summary>Test seam for <see cref="AnnounceThisProcess"/>: whether
+        /// the image was mapped. Null in production, where the process maps
+        /// its own image file.</summary>
+        internal static Func<bool> AnnounceSeam;
+
+        /// <summary>The paths this process's image file opens by, the native
+        /// one first. Read once: neither changes while the process
+        /// lives.</summary>
+        private static string[] s_ownImagePaths;
+
+        /// <summary>Gives HidHide's driver the name of this process's image,
+        /// when the driver has none for it.
+        ///
+        /// <para>The driver does not ask Windows which program a process is.
+        /// It takes the name from the first image it sees mapped into the
+        /// process after the driver itself has started (Logic.c
+        /// OnSystemLoadImage, Config.c HidHideProcessIdRegister), and at a
+        /// hidden device it refuses a process it has no name for (Config.c
+        /// HidHideProcessIdCheckFullImageNameAgainstWhitelist answers
+        /// success for one, which Logic.c Whitelisted reads as not listed).
+        /// A process that was running when the driver first loaded has had
+        /// no image mapped since, or a DLL as its first. A PadForge that
+        /// installs HidHide is such a process. On an ARM64 PC that had never
+        /// had HidHide, PadForge started at 17:38:24 and the driver first
+        /// loaded at 17:40:54. The driver's application list held PadForge's
+        /// own path, and the DualSense PadForge was set to hide was not on
+        /// its device list.</para>
+        ///
+        /// <para>So the process maps its own image file as an image and lets
+        /// go of it at once. No code of the image runs, since nothing goes
+        /// through the loader. Windows tells every image-load callback of
+        /// the mapping, under the image's native path, the string
+        /// <see cref="CurrentProcessNativeImagePath"/> gives and PadForge
+        /// puts on the driver's list. Measured on that PC on 2026-11-19:
+        /// HidHide's own trace showed OnSystemLoadImage once for each of
+        /// five mappings, and Windows' image-load trace named a mapping
+        /// \Device\HarddiskVolume3\PadForge\PadForge.exe whether the file
+        /// was opened by drive letter or by native path. A mapping made with
+        /// SEC_IMAGE_NO_EXECUTE reached neither trace, as CreateFileMapping
+        /// documents: such a view "will not invoke driver callbacks
+        /// registered using the PsSetLoadImageNotifyRoutine kernel
+        /// API".</para>
+        ///
+        /// <para>The driver keeps the first name it hears for a process and
+        /// passes over every later one, so this changes nothing for a
+        /// process the driver knows, by its own image or by another. A
+        /// process that mapped some other image between the driver's start
+        /// and its first call here keeps that image's name in the driver
+        /// until it exits. <see cref="AnnounceThisProcessWhile"/> keeps that
+        /// gap to a few milliseconds for an install PadForge runs.</para>
+        ///
+        /// <para>True when the image was mapped.</para></summary>
+        internal static bool AnnounceThisProcess()
+        {
+            var seam = AnnounceSeam;
+            if (seam != null) return seam();
+            // A test host maps nothing, since the driver of the PC it runs
+            // on would hear it.
+            if (SeamsOnlyForTest)
+            {
+                OffLimitsRefused?.Invoke("announce");
+                return false;
+            }
+            try
+            {
+                var paths = s_ownImagePaths;
+                if (paths == null)
+                {
+                    // The native path first: it is the name the mapping has
+                    // to carry, and it opens the same file whichever
+                    // junction or SUBST drive the program was started
+                    // through.
+                    var found = new List<string>(2);
+                    string native = CurrentProcessNativeImagePath();
+                    if (!string.IsNullOrEmpty(native)) found.Add(@"\\?\GLOBALROOT" + native);
+                    string started = Environment.ProcessPath;
+                    if (!string.IsNullOrEmpty(started)) found.Add(started);
+                    s_ownImagePaths = paths = found.ToArray();
+                }
+                foreach (string path in paths)
+                {
+                    using var file = CreateFileW(path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE,
+                        IntPtr.Zero, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, IntPtr.Zero);
+                    if (file == null || file.IsInvalid) continue;
+                    // SEC_IMAGE, never SEC_IMAGE_NO_EXECUTE, which Windows
+                    // keeps from the image-load callbacks.
+                    IntPtr mapping = CreateFileMappingW(file, IntPtr.Zero, PAGE_READONLY | SEC_IMAGE, 0, 0, null);
+                    if (mapping == IntPtr.Zero) continue;
+                    try
+                    {
+                        IntPtr view = MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, UIntPtr.Zero);
+                        if (view == IntPtr.Zero) continue;
+                        UnmapViewOfFile(view);
+                        return true;
+                    }
+                    finally
+                    {
+                        CloseHandle(mapping);
+                    }
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>How often <see cref="AnnounceThisProcessWhile"/> maps
+        /// the image while its work runs.</summary>
+        internal static readonly TimeSpan AnnounceEvery = TimeSpan.FromMilliseconds(20);
+
+        /// <summary>Runs an install of HidHide, announcing this process all
+        /// the while and once more when the install is over.
+        ///
+        /// <para>The driver starts somewhere inside the install, and the
+        /// first image it then sees mapped into this process names the
+        /// process for as long as it lives
+        /// (<see cref="AnnounceThisProcess"/>). Mapped every
+        /// <see cref="AnnounceEvery"/>, PadForge's own image is that first
+        /// one unless another thread maps an image in the same few
+        /// milliseconds.</para>
+        ///
+        /// <para>The last call comes after the install has returned. The
+        /// driver's control device opens a moment before the driver begins
+        /// to listen for images (Logic.c OnDriverCreate makes the device,
+        /// then registers the callback), so a call timed by the device
+        /// first opening could come too early. By the time an installer
+        /// has returned, the driver's start is long over.</para>
+        ///
+        /// <para>An install that throws is announced the same way before
+        /// its fault reaches the caller: a driver that loaded before a later
+        /// step failed has still started.</para></summary>
+        internal static void AnnounceThisProcessWhile(Action install)
+        {
+            using var over = new System.Threading.ManualResetEventSlim(false);
+            var announcer = new System.Threading.Thread(() =>
+            {
+                do AnnounceThisProcess();
+                while (!over.Wait(AnnounceEvery));
+            })
+            {
+                IsBackground = true,
+                Name = "HidHide announce",
+            };
+            announcer.Start();
+            try
+            {
+                install();
+            }
+            finally
+            {
+                over.Set();
+                announcer.Join();
+                AnnounceThisProcess();
+            }
         }
 
         /// <summary>

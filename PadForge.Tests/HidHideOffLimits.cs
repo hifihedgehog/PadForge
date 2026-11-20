@@ -126,6 +126,19 @@ namespace PadForge.Tests
             Assert.True(HidHideController.SeamsOnlyForTest);
         }
 
+        /// <summary>The announcement maps no image here. The driver of the
+        /// PC the tests run on would hear the test host's image, and a
+        /// mutant of the app could map another.</summary>
+        [Fact]
+        public void AnAnnouncementMapsNothingWithNoSeam()
+        {
+            HidHideController.AnnounceSeam = null;
+
+            Assert.False(HidHideController.AnnounceThisProcess());
+
+            Assert.Contains("announce", Refused());
+        }
+
         /// <summary>The control device does not open, and the error is the
         /// one a PC with no HidHide gives. The release reads that as a
         /// driver that is not there, so its batch ends.</summary>

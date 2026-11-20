@@ -15217,6 +15217,17 @@ namespace PadForge.Services
         /// controller back on a new device stack need not probe.</summary>
         private bool _hidHideReachConfirmed;
 
+        /// <summary>This process has announced itself to HidHide's driver
+        /// since the control device last failed to open
+        /// (<see cref="HidHideController.AnnounceThisProcess"/>). A driver
+        /// that starts while PadForge runs has no name for PadForge,
+        /// whoever installed it, and refuses PadForge at every device
+        /// PadForge hides. The first apply that finds the driver announces
+        /// PadForge before it hides anything, and an apply that does not
+        /// find it clears this, so a driver that comes back is told
+        /// again.</summary>
+        private bool _hidHideAnnounced;
+
         /// <summary>Hidden HID ids whose USB device the release cycled, not
         /// yet opened since, each with the time of its cycle. HidHide is a
         /// class upper filter (its Setup/install.cmd runs devcon classfilter
@@ -15479,8 +15490,16 @@ namespace PadForge.Services
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"HIDHIDE UNAVAILABLE: hiding requested for {wantHiding} device(s) but the control device did not open (err={hidHideErr}). Nothing is hidden.");
             }
+            if (!hidHideUp) _hidHideAnnounced = false;
             if (hidHideUp)
             {
+                // Before anything is hidden: a driver that started while
+                // PadForge ran knows PadForge by no name yet, and refuses it
+                // at the first device hidden. One announcement per driver,
+                // tried again on the next apply while the mapping fails.
+                if (!_hidHideAnnounced)
+                    _hidHideAnnounced = HidHideController.AnnounceThisProcess();
+
                 // Adoption belongs to the OPERATION, not to Start(). Kept
                 // cloaks mean this session inherits entries it did not write,
                 // and the sync's removal set is computed from _managedDeviceIds,
@@ -15899,8 +15918,11 @@ namespace PadForge.Services
                 // Remote was hidden at 22:13:30.242 and SDL removed it at
                 // 30.982, while the virtual pad was being created. So after a
                 // write, PadForge opens one hidden device itself. Refused, it
-                // takes every entry back, stops hiding, and says so. With its
-                // own entry unconfirmed, a refusal would prove nothing.
+                // announces itself to the driver and opens that device once
+                // more, since a driver that has no name for PadForge refuses
+                // it whatever the list says. Refused again, it takes every
+                // entry back, stops hiding, and says so. With its own entry
+                // unconfirmed, a refusal would prove nothing.
                 //
                 // A controller that comes back does so on a device stack
                 // built after the hide, which can be the first of its stacks
@@ -15945,10 +15967,12 @@ namespace PadForge.Services
                         if (cycledBack || cameBack) returned.Add(id);
                         afterRelease |= cycledBack;
                     }
+                    bool refusedOnReturn = false;
                     if (returned.Count > 0)
                     {
                         reach = ProbeOwnHidHideReach(returned, HidHideController.HidInterfaceOf,
                             HidHideController.TryOpenAsThisProcess, out probed, out probeError);
+                        refusedOnReturn = reach == false;
                         if (reach == true)
                         {
                             // The verdict belongs to the process, so one open
@@ -15977,6 +16001,35 @@ namespace PadForge.Services
                             hidLog.Add("HIDHIDE reach unknown: no hidden HID interface answered the probe");
                         }
                     }
+                    // A refusal can mean the driver has no name for this
+                    // process: it names one by the first image it sees
+                    // mapped into it after the driver starts, and refuses a
+                    // process it has no name for
+                    // (HidHideController.AnnounceThisProcess). That is a
+                    // driver that started while PadForge ran and that no
+                    // apply has announced PadForge to, or one whose callback
+                    // was not yet registered when an apply did. PadForge
+                    // announces itself and opens the same interface once
+                    // more. The driver holds no verdict for a process it had
+                    // no name for (Config.c evaluationCache is the named
+                    // process's), so the second open is judged afresh.
+                    bool announcedOnRefusal = reach == false && HidHideController.AnnounceThisProcess();
+                    if (announcedOnRefusal && HidHideController.TryOpenAsThisProcess(probed, out _))
+                    {
+                        reach = true;
+                        _hidHideAnnounced = true;
+                        if (refusedOnReturn)
+                        {
+                            // What an open that worked on the returned ids
+                            // records above.
+                            _hidHideReprobeIds.Clear();
+                            foreach (var back in newArrivals)
+                                _hidHideSeenArrivals[back.Key] = back.Value;
+                        }
+                        _hidHideReachConfirmed = true;
+                        hidLog.Add($"HIDHIDE reach ok once HidHide had PadForge's image name: PadForge opened {probed}");
+                        oneTimeLine = true;
+                    }
                     if (reach == false)
                     {
                         _hidHideRefusedPadForge = true;
@@ -15984,7 +16037,10 @@ namespace PadForge.Services
                         _hidHideReprobeIds.Clear();
                         // Listed and still refused means the driver does not
                         // know this process by that path. Not listed means
-                        // the entry never landed.
+                        // the entry never landed. Listed, announced and
+                        // still refused means the driver knows this process
+                        // by another image's name, which it keeps until the
+                        // process exits.
                         var listNow = HidHideController.GetWhitelist();
                         _hidHideRefusalWhitelist = listNow;
                         string listed = listNow == null ? "unreadable"
@@ -15996,7 +16052,7 @@ namespace PadForge.Services
                         removed.AddRange(undone);
                         hidLog.Add($"HIDHIDE REFUSED: HidHide would not let PadForge open {probed} (err={probeError}) after hiding it. "
                             + $"PadForge took back {undone.Count} entr{(undone.Count == 1 ? "y" : "ies")} (write={(synced ? "ok" : "REFUSED")}) and hides nothing until the whitelist changes or the inverse application cloak goes off. "
-                            + $"native={nativeSelf ?? "unknown"} listed={listed}");
+                            + $"announced={(announcedOnRefusal ? "yes" : "no")} native={nativeSelf ?? "unknown"} listed={listed}");
                         _hidHideRefusalStatus = Strings.Instance.Status_HidHideRefusedPadForge;
                         _mainVm.SetStatus(_hidHideRefusalStatus, persist: true);
                     }

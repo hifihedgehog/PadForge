@@ -190,6 +190,7 @@ namespace PadForge.Tests
             HidHideController.ControlOpenSeam = null;
             HidHideController.InterfaceSeam = null;
             HidHideController.OpenSeam = null;
+            HidHideController.AnnounceSeam = null;
             HidHideController.SerialReader = null;
             HidHideController.ArrivalSeam = null;
             HidHideController.ChainSeam = null;
@@ -253,8 +254,9 @@ namespace PadForge.Tests
         /// <summary>The report's order: nothing is hidden at launch, and the
         /// refusal comes on a later apply. Taking the hide back leaves the
         /// same empty set the first block printed, and the REFUSED line still
-        /// reaches the log, with PadForge's native path and the fact that the
-        /// driver's list held it.</summary>
+        /// reaches the log, with PadForge's native path, the fact that the
+        /// driver's list held it, and that no announcement was made (a test
+        /// host maps no image).</summary>
         [Fact]
         public void ARefusalOnALaterApplyStillReachesTheLog()
         {
@@ -270,7 +272,7 @@ namespace PadForge.Tests
             string native = HidHideController.CurrentProcessNativeImagePath();
             string line = Assert.Single(LogLinesAfter(mark, "HIDHIDE REFUSED"));
             Assert.Contains($"open {RemotePath} (err=5)", line);
-            Assert.EndsWith($"native={native} listed=yes", line);
+            Assert.EndsWith($" announced=no native={native} listed=yes", line);
         }
 
         /// <summary>A whitelist the driver will not write or read is logged
@@ -352,6 +354,257 @@ namespace PadForge.Tests
             Assert.True(Names(_driver.Blacklist, RemoteId));
             Assert.Equal(2, _opened.Count);
             Assert.Equal(string.Empty, _vm.StatusText);
+        }
+
+        // ── A driver that started while PadForge ran ──
+
+        /// <summary>The fake driver's memory of this process, as HidHide
+        /// keeps it. A process is unknown until an image is mapped into it
+        /// while the driver listens, and an unknown process is refused at a
+        /// hidden device whatever the list holds (Config.c
+        /// HidHideProcessIdRegister,
+        /// HidHideProcessIdCheckFullImageNameAgainstWhitelist). The driver
+        /// listens from the announcement numbered
+        /// <paramref name="listensFrom"/> on, and every open answers by
+        /// what it knows. Returns the count of announcements.</summary>
+        private Func<int> ADriverThatLearnsPadForgeFromItsImage(int listensFrom)
+        {
+            int announced = 0;
+            bool known = false;
+            HidHideController.AnnounceSeam = () =>
+            {
+                if (++announced >= listensFrom) known = true;
+                return true;
+            };
+            HidHideController.OpenSeam = path =>
+            {
+                _opened.Add(path);
+                return known ? (true, 0) : (false, ERROR_ACCESS_DENIED);
+            };
+            return () => announced;
+        }
+
+        /// <summary>The report of 2026-11-19: PadForge installed HidHide on
+        /// a PC that had never had it, and the controller it was set to hide
+        /// stayed visible. The driver had started while PadForge ran, and
+        /// such a driver has no name for PadForge and refuses it. The first
+        /// apply that finds the driver announces PadForge before it writes
+        /// either list, so the hide stays and the open works the first
+        /// time. One announcement serves the applies that follow.</summary>
+        [Fact]
+        public void TheFirstApplyThatFindsTheDriverAnnouncesPadForgeBeforeItHides()
+        {
+            var announced = ADriverThatLearnsPadForgeFromItsImage(listensFrom: 1);
+            var learn = HidHideController.AnnounceSeam;
+            var writesBefore = new List<int>();
+            HidHideController.AnnounceSeam = () =>
+            {
+                writesBefore.Add(_driver.BlacklistWrites.Count + _driver.WhitelistWrites);
+                return learn();
+            };
+
+            _svc.ApplyDeviceHiding();
+
+            Assert.Equal(new[] { 0 }, writesBefore);
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.Equal(new[] { RemotePath }, _opened);
+            Assert.NotEqual(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(1, announced());
+        }
+
+        /// <summary>An apply that finds no driver forgets the announcement.
+        /// A driver that comes back is new to every running process, so the
+        /// next apply that finds it announces PadForge again.</summary>
+        [Fact]
+        public void ADriverThatComesBackIsToldAgain()
+        {
+            var announced = ADriverThatLearnsPadForgeFromItsImage(listensFrom: 1);
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(1, announced());
+
+            HidHideController.ControlOpenSeam = () => 2;
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(1, announced());
+
+            HidHideController.ControlOpenSeam = null;
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(2, announced());
+        }
+
+        /// <summary>An announcement that mapped no image is made again at
+        /// each apply until one maps it, and not after.</summary>
+        [Fact]
+        public void AnAnnouncementThatMappedNothingIsMadeAgain()
+        {
+            int tried = 0;
+            HidHideController.AnnounceSeam = () => ++tried >= 3;
+
+            for (int apply = 0; apply < 5; apply++)
+                _svc.ApplyDeviceHiding();
+
+            Assert.Equal(3, tried);
+        }
+
+        /// <summary>The driver's control device opens a moment before the
+        /// driver listens for images (Logic.c OnDriverCreate makes the
+        /// device, then registers the callback), so the announcement an
+        /// apply makes on first finding the driver can come too early. The
+        /// refusal that follows is answered with a second announcement and
+        /// a second open of the same interface. The hide stays, its
+        /// controller goes to the release, and nothing says PadForge was
+        /// refused.</summary>
+        [Fact]
+        public void ARefusalIsAnsweredWithAnAnnouncementAndASecondOpen()
+        {
+            var announced = ADriverThatLearnsPadForgeFromItsImage(listensFrom: 2);
+            string mark = Mark();
+
+            _svc.ApplyDeviceHiding();
+
+            Assert.Equal(2, announced());
+            Assert.Equal(new[] { RemotePath, RemotePath }, _opened);
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.NotEqual(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+            Assert.Empty(LogLinesAfter(mark, "HIDHIDE REFUSED"));
+            Assert.Single(LogLinesAfter(mark, $"HIDHIDE reach ok once HidHide had PadForge's image name: PadForge opened {RemotePath}"));
+            Assert.Contains(RemoteId, Released(), StringComparer.OrdinalIgnoreCase);
+
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(2, announced());
+            Assert.Equal(2, _opened.Count);
+        }
+
+        /// <summary>A process the driver knows by another image's name is
+        /// refused whatever it announces, since the driver keeps the first
+        /// name it heard for a process. PadForge announces, opens a second
+        /// time, takes the hide back, and the log says the announcement was
+        /// made.</summary>
+        [Fact]
+        public void ARefusalThatOutlastsTheAnnouncementTakesTheHideBack()
+        {
+            int announced = 0;
+            HidHideController.AnnounceSeam = () => { announced++; return true; };
+            _openAnswer = (false, ERROR_ACCESS_DENIED);
+            string mark = Mark();
+
+            _svc.ApplyDeviceHiding();
+
+            // Once on finding the driver, once on the refusal.
+            Assert.Equal(2, announced);
+            Assert.Equal(new[] { RemotePath, RemotePath }, _opened);
+            Assert.False(Names(_driver.Blacklist, RemoteId));
+            Assert.Equal(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+            string native = HidHideController.CurrentProcessNativeImagePath();
+            Assert.EndsWith($" announced=yes native={native} listed=yes",
+                Assert.Single(LogLinesAfter(mark, "HIDHIDE REFUSED")));
+            Assert.Empty(Released());
+        }
+
+        /// <summary>An install is announced while it runs and once more when
+        /// it has returned, by which time the driver's start is over.
+        /// Nothing is announced after that.</summary>
+        [Fact]
+        public void AnInstallIsAnnouncedWhileItRunsAndOnceMoreWhenItIsOver()
+        {
+            int announced = 0, afterTheInstall = 0;
+            bool installOver = false;
+            HidHideController.AnnounceSeam = () =>
+            {
+                System.Threading.Interlocked.Increment(ref announced);
+                if (System.Threading.Volatile.Read(ref installOver))
+                    System.Threading.Interlocked.Increment(ref afterTheInstall);
+                return true;
+            };
+
+            HidHideController.AnnounceThisProcessWhile(() =>
+            {
+                Assert.True(System.Threading.SpinWait.SpinUntil(
+                    () => System.Threading.Volatile.Read(ref announced) >= 3, TimeSpan.FromSeconds(30)),
+                    "the install was not announced while it ran");
+                System.Threading.Volatile.Write(ref installOver, true);
+            });
+
+            Assert.True(System.Threading.Volatile.Read(ref afterTheInstall) >= 1,
+                "no announcement followed the install");
+            int atReturn = System.Threading.Volatile.Read(ref announced);
+            System.Threading.Thread.Sleep(HidHideController.AnnounceEvery * 5);
+            Assert.Equal(atReturn, System.Threading.Volatile.Read(ref announced));
+        }
+
+        /// <summary>An install that throws is announced the same way, since
+        /// a driver that loaded before a later step failed has still
+        /// started, and its fault reaches the caller.</summary>
+        [Fact]
+        public void AnInstallThatThrowsIsAnnouncedAllTheSameAndItsFaultGoesOn()
+        {
+            int announced = 0, afterTheFault = 0;
+            bool thrown = false;
+            HidHideController.AnnounceSeam = () =>
+            {
+                System.Threading.Interlocked.Increment(ref announced);
+                if (System.Threading.Volatile.Read(ref thrown))
+                    System.Threading.Interlocked.Increment(ref afterTheFault);
+                return true;
+            };
+
+            var fault = Assert.Throws<InvalidOperationException>(() =>
+                HidHideController.AnnounceThisProcessWhile(() =>
+                {
+                    // Once the loop has run, so that what follows the fault
+                    // is the announcement made after it and not the loop's
+                    // first.
+                    Assert.True(System.Threading.SpinWait.SpinUntil(
+                        () => System.Threading.Volatile.Read(ref announced) >= 2, TimeSpan.FromSeconds(30)),
+                        "the install was not announced while it ran");
+                    System.Threading.Volatile.Write(ref thrown, true);
+                    throw new InvalidOperationException("the installer failed");
+                }));
+
+            Assert.Equal("the installer failed", fault.Message);
+            Assert.True(System.Threading.Volatile.Read(ref afterTheFault) >= 1);
+            int atReturn = System.Threading.Volatile.Read(ref announced);
+            System.Threading.Thread.Sleep(HidHideController.AnnounceEvery * 5);
+            Assert.Equal(atReturn, System.Threading.Volatile.Read(ref announced));
+        }
+
+        /// <summary>What makes the announcement one the driver hears, and
+        /// what puts every install inside it, read from the source. The
+        /// mapping is an image mapping with SEC_IMAGE: Windows keeps a
+        /// SEC_IMAGE_NO_EXECUTE mapping from the image-load callbacks
+        /// (CreateFileMapping's documentation, and both traces of
+        /// 2026-11-19), so that flag would announce nothing while every
+        /// call still succeeded. HidHide's install has one way in, through
+        /// the wrapper that announces.</summary>
+        [Fact]
+        public void TheAnnouncementIsAnImageMapping_AndEveryInstallRunsInsideIt()
+        {
+            var dir = new DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+
+            string ctl = File.ReadAllText(Path.Combine(dir.FullName, "PadForge.App", "Common", "HidHideController.cs"));
+            Assert.Contains("private const uint SEC_IMAGE = 0x01000000;", ctl);
+            Assert.DoesNotContain("0x11000000", ctl);
+            string announce = FenceSource.Body(ctl, "internal static bool AnnounceThisProcess()");
+            Assert.Contains("CreateFileMappingW(file, IntPtr.Zero, PAGE_READONLY | SEC_IMAGE, 0, 0, null);", announce);
+            Assert.Contains("MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, UIntPtr.Zero);", announce);
+            Assert.Contains(@"found.Add(@""\\?\GLOBALROOT"" + native);", announce);
+
+            string installer = File.ReadAllText(Path.Combine(dir.FullName, "PadForge.App", "Common", "DriverInstaller.cs"));
+            Assert.Equal("HidHideController.AnnounceThisProcessWhile(InstallHidHideNow);",
+                FenceSource.FirstStatement(installer, "public static void InstallHidHide()"));
+            // The wrapper's argument and the declaration: nothing else runs
+            // the install.
+            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(installer, @"\bInstallHidHideNow\b").Count);
+            Assert.Contains("HidHideArm64Installer.Install();",
+                FenceSource.Body(installer, "private static void InstallHidHideNow()"));
+            Assert.Equal(new[] { "PadForge.App/Common/DriverInstaller.cs" },
+                FenceSource.Census(@"\bHidHideArm64Installer\.Install\(\)").Keys.ToArray());
+            Assert.Equal(new[] { "PadForge.App/Common/DriverInstaller.cs" },
+                FenceSource.Census(@"\bInstallHidHideNow\b").Keys.ToArray());
         }
 
         /// <summary>A hide PadForge can still reach hands what it added to
@@ -892,6 +1145,35 @@ namespace PadForge.Tests
 
             _svc.ApplyDeviceHiding();
             Assert.Equal(2, _opened.Count);
+        }
+
+        /// <summary>The same answer for a controller that comes back on a
+        /// new device stack, the first one HidHide's filter sits on.
+        /// Refused there, PadForge announces itself and opens the controller
+        /// again. That open counts as the check of the returned controller,
+        /// so the hide stays and the apply after it opens nothing.</summary>
+        [Fact]
+        public void AReturnedControllerRefusedOnItsNewStackIsOpenedAgainOnceAnnounced()
+        {
+            ReleaseCyclesTheRemote();
+            _svc.ApplyDeviceHiding();
+            Cycled();
+            Assert.Single(_opened);
+
+            // The announcement this apply makes on finding the driver comes
+            // before the driver listens, and the one after the refusal
+            // lands.
+            ADriverThatLearnsPadForgeFromItsImage(listensFrom: 2);
+            string mark = Mark();
+            _svc.ApplyDeviceHiding();
+
+            Assert.Equal(3, _opened.Count);
+            Assert.True(Names(_driver.Blacklist, RemoteId));
+            Assert.NotEqual(Strings.Instance.Status_HidHideRefusedPadForge, _vm.StatusText);
+            Assert.Single(LogLinesAfter(mark, "HIDHIDE reach ok once HidHide had PadForge's image name"));
+
+            _svc.ApplyDeviceHiding();
+            Assert.Equal(3, _opened.Count);
         }
 
         /// <summary>Until the controller is back its interface is gone, so

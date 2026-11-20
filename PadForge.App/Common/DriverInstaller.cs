@@ -280,10 +280,26 @@ namespace PadForge.Common
             => Path.Combine(HidHideTempRoot, Guid.NewGuid().ToString("N"));
 
         /// <summary>
-        /// Install HidHide driver. Extracts the embedded bootstrapper,
-        /// unpacks the MSI, and runs msiexec /i with elevation.
+        /// Installs HidHide, and announces PadForge to its driver while the
+        /// install runs.
+        ///
+        /// <para>The driver starts inside the install and names each process
+        /// by the first image it then sees mapped into it. Until it has
+        /// PadForge's name it refuses PadForge at every device PadForge
+        /// hides, and the hide is taken back
+        /// (<see cref="HidHideController.AnnounceThisProcess"/>). Announced
+        /// through the install, PadForge is known to the driver from the
+        /// driver's first moments, and the first device hidden afterward
+        /// stays hidden.</para>
         /// </summary>
         public static void InstallHidHide()
+            => HidHideController.AnnounceThisProcessWhile(InstallHidHideNow);
+
+        /// <summary>
+        /// The install itself. On x64 it extracts the embedded bootstrapper,
+        /// unpacks the MSI and runs msiexec /i with elevation.
+        /// </summary>
+        private static void InstallHidHideNow()
         {
             // A kernel driver cannot run emulated, so the MACHINE picks the
             // package, whichever build this is. ARM64 Windows takes upstream's

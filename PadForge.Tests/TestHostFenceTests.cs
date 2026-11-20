@@ -528,6 +528,8 @@ namespace PadForge.Tests
             new object[] { WiiPairing, "internal PairPassResult RunPairingPass(bool temporary, CancellationToken ct,", "if (PadForge.Common.Input.BluetoothLinkHelper.OffLimitsForTest)", "BluetoothFindFirstRadio(" },
             new object[] { Ds3Driver, "internal static string EnsureSigningCertificate()", "if (OffLimitsForTest)", "RSA.Create(" },
             new object[] { "PadForge.App/Common/HidHideArm64Installer.cs", "int? Run(string arguments)", "if (HidHideController.SeamsOnlyForTest)", "Process.Start(psi)" },
+            // The image a process maps to give HidHide's driver its name.
+            new object[] { "PadForge.App/Common/HidHideController.cs", "internal static bool AnnounceThisProcess()", "if (SeamsOnlyForTest)", "CreateFileW(path," },
             // OpenXInput's identity call loads xinput1_4.dll, after a test's
             // own answer (#583).
             new object[] { SlotIdentity, "public static Answer Get(int slot, int busyRetries = 0)", "if (OffLimitsForTest) return new Answer(Kind.Unsupported);", "Ask((uint)slot)" },

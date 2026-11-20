@@ -2803,13 +2803,17 @@ namespace PadForge.Tests
 
         /// <summary>An XInput interface is OpenXInput's to read, and it
         /// gives no slot when a hardware id of the XUSB interface's node or
-        /// one of its three parents names HIDMaestro (maxDepth 4,
+        /// one of its four parents names HIDMaestro (maxDepth 5,
         /// OpenXinput.cpp). On a pad xusb22 serves the interface sits on
         /// the USB device above the HID node, two nodes below the host
-        /// controller, and the pad is dropped. On a pad xboxgip serves it
-        /// sits on the HID node, four below, where the walk ends at the
-        /// root hub: that pad keeps its slot, PadForge reads it, and the
-        /// node xboxgip makes above it follows it.</summary>
+        /// controller. On a pad xboxgip serves it sits on the HID node,
+        /// four below. The walk reaches the stamp from both, so both are
+        /// dropped, and the node xboxgip makes above the HID node follows
+        /// it. A walk of four nodes ended at the root hub and left the pad
+        /// xboxgip serves its slot, which is how PadForge came to list its
+        /// own Xbox Series controller as XInput#0 (hifihedgehog/SDL#51).
+        /// One hub more between the pad and the host controller is past
+        /// the walk.</summary>
         [Fact]
         public void AnXInputNodeIsDroppedWhereOpenXInputsWalkReachesTheStamp()
         {
@@ -2822,14 +2826,25 @@ namespace PadForge.Tests
             var gip = XboxGipPad("VID_F00D&PID_0B12", RootHub(), UsbipHost(stamped: true));
             string gipHid = gip[0].InstanceId;
             Func<string, bool> onTheHidNode = id => string.Equals(id, gipHid, StringComparison.OrdinalIgnoreCase);
-            Assert.False(HidHideController.ReadersDrop(gip, onTheHidNode));
-            Assert.False(HidHideController.ReadersDrop(gip.Skip(1).ToList(), onTheHidNode));
-            // Were the interface one node up, the walk would reach the
-            // stamp, and both nodes would be dropped.
+            Assert.True(HidHideController.ReadersDrop(gip, onTheHidNode));
+            Assert.True(HidHideController.ReadersDrop(gip.Skip(1).ToList(), onTheHidNode));
+            // Were the interface one node up, the stamp would be nearer
+            // still, and both nodes would be dropped as well.
             string gipAbove = gip[1].InstanceId;
             Func<string, bool> onTheNodeAbove = id => string.Equals(id, gipAbove, StringComparison.OrdinalIgnoreCase);
             Assert.True(HidHideController.ReadersDrop(gip, onTheNodeAbove));
             Assert.True(HidHideController.ReadersDrop(gip.Skip(1).ToList(), onTheNodeAbove));
+
+            // The same pad behind one more hub: the stamp is five nodes
+            // above the interface, one past the walk.
+            var behindAHub = new List<HidHideController.OwnerHop>(gip.Take(3))
+            {
+                Node(@"USB\VID_05E3&PID_0610\6&3&0&1", "USBHUB3", null, @"USB\VID_05E3&PID_0610"),
+                RootHub(),
+                UsbipHost(stamped: true),
+            };
+            Assert.False(HidHideController.ReadersDrop(behindAHub, onTheHidNode));
+            Assert.False(HidHideController.ReadersDrop(behindAHub.Skip(1).ToList(), onTheHidNode));
 
             // No stamp, no drop.
             Assert.False(HidHideController.ReadersDrop(
@@ -3257,16 +3272,18 @@ namespace PadForge.Tests
         /// devices and the nodes OpenXInput gives no slot, since no XInput#N
         /// path names those.
         ///
-        /// <para>A real pad xboxgip serves, attached over usbip-win2 under a
-        /// host controller HIDMaestro has stamped, keeps its slot: the XUSB
-        /// interface sits on its HID node, four nodes below the stamp, past
-        /// OpenXInput's walk. It is no device of HIDMaestro's and stays a
-        /// candidate for its own row's identity. The stamp alone once made it
-        /// HIDMaestro's, which left its row no node of its own and gave a
-        /// local pad of its model and it one identity. A pad xusb22 serves
-        /// there gets no slot, so it stays out, though it is no device of
-        /// HIDMaestro's either. Every one of PadForge's own virtual
-        /// controllers stays out under either scope.</para>
+        /// <para>A real pad attached over usbip-win2 under a host controller
+        /// HIDMaestro has stamped gets no slot, whichever of Windows' Xbox
+        /// drivers serves it: the XUSB interface of a pad xusb22 serves
+        /// sits two nodes below the stamp, that of a pad xboxgip serves
+        /// four, and OpenXInput's walk reaches both. No XInput#N path names
+        /// such a pad, so it stays out, though it is no device of
+        /// HIDMaestro's. Under a host controller with no stamp both keep
+        /// their slots and stay candidates for their own rows' identities.
+        /// The stamp alone never makes a pad HIDMaestro's: read that way,
+        /// a pad that kept its slot had no node of its own, and it and a
+        /// local pad of its model had one identity. Every one of PadForge's
+        /// own virtual controllers stays out under either scope.</para>
         /// </summary>
         [Fact]
         public void TheXInputIdentityTakesAPadOverUsbipForARealOne()
@@ -3283,7 +3300,7 @@ namespace PadForge.Tests
                 // xboxgip: the XUSB interface on the HID node.
                 var gip = XboxGipPad("VID_045E&PID_0B12", RootHub(), UsbipHost(stamped));
                 Assert.False(HidMaestros(gip, inScope: false));
-                Assert.False(LeftOut(gip, false, OnTheNode(gip[0].InstanceId)));
+                Assert.Equal(stamped, LeftOut(gip, false, OnTheNode(gip[0].InstanceId)));
                 // xusb22: the XUSB interface on the USB device above it.
                 var wired360 = Xbox360Pad("VID_045E&PID_028E", "3", RootHub(), UsbipHost(stamped));
                 Assert.False(HidMaestros(wired360, inScope: false));

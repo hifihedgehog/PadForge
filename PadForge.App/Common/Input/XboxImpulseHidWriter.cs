@@ -282,7 +282,7 @@ namespace PadForge.Common.Input
         /// pad arrived in SetupAPI's order, since OpenXInput hands slots out
         /// in the order pads connect (OpenXinput.cpp, ProcessEnumeratedDevice),
         /// and when both lists leave out the same interfaces: OpenXInput also
-        /// leaves out an interface whose node or one of the three nodes above
+        /// leaves out an interface whose node or one of the four nodes above
         /// it carries HIDMaestro's hardware id (IsHidMaestroInterface). With
         /// one pad it is right.</para></summary>
         private static string ResolveInterfacePath(UserDevice ud)
@@ -328,7 +328,7 @@ namespace PadForge.Common.Input
                         if (string.IsNullOrEmpty(path)) continue;
 
                         // Open the XUSB interface with the same flags
-                        // OpenXInput uses (OpenXinput.cpp:2887).
+                        // OpenXInput uses (OpenXinput.cpp:2999).
                         // GENERIC_READ|GENERIC_WRITE so we can issue
                         // IOCTL_XINPUT_GET_INFORMATION (and later the
                         // WriteFile for rumble).
@@ -410,7 +410,7 @@ namespace PadForge.Common.Input
                 out _, IntPtr.Zero);
             if (!ok) return false;
 
-            // OutDeviceInfos_t layout (#pragma pack(1) — OpenXinput.cpp:176-186):
+            // OutDeviceInfos_t layout (#pragma pack(1), OpenXinput.cpp:207-217):
             //   WORD XUSBVersion;   // 0-1
             //   BYTE deviceIndex;   // 2
             //   BYTE unk1,unk2,unk3;// 3,4,5
@@ -436,7 +436,7 @@ namespace PadForge.Common.Input
 
         /// <summary>XUSB driver's device interface class GUID, used by
         /// <c>xinput1_4.dll</c> + OpenXInput to enumerate Xbox
-        /// controllers (OpenXinput.cpp:506). The position fallback walks
+        /// controllers (OpenXinput.cpp:544). The position fallback walks
         /// the same class to reach the device handle that
         /// <c>IOCTL_XINPUT_SET_GAMEPAD_STATE</c> hits and that X1nput's
         /// 9-byte WriteFile lands on for impulse-trigger rumble.</summary>
@@ -444,7 +444,7 @@ namespace PadForge.Common.Input
             new Guid(0xEC87F1E3, 0xC13B, 0x4100, 0xB5, 0xF7, 0x8B, 0x84, 0xD5, 0x42, 0x60, 0xCB);
 
         /// <summary>CTL_CODE(0x8000, 0x800, METHOD_BUFFERED,
-        /// FILE_READ_ACCESS) per OpenXinput.cpp:510. Returns
+        /// FILE_READ_ACCESS) per OpenXinput.cpp:548. Returns
         /// OutDeviceInfos_t.</summary>
         private const uint IOCTL_XINPUT_GET_INFORMATION = 0x80006000;
 

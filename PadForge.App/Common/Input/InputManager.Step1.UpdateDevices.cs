@@ -118,12 +118,14 @@ namespace PadForge.Common.Input
             // A device passed over on its USB/IP ancestry alone is opened
             // again below once no persona of its ids is in scope and it is
             // still in the device tree: a real pad attached that way while
-            // one was live is read from then on. Only a device SDL reads
-            // under a HID interface path is passed over that way, and under
-            // the emulated host controller the SDL fork lists a pad's HID
-            // interface only where HIDMaestro has not stamped it. The
-            // guard's header in InputManager.Step1.UsbipVhciGuard.cs says
-            // what SDL lists under a stamped one, and by which backends.
+            // one was live is read from then on. A device SDL reads under a
+            // HID interface path is passed over that way, and so is an
+            // XInput#N joystick, walked from the interface behind its
+            // number. Under the emulated host controller the forks let
+            // either reach Step 1 only where HIDMaestro has not stamped
+            // it. The guard's header in InputManager.Step1.UsbipVhciGuard.cs
+            // says what SDL lists under a stamped one, and by which
+            // backends.
             var probeAgain = _suppressedSelfVirtualIds.ReleaseLapsed(currentInstanceIds, Environment.TickCount64);
             if (probeAgain != null)
             {
@@ -178,9 +180,10 @@ namespace PadForge.Common.Input
                     // it, other than the usbip host controller's stamp,
                     // marks a controller on HIDMaestro's own driver
                     // whatever its serial and its path. The fork
-                    // enumeration filter remains the primary defense, and
-                    // the XInput backend leak (no serial, and a path that
-                    // names no device node) is out of scope here entirely.
+                    // enumeration filter remains the primary defense. A
+                    // joystick of the XInput backend has no serial and a
+                    // path that names no device node, so its walk starts at
+                    // the interface OpenXInput says serves its number.
                     // PassOver makes the test, those three markers and the
                     // composite personas' ancestry walk, which also reads a
                     // persona's own USB serial, and records the id it

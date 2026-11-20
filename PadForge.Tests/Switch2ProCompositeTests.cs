@@ -1292,6 +1292,111 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The walk up from the XUSB interface of a pad xboxgip
+        /// serves on the usbip-win2 emulated host controller, as read on
+        /// Windows 11 ARM64 on 2026-11-19 (hifihedgehog/SDL#51): the HID
+        /// node that carries the interface, the node xboxgip makes, the USB
+        /// device, the root hub and the host controller.
+        /// <paramref name="usbDevice"/> ends the USB device's instance id,
+        /// HIDMaestro's serial for one of its own.</summary>
+        private static AncestryHop[] XboxGipOverUsbip(string usbDevice, bool stamped) => new[]
+        {
+            Hop(@"HID\VID_045E&PID_02FF&IG_00\4&107E31D5&0&0000", null, @"HID\VID_045E&PID_02FF&IG_00"),
+            Hop(@"USB\VID_045E&PID_02FF&IG_00\00&00&0000FFFBDF0FD306", "HidUsb", @"USB\VID_045E&PID_02FF&IG_00"),
+            Hop($@"USB\VID_045E&PID_0B13\{usbDevice}", "dc1-controller", @"USB\VID_045E&PID_0B13"),
+            Hop(@"USB\ROOT_HUB30\1&2B53A856&0&0", "USBHUB3", @"USB\ROOT_HUB30"),
+            Hop(@"ROOT\USB\0000", "usbip2_ude",
+                stamped ? new[] { @"ROOT\USBIP_WIN2\UDE", @"ROOT\HIDMAESTRO_UDE" } : new[] { @"ROOT\USBIP_WIN2\UDE" }),
+            Hop(@"HTREE\ROOT\0", null),
+        };
+
+        /// <summary>A joystick of SDL's XInput backend is named "XInput#N"
+        /// and nothing else, so the guard walks from the XUSB interface
+        /// OpenXInput says serves the number. Under a host controller with
+        /// no stamp neither fork has anything to find, and OpenXInput gives
+        /// every XUSB interface a slot, a persona's too: HIDMaestro's Xbox
+        /// One and Series controllers on its USB/IP driver are served by
+        /// xboxgip and reach SDL that way. One below HIDMaestro's serial is
+        /// passed over whatever is in scope, under either kind of host
+        /// controller, and is never released. A pad attached over
+        /// usbip-win2 with a serial of its own is let through, and so is a
+        /// pad on a real port. A number OpenXInput has no interface for is
+        /// let through, as every such joystick was before.</summary>
+        [Fact]
+        public void AnXInputJoystickIsWalkedFromTheInterfaceThatServesItsNumber()
+        {
+            const string xusb = "#{ec87f1e3-c13b-4100-b5f7-8b84d54260cb}";
+            const string persona = @"\\?\hid#vid_045e&pid_02ff&ig_00#a-persona" + xusb;
+            const string stampedPersona = @"\\?\hid#vid_045e&pid_02ff&ig_00#a-persona-under-a-stamp" + xusb;
+            const string forwarded = @"\\?\hid#vid_045e&pid_02ff&ig_00#a-forwarded-pad" + xusb;
+            const string onAPort = @"\\?\hid#vid_045e&pid_02ff&ig_00#on-a-real-port" + xusb;
+            var trees = new Dictionary<string, AncestryHop[]>
+            {
+                [persona] = XboxGipOverUsbip("HM7A1FDF0FD306", stamped: false),
+                [stampedPersona] = XboxGipOverUsbip("HM7A1FDF0FD306", stamped: true),
+                [forwarded] = XboxGipOverUsbip("3032363030303236", stamped: false),
+                [onAPort] = OnARealPort("VID_045E&PID_02FF"),
+            };
+            var served = new Dictionary<int, XInputSlotIdentity.Answer>
+            {
+                [0] = new(XInputSlotIdentity.Kind.Found, persona),
+                [1] = new(XInputSlotIdentity.Kind.Found, forwarded),
+                [2] = new(XInputSlotIdentity.Kind.Found, onAPort),
+                [3] = new(XInputSlotIdentity.Kind.Busy),
+                [4] = new(XInputSlotIdentity.Kind.None),
+                [5] = new(XInputSlotIdentity.Kind.Unsupported),
+                [6] = new(XInputSlotIdentity.Kind.Found, stampedPersona),
+            };
+            var walked = new List<string>();
+            var savedWalk = InputManager.UsbipAncestryOf;
+            var savedTree = InputManager.InDeviceTree;
+            var held = new InputManager.SelfVirtualSuppressions();
+            try
+            {
+                XInputSlotIdentity.AnswerForTest = slot => served[slot];
+                InputManager.UsbipAncestryOf = path =>
+                {
+                    walked.Add(path);
+                    return HidMaestroAncestry.Classify(path == null ? null : trees.GetValueOrDefault(path));
+                };
+                InputManager.InDeviceTree = path => true;
+                // No persona of these ids is in scope, so nothing here is
+                // passed over on its place under the host controller alone.
+                Assert.False(InputManager.ChecksUsbipAncestry(0x045E, 0x02FF));
+
+                Assert.True(held.PassOver(1, "", "XInput#0", 0x045E, 0x02FF));
+                Assert.False(held.PassOver(2, "", "XInput#1", 0x045E, 0x02FF));
+                Assert.False(held.PassOver(3, "", "XInput#2", 0x045E, 0x02FF));
+                Assert.False(held.PassOver(4, "", "XInput#3", 0x045E, 0x02FF));
+                Assert.False(held.PassOver(5, "", "XInput#4", 0x045E, 0x02FF));
+                Assert.False(held.PassOver(6, "", "XInput#5", 0x045E, 0x02FF));
+                Assert.True(held.PassOver(7, "", "XInput#6", 0x045E, 0x02FF));
+                Assert.Equal(new[] { persona, forwarded, onAPort, null, null, null, stampedPersona }, walked);
+
+                // HIDMaestro's serial settles it for as long as SDL lists
+                // the joystick: no clock lets it back in.
+                var listed = new HashSet<uint> { 1, 7 };
+                Assert.Null(held.ReleaseLapsed(listed, Far));
+                Assert.True(held.Contains(1) && held.Contains(7));
+
+                // The path the walk starts from: the interface behind a
+                // number, nothing for a number with none, and any other
+                // path as it is.
+                Assert.Equal(persona, InputManager.AncestryPathOf("XInput#0"));
+                Assert.Null(InputManager.AncestryPathOf("XInput#3"));
+                Assert.Null(InputManager.AncestryPathOf("XInput#4"));
+                Assert.Null(InputManager.AncestryPathOf("XInput#5"));
+                Assert.Equal(onAPort, InputManager.AncestryPathOf(onAPort));
+                Assert.Null(InputManager.AncestryPathOf(null));
+            }
+            finally
+            {
+                XInputSlotIdentity.AnswerForTest = null;
+                InputManager.UsbipAncestryOf = savedWalk;
+                InputManager.InDeviceTree = savedTree;
+            }
+        }
+
         /// <summary>Once the clock puts a passed-over device out of scope,
         /// Step 1 opens it again only while it is in the device tree. A
         /// persona that has left the tree is listed by SDL a moment longer,

@@ -63,7 +63,7 @@ namespace PadForge.Services
 
         /// <summary>The device interface xusb22 registers on each pad or
         /// receiver it serves, the one XInput walks (OpenXInput's
-        /// XUSB_INTERFACE_CLASS_GUID, OpenXinput.cpp:518 and :1103).</summary>
+        /// XUSB_INTERFACE_CLASS_GUID, OpenXinput.cpp:544 and :1129).</summary>
         internal static readonly Guid XusbInterfaceGuid = new Guid("EC87F1E3-C13B-4100-B5F7-8B84D54260CB");
 
         /// <summary>The driver a package binds.</summary>

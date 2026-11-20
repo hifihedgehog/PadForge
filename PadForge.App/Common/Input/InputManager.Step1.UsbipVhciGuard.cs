@@ -55,20 +55,23 @@ namespace PadForge.Common.Input
         // It tests the host controller and not the device, so on a stamped
         // host it drops, with a persona's, the HID interface of a real pad
         // forwarded over usbip-win2 and of another program's virtual pad
-        // there. The OpenXInput fork makes the same test on a shorter walk.
-        // It gives no slot to an XUSB interface whose own node, or one of
-        // the three nodes above it, has the token (IsHidMaestroInterface in
-        // OpenXInput's src/OpenXinput.cpp, lines 18 to 83, maxDepth 4 at
-        // line 49, asked of every XUSB interface it lists at line 1123). A
-        // pad xusb22 serves carries its XUSB interface on its USB device,
-        // two nodes below the host controller, and gets no slot. A pad
-        // xboxgip serves, an Xbox One or Series pad, carries it on its HID
-        // node, four nodes below the host controller, past that walk:
-        // OpenXInput gives it a slot, SDL's XInput backend lists it as
-        // XInput#N, and PadForge reads it under a stamped host as under any
-        // other. A forwarded pad of any other kind reaches Step 1 through
-        // none of these backends, and PadForge reads it only by one of the
-        // ways below.
+        // there. The OpenXInput fork makes the same test on a walk of the
+        // same length. It gives no slot to an XUSB interface whose own
+        // node, or one of the four nodes above it, has the token
+        // (IsHidMaestroInterface in OpenXInput's src/OpenXinput.cpp, lines
+        // 18 to 109, maxDepth 5 at line 75, asked of every XUSB interface
+        // it lists at line 1149). A pad xusb22 serves carries its XUSB
+        // interface on its USB device, two nodes below the host
+        // controller. A pad xboxgip serves, an Xbox One or Series pad,
+        // carries it on its HID node, four nodes below. Neither gets a
+        // slot under a stamped host, a persona and a forwarded real pad
+        // alike. The walk read four nodes until fork 082eefc, which left
+        // a pad xboxgip serves its slot: HIDMaestro 2.3.0 presented its
+        // Xbox One and Series controllers that way, and PadForge listed
+        // its own virtual controller as XInput#0 (hifihedgehog/SDL#51). A
+        // forwarded pad of any other kind reaches Step 1 through none of
+        // these backends, and PadForge reads it only by one of the ways
+        // below.
         //
         // SDL has other ways in, and no filter stands on them. The fork's
         // GameInput backend (src/joystick/gdk/SDL_gameinputjoystick.cpp) is
@@ -88,25 +91,31 @@ namespace PadForge.Common.Input
         // serial, Bluetooth, network and iCade drivers.
         //
         // A persona does not come in that way. No HIDMaestro profile carries
-        // an instrument's ids, and no composite profile has an id of that
-        // table or an Xbox interface. The Switch 2 driver, which opens its
-        // controller's bulk interface through libusb itself, asks whether a
-        // candidate's serial is a persona's (SDL_HidmaestroOwnsUsbSerial).
-        // The serial, Bluetooth and network drivers read no USB HID
-        // interface, and the iCade driver reads the keyboards whose ids the
-        // user names for it, under an interface path this guard walks like
-        // any other.
+        // an instrument's ids or an id of that table, and the Xbox
+        // interface of a persona is one the system's own driver holds. The
+        // Switch 2 driver, which opens its controller's bulk interface
+        // through libusb itself, asks whether a candidate's serial is a
+        // persona's (SDL_HidmaestroOwnsUsbSerial). The serial, Bluetooth and
+        // network drivers read no USB HID interface, and the iCade driver
+        // reads the keyboards whose ids the user names for it, under an
+        // interface path this guard walks like any other.
         //
-        // So this guard decides for the HID interfaces under a host
-        // controller with no stamp, where SDL lists them all: its walk
-        // starts from a HID interface path. A device GameInput lists it
-        // lets through: the path SDL gives for one is GameInput's device
-        // id, which the walk finds no node for, and its ids are no
-        // persona's. A pad SDL's XInput backend lists it lets through the
-        // same way, under either kind of host controller: its path is
-        // XInput#N, and no persona is one, since no composite profile has
-        // an Xbox interface. Such a pad's identity is the node
-        // StableXInputInstance finds for it, by the rule this guard reads.
+        // So this guard decides under a host controller with no stamp,
+        // where neither fork has anything to find. SDL lists every HID
+        // interface there, and the walk starts from its path. OpenXInput
+        // gives every XUSB interface there a slot, and SDL's XInput backend
+        // lists the pad as XInput#N, a path that names no node. A persona
+        // can be such a pad since HIDMaestro 2.3.0, whose Xbox One and
+        // Series controllers on its USB/IP driver are served by xboxgip.
+        // The walk for one starts from the XUSB interface OpenXInput says
+        // serves the number (AncestryPathOf, XInputSlotIdentity), and a
+        // persona's serial above it settles it as for any other device. A
+        // number OpenXInput does not answer for is let through. A device
+        // GameInput lists is let through as well: the path SDL gives for
+        // one is GameInput's device id, which the walk finds no node for,
+        // and its ids are no persona's. An XInput pad's identity is the
+        // node StableXInputInstance finds for it, by the rule this guard
+        // reads.
         //
         // The persona serial needs no scope and no clock: under the emulated
         // host controller, below a USB device named by it, a device is a
@@ -243,10 +252,12 @@ namespace PadForge.Common.Input
         /// under a host controller HIDMaestro has not stamped, since the SDL
         /// fork drops it under a stamped one. What SDL lists there by a way
         /// the fork's filter is not on, the header names: an instrument
-        /// through GameInput and a pad xboxgip serves through the XInput
-        /// backend, which the walk finds no node for, and a keyboard the
-        /// user named for the iCade driver, which this test then weighs like
-        /// any other device. The hiding side asks this for a node under the
+        /// through GameInput, which the walk finds no node for, and a
+        /// keyboard the user named for the iCade driver, which this test
+        /// then weighs like any other device. Under a host controller with
+        /// no stamp it weighs a pad SDL's XInput backend lists as well,
+        /// walked from the interface behind its number
+        /// (<see cref="AncestryPathOf"/>). The hiding side asks this for a node under the
         /// host controller (HidHideController.PersonaInScope), and the
         /// engine for the node of an XInput pad's identity
         /// (StableXInputInstance.PersonaInScope).</summary>
@@ -324,7 +335,10 @@ namespace PadForge.Common.Input
             /// a persona this process makes
             /// (<see cref="ChecksUsbipAncestry(ushort, ushort)"/>), until
             /// that persona is gone, and is let through otherwise, as a real
-            /// pad forwarded over USB/IP.</summary>
+            /// pad forwarded over USB/IP. The walk starts at the device's
+            /// HID interface, or for a joystick SDL names only "XInput#N"
+            /// at the XUSB interface that serves the number
+            /// (<see cref="AncestryPathOf"/>).</summary>
             public bool PassOver(uint instanceId, string serialNumber, string devicePath,
                 ushort vendorId, ushort productId)
             {
@@ -333,7 +347,11 @@ namespace PadForge.Common.Input
                      && serialNumber.StartsWith("HM-CTL-", StringComparison.Ordinal))
                     || (devicePath != null
                         && devicePath.IndexOf("HIDMAESTRO", StringComparison.OrdinalIgnoreCase) >= 0);
-                var ancestry = markedSelf ? UsbipAncestry.None : UsbipAncestryOf(devicePath);
+                // The path the walk starts from, and the one kept to ask
+                // later whether the device is still in the tree: an
+                // XInput#N joystick's is the interface behind its number.
+                string walkFrom = markedSelf ? devicePath : AncestryPathOf(devicePath);
+                var ancestry = markedSelf ? UsbipAncestry.None : UsbipAncestryOf(walkFrom);
                 if (ancestry is UsbipAncestry.Persona or UsbipAncestry.HidMaestroNode) markedSelf = true;
                 bool ancestrySelf = !markedSelf
                     && ancestry == UsbipAncestry.UnderVhci
@@ -341,7 +359,7 @@ namespace PadForge.Common.Input
                 if (!markedSelf && !ancestrySelf) return false;
                 Engine.SdlDiagLog.WriteLine(
                     $"DEV self-virtual suppressed SDL#{instanceId} {vendorId:X4}:{productId:X4} serial={serialNumber}");
-                Add(instanceId, vendorId, productId, byAncestryOnly: ancestrySelf, devicePath);
+                Add(instanceId, vendorId, productId, byAncestryOnly: ancestrySelf, walkFrom);
                 return true;
             }
 
@@ -388,6 +406,28 @@ namespace PadForge.Common.Input
                 }
                 return probeAgain;
             }
+        }
+
+        /// <summary>How often the guard asks OpenXInput again for a number
+        /// it is busy with, a millisecond apart. Every XInput call holds
+        /// OpenXInput's lock through its device I/O, and the answer missed
+        /// here is not asked for again while the joystick stays
+        /// open.</summary>
+        internal const int XInputIdentityRetries = 20;
+
+        /// <summary>The path the ancestry walk starts from for a device SDL
+        /// lists under <paramref name="devicePath"/>. A joystick of SDL's
+        /// XInput backend has no path of its own, only "XInput#N", so its
+        /// walk starts at the XUSB interface OpenXInput says serves that
+        /// number (<see cref="XInputSlotIdentity"/>). Null when OpenXInput
+        /// names none: the number is empty, the call stayed busy, or the
+        /// DLL is not PadForge's own. The walk then finds no node, and the
+        /// joystick is let through. Every other path is its own.</summary>
+        internal static string AncestryPathOf(string devicePath)
+        {
+            if (!XInputSlotIdentity.TryParseSlot(devicePath, out int slot)) return devicePath;
+            var served = XInputSlotIdentity.Get(slot, XInputIdentityRetries);
+            return served.Kind == XInputSlotIdentity.Kind.Found ? served.InterfacePath : null;
         }
 
         /// <summary>The ancestry walk the guard runs

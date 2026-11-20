@@ -186,9 +186,12 @@ namespace PadForge.Engine
 
         // How many parents each reader walks above the node it starts at.
         // SDL: HM_FILTER_MAX_DEPTH 5, the node and four parents (hid.c:986).
-        // OpenXInput: maxDepth 4, the node and three (OpenXinput.cpp:49).
+        // OpenXInput: maxDepth 5, the node and four (OpenXinput.cpp:75). It
+        // read four nodes until 082eefc, which let a persona xboxgip serves
+        // keep a slot: PadForge listed its own Xbox Series controller as
+        // XInput#0 (hifihedgehog/SDL#51).
         private const int SdlHidParents = 4;
-        private const int OpenXInputParents = 3;
+        private const int OpenXInputParents = 4;
 
         /// <summary>Whether PadForge's readers drop the node a walk starts
         /// at, so that PadForge reads nothing from it.
@@ -216,14 +219,14 @@ namespace PadForge.Engine
         /// XInput (hid.c:1334) and DirectInput passes over
         /// while XInput is on (SDL_dinputjoystick.c:480, :898-903). OpenXInput lists XUSB interfaces and
         /// gives no slot to one when a hardware id of its node or one of
-        /// that node's three parents names HIDMaestro (OpenXinput.cpp:1103
-        /// and 1123, IsHidMaestroInterface). A pad xusb22 serves carries
+        /// that node's four parents names HIDMaestro (OpenXinput.cpp:1129
+        /// and 1149, IsHidMaestroInterface). A pad xusb22 serves carries
         /// the interface on the USB device above the HID node, two nodes
         /// below the host controller, and gets no slot. A pad xboxgip
         /// serves carries it on the HID node, four nodes below
-        /// (SDL_xinput_paddle_identity.cpp:519-554), where the walk ends at
-        /// the root hub: it keeps its slot and PadForge reads it. Windows
-        /// says which node carries the interface
+        /// (SDL_xinput_paddle_identity.cpp:519-554), which the walk
+        /// reaches: it gets no slot either. Windows says which node
+        /// carries the interface
         /// (<see cref="CarriesXusbInterface"/>).</para>
         ///
         /// <para>A node that is no HID node, such as the USB interface

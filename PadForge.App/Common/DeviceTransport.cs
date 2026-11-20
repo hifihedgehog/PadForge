@@ -88,9 +88,9 @@ namespace PadForge.Common
                 // there. XINPUT_CAPS_WIRELESS cannot answer either: pads in
                 // Bluetooth mode speak XUSB 1.1, whose capability reply
                 // carries no Flags field (GamepadCapabilities0101,
-                // OpenXinput.cpp:962-990), so on that protocol the flag is
+                // OpenXinput.cpp:1022-1050), so on that protocol the flag is
                 // set only for the 360 2.4GHz wireless receiver
-                // (OpenXinput.cpp:977-987). The Bluetooth answer for these
+                // (OpenXinput.cpp:1037-1047). The Bluetooth answer for these
                 // pads is the VID/PID check above. An XInput pad reaching
                 // this line is a Microsoft pad in its non-Bluetooth identity
                 // (USB, Xbox Wireless Adapter, or the 360 receiver) or a

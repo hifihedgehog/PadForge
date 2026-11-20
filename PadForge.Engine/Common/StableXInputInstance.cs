@@ -105,10 +105,9 @@ namespace PadForge.Engine
         /// node OpenXInput gives no slot
         /// (<see cref="HidMaestroAncestry.ReadersDrop"/>). A real pad
         /// attached over usbip-win2 under a host controller HIDMaestro has
-        /// stamped is the second kind when xusb22 serves it, since its XUSB
-        /// interface sits within OpenXInput's walk of the stamp, and is no
-        /// kind when xboxgip serves it: OpenXInput gives that pad a slot,
-        /// and its row needs its own node for an identity.
+        /// stamped is the second kind, whichever of Windows' Xbox drivers
+        /// serves it: xusb22 puts its XUSB interface two nodes below the
+        /// stamp and xboxgip four, and OpenXInput's walk reaches both.
         /// <paramref name="walk"/> gives the hops up from a node, or null
         /// for a node that is not present, and
         /// <paramref name="carriesXusb"/> says whether a node carries an

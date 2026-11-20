@@ -15048,9 +15048,9 @@ namespace PadForge.Services
                     {
                         // Xbox 360 rings are deliberately NOT repainted here:
                         // the XUSB setter exists (OpenXInput SendLEDState,
-                        // OpenXinput.cpp:2427), but every xinput1_4 instance
+                        // OpenXinput.cpp:2523), but every xinput1_4 instance
                         // recovers a pad's port FROM the ring LED on
-                        // enumeration (OpenXinput.cpp:1217-1233), so writing
+                        // enumeration (OpenXinput.cpp:1252-1271), so writing
                         // a player number that differs from the port re-seats
                         // the pad on the wrong XInput slot in other processes.
                         w.SetPlayerIndex(n - 1);

@@ -48,7 +48,7 @@ namespace PadForge.Tests
 
         /// <summary>The identity struct the service asks through
         /// (XInputSlotIdentity) matches OpenXInput's static asserts
-        /// (OpenXinput.cpp:4106-4107): 24 bytes, generation at offset 8.</summary>
+        /// (OpenXinput.cpp:4132-4133): 24 bytes, generation at offset 8.</summary>
         [Fact]
         public void IdentityStruct_MatchesOpenXInputsLayout()
         {

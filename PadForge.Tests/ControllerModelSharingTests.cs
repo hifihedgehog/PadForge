@@ -52,7 +52,16 @@ namespace PadForge.Tests
         /// built this model while the test above built its first, and its
         /// two models shared 9 meshes where 10 were asked for. Here four
         /// threads build the model at once with nothing kept, and all four
-        /// end with the same meshes and the same art.</summary>
+        /// end with the same meshes and the same art.
+        ///
+        /// <para>Each thread holds its model until all four are built. A
+        /// file is kept only while a model built from it lives, and a thread
+        /// used to let its model go as soon as it had read it. A thread that
+        /// fell behind the others could then find a file let go and
+        /// collected, and read a copy of its own. A full run on 2026-11-20
+        /// failed once with "builder 2 kept meshes of its own". Held to one
+        /// core with a thread collecting, that body failed 47 runs of 60
+        /// with the same message, and this one none.</para></summary>
         [Fact]
         public void ModelsBuiltAtTheSameMomentShareOneCopyOfEachFile()
         {
@@ -65,18 +74,17 @@ namespace PadForge.Tests
             }
 
             using var start = new System.Threading.Barrier(builders);
+            using var built = new System.Threading.CountdownEvent(builders);
             var meshes = new HashSet<object>[builders];
             var art = new HashSet<object>[builders];
             var faults = new Exception[builders];
             var threads = Enumerable.Range(0, builders).Select(i => new System.Threading.Thread(() =>
             {
+                ControllerModelBase model = null;
                 try
                 {
                     start.SignalAndWait();
-                    // A model belongs to the thread that built it, so it is
-                    // read and let go of there. Its meshes and its art are
-                    // frozen and outlive it in these sets.
-                    using var model = ControllerModelBase.Create("XboxSeries", "Carbon", true);
+                    model = ControllerModelBase.Create("XboxSeries", "Carbon", true);
                     var parts = Parts(model.model3DGroup).ToList();
                     meshes[i] = new HashSet<object>(parts.Select(p => p.Geometry), ReferenceEqualityComparer.Instance);
                     art[i] = new HashSet<object>(parts.SelectMany(p => Brushes(p.Material)).OfType<ImageBrush>(),
@@ -85,6 +93,16 @@ namespace PadForge.Tests
                 catch (Exception ex)
                 {
                     faults[i] = ex;
+                }
+                finally
+                {
+                    // A model belongs to the thread that built it, so it is
+                    // let go of there, once every thread has built its own.
+                    // Its meshes and its art are frozen and outlive it in
+                    // these sets.
+                    built.Signal();
+                    built.Wait();
+                    model?.Dispose();
                 }
             })).ToList();
             threads.ForEach(t => t.Start());

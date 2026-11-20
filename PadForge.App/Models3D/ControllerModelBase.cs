@@ -909,9 +909,7 @@ namespace PadForge.Models3D
                     brush.Freeze();
                     var mat = new DiffuseMaterial(brush);
                     mat.Freeze();
-                    lock (s_texturesGate)
-                        s_textures[(name, opacity)] = new WeakReference<Material>(mat);
-                    return mat;
+                    return KeepFirst(s_textures, s_texturesGate, (name, opacity), (Material)mat);
                 }
             }
             catch (Exception ex)
@@ -1046,8 +1044,19 @@ namespace PadForge.Models3D
             var model = TryLoadModelFrom(_resourceModelName, filename);
             if (model == null && SharedGeometry.TryGetValue(_resourceModelName, out var shared))
                 model = TryLoadModelFrom(shared, filename);
+            if (model != null && s_parsedBy.TryGetValue(model, out var file))
+                _files.Add(file);
             return model;
         }
+
+        /// <summary>The files this model was built from, held for as long as
+        /// the model is. A group built from a file holds the file while the
+        /// group lives (<see cref="s_parsedBy"/>), but a rider decal's group
+        /// is emptied into its host and dropped
+        /// (<see cref="AttachRiderDecal"/>). Its file then had nothing
+        /// holding it: the next collection let it go while the model still
+        /// drew its meshes, and the next model read the file again.</summary>
+        private readonly List<Model3DGroup> _files = new();
 
         private static Model3DGroup TryLoadModelFrom(string modelName, string filename)
         {
@@ -1088,9 +1097,27 @@ namespace PadForge.Models3D
             if (model == null || !model.CanFreeze)
                 return model;
             model.Freeze();
-            lock (s_parsedGate)
-                s_parsed[resourceName] = new WeakReference<Model3DGroup>(model);
-            return Instance(model);
+            return Instance(KeepFirst(s_parsed, s_parsedGate, resourceName, model));
+        }
+
+        /// <summary>Keeps what a caller has just read under its key, unless
+        /// another caller kept its own copy while this one was reading.
+        /// Returns the kept one either way. Two models built at the same
+        /// moment both find nothing kept and both read the file, outside
+        /// the gate. Each used to keep its own copy, the later over the
+        /// earlier, so the model that read first held meshes no later model
+        /// got, and what was meant to be read once was held twice. The
+        /// first copy kept is now the one every model shares.</summary>
+        internal static T KeepFirst<TKey, T>(Dictionary<TKey, WeakReference<T>> kept, object gate, TKey key, T read)
+            where T : class
+        {
+            lock (gate)
+            {
+                if (kept.TryGetValue(key, out var held) && held.TryGetTarget(out var first))
+                    return first;
+                kept[key] = new WeakReference<T>(read);
+                return read;
+            }
         }
 
         /// <summary>Each mesh file as ObjReader reads it, frozen, kept while
@@ -1151,6 +1178,7 @@ namespace PadForge.Models3D
                 DefaultMaterials?.Clear();
                 HighlightMaterials?.Clear();
                 model3DGroup?.Children.Clear();
+                _files.Clear();
             }
             _disposed = true;
         }

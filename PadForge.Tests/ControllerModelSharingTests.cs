@@ -45,6 +45,83 @@ namespace PadForge.Tests
             Assert.DoesNotContain(Groups(first.model3DGroup), groupsOfB.Contains);
         }
 
+        /// <summary>Two models built at the same moment both find no file
+        /// kept and both read it. The copy kept first is the one every model
+        /// shares. Kept over it, the model that had read first held meshes
+        /// no later model got. In a full run on 2026-11-19 another class
+        /// built this model while the test above built its first, and its
+        /// two models shared 9 meshes where 10 were asked for. Here four
+        /// threads build the model at once with nothing kept, and all four
+        /// end with the same meshes and the same art.</summary>
+        [Fact]
+        public void ModelsBuiltAtTheSameMomentShareOneCopyOfEachFile()
+        {
+            const int builders = 4;
+            var flags = BindingFlags.NonPublic | BindingFlags.Static;
+            foreach (var (table, gate) in new[] { ("s_parsed", "s_parsedGate"), ("s_textures", "s_texturesGate") })
+            {
+                var kept = (System.Collections.IDictionary)typeof(ControllerModelBase).GetField(table, flags).GetValue(null);
+                lock (typeof(ControllerModelBase).GetField(gate, flags).GetValue(null)) kept.Clear();
+            }
+
+            using var start = new System.Threading.Barrier(builders);
+            var meshes = new HashSet<object>[builders];
+            var art = new HashSet<object>[builders];
+            var faults = new Exception[builders];
+            var threads = Enumerable.Range(0, builders).Select(i => new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    start.SignalAndWait();
+                    // A model belongs to the thread that built it, so it is
+                    // read and let go of there. Its meshes and its art are
+                    // frozen and outlive it in these sets.
+                    using var model = ControllerModelBase.Create("XboxSeries", "Carbon", true);
+                    var parts = Parts(model.model3DGroup).ToList();
+                    meshes[i] = new HashSet<object>(parts.Select(p => p.Geometry), ReferenceEqualityComparer.Instance);
+                    art[i] = new HashSet<object>(parts.SelectMany(p => Brushes(p.Material)).OfType<ImageBrush>(),
+                        ReferenceEqualityComparer.Instance);
+                }
+                catch (Exception ex)
+                {
+                    faults[i] = ex;
+                }
+            })).ToList();
+            threads.ForEach(t => t.Start());
+            threads.ForEach(t => t.Join());
+
+            Assert.All(faults, Assert.Null);
+            Assert.True(meshes[0].Count >= 10, $"the model has only {meshes[0].Count} meshes");
+            Assert.NotEmpty(art[0]);
+            for (int i = 1; i < builders; i++)
+            {
+                Assert.True(meshes[0].SetEquals(meshes[i]), $"builder {i} kept meshes of its own");
+                Assert.True(art[0].SetEquals(art[i]), $"builder {i} kept art of its own");
+            }
+        }
+
+        /// <summary>The rule both caches keep by: the first copy kept under
+        /// a key is the one handed to every caller, a second read of the
+        /// same key is dropped for it, and a copy nothing holds any more
+        /// gives way to the next one read.</summary>
+        [Fact]
+        public void TheFirstCopyKeptIsTheOneEveryCallerGets()
+        {
+            var kept = new Dictionary<string, WeakReference<object>>();
+            var gate = new object();
+            object first = new object(), second = new object(), other = new object();
+
+            Assert.Same(first, ControllerModelBase.KeepFirst(kept, gate, "Body.obj", first));
+            Assert.Same(first, ControllerModelBase.KeepFirst(kept, gate, "Body.obj", second));
+            Assert.Same(other, ControllerModelBase.KeepFirst(kept, gate, "Grip.obj", other));
+
+            kept["Gone.obj"] = new WeakReference<object>(null);
+            Assert.Same(second, ControllerModelBase.KeepFirst(kept, gate, "Gone.obj", second));
+            Assert.Same(second, ControllerModelBase.KeepFirst(kept, gate, "Gone.obj", first));
+            GC.KeepAlive(first);
+            GC.KeepAlive(other);
+        }
+
         [Fact]
         public void PaintingOneModelLeavesTheOtherAlone()
         {

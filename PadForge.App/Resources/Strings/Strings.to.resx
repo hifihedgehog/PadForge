@@ -735,7 +735,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Fekauʻi ʻa e tetetete ʻo e ongo motor lalahi ki he ongo trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Tetetete trigger mei he bass ʻi he ongo ʻo e sisitemi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone fakatafaʻaki, Fakahangatonu ʻo e Controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button Fakaʻaongaʻi Taumuʻa, Mode Fakaʻaongaʻi, Threshold Taumuʻa Faingofua</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button Fakaʻaongaʻi Taumuʻa, Mode Fakaʻaongaʻi, Gyro ʻOku Ngāue, Toe Fakalotoloto, Threshold Taumuʻa Faingofua</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Fakaava ʻa e ngaahi gesture ʻo e touchpad ko eni</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Lekooti hoʻo ngaahi gesture pē ʻaʻau</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ngingila LED, Sīpinga ʻo e Tokotaha Vaʻinga, Mode LED Fakalongolongo</value></data>
@@ -746,7 +746,6 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu foʻou</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Toʻo ʻa e puha fakaʻosi</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Hingoa</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Maʻuʻanga, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller kotoa</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakaiʻi ʻa e ngaahi shaker</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player pe Māmani</value></data>

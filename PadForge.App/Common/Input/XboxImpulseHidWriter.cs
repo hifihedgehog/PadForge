@@ -75,7 +75,9 @@ namespace PadForge.Common.Input
             var buf = BuildReport(lt, rt, lm, rm);
 
             // Which interface serves the pad's slot now. The identity call
-            // does no device I/O, so it is asked on every write (#583).
+            // does no device I/O and an unchanged answer makes no garbage
+            // (XInputSlotIdentity.AnswerOf), so it is asked on every write
+            // (#583), once, never waited for.
             var slot = SlotAnswer(ud);
 
             // Cached resolved path + persistent handle: the per-change
@@ -93,6 +95,13 @@ namespace PadForge.Common.Input
                 cached.Handle?.Dispose();
                 s_targets.TryRemove(ud.DevicePath, out _);
             }
+
+            // OpenXInput was in another thread's device I/O and no handle
+            // serves the pad. Nothing says which interface would, and nothing
+            // failed: the write is refused without the cooldown, and the poll
+            // thread, which re-arms a refused write, asks on its next frame.
+            if (slot.Kind == XInputSlotIdentity.Kind.Busy)
+                return false;
 
             // A pad whose last resolve, open or write failed waits out the
             // cooldown. The poll thread re-arms a refused write every frame,
@@ -139,14 +148,13 @@ namespace PadForge.Common.Input
             return Failed(ud.DevicePath, now);
         }
 
-        /// <summary>OpenXInput's answer for the pad's slot, or
+        /// <summary>OpenXInput's answer for the pad's slot, asked once, or
         /// <see cref="XInputSlotIdentity.Kind.Unsupported"/> for a path that
-        /// is no XInput slot. A busy lock is asked again twice, a millisecond
-        /// apart, since a resolve that finds nothing waits out the
-        /// cooldown.</summary>
+        /// is no XInput slot. A busy answer is not waited for on the poll
+        /// thread: Write refuses the write without the cooldown.</summary>
         private static XInputSlotIdentity.Answer SlotAnswer(UserDevice ud)
             => XInputSlotIdentity.TryParseSlot(ud.DevicePath, out int slot)
-                ? XInputSlotIdentity.Get(slot, busyRetries: 2)
+                ? XInputSlotIdentity.Get(slot)
                 : new XInputSlotIdentity.Answer(XInputSlotIdentity.Kind.Unsupported);
 
         /// <summary>Where the report goes. The slot's own interface when it

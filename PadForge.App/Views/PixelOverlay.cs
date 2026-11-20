@@ -156,8 +156,31 @@ namespace PadForge.Views
         private CrosshairOverlay(CrosshairView view, string title) : base(view, title)
         {
             _view = view;
-            DisplaysChanged += Place;
-            DpiChanged += (_, _) => Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(Place));
+            DisplaysChanged += PlaceAgain;
+            DpiChanged += (_, _) => Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(PlaceAgain));
+        }
+
+        /// <summary>A display change hid the window or showed it again. The
+        /// crosshair's card says whether it is running, so it learns of it
+        /// here.</summary>
+        internal event Action ShownOrHiddenByDisplays;
+
+        private bool _closed;
+
+        /// <summary>A display change queued before the window closed runs
+        /// after it, and a closed window cannot show again.</summary>
+        protected override void OnClosed(EventArgs e)
+        {
+            _closed = true;
+            base.OnClosed(e);
+        }
+
+        private void PlaceAgain()
+        {
+            if (_closed) return;
+            bool was = IsVisible;
+            Place();
+            if (IsVisible != was) ShownOrHiddenByDisplays?.Invoke();
         }
 
         /// <summary>Shows the crosshair <paramref name="look"/> draws. The
@@ -166,7 +189,10 @@ namespace PadForge.Views
         internal void ShowLook(CrosshairData look)
         {
             _look = look;
-            _view.Look = look;
+            // The same look raises no change, and its picture is read again
+            // at every show.
+            if (ReferenceEquals(_view.Look, look)) _view.Reload();
+            else _view.Look = look;
             Place();
         }
 

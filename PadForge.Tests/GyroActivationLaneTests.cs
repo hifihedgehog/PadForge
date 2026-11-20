@@ -12,8 +12,8 @@ using Xunit;
 
 namespace PadForge.Tests
 {
-    /// <summary>A Steam import's gyro activation at run time: the engaged
-    /// layer's entry of WorkshopGyroActivation, else Base's, any or all of
+    /// <summary>The Gyro card's activation at run time: the engaged layer's
+    /// entry of PadSetting.GyroActivation, else Base's, any or all of
     /// its buttons under Hold, Release or Toggle, ANDed into the slot's
     /// engage state, the re-center each time the gyro turns on, and the
     /// "Gyro Engaged" read the import gates its tilt rows on.</summary>
@@ -31,15 +31,18 @@ namespace PadForge.Tests
         private readonly InputManager _im = new();
         private readonly HashSet<string> _down = new(StringComparer.Ordinal);
         private int _recenters;
+        private readonly UserSetting _device;
 
         public GyroActivationLaneTests()
         {
             var device = Guid.NewGuid();
             SettingsManager.UserSettings = new SettingsCollection();
-            SettingsManager.UserSettings.Items.Add(new UserSetting
+            _device = new UserSetting
             {
                 InstanceGuid = device, ProductGuid = device, MapTo = 0, IsEnabled = true,
-            });
+            };
+            _device.SetPadSetting(new PadSetting());
+            SettingsManager.UserSettings.Items.Add(_device);
             SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
             SettingsManager.SlotCreated[0] = true;
             SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
@@ -59,17 +62,17 @@ namespace PadForge.Tests
             InputManager.ClearShiftRuntime(0);
         }
 
-        /// <summary>Stamps slot 0 with <paramref name="activation"/> on a set
-        /// that declares Layer_1 to Layer_3, and forces the engage config
-        /// to re-read it on the next settle.</summary>
+        /// <summary>Sets slot 0's device card to <paramref name="activation"/>
+        /// on a set that declares Layer_1 to Layer_3, and forces the engage
+        /// config to re-read it on the next settle.</summary>
         private void Stamp(string activation, bool recenter = false)
         {
-            var set = new MappingSet
+            _device.SetPadSetting(new PadSetting
             {
-                Authoritative = true,
-                WorkshopGyroActivation = activation,
-                WorkshopGyroRecenterOnEngage = recenter,
-            };
+                GyroActivation = activation,
+                GyroRecenterOnEngage = recenter ? "1" : "0",
+            });
+            var set = new MappingSet();
             foreach (var mask in new[] { "Layer_1", "Layer_2", "Layer_3" })
                 set.ShiftActivators.Add(new ShiftActivator
                 {
@@ -157,14 +160,19 @@ namespace PadForge.Tests
             Assert.True(Settle());
         }
 
+        /// <summary>An unchanged activation keeps its entries, so a Toggle
+        /// stays where the user left it across the quarter-second refresh,
+        /// and a changed one drops the old entries' states.</summary>
         [Fact]
-        public void AReplacedStamp_DropsTheOldTogglesStates()
+        public void AChangedActivation_DropsTheOldTogglesStates()
         {
             Stamp("Base=Toggle,Any,Gamepad ButtonA");
             _down.Add("Gamepad ButtonA");
             Assert.True(Settle());
             _down.Clear();
             Stamp("Base=Toggle,Any,Gamepad ButtonA");
+            Assert.True(Settle());
+            Stamp("Base=Toggle,Any,Gamepad ButtonA|Gamepad ButtonB");
             Assert.False(Settle());
             _down.Add("Gamepad ButtonA");
             Assert.True(Settle());
@@ -199,16 +207,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void IsGyroEngaged_NeedsAnEngageSource_NoRatchet_AndTheLaneOn()
+        public void IsGyroEngaged_NeedsAnEngageSource_AndTheLaneOn()
         {
             _im.GyroEngagedFromButton[0] = true;
             Assert.True(_im.IsGyroEngaged(0));
             _im.GyroActivationOn[0] = false;
             Assert.False(_im.IsGyroEngaged(0));
             _im.GyroActivationOn[0] = true;
-            _im.GyroRatchetHeld[0] = true;
-            Assert.False(_im.IsGyroEngaged(0));
-            _im.GyroRatchetHeld[0] = false;
             _im.GyroEngagedFromButton[0] = false;
             Assert.False(_im.IsGyroEngaged(0));
             _im.GyroEngagedFromMacro[0] = true;
@@ -272,7 +277,7 @@ namespace PadForge.Tests
                 Assert.Equal("Base=Hold,Any,Gamepad ButtonA|Gamepad ButtonB;Layer_1=Release,Any,Gamepad ButtonX",
                     set.WorkshopGyroActivation);
                 Assert.True(set.WorkshopGyroRecenterOnEngage);
-                var parsed = set.WorkshopGyroActivationByLayer;
+                var parsed = GyroActivation.Parse(set.WorkshopGyroActivation);
                 Assert.Equal(new[] { "Gamepad ButtonA", "Gamepad ButtonB" }, parsed["Base"].Buttons);
                 Assert.Equal("Release", parsed["Layer_1"].Mode);
             }
@@ -291,8 +296,6 @@ namespace PadForge.Tests
             src.CopyWorkshopStampsTo(dst);
             Assert.Equal(src.WorkshopGyroActivation, dst.WorkshopGyroActivation);
             Assert.True(dst.WorkshopGyroRecenterOnEngage);
-            Assert.True(dst.WorkshopGyroActivationByLayer["Base"].All);
-            Assert.Equal("Toggle", dst.WorkshopGyroActivationByLayer["Base"].Mode);
         }
     }
 }

@@ -215,7 +215,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Dee "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(enweghị ederede)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ederede</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>nkeji</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Gụọ dịka controller iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Gụọ dịka keyboard</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nọmba onye egwuregwu…</value></data>
@@ -1314,7 +1313,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Na-eziga rumble nke motor ndị isi na trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble trigger sitere na bass nke ụda sistemụ</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ịdabere, Ntụziaka njikwa</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọtịnụ Aim Engage, Ọnọdụ Engage, Oke Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọtịnụ Aim Engage, Ọnọdụ Engage, Gyro gbanwuru, Itinye n'etiti ọzọ, Oke Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Na-agbanye mmegharị touchpad a</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ịkpụ aka, ịpị, ịmịkọ, ọdịdị</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Dekọọ nke gị</value></data>
@@ -1347,7 +1346,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Uru ndị ahụ bụ ahịrị Game Telemetry na [Ngwaọrụ]. Hazie ha na ngalaba Nhazi nke controller ma ọ bụ jiri ha malite macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>A na-edozi ebe, nha na nghọta nke menu n'onwe ya na menu ahụ, na ngalaba [Macro na Menu] nke controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ihe na-egosi</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Okirikiri, grid ma ọ bụ bar nke menu mgbe ọ meghere</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Okirikiri, grid ma ọ bụ bar nke menu mgbe ọ meghere.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Detuo adreesị</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ekwentị jikọrọ na-egosi ebe a na na peeji Ngwaọrụ, ebe ị na-ekenye ya controller.</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Ọ dịghị ngwaọrụ dabara.</value></data>
@@ -1477,10 +1476,24 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Njikwa ahụ nọ na ọnọdụ Xbox azaghị dịka Apex 4, ya mere ọ dịghị ihe e zigara, Windows enwetaghachikwala ya. Jiri mgba nke ya gbanwee ya laghachi na ọnọdụ DInput.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ebufeghị njikwa ahụ na WinUSB, ya mere ọ dịghị ihe e zigara. Jiri mgba nke ya gbanwee ya laghachi na ọnọdụ DInput.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Akwụsịla. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya tupu i zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Port ihuenyo ahụ emegheghị, ya mere o nweghị ihe e zipuru. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya, ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Foto ahụ nwere frame karịa ihe ihuenyo njikwa a nwere ike ijide.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>A na-eziga foto na njikwa a ugbu a. Chere ka ọ gwụchaa.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ihuenyo ahụ rịọrọ foto ahụ n'adreesị PadForge anaghị ede na ya, ya mere o nweghị ihe e zipuru. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya, ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>E zipuru foto ahụ, mana njikwa ahụ alaghachighị n'ọnọdụ DInput. Jiri mgba nke ya laghachi ya.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Njikwa ahụ anabataghị iwu na-akwado ya, ya mere o nweghị ihe e zipuru. Lelee na ejikọrọ ya ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Iziga ahụ kwụsịrị n'ihi njehie dị na PadForge. Faịlụ log nwere nkọwa ya.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>A ka na-ezipu foto gaa na njikwa ahụ. Kwụsị izipu ahụ?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Tinye</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Ngwaọrụ amaghị ama</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Naanị mgbe</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Isi iyi a na-agụ naanị mgbe a na-agụkwa ntinye a dị ka a pịrị ya na otu njikwa ahụ. Nnwale mpaghara sitere na mbubata na-agụ dị ka oke stick ma ọ bụ trigger ọ na-enyocha.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ma mgbe</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ntinye nke abụọ isi iyi a na-echekwa.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Gbanwee ntinye</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Na-ahọrọ ntinye ọzọ a ga-echere.</value></data>
 </root>

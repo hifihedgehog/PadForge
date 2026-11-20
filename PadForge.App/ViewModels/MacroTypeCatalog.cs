@@ -15,6 +15,10 @@ namespace PadForge.ViewModels
         public string Label { get; init; }
         public string Category { get; init; }
         public string Tooltip { get; init; }
+        // Equal by Type: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is MacroTypeChoice o && o.Type.Equals(Type);
+        public override int GetHashCode() => Type.GetHashCode();
     }
 
     /// <summary>
@@ -162,10 +166,10 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.PointerModeSet, S.MacroAction_Type_PointerModeSet, S.Macro_Cat_Motion, S.MacroAction_PointerModeSet_Tooltip);
                 Add(MacroActionType.PointerModeCycle, S.MacroAction_Type_PointerModeCycle, S.Macro_Cat_Motion, S.MacroAction_PointerModeCycle_Tooltip);
                 Add(MacroActionType.SwitchLayer, S.MacroAction_Type_SwitchLayer, S.Macro_Cat_Layers, S.Macro_SwitchLayer_Hint);
-                Add(MacroActionType.ToggleTouchpadOverlay, S.Macro_ToggleTouchpadOverlay, S.Macro_Cat_Layers, null);
-                Add(MacroActionType.ToggleScreenOverlay, S.Macro_ToggleScreenOverlay, S.Macro_Cat_Layers, null);
-                Add(MacroActionType.ToggleCrosshair, S.Macro_ToggleCrosshair, S.Macro_Cat_Layers, null);
-                Add(MacroActionType.ToggleMagnifier, S.Macro_ToggleMagnifier, S.Macro_Cat_Layers, null);
+                Add(MacroActionType.ToggleTouchpadOverlay, S.MacroAction_ToggleTouchpadOverlay, S.Macro_Cat_Layers, null);
+                Add(MacroActionType.ToggleScreenOverlay, S.MacroAction_ToggleScreenOverlay, S.Macro_Cat_Layers, null);
+                Add(MacroActionType.ToggleCrosshair, S.MacroAction_ToggleCrosshair, S.Macro_Cat_Layers, null);
+                Add(MacroActionType.ToggleMagnifier, S.MacroAction_ToggleMagnifier, S.Macro_Cat_Layers, null);
                 Add(MacroActionType.MagnifierWhileHeld, S.MacroAction_Type_MagnifierWhileHeld, S.Macro_Cat_Layers, S.MacroAction_MagnifierWhileHeld_Tooltip);
                 Add(MacroActionType.ProfileShortcut, S.MacroAction_Type_ProfileShortcut, S.Macro_Cat_System, S.MacroAction_ProfileShortcut_Tooltip);
                 Add(MacroActionType.RunProgram, S.MacroAction_Type_RunProgram, S.Macro_Cat_System, S.MacroAction_RunProgram_Tooltip);

@@ -31,15 +31,36 @@ namespace PadForge.Common.Input
         public const string CustomProfileId = "padforge-custom";
 
         private static readonly object _initLock = new object();
-        private static bool _initialized;
-        private static List<HMProfile> _allProfiles = new();
-        private static List<HMProfile> _xboxProfiles = new();
-        private static List<HMProfile> _playStationProfiles = new();
-        private static List<HMProfile> _nintendoProfiles = new();
-        private static List<HMProfile> _extendedProfiles = new();
-        private static List<HMProfile> _keyboardProfiles = new();
-        private static List<HMProfile> _mouseProfiles = new();
-        private static Dictionary<string, UserProfileProblem> _userProfileProblems = new(StringComparer.Ordinal);
+
+        /// <summary>One load of the catalog: every list and map the accessors
+        /// hand out, built whole before it is published and never changed
+        /// after. A reload publishes a new one in a single assignment, so a
+        /// reader on another thread, a lifecycle task's
+        /// CreateHMaestroController among them, reads with no lock and sees
+        /// the old catalog or the new one, never one half emptied or half
+        /// built.</summary>
+        private sealed class Loaded
+        {
+            public List<HMProfile> All = new();
+            public List<HMProfile> Xbox = new();
+            public List<HMProfile> PlayStation = new();
+            public List<HMProfile> Nintendo = new();
+            public List<HMProfile> Extended = new();
+            public List<HMProfile> Keyboard = new();
+            public List<HMProfile> Mouse = new();
+            public Dictionary<string, UserProfileProblem> UserProfileProblems = new(StringComparer.Ordinal);
+
+            /// <summary>Every loaded profile by its ID slug, the first in
+            /// <see cref="All"/> order where two share one. The UI timer
+            /// looks up each slot's profile 30 times a second, and a scan of
+            /// the list with a lambda made a closure and a delegate each
+            /// time, the most numerous garbage in the program at rest
+            /// (measured 2026-11-16).</summary>
+            public readonly Dictionary<string, HMProfile> ById = new(StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>The published catalog, null until the first load.</summary>
+        private static volatile Loaded s_loaded;
 
         /// <summary>Why one user profile is missing from the pickers.</summary>
         public sealed class UserProfileProblem
@@ -56,7 +77,7 @@ namespace PadForge.Common.Input
         /// Extended category alongside the built-in catalog. Populated by
         /// the settings layer on startup (profiles live in PadForge.xml
         /// under &lt;UserProfiles&gt;) and re-populated after every live
-        /// import. EnsureInitialized invokes the provider once per load; if
+        /// import. Each load of the catalog invokes the provider once; if
         /// it's null or returns null, only the built-in catalog + the
         /// synthetic Custom entry appear.
         /// </summary>
@@ -78,7 +99,7 @@ namespace PadForge.Common.Input
         /// <summary>All loaded profiles, ordered by ID slug.</summary>
         public static IReadOnlyList<HMProfile> AllProfiles
         {
-            get { EnsureInitialized(); return _allProfiles; }
+            get => Current.All;
         }
 
         /// <summary>Xbox-family controller profiles. Filter is the
@@ -88,7 +109,7 @@ namespace PadForge.Common.Input
         /// (Surface peripherals, generic HID devices, etc.) into Extended.</summary>
         public static IReadOnlyList<HMProfile> XboxProfiles
         {
-            get { EnsureInitialized(); return _xboxProfiles; }
+            get => Current.Xbox;
         }
 
         /// <summary>PlayStation-family controller profiles. Filter is the
@@ -98,7 +119,7 @@ namespace PadForge.Common.Input
         /// PS3 Remote, PS Classic, etc.) drop to Extended.</summary>
         public static IReadOnlyList<HMProfile> PlayStationProfiles
         {
-            get { EnsureInitialized(); return _playStationProfiles; }
+            get => Current.PlayStation;
         }
 
         /// <summary>Nintendo-family controller profiles: switch-pro,
@@ -107,7 +128,7 @@ namespace PadForge.Common.Input
         /// exclusive with the other buckets.</summary>
         public static IReadOnlyList<HMProfile> NintendoProfiles
         {
-            get { EnsureInitialized(); return _nintendoProfiles; }
+            get => Current.Nintendo;
         }
 
         /// <summary>Profiles that don't match the strict Xbox or PlayStation
@@ -118,7 +139,7 @@ namespace PadForge.Common.Input
         /// buckets so each profile appears in exactly one category.</summary>
         public static IReadOnlyList<HMProfile> ExtendedProfiles
         {
-            get { EnsureInitialized(); return _extendedProfiles; }
+            get => Current.Extended;
         }
 
         /// <summary>Keyboard profiles (HIDMaestro 1.12.0, HIDMaestro#67): the
@@ -127,14 +148,14 @@ namespace PadForge.Common.Input
         /// keyboard takes SubmitKeyboard, not gamepad state.</summary>
         public static IReadOnlyList<HMProfile> KeyboardProfiles
         {
-            get { EnsureInitialized(); return _keyboardProfiles; }
+            get => Current.Keyboard;
         }
 
         /// <summary>Mouse profiles, profile type "mouse", the twin of
         /// <see cref="KeyboardProfiles"/>.</summary>
         public static IReadOnlyList<HMProfile> MouseProfiles
         {
-            get { EnsureInitialized(); return _mouseProfiles; }
+            get => Current.Mouse;
         }
 
         /// <summary>True for a keyboard or mouse profile, by the profile's own
@@ -149,17 +170,15 @@ namespace PadForge.Common.Input
         public static HMProfile GetProfileById(string id)
         {
             if (string.IsNullOrEmpty(id)) return null;
-            EnsureInitialized();
-            return _profilesById.TryGetValue(id, out var profile) ? profile : null;
+            var catalog = Current;
+            LookupSeam?.Invoke();
+            return catalog.ById.TryGetValue(id, out var profile) ? profile : null;
         }
 
-        /// <summary>Every loaded profile by its ID slug, the first in
-        /// <see cref="AllProfiles"/> order where two share one, built with the
-        /// lists. The UI timer looks up each slot's profile 30 times a second,
-        /// and a scan of the list with a lambda made a closure and a delegate
-        /// each time, the most numerous garbage in the program at rest
-        /// (measured 2026-11-16).</summary>
-        private static Dictionary<string, HMProfile> _profilesById = new(StringComparer.OrdinalIgnoreCase);
+        /// <summary>Test seam run by <see cref="GetProfileById"/> between
+        /// taking the catalog and reading it, null in production. A test
+        /// reloads the catalog there.</summary>
+        internal static System.Action LookupSeam;
 
         /// <summary>Why the user profile with this JSON, as
         /// <see cref="UserProfilesProvider"/> handed it in, is not in the
@@ -167,8 +186,7 @@ namespace PadForge.Common.Input
         public static UserProfileProblem GetUserProfileProblem(string json)
         {
             if (string.IsNullOrEmpty(json)) return null;
-            EnsureInitialized();
-            return _userProfileProblems.TryGetValue(json, out var problem) ? problem : null;
+            return Current.UserProfileProblems.TryGetValue(json, out var problem) ? problem : null;
         }
 
         /// <summary>Why HIDMaestro would keep this profile JSON out of the
@@ -281,149 +299,150 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Force the catalog to re-initialize on the next access. Call
-        /// after a user imports a new profile so the Extended dropdown
-        /// picks it up.
+        /// Builds the catalog again and publishes it. Call after a user
+        /// imports a new profile so the Extended dropdown picks it up.
         /// </summary>
         public static void Reload()
         {
-            lock (_initLock)
-            {
-                _initialized = false;
-                _allProfiles = new();
-                _xboxProfiles = new();
-                _playStationProfiles = new();
-                _nintendoProfiles = new();
-                _extendedProfiles = new();
-                _keyboardProfiles = new();
-                _mouseProfiles = new();
-                _profilesById = new(StringComparer.OrdinalIgnoreCase);
-                _userProfileProblems = new(StringComparer.Ordinal);
-            }
-            EnsureInitialized();
+            // The catalog in place stays in place while the new one builds.
+            lock (_initLock) s_loaded = Load();
             foreach (var reloaded in s_catalogReloaded.Live()) reloaded(null, System.EventArgs.Empty);
         }
 
-        private static void EnsureInitialized()
+        /// <summary>The published catalog, loaded on first use.</summary>
+        private static Loaded Current
         {
-            if (_initialized) return;
-            lock (_initLock)
+            get
             {
-                if (_initialized) return;
-
-                try
+                var loaded = s_loaded;
+                if (loaded != null) return loaded;
+                lock (_initLock)
                 {
-                    using var ctx = new HMContext();
-                    ctx.LoadDefaultProfiles();
-                    // A refused catalog file would drop a built-in profile
-                    // without a word, so whatever the catalog's own load
-                    // lists goes to the log. HIDMaestro's release checks keep
-                    // this empty.
-                    foreach (var issue in ctx.ProfileLoadIssues)
-                        PadForge.Engine.SdlDiagLog.WriteLine($"PROFILES: catalog {issue.Kind} {issue}");
-
-                    // The user's imported profiles load through the same
-                    // context, so they get the same parse and checks as the
-                    // built-in catalog, and each one that does not make the
-                    // pickers keeps its reason for Manage Profiles.
-                    _userProfileProblems = LoadUserProfiles(ctx, UserProfilesProvider?.Invoke());
-
-                    // Filter undeployable profiles at catalog load. HIDMaestro
-                    // ships some profile JSONs that lack a HID descriptor, and
-                    // HMContext.CreateController throws HMProfileException
-                    // "Profile 'X' at $.descriptor: the profile has no HID
-                    // descriptor and cannot be deployed." for those.
-                    // Excluding them at the catalog
-                    // level prevents the user from selecting a broken
-                    // profile in any dropdown, so creation never attempts a
-                    // controller it can't deploy. When HIDMaestro ships a
-                    // fixed catalog, these profiles reappear automatically.
-                    // Sort by display Name, not Id slug. The dropdown's
-                    // DisplayMemberPath is "Name" so the user sees the
-                    // product name; slug order produced a visually
-                    // unsorted list (e.g. "Logitech F710" after
-                    // "HORI Fighting Stick" but before "Thrustmaster T300"
-                    // matches slug "logitech-f710" but reads wrong).
-                    _allProfiles = ctx.AllProfiles
-                        .Where(p => p.IsDeployable)
-                        .Where(p => !IsWithheldProfile(p.Id))
-                        .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
-                        .ToList();
-
-                    // Vendor match is prefix-based: HM upstream isn't strictly
-                    // consistent on the vendor field — older Sony profiles use
-                    // "Sony", the dualsense-bt-full profile added in HM 1.2.2
-                    // uses "Sony Interactive Entertainment". Same shape for
-                    // Microsoft if a future HM rev ships "Microsoft Corporation".
-                    // StartsWith keeps both variants in the right family bucket
-                    // without us needing to chase upstream string changes.
-                    //
-                    // Xbox / PlayStation buckets additionally require the
-                    // profile name (or id slug) to carry the canonical
-                    // product family — "Xbox" for Microsoft, "DualShock" or
-                    // "DualSense" for Sony. Vendor-only matching pulled in
-                    // peripherals that share the brand but aren't gamepads
-                    // (Surface, PS Move, PS3 Remote, PS Classic), which
-                    // confused the user-facing pickers; those drop to
-                    // Extended now.
-                    _xboxProfiles = _allProfiles
-                        .Where(IsXboxProfile)
-                        .ToList();
-
-                    _playStationProfiles = _allProfiles
-                        .Where(IsPlayStationProfile)
-                        .ToList();
-
-                    _nintendoProfiles = _allProfiles
-                        .Where(IsNintendoProfile)
-                        .ToList();
-
-                    // Extended = everything that's not Xbox or PlayStation,
-                    // plus the synthetic "Custom" entry at the top so the
-                    // user can define a fully custom VC without inheriting
-                    // from any catalog profile. Custom sorts first to
-                    // make it the discoverable default for new Extended
-                    // slots. Also prepended to _allProfiles so that
-                    // GetProfileById lookups resolve it for Step 5's
-                    // CreateHMaestroController fallback path — HIDMaestro's
-                    // own HMContext.GetProfile doesn't know about the
-                    // synthetic.
-                    var custom = BuildCustomProfile();
-                    _allProfiles.Insert(0, custom);
-                    var extended = new List<HMProfile> { custom };
-                    extended.AddRange(_allProfiles
-                        .Where(p =>
-                            p.Id != CustomProfileId &&
-                            !IsXboxProfile(p) &&
-                            !IsPlayStationProfile(p) &&
-                            !IsNintendoProfile(p) &&
-                            !IsKeyboardOrMouseProfile(p)));
-                    _extendedProfiles = extended;
-
-                    // Keyboards and mice (HIDMaestro 1.12.0) belong to the
-                    // Keyboard + Mouse slot's device pickers and to no gamepad
-                    // bucket. In Extended they would have taken gamepad
-                    // state, which their reports cannot carry.
-                    _keyboardProfiles = _allProfiles
-                        .Where(p => string.Equals(p.Type, "keyboard", StringComparison.OrdinalIgnoreCase))
-                        .ToList();
-                    _mouseProfiles = _allProfiles
-                        .Where(p => string.Equals(p.Type, "mouse", StringComparison.OrdinalIgnoreCase))
-                        .ToList();
+                    loaded = s_loaded;
+                    if (loaded == null)
+                    {
+                        loaded = Load();
+                        s_loaded = loaded;
+                    }
+                    return loaded;
                 }
-                catch
-                {
-                    // Catalog unavailable. Leave the empty lists in place.
-                    // The engine's own HMContext will surface the real error.
-                }
-
-                var byId = new Dictionary<string, HMProfile>(StringComparer.OrdinalIgnoreCase);
-                foreach (var profile in _allProfiles)
-                    if (profile?.Id != null)
-                        byId.TryAdd(profile.Id, profile);
-                _profilesById = byId;
-                _initialized = true;
             }
+        }
+
+        /// <summary>Builds the catalog. Caller holds _initLock.</summary>
+        private static Loaded Load()
+        {
+            var c = new Loaded();
+            try
+            {
+                using var ctx = new HMContext();
+                ctx.LoadDefaultProfiles();
+                // A refused catalog file would drop a built-in profile
+                // without a word, so whatever the catalog's own load
+                // lists goes to the log. HIDMaestro's release checks keep
+                // this empty.
+                foreach (var issue in ctx.ProfileLoadIssues)
+                    PadForge.Engine.SdlDiagLog.WriteLine($"PROFILES: catalog {issue.Kind} {issue}");
+
+                // The user's imported profiles load through the same
+                // context, so they get the same parse and checks as the
+                // built-in catalog, and each one that does not make the
+                // pickers keeps its reason for Manage Profiles.
+                c.UserProfileProblems = LoadUserProfiles(ctx, UserProfilesProvider?.Invoke());
+
+                // Filter undeployable profiles at catalog load. HIDMaestro
+                // ships some profile JSONs that lack a HID descriptor, and
+                // HMContext.CreateController throws HMProfileException
+                // "Profile 'X' at $.descriptor: the profile has no HID
+                // descriptor and cannot be deployed." for those.
+                // Excluding them at the catalog
+                // level prevents the user from selecting a broken
+                // profile in any dropdown, so creation never attempts a
+                // controller it can't deploy. When HIDMaestro ships a
+                // fixed catalog, these profiles reappear automatically.
+                // Sort by display Name, not Id slug. The dropdown's
+                // DisplayMemberPath is "Name" so the user sees the
+                // product name; slug order produced a visually
+                // unsorted list (e.g. "Logitech F710" after
+                // "HORI Fighting Stick" but before "Thrustmaster T300"
+                // matches slug "logitech-f710" but reads wrong).
+                c.All = ctx.AllProfiles
+                    .Where(p => p.IsDeployable)
+                    .Where(p => !IsWithheldProfile(p.Id))
+                    .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                // Vendor match is prefix-based: HM upstream isn't strictly
+                // consistent on the vendor field: older Sony profiles use
+                // "Sony", the dualsense-bt-full profile added in HM 1.2.2
+                // uses "Sony Interactive Entertainment". Same shape for
+                // Microsoft if a future HM rev ships "Microsoft Corporation".
+                // StartsWith keeps both variants in the right family bucket
+                // without us needing to chase upstream string changes.
+                //
+                // Xbox / PlayStation buckets additionally require the
+                // profile name (or id slug) to carry the canonical
+                // product family: "Xbox" for Microsoft, "DualShock" or
+                // "DualSense" for Sony. Vendor-only matching pulled in
+                // peripherals that share the brand but aren't gamepads
+                // (Surface, PS Move, PS3 Remote, PS Classic), which
+                // confused the user-facing pickers; those drop to
+                // Extended now.
+                c.Xbox = c.All
+                    .Where(IsXboxProfile)
+                    .ToList();
+
+                c.PlayStation = c.All
+                    .Where(IsPlayStationProfile)
+                    .ToList();
+
+                c.Nintendo = c.All
+                    .Where(IsNintendoProfile)
+                    .ToList();
+
+                // Extended = everything that's not Xbox or PlayStation,
+                // plus the synthetic "Custom" entry at the top so the
+                // user can define a fully custom VC without inheriting
+                // from any catalog profile. Custom sorts first to
+                // make it the discoverable default for new Extended
+                // slots. Also prepended to the full list so that
+                // GetProfileById lookups resolve it for Step 5's
+                // CreateHMaestroController fallback path, since
+                // HIDMaestro's own HMContext.GetProfile does not know
+                // the synthetic profile.
+                var custom = BuildCustomProfile();
+                c.All.Insert(0, custom);
+                var extended = new List<HMProfile> { custom };
+                extended.AddRange(c.All
+                    .Where(p =>
+                        p.Id != CustomProfileId &&
+                        !IsXboxProfile(p) &&
+                        !IsPlayStationProfile(p) &&
+                        !IsNintendoProfile(p) &&
+                        !IsKeyboardOrMouseProfile(p)));
+                c.Extended = extended;
+
+                // Keyboards and mice (HIDMaestro 1.12.0) belong to the
+                // Keyboard + Mouse slot's device pickers and to no gamepad
+                // bucket. In Extended they would have taken gamepad
+                // state, which their reports cannot carry.
+                c.Keyboard = c.All
+                    .Where(p => string.Equals(p.Type, "keyboard", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                c.Mouse = c.All
+                    .Where(p => string.Equals(p.Type, "mouse", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            catch
+            {
+                // Catalog unavailable. Leave the empty lists in place.
+                // The engine's own HMContext will surface the real error.
+            }
+
+            foreach (var profile in c.All)
+                if (profile?.Id != null)
+                    c.ById.TryAdd(profile.Id, profile);
+            return c;
         }
 
         /// <summary>

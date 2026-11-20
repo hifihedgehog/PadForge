@@ -455,7 +455,7 @@ namespace PadForge.Tests
             var said = new List<(int, string)>();
             recorder.RecordingRefused += (pad, reason) => said.Add((pad, reason));
             var pad2 = main.Pads[2];
-            recorder.StartRecording(pad2.Mappings.First(m => m.TargetSettingName == "ButtonA"), 2, Guid.Empty);
+            recorder.StartRecording(pad2.Mappings.First(m => m.TargetSettingName == "ButtonA"), 2);
             Assert.False(recorder.IsRecording);
             Assert.Equal(new[] { (2, strings.Status_NoDeviceToRecord) }, said);
 
@@ -915,7 +915,7 @@ namespace PadForge.Tests
             // picture is sized from that, and adding a source never resizes
             // it. A change of the bar's height sizes the picture again while
             // the bar shows.
-            Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, OneLineBarHeight\(\), ref _barMeasured\);\s*double folded = SteadyFoldedHeight\(vm\.OutputTabVisible \|\| vm\.ShowMidiCard, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, bar, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
+            Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, PlainBarHeight\(\), ref _barMeasured\);\s*double folded = SteadyFoldedHeight\(vm\.OutputTabVisible \|\| vm\.ShowMidiCard, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, bar, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
             Assert.Matches(@"if \(PictureBar == null \|\| PictureBar\.Visibility != Visibility\.Visible \|\| PictureBar\.ActualHeight <= 0\) return double\.NaN;\s*if \(PickedBlocks == null \|\| PickedBlocks\.Items\.Count != 1\) return double\.NaN;(\s*//[^\n]*)*\s*if \(DataContext is not PadViewModel \{ PickedRow: \{ \} row \} \|\| !IsPlainOneSource\(row\)\) return double\.NaN;\s*return PictureBar\.ActualHeight \+ PictureBar\.Margin\.Top \+ PictureBar\.Margin\.Bottom;", code);
             Assert.Contains("private double _barMeasured = PictureBarBaseHeight;", code);
             Assert.Equal("PictureBar_SizeChanged", (string)Named(page, "PictureBar").Attribute("SizeChanged"));
@@ -961,7 +961,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The picture takes what the viewport has left after its
-        /// line, the bar under it with its blocks on one line, and the folded
+        /// line, the bar under it with one plain source, and the folded
         /// output cards, so the first look, a control picked and every card
         /// folded, fits and has nothing to scroll, as the Buttons board has
         /// it (#574). The numbers are the ones read off the running page on

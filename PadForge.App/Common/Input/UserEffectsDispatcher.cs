@@ -1417,6 +1417,7 @@ namespace PadForge.Common.Input
                     _prevModPips.Remove(g);
                     _prevMacroRightTrig.Remove(g);
                     _prevMacroLeftTrig.Remove(g);
+                    _flydigiSides.Remove(g);
                     _audioMuteBurstLeft.Remove(g);
                     RearmAudioAsserts(g);
                 }
@@ -2145,8 +2146,11 @@ namespace PadForge.Common.Input
             // (rebind during VC reset) and we shouldn't yank its slot key.
             // Atomic pair-remove: the old TryGetValue + key-only TryRemove
             // could evict a replacement that registered between the two.
-            ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
+            bool registered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
                 .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(_padIndex, this));
+            // The slot's Flydigi bit goes with the dispatcher that set it. A
+            // replacement registered before this dispose keeps its own.
+            if (registered) NoteFlydigiSlot(false, false);
             // A deleted slot takes its dispatcher with it, and no other slot
             // may dispatch soon, so the pads it left off their headsets or at
             // a lowered Headphone Volume are swept from here (#546). Off this

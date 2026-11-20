@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Жоқ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>секунд</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>минут (0 = ешқашан)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Тағайындалмаған</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← солға)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ жоғары)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll табылмады</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll табылмады. SDL3.dll файлын PadForge.exe жанына орналастырыңыз. Оны мына жерден жүктеп алыңыз: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll табылмады. PadForge бағдарламасын қайта жүктеп алыңыз.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Драйвер әрекеті орындалмады: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Параметрлер алмасу буферіне көшірілді.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Құрылғы туралы ақпарат алмасу буферіне көшірілді.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Төмен</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Сурет</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Тізім</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} шығыс</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} шығыс</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Қозғалыс</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Басқару элементін басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge танымайтын ойындар</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Жібермес бұрын жұмыс істеп тұрған DSX іздейтін модтар үшін.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Не көрсетіледі</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Мәзір ашық кезіндегі оның сақинасы, торы немесе жолағы</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты қосылғанда қабаттың аты, сол қабат белгілеген уақыт бойы</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профиль ауысқанда профильдің аты</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Мәзір ашық кезіндегі оның сақинасы, торы немесе жолағы.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты қосылғанда қабаттың аты, сол қабат белгілеген уақыт бойы.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профиль ауысқанда профильдің аты.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Мекенжайды көшіру</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Экрандағы орны</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Телефонды қосу</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Іске қосқанда қозғалтқышты автоматты бастау</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Терезе фокусты жоғалтқанда сұрауды жалғастыру</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Сұрау жиілігі (профиль басқасын белгілемесе)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Қозғалтқыш барлық құрылғыларды сұрап, виртуалды контроллерлерді секундына осынша рет жаңартады, мәні 60-тан 10000-ға дейін. Жиілік жоғары болған сайын процессор уақыты көбірек жұмсалады. Windows қозғалтқышты секундына ең көбі шамамен 2000 рет оятады, сондықтан жоғарырақ жиілікте әр оянған сайын бірнеше жүріс орындалады. Өз сұрау жиілігі бар профиль белсенді болғанда, оның орнына сол жиілік қолданылады. Профиль өшкенде осы мән қайта қолданылады.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Қозғалтқыш барлық құрылғыларды сұрап, виртуалды контроллерлерді секундына осынша рет жаңартады, мәні 60-тан 10000-ға дейін. Жиілік жоғары болған сайын процессор уақыты көбірек жұмсалады. Осы компьютерде Windows қозғалтқышты секундына ең көбі {0} рет оятады, сондықтан жоғарырақ жиілікте әр оянған сайын бірнеше жүріс орындалады. Өз сұрау жиілігі бар профиль белсенді болғанда, оның орнына сол жиілік қолданылады. Профиль өшкенде осы мән қайта қолданылады.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Құрылғыларды ойындардан жасыру</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide арқылы құрылғыларды жасыру мен төменгі деңгейлі кіріс ілмектерінің негізгі қосқышы. Өшірулі болса, әр құрылғының параметрлеріне қарамастан ешбір құрылғы жасырылмайды.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Іске қосулар арасында құрылғыларды жасырын ұстау</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Терілетін таңбалар арасындағы миллисекунд саны, 1000-ға дейін. 0 мәні бүкіл мәтінді бірден тереді.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Әрекетсіз кезде ажырату</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Мәліметтер</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>минут</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB арқылы қосылғанда Bluetooth байланысын ажырату</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Жылдам зарядтау. Bluetooth арқылы қосылған контроллер зарядталып жатқанын хабарласа, Bluetooth байланысы үзіледі, сонда ол радионы қоректендірмей зарядталады. Кез келген USB қуат көзі, соның ішінде розеткаға қосылатын зарядтағыштар да есепке алынады. Кабель қосулы тұрғанда Bluetooth байланысын қайта қоссаңыз, кабель келесі рет ажыратылғанға дейін оған тиіспейді.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade контроллері ретінде оқу</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU белсенді профильдің атын көрсетеді және профиль ауысқан сайын жаңартылады.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU белсенді профильдің профильдер тізіміндегі орнын көрсетеді. «Әдепкі» профилінің нөмірі 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU белсенді профильдің өз суретін, ал суреті жоқ болса, атын көрсетеді. Әр профиль өз суретін сақтайды.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU тәулік уақытын көрсетеді, ол минутына бір рет қайта жазылады. Адаптер әр суретті 100 000 жазуға есептелген жадта сақтайды, тәулік бойы көрсеткенде бұл шекке шамамен он аптада жетеді.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge геймпадты тапқаннан бергі сағат пен минутты көрсетеді, ол минутына бір рет қайта жазылады. Портынан он секундтан ұзақ алынған геймпад үшін есеп нөлден басталады. Адаптер әр суретті 100 000 жазуға есептелген жадта сақтайды, тәулік бойы көрсеткенде бұл шекке шамамен он аптада жетеді.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU тәулік уақытын көрсетеді, ол минутына бір рет қайта жазылады. Адаптер әр суретті өз жадында сақтайды, сондықтан PadForge оны одан жиі қайта жазбайды.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge геймпадты тапқаннан бергі сағат пен минутты көрсетеді, ол минутына бір рет қайта жазылады. Портынан он секундтан ұзақ алынған геймпад үшін есеп нөлден басталады. Адаптер әр суретті өз жадында сақтайды, сондықтан PadForge оны минутына бір реттен жиі қайта жазбайды.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU өзіңіз таңдаған суретті көрсетеді: BMP не PNG, VMU Animator .lcd файлы немесе Dreamcast .vms белгішесі. Суреттер 48 × 32 өлшемді ақ-қара пиксельге дейін қиылады.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Сурет таңдау…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} үшін сурет таңдау…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox режиміндегі контроллер Apex 4 ретінде жауап бермеді, сондықтан ештеңе жіберілмеді, ал Windows оны қайта алды. Оны өз қосқышымен DInput режиміне қайтарыңыз.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows контроллерді WinUSB драйверіне көшіре алмады, сондықтан ештеңе жіберілмеді. Оны өз қосқышымен DInput режиміне қайтарыңыз.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Тоқтатылды. Қайта жіберер алдында контроллерді өз қосқышымен өшіріп, қайта қосыңыз.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Экран порты ашылмады, сондықтан ештеңе жіберілмеді. Контроллерді өз қосқышымен өшіріп, қайта қосыңыз да, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Суреттегі кадрлар саны осы контроллер экранына сыятыннан көп.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Бұл контроллерге сурет жіберіліп жатыр. Оның аяқталуын күтіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Экран суретті PadForge жазбайтын мекенжай бойынша сұрады, сондықтан ештеңе жіберілмеді. Контроллерді өз қосқышымен өшіріп, қайта қосыңыз да, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Сурет жіберілді, бірақ контроллер DInput режиміне қайта ауыспады. Оны өз қосқышымен қайта ауыстырыңыз.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контроллер өзін дайындайтын пәрменді қабылдамады, сондықтан ештеңе жіберілмеді. Оның қосылғанын тексеріп, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Жіберу PadForge ішіндегі қатеге байланысты тоқтады. Мәліметтер журнал файлында.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Контроллерге сурет әлі жіберіліп жатыр. Жіберуді тоқтату керек пе?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлдары (*.mpk)|*.mpk|Барлық файлдар (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Мәзір геометриясын қалпына келтіру</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Торкөзді қалпына келтіру</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Сезімталдықты қалпына келтіру</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Үдеуді қалпына келтіру</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Өлі аймақты қалпына келтіру</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Ұстау уақытын қалпына келтіру</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Басу терезесін қалпына келтіру</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Кез келген қабат</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Бұл виртуалды контроллер белсенді болғанда үздіксіз жұмыс істейді. Іске қосқыш түйме қажет емес.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Орындау</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Қабат, Көз, Шек, Бағыт, Іске қосқыш түймелерін бөгеу, Қайталау</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Әрекет қосу</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Түрі</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуалды түймелер</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Тінтуір түймесін басу</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Тінтуір түймесін жіберу</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Тінтуірмен айналдыру</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу/өшіру</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Түймелер</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Пернелер тіркесімі</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} пішіміндегі пернелер тіркесімі. Өңдеуге болады.</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} әр {1} мс сайын қайталау</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Тінтуір X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Тінтуір Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Көлденең ығысу</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Тік ығысу</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Аралық</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Экраннан таңдау</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Түсіру: {0}…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Төңкерілген жарты</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Құрылғы тағайындалмаған</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Белгісіз құрылғы</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Сенсорлық тақтаны басу</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Төмен (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Жоғары (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Қосу</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Көздеуді қосу түймесі, Қосу режимі, Жеңіл көздеу шегі</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Көздеуді қосу түймесі, Қосу режимі, Гиро қосулы, Орталыққа келтіру, Жеңіл көздеу шегі</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоптың қашан белсенді болатынын шектейтін қосымша шарттар. Оң стик ауытқуын және көздеуді қосу түймесін жеке-жеке баптауға болады. Гироскоп барлық бапталған шарттар белсенді болғанда ғана іске қосылады.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Жергілікті</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Ойыншы</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Жеңіл көздеу шегін қалпына келтіру</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Көздеуді қосу түймесін қалпына келтіру</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Қосу режимін қалпына келтіру</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Қабат</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Төмендегі жолдар Гиро қосулы параметрін көрсететін және өзгертетін қабат.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Гиро қосулы</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Гироскоптың бұл қабатта қашан жұмыс істейтіні, қосу түймесіне қосымша. «Негізгімен бірдей» күйіндегі ауыстыру қабаты Негізгі қабатты қайталайды.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Үнемі қосулы</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Негізгімен бірдей</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Басып тұрғанда</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Басып тұрмағанда</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Әр басқан сайын ауыстыру</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Гиро қосулы түймелері</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Гиро қосулы параметрі оқитын түймелер, осы уяшықтың кез келген контроллерінде.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Талап</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Белгіленген түймелердің біреуі жеткілікті ме, әлде барлығын басып тұру керек пе.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Кез келген түйме</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Әр түйме</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Гиро қосылғанда орталыққа келтіру</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Гиро қосылған сайын контроллердің қалпын тыныштық нүктесі етіп алады.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Гиро қосулыны қалпына келтіру</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Гиро қосулы түймелерін қалпына келтіру</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Талапты қалпына келтіру</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Гиро қосылғанда орталыққа келтіруді қалпына келтіру</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Қосатын стикті қалпына келтіру</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Қосу бағытын қалпына келтіру</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Қозғалысты тікелей өткізу</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Ойын қозғалысты осында бапталған сезімталдықпен, тегістеумен және қисықпен оқиды.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Тікелей өткізу баптауларын қалпына келтіру</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Тек мына кезде</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Бұл көз тек сол контроллерде мына кіріс те басылған болып оқылғанда есептеледі. Импорттағы аймақ тексеруі стиктің немесе триггердің тексерілетін диапазоны ретінде оқылады.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Және мына кезде</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Бұл көз тағы күтетін екінші кіріс.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Кірісті өзгерту</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Күтетін басқа кірісті таңдайды.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Қисық</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Осы кірістің мәнін шығысқа берер алдында осы дәрежеге шығарады. 0 және 1 оны түзу қалдырады. 1-ден жоғары мән ортаға жақын жерде баяуырақ.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Сыртқы диапазон</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Шығыс жолдың осынша бөлігінде толық мәніне жетеді. 100% өшірулі дегенді білдіреді.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Анти-өлі аймақ</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Кіріс қозғалысымен бірге шығыс осыдан басталады. 0 өшірулі дегенді білдіреді.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Өлі аймақ пішіні</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Өшірулі күйде оқылым өзгермейді. Осьтік тек осы осьті өлшейді. Радиалды стик жұбын бірге өлшейді.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Өшірулі</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Осьтік</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Радиалды</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Ішкі өлі аймақ</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Жолдың осыншаға дейінгі бөлігінде кіріс ортада тұр деп оқылады.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін гироскоп сезімталдығының көбейткіші. 1.0 = қозғалтқыштың әдепкі мәні (500°/с → толық ауытқу). 1.0 мәнінен жоғары мәндер сезімталырақ. 1.0 мәнінен төмен мәндердің сезімталдығы азырақ.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін еңкейту сезімталдығының көбейткіші. 1.0 = толық ауытқу үшін 90° еңкейту. 1.0 мәнінен жоғары мәндер толық ауытқуға азырақ еңкейтумен жетеді.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Гироскоп еңкейтуі X</value></data>
@@ -3041,6 +3089,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Деңгей</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Әрекетсіздік уақыты</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Тағайындалған барлық құрылғылары желіден тыс болғанда виртуалды контроллер жойылғанға дейінгі секунд саны. 0 өшіреді. Сол түрдегі қалған контроллерлер бос орынды толтыру үшін жоғары жылжып, төменгі ұяшықтарға қайта байланысады.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунд (0 = ешқашан)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Қабат қосу</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ауыстыру қабатын қосу. Түйме ұсталып тұрғанда не ауыстырылғанда белсенді болатын екінші тағайындау кестесі.</value></data>
@@ -3152,6 +3201,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Кері бұралу жылдамдығын қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Бұрыштың ішкі өлі аймағын қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Бұрыштың сыртқы өлі аймағын қалпына келтіру</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Стиктің өлі аймағы</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Осы ауытқудан төменде стик ортада тұр деп оқылады, сондықтан бұру жиналмайды.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Стиктің өлі аймағын қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Көлбеудің ішкі өлі аймағын қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Көлбеудің сыртқы өлі аймағын қалпына келтіру</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Контроллер бағдарын қалпына келтіру</value></data>
@@ -3257,6 +3309,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m ішінен</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Бұл көлік рөлде бар моменттен көбірек сұрайды, сондықтан қисықтың үстіңгі жағы кесіледі.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Орталықтағы сезім, рөл күшейткіші, демпфирлеу, үйкеліс, ілініс, тұрақты жылдамдық, рөл моменті</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Орталықтағы сезім, рөл күшейткіші, демпфирлеу, ілініс, тұрақты жылдамдық, рөл моменті</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Рөл төмен жылдамдықта ортасын қаншалықты күшті ұстайтыны. 100% көліктің өз мәні.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Рөл күшейткіші</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Бұрылыс күшейген сайын рөл күшейткіші қанша күшті алып тастайды. Көбірек болса ортадан алыстағы рөл жеңілірек.</value></data>
@@ -3398,7 +3451,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Жоғары тондарды қалпына келтіру</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Тон шегін қалпына келтіру</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Жүйенің әдепкі шығысы ойнатқан кез келген дыбысты осы контроллердің кірістірілген динамигіне қатар көшіреді. USB және Bluetooth арқылы жұмыс істейді.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Таңдалған құрылғыда кірістірілген динамик жоқ. Бұл геймпадтың макрос дыбыстары жүйенің әдепкі шығысында ойнатылады.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge-те таңдалған құрылғыдағы динамикке осы қосылым арқылы жол жоқ. Бұл геймпадтың макрос дыбыстары жүйенің әдепкі шығысында ойнатылады.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) жасаған браузерлік DualSense сынақ жинағы: PadForge виртуалды геймпадтардан физикалық геймпадтарға жіберетін Sony feature-report CRC кадрлау және микробағдарлама сынақ командаларының эталоны.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3812,7 +3865,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast экранын көрсету</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Осы ұяшыққа кіріс беретін Bliss-Box портындағы әр Dreamcast геймпадының VMU экранында суреттерді ойнатады, содан кейін әр портты өз экран параметріне қайтарады.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast суреттерін көрсету: {0} × {1} мс, қайталау саны {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Әр сурет кемінде бір секунд көрсетіледі, себебі адаптер жіберілген әр суретті 100 000 жазуға есептелген жадта сақтайды, ал әр секунд сайын жаңа сурет бұл шекке шамамен бір тәулікте жетеді. Суреттер BMP не PNG, VMU Animator .lcd файлы немесе Dreamcast .vms белгішесінен алынған 48 × 32 өлшемді ақ-қара пиксель.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Әр сурет кемінде бір секунд көрсетіледі. PadForge адаптерге секундына ең көбі бір сурет жібереді, себебі адаптер жіберілген әр суретті өз жадында сақтайды. Суреттер BMP не PNG, VMU Animator .lcd файлы немесе Dreamcast .vms белгішесінен алынған 48 × 32 өлшемді ақ-қара пиксель.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Суреттер</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Сурет қосу…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Суретті алып тастау</value></data>
@@ -3889,15 +3942,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Қабат қосулы тұрғанда, оның өз тағайындалған кірістерінің ешқайсысы белсенді болмаса, осынша миллисекундтан кейін ол өздігінен өшеді. Таймер қабат қосылғанда басталады және қабаттың әр кірісінде қайта басталады. 0 қабатты өзіңіз өшіргенше қосулы ұстайды.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Реттеу өлі аймағын 25% мәніне қайтару.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Реттеу жылдамдығын секундына 100% мәніне қайтару.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Жібергенде деңгейді 100% мәніне қайтаруды қалпына келтіру.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Автоматты болдырмауды 0 мәніне қайтару (қабат өшірілгенше қосулы қалады).</value>
   </data>
@@ -3965,6 +4009,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop профилі</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop макросы</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Курсор аймағы</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (басып тұру)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (жіберу)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (қосу)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Не ауысатынын көру үшін конфигурацияны таңдаңыз.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Не ауысады</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Болады</value></data>
@@ -4592,7 +4639,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Бағыт басулары элементтер бойымен жылжиды және жаңа таңдалған әрбір элементті іске қосады. Бұл жылдам панель әрекеті Іске қосу режимін немесе Басу кірісін қолданбайды.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi кеңейтілген протоколы</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Қолдау көрсетілетін Flydigi контроллерлерінде қосымша түймелер мен қозғалыс сенсорларын қосады.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi бағдарламасы жұмыс істеп тұр: {0}. Ол PadForge сияқты контроллер интерфейсін қолдана алады, ал екеуінде де қолжетімділік болғанда Vader 5 Pro қайта-қайта ажырайтыны туралы хабарланған. Бұл контроллер ажырап, қайта қосылса, PadForge қолданған кезде қызметті тоқтатыңыз, контроллерді жасырын күйде ұстап, қызметті HidHide ақ тізімінен алып тастаңыз немесе Параметрлерде «Flydigi кеңейтілген протоколы» опциясын өшіріп көріңіз, бірақ бұл көмектесетіні расталмаған.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi бағдарламасы жұмыс істеп тұр: {0}. Ол контроллермен PadForge қолданатын интерфейс арқылы сөйлеседі. Бұл контроллер ажырап, қайта қосылса, PadForge қолданған кезде сол бағдарламаны тоқтатыңыз.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Қашықтан тағайындауды өзгертуге рұқсат беру</value>
   </data>

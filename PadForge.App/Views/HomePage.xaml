@@ -760,17 +760,17 @@
                              a space. -->
                         <controls:FlexLinePanel x:Name="EngineStats" Gap="36" LineGap="14" VerticalAlignment="Center">
                             <StackPanel x:Name="EngineStatRate">
-                                <TextBlock x:Name="EngineRate" FontFamily="{StaticResource DisplayFontFamily}" FontSize="14" Typography.NumeralAlignment="Tabular"
+                                <TextBlock x:Name="EngineRate" FontSize="14" Typography.NumeralAlignment="Tabular"
                                            LineHeight="31" LineStackingStrategy="BlockLineHeight"
-                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontSize="28" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_PollingRate, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="EngineStatLive">
-                                <TextBlock x:Name="EngineLive" FontFamily="{StaticResource DisplayFontFamily}" FontSize="14" Typography.NumeralAlignment="Tabular"
+                                <TextBlock x:Name="EngineLive" FontSize="14" Typography.NumeralAlignment="Tabular"
                                            LineHeight="31" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_ControllersLive, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
@@ -1195,10 +1195,12 @@
                          number and the preset, the state as a flame in a
                          round button, the one device the card names with
                          how many more there are, and the stage icons with
-                         Delete at their end. Everything a detailed card
-                         does, a compact one does: a click opens the page,
-                         a drag reorders, the tile opens the type bar and
-                         the flame turns the controller on or off. -->
+                         Delete at their end. It keeps these actions of a
+                         detailed card: a click opens the page, a drag
+                         reorders, the tile opens the type bar and the
+                         flame turns the controller on or off. It has no
+                         Add Device button and no line saying what a
+                         waiting controller waits for. -->
                     <DataTemplate x:Key="SlotCardCompact">
                         <Border Style="{StaticResource SlotCardEdge}"
                                 Tag="{Binding PadIndex}"

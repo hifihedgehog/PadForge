@@ -34,6 +34,10 @@ namespace PadForge.ViewModels
     {
         public KeyBackgroundRule Rule { get; init; }
         public string Label { get; init; }
+        // Equal by Rule: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is KeyBackgroundChoice o && o.Rule.Equals(Rule);
+        public override int GetHashCode() => Rule.GetHashCode();
     }
 
     /// <summary>

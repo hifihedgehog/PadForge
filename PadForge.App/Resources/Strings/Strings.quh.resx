@@ -136,6 +136,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Pisi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Rikch'ay</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} lluqsiy</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} lluqsiy</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Kuyuy</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Huk controlta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
@@ -262,7 +263,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" qillqay</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(mana qillqa kanchu)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Qillqa</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutokuna</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Teclado hina ñawinchay</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Pukllaqpa yupaynin…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Pukllaqpa yupaynin</value></data>
@@ -378,7 +378,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menúq geometríanta ñawpaqman kutichiy</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Celdata ñawpaqman kutichiy</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Sensibilidadta ñawpaqman kutichiy</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Aceleraciónta ñawpaqman kutichiy</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Zona muertata ñawpaqman kutichiy</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>Intervalota ñawpaqman kutichiy</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>
@@ -485,6 +484,8 @@
   <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horizontal desplazamiento</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertical desplazamiento</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalo</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hap'iy</value></data>
@@ -632,6 +633,18 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Hanaq (Y+)</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Zona muertata ñawpaqman kutichiy</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Ñitisqa kaptinlla</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Kay fuenteqa kay entradapas kikin controlpi ñitisqa hina ñawinchakuptinlla yupakun. Importacionmanta zona pruebaqa palancap utaq gatillop qhawasqan rango hina ñawinchakun.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ñitisqa kaptinpas</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Kay fuente suyakullantaq iskay kaq entrada.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Entradata tikray</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Suyakunanpaq huk entradata akllan.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curva</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Kay entradap ñawinchayninta kay potenciaman huqarin manaraq lluqsiyta kuyuchichkaptin. 0 utaq 1 chiqanta saqin. 1 patanpiqa chawpi kayllapi aswan pisi pisi kuyun.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Hawa rango</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Lluqsiyqa kay chhika puriypi hunt'asqaman chayan. 100% nisqapiqa mana llamk'anchu.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti zona muerta</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Entrada kuyuriyta qallarisqanmanta pacha lluqsiyqa kay chhikamanta qallarin. 0 nisqapiqa mana llamk'anchu.</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouse kuyuy X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouse kuyuy Y</value></data>
@@ -1518,7 +1531,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Sistema audiopa bajonmanta gatillo vibración</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kinrayaypa zona muertankuna, controlpa orientacionnin</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, llamp'uchay, Aceleración, lluqsiy curva</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Punteríata qallarichiq botón, qallarichiy modo, Easy Aim umbral</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Punteríata qallarichiq botón, qallarichiy modo, Gyro kicharisqa, Wakmanta chawpichay, Easy Aim umbral</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Kay touchpadpa gestonkunata qallarichin</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Llust'ichiykuna, takyaykuna, ch'apiykuna, rikch'aykuna</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Qampa kikiykita grabay</value></data>
@@ -1528,7 +1541,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Sapa gatillo kallpa, motor tikray, adaptive gatillo vibración, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>T'ikray, impulso, kutichiy, Aceleración, fling</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Ruway</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Capa, Pukyu, Umbral, Dirección, Activador botonkunata hark'ay, Kutipay</value></data>
   <data name="Menu_Opens_Header" xml:space="preserve"><value>Kichakuy</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Musuq menú</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Kay dispositivo</value></data>
@@ -1543,7 +1555,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Chaninkunaqa [Dispositivokuna] nisqapi Game Telemetry filam. Huk controlpa Asignacionkuna seccionninpi asignay, utaq macrokunata qallarichinapaq llamk'achiy.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Huk menúpa maypi kasqan, sayaynin, opacidadnin ima menúllapitaq churakun, huk controlpa [Macrokuna &amp; Menúkuna] seccionninpi.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Imakuna rikhurin</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Huk menúpa muyunin, cuadrículan utaq barran kicharisqa kachkaptin</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Huk menúpa muyunin, cuadrículan utaq barran kicharisqa kachkaptin.</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Tinkikuq celularqa kaypi, Dispositivokuna paginapipas rikhurin, chaypi huk controlman asignanki.</value></data>
   <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Mana emparejasqa PC kanchu.</value></data>
   <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Huk PC-ta emparejay</value></data>
@@ -1653,4 +1665,8 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Churay</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mana riqsisqa dispositivo</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hap'iy)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (kacharpariy)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (qallarichiy)</value></data>
 </root>

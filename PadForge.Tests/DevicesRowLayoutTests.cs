@@ -22,7 +22,7 @@ namespace PadForge.Tests
     public class DevicesRowLayoutTests
     {
         // The page beside the sidebar of a 1720-wide window, where the list is
-        // a table, and of a 1280-wide one, where the list is under 660 wide
+        // a table, and of a 1280-wide one, where the list is under TableMin wide
         // and narrow (DevicesPage.TableMin).
         private const double Table = 1456, NarrowList = 1016, Tall = 2600;
 

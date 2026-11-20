@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>არცერთი</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>მწმ</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>წამი</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>წუთი (0 = არასდროს)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>ჰც</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>მიუნიჭებელი</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← მარცხნივ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ზემოთ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა. განათავსეთ SDL3.dll PadForge.exe-ს გვერდით. ჩამოტვირთეთ აქედან: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა. ჩამოტვირთეთ PadForge თავიდან.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>დრაივერის ოპერაცია ვერ შესრულდა: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>პარამეტრები დაკოპირდა გაცვლის ბუფერში.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>მოწყობილობის ინფორმაცია დაკოპირდა გაცვლის ბუფერში.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>დაბალი</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>სურათი</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>სია</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} გამოსავალი</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} გამოსავალი</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>მოძრაობა</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>დააწკაპუნეთ კონტროლზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>თამაშები, რომლებსაც PadForge არ იცნობს</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>მოდებისთვის, რომლებიც გაგზავნამდე გაშვებულ DSX-ს ეძებენ.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>რა ჩანს</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>მისამართის კოპირება</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ადგილი ეკრანზე</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ტელეფონის დაკავშირება</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ძრავის ავტომატური გაშვება გახსნისას</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>გამოკითხვის გაგრძელება, როცა ფანჯარა ფოკუსს კარგავს</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>გამოკითხვის სიხშირე (თუ პროფილი არ გადაფარავს)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ძრავა ყველა მოწყობილობას კითხულობს და ვირტუალურ კონტროლერებს ანახლებს წამში ამდენჯერ, 60-დან 10000-მდე. უფრო მაღალი სიხშირე პროცესორის მეტ დროს იყენებს. Windows ძრავას წამში დაახლოებით 2000-ჯერ აღვიძებს, არაუმეტეს, ამიტომ უფრო მაღალი სიხშირისას ძრავა ყოველ გაღვიძებაზე რამდენიმე გავლას ასრულებს. სანამ აქტიურია პროფილი საკუთარი გამოკითხვის სიხშირით, ამის ნაცვლად ის მოქმედებს. ეს მნიშვნელობა ბრუნდება პროფილის დეაქტივაციისას.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>ძრავა ყველა მოწყობილობას კითხულობს და ვირტუალურ კონტროლერებს ანახლებს წამში ამდენჯერ, 60-დან 10000-მდე. უფრო მაღალი სიხშირე პროცესორის მეტ დროს იყენებს. ამ კომპიუტერზე Windows ძრავას წამში არაუმეტეს {0}-ჯერ აღვიძებს, ამიტომ უფრო მაღალი სიხშირისას ძრავა ყოველ გაღვიძებაზე რამდენიმე გავლას ასრულებს. სანამ აქტიურია პროფილი საკუთარი გამოკითხვის სიხშირით, ამის ნაცვლად ის მოქმედებს. ეს მნიშვნელობა ბრუნდება პროფილის დეაქტივაციისას.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>მოწყობილობების დამალვა თამაშებისგან</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>მთავარი გადამრთველი HidHide-ით მოწყობილობების დამალვისა და დაბალი დონის შეყვანის კაუჭებისთვის. გამორთვისას მოწყობილობა არ იმალება, მოწყობილობის პარამეტრების მიუხედავად.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>მოწყობილობების დაფარვა გაშვებებს შორის</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>მილიწამები აკრეფილ სიმბოლოებს შორის, 1000-მდე. 0 მთელ ტექსტს ერთდროულად კრეფს.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>უმოქმედობისას გამორთვა</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>დეტალები</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>წუთი</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth-ის გამორთვა USB-ით შეერთებისას</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>სწრაფი დატენვა. როცა ეს კონტროლერი Bluetooth-ით დაკავშირებულ მდგომარეობაში იტყობინება, რომ იტენება, Bluetooth კავშირი წყდება, რათა დაიტენოს რადიოს კვების გარეშე. ნებისმიერი USB კვების წყარო ითვლება, კედლის დამტენების ჩათვლით. თუ კაბელის ჩართულობისას Bluetooth-ს კვლავ ჩართავთ, ის კაბელის შემდეგ გამოღებამდე არ შეეხება.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>წაკითხვა iCade კონტროლერად</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU აჩვენებს აქტიური პროფილის სახელს და მიჰყვება პროფილის ყოველ გადართვას.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU აჩვენებს აქტიური პროფილის ადგილს პროფილების სიაში. ნაგულისხმევი პროფილი 0-ია.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU აჩვენებს აქტიური პროფილის საკუთარ სურათს, ხოლო თუ არ აქვს, მის სახელს. ყოველ პროფილს თავისი სურათი აქვს.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU აჩვენებს დღის დროს, წუთში ერთხელ გადაწერილს. ადაპტერი ყოველ სურათს მეხსიერებაში ინახავს, რომელიც 100,000 ჩაწერაზეა გათვლილი, და ამას საათის გარშემო ჩვენებისას დაახლოებით ათ კვირაში აღწევს.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU აჩვენებს საათებსა და წუთებს იმ მომენტიდან, როცა PadForge-მა გეიმპადი იპოვა, წუთში ერთხელ გადაწერილს. გეიმპადი, რომელიც ათ წამზე მეტხანს პორტიდან ამოღებულია, ნულიდან იწყებს. ადაპტერი ყოველ სურათს მეხსიერებაში ინახავს, რომელიც 100,000 ჩაწერაზეა გათვლილი, და ამას საათის გარშემო ჩვენებისას დაახლოებით ათ კვირაში აღწევს.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU აჩვენებს დღის დროს, წუთში ერთხელ გადაწერილს. ადაპტერი ყოველ სურათს საკუთარ მეხსიერებაში ინახავს, ამიტომ PadForge მას ამაზე ხშირად არ გადაწერს.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU აჩვენებს საათებსა და წუთებს იმ მომენტიდან, როცა PadForge-მა გეიმპადი იპოვა, წუთში ერთხელ გადაწერილს. გეიმპადი, რომელიც ათ წამზე მეტხანს პორტიდან ამოღებულია, ნულიდან იწყებს. ადაპტერი ყოველ სურათს საკუთარ მეხსიერებაში ინახავს, ამიტომ PadForge მას წუთში ერთხელზე ხშირად არ გადაწერს.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU აჩვენებს თქვენ მიერ არჩეულ სურათს: BMP ან PNG, VMU Animator-ის .lcd ფაილს ან Dreamcast-ის .vms ხატულას. სურათები იჭრება 48 × 32 შავ-თეთრ პიქსელამდე.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>სურათის არჩევა…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>სურათის არჩევა: {0}…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox რეჟიმში კონტროლერმა Apex 4-ის სახით არ უპასუხა, ამიტომ არაფერი გაიგზავნა და Windows-ს დაუბრუნდა. მისივე გადამრთველით დააბრუნეთ DInput რეჟიმზე.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows-მა კონტროლერი WinUSB-ზე არ გადაიყვანა, ამიტომ არაფერი გაიგზავნა. მისივე გადამრთველით დააბრუნეთ DInput რეჟიმზე.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>შეჩერდა. თავიდან გაგზავნამდე გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>ეკრანის პორტი არ გაიხსნა, ამიტომ არაფერი გაიგზავნა. გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>სურათს მეტი კადრი აქვს, ვიდრე ამ კონტროლერის ეკრანს ეტევა.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ამ კონტროლერზე სურათი უკვე იგზავნება. დაელოდეთ დასრულებას.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>ეკრანმა სურათი ისეთ მისამართზე მოითხოვა, სადაც PadForge არ წერს, ამიტომ არაფერი გაიგზავნა. გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>სურათი გაიგზავნა, მაგრამ კონტროლერი DInput რეჟიმში არ დაბრუნდა. დააბრუნეთ იგი მისივე გადამრთველით.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>კონტროლერმა მისი მომზადების ბრძანება არ მიიღო, ამიტომ არაფერი გაიგზავნა. შეამოწმეთ, რომ ის დაკავშირებულია, და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>გაგზავნა შეჩერდა PadForge-ის შეცდომის გამო. დეტალები ჟურნალის ფაილშია.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>სურათი ჯერ კიდევ იგზავნება კონტროლერზე. შეწყდეს გაგზავნა?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-ის ფაილები (*.mpk)|*.mpk|ყველა ფაილი (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak პორტი {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>მენიუს გეომეტრიის საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>უჯრედის საწყისზე დაბრუნება</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>მგრძნობელობის საწყისზე დაბრუნება</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>აჩქარების საწყისზე დაბრუნება</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>დაჭერის ხანგრძლივობის საწყისზე დაბრუნება</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>დაჭერის ფანჯრის საწყისზე დაბრუნება</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ნებისმიერი შრე</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>მუშაობს განუწყვეტლივ, სანამ ეს ვირტუალური კონტროლერი აქტიურია. ტრიგერის ღილაკი საჭირო არ არის.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>შესრულება</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>შრე, წყარო, ზღვარი, მიმართულება, ტრიგერის ღილაკების მოხმარება, გამეორება</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>მოქმედების დამატება</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ტიპი</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ვირტუალური ღილაკები</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>მაუსის ღილაკის დაჭერა</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>მაუსის ღილაკის აშვება</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>მაუსის გადახვევა</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვის გადართვა</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ღილაკები</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>კლავიშთა კომბინაცია</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>კლავიშთა კომბინაცია {Key1}{Key2} ფორმატში. რედაქტირებადია.</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>გამეორება {0} ყოველ {1} მწმ</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>მაუსი X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>მაუსი Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>ჰორიზონტალური წანაცვლება</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ვერტიკალური წანაცვლება</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ინტერვალი</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>ეკრანზე არჩევა</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ჩაწერამდე: {0}…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>ინვერტირებული ნახევარი</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>მოწყობილობა მიბმული არ არის</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>უცნობი მოწყობილობა</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ტაჩპედის დაჭერა</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ქვევით (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ზევით (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ჩართვა</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>დამიზნების ჩართვის ღილაკი, ჩართვის რეჟიმი, მარტივი დამიზნების ზღვარი</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>დამიზნების ჩართვის ღილაკი, ჩართვის რეჟიმი, გიროსკოპის ჩართვა, ცენტრში დაბრუნება, მარტივი დამიზნების ზღვარი</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>არასავალდებულო ბლოკები, რომლებიც ზღუდავენ, როდის არის გიროსკოპი აქტიური. შეგიძლიათ დააყენოთ მარჯვენა სტიკის გადახრაც და დამიზნების ჩართვის ღილაკიც. გიროსკოპი მუშაობს მხოლოდ მაშინ, როცა ყველა დაყენებული ბლოკი აქტიურია.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ლოკალური</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>მოთამაშე</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>საწყისზე დაბრუნება: მარტივი დამიზნების ზღვარი</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>საწყისზე დაბრუნება: დამიზნების ჩართვის ღილაკი</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>საწყისზე დაბრუნება: ჩართვის რეჟიმი</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>შრე</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>შრე, რომლის გიროსკოპის ჩართვის პარამეტრს ქვემოთ მოცემული რიგები აჩვენებს და ცვლის.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>გიროსკოპის ჩართვა</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>როდის მუშაობს გიროსკოპი ამ შრეზე, ჩართვის ღილაკის გარდა. Shift-შრე, რომელზეც არჩეულია „იგივე, რაც ბაზაში“, ბაზას მიჰყვება.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>ყოველთვის ჩართული</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>იგივე, რაც ბაზაში</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>დაჭერისას</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>დაუჭერელობისას</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>გადართვა ყოველ დაჭერაზე</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>გიროსკოპის ჩართვის ღილაკები</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>ღილაკები, რომლებსაც გიროსკოპის ჩართვა კითხულობს, ამ სლოტის ნებისმიერ კონტროლერზე.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>საჭიროა</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>საკმარისია ერთი მონიშნული ღილაკი თუ ყველა მონიშნული ღილაკი უნდა იყოს დაჭერილი.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ნებისმიერი ღილაკი</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>ყველა ღილაკი</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ცენტრში დაბრუნება გიროსკოპის ჩართვისას</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>გიროსკოპის ყოველ ჩართვაზე კონტროლერის მდგომარეობას უძრაობის წერტილად იღებს.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>საწყისზე დაბრუნება: გიროსკოპის ჩართვა</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>საწყისზე დაბრუნება: გიროსკოპის ჩართვის ღილაკები</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>საწყისზე დაბრუნება: საჭიროა</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>საწყისზე დაბრუნება: ცენტრში დაბრუნება გიროსკოპის ჩართვისას</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>საწყისზე დაბრუნება: ჩართვის სტიკი</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>საწყისზე დაბრუნება: ჩართვის მიმართულება</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>მოძრაობის გატარება</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>თამაში კითხულობს მოძრაობას აქ დაყენებული მგრძნობელობით, გასწორებითა და მრუდით.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>საწყისზე დაბრუნება: გატარების რეგულირება</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>მხოლოდ როცა</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ეს წყარო ითვლება მხოლოდ მაშინ, როცა ამავე კონტროლერზე ეს შეყვანაც დაჭერილად იკითხება. იმპორტიდან მიღებული ზონის შემოწმება იკითხება როგორც სტიკის ან ტრიგერის დიაპაზონი, რომელსაც ამოწმებს.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>და ასევე როცა</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>მეორე შეყვანა, რომელსაც ეს წყაროც ელოდება.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>შეყვანის შეცვლა</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>ირჩევს სხვა შეყვანას მოსაცდელად.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>მრუდი</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>ამ შეყვანის ჩვენებას ამ ხარისხში აჰყავს, სანამ ის გამოსავალს მართავს. 0 და 1 მას სწორს ტოვებს. 1-ზე მეტი ცენტრთან უფრო ნელია.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>გარე დიაპაზონი</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>გამოსავალი სრულს აღწევს სვლის ამ ნაწილზე. 100% გამორთულია.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ანტი-მკვდარი ზონა</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>გამოსავალი ამ მნიშვნელობიდან იწყება, როგორც კი შეყვანა განძრევდება. 0 გამორთულია.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>მკვდარი ზონის ფორმა</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>„გამორთული“ ჩვენებას არ ეხება. „ღერძული“ ზომავს მხოლოდ ამ ღერძს. „რადიალური“ ზომავს სტიკის წყვილს ერთად.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>გამორთული</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>ღერძული</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>რადიალური</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>შიდა მკვდარი ზონა</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>სვლის ამ ნაწილამდე შეყვანა ცენტრში მყოფად იკითხება.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>გიროსკოპის მგრძნობელობის მამრავლი თითოეული წყაროსთვის. 1.0 = ძრავის ნაგულისხმევი (500°/წმ → სრული გადახრა). 1.0-ზე მაღალი მნიშვნელობები უფრო მგრძნობიარეა. 1.0-ზე დაბალი უფრო ნაკლებად.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>დახრის მგრძნობელობის მამრავლი თითოეული წყაროსთვის. 1.0 = 90° დახრა სრული გადახრისთვის. 1.0-ზე მაღალი მნიშვნელობებით სრული გადახრა ნაკლები დახრით მიიღწევა.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>გიროსკოპის დახრა X</value></data>
@@ -3042,6 +3090,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>დონე</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>უქმობის ვადა</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>წამები, რომლის შემდეგაც ვირტუალური კონტროლერი განადგურდება, როცა მისი ყველა მიბმული მოწყობილობა გათიშულია. 0 გამორთავს. იმავე ტიპის დარჩენილი კონტროლერები ზევით გადაინაცვლებს ხარვეზის შესავსებად და ქვედა სლოტებს თავიდან მიებმება.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>წამი (0 = არასდროს)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>შრის დამატება</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>დაამატეთ Shift შრე. მიბმების მეორე ცხრილი, რომელიც აქტიურდება ღილაკის დაჭერისას ან გადართვისას.</value></data>
@@ -3153,6 +3202,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>გახსნის სიჩქარის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>კუთხის შიდა მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>კუთხის გარე მკვდარი ზონის საწყისზე დაბრუნება</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>სტიკის მკვდარი ზონა</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ამ გადახრამდე სტიკი ცენტრში მყოფად იკითხება, ამიტომ საჭის მობრუნება არ გროვდება.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>სტიკის მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>დახრის შიდა მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>დახრის გარე მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>კონტროლერის ორიენტაციის საწყისზე დაბრუნება</value></data>
@@ -3258,6 +3310,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>მაქსიმუმიდან {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ეს მანქანა საჭეზე მეტ მომენტს მოითხოვს, ვიდრე საჭეს აქვს, ამიტომ მრუდის ზედა ნაწილი ჩამოჭრილია.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>ცენტრის შეგრძნება, საჭის გამაძლიერებელი, ჩახშობა, ხახუნი, მოჭიდება, ფიქსირებული სიჩქარე, საჭის მომენტი</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>ცენტრის შეგრძნება, საჭის გამაძლიერებელი, ჩახშობა, მოჭიდება, ფიქსირებული სიჩქარე, საჭის მომენტი</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>რამდენად მყარად ინარჩუნებს საჭე ცენტრს დაბალ სიჩქარეზე. 100% მანქანის საკუთარი მნიშვნელობაა.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>საჭის გამაძლიერებელი</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>რამდენს იღებს გამაძლიერებელი მოსახვევის ზრდასთან ერთად. მეტი ნიშნავს უფრო მსუბუქ საჭეს ცენტრიდან მოშორებით.</value></data>
@@ -3399,7 +3452,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>მაღალი ტონების საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ტონის ზღვრის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>სისტემის ნაგულისხმევი გამოსავალი, რასაც უკრავს, პარალელურად ამ კონტროლერის ჩაშენებულ დინამიკზეც გადააქვს. მუშაობს USB-ითაც და Bluetooth-ითაც.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>არჩეულ მოწყობილობას ჩაშენებული დინამიკი არ აქვს. ამ კონტროლერის მაკროს ხმები სისტემის ნაგულისხმევ გამოსავალზე უკრავს.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge-ს არჩეულ მოწყობილობაზე დინამიკამდე ამ კავშირით გზა არ აქვს. ამ კონტროლერის მაკროს ხმები სისტემის ნაგულისხმევ გამოსავალზე უკრავს.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ბრაუზერული DualSense-ის სატესტო კომპლექტი, ავტორი Xuezhou Dai (daidr): მითითება Sony-ის feature-report-ის CRC ჩარჩოებისა და ფირმვერის სატესტო ბრძანებებისთვის, რომლებსაც PadForge ვირტუალური კონტროლერებიდან ფიზიკურ კონტროლერებზე გადასცემს.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3813,7 +3866,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast-ის ეკრანის ჩვენება</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>უშვებს სურათებს VMU-ზე ყველა Dreamcast კონტროლერზე Bliss-Box-ის პორტში, რომელიც ამ სლოტს კვებავს, შემდეგ კი თითოეულ პორტს მისი საკუთარი ეკრანის პარამეტრს უბრუნებს.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast-ის სურათების ჩვენება: {0} × {1} მწ, გამეორება {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ყოველი სურათი ერთ წამს მაინც ჩანს, რადგან ადაპტერი თითოეულ მიღებულ სურათს მეხსიერებაში ინახავს, რომელიც 100,000 ჩაწერაზეა გათვლილი, და ყოველ წამს ახალი სურათი მას დაახლოებით ერთ დღეში მიაღწევს. სურათები არის 48 × 32 შავ-თეთრი პიქსელი BMP ან PNG ფაილიდან, VMU Animator-ის .lcd ფაილიდან ან Dreamcast-ის .vms ხატულიდან.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ყოველი სურათი ერთ წამს მაინც ჩანს. PadForge ადაპტერს წამში არაუმეტეს ერთ სურათს უგზავნის, რადგან ადაპტერი თითოეულ მიღებულ სურათს საკუთარ მეხსიერებაში ინახავს. სურათები არის 48 × 32 შავ-თეთრი პიქსელი BMP ან PNG ფაილიდან, VMU Animator-ის .lcd ფაილიდან ან Dreamcast-ის .vms ხატულიდან.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>სურათები</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>სურათის დამატება…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>სურათის წაშლა</value></data>
@@ -3890,15 +3943,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>სანამ შრე გადართულია, ის თავისით ითიშება, როცა ამდენი მილიწამი გავა და შრის საკუთარი მიბმული შეყვანებიდან არცერთი არ არის აქტიური. ტაიმერი იწყება შრის ჩართვისას და თითოეულ შრის შეყვანაზე თავიდან იწყება. 0 შრეს ჩართულს ტოვებს, სანამ თავად არ გამორთავთ.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ტრიმის მკვდარი ზონის დაბრუნება 25%-ზე.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ტრიმის სიჩქარის დაბრუნება 100%-ზე წამში.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>დაბრუნება აშვებისას დონის 100%-ზე დაბრუნების რეჟიმზე.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>ავტომატური გაუქმების დაბრუნება 0-ზე (შრე ჩართული რჩება, სანამ არ გამოირთვება).</value>
   </data>
@@ -3966,6 +4010,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-ის პროფილი</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-ის მაკრო</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>კურსორის არე</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (დაჭერისას)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (აშვებისას)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ჩართვა)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>აირჩიეთ კონფიგურაცია, რომ ნახოთ რა გადმოდის.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>რა გადმოდის</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ხდება</value></data>
@@ -4592,7 +4639,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>მიმართულების დაჭერები უჯრედებს გადაუყვება და ყოველ ახლად არჩეულ უჯრედს ააქტიურებს. სწრაფი პანელის ეს ქცევა არ იყენებს ჩართვის რეჟიმს ან დაწკაპუნების შეყვანას.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi გაფართოებული პროტოკოლი</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>რთავს დამატებით ღილაკებს და მოძრაობის სენსორებს მხარდაჭერილ Flydigi კონტროლერებზე.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ის პროგრამა მუშაობს: {0}. მას შეუძლია იგივე კონტროლერის ინტერფეისი გამოიყენოს, რაც PadForge-ს, და ცნობილია შემთხვევა, როცა Vader 5 Pro არაერთხელ გამოირთო, სანამ ორივეს ჰქონდა წვდომა. თუ ეს კონტროლერი წყდება და თავიდან უერთდება, გააჩერეთ სერვისი PadForge-ის გამოყენებისას, დატოვეთ კონტროლერი დამალული და ამოიღეთ სერვისი HidHide-ის თეთრი სიიდან, ან სცადეთ პარამეტრებში გამორთოთ „Flydigi გაფართოებული პროტოკოლი“, რაც დადასტურებულად არ ეხმარება.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ის პროგრამა მუშაობს: {0}. ის კონტროლერთან იმ ინტერფეისით ურთიერთობს, რომელსაც PadForge იყენებს. თუ ეს კონტროლერი წყდება და თავიდან უერთდება, გააჩერეთ ეს პროგრამა PadForge-ის გამოყენებისას.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>დისტანციური მინიჭების ცვლილებების დაშვება</value>
   </data>

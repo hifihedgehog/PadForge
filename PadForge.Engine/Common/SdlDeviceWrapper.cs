@@ -91,6 +91,11 @@ namespace PadForge.Engine
 
         private long _lastRumbleCapabilityReadTick;
 
+        /// <summary>Raised on the poll thread when a joystick gains its rumble
+        /// capability after the open, so the Devices row and the controller
+        /// page's tabs read it again.</summary>
+        public static event Action<SdlDeviceWrapper> RumbleFoundAfterOpen;
+
         /// <summary>Takes a rumble capability SDL found after the open. SDL
         /// sets the property on a joystick that is already open: the fork's
         /// Bluetooth Switch 2 driver when a recovery finds the vibration
@@ -112,6 +117,7 @@ namespace PadForge.Engine
             if (!RumbleCapabilityReader(Joystick)) return false;
             _hasRumble = true;
             SdlDiagLog.WriteLine($"Rumble found after the open: vid={VendorId:X4} pid={ProductId:X4}");
+            RumbleFoundAfterOpen?.Invoke(this);
             return true;
         }
 

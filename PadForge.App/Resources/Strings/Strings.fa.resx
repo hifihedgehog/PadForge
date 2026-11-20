@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>هیچ‌کدام</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ثانیه</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>دقیقه (0 = هرگز)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>اختصاص‌نیافته</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← چپ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ بالا)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll پیدا نشد</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll پیدا نشد. SDL3.dll را کنار PadForge.exe قرار دهید. آن را از https://github.com/libsdl-org/SDL/releases دانلود کنید</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll پیدا نشد. PadForge را دوباره دانلود کنید.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>عملیات درایور ناموفق بود: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>تنظیمات در کلیپ‌بورد کپی شد.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>اطلاعات دستگاه در کلیپ‌بورد کپی شد.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>کم</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>تصویر</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>فهرست</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} خروجی</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} خروجی</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>حرکت</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>روی یک کنترل کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>بازی‌هایی که PadForge نمی‌شناسد</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>برای مودهایی که پیش از فرستادن دنبال DSX در حال اجرا می‌گردند.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>آنچه نشان داده می‌شود</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقه، جدول یا نوار یک منو تا وقتی باز است</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه هنگام روشن شدن یک لایه شیفت، به مدتی که آن لایه تعیین می‌کند</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>نام پروفایل وقتی پروفایل عوض می‌شود</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقه، جدول یا نوار یک منو تا وقتی باز است.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه هنگام روشن شدن یک لایه شیفت، به مدتی که آن لایه تعیین می‌کند.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>نام پروفایل وقتی پروفایل عوض می‌شود.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>کپی نشانی</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>جای روی صفحه</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>اتصال یک گوشی</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>شروع خودکار موتور هنگام اجرا</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ادامه نمونه‌برداری وقتی پنجره فوکوس را از دست می‌دهد</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>نرخ نمونه‌برداری (مگر اینکه پروفایلی آن را تغییر دهد)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>موتور به این تعداد بار در ثانیه، از 60 تا 10000، همه دستگاه‌ها را می‌خواند و کنترلرهای مجازی را به‌روز می‌کند. نرخ بالاتر زمان بیشتری از پردازنده را مصرف می‌کند. Windows موتور را حداکثر حدود 2000 بار در ثانیه بیدار می‌کند، پس نرخ بالاتر در هر بیدارسازی چند اجرا انجام می‌دهد. تا وقتی پروفایلی با نرخ نمونه‌برداری خودش فعال است، همان نرخ اعمال می‌شود. با غیرفعال شدن آن پروفایل، این مقدار برمی‌گردد.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>موتور به این تعداد بار در ثانیه، از 60 تا 10000، همه دستگاه‌ها را می‌خواند و کنترلرهای مجازی را به‌روز می‌کند. نرخ بالاتر زمان بیشتری از پردازنده را مصرف می‌کند. در این رایانه، Windows موتور را حداکثر {0} بار در ثانیه بیدار می‌کند، پس نرخ بالاتر در هر بیدارسازی چند اجرا انجام می‌دهد. تا وقتی پروفایلی با نرخ نمونه‌برداری خودش فعال است، همان نرخ اعمال می‌شود. با غیرفعال شدن آن پروفایل، این مقدار برمی‌گردد.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>پنهان کردن دستگاه‌ها از بازی‌ها</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>کلید اصلی پنهان‌سازی دستگاه با HidHide و هوک‌های ورودی سطح پایین. وقتی خاموش است، صرف‌نظر از تنظیمات هر دستگاه، هیچ دستگاهی پنهان نمی‌شود.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>پنهان نگه داشتن دستگاه‌ها بین اجراها</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>میلی‌ثانیه بین نویسه‌های تایپ‌شده، حداکثر 1000. مقدار 0 کل متن را یکجا تایپ می‌کند.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>قطع اتصال در بیکاری</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>جزئیات</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>دقیقه</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>قطع بلوتوث هنگام اتصال با USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>شارژ سریع. وقتی این کنترلر هنگام اتصال با بلوتوث گزارش دهد که در حال شارژ است، اتصال بلوتوث قطع می‌شود تا بدون تغذیه رادیو شارژ شود. هر منبع تغذیه USB حساب می‌شود، از جمله شارژرهای دیواری. اگر تا وقتی کابل وصل است بلوتوث را دوباره روشن کنید، تا جدا شدن بعدی کابل کاری با آن نخواهد داشت.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>خواندن به‌عنوان کنترلر iCade</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU نام پروفایل فعال را نشان می‌دهد و با هر تعویض پروفایل تغییر می‌کند.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU جایگاه پروفایل فعال را در فهرست پروفایل‌ها نشان می‌دهد. پروفایل پیش‌فرض 0 است.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU تصویر خود پروفایل فعال را نشان می‌دهد، یا اگر تصویری نداشته باشد نامش را. هر پروفایل تصویر خودش را نگه می‌دارد.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ساعت روز را نشان می‌دهد که هر دقیقه یک بار بازنویسی می‌شود. آداپتور هر تصویر را در حافظه‌ای نگه می‌دارد که برای 100,000 بار نوشتن طراحی شده است و این حالت پس از حدود ده هفته نمایش شبانه‌روزی به این تعداد می‌رسد.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU ساعت‌ها و دقیقه‌های سپری‌شده از زمانی را نشان می‌دهد که PadForge گیم‌پد را پیدا کرده است و هر دقیقه یک بار بازنویسی می‌شود. گیم‌پدی که بیش از ده ثانیه از پورتش جدا باشد دوباره از صفر شروع می‌کند. آداپتور هر تصویر را در حافظه‌ای نگه می‌دارد که برای 100,000 بار نوشتن طراحی شده است و این حالت پس از حدود ده هفته نمایش شبانه‌روزی به این تعداد می‌رسد.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ساعت روز را نشان می‌دهد که هر دقیقه یک بار بازنویسی می‌شود. آداپتور هر تصویر را در حافظه خودش ذخیره می‌کند، پس PadForge آن را بیش از این بازنویسی نمی‌کند.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU ساعت‌ها و دقیقه‌های سپری‌شده از زمانی را نشان می‌دهد که PadForge گیم‌پد را پیدا کرده است و هر دقیقه یک بار بازنویسی می‌شود. گیم‌پدی که بیش از ده ثانیه از پورتش جدا باشد دوباره از صفر شروع می‌کند. آداپتور هر تصویر را در حافظه خودش ذخیره می‌کند، پس PadForge آن را بیش از یک بار در دقیقه بازنویسی نمی‌کند.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU تصویری را نشان می‌دهد که خودتان انتخاب می‌کنید: یک فایل BMP یا PNG، یک فایل .lcd از VMU Animator یا یک نماد .vms از Dreamcast. تصاویر به 48 در 32 پیکسل سیاه و سفید بریده می‌شوند.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>انتخاب تصویر…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>انتخاب تصویر برای {0}…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>کنترلر در حالت Xbox مثل Apex 4 پاسخ نداد، پس چیزی فرستاده نشد و ویندوز آن را پس گرفته است. آن را با کلید خودش به حالت DInput برگردانید.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>ویندوز کنترلر را به WinUSB منتقل نکرد، پس چیزی فرستاده نشد. آن را با کلید خودش به حالت DInput برگردانید.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>متوقف شد. پیش از ارسال دوباره، کنترلر را با کلید خودش خاموش و روشن کنید.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>پورت صفحه‌نمایش باز نشد، پس چیزی ارسال نشد. کنترلر را با کلید خودش خاموش و روشن کنید و دوباره بفرستید.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>تعداد فریم‌های تصویر از ظرفیت صفحه‌نمایش این کنترلر بیشتر است.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>یک تصویر هم‌اکنون به این کنترلر ارسال می‌شود. صبر کنید تا تمام شود.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>صفحه‌نمایش تصویر را در نشانی‌ای خواست که PadForge در آن نمی‌نویسد، پس چیزی ارسال نشد. کنترلر را با کلید خودش خاموش و روشن کنید و دوباره بفرستید.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>تصویر ارسال شد، اما کنترلر به حالت DInput برنگشت. آن را با کلید خودش برگردانید.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>کنترلر فرمانی را که آن را آماده می‌کند نپذیرفت، پس چیزی ارسال نشد. بررسی کنید که وصل باشد و دوباره بفرستید.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ارسال با خطایی در PadForge متوقف شد. جزئیات در فایل گزارش است.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>تصویر هنوز در حال رفتن به کنترلر است. ارسال متوقف شود؟</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>فایل‌های Controller Pak (*.mpk)|*.mpk|همه فایل‌ها (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak پورت {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>بازنشانی هندسه منو</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>بازنشانی خانه</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>بازنشانی حساسیت</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>بازنشانی شتاب</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>بازنشانی ناحیه مرده</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>بازنشانی زمان نگه داشتن</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>بازنشانی پنجره زمانی فشار</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>هر لایه</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>تا وقتی این کنترلر مجازی فعال است پیوسته اجرا می‌شود. به دکمه راه‌انداز نیازی نیست.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>آنگاه</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>لایه، منبع، آستانه، جهت، مصرف دکمه‌های راه‌انداز، تکرار</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>افزودن کنش</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>نوع</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>دکمه‌های مجازی</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>فشار دکمه ماوس</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>رها کردن دکمه ماوس</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>پیمایش ماوس</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی تاچ‌پد</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>دکمه‌ها</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>ترکیب کلید</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>ترکیب کلید در قالب {Key1}{Key2}. قابل ویرایش.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>تکرار {0} هر {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>ماوس X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>ماوس Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>جابه‌جایی افقی</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>جابه‌جایی عمودی</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>بازه</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>انتخاب روی صفحه</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ثبت پس از {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>نیمه معکوس</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>هیچ دستگاهی نگاشت نشده</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>دستگاه ناشناس</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>کلیک تاچ‌پد</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>پایین (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>بالا (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>فعال‌سازی</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>دکمه فعال‌سازی نشانه‌گیری، حالت فعال‌سازی، آستانه نشانه‌گیری آسان</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>دکمه فعال‌سازی نشانه‌گیری، حالت فعال‌سازی، ژیروسکوپ روشن، مرکزگذاری مجدد، آستانه نشانه‌گیری آسان</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شرط‌های اختیاری که زمان فعال بودن ژیروسکوپ را محدود می‌کنند. انحراف استیک راست و دکمه فعال‌سازی نشانه‌گیری را می‌توان جداگانه پیکربندی کرد. ژیروسکوپ فقط وقتی فعال است که همه شرط‌های پیکربندی‌شده برقرار باشند.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>محلی</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>بازیکن</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>بازنشانی آستانه نشانه‌گیری آسان</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>بازنشانی دکمه فعال‌سازی نشانه‌گیری</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>بازنشانی حالت فعال‌سازی</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>لایه</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>لایه‌ای که ردیف‌های زیر، تنظیم ژیروسکوپ روشن آن را نشان می‌دهند و تغییر می‌دهند.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ژیروسکوپ روشن</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>زمان کار کردن ژیروسکوپ در این لایه، علاوه بر دکمه فعال‌سازی. لایه شیفتی که روی «مثل پایه» باشد از پایه پیروی می‌کند.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>همیشه روشن</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>مثل پایه</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>هنگام نگه داشتن</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>هنگام نگه نداشتن</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>با هر فشار تغییر وضعیت</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>دکمه‌های ژیروسکوپ روشن</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>دکمه‌هایی که ژیروسکوپ روشن می‌خواند، روی هر کنترلر این اسلات.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>نیاز به</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>اینکه یک دکمه علامت‌دار کافی است یا باید همه دکمه‌های علامت‌دار نگه داشته شوند.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>هر دکمه</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>همه دکمه‌ها</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>مرکزگذاری مجدد هنگام روشن شدن ژیروسکوپ</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>هر بار که ژیروسکوپ روشن می‌شود، وضعیت کنترلر را نقطه آرام می‌گیرد.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>بازنشانی ژیروسکوپ روشن</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>بازنشانی دکمه‌های ژیروسکوپ روشن</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>بازنشانی نیاز به</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>بازنشانی مرکزگذاری مجدد هنگام روشن شدن ژیروسکوپ</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>بازنشانی استیک فعال‌سازی</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>بازنشانی جهت فعال‌سازی</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>عبور مستقیم حرکت</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>بازی حرکت را با حساسیت، هموارسازی و منحنی تنظیم‌شده در اینجا می‌خواند.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>بازنشانی تنظیمات عبور مستقیم</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>حساسیت</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>فقط هنگام</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>این منبع فقط وقتی به حساب می‌آید که این ورودی هم روی همان کنترلر فشرده خوانده شود. آزمون ناحیه‌ای از یک درون‌ریزی، به‌صورت بازه‌ای از استیک یا ماشه که بررسی می‌کند خوانده می‌شود.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>و هنگام</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ورودی دومی که این منبع هم منتظر آن می‌ماند.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>تغییر ورودی</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>ورودی دیگری را برای انتظار انتخاب می‌کند.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>منحنی</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>مقدار خوانده‌شده این ورودی را پیش از آنکه خروجی را هدایت کند به این توان می‌رساند. 0 و 1 آن را مستقیم نگه می‌دارند. بالاتر از 1 نزدیک مرکز کندتر است.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>بازه بیرونی</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>خروجی در این مقدار از مسیر حرکت به حداکثر می‌رسد. 100% یعنی خاموش.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ضد ناحیه مرده</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>خروجی به محض حرکت ورودی از این مقدار شروع می‌شود. 0 یعنی خاموش.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>شکل ناحیه مرده</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>خاموش مقدار خوانده‌شده را دست‌نخورده می‌گذارد. محوری فقط همین محور را اندازه می‌گیرد. شعاعی جفت استیک را با هم اندازه می‌گیرد.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>خاموش</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>محوری</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>شعاعی</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>ناحیه مرده درونی</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>زیر این مقدار از مسیر حرکت، ورودی در مرکز خوانده می‌شود.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ضریب حساسیت ژیروسکوپ برای هر منبع. 1.0 = پیش‌فرض موتور (500 درجه بر ثانیه ← انحراف کامل). مقادیر بالاتر از 1.0 حساس‌تر و مقادیر پایین‌تر از 1.0 کم‌حساس‌ترند.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ضریب حساسیت کج کردن برای هر منبع. 1.0 = 90° کج کردن برای انحراف کامل. مقادیر بالاتر از 1.0 با کج کردن کمتر به انحراف کامل می‌رسند.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>شیب ژیروسکوپ X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>سطح</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>مهلت عدم فعالیت</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>تعداد ثانیه‌ها پیش از حذف یک کنترلر مجازی، وقتی همه دستگاه‌های نگاشت‌شده آن آفلاین باشند. مقدار 0 غیرفعال می‌کند. کنترلرهای باقی‌مانده از همان نوع برای پر کردن جای خالی بالا می‌آیند و به اسلات‌های پایین‌تر مقید می‌شوند.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ثانیه (0 = هرگز)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>افزودن لایه</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>یک لایه شیفت اضافه می‌کند: جدول نگاشت دومی که با نگه داشتن یا تغییر وضعیت یک دکمه فعال می‌شود.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>بازنشانی نرخ بازگشت</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>بازنشانی ناحیه مرده درونی زاویه</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>بازنشانی ناحیه مرده بیرونی زاویه</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>ناحیه مرده استیک</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>زیر این میزان انحراف، استیک در مرکز خوانده می‌شود، پس فرمانی انباشته نمی‌شود.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>بازنشانی ناحیه مرده استیک</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>بازنشانی ناحیه مرده درونی کج کردن</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>بازنشانی ناحیه مرده بیرونی کج کردن</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>بازنشانی جهت‌گیری کنترلر</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>از {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>این خودرو گشتاور بیشتری از توان فرمان می‌خواهد، پس بالای منحنی بریده می‌شود.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>حس مرکز، کمک‌فرمان، میرایی، اصطکاک، چسبندگی، سرعت ثابت، گشتاور فرمان</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>حس مرکز، کمک‌فرمان، میرایی، چسبندگی، سرعت ثابت، گشتاور فرمان</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>فرمان در سرعت کم مرکز خود را چقدر محکم نگه می‌دارد. 100% همان حالت خود خودرو است.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>کمک‌فرمان</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>با افزایش شتاب جانبی، فرمان هیدرولیک چقدر از زحمت فرمان می‌کاهد. مقدار بیشتر یعنی فرمان دور از مرکز سبک‌تر است.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>بازنشانی تُن‌های زیر</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>بازنشانی حد تُن</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>هر چه خروجی پیش‌فرض سیستم پخش می‌کند را هم‌زمان روی بلندگوی داخلی این کنترلر هم کپی می‌کند. با USB و بلوتوث کار می‌کند.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>دستگاه انتخاب‌شده بلندگوی داخلی ندارد. صداهای ماکروی این گیم‌پد از خروجی پیش‌فرض سیستم پخش می‌شوند.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge در این اتصال مسیری به بلندگوی دستگاه انتخاب‌شده ندارد. صداهای ماکروی این گیم‌پد از خروجی پیش‌فرض سیستم پخش می‌شوند.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعه آزمون DualSense در مرورگر، اثر Xuezhou Dai با نام کاربری daidr: مرجع قاب‌بندی CRC در گزارش‌های feature شرکت Sony و فرمان‌های آزمون فریم‌ور که PadForge از گیم‌پد مجازی به فیزیکی می‌فرستد.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>نمایش روی صفحه‌نمایش Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>تصاویر را روی VMU هر گیم‌پد Dreamcast در پورت Bliss-Box که به این اسلات ورودی می‌دهد پخش می‌کند و سپس هر پورت را به تنظیم صفحه‌نمایش خودش برمی‌گرداند.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>نمایش تصاویر Dreamcast: {0} × {1} ms، تعداد تکرار {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>هر تصویر دست‌کم یک ثانیه نمایش داده می‌شود، چون آداپتور هر تصویری را که دریافت می‌کند در حافظه‌ای نگه می‌دارد که برای 100,000 بار نوشتن طراحی شده و با یک تصویر جدید در هر ثانیه، حدود یک روزه به این تعداد می‌رسد. تصاویر 48 در 32 پیکسل سیاه و سفید هستند، از یک فایل BMP یا PNG، یک فایل .lcd از VMU Animator یا یک نماد .vms از Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>هر تصویر دست‌کم یک ثانیه نمایش داده می‌شود. PadForge حداکثر یک تصویر در ثانیه به آداپتور می‌فرستد، چون آداپتور هر تصویری را که دریافت می‌کند در حافظه خودش ذخیره می‌کند. تصاویر 48 در 32 پیکسل سیاه و سفید هستند، از یک فایل BMP یا PNG، یک فایل .lcd از VMU Animator یا یک نماد .vms از Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>تصاویر</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>افزودن تصویر…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>برداشتن تصویر</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>تا وقتی لایه روشن است، اگر به این تعداد میلی‌ثانیه هیچ‌یک از ورودی‌های نگاشت‌شده خود لایه فعال نباشد، خودش دوباره خاموش می‌شود. زمان‌سنج با فعال شدن لایه شروع می‌شود و با هر ورودی لایه از نو آغاز می‌شود. مقدار 0 لایه را روشن نگه می‌دارد تا خودتان خاموشش کنید.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>بازنشانی ناحیه مرده تریم به 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>بازنشانی سرعت تریم به 100% در ثانیه.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>بازنشانی به برگرداندن سطح به 100% هنگام رها کردن.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>بازنشانی لغو خودکار به 0 (لایه تا خاموش کردن روشن می‌ماند).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>پروفایل Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماکروی Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ناحیه مکان‌نما</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (نگه داشتن)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (رها کردن)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (فعال‌سازی)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>یک پیکربندی را انتخاب کنید تا ببینید چه چیزی منتقل می‌شود.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>آنچه منتقل می‌شود</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>تبدیل به</value></data>
@@ -4825,7 +4872,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>فشار دکمه‌های جهت، خانه‌ها را یکی‌یکی طی می‌کند و هر خانه تازه انتخاب‌شده را اجرا می‌کند، بدون «حالت فعال شدن» یا «ورودی کلیک». سبک «نوار میانبر» بدون اجرا جلو و عقب می‌رود و با کنترل «اجرا»ی خودش اجرا می‌کند.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>پروتکل پیشرفته Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>دکمه‌های اضافی و حسگرهای حرکتی را در کنترلرهای پشتیبانی‌شده Flydigi فعال می‌کند.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>نرم‌افزار Flydigi در حال اجراست: {0}. این نرم‌افزار می‌تواند از همان رابط کنترلری استفاده کند که PadForge به کار می‌برد و گزارش شده است که یک Vader 5 Pro وقتی هر دو به آن دسترسی داشتند بارها قطع شده است. اگر این کنترلر قطع و دوباره وصل می‌شود، هنگام استفاده از PadForge سرویس را متوقف کنید، کنترلر را پنهان نگه دارید و سرویس را از فهرست مجاز HidHide بردارید، یا «پروتکل پیشرفته Flydigi» را در تنظیمات خاموش کنید، هرچند تأیید نشده که کمکی بکند.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>نرم‌افزار Flydigi در حال اجراست: {0}. این نرم‌افزار از طریق همان رابطی با کنترلر ارتباط برقرار می‌کند که PadForge به کار می‌برد. اگر این کنترلر قطع و دوباره وصل می‌شود، هنگام استفاده از PadForge آن نرم‌افزار را متوقف کنید.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>اجازه تغییر اختصاص از راه دور</value>
   </data>
@@ -5485,9 +5532,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>انتخاب آنچه نشان می‌دهد…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>اورلی صفحه‌نمایش PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>هنوز چیزی برای نمایش نیست. در صفحه اورلی صفحه‌نمایش، زیر افزونه‌ها انتخاب کنید که چه چیزی نشان دهد.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>تغییر وضعیت نشانه‌گیر</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>تغییر وضعیت ذره‌بین</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>همه نشانه‌گیرها</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>نشانه‌گیر</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>

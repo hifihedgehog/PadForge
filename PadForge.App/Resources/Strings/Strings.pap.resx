@@ -215,7 +215,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← robes)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ariba)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll no a wordu hayá</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll no a wordu hayá. Pone SDL3.dll banda di PadForge.exe. Deskarg'é for di https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll no a wordu hayá. Deskargá PadForge atrobe.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operashon di driver a faya: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Konfigurashon kopiá na clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informashon di aparato kopiá na clipboard.</value></data>
@@ -325,6 +325,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Abou</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imágen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} salida</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} salida</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Movementu</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klek riba un kontrol, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
@@ -563,7 +564,6 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ningun teksto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teksto</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detayenan</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minüt</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deskonektá Bluetooth ora e kable USB ta konektá</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lesa komo kontrol iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lesa komo teklado</value></data>
@@ -839,7 +839,6 @@
   <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Reset X personalisá</value></data>
   <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Reset Y personalisá</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Reset sensibilidat</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Reset akselerashon</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Reset zona morto</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>Reset intervalo</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Reset zona morto di eje pa botòn</value></data>
@@ -999,7 +998,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Kualke kapa</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ta kore kontinuamente miéntras e kontrol virtual aki ta aktivo. No ta nesesario un botòn aktivadó.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Hasi</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Kapa, Fuente, Límite, Direkshon, Konsumí botonnan aktivadó, Ripití</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Agregá akshon</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipo</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botònnan virtual</value></data>
@@ -1022,7 +1020,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Primi botòn di mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Larga botòn di mouse</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Scroll di mouse</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Aktivá/desaktivá overlay di touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botònnan</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombinashon di tekla</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Durashon</value></data>
@@ -1103,6 +1100,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ripití {0} kada {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Desplasamentu horizontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Desplasamentu vertikal</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalo</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Skohe riba pantaya</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modo</value></data>
@@ -1128,6 +1127,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Mitar invertí</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ningun aparato asigná</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Aparato deskonosí</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dede {1} X</value></data>
@@ -1368,6 +1368,21 @@
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Reset zona morto</value></data>
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Reset akselerashon</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidat</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Solamente miéntras</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>E fuente aki ta konta solamente miéntras e input aki tambe ta primí riba e mesun kontrol. Un prueba di zona for di un importashon ta konta komo e rango di stick òf trigger ku e ta kontrolá.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>I miéntras</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Un di dos input ku e fuente aki tambe ta warda riba dje.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Kambia input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ta skohe otro input pa warda riba dje.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurva</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ta subi e lektura di e input aki na e potensia aki promé ku e ta stüur e salida. 0 i 1 ta lag'é rekt. Riba 1 ta mas lento serka di e sentro.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Rango eksterior</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>E salida ta yega kompleto na e parti aki di e rekorido. 100% ta pagá.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zona morto</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>E salida ta kuminsá na e balor aki apenas e input move. 0 ta pagá.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forma di zona morto</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Pagá ta laga e lektura manera e ta. Aksial ta midi e eje aki so. Radial ta midi e par di stick huntu.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Pagá</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velosidat di mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velosidat di mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scroll di mouse</value></data>
@@ -1764,6 +1779,9 @@
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Patras</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Reset zona morto interior di ángulo</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Reset zona morto eksterior di ángulo</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zona morto di stick</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Bou di e desviashon aki e stick ta konta komo sentrá, p'esei no ta akumulá ningun stüurmentu.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Reset zona morto di stick</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Reset orientashon di kontrol</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick drechi)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick robes)</value></data>
@@ -1824,7 +1842,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset na standard (apagá)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset na standard (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset na 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>E aparato skohé no tin boks integrá. Zonidonan di makro pa e kontrol aki ta toka riba e salida standard di sistema.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Eksportá…</value></data>
@@ -2078,12 +2095,6 @@
   <data name="Pad_Mapping_TrimReset" xml:space="preserve">
     <value>Reset ora bo larga</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Reset e zona morto di trim na 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Reset e velosidat di trim na 100% pa sekònde.</value>
-  </data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>Reset e tardansa na 0 (e kapa ta reakshoná mesora).</value>
   </data>
@@ -2118,6 +2129,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil di Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro di Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Region di kursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tene)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (laga bai)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivá)</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Wardá perfil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Wardá i apliká</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Asignashon</value></data>
@@ -2669,7 +2683,7 @@
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morto, suavisashon, Akselerashon, Kurva di output</value></data>
   <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Marko di referensia</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Hugadó òf Mundu</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botòn pa aktivá apuntamentu, Modo di aktivashon, Límite di Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botòn pa aktivá apuntamentu, Modo di aktivashon, Gyro sendí, Sentra atrobe, Límite di Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Usa e touchpad komo stick òf D-pad</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, toke, pinch, forma</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Graba bo mes gestonan</value></data>
@@ -2702,8 +2716,8 @@
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>E lugá, tamaño i opasidat di un menu ta wòrdu poné riba e menu mes, den e sekshon [Makro i menu] di un kontrol.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Wega ku PadForge no konosé</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kiko ta mustra</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>E rondo, rooster òf bara di un menu miéntras e ta habrí</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>E nòmber di e perfil ora e perfil kambia</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>E rondo, rooster òf bara di un menu miéntras e ta habrí.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>E nòmber di e perfil ora e perfil kambia.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiá adrès</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konektá un telefòn</value></data>
   <data name="Extras_WebController_Step1" xml:space="preserve"><value>Pone e telefòn riba e mesun red ku e PC aki.</value></data>
@@ -2842,6 +2856,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>E kontrol na modo Xbox no a kontestá komo un Apex 4, pues nada no a wordu mandá i Windows tin e bèk. Pone e bèk na modo DInput ku su propio switch.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows no a move e kontrol pa WinUSB, pues nada no a wordu mandá. Pone e bèk na modo DInput ku su propio switch.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>A stòp. Paga e kontrol i sende e atrobe ku su propio switch promé ku bo manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>E pòrt di e pantaya no a habri, p'esei nada no a wordu mandá. Paga e kontrol i sende e atrobe ku su propio switch i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>E potrèt tin mas kuadro ku e pantaya di e kontrol aki por tene.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Un potrèt ta bayendo e kontrol aki kaba. Warda te ora e kaba.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>E pantaya a pidi e potrèt na un adrès kaminda PadForge no ta skirbi, p'esei nada no a wordu mandá. Paga e kontrol i sende e atrobe ku su propio switch i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>E potrèt a wordu mandá, pero e kontrol no a bolbe na modo DInput. Pon'é bèk ku su propio switch.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>E kontrol no a aseptá e komando ku ta prepar'é, p'esei nada no a wordu mandá. Kontrolá ku e ta konektá i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>E manda a stòp pa motibu di un eror den PadForge. E archivo di log tin e detayenan.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Ainda un potrèt ta bayendo pa e kontrol. Stòp e envio?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>

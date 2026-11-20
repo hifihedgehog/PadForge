@@ -1773,13 +1773,15 @@ namespace PadForge.ViewModels
 
         /// <summary>Section-level reset for the indicator-LEDs card on
         /// the Lighting tab. Player number row brightness + mode + mic
-        /// mute LED state. Mirrors the lightbar card's Reset All shape.</summary>
+        /// mute LED mode and its follow-device pick. Mirrors the lightbar
+        /// card's Reset All shape.</summary>
         public RelayCommand ResetIndicatorLedsAllCommand =>
             _resetIndicatorLedsAll ??= new RelayCommand(() =>
             {
                 PlayerLedBrightness = PlayerLedBrightness.High;
                 PlayerLedMode = PlayerLedMode.PlayerNumber;
                 MicLedMode = MicLedMode.Off;
+                MicLedFollowDeviceId = string.Empty;
             });
         private RelayCommand _resetIndicatorLedsAll;
 

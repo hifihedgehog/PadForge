@@ -185,7 +185,6 @@
   <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>Mga argumento</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(mayong teksto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teksto</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuto</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Ipahiling</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Pangaran kan profile</value></data>
   <data name="DreamcastScreen_Mode_ProfileNumber" xml:space="preserve"><value>Numero kan profile</value></data>
@@ -1214,6 +1213,7 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro asin menu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} na output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Hiro</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click nin sarong kontrol, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
@@ -1244,7 +1244,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble kan trigger gikan sa bass kan audio kan sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone kan pagkiling, Oryentasyon kan controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpakinis, Akselerasyon, Curve kan output</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buton sa pag-engage kan aim, Mode kan engage, Threshold kan Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buton sa pag-engage kan aim, Mode kan engage, Gyro On, Re-Center, Threshold kan Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Binubuhay an mga gesture kan touchpad na ini</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Mga swipe, tap, pinch, korte</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Irekord an saimong sadiri</value></data>
@@ -1273,7 +1273,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga halaga iyo an Game Telemetry na hilera sa [Mga device]. I-map sinda sa seksyon na Mga mapping kan sarong controller o gamiton sinda sa pagpaandar nin mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>An sadiring lugar, sukol asin opacity kan sarong menu itinatakda sa menu mismo, sa seksyon na [Mga macro asin menu] kan sarong controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>An Ipinapahiling</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar kan sarong menu mantang bukas ini</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar kan sarong menu mantang bukas ini.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyahon an address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>An telepono na nakakonektar nagpapahiling digdi asin sa pahina na Mga device, kun saen ini itinatao mo sa sarong controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Hanapon an mga device</value></data>
@@ -1386,4 +1386,10 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>I-apply</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Pinapataas an pagbasa kan input na ini sa power na ini bago ini magpagalaw sa output. An 0 asin 1 dai nagbabago kaini. Kun lampas sa 1, mas mahinay harani sa sentro.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Panluwas na sakop</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>An output nag-aabot sa kabilugan sa kaini kadakol kan paglakaw. An 100% nangangahulugan na patay ini.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>An output nagpopoon sa kaini kadakol pagkagalaw kan input. An 0 nangangahulugan na patay ini.</value></data>
 </root>

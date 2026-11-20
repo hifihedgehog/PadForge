@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Bat ere ez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutu (0 = inoiz ez)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Esleitu gabe</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ezkerrera)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ gora)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Ez da SDL3.dll aurkitu</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Ez da SDL3.dll aurkitu. Jarri SDL3.dll PadForge.exe-ren ondoan. Deskargatu hemendik: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Ez da SDL3.dll aurkitu. Deskargatu PadForge berriro.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Kontrolatzailearen eragiketak huts egin du: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Ezarpenak arbelera kopiatu dira.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Gailuaren informazioa arbelera kopiatu da.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baxua</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Irudia</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Zerrenda</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} irteera</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} irteera</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Mugimendua</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Egin klik kontrol batean, eta sakatu gailuko sarrera hura gidatzeko.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge-k ezagutzen ez dituen jokoak</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Bidali aurretik DSX martxan dagoen bilatzen duten modentzat.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Zer erakusten den</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilaren izena, profila aldatzen denean</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilaren izena, profila aldatzen denean.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiatu helbidea</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Kokatu pantailan</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konektatu telefono bat</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Abiarazi motorra automatikoki hastean</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jarraitu galdeketan leihoak fokua galtzean</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Galdeketa-maiztasuna (profil batek bestelakorik ezartzen ez badu)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motorrak gailu guztiak irakurtzen ditu eta kontrolagailu birtualak eguneratzen ditu segundoko hainbeste aldiz, 60tik 10000ra. Maiztasun altuago batek prozesadorearen denbora gehiago erabiltzen du. Windowsek motorra segundoko 2000 aldiz esnatzen du gehienez, beraz maiztasun altuago batean motorrak pasaldi bat baino gehiago exekutatzen ditu esnatze bakoitzean. Bere galdeketa-maiztasuna duen profil bat aktibo dagoen bitartean, maiztasun hori aplikatzen da. Balio hau berriro aplikatzen da profila desaktibatzean.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Motorrak gailu guztiak irakurtzen ditu eta kontrolagailu birtualak eguneratzen ditu segundoko hainbeste aldiz, 60tik 10000ra. Maiztasun altuago batek prozesadorearen denbora gehiago erabiltzen du. Ordenagailu honetan Windowsek motorra segundoko {0} aldiz esnatzen du gehienez, beraz maiztasun altuago batean motorrak pasaldi bat baino gehiago exekutatzen ditu esnatze bakoitzean. Bere galdeketa-maiztasuna duen profil bat aktibo dagoen bitartean, maiztasun hori aplikatzen da. Balio hau berriro aplikatzen da profila desaktibatzean.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ezkutatu gailuak jokoetatik</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide bidezko gailu-ezkutatzearen eta behe-mailako sarrera-kakoen etengailu nagusia. Desaktibatuta dagoenean, ez da gailurik ezkutatzen, gailu bakoitzaren ezarpenak edozein direla ere.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantendu gailuak ezkutatuta abioen artean</value></data>
@@ -924,7 +926,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Idatzitako karaktereen arteko milisegundoak, gehienez 1000. 0 balioarekin testu osoa batera idazten da.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Inaktibitateagatiko deskonexioa</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Xehetasunak</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutu</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deskonektatu Bluetooth USB bidez konektatzean</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karga azkarra. Kontrolagailu honek Bluetooth bidez konektatuta dagoela kargatzen ari dela jakinarazten duenean, Bluetooth lotura eten egiten da, irratia elikatu gabe karga dadin. USB bidezko edozein elikatze-iturrik balio du, hormako kargagailuak barne. Kablea konektatuta dagoela Bluetooth berriro aktibatzen baduzu, ez zaio ezer egingo hurrengo deskonexiora arte.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Irakurri iCade kontrolagailu gisa</value></data>
@@ -966,8 +967,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMUak profil aktiboaren izena erakusten du, eta profil-aldaketa bakoitzari jarraitzen dio.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMUak profil aktiboak profil-zerrendan duen lekua erakusten du. Lehenetsia profila 0 da.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMUak profil aktiboaren irudia erakusten du, edo haren izena, irudirik ez badu. Profil bakoitzak bere irudia gordetzen du.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMUak eguneko ordua erakusten du, minutuan behin berridatzita. Egokigailuak irudi bakoitza 100.000 idazketa jasateko diseinatutako memorian gordetzen du, eta hamar aste inguruan iristen da muga horretara, etenik gabe erakutsiz gero.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMUak PadForge-k kontrolagailua aurkitu zuenetik igarotako orduak eta minutuak erakusten ditu, minutuan behin berridatzita. Kontrolagailua hamar segundo baino gehiagoz bere atakatik kanpo badago, zerotik hasten da berriro. Egokigailuak irudi bakoitza 100.000 idazketa jasateko diseinatutako memorian gordetzen du, eta hamar aste inguruan iristen da muga horretara, etenik gabe erakutsiz gero.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMUak eguneko ordua erakusten du, minutuan behin berridatzita. Egokigailuak irudi bakoitza bere memorian gordetzen du, beraz PadForge-k ez du hori baino maizago berridazten.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMUak PadForge-k kontrolagailua aurkitu zuenetik igarotako orduak eta minutuak erakusten ditu, minutuan behin berridatzita. Kontrolagailua hamar segundo baino gehiagoz bere atakatik kanpo badago, zerotik hasten da berriro. Egokigailuak irudi bakoitza bere memorian gordetzen du, beraz PadForge-k ez du minutuan behin baino maizago berridazten.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMUak zuk aukeratutako irudi bat erakusten du: BMP edo PNG bat, VMU Animator-en .lcd fitxategi bat edo Dreamcast-en .vms ikono bat. Irudiak 48 × 32 pixel zuri-beltzetara murrizten dira.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Aukeratu irudia…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Aukeratu «{0}» profilaren irudia…</value></data>
@@ -1012,6 +1013,13 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox moduko kontrolagailuak ez du Apex 4 gisa erantzun, beraz ez da ezer bidali eta Windows-ek berreskuratu du. Aldatu berriro DInput modura bere etengailuarekin.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows-ek ez du kontrolagailua WinUSB-ra mugitu, beraz ez da ezer bidali. Aldatu berriro DInput modura bere etengailuarekin.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Geldituta. Itzali eta piztu kontrolagailua bere etengailuarekin berriro bidali aurretik.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Pantailaren atakak ez du ireki, beraz ez da ezer bidali. Itzali eta piztu kontrolagailua bere etengailuarekin eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Irudiak kontrolagailu honen pantailak har dezakeena baino fotograma gehiago ditu.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Irudi bat jada bidaltzen ari da kontrolagailu honetara. Itxaron amaitu arte.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Pantailak irudia PadForge-k idazten ez duen helbide batean eskatu du, beraz ez da ezer bidali. Itzali eta piztu kontrolagailua bere etengailuarekin eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Irudia bidali da, baina kontrolagailua ez da DInput modura itzuli. Itzuli ezazu bere etengailuarekin.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolagailuak ez du prestatzen duen agindua hartu, beraz ez da ezer bidali. Egiaztatu konektatuta dagoela eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Bidalketa PadForge-ren errore batean gelditu da. Log fitxategian dago xehetasunen berri.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Irudi bat oraindik kontrolagailura doa. Bidalketa gelditu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fitxategiak (*.mpk)|*.mpk|Fitxategi guztiak (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ataka {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Berrezarri menuaren geometria</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Berrezarri gelaxka</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Berrezarri sentikortasuna</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Berrezarri azelerazioa</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Berrezarri gune hila</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Berrezarri euste-denbora</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Berrezarri sakatze-leihoa</value></data>
@@ -1787,7 +1794,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Edozein geruza</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Etengabe exekutatzen da kontrolagailu birtual hau aktibo dagoen bitartean. Ez du abiarazle-botoirik behar.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Egin</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Geruza, Iturburua, Atalasea, Norabidea, Kontsumitu abiarazle-botoiak, Errepikatu</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Gehitu ekintza</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Mota</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botoi birtualak</value></data>
@@ -1813,7 +1819,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Sagu-botoiaren sakatzea</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Sagu-botoiaren askatzea</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Saguaren korritzea</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Erakutsi/ezkutatu ukipen-panelaren gainjartzea</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botoiak</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tekla-konbinazioa</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tekla-konbinazioa {Tekla1}{Tekla2} formatuan. Editagarria.</value></data>
@@ -1944,6 +1949,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Errepikatu {0} {1} ms-an behin</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Sagua X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Sagua Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Desplazamendu horizontala</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Desplazamendu bertikala</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Tartea</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Aukeratu pantailan</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} barru atzemango da…</value></data>
@@ -1978,6 +1985,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Alderantzikatutako erdia</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ez dago gailurik esleituta</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Gailu ezezaguna</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Ukipen-panelaren klika</value></data>
@@ -2420,7 +2428,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Behera (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Gora (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktibazioa</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktibazio-botoia, Aktibazio-modua, Easy Aim atalasea</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktibazio-botoia, Aktibazio-modua, Giroskopioa aktibo, Birzentratu, Easy Aim atalasea</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Giroskopioa noiz dagoen aktibo mugatzen duten aukerako baldintzak. Eskuineko palankaren desbideratzea eta apuntatzea aktibatzeko botoia konfigura daitezke, bakoitza bere aldetik. Giroskopioa konfiguratutako baldintza guztiak betetzen diren bitartean soilik aktibatzen da.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokala</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jokalaria</value></data>
@@ -2457,6 +2465,27 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Berrezarri Easy Aim atalasea</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Berrezarri apuntatzea aktibatzeko botoia</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Berrezarri aktibazio modua</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Geruza</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Azpiko errenkadek erakusten eta aldatzen duten Giroskopioa aktibo ezarpenaren geruza.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giroskopioa aktibo</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Giroskopioak geruza honetan noiz funtzionatzen duen, aktibazio-botoiaz gain. Base bezala ezarritako aldaketa-geruza batek Base geruzari jarraitzen dio.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Beti aktibo</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Base bezala</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Sakatuta dagoen bitartean</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Sakatuta ez dagoen bitartean</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Sakatze bakoitzean txandakatu</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Giroskopioa aktibo botoiak</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Giroskopioa aktibo ezarpenak irakurtzen dituen botoiak, tarte honetako edozein kontrolagailutan.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Behar du</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Markatutako botoi bat nahikoa den ala markatutako botoi guztiak sakatuta egon behar duten.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Edozein botoi</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Botoi guztiak</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Birzentratu giroskopioa aktibatzean</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Kontrolagailuaren jarrera hartzen du atseden-puntutzat giroskopioa aktibatzen den bakoitzean.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Berrezarri Giroskopioa aktibo</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Berrezarri Giroskopioa aktibo botoiak</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Berrezarri Behar du</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Berrezarri birzentratu giroskopioa aktibatzean</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Berrezarri aktibazio-palanka</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Berrezarri aktibazio-norabidea</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Mugimenduaren igarotze zuzena</value></data>
@@ -2467,6 +2496,25 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jokoak mugimendua hemen ezarritako sentikortasun, leuntze eta kurbarekin irakurtzen du.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Berrezarri igarotze zuzenaren doikuntza</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Soilik hau bitartean</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Iturburu honek soilik balio du sarrera hau kontrolagailu berean sakatuta agertzen den bitartean. Inportazio bateko eremu-proba bat probak egiaztatzen duen palankaren edo abiarazlearen tarte gisa agertzen da.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Eta hau bitartean</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Iturburu honek ere itxaroten duen bigarren sarrera bat.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Aldatu sarrera</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Itxaroteko beste sarrera bat hautatzen du.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurba</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Sarrera honen irakurketa berretzen du berretura honetara irteera gidatu aurretik. 0k eta 1ek zuzen uzten dute. 1etik gorakoa motelagoa da erdigunean.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Kanpoko tartea</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Irteera osora iristen da ibilbidearen hainbeste egitean. %100 desaktibatuta dago.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Gune hilaren konpentsazioa</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Irteera hainbesteko balioan hasten da sarrera mugitu bezain laster. 0 desaktibatuta dago.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Gune hilaren forma</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Desaktibatuta aukerak irakurketa ukitu gabe uzten du. Axiala eduki honen ardatza bakarrik neurtzen du. Erradiala palanka-bikotea batera neurtzen du.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Desaktibatuta</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axiala</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Erradiala</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Barneko gune hila</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ibilbidearen hainbesteko balioaren azpitik sarrerak zentratuta irakurtzen da.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko giroskopio-sentikortasunaren biderkatzailea. 1.0 = motorraren lehenetsia (500°/s → desbideratze osoa). 1.0 baino balio handiagoak sentikorragoak dira. 1.0 baino balio txikiagoak sentikortasun gutxiagokoak dira.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko inklinazio-sentikortasunaren biderkatzailea. 1.0 = 90°-ko inklinazioa desbideratze osorako. 1.0 baino balio handiagoek inklinazio gutxiagorekin lortzen dute desbideratze osoa.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Giroskopioaren inklinazioa X</value></data>
@@ -3036,6 +3084,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Maila</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktibitatearen denbora-muga</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Kontrolagailu birtual bat suntsitu aurreko segundoak, esleitutako gailu guztiak lineaz kanpo daudenean. 0 balioak desgaitu egiten du. Mota bereko gainerako kontrolagailuak gorantz mugitzen dira hutsunea betetzeko, eta zenbaki txikiagoko zirrikituetara lotzen dira berriro.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundo (0 = inoiz ez)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Gehitu geruza</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Gehitu aldaketa-geruza bat. Botoi bati eusten zaion bitartean edo txandakatzean aktibatzen den bigarren esleipen-taula da.</value></data>
@@ -3147,6 +3196,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Berrezarri desbilbatze-abiadura</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Berrezarri angeluaren barneko gune hila</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Berrezarri angeluaren kanpoko gune hila</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Palankaren gune hila</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Desbideratze honen azpitik palanka zentratuta irakurtzen da, beraz ez da biraketarik pilatzen.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Berrezarri palankaren gune hila</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Berrezarri inklinazioaren barneko gune hila</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Berrezarri inklinazioaren kanpoko gune hila</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Berrezarri kontrolagailuaren orientazioa</value></data>
@@ -3252,6 +3304,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m-tik</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Auto honek bolanteak baino momentu handiagoa eskatzen du, beraz kurbaren goiko aldea moztu egiten da.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Erdiguneko sentsazioa, laguntza elektrikoa, moteltzea, marruskadura, atxikitasuna, abiadura finkoa, bolantearen momentua</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Erdiguneko sentsazioa, laguntza elektrikoa, moteltzea, atxikitasuna, abiadura finkoa, bolantearen momentua</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Gidatzeak abiadura txikian erdigunea zein indartsu mantentzen duen. 100% autoaren berezkoa da.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Laguntza elektrikoa</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Zenbat arintzen duen servogidaketak kurbetan indarra handitu ahala. Gehiagok gidatze arinagoa esan nahi du erditik aldenduta.</value></data>
@@ -3393,7 +3446,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Berrezarri tonu altuak</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Berrezarri tonu-muga</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sistemaren irteera lehenetsiak erreproduzitzen duen guztia kopiatzen du, paraleloan, kontrolagailu honen bozgorailu integratura. USB eta Bluetooth bidez funtzionatzen du.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Hautatutako gailuak ez du bozgorailu integraturik. Kontrolagailu honetako makro-soinuak sistemaren irteera lehenetsian erreproduzitzen dira.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge-k ez du biderik hautatutako gailuaren bozgorailura konexio honetan zehar. Kontrolagailu honetako makro-soinuak sistemaren irteera lehenetsian erreproduzitzen dira.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai-ren (daidr) nabigatzailerako DualSense proba-multzoa: Sony-ren feature-report txostenen CRC tramaketaren eta PadForge-k kontrolagailu birtualetatik fisikoetara birbidaltzen dituen firmware-proba komandoen erreferentzia.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,7 +3860,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Erakutsi Dreamcast pantaila</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Zirrikitu hau elikatzen duen Bliss-Box ataka bateko Dreamcast kontrolagailu bakoitzaren VMUan irudiak erreproduzitzen ditu, eta gero ataka bakoitza bere pantaila-ezarpenera itzultzen du.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Erakutsi Dreamcast irudiak: {0} × {1} ms, errepikapenak: {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Irudi bakoitza segundo batez erakusten da gutxienez, egokigailuak jasotzen duen irudi bakoitza 100.000 idazketa jasateko diseinatutako memorian gordetzen duelako, eta segundoro irudi berri batekin muga hori egun bat inguruan iristen da. Irudiak 48 × 32 pixel zuri-beltzekoak dira, BMP edo PNG batetik, VMU Animator-en .lcd fitxategi batetik edo Dreamcast-en .vms ikono batetik.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Irudi bakoitza segundo batez erakusten da gutxienez. PadForge-k segundoko irudi bat bidaltzen du egokigailura gehienez, egokigailuak jasotzen duen irudi bakoitza bere memorian gordetzen duelako. Irudiak 48 × 32 pixel zuri-beltzekoak dira, BMP edo PNG batetik, VMU Animator-en .lcd fitxategi batetik edo Dreamcast-en .vms ikono batetik.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Irudiak</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Gehitu irudia…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Kendu irudia</value></data>
@@ -3884,15 +3937,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Geruza txandakatuz aktibatuta dagoen bitartean, bere kabuz desaktibatzen da milisegundo kopuru hau igaro ondoren, geruzaren esleitutako sarrerarik aktibo egon gabe. Tenporizadorea geruza aktibatzean hasten da, eta geruzaren sarrera bakoitzarekin berrabiarazten da. 0 balioarekin, geruza aktibatuta geratzen da zuk zeuk desaktibatu arte.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Berrezarri doikuntzaren gune hila %25era.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Berrezarri doikuntzaren abiadura segundoko %100era.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Berrezarri askatzean maila %100era itzultzeko aukerara.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Berrezarri bertan behera uzte automatikoa 0ra (geruza aktibatuta geratzen da desaktibatu arte).</value>
   </data>
@@ -3960,6 +4004,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profila</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makroa</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurtsore-eskualdea</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mantendu)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (askatu)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktibatu)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Hautatu konfigurazio bat zer etortzen den ikusteko.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Zer etortzen den</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bihurtzen da</value></data>
@@ -4589,7 +4636,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Norabide-sakatzeek gelaxkak banan-banan zeharkatzen dituzte eta hautatu berri den gelaxka bakoitza aktibatzen dute. Barra azkarreko portaera honek ez du Aktibazio modua ez Klik sarrera erabiltzen.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi protokolo hobetua</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Flydigi kontrolagailu bateragarrietan botoi gehigarriak eta mugimendu-sentsoreak gaitzen ditu.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi softwarea exekutatzen ari da: {0}. PadForge-k erabiltzen duen kontrolagailu-interfaze bera erabil dezake, eta Vader 5 Pro bat behin eta berriz deskonektatzen zela jakinarazi da biek sarbidea zutenean. Kontrolagailu honek deskonektatu eta berriro konektatzen badu, gelditu zerbitzua PadForge erabiltzen duzun bitartean, mantendu kontrolagailua ezkutatuta eta kendu zerbitzua HidHide-ren zerrenda zurietik, edo saiatu Ezarpenetan "Flydigi protokolo hobetua" desaktibatzen, baina ez dago baieztatuta laguntzen duenik.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi softwarea exekutatzen ari da: {0}. Kontrolagailuarekin PadForge-k erabiltzen duen interfazearen bidez komunikatzen da. Kontrolagailu honek deskonektatu eta berriro konektatzen badu, gelditu software hori PadForge erabiltzen duzun bitartean.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Onartu urruneko esleipen-aldaketak</value>
   </data>

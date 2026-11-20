@@ -117,9 +117,12 @@ namespace PadForge.Common
         /// <summary>The device's link, from its path and ids: Bluetooth where
         /// <see cref="IsBluetooth"/> says so, and otherwise what the device
         /// tree shows (<see cref="LinkOf(IEnumerable{AncestryHop})"/>), read
-        /// once for each path. A path the tree does not hold makes no claim
-        /// and is read again the next time, so a device first seen while it
-        /// is away is named once it is back.</summary>
+        /// once for each path. A path the tree does not hold is answered None
+        /// and kept like any other answer, so an offline row does not walk the
+        /// tree at every read. A row coming online calls
+        /// <see cref="ForgetLink"/>, so a device first seen while it was away,
+        /// or read from a walk that ended before it settled, is read again
+        /// then.</summary>
         internal static DeviceLink LinkOf(string devicePath, ushort vendorId, ushort productId)
             => LinkOf(devicePath, vendorId, productId, TreeWalk, s_links);
 
@@ -136,9 +139,7 @@ namespace PadForge.Common
                 return DeviceLink.None;
             lock (known)
                 if (known.TryGetValue(devicePath, out var link)) return link;
-            var hops = walk(devicePath);
-            if (hops == null) return DeviceLink.None;
-            var read = LinkOf(hops);
+            var read = LinkOf(walk(devicePath));
             lock (known) known[devicePath] = read;
             return read;
         }
@@ -157,6 +158,14 @@ namespace PadForge.Common
             => OffLimitsForTest ? null : Input.InputManager.AncestryHopsOf(devicePath);
 
         private static readonly Dictionary<string, DeviceLink> s_links = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Forgets one path's link, so the next read walks the tree
+        /// again. A row calls it when it comes online.</summary>
+        internal static void ForgetLink(string devicePath)
+        {
+            if (devicePath == null) return;
+            lock (s_links) s_links.Remove(devicePath);
+        }
 
         /// <summary>Forgets every path's link, for the page pictures, which
         /// read their devices through a walk of their own.</summary>

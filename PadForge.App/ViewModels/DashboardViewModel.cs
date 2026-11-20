@@ -120,6 +120,13 @@ namespace PadForge.ViewModels
             ShowAddController = canAddMore;
         }
 
+        /// <summary>Tells every card that the computer's drawing tier
+        /// changed. Home's page calls it from RenderCapability.TierChanged.</summary>
+        internal void RenderTierChanged()
+        {
+            foreach (var slot in SlotSummaries) slot.RenderTierChanged();
+        }
+
         private int _selectedPadIndex = -1;
 
         /// <summary>Names the slot whose pad page is open, or -1 for none.
@@ -2134,9 +2141,30 @@ namespace PadForge.ViewModels
             if (first == null) return (null, string.Empty);
             var strings = PadForge.Resources.Strings.Strings.Instance;
             if (!first.IsOnline) return (first, strings.Home_Device_NotConnected);
-            return (first, count > 1
-                ? string.Format(System.Globalization.CultureInfo.CurrentCulture, strings.Common_MoreCount_Format, count - 1)
-                : string.Empty);
+            return (first, count > 1 ? MoreNote(count - 1) : string.Empty);
+        }
+
+        private static string[] s_moreNotes = Array.Empty<string>();
+        private static string s_moreFormat;
+
+        /// <summary>The note for <paramref name="more"/> more devices, made
+        /// once for each count in the language in use. Every compact card
+        /// asks for it on every dashboard refresh.</summary>
+        private static string MoreNote(int more)
+        {
+            string format = PadForge.Resources.Strings.Strings.Instance.Common_MoreCount_Format;
+            var made = s_moreNotes;
+            if (!string.Equals(format, s_moreFormat, StringComparison.Ordinal))
+            {
+                made = Array.Empty<string>();
+                s_moreFormat = format;
+            }
+            if (more >= made.Length)
+            {
+                Array.Resize(ref made, more + 1);
+            }
+            s_moreNotes = made;
+            return made[more] ??= string.Format(System.Globalization.CultureInfo.CurrentCulture, format, more);
         }
 
         private string _pictureProfile;
@@ -2263,6 +2291,15 @@ namespace PadForge.ViewModels
         /// card shows moving in the picture's place while the controller
         /// forges (LiveArtStage). Null for a still of the 3D model.</summary>
         public PadForge.Models2D.LiveArt LiveArt => _liveArt;
+
+        /// <summary>The computer's drawing tier changed (a remote desktop
+        /// session started or ended): whether the card shows its model
+        /// moving, and so whether its picture moves, may be other now.</summary>
+        internal void RenderTierChanged()
+        {
+            OnPropertyChanged(nameof(ShowsLiveModel));
+            OnPropertyChanged(nameof(PictureMoves));
+        }
 
         /// <summary>Whether the card shows its 2D art moving in place of the
         /// color picture.</summary>
@@ -2411,8 +2448,8 @@ namespace PadForge.ViewModels
     /// One stage entry in a slot card's pipeline heat ledger (#175 item
     /// 10). Carries the tab's glyph (font char for gyro / lighting /
     /// touchpad / audio; the Zacksly stick / trigger shapes for the two
-    /// shape stages), the ember/ashen heat flag, and a mono summary of
-    /// the real non-default values for the hover tooltip.
+    /// shape stages), the ember/ashen heat flag, and a summary of the
+    /// real non-default values for the hover tooltip.
     /// </summary>
     public class SlotStageInfo : ObservableObject
     {
@@ -2488,14 +2525,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Per-device readout lines for the hover tooltip, in
         /// binding order: every assigned device the stage covers gets a
-        /// line (devices still at defaults read STOCK), so multi-device
+        /// line (one still at its defaults reads Default Settings), so multi-device
         /// slots attribute each value to its device the same way the
         /// preview annotation readout does.</summary>
         public ObservableCollection<StageSummaryLine> SummaryLines { get; } = new();
     }
 
     /// <summary>One tooltip line of a stage's readout: device-class
-    /// glyph, Body-face device name, then mono value tokens. Name sits
+    /// glyph, device name, then value tokens with tabular figures. Name sits
     /// BETWEEN glyph and tokens (user direction 2026-07-06): icon, name,
     /// settings, the same order as the card's main device label. The name
     /// carries its trailing "  ·  " separator and is empty for slot-level

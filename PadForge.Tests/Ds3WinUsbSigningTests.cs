@@ -210,5 +210,36 @@ namespace PadForge.Tests
             Assert.Contains("WinUsb_GetDescriptor", pair, StringComparison.Ordinal);
             Assert.Contains("DS3 WinUSB interface: ", pair, StringComparison.Ordinal);
         }
+
+        /// <summary>Every certificate a store hands out is a handle of its
+        /// own. The lookup that finds the signing certificate closes each
+        /// one it is handed, the one it picks among them, and returns the
+        /// thumbprint: a certificate good for at least 30 more days, with
+        /// its private key.</summary>
+        [Fact]
+        public void TheSigningLookup_ClosesEveryCertificateItIsHanded()
+        {
+            using var rsa = System.Security.Cryptography.RSA.Create(2048);
+            System.Security.Cryptography.X509Certificates.X509Certificate2 Make(int days)
+                => new System.Security.Cryptography.X509Certificates.CertificateRequest("CN=PadForge DS3 WinUSB", rsa,
+                        System.Security.Cryptography.HashAlgorithmName.SHA256,
+                        System.Security.Cryptography.RSASignaturePadding.Pkcs1)
+                    .CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(days));
+            var soon = Make(10);
+            var good = Make(3650);
+            var noKey = System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadCertificate(good.RawData);
+            string expected = good.Thumbprint;
+            Assert.True(good.HasPrivateKey);
+            Assert.False(noKey.HasPrivateKey);
+
+            var found = new System.Security.Cryptography.X509Certificates.X509Certificate2Collection { soon, noKey, good };
+            Assert.Equal(expected, Ds3DriverInstaller.UsableSigningThumbprint(found, DateTime.Now));
+            Assert.All(new[] { soon, noKey, good }, c => Assert.Equal(IntPtr.Zero, c.Handle));
+
+            var none = Make(10);
+            Assert.Null(Ds3DriverInstaller.UsableSigningThumbprint(
+                new System.Security.Cryptography.X509Certificates.X509Certificate2Collection { none }, DateTime.Now));
+            Assert.Equal(IntPtr.Zero, none.Handle);
+        }
     }
 }

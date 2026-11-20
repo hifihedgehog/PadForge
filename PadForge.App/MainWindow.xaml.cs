@@ -1568,6 +1568,7 @@ namespace PadForge
                         nameof(PadViewModel.GyroRealWorldCalibration) or
                         nameof(PadViewModel.GyroAimEngageButton) or nameof(PadViewModel.GyroAimEngageDeviceGuid) or
                         nameof(PadViewModel.GyroAimEngageMode) or nameof(PadViewModel.GyroEngageStickSide) or
+                        nameof(PadViewModel.GyroActivation) or nameof(PadViewModel.GyroRecenterOnEngage) or
                         nameof(PadViewModel.GyroEngageStickDirection) or
                         nameof(PadViewModel.IrSensorBarPos) or nameof(PadViewModel.IrSensorBarCompPercent) or
                         nameof(PadViewModel.IrSmoothingPercent) or
@@ -1808,7 +1809,7 @@ namespace PadForge
                             _kindRecordStage = KindRecStage.Down;
                             _recorderService.StartRecordingExtraSourceParam(
                                 parent, result.ExtraSource, activePad.PadIndex,
-                                RecorderService.ParamTarget.Down);
+                                RecorderService.ParamTarget.Down, followUp: true);
                             if (_recorderService.IsRecording)
                             {
                                 activePad.CurrentRecordingTarget = parent.TargetSettingName;
@@ -1930,13 +1931,14 @@ namespace PadForge
                         // Update recording target to pos for flash/arrow.
                         activePad.CurrentRecordingTarget = negMapping.TargetSettingName;
 
-                        // Start recording — result will go to SourceDescriptor via normal path.
-                        // Neutralize baseline so the previous POV/button press doesn't block detection.
+                        // Start recording. The result goes to SourceDescriptor by the
+                        // normal path, on the devices the negative half listened to. It waits for
+                        // the previous POV/button press to be let go.
                         // Mark the chain so the pos completion doesn't re-prompt
                         // for the neg that phase one just promoted into extras.
                         _savedPosDescriptor = null;
                         _negChainCompletedMapping = negMapping;
-                        _recorderService.StartRecording(negMapping, activePad.PadIndex, deviceGuid, neutralizeBaseline: true);
+                        _recorderService.StartFollowUpRecording(negMapping, activePad.PadIndex);
                         return;
                     }
 
@@ -2009,10 +2011,10 @@ namespace PadForge
                     // Update the recording target to the neg setting for flash/arrow.
                     activePad.CurrentRecordingTarget = result.Mapping.NegSettingName;
 
-                    // Start recording again for the neg direction.
-                    // Neutralize baseline so the previous POV/button press doesn't block detection.
-                    _recorderService.StartRecording(result.Mapping, activePad.PadIndex, deviceGuid,
-                        neutralizeBaseline: true, negRecording: true);
+                    // Start recording again for the neg direction, on the
+                    // devices the positive half listened to. It waits for the
+                    // previous POV/button press to be let go.
+                    _recorderService.StartFollowUpRecording(result.Mapping, activePad.PadIndex, negRecording: true);
                     return;
                 }
 
@@ -2139,13 +2141,10 @@ namespace PadForge
                     string.Equals(m.TargetSettingName, posTargetName, StringComparison.OrdinalIgnoreCase));
                 if (mapping == null) return;
 
-                // NOTE: this `deviceGuid` is passed to StartRecording purely
-                // for API shape — RecorderService ignores it and listens to
-                // EVERY device on the slot (the first to fire wins). The
-                // dropdown selection has no bearing on what gets recorded; see
-                // the big REGRESSION GUARD comment in the RecordingCompleted
-                // handler above.
-                Guid deviceGuid = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                // RecorderService listens to EVERY device on the slot (the
+                // first to fire wins). The dropdown selection has no bearing
+                // on what gets recorded; see the big REGRESSION GUARD comment
+                // in the RecordingCompleted handler above.
 
                 // ─────────────────────────────────────────────────────────
                 //  Don't let a quadrant click clobber an already-mapped axis.
@@ -2198,7 +2197,7 @@ namespace PadForge
                 if (isNegTarget)
                     _pendingNegMapping = mapping;
 
-                _recorderService.StartRecording(mapping, padVm.PadIndex, deviceGuid,
+                _recorderService.StartRecording(mapping, padVm.PadIndex,
                     negRecording: isNegTarget);
 
                 // Only show arrow/flash if recording actually started (device available).
@@ -2274,8 +2273,6 @@ namespace PadForge
                 var capturedPad = pad;
                 pad.MapAllRecordRequested += (s, mapping) =>
                 {
-                    Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-
                     // Y axes record neg (up in game) first due to NegateAxis inversion.
                     // Pre-set _pendingNegMapping so the recorder result goes to NegSourceDescriptor.
                     // For Extended custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
@@ -2294,7 +2291,7 @@ namespace PadForge
                     if (mapping.HasNegDirection && !isYAxis)
                         mapping.NegSourceDescriptor = string.Empty;
 
-                    _recorderService.StartRecording(mapping, capturedPad.PadIndex, deviceGuid,
+                    _recorderService.StartRecording(mapping, capturedPad.PadIndex,
                         negRecording: isYFirstPhase);
                 };
                 pad.MapAllCancelRequested += (s, e) =>
@@ -3387,12 +3384,12 @@ namespace PadForge
             }
             catch (DllNotFoundException)
             {
-                _viewModel.Settings.SdlVersion = Strings.Instance.Status_SDL3NotFound;
-                _viewModel.SetStatus(Strings.Instance.Status_SDL3NotFoundDetail, persist: true);
+                _viewModel.Settings.SdlVersionState = SettingsViewModel.SdlVersionKind.NotFound;
+                _viewModel.SetStatus(Strings.Instance.Status_SDL3NotFoundDownloadAgain, persist: true);
             }
             catch
             {
-                _viewModel.Settings.SdlVersion = Strings.Instance.Common_Unknown;
+                _viewModel.Settings.SdlVersionState = SettingsViewModel.SdlVersionKind.Unknown;
             }
 
             // Select the first nav item. Through the helper, not a bare
@@ -7311,8 +7308,6 @@ namespace PadForge
             {
                 if (s is MappingItem mi)
                 {
-                    Guid deviceGuid = capturedPad.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
-
                     // #111 audit fix B. A fresh recording supersedes any in-flight
                     // kind recording on another row. Clear that row's stuck Stop
                     // state so its button does not linger showing "recording".
@@ -7374,7 +7369,7 @@ namespace PadForge
                     if (isYAxis)
                         _pendingNegMapping = mi;
 
-                    _recorderService.StartRecording(mi, capturedPad.PadIndex, deviceGuid,
+                    _recorderService.StartRecording(mi, capturedPad.PadIndex,
                         negRecording: isYAxis);
 
                     // Only show arrow/flash if recording actually started (device available).
@@ -7432,7 +7427,14 @@ namespace PadForge
                     or nameof(MappingItem.MotionAngle)
                     or nameof(MappingItem.MotionDeadzone)
                     or nameof(MappingItem.InvertOutput)
-                    or nameof(MappingItem.ParamAccel))
+                    or nameof(MappingItem.ParamAccel)
+                    or nameof(MappingItem.ParamCurveExponent)
+                    or nameof(MappingItem.ParamRangeOuter)
+                    or nameof(MappingItem.ParamAntiDeadzone)
+                    or nameof(MappingItem.ParamStickDeadZoneShape)
+                    or nameof(MappingItem.ParamStickDeadZoneInner)
+                    or nameof(MappingItem.GateDescriptor)
+                    or nameof(MappingItem.Gate2Descriptor))
                 {
                     _settingsService.MarkDirty();
 
@@ -7578,7 +7580,14 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamReverseMultiplier)
                         or nameof(MappingSourceItem.ParamRapidTriggerDistance)
                         or nameof(MappingSourceItem.InvertOutput)
-                        or nameof(MappingSourceItem.ParamAccel))
+                        or nameof(MappingSourceItem.ParamAccel)
+                        or nameof(MappingSourceItem.ParamCurveExponent)
+                        or nameof(MappingSourceItem.ParamRangeOuter)
+                        or nameof(MappingSourceItem.ParamAntiDeadzone)
+                        or nameof(MappingSourceItem.ParamStickDeadZoneShape)
+                        or nameof(MappingSourceItem.ParamStickDeadZoneInner)
+                        or nameof(MappingSourceItem.GateDescriptor)
+                        or nameof(MappingSourceItem.Gate2Descriptor))
                         _settingsService.MarkDirty();
                 };
             }

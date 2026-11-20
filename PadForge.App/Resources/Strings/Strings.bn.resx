@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>সেকেন্ড</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>মিনিট (0 = কখনো নয়)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>বরাদ্দ নেই</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← বামে)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ উপরে)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি। SDL3.dll ফাইলটি PadForge.exe-এর পাশে রাখুন। এটি ডাউনলোড করুন: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি। PadForge আবার ডাউনলোড করুন।</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ড্রাইভারের কাজ ব্যর্থ হয়েছে: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>সেটিংস ক্লিপবোর্ডে কপি হয়েছে।</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ডিভাইসের তথ্য ক্লিপবোর্ডে কপি হয়েছে।</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>কম</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ছবি</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>তালিকা</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0}টি আউটপুট</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0}টি আউটপুট</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>মোশন</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>একটি কন্ট্রোল-এ ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>যেসব গেম PadForge চেনে না</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>যেসব মড পাঠানোর আগে চালু DSX খোঁজে তাদের জন্য।</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>যা দেখানো হয়</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>মেনু খোলা থাকাকালীন তার রিং, গ্রিড বা বার</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার চালু হলে লেয়ারের নাম, সেই লেয়ারের ঠিক করা সময় ধরে</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>প্রোফাইল বদলালে প্রোফাইলের নাম</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>মেনু খোলা থাকাকালীন তার রিং, গ্রিড বা বার।</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার চালু হলে লেয়ারের নাম, সেই লেয়ারের ঠিক করা সময় ধরে।</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>প্রোফাইল বদলালে প্রোফাইলের নাম।</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ঠিকানা কপি করুন</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>স্ক্রিনে অবস্থান</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ফোন সংযুক্ত করুন</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>চালুর সময় ইঞ্জিন স্বয়ংক্রিয়ভাবে চালু করুন</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>উইন্ডো ফোকাস হারালেও পোলিং চালিয়ে যান</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>পোলিং রেট (কোনো প্রোফাইল এটি ওভাররাইড না করলে)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ইঞ্জিন প্রতি সেকেন্ডে এতবার প্রতিটি ডিভাইস পোল করে এবং ভার্চুয়াল কন্ট্রোলার আপডেট করে, মান 60 থেকে 10000 পর্যন্ত হতে পারে। রেট বেশি হলে প্রসেসরের সময় বেশি লাগে। Windows ইঞ্জিনকে প্রতি সেকেন্ডে সর্বোচ্চ প্রায় 2000 বার জাগায়, তাই এর চেয়ে বেশি রেটে প্রতিবার জাগানোর সময় ইঞ্জিন কয়েকটি পাস চালায়। নিজস্ব পোলিং রেট আছে এমন প্রোফাইল সক্রিয় থাকলে তার বদলে সেই রেটই প্রযোজ্য হয়। প্রোফাইলটি নিষ্ক্রিয় হলে এই মান ফিরে আসে।</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>ইঞ্জিন প্রতি সেকেন্ডে এতবার প্রতিটি ডিভাইস পোল করে এবং ভার্চুয়াল কন্ট্রোলার আপডেট করে, মান 60 থেকে 10000 পর্যন্ত হতে পারে। রেট বেশি হলে প্রসেসরের সময় বেশি লাগে। এই পিসিতে Windows ইঞ্জিনকে প্রতি সেকেন্ডে সর্বোচ্চ {0} বার জাগায়, তাই এর চেয়ে বেশি রেটে প্রতিবার জাগানোর সময় ইঞ্জিন কয়েকটি পাস চালায়। নিজস্ব পোলিং রেট আছে এমন প্রোফাইল সক্রিয় থাকলে তার বদলে সেই রেটই প্রযোজ্য হয়। প্রোফাইলটি নিষ্ক্রিয় হলে এই মান ফিরে আসে।</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>গেম থেকে ডিভাইস লুকান</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide দিয়ে ডিভাইস লুকানো ও লো-লেভেল ইনপুট হুকের মূল সুইচ। এটি বন্ধ থাকলে প্রতিটি ডিভাইসের আলাদা সেটিং যা-ই হোক, কোনো ডিভাইস লুকানো হয় না।</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>PadForge বন্ধ থাকলেও ডিভাইস আড়ালে রাখুন</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>টাইপ করা অক্ষরগুলোর মাঝের মিলিসেকেন্ড, সর্বোচ্চ 1000। 0 দিলে পুরো টেক্সট একবারে টাইপ হয়।</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>নিষ্ক্রিয় থাকলে বিচ্ছিন্ন</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>বিবরণ</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>মিনিট</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-তে লাগানো হলে Bluetooth বিচ্ছিন্ন করুন</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>দ্রুত চার্জ। Bluetooth-এ সংযুক্ত থাকা অবস্থায় এই কন্ট্রোলার চার্জ হচ্ছে বলে জানালে Bluetooth সংযোগ কেটে দেওয়া হয়, যাতে রেডিওতে বিদ্যুৎ খরচ না করে এটি চার্জ হয়। ওয়াল চার্জারসহ যেকোনো USB পাওয়ার উৎসই গণ্য হয়। USB কেবল লাগানো অবস্থায় আপনি Bluetooth আবার চালু করলে, পরের বার USB কেবল খুলে ফেলা পর্যন্ত এতে আর হাত দেওয়া হয় না।</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade কন্ট্রোলার হিসেবে পড়ুন</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU সক্রিয় প্রোফাইলের নাম দেখায় এবং প্রতিবার প্রোফাইল বদলের সঙ্গে তা বদলায়।</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU প্রোফাইল তালিকায় সক্রিয় প্রোফাইলের অবস্থান দেখায়। ডিফল্ট প্রোফাইল হলো 0।</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU সক্রিয় প্রোফাইলের নিজস্ব ছবি দেখায়, ছবি না থাকলে তার নাম। প্রতিটি প্রোফাইলের নিজস্ব ছবি থাকে।</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU দিনের সময় দেখায়, যা প্রতি মিনিটে একবার নতুন করে লেখা হয়। অ্যাডাপ্টার প্রতিটি ছবি এমন মেমরিতে রাখে, যা 100,000 বার লেখার উপযোগী, আর দিনরাত একটানা দেখালে প্রায় দশ সপ্তাহে সেই সীমায় পৌঁছায়।</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge প্যাডটি খুঁজে পাওয়ার পর কত ঘণ্টা ও মিনিট কেটেছে তা VMU দেখায়, যা প্রতি মিনিটে একবার নতুন করে লেখা হয়। প্যাড দশ সেকেন্ডের বেশি পোর্টের বাইরে থাকলে আবার শূন্য থেকে শুরু হয়। অ্যাডাপ্টার প্রতিটি ছবি এমন মেমরিতে রাখে, যা 100,000 বার লেখার উপযোগী, আর দিনরাত একটানা দেখালে প্রায় দশ সপ্তাহে সেই সীমায় পৌঁছায়।</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU দিনের সময় দেখায়, যা প্রতি মিনিটে একবার নতুন করে লেখা হয়। অ্যাডাপ্টার প্রতিটি ছবি নিজের মেমরিতে রাখে, তাই PadForge এর চেয়ে ঘন ঘন সেটি নতুন করে লেখে না।</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge প্যাডটি খুঁজে পাওয়ার পর কত ঘণ্টা ও মিনিট কেটেছে তা VMU দেখায়, যা প্রতি মিনিটে একবার নতুন করে লেখা হয়। প্যাড দশ সেকেন্ডের বেশি পোর্টের বাইরে থাকলে আবার শূন্য থেকে শুরু হয়। অ্যাডাপ্টার প্রতিটি ছবি নিজের মেমরিতে রাখে, তাই PadForge মিনিটে একবারের বেশি সেটি নতুন করে লেখে না।</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU আপনার বেছে নেওয়া ছবি দেখায়: একটি BMP বা PNG, VMU Animator-এর .lcd ফাইল অথবা Dreamcast-এর .vms আইকন। ছবিগুলো কেটে প্রস্থে 48 ও উচ্চতায় 32 সাদা-কালো পিক্সেলে আনা হয়।</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ছবি বেছে নিন…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0}-এর জন্য ছবি বেছে নিন…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox মোডে থাকা কন্ট্রোলার Apex 4 হিসেবে সাড়া দেয়নি, তাই কিছু পাঠানো হয়নি এবং Windows এটি ফিরে পেয়েছে। নিজস্ব সুইচে এটিকে আবার DInput মোডে নিন।</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows কন্ট্রোলারটিকে WinUSB-তে সরায়নি, তাই কিছু পাঠানো হয়নি। নিজস্ব সুইচে এটিকে আবার DInput মোডে নিন।</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>থামানো হয়েছে। আবার পাঠানোর আগে কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন।</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>স্ক্রিনের পোর্ট খোলেনি, তাই কিছু পাঠানো হয়নি। কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>ছবিটিতে এই কন্ট্রোলারের স্ক্রিনের ধারণক্ষমতার চেয়ে বেশি ফ্রেম আছে।</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>এই কন্ট্রোলারে আগে থেকেই একটি ছবি যাচ্ছে। সেটি শেষ হওয়া পর্যন্ত অপেক্ষা করুন।</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>স্ক্রিন এমন একটি ঠিকানায় ছবিটি চেয়েছে, যেখানে PadForge লেখে না, তাই কিছু পাঠানো হয়নি। কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>ছবিটি পাঠানো হয়েছে, কিন্তু কন্ট্রোলার DInput মোডে ফিরে যায়নি। কন্ট্রোলারের নিজস্ব সুইচে সেটিকে ফিরিয়ে আনুন।</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>কন্ট্রোলার তাকে প্রস্তুত করার কমান্ডটি নেয়নি, তাই কিছু পাঠানো হয়নি। এটি সংযুক্ত আছে কি না দেখুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge-এর একটি ত্রুটিতে পাঠানো থেমে গেছে। বিস্তারিত লগ ফাইলে আছে।</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>একটি ছবি এখনও কন্ট্রোলারে যাচ্ছে। পাঠানো থামাবেন?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ফাইল (*.mpk)|*.mpk|সব ফাইল (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak পোর্ট {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>মেনুর জ্যামিতি রিসেট করুন</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>সেল রিসেট করুন</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>সংবেদনশীলতা রিসেট করুন</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>ত্বরণ রিসেট করুন</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>ডেডজোন রিসেট করুন</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>ধরে রাখার সময় রিসেট করুন</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>চাপের সময়সীমা রিসেট করুন</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>যেকোনো লেয়ার</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার সক্রিয় থাকা অবস্থায় অবিরাম চলে। কোনো ট্রিগার বোতাম লাগে না।</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>করণীয়</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>লেয়ার, উৎস, থ্রেশহোল্ড, দিক, ট্রিগার বোতাম আটকে দিন, পুনরাবৃত্তি</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>অ্যাকশন যোগ করুন</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ধরন</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ভার্চুয়াল বোতাম</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>মাউস বোতাম চাপ</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>মাউস বোতাম ছেড়ে দেওয়া</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>মাউস স্ক্রোল</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>টাচপ্যাড ওভারলে টগল করুন</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>বোতাম</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>কী কম্বো</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} ফরম্যাটে কী কম্বো। সম্পাদনাযোগ্য।</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>প্রতি {1} ms-এ {0} পুনরাবৃত্তি করুন</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>মাউস X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>মাউস Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>অনুভূমিক সরণ</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>উল্লম্ব সরণ</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ব্যবধান</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>স্ক্রিনে বেছে নিন</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ক্যাপচার হবে: {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>উল্টো অর্ধেক</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>কোনো ডিভাইস ম্যাপ করা নেই</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>অজানা ডিভাইস</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>টাচপ্যাড ক্লিক</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>নিচ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>উপর (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>সক্রিয় করা</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>সক্রিয় করার বোতাম, সক্রিয় করার মোড, সহজ নিশানার থ্রেশহোল্ড</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>সক্রিয় করার বোতাম, সক্রিয় করার মোড, জাইরো চালু, আবার কেন্দ্রে আনা, সহজ নিশানার থ্রেশহোল্ড</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ঐচ্ছিক শর্ত, যা জাইরো কখন সক্রিয় থাকবে তা সীমিত করে। ডান স্টিকের বিক্ষেপ ও নিশানা সক্রিয় করার বোতাম, দুটিই আলাদাভাবে কনফিগার করা যায়। কনফিগার করা প্রতিটি শর্ত পূরণ হলেই কেবল জাইরো চালু হয়।</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>লোকাল</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>প্লেয়ার</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>সহজ নিশানার থ্রেশহোল্ড রিসেট করুন</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>নিশানা সক্রিয় করার বোতাম রিসেট করুন</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>সক্রিয় করার মোড রিসেট করুন</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>লেয়ার</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>যে লেয়ারের জাইরো চালুর সেটিং নিচের সারিগুলো দেখায় ও বদলায়।</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>জাইরো চালু</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>এই লেয়ারে জাইরো কখন কাজ করে, সক্রিয় করার বোতামের পাশাপাশি। “বেসের মতোই” বেছে নেওয়া শিফট লেয়ার বেসের সেটিং অনুসরণ করে।</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>সবসময় চালু</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>বেসের মতোই</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>চেপে ধরে রাখলে</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>চেপে ধরা না থাকলে</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>প্রতিবার চাপলে চালু বা বন্ধ</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>জাইরো চালুর বোতাম</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>এই স্লটের যেকোনো কন্ট্রোলারে জাইরো চালুর সেটিং যে বোতামগুলো পড়ে।</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>প্রয়োজন</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>টিক দেওয়া একটি বোতামই যথেষ্ট, নাকি টিক দেওয়া প্রতিটি বোতাম চেপে ধরতে হবে।</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>যেকোনো বোতাম</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>প্রতিটি বোতাম</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>জাইরো চালু হলে আবার কেন্দ্রে আনুন</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>জাইরো চালু হওয়ার প্রতিবার কন্ট্রোলারের অবস্থানকে বিশ্রামের বিন্দু হিসেবে নেয়।</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>জাইরো চালু রিসেট করুন</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>জাইরো চালুর বোতাম রিসেট করুন</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>প্রয়োজন রিসেট করুন</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>জাইরো চালু হলে আবার কেন্দ্রে আনা রিসেট করুন</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>সক্রিয় করার স্টিক রিসেট করুন</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>সক্রিয় করার দিক রিসেট করুন</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>মোশন পাসথ্রু</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>গেম এখানে সেট করা সংবেদনশীলতা, মসৃণকরণ ও কার্ভ সহ মোশন পড়ে।</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>পাসথ্রু টিউনিং রিসেট করুন</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>সংবেদনশীলতা</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>শুধু যখন</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>এই সোর্স কেবল তখনই গণ্য হয়, যখন একই কন্ট্রোলারে এই ইনপুটও চাপা অবস্থায় পড়া হয়। ইমপোর্ট থেকে আসা জোন পরীক্ষা সেই স্টিক বা ট্রিগারের পরিসর হিসেবে পড়া হয়, যা সেটি যাচাই করে।</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>এবং যখন</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>দ্বিতীয় একটি ইনপুট, যার জন্য এই সোর্সও অপেক্ষা করে।</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ইনপুট বদলান</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>অপেক্ষা করার জন্য আরেকটি ইনপুট বেছে নেয়।</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>কার্ভ</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>আউটপুট চালানোর আগে এই ইনপুটের পাঠকে এই ঘাতে তোলে। 0 ও 1 হলে সরল থাকে। 1-এর বেশি হলে কেন্দ্রের কাছে ধীর হয়।</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>বাইরের পরিসর</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>চলার পথের এতটুকুতে আউটপুট পূর্ণ মানে পৌঁছায়। 100% মানে বন্ধ।</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>অ্যান্টি-ডেডজোন</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ইনপুট নড়ামাত্র আউটপুট এই মান থেকে শুরু হয়। 0 মানে বন্ধ।</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>ডেডজোনের আকৃতি</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>বন্ধ থাকলে পাঠে হাত দেওয়া হয় না। অক্ষীয় কেবল এই অক্ষটি মাপে। রেডিয়াল স্টিকের জোড়াকে একসাথে মাপে।</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>বন্ধ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>অক্ষীয়</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>রেডিয়াল</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>ভেতরের ডেডজোন</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>চলার পথের এর চেয়ে কম অংশে ইনপুট কেন্দ্রে আছে বলে পড়া হয়।</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>প্রতিটি উৎসের আলাদা জাইরো সংবেদনশীলতার গুণক। 1.0 = ইঞ্জিনের ডিফল্ট (500°/s → পূর্ণ বিক্ষেপ)। 1.0-এর বেশি মান বেশি সংবেদনশীল। 1.0-এর কম মান কম সংবেদনশীল।</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>প্রতিটি উৎসের আলাদা কাত সংবেদনশীলতার গুণক। 1.0 = পূর্ণ বিক্ষেপের জন্য 90° কাত। 1.0-এর বেশি মানে কম কাতেই পূর্ণ বিক্ষেপ হয়।</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>জাইরো কাত X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>মাত্রা</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>নিষ্ক্রিয়তার টাইমআউট</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের ম্যাপ করা সব ডিভাইস অফলাইন থাকলে যত সেকেন্ড পর সেটি সরিয়ে ফেলা হয়। 0 দিলে এটি নিষ্ক্রিয় থাকে। একই ধরনের টিকে থাকা কন্ট্রোলারগুলো ফাঁকা জায়গা পূরণ করতে উপরে সরে আসে এবং নিচের নম্বরের স্লটে আবার যুক্ত হয়।</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>সেকেন্ড (0 = কখনো নয়)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>লেয়ার যোগ করুন</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>একটি শিফট লেয়ার যোগ করুন। এটি দ্বিতীয় একটি ম্যাপিং টেবিল, যা একটি বোতাম ধরে রাখা বা টগল করা অবস্থায় সক্রিয় হয়।</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>পাক খোলার হার রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>কোণের ভেতরের ডেডজোন রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>কোণের বাইরের ডেডজোন রিসেট করুন</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>স্টিকের ডেডজোন</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>এই বিক্ষেপের নিচে স্টিক কেন্দ্রে আছে বলে পড়া হয়, তাই কোনো স্টিয়ারিং জমে না।</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>স্টিকের ডেডজোন রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>হেলানোর ভেতরের ডেডজোন রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>হেলানোর বাইরের ডেডজোন রিসেট করুন</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>কন্ট্রোলারের অভিমুখ রিসেট করুন</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>এর মধ্যে {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>এই গাড়ি হুইলের সামর্থ্যের চেয়ে বেশি টর্ক চায়, তাই বক্ররেখার উপরের অংশ কেটে যায়।</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>কেন্দ্রে স্থিরতার অনুভূতি, পাওয়ার অ্যাসিস্ট, ড্যাম্পিং, ঘর্ষণ, গ্রিপ, স্থির গতি, হুইল টর্ক</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>কেন্দ্রে স্থিরতার অনুভূতি, পাওয়ার অ্যাসিস্ট, ড্যাম্পিং, গ্রিপ, স্থির গতি, হুইল টর্ক</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>কম গতিতে স্টিয়ারিং কতটা জোরে কেন্দ্র ধরে রাখে। 100% হলো গাড়ির নিজস্ব মান।</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>পাওয়ার অ্যাসিস্ট</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>কর্নারিং বাড়লে পাওয়ার স্টিয়ারিং কতটা ভার কমায়। বেশি হলে কেন্দ্র থেকে দূরে স্টিয়ারিং হালকা হয়।</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>উঁচু টোন রিসেট করুন</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>টোনের সীমা রিসেট করুন</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>সিস্টেমের ডিফল্ট আউটপুটে যা-ই বাজে তা একই সঙ্গে এই কন্ট্রোলারের অন্তর্নির্মিত স্পিকারেও কপি করে। USB ও Bluetooth, দুটিতেই কাজ করে।</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>নির্বাচিত ডিভাইসে অন্তর্নির্মিত স্পিকার নেই। এই প্যাডের ম্যাক্রোর শব্দ সিস্টেমের ডিফল্ট আউটপুটে বাজে।</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>এই সংযোগে নির্বাচিত ডিভাইসের স্পিকার পর্যন্ত PadForge-এর কোনো পথ নেই। এই প্যাডের ম্যাক্রোর শব্দ সিস্টেমের ডিফল্ট আউটপুটে বাজে।</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-এর ব্রাউজারভিত্তিক DualSense টেস্ট স্যুট: Sony ফিচার-রিপোর্টের CRC ফ্রেমিং ও ফার্মওয়্যার টেস্ট কমান্ডের রেফারেন্স, যেগুলো PadForge ভার্চুয়াল প্যাড থেকে ফিজিক্যাল প্যাডে পাঠায়।</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast স্ক্রিন দেখান</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন Bliss-Box পোর্টের প্রতিটি Dreamcast প্যাডের VMU-তে ছবি দেখায়, তারপর প্রতিটি পোর্টকে তার নিজের স্ক্রিন সেটিংয়ে ফিরিয়ে দেয়।</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast ছবি দেখান: {0} × {1} ms, পুনরাবৃত্তির সংখ্যা {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>প্রতিটি ছবি অন্তত এক সেকেন্ড দেখানো হয়, কারণ অ্যাডাপ্টার তাকে পাঠানো প্রতিটি ছবি এমন মেমরিতে রাখে, যা 100,000 বার লেখার উপযোগী, আর প্রতি সেকেন্ডে একটি নতুন ছবি দিলে প্রায় এক দিনেই সেই সীমায় পৌঁছায়। ছবিগুলো প্রস্থে 48 ও উচ্চতায় 32 সাদা-কালো পিক্সেলের, যা BMP বা PNG, VMU Animator-এর .lcd ফাইল অথবা Dreamcast-এর .vms আইকন থেকে নেওয়া হয়।</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>প্রতিটি ছবি অন্তত এক সেকেন্ড দেখানো হয়। PadForge অ্যাডাপ্টারে সর্বোচ্চ প্রতি সেকেন্ডে একটি ছবি পাঠায়, কারণ অ্যাডাপ্টার তাকে পাঠানো প্রতিটি ছবি নিজের মেমরিতে রাখে। ছবিগুলো প্রস্থে 48 ও উচ্চতায় 32 সাদা-কালো পিক্সেলের, যা BMP বা PNG, VMU Animator-এর .lcd ফাইল অথবা Dreamcast-এর .vms আইকন থেকে নেওয়া হয়।</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>ছবি</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>ছবি যোগ করুন…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>ছবি সরান</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>লেয়ার টগল করে চালু থাকা অবস্থায় এত মিলিসেকেন্ড লেয়ারের নিজস্ব ম্যাপ করা কোনো ইনপুট সক্রিয় না থাকলে এটি নিজে থেকেই বন্ধ হয়ে যায়। লেয়ার সক্রিয় হলে টাইমার শুরু হয় এবং লেয়ারের প্রতিটি ইনপুটে নতুন করে শুরু হয়। 0 দিলে আপনি নিজে টগল করে বন্ধ না করা পর্যন্ত লেয়ার চালু থাকে।</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ট্রিম ডেডজোন 25%-এ রিসেট করুন।</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ট্রিমের গতি প্রতি সেকেন্ডে 100%-এ রিসেট করুন।</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>ছাড়লে মাত্রা আবার 100%-এ ফেরার অবস্থায় রিসেট করুন।</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>স্বয়ংক্রিয় বাতিল 0-তে রিসেট করুন (টগল করে বন্ধ না করা পর্যন্ত লেয়ার চালু থাকে)।</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop প্রোফাইল</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop ম্যাক্রো</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>কার্সর অঞ্চল</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ধরে রাখা)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ছাড়া)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (সক্রিয়)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>কী কী আসে তা দেখতে একটি কনফিগ বেছে নিন।</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>যা যা রূপান্তরিত হয়</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>হয়ে যায়</value></data>
@@ -4825,7 +4872,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>দিকের চাপে সেলগুলোর মধ্যে এক ধাপ করে এগোয় এবং নতুন নির্বাচিত প্রতিটি সেল চালু করে, “ফায়ার মোড” বা “ক্লিক ইনপুট” ছাড়াই। “হটবার” স্টাইল চালু না করেই এগোয় এবং নিজের “ফায়ার” কন্ট্রোল দিয়ে চালু করে।</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi এনহান্সড প্রোটোকল</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>সমর্থিত Flydigi কন্ট্রোলারে অতিরিক্ত বোতাম ও মোশন সেন্সর সক্ষম করে।</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi সফটওয়্যার চলছে: {0}। এটি PadForge-এর মতো একই কন্ট্রোলার ইন্টারফেস ব্যবহার করতে পারে, আর দুটিরই অ্যাক্সেস থাকা অবস্থায় একটি Vader 5 Pro বারবার বিচ্ছিন্ন হওয়ার খবর পাওয়া গেছে। এই কন্ট্রোলারের সংযোগ কেটে গিয়ে আবার সংযুক্ত হলে PadForge ব্যবহারের সময় সার্ভিসটি থামান, কন্ট্রোলারটি লুকিয়ে রাখুন এবং HidHide হোয়াইটলিস্ট থেকে সার্ভিসটি সরান, অথবা সেটিংসে "Flydigi এনহান্সড প্রোটোকল" বন্ধ করে দেখুন, যদিও এতে কাজ হয় কি না তা নিশ্চিত নয়।</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi সফটওয়্যার চলছে: {0}। PadForge যে ইন্টারফেস ব্যবহার করে, সেটি দিয়েই এটি কন্ট্রোলারের সঙ্গে কথা বলে। এই কন্ট্রোলারের সংযোগ কেটে গিয়ে আবার সংযুক্ত হলে PadForge ব্যবহারের সময় সেই সফটওয়্যারটি থামান।</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>দূর থেকে বরাদ্দ বদলের অনুমতি দিন</value>
   </data>
@@ -5485,9 +5532,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>কী দেখাবে তা বেছে নিন…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge স্ক্রিন ওভারলে</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>এখনও দেখানোর কিছু নেই। এক্সট্রার অধীনে স্ক্রিন ওভারলে পাতায় গিয়ে কী দেখাবে তা বেছে নিন।</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>ক্রসহেয়ার টগল করুন</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>ম্যাগনিফায়ার টগল করুন</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>প্রতিটি ক্রসহেয়ার</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>ক্রসহেয়ার</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>

@@ -361,8 +361,10 @@
          it opens a pad, and leftMotor and rightMotor decoded from its
          haptics. joypad-steam-input answers with joypad-os's own reply. On
          both, a submit made while the features answer waits for the driver
-         waits with it, at most 200 ms. It embeds the 2.1.0 driver unchanged
-         (2.1.0.1716), so nothing reinstalls.
+         waits with it, at most 200 ms, so PadForge sends their frames from
+         a thread of its own (HMaestroSubmitLane) and the poll thread does
+         not wait. It embeds the 2.1.0 driver unchanged (2.1.0.1716), so
+         nothing reinstalls.
          v2.1.0 before it delivers each frame once
          and in order, keeps an Xbox 360 profile's HID device through a
          system sleep, runs each device's driver host at high priority so

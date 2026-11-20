@@ -203,34 +203,54 @@ namespace PadForge.Engine.RemoteLink
             ushort rangeDeg, ushort ledMask, bool ledValid, bool rangeLeftToWheel = false,
             CenteringTail centering = default)
         {
-            var w = new Writer(48);
-            w.U8((byte)Kind.Wheel);
-            w.U8((byte)((hasCond ? 1 : 0) | (dir ? 2 : 0) | (ledValid ? 4 : 0) | (rangeLeftToWheel ? 8 : 0)));
-            w.I16(force);
-            w.I16(peak);
-            w.I32(ac);
-            w.U32(effect);
-            w.I32(period);
-            w.I16(pc);
-            w.I16(nc);
-            w.I16(off);
-            w.I32(db);
-            w.I32(ps);
-            w.I32(ns);
-            w.I32(condGain);
-            w.U16(rangeDeg);
-            w.U16(ledMask);
+            Span<byte> frame = stackalloc byte[WheelFrameMax];
+            int length = EncodeWheel(frame, hasCond, dir, force, peak, ac, effect, period, pc, nc, off, db, ps, ns,
+                condGain, rangeDeg, ledMask, ledValid, rangeLeftToWheel, centering);
+            return frame[..length].ToArray();
+        }
+
+        /// <summary>The most a wheel frame takes: 44 bytes, and 13 more for
+        /// the centering tail.</summary>
+        public const int WheelFrameMax = 57;
+
+        /// <summary>The wheel frame written into <paramref name="into"/>, which
+        /// holds <see cref="WheelFrameMax"/> bytes. Answers its length. The
+        /// poll writes a peer's wheel frame here on every pass to compare it
+        /// with the last one sent, so it makes no array.</summary>
+        public static int EncodeWheel(Span<byte> into,
+            bool hasCond, bool dir, short force, short peak, int ac, uint effect, int period,
+            short pc, short nc, short off, int db, int ps, int ns, int condGain,
+            ushort rangeDeg, ushort ledMask, bool ledValid, bool rangeLeftToWheel = false,
+            CenteringTail centering = default)
+        {
+            int n = 0;
+            into[n++] = (byte)Kind.Wheel;
+            into[n++] = (byte)((hasCond ? 1 : 0) | (dir ? 2 : 0) | (ledValid ? 4 : 0) | (rangeLeftToWheel ? 8 : 0));
+            BinaryPrimitives.WriteInt16LittleEndian(into[n..], force); n += 2;
+            BinaryPrimitives.WriteInt16LittleEndian(into[n..], peak); n += 2;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], ac); n += 4;
+            BinaryPrimitives.WriteUInt32LittleEndian(into[n..], effect); n += 4;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], period); n += 4;
+            BinaryPrimitives.WriteInt16LittleEndian(into[n..], pc); n += 2;
+            BinaryPrimitives.WriteInt16LittleEndian(into[n..], nc); n += 2;
+            BinaryPrimitives.WriteInt16LittleEndian(into[n..], off); n += 2;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], db); n += 4;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], ps); n += 4;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], ns); n += 4;
+            BinaryPrimitives.WriteInt32LittleEndian(into[n..], condGain); n += 4;
+            BinaryPrimitives.WriteUInt16LittleEndian(into[n..], rangeDeg); n += 2;
+            BinaryPrimitives.WriteUInt16LittleEndian(into[n..], ledMask); n += 2;
             if (!centering.IsEmpty)
             {
-                w.U8(CenteringTail.Tag);
-                w.I16(centering.Level);
-                w.U16(centering.SpringCoefficient);
-                w.U16(centering.SpringSaturation);
-                w.U16(centering.DamperCoefficient);
-                w.U16(centering.DamperSaturation);
-                w.U16(centering.FrictionSaturation);
+                into[n++] = CenteringTail.Tag;
+                BinaryPrimitives.WriteInt16LittleEndian(into[n..], centering.Level); n += 2;
+                BinaryPrimitives.WriteUInt16LittleEndian(into[n..], centering.SpringCoefficient); n += 2;
+                BinaryPrimitives.WriteUInt16LittleEndian(into[n..], centering.SpringSaturation); n += 2;
+                BinaryPrimitives.WriteUInt16LittleEndian(into[n..], centering.DamperCoefficient); n += 2;
+                BinaryPrimitives.WriteUInt16LittleEndian(into[n..], centering.DamperSaturation); n += 2;
+                BinaryPrimitives.WriteUInt16LittleEndian(into[n..], centering.FrictionSaturation); n += 2;
             }
-            return w.ToArray();
+            return n;
         }
 
         // ── HD haptic tone (#147) ───────────────────────────────────────────

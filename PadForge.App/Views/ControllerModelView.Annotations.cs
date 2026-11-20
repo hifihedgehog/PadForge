@@ -3,12 +3,11 @@
 // A 2D Canvas sibling of the HelixViewport3D carries one chip per mapped
 // ButtonMap-backed row (steel chip at the canvas edge, 1px cold leader
 // line to the control's projected anchor, the chip lit ember while its
-// control's output is on) plus two slim trigger level bars (cold raw
-// beside ember out). Off by default, session-only state.
+// control's output is on). Off by default, session-only state.
 //
 // Rules baked in: no storyboards, no Effects, all live state is plain
 // brush/property swaps. Re-projection is timer-driven (150 ms), never
-// per-frame. Bar heights and chip lights update at render rate.
+// per-frame. Chip lights update in the render pass that paints the model.
 
 using System;
 using System.Collections.Generic;
@@ -652,7 +651,7 @@ namespace PadForge.Views
                 Height = AnnotationChipHeight,
                 CornerRadius = new CornerRadius(6),
                 BorderThickness = new Thickness(1),
-                Padding = new Thickness(6, 2, 6, 2),
+                Padding = new Thickness(6, 1, 6, 1),
                 Cursor = Cursors.Hand,
                 Child = text,
                 Tag = row.TargetSettingName,
@@ -733,9 +732,8 @@ namespace PadForge.Views
             return p;
         }
 
-        /// <summary>Runs the full projection + column layout pass and
-        /// positions the trigger bar clusters. Timer/interaction driven,
-        /// never per-frame.</summary>
+        /// <summary>Runs the full projection + column layout pass.
+        /// Timer/interaction driven, never per-frame.</summary>
         private void ReprojectAnnotations()
         {
             if (!_annotationsEnabled || _annotationDragHidden
@@ -840,9 +838,9 @@ namespace PadForge.Views
             if (!_annotationsEnabled || _vm == null || _currentModel == null)
                 return;
             // Retained visibility-toggled page: keep the 6.7 Hz projection
-            // off hidden surfaces. Chips recompute from live state each
-            // tick, so the first visible tick catches up. Iconic gate:
-            // IsVisible stays TRUE while minimized.
+            // off hidden surfaces. Each tick projects the anchors again from
+            // the camera as it stands, so the first visible tick catches up.
+            // Iconic gate: IsVisible stays TRUE while minimized.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
 
             if (!_annotationDragHidden)

@@ -42,8 +42,6 @@ namespace PadForge.ViewModels
 
         public MappingSourceItem ModeHolder => this;
 
-        public bool IsFirstSource => false;
-
         /// <summary>This is the object a row keeps its first source's mode
         /// on, and no source of its own.</summary>
         private bool HoldsTheFirstSourcesMode
@@ -227,8 +225,10 @@ namespace PadForge.ViewModels
                 case nameof(KindChoices):
                     Raise(nameof(ModeChoices));
                     break;
-                case nameof(IsRecording):
+                case nameof(RecordButtonIcon):
                     Raise(nameof(LineRecordIcon));
+                    break;
+                case nameof(RecordButtonText):
                     Raise(nameof(LineRecordText));
                     break;
                 case nameof(Descriptor):

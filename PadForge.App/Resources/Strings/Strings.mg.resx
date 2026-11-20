@@ -130,7 +130,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ankavia)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ambony)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Tsy hita ny SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Tsy hita ny SDL3.dll. Apetraho eo akaikin'ny PadForge.exe ny SDL3.dll. Alaivo ao amin'ny https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Tsy hita ny SDL3.dll. Alaivo indray ny PadForge.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Hadisoana tamin'ny fakana ny fikirakirana: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Voatahiry tao amin'ny {0} ny fikirakirana.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Hadisoana tamin'ny fitehirizana ny fikirakirana: {0}</value></data>
@@ -156,6 +156,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ambany</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Sary</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lisitra</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} fivoahana</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} fivoahana</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Fihetsika</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Tsindrio singa iray amin'ny sary, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
@@ -305,7 +306,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Soraty «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(tsy misy lahatsoratra)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Lahatsoratra</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minitra</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Vakio ho contrôleur iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Vakio ho fitendry</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Laharan'ny mpilalao…</value></data>
@@ -526,7 +526,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Averina ny kitika</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Averina ny sela</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Averina ny sensibilité</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Averina ny fanafainganana</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Averina ny deadzone</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Averina ny faharetan'ny fitazonana</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>Averina ny elanelam-potoana</value></data>
@@ -713,7 +712,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Layer rehetra</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Mandeha tsy tapaka raha mbola mavitrika ity contrôleur virtoaly ity. Tsy mila bokotra mpanetsika.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Ataovy</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Loharano, Seuil, Direction, Consume Trigger Buttons, Famerenana</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ampio hetsika</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Karazana</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Bokotra virtoaly</value></data>
@@ -824,6 +822,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Avereno {0} isaky ny {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Totozy X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Totozy Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Fifindrana mitsivalana</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Fifindrana mitsangana</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Elanelam-potoana</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Fidio eo amin'ny efijery</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Tsindrio, avy eo afindrao eo amin'ny kendrena ny curseur. Raisina ny toerany aorian'ny fanisana fohy.</value></data>
@@ -1387,7 +1387,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Avereno amin'ny par défaut (tsy mandeha)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Avereno amin'ny par défaut (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Avereno ho 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Tsy manana haut-parleur ny fitaovana voafidy. Ny feo macro ho an'ity contrôleur ity dia mivoaka amin'ny fivoahana par défaut an'ny rafitra.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Avoahy…</value></data>
@@ -1598,12 +1597,6 @@
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Hafainganana ambony indrindra</value></data>
   <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Hafainganan'ny fihodinana amin'ny deflection feno, amin'ny degre isan-tsegondra.</value></data>
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Hafainganana am-piandohana</value></data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Averina ho 25% ny deadzone an'ny trim.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Averina ho 100% isan-tsegondra ny hafainganan'ny trim.</value>
-  </data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Mitady lalao</value></data>
   <data name="Workshop_Games" xml:space="preserve"><value>Lalao</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Tsy nahitana lalao tao amin'ny fivarotana Steam.</value></data>
@@ -2082,7 +2075,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration amin'ny gâchette avy amin'ny bass ao amin'ny feon'ny rafitra</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone amin'ny fitongilanana, fironan'ny contrôleur</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, fanalefahana, fanafainganana, fiolahan'ny fivoahana</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bokotra fampandehanana ny fikendrena, fomba fampandehanana, seuil an'ny Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bokotra fampandehanana ny fikendrena, fomba fampandehanana, gyro mandeha, famerenana eo afovoany, seuil an'ny Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Mampandeha ny geste amin'ity touchpad ity</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Fikosehana, fikitihana, fanendahana, endrika</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Raketo ny geste anao manokana</value></data>
@@ -2264,10 +2257,26 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Tsy namaly ho Apex 4 ny contrôleur amin'ny mode Xbox, koa tsy nisy nalefa ary efa azon'ny Windows indray izy. Avereno ho mode DInput amin'ny bokotra fanovana mode azy izy.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Tsy nafindran'ny Windows any amin'ny WinUSB ny contrôleur, koa tsy nisy nalefa. Avereno ho mode DInput amin'ny bokotra fanovana mode azy izy.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Najanona. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur alohan'ny handefasanao indray.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Tsy nisokatra ny port an'ny efijery, ka tsy nisy nalefa. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Betsaka noho izay zakan'ny efijerin'ity contrôleur ity ny frame an'ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Efa misy sary alefa amin'ity contrôleur ity. Andraso ho vita aloha izy.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Nangataka ny sary tamin'ny adiresy tsy anoratan'ny PadForge ny efijery, ka tsy nisy nalefa. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Lasa ny sary, saingy tsy niverina tamin'ny fomba DInput ny contrôleur. Avereno amin'ny bokotra fanovana fomba azy izy.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Tsy nekin'ny contrôleur ny baiko manomana azy, ka tsy nisy nalefa. Hamarino fa mifandray izy ary alefaso indray.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Nijanona noho ny hadisoana tao amin'ny PadForge ny fandefasana. Ao amin'ny rakitra log ny antsipiriany.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mbola mandeha any amin'ny contrôleur ny sary. Hajanona ve ny fandefasana?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Ampiharo</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Fiolahana</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Akarina amin'ity hery ity ny vakian'ity fidirana ity alohan'ny hitarihany ny fivoahana. Ny 0 sy ny 1 dia mamela azy mahitsy. Mihoatra ny 1 dia miadana kokoa eo akaikin'ny afovoany.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Faritra ivelany</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Tonga feno ny fivoahana amin'ity ampahany amin'ny fihetsehana ity. Raha 100% dia tsy miasa.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Manomboka amin'ity sanda ity ny fivoahana raha vao mihetsika ny fidirana. Raha 0 dia tsy miasa.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Endriky ny deadzone</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Ny Tsy miasa dia tsy manova ny vakiana. Ny Axial dia mandrefy ity axe ity irery. Ny Radial dia mandrefy miaraka ny axe roan'ny tsorakazo.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Tsy miasa</value></data>
 </root>

@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Yok</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>saniye</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>dakika (0 = hiç)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Atanmamış</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← sol)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ yukarı)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll bulunamadı</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll bulunamadı. SDL3.dll dosyasını PadForge.exe dosyasının yanına koyun. Şu adresten indirin: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll bulunamadı. PadForge'u yeniden indirin.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Sürücü işlemi başarısız oldu: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Ayarlar panoya kopyalandı.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Cihaz bilgileri panoya kopyalandı.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Düşük</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Resim</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} çıkış</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} çıkış</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Hareket</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Bir kontrole tıklayın, ardından onu yönetecek girişe basın veya hareket ettirin.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge'un tanımadığı oyunlar</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Göndermeden önce çalışan bir DSX arayan modlar için.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ne gösterilir</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Açıkken bir menünün halkası, ızgarası veya çubuğu</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Bir shift katmanı açıldığında katmanın adı, o katmanın belirlediği süre boyunca</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profil değiştiğinde profilin adı</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Açıkken bir menünün halkası, ızgarası veya çubuğu.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Bir shift katmanı açıldığında katmanın adı, o katmanın belirlediği süre boyunca.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profil değiştiğinde profilin adı.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adresi kopyala</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ekrandaki yer</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Telefon bağla</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Açılışta motoru otomatik başlat</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Pencere odağı kaybedince yoklamayı sürdür</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Yoklama hızı (bir profil geçersiz kılmadıkça)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motor, tüm cihazları okur ve sanal kontrolcüleri saniyede bu kadar kez günceller, 60 ile 10000 arasında. Daha yüksek bir hız işlemci zamanının daha fazlasını kullanır. Windows motoru saniyede en fazla yaklaşık 2000 kez uyandırır, bu yüzden daha yüksek bir hız her uyanışta birkaç geçiş çalıştırır. Kendi yoklama hızı olan bir profil etkinken onun hızı geçerli olur. Profil devre dışı kalınca bu değer geri gelir.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Motor, tüm cihazları okur ve sanal kontrolcüleri saniyede bu kadar kez günceller, 60 ile 10000 arasında. Daha yüksek bir hız işlemci zamanının daha fazlasını kullanır. Bu bilgisayarda Windows motoru saniyede en fazla {0} kez uyandırır, bu yüzden daha yüksek bir hız her uyanışta birkaç geçiş çalıştırır. Kendi yoklama hızı olan bir profil etkinken onun hızı geçerli olur. Profil devre dışı kalınca bu değer geri gelir.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Cihazları oyunlardan gizle</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide cihaz gizleme ve düşük düzeyli giriş kancaları için ana anahtar. Kapalıyken, cihaz başına ayarlar ne olursa olsun hiçbir cihaz gizlenmez.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Açılışlar arasında cihazları gizli tut</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Yazılan karakterler arasındaki milisaniye, en fazla 1000. 0 değeri tüm metni bir kerede yazar.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Boştayken bağlantıyı kes</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Ayrıntılar</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>dakika</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ile takıldığında Bluetooth bağlantısını kes</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hızlı şarj. Bu kontrolcü Bluetooth ile bağlıyken şarj olduğunu bildirdiğinde Bluetooth bağlantısı kesilir. Böylece radyoya güç harcamadan şarj olur. Duvar şarj cihazları dahil her USB güç kaynağı sayılır. Kablo takılıyken Bluetooth'u yeniden açarsanız, kablo bir sonraki çıkarılışına kadar bağlantıya dokunulmaz.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade kontrolcüsü olarak oku</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU etkin profilin adını gösterir ve her profil değişimini izler.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU etkin profilin profil listesindeki sırasını gösterir. Varsayılan profil 0'dır.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU etkin profilin kendi resmini, resmi yoksa adını gösterir. Her profil kendi resmini saklar.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU günün saatini gösterir ve dakikada bir yeniden yazılır. Adaptör her resmi 100.000 yazma ömrü olan bellekte tutar ve günün her saati gösterildiğinde bu sayıya yaklaşık on haftada ulaşılır.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU, PadForge'un kumandayı bulmasından bu yana geçen saat ve dakikayı gösterir ve dakikada bir yeniden yazılır. Portundan on saniyeden uzun süre çıkarılan kumanda sıfırdan başlar. Adaptör her resmi 100.000 yazma ömrü olan bellekte tutar ve günün her saati gösterildiğinde bu sayıya yaklaşık on haftada ulaşılır.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU günün saatini gösterir ve dakikada bir yeniden yazılır. Adaptör her resmi kendi belleğinde saklar, bu yüzden PadForge resmi bundan daha sık yeniden yazmaz.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU, PadForge'un kumandayı bulmasından bu yana geçen saat ve dakikayı gösterir ve dakikada bir yeniden yazılır. Portundan on saniyeden uzun süre çıkarılan kumanda sıfırdan başlar. Adaptör her resmi kendi belleğinde saklar, bu yüzden PadForge resmi dakikada birden daha sık yeniden yazmaz.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU, seçtiğiniz bir resmi gösterir: BMP veya PNG, VMU Animator .lcd dosyası ya da Dreamcast .vms simgesi. Resimler 48'e 32 siyah beyaz piksele kırpılır.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Resim seç…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} için resim seç…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox modundaki kontrolcü Apex 4 olarak yanıt vermedi, bu yüzden hiçbir şey gönderilmedi ve Windows onu geri aldı. Onu kendi anahtarıyla DInput moduna geri alın.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows kontrolcüyü WinUSB'ye geçirmedi, bu yüzden hiçbir şey gönderilmedi. Onu kendi anahtarıyla DInput moduna geri alın.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Durduruldu. Yeniden göndermeden önce kontrolcüyü kendi anahtarıyla kapatıp açın.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Ekranın portu açılmadı, bu yüzden hiçbir şey gönderilmedi. Kontrolcüyü kendi anahtarıyla kapatıp açın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Resim, bu kontrolcünün ekranının alabileceğinden daha fazla kare içeriyor.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Bu kontrolcüye zaten bir resim gönderiliyor. Bitmesini bekleyin.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ekran, resmi PadForge'un yazmadığı bir adreste istedi, bu yüzden hiçbir şey gönderilmedi. Kontrolcüyü kendi anahtarıyla kapatıp açın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Resim gönderildi, ancak kontrolcü DInput moduna geri dönmedi. Kendi anahtarıyla geri alın.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolcü, onu hazırlayan komutu almadı, bu yüzden hiçbir şey gönderilmedi. Bağlı olduğundan emin olun ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Gönderim, PadForge'daki bir hata yüzünden durdu. Ayrıntılar günlük dosyasında.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrolcüye hâlâ bir resim gidiyor. Gönderme durdurulsun mu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak dosyaları (*.mpk)|*.mpk|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menü geometrisini sıfırla</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Hücreyi sıfırla</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Hassasiyeti sıfırla</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>İvmeyi sıfırla</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Ölü bölgeyi sıfırla</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Basılı tutma süresini sıfırla</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Basma penceresini sıfırla</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Herhangi bir katman</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Bu sanal kontrolcü etkin olduğu sürece sürekli çalışır. Tetikleyici düğme gerekmez.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Eylemler</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Katman, Kaynak, Eşik, Yön, Tetikleyici düğmeleri tüket, Yinele</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Eylem ekle</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tür</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Sanal düğmeler</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Fare düğmesi basma</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Fare düğmesi bırakma</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Fare kaydırma</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Dokunmatik yüzey kaplamasını aç/kapat</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Düğmeler</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tuş kombinasyonu</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} biçiminde tuş kombinasyonu. Düzenlenebilir.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Her {1} ms'de yinele: {0}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Fare X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Fare Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Yatay kaydırma</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Dikey kaydırma</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Aralık</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Ekranda seç</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Yakalamaya {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Ters yarım</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Eşlenmiş cihaz yok</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Bilinmeyen cihaz</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Dokunmatik yüzey tıklaması</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Aşağı (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Yukarı (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Devreye alma</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Nişan devreye alma düğmesi, Devreye alma modu, Kolay nişan eşiği</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Nişan devreye alma düğmesi, Devreye alma modu, Jiroskop açık, Yeniden merkezleme, Kolay nişan eşiği</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Jiroskopun ne zaman etkin olacağını sınırlayan isteğe bağlı koşullar. Sağ çubuk itme miktarı ve nişan devreye alma düğmesi ayrı ayrı yapılandırılabilir. Jiroskop yalnızca yapılandırılan tüm koşullar etkinken çalışır.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Yerel</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Oyuncu</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Kolay nişan eşiğini sıfırla</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Nişan devreye alma düğmesini sıfırla</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Devreye alma modunu sıfırla</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Katman</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Aşağıdaki satırların Jiroskop açık ayarını gösterdiği ve değiştirdiği katman.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Jiroskop açık</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Jiroskopun bu katmanda ne zaman çalıştığı, devreye alma düğmesine ek olarak. Temel ile aynı olarak ayarlanan bir shift katmanı Temel'i izler.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Her zaman açık</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Temel ile aynı</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Basılıyken</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Basılı değilken</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Her basışta aç veya kapat</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Jiroskop açık düğmeleri</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Jiroskop açık ayarının okuduğu düğmeler, bu yuvanın herhangi bir kontrolcüsünde.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Gereken</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>İşaretli düğmelerden birinin yeterli mi yoksa hepsinin basılı tutulması mı gerektiği.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Herhangi bir düğme</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Her düğme</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Jiroskop açılınca yeniden merkezle</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Jiroskop her açıldığında kontrolcünün duruşunu dinlenme noktası olarak alır.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Jiroskop açık ayarını sıfırla</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Jiroskop açık düğmelerini sıfırla</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Gereken ayarını sıfırla</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Jiroskop açılınca yeniden merkezleme ayarını sıfırla</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Devreye alma çubuğunu sıfırla</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Devreye alma yönünü sıfırla</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Hareket doğrudan aktarımı</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Oyun hareketi burada ayarlanan hassasiyet, yumuşatma ve eğriyle okur.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doğrudan aktarım ayarını sıfırla</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Yalnızca şu sırada</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Bu kaynak, yalnızca aynı kontrolcüde bu giriş de basılı okunurken sayılır. İçe aktarmadan gelen bir bölge testi, denetlediği çubuk veya tetik aralığı olarak okunur.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ve şu sırada</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Bu kaynağın ayrıca beklediği ikinci bir giriş.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Girişi değiştir</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Beklenecek başka bir giriş seçer.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Eğri</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Bu girişin değerini, çıkışı sürmeden önce bu kuvvetine yükseltir. 0 ve 1 değeri düz bırakır. 1'in üstü merkez yakınında daha yavaştır.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Dış aralık</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Çıkış, hareketin bu kadarında tam değere ulaşır. %100 kapalı demektir.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti ölü bölge</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Giriş hareket eder etmez çıkış bu değerden başlar. 0 kapalı demektir.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Ölü bölge şekli</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Kapalı okumaya dokunmaz. Eksenel yalnızca bu ekseni ölçer. Dairesel çubuk çiftini birlikte ölçer.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Eksenel</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Dairesel</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>İç ölü bölge</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Hareketin bu kadarının altında giriş merkezde okunur.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına jiroskop hassasiyet çarpanı. 1.0 = motorun varsayılanı (500°/s → tam itme). 1.0'ın üzerindeki değerler daha hassastır. 1.0'ın altındaki değerler daha az hassastır.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına eğim hassasiyet çarpanı. 1.0 = tam itme için 90° eğim. 1.0'ın üzerindeki değerler tam itmeye daha az eğimle ulaşır.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Jiroskop eğimi X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Düzey</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Hareketsizlik zaman aşımı</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Eşlenmiş tüm cihazları çevrimdışıyken bir sanal kontrolcünün yok edilmesinden önce geçecek saniye. 0 devre dışı bırakır. Aynı türden kalan kontrolcüler boşluğu doldurmak için yukarı kayar ve daha düşük numaralı yuvalara yeniden bağlanır.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>saniye (0 = hiç)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Katman ekle</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Bir shift katmanı ekler: bir düğme basılı tutulurken veya açıkken etkinleşen ikinci bir eşleme tablosu.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Çözülme hızını sıfırla</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Açı iç ölü bölgesini sıfırla</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Açı dış ölü bölgesini sıfırla</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Çubuk ölü bölgesi</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Bu itme miktarının altında çubuk merkezde okunur, bu yüzden direksiyon birikmez.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Çubuk ölü bölgesini sıfırla</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Yatırma iç ölü bölgesini sıfırla</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Yatırma dış ölü bölgesini sıfırla</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Kontrolcü yönünü sıfırla</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Bu araç direksiyonun sahip olduğundan fazla tork istiyor, bu yüzden eğrinin tepesi kesiliyor.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Merkezde his, direksiyon desteği, sönümleme, sürtünme, tutuş, sabit hız, direksiyon torku</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Merkezde his, direksiyon desteği, sönümleme, tutuş, sabit hız, direksiyon torku</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Direksiyonun düşük hızda merkezini ne kadar güçlü tuttuğu. %100, aracın kendi değeridir.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Direksiyon desteği</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Viraj ivmesi arttıkça hidrolik direksiyonun ne kadar yükü aldığı. Yüksek değer, merkezden uzakta daha hafif direksiyon demektir.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Yüksek tonları sıfırla</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ton sınırını sıfırla</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sistemin varsayılan çıkışında çalınan her şeyi eşzamanlı olarak bu kontrolcünün yerleşik hoparlörüne kopyalar. USB ve Bluetooth üzerinden çalışır.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Seçili cihazda yerleşik hoparlör yok. Bu kumandanın makro sesleri sistemin varsayılan çıkışında çalınır.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge'un bu bağlantı üzerinden seçili cihazdaki hoparlöre yolu yok. Bu kumandanın makro sesleri sistemin varsayılan çıkışında çalınır.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai'nin (daidr) tarayıcı tabanlı DualSense test paketi: PadForge'un sanal kumandalardan fiziksel kumandalara ilettiği Sony özellik raporu CRC çerçevelemesi ve donanım yazılımı test komutları için referans.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast ekranını göster</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Bu yuvayı besleyen bir Bliss-Box portundaki her Dreamcast kumandasının VMU'sunda resimler oynatır, ardından her portu kendi ekran ayarına döndürür.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast resimlerini göster: {0} × {1} ms, yineleme sayısı {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Her resim en az bir saniye gösterilir, çünkü adaptör kendisine gönderilen her resmi 100.000 yazma ömrü olan bellekte tutar ve her saniye yeni bir resim bu sayıya yaklaşık bir günde ulaşır. Resimler bir BMP veya PNG'den, bir VMU Animator .lcd dosyasından ya da bir Dreamcast .vms simgesinden alınan 48'e 32 siyah beyaz pikseldir.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Her resim en az bir saniye gösterilir. PadForge adaptöre saniyede en fazla bir resim gönderir, çünkü adaptör kendisine gönderilen her resmi kendi belleğinde saklar. Resimler bir BMP veya PNG'den, bir VMU Animator .lcd dosyasından ya da bir Dreamcast .vms simgesinden alınan 48'e 32 siyah beyaz pikseldir.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Resimler</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Resim ekle…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Resmi kaldır</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Katman açıkken, katmanın kendi eşlenmiş girişlerinden hiçbiri bu kadar milisaniye boyunca etkin olmazsa katman kendini kapatır. Zamanlayıcı katman devreye girdiğinde başlar ve her katman girişinde yeniden başlar. 0, siz kapatana kadar katmanı açık tutar.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Trim ölü bölgesini %25'e sıfırlar.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Trim hızını saniyede %100'e sıfırlar.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Bırakınca düzeyi %100'e döndürme ayarına sıfırlar.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Otomatik iptali 0'a sıfırlar (katman kapatılana kadar açık kalır).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profili</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makrosu</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>İmleç bölgesi</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (basılı tutma)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (bırakma)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (devreye alma)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Nelerin aktarılacağını görmek için bir yapılandırma seçin.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Aktarılanlar</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Dönüşür</value></data>
@@ -4825,7 +4872,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Yön basışları hücreler arasında adım adım ilerler ve yeni seçilen her hücreyi tetikler, "Tetikleme modu" veya "Tıklama girişi" kullanılmaz. "Kısayol çubuğu" stili tetiklemeden ilerler ve kendi "Tetikle" denetimiyle tetikler.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi gelişmiş protokolü</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Desteklenen Flydigi kontrolcülerinde ek düğmeleri ve hareket sensörlerini etkinleştirir.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi yazılımı çalışıyor: {0}. PadForge ile aynı kontrolcü arayüzünü kullanabilir ve ikisinin de erişimi varken bir Vader 5 Pro'nun tekrar tekrar bağlantısının kesildiği bildirilmiştir. Bu kontrolcünün bağlantısı kopup yeniden kuruluyorsa PadForge'u kullanırken hizmeti durdurun, kontrolcüyü gizli tutup hizmeti HidHide izin verilenler listesinden kaldırın veya Ayarlar'da "Flydigi gelişmiş protokolü" seçeneğini kapatmayı deneyin. Bu son seçeneğin yardımcı olduğu doğrulanmamıştır.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi yazılımı çalışıyor: {0}. Kontrolcüyle PadForge'un kullandığı arayüz üzerinden konuşur. Bu kontrolcünün bağlantısı kopup yeniden kuruluyorsa PadForge'u kullanırken o yazılımı durdurun.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Uzaktan atama değişikliklerine izin ver</value>
   </data>
@@ -5485,9 +5532,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Gösterilecek şeyi seç…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekran kaplaması</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Henüz gösterilecek bir şey yok. Neyin gösterileceğini Ekstralar altındaki Ekran kaplaması sayfasından seçin.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Nişangahı aç/kapat</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Büyüteci aç/kapat</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Her nişangah</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Nişangah</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>

@@ -158,6 +158,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← lef)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ antap)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll i no stap</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll i no stap. Daonlodem PadForge bakegen.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>I no save kopiem: {0}</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Rekod: presem wan baton o muvum wan aksis blong "{0}"…</value></data>
   <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Rekod: tanem o seksekem wan kontrola blong "{0}"…</value></data>
@@ -183,6 +184,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Daon</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pija</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} aotput</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} aotput</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Muv</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kilikim wan kontrol, afta presem baten o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
@@ -330,7 +332,6 @@
   <data name="MacroAction_RunProgram_Format" xml:space="preserve"><value>Ronem {0}</value></data>
   <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(i no gat program)</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Taepem "{0}"</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minit</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Ridim olsem kiboad</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Ridim olsem ol stik blong Tekken</value></data>
   <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Bliss-Box pot {0} · {1} · firmware {2}</value></data>
@@ -606,6 +607,8 @@
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Maos X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maos Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Muv long saed</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Muv antap o daon</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Holem</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lef mota</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Raet mota</value></data>
@@ -626,6 +629,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Haf</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>I no gat divaes long mapping</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Divaes we i no save</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Klik long tajpad</value></data>
@@ -771,6 +775,18 @@
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Putum bak dedzon</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Passthrough blong muvmen</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Nomo taem</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Sos ia i kaon nomo taem we input ia tu i stap presem long sem kontrola. Wan zon test we i kam long wan impot i soem renj blong stik o triga we hem i jekem.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Mo taem</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Wan namba tu input we sos ia i wet long hem tu.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Jenisim input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Jusum narafala input blong wet long hem.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kev</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>I leftemap ridim blong input ia long paoa ia bifo we i draevem aotput. 0 mo 1 i livim i stret. Antap long 1 i slo moa kolosap long medel.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Renj blong saed</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Aotput i kasem fulwan long hamas ia blong muv. 100% i minim of.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-dedzon</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Aotput i stat long hamas ia stret taem input i muv. 0 i minim of.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Spid blong maos X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Spid blong maos Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
@@ -1109,7 +1125,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Putum bak long orijinol (Of)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Putum bak long orijinol (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Putum bak long 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Divaes we yu jusum i no gat spika insaed long hem. Ol saon blong makro blong kontrola ia oli plei long orijinol spika blong sistem.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>PadForge i no save ridim fael ia olsem wan profael.</value></data>
@@ -1651,7 +1666,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Seksek blong triga we i kam long bes blong saon blong sistem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ol dedzon blong lin, Daereksen blong kontrola</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dedzon, smudim, Akselereisen, Kev blong aotput</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baton blong stat eim, Mod blong stat, Threshold blong Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baton blong stat eim, Mod blong stat, Gyro i on, Senta bakegen, Threshold blong Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Yusum tajpad olsem stik o D-pad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>I tanem on ol jesja blong tajpad ia</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swaep, tap, pinj, sep</value></data>
@@ -1664,7 +1679,6 @@
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Respons, Akselereisen, fling</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Soem QR</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Mekem</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Niu menu</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tekemaot las sel</value></data>
   <data name="Menu_EditCell" xml:space="preserve"><value>Jenisim sel</value></data>

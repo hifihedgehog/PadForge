@@ -78,8 +78,9 @@ namespace PadForge.Services
                 mappingSets[gamepadSlot].Authoritative = true;
                 // Slot-level workshop stamps (v18): Steam's deadzone_shape
                 // rides the Xbox set (the thumb pairs it shapes live
-                // there); the runtime overlays it onto the resolved
-                // per-device tuning, the gesture auto-arm contract.
+                // there) until a device is assigned, when
+                // WorkshopTuningApplier moves it onto that device's Dead
+                // Zone Shape.
                 mappingSets[gamepadSlot].WorkshopLeftStickDeadZoneShape =
                     translated.LeftStickDeadZoneShape ?? "";
                 mappingSets[gamepadSlot].WorkshopRightStickDeadZoneShape =
@@ -528,12 +529,13 @@ namespace PadForge.Services
             var mouseButton = (ViewModels.MacroMouseButton)Math.Clamp(m.MouseButtonIndex, 0, 4);
 
             MacroData Build(MacroTriggerMode mode, ActionData action, int preDelayMs,
-                string suffix, bool untilRelease)
+                string nameFormat, bool untilRelease)
             {
                 var data = new MacroData
                 {
                     PadIndex = xboxSlot,
-                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultMacroName : m.Name)} {suffix}",
+                    Name = string.Format(nameFormat,
+                        string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultMacroName : m.Name),
                     IsEnabled = true,
                     TriggerSource = MacroTriggerSource.OutputController,
                     TriggerMode = mode,
@@ -577,7 +579,7 @@ namespace PadForge.Services
                         MouseButton = mouseButton,
                         LatchDirection = ViewModels.MacroLatchDirection.On,
                     },
-                m.DelayStartMs, "(hold)", untilRelease: true);
+                m.DelayStartMs, Strings.Instance.Workshop_HoldMacroName_Format, untilRelease: true);
             var release = Build(MacroTriggerMode.OnRelease,
                 key
                     ? new ActionData
@@ -592,7 +594,7 @@ namespace PadForge.Services
                         MouseButton = mouseButton,
                         LatchDirection = ViewModels.MacroLatchDirection.Off,
                     },
-                m.DelayEndMs, "(release)", untilRelease: false);
+                m.DelayEndMs, Strings.Instance.Workshop_ReleaseMacroName_Format, untilRelease: false);
             if (press == null || release == null) return Array.Empty<MacroData>();
             return new[] { press, release };
         }
@@ -771,7 +773,7 @@ namespace PadForge.Services
             int insetX = RegionInsetPixels(scale, GetSystemMetrics(SM_CXSCREEN));
             int insetY = RegionInsetPixels(scale, GetSystemMetrics(SM_CYSCREEN));
 
-            MacroData Build(MacroTriggerMode mode, string suffix)
+            MacroData Build(MacroTriggerMode mode, string nameFormat)
             {
                 var clamp = new ActionData
                 {
@@ -796,7 +798,8 @@ namespace PadForge.Services
                 var data = new MacroData
                 {
                     PadIndex = xboxSlot,
-                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultCursorRegionName : m.Name)} {suffix}",
+                    Name = string.Format(nameFormat,
+                        string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultCursorRegionName : m.Name),
                     IsEnabled = true,
                     TriggerSource = MacroTriggerSource.OutputController,
                     TriggerMode = mode,
@@ -822,8 +825,8 @@ namespace PadForge.Services
                 return ApplyDeviceFreeTrigger(data, m) ? data : null;
             }
 
-            var engage = Build(MacroTriggerMode.OnPress, "(engage)");
-            var release = Build(MacroTriggerMode.OnRelease, "(release)");
+            var engage = Build(MacroTriggerMode.OnPress, Strings.Instance.Workshop_EngageMacroName_Format);
+            var release = Build(MacroTriggerMode.OnRelease, Strings.Instance.Workshop_ReleaseMacroName_Format);
             if (engage == null || release == null) return Array.Empty<MacroData>();
             return new[] { engage, release };
         }

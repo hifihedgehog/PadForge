@@ -424,14 +424,6 @@ namespace PadForge.Common.Input.Flydigi
             }
         }
 
-        /// <summary>Scales the trigger effects' force, 0 to 100.</summary>
-        public void SetStrength(int percent)
-        {
-            percent = Math.Clamp(percent, 0, 100);
-            if (Triggers != null) Triggers.StrengthPercent = percent;
-            else lock (_stream) _triggerStrength = percent;
-        }
-
         /// <summary>The 11-byte DualSense effect one trigger should show.
         /// <paramref name="ours"/> says it is PadForge's own setting, so
         /// its type 0 releases the trigger.</summary>
@@ -462,14 +454,20 @@ namespace PadForge.Common.Input.Flydigi
                 SetRumble(0, 0);
                 return;
             }
-            lock (_stream)
-            {
-                _leftEffect = Apex6TriggerEffect.None;
-                _rightEffect = Apex6TriggerEffect.None;
-                _pendingClear[0] = _pendingClear[1] = false;
-                _rumbleLow = _rumbleHigh = 0;
-                _pcm.Clear();
-            }
+            lock (_stream) ClearStreamLocked();
+        }
+
+        /// <summary>Under <see cref="_stream"/>: no effect, no rumble, no
+        /// samples, and the grips not wanted for samples, so the stream
+        /// thread finds no work.</summary>
+        private void ClearStreamLocked()
+        {
+            _leftEffect = Apex6TriggerEffect.None;
+            _rightEffect = Apex6TriggerEffect.None;
+            _pendingClear[0] = _pendingClear[1] = false;
+            _rumbleLow = _rumbleHigh = 0;
+            while (_pcm.Count > 0) Recycle(_pcm.Dequeue());
+            _gripPcmWanted = false;
         }
 
         private void WriterLoop()
@@ -680,9 +678,22 @@ namespace PadForge.Common.Input.Flydigi
         private readonly long[] _feedbackSeenAt = { long.MinValue / 2, long.MinValue / 2 };
         private byte _positionLeft, _positionRight;
         private byte _rumbleLow, _rumbleHigh;
-        private int _triggerStrength = 100;
         private bool _streaming, _gripPcmWanted, _wake;
+        /// <summary>The crash path handed the motors back (QuietNow): the
+        /// stream does not start again in this session.</summary>
+        private bool _handedBack;
         private readonly Queue<(sbyte[] Left, sbyte[] Right, long At)> _pcm = new();
+        /// <summary>Sample blocks the stream is done with, for the next
+        /// <see cref="SubmitGripPcm"/>. A block a pair of grips takes every
+        /// 8 ms made two arrays.</summary>
+        private readonly Stack<(sbyte[] Left, sbyte[] Right)> _pcmFree = new();
+
+        /// <summary>Under <see cref="_stream"/>: a block back to the free
+        /// ones.</summary>
+        private void Recycle((sbyte[] Left, sbyte[] Right, long At) block)
+        {
+            if (_pcmFree.Count < PcmQueueCapacity + 2) _pcmFree.Push((block.Left, block.Right));
+        }
 
         /// <summary>True while the stream runs, so the grips take samples
         /// and the pad's own rumble is off.</summary>
@@ -706,11 +717,14 @@ namespace PadForge.Common.Input.Flydigi
         {
             if (Identity.Model != FlydigiApexModel.Apex6Pro || _disposed || _failed) return;
             if (left.Length < Proto.Apex6SamplesPerReport || right.Length < Proto.Apex6SamplesPerReport) return;
-            var l = left.Slice(0, Proto.Apex6SamplesPerReport).ToArray();
-            var r = right.Slice(0, Proto.Apex6SamplesPerReport).ToArray();
             lock (_stream)
             {
-                if (_pcm.Count == PcmQueueCapacity) _pcm.Dequeue();
+                if (_pcm.Count == PcmQueueCapacity) Recycle(_pcm.Dequeue());
+                var (l, r) = _pcmFree.Count > 0
+                    ? _pcmFree.Pop()
+                    : (new sbyte[Proto.Apex6SamplesPerReport], new sbyte[Proto.Apex6SamplesPerReport]);
+                left.Slice(0, Proto.Apex6SamplesPerReport).CopyTo(l);
+                right.Slice(0, Proto.Apex6SamplesPerReport).CopyTo(r);
                 _pcm.Enqueue((l, r, Clock()));
                 WakeStream();
             }
@@ -787,15 +801,20 @@ namespace PadForge.Common.Input.Flydigi
             {
                 while (!_disposed && !_failed)
                 {
+                    // Whether the stream starts is read once, under the lock that
+                    // the crash path's hand-back takes, and a hand-back keeps it
+                    // off for good.
+                    bool start;
                     lock (_stream)
                     {
-                        if (!_streaming)
+                        start = !_streaming;
+                        if (start)
                         {
-                            while (!_disposed && !StreamHasWork()) Monitor.Wait(_stream);
+                            while (!_disposed && (_handedBack || !StreamHasWork())) Monitor.Wait(_stream);
                             if (_disposed) break;
                         }
                     }
-                    if (!Streaming)
+                    if (start)
                     {
                         // Both triggers and both grips onto the stream, then
                         // the pause the reference gives the pad (start).
@@ -806,7 +825,20 @@ namespace PadForge.Common.Input.Flydigi
                             continue;
                         }
                         Thread.Sleep(EnableDelayMs);
-                        lock (_stream) _streaming = true;
+                        bool handedBack;
+                        lock (_stream)
+                        {
+                            handedBack = _handedBack;
+                            if (!handedBack) _streaming = true;
+                        }
+                        if (handedBack)
+                        {
+                            // The crash path handed the motors back while the
+                            // stream came up: off again.
+                            WriteNow(Proto.Apex6TriggerOff(Proto.Apex6Route.Both));
+                            WriteNow(Proto.Apex6GripStream(false));
+                            continue;
+                        }
                         target = Proto.Apex6Route.Both;
                         mixer.Reset();
                         silentStreak = 0;
@@ -820,7 +852,6 @@ namespace PadForge.Common.Input.Flydigi
                     long now = Clock();
                     bool pcmActive = false, work;
                     byte rumbleLow, rumbleHigh;
-                    int strength;
                     lock (_stream)
                     {
                         for (int i = 0; i < 2; i++)
@@ -833,27 +864,21 @@ namespace PadForge.Common.Input.Flydigi
                         Apex6TriggerRenderer.Render(_leftEffect, _positionLeft, _leftState, sampleOffset, left);
                         Apex6TriggerRenderer.Render(_rightEffect, _positionRight, _rightState, sampleOffset, right);
                         sampleOffset += Proto.Apex6SamplesPerReport;
-                        while (_pcm.Count > 0 && now - _pcm.Peek().At > MaximumPcmAgeMs) _pcm.Dequeue();
+                        while (_pcm.Count > 0 && now - _pcm.Peek().At > MaximumPcmAgeMs) Recycle(_pcm.Dequeue());
                         if (_pcm.Count > 0)
                         {
                             var block = _pcm.Dequeue();
+                            Recycle(block);
                             block.Left.CopyTo(gripLeft, 0);
                             block.Right.CopyTo(gripRight, 0);
                             pcmActive = true;
                         }
                         rumbleLow = _rumbleLow;
                         rumbleHigh = _rumbleHigh;
-                        strength = _triggerStrength;
                         work = StreamHasWork();
                         _wake = false;
                     }
 
-                    if (strength < 100)
-                        for (int i = 0; i < left.Length; i++)
-                        {
-                            left[i] = (sbyte)(left[i] * strength / 100);
-                            right[i] = (sbyte)(right[i] * strength / 100);
-                        }
                     // A grip with no samples of its own plays the rumble as
                     // a carrier, 65 Hz for the low motor and 150 Hz for the
                     // high one (renderBlock).
@@ -987,8 +1012,11 @@ namespace PadForge.Common.Input.Flydigi
                         WriteNow(Proto.Apex5Rumble(0, 0));
                         break;
                     case FlydigiApexModel.Apex4:
-                        // Twice, 25 ms apart: the pad acknowledges nothing.
-                        for (int pass = 0; pass < 2; pass++)
+                        // Three times, 25 ms apart: the pad acknowledges nothing, and
+                        // flydigi-apex4-linux sends each release once per entry of its
+                        // three-entry schedule on exit so a lost packet cannot leave a
+                        // trigger effect on (apex4ds5/triggers.py reset).
+                        for (int pass = 0; pass < 3; pass++)
                         {
                             WriteNow(Proto.Apex4Trigger(FlydigiTriggerCommand.Off(FlydigiTriggerSide.Left)));
                             Thread.Sleep((int)Apex4TriggerSpacingMs);
@@ -998,6 +1026,13 @@ namespace PadForge.Common.Input.Flydigi
                         WriteNow(Proto.Apex4Rumble(0, 0));
                         break;
                     case FlydigiApexModel.Apex6Pro:
+                        // The stream thread keeps running, so it is given no work
+                        // first, and the hand-back keeps the stream off.
+                        lock (_stream)
+                        {
+                            ClearStreamLocked();
+                            _handedBack = true;
+                        }
                         HandMotorsBack();
                         break;
                 }

@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>сек</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>мин (0 = никога)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Хц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Неназначено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← наляво)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ нагоре)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll не е намерен</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll не е намерен. Поставете SDL3.dll до PadForge.exe. Изтеглете го от https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll не е намерен. Изтеглете PadForge отново.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Операцията с драйвера е неуспешна: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Настройките са копирани в клипборда.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Информацията за устройството е копирана в клипборда.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Изтощена</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Картина</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Списък</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Изход: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Изходи: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Движение</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Щракнете върху елемент, после натиснете входа, който трябва да го управлява.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Игри, които PadForge не познава</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>За модове, които търсят работещ DSX, преди да изпратят.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Какво се показва</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Пръстенът, мрежата или лентата на менюто, докато е отворено</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, когато слоят се включи, за времето, което слоят задава</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профила, когато профилът се смени</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Пръстенът, мрежата или лентата на менюто, докато е отворено.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, когато слоят се включи, за времето, което слоят задава.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профила, когато профилът се смени.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирай адреса</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Място на екрана</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Свържете телефон</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автоматично стартиране на двигателя при пускане</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продължаване на запитването, когато прозорецът загуби фокус</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Честота на запитване (освен ако профил не я замени)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Двигателят чете всяко устройство и обновява виртуалните контролери толкова пъти в секунда, от 60 до 10000. По-висока честота използва повече процесорно време. Windows събужда двигателя най-много около 2000 пъти в секунда, затова при по-висока честота двигателят извършва по няколко прохода при всяко събуждане. Докато е активен профил със собствена честота на запитване, се прилага тя. Тази стойност се връща, когато профилът се деактивира.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Двигателят чете всяко устройство и обновява виртуалните контролери толкова пъти в секунда, от 60 до 10000. По-висока честота използва повече процесорно време. На този компютър Windows събужда двигателя най-много {0} пъти в секунда, затова при по-висока честота двигателят извършва по няколко прохода при всяко събуждане. Докато е активен профил със собствена честота на запитване, се прилага тя. Тази стойност се връща, когато профилът се деактивира.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Скриване на устройствата от игрите</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главен превключвател за скриването на устройства чрез HidHide и за прихващането на вход на ниско ниво. Когато е изключен, никое устройство не се скрива, независимо от настройките на отделните устройства.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Запазване на скриването на устройствата между стартиранията</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Милисекунди между въведените знаци, до 1000. При 0 целият текст се въвежда наведнъж.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Прекъсване при бездействие</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Подробности</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>мин</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Прекъсване на Bluetooth при свързване чрез USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Бързо зареждане. Когато този контролер съобщи, че се зарежда, докато е свързан чрез Bluetooth, Bluetooth връзката се прекъсва, за да се зарежда, без да захранва радиото. Важи за всеки USB източник на захранване, включително зарядни за контакт. Ако включите Bluetooth отново, докато кабелът е свързан, връзката не се прекъсва до следващото изваждане на кабела.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Четене като контролер iCade</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU показва името на активния профил и се обновява при всяка смяна на профила.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU показва мястото на активния профил в списъка с профили. Профилът по подразбиране е 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU показва собствената картинка на активния профил или името му, ако няма картинка. Всеки профил пази своя картинка.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU показва часа, като го презаписва веднъж в минута. Адаптерът пази всяка картинка в памет, издържаща 100 000 записа, което при денонощно показване се достига след около десет седмици.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU показва часовете и минутите, откакто PadForge е открил геймпада, като ги презаписва веднъж в минута. Геймпад, изваден от порта си за повече от десет секунди, започва отново от нула. Адаптерът пази всяка картинка в памет, издържаща 100 000 записа, което при денонощно показване се достига след около десет седмици.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU показва часа, като го презаписва веднъж в минута. Адаптерът съхранява всяка картинка в собствената си памет, затова PadForge я презаписва не по-често от това.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU показва часовете и минутите, откакто PadForge е открил геймпада, като ги презаписва веднъж в минута. Геймпад, изваден от порта си за повече от десет секунди, започва отново от нула. Адаптерът съхранява всяка картинка в собствената си памет, затова PadForge я презаписва не по-често от веднъж в минута.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU показва избрана от вас картинка: BMP или PNG, .lcd файл от VMU Animator или .vms икона за Dreamcast. Картинките се изрязват до 48 на 32 черно-бели пиксела.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Избор на картинка…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Избор на картинка за {0}…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Контролерът в режим Xbox не отговори като Apex 4, затова нищо не е изпратено и Windows го получи обратно. Превключете го обратно в режим DInput с неговия превключвател.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows не премести контролера към WinUSB, затова нищо не е изпратено. Превключете го обратно в режим DInput с неговия превключвател.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Спряно. Изключете и включете контролера с неговия превключвател, преди да изпратите отново.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Портът на екрана не се отвори, затова нищо не беше изпратено. Изключете и включете контролера с неговия превключвател и изпратете отново.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Картинката има повече кадри, отколкото екранът на този контролер побира.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Към този контролер вече се изпраща картинка. Изчакайте да приключи.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Екранът поиска картинката на адрес, на който PadForge не записва, затова нищо не беше изпратено. Изключете и включете контролера с неговия превключвател и изпратете отново.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Картинката беше изпратена, но контролерът не се върна в режим DInput. Върнете го с неговия превключвател.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контролерът не прие командата, която го подготвя, затова нищо не беше изпратено. Проверете дали е свързан и изпратете отново.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Изпращането спря заради грешка в PadForge. Подробности има в лог файла.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Картинка все още се изпраща към контролера. Да се спре ли изпращането?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Файлове на Controller Pak (*.mpk)|*.mpk|Всички файлове (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Нулиране на геометрията на менюто</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Нулиране на клетката</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Нулиране на чувствителността</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Нулиране на ускорението</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Нулиране на мъртвата зона</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Нулиране на времето за задържане</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Нулиране на прозореца за натискане</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Всеки слой</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Изпълнява се непрекъснато, докато този виртуален контролер е активен. Не е нужен задействащ бутон.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Изпълни</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Слой, Източник, Праг, Посока, Поглъщане на задействащите бутони, Повторение</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Добави действие</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Тип</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуални бутони</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Натискане на бутон на мишката</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Отпускане на бутон на мишката</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Превъртане с мишката</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Превключване на наслагването с тъчпад</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Бутони</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Клавишна комбинация</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Клавишна комбинация във формат {Key1}{Key2}. Може да се редактира.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Повтаряне на {0} на всеки {1} мс</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Мишка X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Мишка Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Хоризонтално отместване</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Вертикално отместване</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Интервал</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Избор от екрана</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Заснемане след {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Обърната половина</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Няма съпоставено устройство</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Неизвестно устройство</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Щракване на тъчпада</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Надолу (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Нагоре (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Активиране</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Бутон за активиране на прицелването, Режим на активиране, Праг за лесно прицелване</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Бутон за активиране на прицелването, Режим на активиране, Жироскоп включен, Центриране отново, Праг за лесно прицелване</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Незадължителни условия, които ограничават кога жироскопът е активен. Може да се зададе както отклонение на десния стик, така и бутон за активиране на прицелването. Жироскопът работи само докато всички зададени условия са изпълнени.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локално</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Играч</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Нулиране на прага за лесно прицелване</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Нулиране на бутона за активиране на прицелването</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Нулиране на режима на активиране</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Слой</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Слоят, чиято настройка „Жироскоп включен“ показват и променят редовете по-долу.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Жироскоп включен</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Кога жироскопът работи на този слой, освен бутона за активиране. Слой за превключване със „Като основния“ следва основния слой.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Винаги включен</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Като основния</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Докато е задържан</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Докато не е задържан</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Превключване при всяко натискане</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Бутони за включване на жироскопа</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Бутоните, които „Жироскоп включен“ чете, на всеки контролер от този слот.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Изисква</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Дали е достатъчен един отметнат бутон, или всички отметнати бутони трябва да са задържани.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Всеки бутон</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Всички бутони</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Центриране отново при включване на жироскопа</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Взема положението на контролера за изходна точка всеки път, когато жироскопът се включи.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Нулиране на „Жироскоп включен“</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Нулиране на бутоните за включване на жироскопа</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Нулиране на „Изисква“</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Нулиране на центрирането отново при включване на жироскопа</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Нулиране на стика за активиране</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Нулиране на посоката за активиране</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Директно предаване на движението</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Играта чете движението с чувствителността, изглаждането и кривата, зададени тук.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Нулиране на настройките за директно предаване</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Само докато</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Този източник се отчита само докато този вход също се чете като натиснат на същия контролер. Проверка на зона от импорт се чете като обхвата на стика или спусъка, който проверява.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>И докато</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Втори вход, който този източник също изчаква.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Смяна на входа</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Избира друг вход, който да се изчаква.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Крива</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Повдига показанието на този вход на тази степен, преди да задвижи изхода. 0 и 1 го оставят право. Над 1 е по-бавно близо до центъра.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Външен обхват</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Изходът достига максимум при толкова от хода. 100% е изключено.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Анти-мъртва зона</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Изходът започва от толкова веднага щом входът се помръдне. 0 е изключено.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Форма на мъртвата зона</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Изключено оставя показанието непроменено. Аксиална измерва само тази ос. Радиална измерва двойката оси на стика заедно.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Изключено</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Аксиална</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Радиална</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Вътрешна мъртва зона</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Под толкова от хода входът се чете като центриран.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множител на чувствителността на жироскопа за всеки източник. 1.0 = стойността по подразбиране на двигателя (500°/с → пълно отклонение). Стойностите над 1.0 са по-чувствителни. Стойностите под 1.0 са по-малко чувствителни.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Множител на чувствителността към накланяне за всеки източник. 1.0 = 90° накланяне за пълно отклонение. Стойностите над 1.0 достигат пълно отклонение с по-малко накланяне.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Жироскоп: накланяне X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Ниво</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Време на неактивност</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Секунди, след които виртуален контролер се унищожава, когато всички съпоставени към него устройства са офлайн. 0 изключва функцията. Останалите контролери от същия тип се преместват нагоре, за да запълнят празнината, и се обвързват отново с по-ниските слотове.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>сек (0 = никога)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Добави слой</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Добавя слой. Втора таблица за съпоставяне, която се активира, докато бутон е задържан или превключен.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Нулиране на скоростта на развиване</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Нулиране на вътрешната мъртва зона на ъгъла</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Нулиране на външната мъртва зона на ъгъла</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Мъртва зона на стика</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Под това отклонение стикът се чете като центриран, затова не се натрупва завиване.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Нулиране на мъртвата зона на стика</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Нулиране на вътрешната мъртва зона на навеждането</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Нулиране на външната мъртва зона на навеждането</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Нулиране на ориентацията на контролера</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>от {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Този автомобил изисква повече въртящ момент, отколкото воланът има, затова върхът на кривата е отрязан.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Усещане в центъра, серво усилване, демпфиране, триене, сцепление, фиксирана скорост, въртящ момент на волана</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Усещане в центъра, серво усилване, демпфиране, сцепление, фиксирана скорост, въртящ момент на волана</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Колко здраво кормилното управление държи центъра си при ниска скорост. 100% е стойността на самия автомобил.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Серво усилване</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Колко усилването на кормилото сваля от усилието, когато страничното ускорение нараства. По голяма стойност дава по леко кормилно управление встрани от центъра.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Нулиране на високите тонове</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Нулиране на границата на тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Копира паралелно всичко, което възпроизвежда изходното устройство по подразбиране на системата, към вградения високоговорител на този контролер. Работи чрез USB и Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Избраното устройство няма вграден високоговорител. Звуците от макроси за този контролер се възпроизвеждат на изходното устройство по подразбиране на системата.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge няма път до високоговорител на избраното устройство при тази връзка. Звуците от макроси за този контролер се възпроизвеждат на изходното устройство по подразбиране на системата.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Набор от тестове за DualSense в браузъра от Xuezhou Dai (daidr): референция за CRC рамкирането на отчетите за функции на Sony и тестовите команди на фърмуера, които PadForge препраща от виртуалните към физическите контролери.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Показване на екран на Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Показва картинки на VMU на всеки геймпад за Dreamcast в порт на Bliss-Box, който подава към този слот, след което връща всеки порт към собствената му настройка на екрана.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Показване на картинки на Dreamcast: {0} × {1} мс, брой повторения {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Всяка картинка се показва поне една секунда, тъй като адаптерът пази всяка изпратена картинка в памет, издържаща 100 000 записа, които при нова картинка всяка секунда се достигат за около един ден. Картинките са 48 на 32 черно-бели пиксела от BMP или PNG, .lcd файл от VMU Animator или .vms икона за Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Всяка картинка се показва поне една секунда. PadForge изпраща на адаптера най-много една картинка в секунда, тъй като адаптерът съхранява всяка изпратена картинка в собствената си памет. Картинките са 48 на 32 черно-бели пиксела от BMP или PNG, .lcd файл от VMU Animator или .vms икона за Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Картинки</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Добави картинка…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Премахни картинката</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Докато слоят е включен, той се изключва сам след толкова милисекунди, през които нито един от собствените съпоставени входове на слоя не е активен. Таймерът започва при активирането на слоя и се рестартира при всеки вход от слоя. 0 оставя слоя включен, докато не го изключите сами.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Нулиране на мъртвата зона на фината настройка до 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Нулиране на скоростта на фината настройка до 100% за секунда.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Нулиране до връщане на нивото на 100% при отпускане.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Нулиране на автоматичното деактивиране до 0 (слоят остава включен, докато не бъде изключен).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Профил от Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Макрос от Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Област на курсора</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (задържане)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (отпускане)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (активиране)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Изберете конфигурация, за да видите какво се пренася.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Какво се пренася</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Става</value></data>
@@ -4825,7 +4872,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Натисканията на посоки преминават през клетките и задействат всяка новоизбрана клетка, без „Режим на задействане“ и „Вход за щракване“. Стилът „Лента с умения“ преминава без задействане и задейства със собствения си контрол „Задействане“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Разширен протокол на Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Включва допълнителните бутони и сензорите за движение на поддържаните контролери Flydigi.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Работи софтуер на Flydigi: {0}. Той може да използва същия интерфейс на контролера като PadForge и има съобщения, че Vader 5 Pro многократно прекъсва връзката, когато и двете програми имат достъп. Ако този контролер прекъсва и се свързва отново, спрете услугата, докато използвате PadForge, дръжте контролера скрит и премахнете услугата от списъка с разрешени приложения в HidHide или опитайте да изключите „Разширен протокол на Flydigi“ в „Настройки“, което не е потвърдено, че помага.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Работи софтуер на Flydigi: {0}. Той говори с контролера през интерфейса, който използва PadForge. Ако този контролер прекъсва и се свързва отново, спрете този софтуер, докато използвате PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Разрешаване на отдалечени промени в назначенията</value>
   </data>
@@ -5485,9 +5532,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Избор на показваното…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Наслагване на екрана на PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Още няма какво да се покаже. Изберете какво да показва от страницата Наслагване на екрана, под Допълнения.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Превключване на мерника</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Превключване на лупата</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Всеки мерник</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Мерник</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>

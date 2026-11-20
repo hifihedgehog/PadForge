@@ -25,6 +25,12 @@ namespace PadForge.Common.Input
         private readonly System.Collections.Generic.IReadOnlyList<HIDMaestro.HMSimpleTrigger> _cachedProfileTriggers;
         private readonly VirtualControllerType _type;
         private HMController _controller;
+        // Where this controller's frames go, set with _controller: the
+        // controller itself, or a submit lane in front of it on a profile
+        // whose submit can wait (HMaestroSubmitLane.SubmitCanWait).
+        private IHMaestroSubmitTarget _target;
+        // The lane _target is, or null.
+        private HMaestroSubmitLane _lane;
         private HMaestroFfbDecoder _ffbDecoder;
         private Vibration[] _fbVibrationStates; // for the per-tick FFB re-evaluation
         private DualSensePassthroughDispatcher _ds5Dispatcher;
@@ -418,6 +424,12 @@ namespace PadForge.Common.Input
         /// the disposes here.</summary>
         internal Action<HMController> DisposeControllerSeam;
 
+        /// <summary>Test seam for where the frames go once connected, null in
+        /// production, where they go to the SDK controller. A test has no SDK
+        /// controller (<see cref="CreateControllerSeam"/> hands back none),
+        /// so it records the frames here.</summary>
+        internal Func<IHMaestroSubmitTarget> SubmitTargetSeam;
+
         public void Connect()
         {
             if (IsConnected) return;
@@ -472,6 +484,9 @@ namespace PadForge.Common.Input
         {
             var controller = _controller;
             _controller = null;
+            _target = null;
+            _lane?.Dispose();
+            _lane = null;
             _ffbDecoder = null;
             try
             {
@@ -488,6 +503,14 @@ namespace PadForge.Common.Input
         private void FinishConnect()
         {
             ControllerMadeSeam?.Invoke();
+
+            var target = SubmitTargetSeam?.Invoke()
+                ?? (_controller != null ? new HMControllerSubmitTarget(_controller) : null);
+            // A submit that can wait inside HIDMaestro goes out on a lane of
+            // its own, off the poll thread (HMaestroSubmitLane).
+            if (target != null && HMaestroSubmitLane.SubmitCanWait(_profile))
+                target = _lane = new HMaestroSubmitLane(target, _profile.Id);
+            _target = target;
 
             // Fresh HMController = fresh shared section. Reset the idle-dedup
             // memory so the first frame always submits instead of waiting out
@@ -584,6 +607,11 @@ namespace PadForge.Common.Input
             // feedback detach parked the index.
             Peripherals.GameLightbarCapture.WithdrawEverywhere(_gameLightbar);
 
+            // The lane stops before the controller goes. A frame in flight
+            // holds the controller's submit lock, which its dispose takes.
+            _target = null;
+            _lane?.Dispose();
+            _lane = null;
             _controller?.Dispose();
             _controller = null;
             IsConnected = false;
@@ -748,7 +776,7 @@ namespace PadForge.Common.Input
         /// HMController.SubmitRawReport.</summary>
         public void SubmitRawReport(ReadOnlySpan<byte> report)
         {
-            if (_controller == null) return;
+            if (_target == null) return;
             // Every per-tick Submit path ticks FFB (see TickFfb doc). This
             // is the ONLY submit on USB Sony slots now that Step 5 skips
             // the redundant extended leg when a packer exists. A pass
@@ -767,9 +795,9 @@ namespace PadForge.Common.Input
             // is that pad's lizard-mode mouse: every frame became cursor
             // motion. PackerFramesCarryTheirOwnReportId pins the pairing.
             if (_extendedFrameCarriesItsOwnId)
-                _controller.SubmitRawExtendedReport(report);
+                _target.SubmitRawExtendedReport(report);
             else
-                _controller.SubmitRawReport(report);
+                _target.SubmitRawReport(report);
         }
 
         // The gate of the frames this controller sends on every pass, and
@@ -794,7 +822,7 @@ namespace PadForge.Common.Input
         /// that sends.</summary>
         internal bool RawReportDue(ReadOnlySpan<byte> content)
         {
-            if (_controller == null) return false;
+            if (_target == null) return false;
             bool changed = content.Length != _gatedReportLength
                 || !content.SequenceEqual(new ReadOnlySpan<byte>(_gatedReport, 0, _gatedReportLength));
             if (!_everyPassGate.Due(changed, System.Diagnostics.Stopwatch.GetTimestamp()))
@@ -855,7 +883,7 @@ namespace PadForge.Common.Input
 
         public void SubmitGamepadState(Gamepad gp)
         {
-            if (_controller == null) return;
+            if (_target == null) return;
             TickFfb();
 
             // Idle dedup with a 16 ms keepalive. An unchanged state means an
@@ -928,7 +956,7 @@ namespace PadForge.Common.Input
                 Hat = MapHat(gp.Buttons),
             };
 
-            _controller.SubmitState(state);
+            _target.SubmitState(state);
         }
 
         // Sony int16 sensor scaling — must stay identical to
@@ -973,7 +1001,7 @@ namespace PadForge.Common.Input
             bool batteryCharging,
             in PadForge.Engine.Common.ButtonPressureState pressure)
         {
-            if (_controller == null) return;
+            if (_target == null) return;
             TickFfb();
 
             // The frame carries the sensor's clock, so it goes out on every
@@ -1070,7 +1098,7 @@ namespace PadForge.Common.Input
 
             WritePressure(ref state, PressureOnTheWire(pressure, gp));
 
-            _controller.SubmitState(state);
+            _target.SubmitState(state);
         }
 
         /// <summary>Copies the frame's pressure into HIDMaestro's ten pressure
@@ -1216,7 +1244,7 @@ namespace PadForge.Common.Input
         public void SubmitRawHidState(RawHidState raw, int sticks, int triggers,
             in PadForge.Services.MotionSnapshot motion)
         {
-            if (_controller == null) return;
+            if (_target == null) return;
             TickFfb();
 
             // Idle dedup, the EXACT basic-path shape (16 ms keepalive):
@@ -1266,7 +1294,7 @@ namespace PadForge.Common.Input
                 StoreRawFrame(in raw, hadMotion: false, nowRawTick);
             }
 
-            _controller.SubmitState(BuildRawHidState(raw, sticks, triggers, in motion));
+            _target.SubmitState(BuildRawHidState(raw, sticks, triggers, in motion));
         }
 
         /// <summary>The state one raw-surface frame submits. It needs no
@@ -1474,7 +1502,7 @@ namespace PadForge.Common.Input
         /// the full poll rate whether or not anything moved.</para></summary>
         public void SubmitPackedExtendedReport(ReadOnlySpan<byte> report)
         {
-            if (_controller == null || report.Length == 0) return;
+            if (_target == null || report.Length == 0) return;
             TickFfb();
 
             long now = System.Environment.TickCount64;
@@ -1486,7 +1514,7 @@ namespace PadForge.Common.Input
             report.CopyTo(_lastPacked.AsSpan());
             _lastPackedLength = report.Length;
             _lastPackedTick = now;
-            _controller.SubmitRawReport(report);
+            _target.SubmitRawReport(report);
         }
 
         private readonly byte[] _lastPacked = new byte[64];

@@ -177,6 +177,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kwesobunxele)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ phezulu)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>I-SDL3.dll ayitholakali</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>I-SDL3.dll ayitholakali. Landa i-PadForge futhi.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Umsebenzi womshayeli wehlulekile: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Izilungiselelo zikopishelwe ebhodini lokunamathisela.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kuhlulekile ukukopisha: {0}</value></data>
@@ -265,6 +266,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Liphansi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Isithombe</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uhlu</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Okukhiphayo okungu-{0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Okukhiphayo okungu-{0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Ukunyakaza</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Chofoza ingxenye esithombeni, bese ucindezela okokufaka okufanele kuyilawule.</value></data>
@@ -737,7 +739,6 @@
   <data name="Menu_Reset_Style" xml:space="preserve"><value>Setha kabusha isitayela</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Setha kabusha ukuchofoza</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Setha kabusha ukuzwela</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Setha kabusha ukusheshisa</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Setha kabusha indawo efile</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Setha kabusha isikhathi sokubamba</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>Setha kabusha isikhawu</value></data>
@@ -835,7 +836,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Noma yiluphi ungqimba</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Kusebenza njalo ngesikhathi lesi silawuli esibonakalayo sisebenza. Akudingeki inkinobho yokuqalisa.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Yenza</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Ungqimba, Umthombo, Umkhawulo, Isiqondiso, Gwinya izinkinobho zesiqalisi, Phinda</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Engeza isenzo</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Uhlobo</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Izinkinobho ezibonakalayo</value></data>
@@ -927,6 +927,8 @@
   <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Hambisa igundane ku-{0}, {1}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Igundane X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Igundane Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Ukususa okuvundlile</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Ukususa okuqondile</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Isikhawu</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Imodi</value></data>
   <data name="Macro_CursorWrite_Caveat" xml:space="preserve"><value>Ngesikhathi lokhu kusebenza, i-PadForge ibhala indawo yekhesa kuwo wonke ufreyimu. Imidlalo ehambisa ikhesa ngokwayo ingaphazamisa.</value></data>
@@ -951,6 +953,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Isigamu</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ayikho idivayisi emephiwe</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Idivayisi engaziwa</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Ukuchofoza iphedi yokuthinta</value></data>
@@ -1279,6 +1282,21 @@
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Setha kabusha ijika lokukhiphayo</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Ukudlulisa ukunyakaza</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ukuzwela</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Kuphela ngenkathi</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Lo mthombo ubalwa kuphela ngenkathi lokhu okufakwayo nakho kufundeka njengokucindezelwe esilawulini esifanayo. Ukuhlola kwendawo okuvela ekungeniseni kufundeka njengobubanzi benduku noma be-trigger obuhlolwayo.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Futhi ngenkathi</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Okufakwayo kwesibili lo mthombo okulindile nakho.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Shintsha okufakwayo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ikhetha okunye okufakwayo okuzolindwa.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Ijika</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Iphakamisa ukufunda kwalokhu okufakwayo kulawa mandla ngaphambi kokuthi kushayele okukhiphayo. U-0 no-1 bakushiya kuqondile. Ngaphezu kuka-1 kuhamba kancane eduze nesikhungo.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ububanzi bangaphandle</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Okukhiphayo kufinyelela okugcwele kulobu bungako bokuhamba. U-100% usho ukuthi kuvaliwe.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Okuphikisa indawo efile</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Okukhiphayo kuqala kulobu bungako lapho nje okufakwayo kunyakaza. U-0 usho ukuthi kuvaliwe.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Ukuma kwendawo efile</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Valiwe kushiya ukufunda kunjalo. Nge-eksisi kukala le eksisi yodwa. Ngendilinga kukala izinduku ezimbili ndawonye.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Valiwe</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Ukutsheka kwe-gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Ukutsheka kwe-gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Ukutsheka kwe-gyro</value></data>
@@ -2594,7 +2612,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukudlidliza kwamathrigha okuvela kumaza aphansi omsindo wesistimu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Izindawo ezifile zokuncika, Ukubhekiswa kwesilawuli</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Indawo efile, ukubushelelisa, Ukusheshisa, Ijika lokukhiphayo</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Inkinobho yokuvula ukuhlosa, Imodi yokuvula, Umkhawulo wokuhlosa okulula</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Inkinobho yokuvula ukuhlosa, Imodi yokuvula, I-gyro ivuliwe, Buyisela phakathi, Umkhawulo wokuhlosa okulula</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ingxenye yesikrini efinyelelwa yiphedi</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ukuswayipha, ukuthepha, ukuncinza, izimo</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ukukhanya kwe-LED, Iphethini yomdlali, Imodi ye-LED yokuthulisa</value></data>
@@ -2623,8 +2641,8 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Imidlalo i-PadForge engayazi</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Okwama-mod afuna i-DSX esebenzayo ngaphambi kokuthi athumele.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Okuboniswayo</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Indandatho, igridi noma ibha yemenyu ngenkathi ivuliwe</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama lephrofayela uma iphrofayela ishintsha</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Indandatho, igridi noma ibha yemenyu ngenkathi ivuliwe.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama lephrofayela uma iphrofayela ishintsha.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopisha ikheli</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Indawo esikrinini</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Xhuma ifoni</value></data>
@@ -2762,10 +2780,19 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Isilawuli esikumodi ye-Xbox asiphendulanga njenge-Apex 4, ngakho akukho okuthunyelwe futhi i-Windows isiphinde yasithola. Sibuyisele kumodi ye-DInput ngeswishi yaso.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>I-Windows ayisisusanga isilawuli ukusiyisa ku-WinUSB, ngakho akukho okuthunyelwe. Sibuyisele kumodi ye-DInput ngeswishi yaso.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kumisiwe. Cisha bese uvula isilawuli ngeswishi yaso ngaphambi kokuthi uthumele futhi.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Imbobo yesikrini ayivulekanga, ngakho akukho okuthunyelwe. Cisha bese uvula isilawuli ngeswishi yaso bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Isithombe sinamafreyimu amaningi kunalawo isikrini salesi silawuli esingawagcina.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Kukhona isithombe esivele sithunyelwa kulesi silawuli. Linda size siqede.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Isikrini sicele isithombe ekhelini i-PadForge engabhali kulo, ngakho akukho okuthunyelwe. Cisha bese uvula isilawuli ngeswishi yaso bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Isithombe sithunyelwe, kodwa isilawuli asibuyelanga kumodi ye-DInput. Sibuyisele ngeswishi yaso.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Isilawuli asamukelanga umyalo osilungiselelayo, ngakho akukho okuthunyelwe. Hlola ukuthi sixhunyiwe bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Ukuthumela kumiswe yiphutha ku-PadForge. Ifayela lelogi linemininingwane.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Isithombe sisathunyelwa esilawulini. Misa ukuthumela?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Sebenzisa</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Indawo efile yangaphakathi</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ngaphansi kwalobu bungako bokuhamba okufakwayo kufundeka njengokuphakathi nendawo.</value></data>
 </root>

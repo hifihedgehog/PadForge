@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Cap</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segons</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuts (0 = mai)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Sense assignar</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← esquerra)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ amunt)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>No s'ha trobat SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>No s'ha trobat SDL3.dll. Posa SDL3.dll al costat de PadForge.exe. Baixa'l de https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>No s'ha trobat SDL3.dll. Baixa PadForge de nou.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Ha fallat l'operació del controlador: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>S'ha copiat la configuració al porta-retalls.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>S'ha copiat la informació del dispositiu al porta-retalls.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baixa</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imatge</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Llista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Sortida: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Sortides: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Moviment</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Fes clic en un control i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
@@ -429,9 +431,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jocs que PadForge no coneix</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Per als mods que busquen un DSX en execució abans d'enviar.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Què es mostra</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anell, la quadrícula o la barra d'un menú mentre és obert</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa quan s'activa una capa, durant el temps que aquesta capa estableix</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nom del perfil quan canvia el perfil</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anell, la quadrícula o la barra d'un menú mentre és obert.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa quan s'activa una capa, durant el temps que aquesta capa estableix.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nom del perfil quan canvia el perfil.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia l'adreça</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posició a la pantalla</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Connecta un telèfon</value></data>
@@ -627,7 +629,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Inicia el motor automàticament en obrir el programa</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continua el sondeig quan la finestra perd el focus</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Freqüència de sondeig (tret que un perfil la substitueixi)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>El motor llegeix tots els dispositius i actualitza els comandaments virtuals aquest nombre de vegades per segon, de 60 a 10000. Una freqüència més alta consumeix més temps de processador. El Windows desperta el motor unes 2000 vegades per segon com a màxim, de manera que una freqüència més alta executa diverses passades a cada despertar. Mentre hi ha actiu un perfil amb la seva pròpia freqüència de sondeig, s'aplica aquella freqüència. Aquest valor es recupera quan el perfil es desactiva.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>El motor llegeix tots els dispositius i actualitza els comandaments virtuals aquest nombre de vegades per segon, de 60 a 10000. Una freqüència més alta consumeix més temps de processador. En aquest PC, el Windows desperta el motor {0} vegades per segon com a màxim, de manera que una freqüència més alta executa diverses passades a cada despertar. Mentre hi ha actiu un perfil amb la seva pròpia freqüència de sondeig, s'aplica aquella freqüència. Aquest valor es recupera quan el perfil es desactiva.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Amaga els dispositius als jocs</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruptor general per a l'ocultació de dispositius amb HidHide i els ganxos d'entrada de baix nivell. Quan està desactivat, no s'amaga cap dispositiu, independentment de la configuració de cada dispositiu.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantén els dispositius ocults entre execucions</value></data>
@@ -918,7 +920,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Mil·lisegons entre caràcters escrits, fins a 1000. Amb 0, s'escriu tot el text de cop.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconnexió per inactivitat</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalls</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuts</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconnecta el Bluetooth quan es connecti per USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Càrrega ràpida. Quan aquest comandament indica que s'està carregant mentre està connectat per Bluetooth, es talla l'enllaç Bluetooth perquè es carregui sense alimentar la ràdio. Compta qualsevol font d'alimentació USB, inclosos els carregadors de paret. Si tornes a activar el Bluetooth amb el cable connectat, no s'hi torna a actuar fins que el desconnectis.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Llegeix com a comandament iCade</value></data>
@@ -960,8 +961,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>La VMU mostra el nom del perfil actiu i s'actualitza a cada canvi de perfil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>La VMU mostra la posició del perfil actiu a la llista de perfils. El perfil Per defecte és el 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>La VMU mostra la imatge pròpia del perfil actiu, o el seu nom quan no en té. Cada perfil conserva la seva imatge.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU mostra l'hora del dia, que es reescriu un cop per minut. L'adaptador guarda cada imatge en una memòria preparada per a 100.000 escriptures, que això assoleix després d'unes deu setmanes de visualització ininterrompuda.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU mostra les hores i els minuts des que PadForge va trobar el comandament, i es reescriu un cop per minut. Si el comandament està fora del port més de deu segons, el compte torna a començar des de zero. L'adaptador guarda cada imatge en una memòria preparada per a 100.000 escriptures, que això assoleix després d'unes deu setmanes de visualització ininterrompuda.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU mostra l'hora del dia, que es reescriu un cop per minut. L'adaptador desa cada imatge en la seva pròpia memòria, de manera que PadForge no la reescriu amb més freqüència.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU mostra les hores i els minuts des que PadForge va trobar el comandament, i es reescriu un cop per minut. Si el comandament està fora del port més de deu segons, el compte torna a començar des de zero. L'adaptador desa cada imatge en la seva pròpia memòria, de manera que PadForge no la reescriu amb més freqüència que un cop per minut.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>La VMU mostra una imatge que triïs: un BMP o un PNG, un fitxer .lcd de VMU Animator o una icona .vms de Dreamcast. Les imatges es redueixen a 48 per 32 píxels en blanc i negre.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Tria una imatge…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Tria una imatge per a {0}…</value></data>
@@ -1006,6 +1007,13 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>El comandament al mode Xbox no ha respost com un Apex 4, de manera que no s'ha enviat res i Windows el té de nou. Torna'l al mode DInput amb el seu interruptor.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows no ha passat el comandament a WinUSB, de manera que no s'ha enviat res. Torna'l al mode DInput amb el seu interruptor.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Aturat. Apaga i torna a encendre el comandament amb el seu interruptor abans de tornar a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>El port de la pantalla no s'ha pogut obrir, així que no s'ha enviat res. Apaga i torna a encendre el comandament amb el seu interruptor i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>La imatge té més fotogrames dels que cap a la pantalla d'aquest comandament.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Ja s'està enviant una imatge a aquest comandament. Espera que acabi.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>La pantalla ha demanat la imatge en una adreça on PadForge no escriu, així que no s'ha enviat res. Apaga i torna a encendre el comandament amb el seu interruptor i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>La imatge s'ha enviat, però el comandament no ha tornat al mode DInput. Torna'l a posar-hi amb el seu interruptor.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>El comandament no ha acceptat l'ordre que el prepara, així que no s'ha enviat res. Comprova que estigui connectat i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>L'enviament s'ha aturat per un error de PadForge. El fitxer de registre en té els detalls.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Encara s'està enviant una imatge al comandament. Vols aturar l'enviament?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fitxers de Controller Pak (*.mpk)|*.mpk|Tots els fitxers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak del port {0}.mpk</value></data>
@@ -1500,7 +1508,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Restableix la geometria del menú</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Restableix la cel·la</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Restableix la sensibilitat</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Restableix l'acceleració</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Restableix la zona morta</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Restableix el temps de retenció</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Restableix la finestra de pulsació</value></data>
@@ -1781,7 +1788,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Qualsevol capa</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'executa contínuament mentre aquest comandament virtual està actiu. No cal cap botó activador.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Fes</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Capa, font, llindar, direcció, consumeix els botons activadors, repetició</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Afegeix una acció</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipus</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botons virtuals</value></data>
@@ -1807,7 +1813,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pulsació de botó del ratolí</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Alliberament de botó del ratolí</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Desplaçament del ratolí</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Mostra o amaga la superposició del panell tàctil</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botons</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinació de tecles</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinació de tecles en format {Tecla1}{Tecla2}. Editable.</value></data>
@@ -1938,6 +1943,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Repeteix {0} cada {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Ratolí X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Ratolí Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Desplaçament horitzontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Desplaçament vertical</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Tria a la pantalla</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Es capturarà d'aquí a {0}…</value></data>
@@ -1972,6 +1979,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Meitat invertida</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Cap dispositiu assignat</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Dispositiu desconegut</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic del panell tàctil</value></data>
@@ -2414,7 +2422,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Avall (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Amunt (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activació</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botó d'activació de la punteria, mode d'activació, llindar de punteria fàcil</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botó d'activació de la punteria, mode d'activació, giroscopi actiu, recentrat, llindar de punteria fàcil</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Condicions opcionals que limiten quan està actiu el giroscopi. Es poden configurar la desviació de la palanca dreta i el botó d'activació de la punteria. El giroscopi només actua mentre totes les condicions configurades estan actives.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jugador</value></data>
@@ -2451,6 +2459,27 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Restableix el llindar de punteria fàcil</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Restableix el botó d'activació de la punteria</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Restableix el mode d'activació</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Capa</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>La capa de la qual les files següents mostren i canvien l'ajust Giroscopi actiu.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giroscopi actiu</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Quan funciona el giroscopi en aquesta capa, a més del botó d'activació. Una capa de canvi establerta a Igual que la base segueix la base.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Sempre actiu</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Igual que la base</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Mentre es manté premut</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Mentre no es manté premut</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Alterna a cada pulsació</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Botons de Giroscopi actiu</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Els botons que llegeix Giroscopi actiu, a qualsevol comandament d'aquesta ranura.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Requereix</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Si n'hi ha prou amb un botó marcat o s'han de mantenir premuts tots els botons marcats.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Qualsevol botó</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Tots els botons</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Recentra quan s'activa el giroscopi</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Pren la posició del comandament com a punt de repòs cada cop que s'activa el giroscopi.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Restableix Giroscopi actiu</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Restableix Botons de Giroscopi actiu</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Restableix Requereix</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Restableix Recentra quan s'activa el giroscopi</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Restableix la palanca d'activació</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Restableix la direcció d'activació</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmissió directa del moviment</value></data>
@@ -2461,6 +2490,25 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>El joc llegeix el moviment amb la sensibilitat, el suavitzat i la corba definits aquí.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Restableix l'ajust de la transmissió directa</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Només mentre</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Aquesta font només compta mentre aquesta entrada també es llegeix com a premuda al mateix comandament. Una prova de zona d'una importació es llegeix com l'interval de la palanca o del gallet que comprova.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>I mentre</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Una segona entrada que aquesta font també espera.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Canvia l'entrada</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Tria una altra entrada que s'ha d'esperar.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Corba</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Eleva la lectura d'aquesta entrada a aquesta potència abans que governi la sortida. 0 i 1 la deixen recta. Per sobre d'1 és més lenta prop del centre.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Rang exterior</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>La sortida arriba al màxim amb aquesta part del recorregut. 100% és desactivat.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Antizona morta</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>La sortida comença en aquest valor tan bon punt es mou l'entrada. 0 és desactivat.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forma de la zona morta</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Desactivat deixa la lectura tal com és. Axial mesura només aquest eix. Radial mesura el parell de palanques juntes.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Desactivat</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axial</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zona morta interior</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Per sota d'aquesta part del recorregut l'entrada es llegeix com a centrada.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de la sensibilitat del giroscopi per a cada font. 1.0 = el valor per defecte del motor (500°/s → desviació completa). Els valors per sobre d'1.0 són més sensibles. Els valors per sota d'1.0 són menys sensibles.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de la sensibilitat a la inclinació per a cada font. 1.0 = 90° d'inclinació per a la desviació completa. Els valors per sobre d'1.0 arriben a la desviació completa amb menys inclinació.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Basculament del giroscopi X</value></data>
@@ -3040,6 +3088,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Nivell</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Temps d'espera per inactivitat</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segons que han de passar perquè es destrueixi un comandament virtual quan tots els seus dispositius assignats estan fora de línia. Amb 0 es desactiva. Els comandaments restants del mateix tipus es desplacen per omplir el buit i es tornen a vincular a ranures inferiors.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segons (0 = mai)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Afegeix una capa</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Afegeix una capa: una segona taula d'assignacions que s'activa mentre es manté premut un botó o quan es commuta.</value></data>
@@ -3151,6 +3200,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Restableix la velocitat de desenrotllament</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Restableix la zona morta interior de l'angle</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Restableix la zona morta exterior de l'angle</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zona morta de la palanca</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Per sota d'aquesta desviació la palanca es llegeix com a centrada, de manera que no s'acumula cap gir.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Restableix la zona morta de la palanca</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Restableix la zona morta interior de la inclinació</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Restableix la zona morta exterior de la inclinació</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Restableix l'orientació del comandament</value></data>
@@ -3256,6 +3308,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>de {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Aquest cotxe demana més parell del que té el volant, per això la part alta de la corba es retalla.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Sensació al centre, assistència, amortiment, fricció, adherència, velocitat fixa, parell del volant</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Sensació al centre, assistència, amortiment, adherència, velocitat fixa, parell del volant</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Amb quina força la direcció manté el centre a poca velocitat. El 100% és el del propi cotxe.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Assistència</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Quant esforç treu la direcció assistida a mesura que creix la força en corba. Més vol dir una direcció més lleugera lluny del centre.</value></data>
@@ -3397,7 +3450,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restableix els tons aguts</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restableix el límit de to</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paral·lel tot el que reprodueix la sortida per defecte del sistema a l'altaveu integrat d'aquest comandament. Funciona per USB i per Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositiu seleccionat no té cap altaveu integrat. Els sons de macro d'aquest comandament es reprodueixen a la sortida per defecte del sistema.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge no té cap camí cap a un altaveu del dispositiu seleccionat amb aquesta connexió. Els sons de macro d'aquest comandament es reprodueixen a la sortida per defecte del sistema.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Conjunt de proves del DualSense per al navegador, de Xuezhou Dai (daidr): referència per a l'entramat amb CRC dels informes de característiques de Sony i per a les ordres de prova del microprogramari que PadForge reenvia dels comandaments virtuals als físics.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3811,7 +3864,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Mostra la pantalla de Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Mostra imatges a la VMU de cada comandament de Dreamcast connectat a un port Bliss-Box que alimenta aquesta ranura i després torna cada port a la seva pròpia configuració de pantalla.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Mostra imatges de Dreamcast: {0} × {1} ms, repeticions {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Cada imatge es mostra com a mínim un segon, perquè l'adaptador guarda cada imatge que rep en una memòria preparada per a 100.000 escriptures, que amb una imatge nova cada segon s'assoleixen en aproximadament un dia. Les imatges són de 48 per 32 píxels en blanc i negre, a partir d'un BMP o un PNG, un fitxer .lcd de VMU Animator o una icona .vms de Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Cada imatge es mostra com a mínim un segon. PadForge envia a l'adaptador una imatge per segon com a màxim, perquè l'adaptador desa cada imatge que rep en la seva pròpia memòria. Les imatges són de 48 per 32 píxels en blanc i negre, a partir d'un BMP o un PNG, un fitxer .lcd de VMU Animator o una icona .vms de Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Imatges</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Afegeix una imatge…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Elimina la imatge</value></data>
@@ -3888,15 +3941,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Mentre la capa està activada per commutació, es desactiva sola després d'aquests mil·lisegons sense que cap de les entrades assignades de la mateixa capa estigui activa. El temporitzador comença quan s'activa la capa i es reinicia amb cada entrada de la capa. Amb 0, la capa es manté activada fins que la desactives tu mateix.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Restableix la zona morta de l'ajust fi al 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Restableix la velocitat de l'ajust fi al 100% per segon.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Restableix el retorn del nivell al 100% en deixar anar.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Restableix la cancel·lació automàtica a 0 (la capa es manté activada fins que es desactiva).</value>
   </data>
@@ -3964,6 +4008,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil de Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro de Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Regió del cursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mantenir)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (deixar anar)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activar)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Tria una configuració per veure què s'incorpora.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>El que s'incorpora</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Es converteix en</value></data>
@@ -4593,7 +4640,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Les pulsacions de direcció recorren les cel·les i activen cada cel·la nova seleccionada. Aquest comportament de barra d'accions no fa servir el Mode d'activació ni l'Entrada de clic.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocol millorat de Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Activa els botons addicionals i els sensors de moviment dels comandaments Flydigi compatibles.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>S'està executant programari de Flydigi: {0}. Pot fer servir la mateixa interfície del comandament que PadForge, i s'ha informat d'un Vader 5 Pro que es desconnectava repetidament mentre tots dos hi tenien accés. Si aquest comandament es desconnecta i es torna a connectar, atura el servei mentre facis servir PadForge, mantén el comandament amagat i elimina el servei de la llista d'aplicacions permeses de HidHide, o prova de desactivar «Protocol millorat de Flydigi» a Configuració, tot i que no està confirmat que ajudi.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>S'està executant programari de Flydigi: {0}. Es comunica amb el comandament per la interfície que fa servir PadForge. Si aquest comandament es desconnecta i es torna a connectar, atura aquest programari mentre facis servir PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Permet canvis d'assignació remots</value>
   </data>

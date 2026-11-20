@@ -361,17 +361,6 @@ namespace PadForge.Engine.Flydigi
             => report.Length >= 4 && report[0] == ReportIn && report[1] == Magic0
             && report[2] == Magic1 && report[3] == command;
 
-        /// <summary>The active profile slot from a command 0xA1 reply, or
-        /// -1. Slots 4 to 7 are the Switch bank of the same four
-        /// (Apex5Protocol.cpp parseProfileStatus).</summary>
-        public static int ParseApex5ProfileSlot(ReadOnlySpan<byte> report)
-        {
-            if (report.Length < 7 || !IsApex5Reply(report, CmdProfileStatus)) return -1;
-            int raw = report[6];
-            if (raw >= 8) return -1;
-            return raw >= 4 ? raw - 4 : raw;
-        }
-
         // ── Apex 4 ───────────────────────────────────────────────────
 
         public static byte[] Apex4Command(byte command, params byte[] args)
@@ -556,12 +545,6 @@ namespace PadForge.Engine.Flydigi
             if (report.Length >= Apex6FrameSize && report[0] == Magic0 && report[1] == Magic1)
                 return report.Slice(0, Apex6FrameSize);
             return ReadOnlySpan<byte>.Empty;
-        }
-
-        public static bool IsApex6Reply(ReadOnlySpan<byte> report, byte command)
-        {
-            var frame = Apex6Frame(report);
-            return frame.Length == Apex6FrameSize && frame[2] == command && frame[31] == Apex6Checksum(frame);
         }
 
         /// <summary>The trigger a motor command names.</summary>

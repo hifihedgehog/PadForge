@@ -109,6 +109,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iphantsi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Umfanekiso</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uluhlu</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Isiphumo: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Iziphumo: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Intshukumo</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Cofa isilawuli, uze ucinezele igalelo elifanele ukusiqhuba.</value></data>
@@ -544,6 +545,8 @@
   <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Imowudi</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Impuku X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Impuku Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Umgama othe tyaba</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Umgama othe nkqo</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Imowudi</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Bamba</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Imoto yasekhohlo</value></data>
@@ -789,6 +792,18 @@
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Seta kwakhona ukukhawuleza</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>I-passthrough yentshukumo</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Uvakalelo</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Kuphela xa</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Lo mthombo ubalwa kuphela xa eli galelo likwafundwa njengelicinezelweyo kwisilawuli esinye. Uvavanyo lwendawo oluvela kungeniso lufundwa njengomda wentonga okanye wesiqhushumbisi oluwujongayo.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Kwaye xa</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Igalelo lesibini elo lo mthombo ukwalilindileyo.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Tshintsha igalelo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ikhetha elinye igalelo eliza kulindwa.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Igophe</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Iphakamisa ufundo lweli galelo kweli gunya ngaphambi kokuba luqhube isiphumo. U-0 no-1 bayishiya ithe ngqo. Ngaphezu ko-1 kucotha kufutshane nembindi.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Umda wangaphandle</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Isiphumo sifikelela ekupheleleni kobu bungakanani bohambo. U-100% uthetha ukuba icinyiwe.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>I-anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Isiphumo siqala kobu bungakanani kwangoko xa igalelo lishukuma. U-0 uthetha ukuba icinyiwe.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Ukuthambeka kwe-gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Ukuthambeka kwe-gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Ukuthambeka kwe-gyro</value></data>
@@ -1750,7 +1765,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ukungcangcazela kwe-trigger okuvela kwi-bass yesandi senkqubo</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ii-deadzone zokuthambeka, Ukuma kwesilawuli</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>I-deadzone, ukuthambisa, Ukukhawuleza, Igophe lesiphumo</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Iqhosha lokuvula ukujolisa, Imowudi yokuvula, Umda wokujolisa okulula</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Iqhosha lokuvula ukujolisa, Imowudi yokuvula, I-gyro ivuliwe, Phinda ulungelelanise embindini, Umda wokujolisa okulula</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Sebenzisa i-touchpad njengentonga okanye i-D-pad</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Inxalenye yesikrini efikelelwa yi-touchpad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ivula ii-gesture zale touchpad</value></data>
@@ -1762,7 +1777,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amandla e-trigger nganye, ukutshintshiselana kweemoto, ukungcangcazela kwe-adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guqula, Isantya esiqhubekayo, Impendulo, Ukukhawuleza, ukuphosa</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Yenza</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Umaleko, Umthombo, Umda, Direction, Consume Trigger Buttons, Phinda</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Thiya kwakhona</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Imenyu entsha</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Yongeza iseli</value></data>
@@ -1785,8 +1799,8 @@
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Uluhlu nge-axis nganye. U-0 ulandela uluhlu olungentla.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Imidlalo engaziwayo yi-PadForge</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Okubonakalayo</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Isangqa, igridi okanye ibha yemenyu xa ivuliwe</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama leprofayile xa iprofayile itshintsha</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Isangqa, igridi okanye ibha yemenyu xa ivuliwe.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama leprofayile xa iprofayile itshintsha.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopa idilesi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ifowuni eqhagamshelayo ibonakala apha nakwiphepha leZixhobo, apho uyabela khona kwisilawuli.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Khangela izixhobo</value></data>
@@ -1906,4 +1920,7 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Sebenzisa</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Isixhobo esingaziwayo</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>I-deadzone yangaphakathi</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ngaphantsi kobu bungakanani bohambo igalelo lifundwa njengelisembindini.</value></data>
 </root>

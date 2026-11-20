@@ -360,7 +360,7 @@ namespace PadForge.Engine.Data
         /// camera drives the "IR Brightness" cover/proximity source (issue #151).
         /// Identity-derived from VID + name like the two properties above, so it
         /// is correct online or offline. The SDL driver names it exactly
-        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:2822/2872), so the
+        /// "Nintendo Switch Joy-Con (R)" (SDL_hidapi_switch.c:2822/2874), so the
         /// match is exact equality, not a suffix test: the Switch 2 right
         /// Joy-Con is "Nintendo Switch 2 Joy-Con (R)" under the same Nintendo
         /// VID (SDL_ble_switch2joystick.c:1564) and has a mouse sensor, not an

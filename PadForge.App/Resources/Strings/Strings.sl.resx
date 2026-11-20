@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Brez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekund</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minut (0 = nikoli)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nedodeljeno</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← levo)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ gor)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Ni datoteke SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Datoteke SDL3.dll ni mogoče najti. Postavite SDL3.dll poleg PadForge.exe. Prenesite jo s strani https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Ni datoteke SDL3.dll. Znova prenesite PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operacija gonilnika ni uspela: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Nastavitve so kopirane v odložišče.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Podatki o napravi so kopirani v odložišče.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Nizka</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Slika</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Seznam</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Izhod: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Izhodi: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Gibanje</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kliknite kontrolnik, nato pritisnite vnos, ki naj ga upravlja.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Igre, ki jih PadForge ne pozna</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Za modifikacije, ki pred pošiljanjem iščejo zagnan DSX.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kaj se prikaže</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ime profila ob zamenjavi profila</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ime profila ob zamenjavi profila.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiraj naslov</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Mesto na zaslonu</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Poveži telefon</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Ob zagonu samodejno zaženi mehanizem</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Nadaljuj poizvedovanje, ko okno ni aktivno</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Hitrost poizvedovanja (če je profil ne preglasi)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mehanizem prebere vsako napravo in posodobi navidezne krmilnike tolikokrat na sekundo, od 60 do 10000. Višja hitrost porabi več procesorskega časa. Windows zbudi mehanizem približno 2000-krat na sekundo, pogosteje ne, zato pri višji hitrosti mehanizem ob vsaki zbuditvi opravi več prehodov. Ko je aktiven profil z lastno hitrostjo poizvedovanja, velja ta hitrost. Ta vrednost znova velja, ko se profil deaktivira.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Mehanizem prebere vsako napravo in posodobi navidezne krmilnike tolikokrat na sekundo, od 60 do 10000. Višja hitrost porabi več procesorskega časa. Na tem računalniku Windows zbudi mehanizem največ {0}-krat na sekundo, zato pri višji hitrosti mehanizem ob vsaki zbuditvi opravi več prehodov. Ko je aktiven profil z lastno hitrostjo poizvedovanja, velja ta hitrost. Ta vrednost znova velja, ko se profil deaktivira.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skrij naprave pred igrami</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Glavno stikalo za skrivanje naprav s programom HidHide in nizkonivojske kljuke za vnos. Ko je izklopljeno, ni skrita nobena naprava, ne glede na nastavitve posameznih naprav.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Naprave ostanejo skrite med zagoni</value></data>
@@ -937,7 +939,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekunde med vtipkanimi znaki, največ 1000. Pri 0 se celotno besedilo vtipka naenkrat.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Prekinitev ob nedejavnosti</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Podrobnosti</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minut</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Prekini Bluetooth, ko je priključen prek USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hitro polnjenje. Ko krmilnik, povezan prek Bluetootha, sporoči, da se polni, se povezava Bluetooth prekine, tako da se polni brez napajanja radia. Šteje vsak vir napajanja USB, tudi stenski polnilniki. Če Bluetooth znova vklopite, medtem ko je kabel še priključen, ostane vklopljen do naslednjega odklopa.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Beri kot krmilnik iCade</value></data>
@@ -979,8 +980,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU prikazuje ime aktivnega profila in sledi vsaki zamenjavi profila.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU prikazuje mesto aktivnega profila na seznamu profilov. Profil „Privzeto“ je 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU prikazuje sliko aktivnega profila ali njegovo ime, če slike nima. Vsak profil ima svojo sliko.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU prikazuje uro, ki se osveži enkrat na minuto. Adapter vsako sliko hrani v pomnilniku, ki je zasnovan za 100 000 zapisov, kar ta način doseže po približno desetih tednih neprekinjenega prikaza.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU prikazuje ure in minute, odkar je PadForge zaznal krmilnik, in se osveži enkrat na minuto. Krmilnik, ki je dlje kot deset sekund izven priključka, začne znova od nič. Adapter vsako sliko hrani v pomnilniku, ki je zasnovan za 100 000 zapisov, kar ta način doseže po približno desetih tednih neprekinjenega prikaza.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU prikazuje uro, ki se osveži enkrat na minuto. Adapter vsako sliko shrani v svoj pomnilnik, zato jo PadForge ne prepisuje pogosteje.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU prikazuje ure in minute, odkar je PadForge zaznal krmilnik, in se osveži enkrat na minuto. Krmilnik, ki je dlje kot deset sekund izven priključka, začne znova od nič. Adapter vsako sliko shrani v svoj pomnilnik, zato jo PadForge ne prepisuje pogosteje kot enkrat na minuto.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU prikazuje sliko po vaši izbiri: BMP ali PNG, datoteko .lcd programa VMU Animator ali ikono Dreamcast .vms. Slike se obrežejo na 48 × 32 črno-belih slikovnih pik.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Izberi sliko …</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Izberi sliko za {0} …</value></data>
@@ -1025,6 +1026,13 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Krmilnik v načinu Xbox se ni odzval kot Apex 4, zato ni bilo poslano nič in ga ima Windows nazaj. Z njegovim stikalom ga preklopite nazaj v način DInput.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows krmilnika ni premaknil na WinUSB, zato ni bilo poslano nič. Z njegovim stikalom ga preklopite nazaj v način DInput.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Ustavljeno. Preden znova pošljete, krmilnik izklopite in vklopite z njegovim stikalom.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Vrata zaslona se niso odprla, zato ni bilo poslano nič. Krmilnik izklopite in vklopite z njegovim stikalom ter znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Slika ima več sličic, kot jih zaslon tega krmilnika sprejme.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Slika se že pošilja temu krmilniku. Počakajte, da se konča.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Zaslon je zahteval sliko na naslovu, na katerega PadForge ne piše, zato ni bilo poslano nič. Krmilnik izklopite in vklopite z njegovim stikalom ter znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Slika je bila poslana, a se krmilnik ni vrnil v način DInput. Vrnite ga z njegovim stikalom.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Krmilnik ni sprejel ukaza, ki ga pripravi, zato ni bilo poslano nič. Preverite, ali je povezan, in znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Pošiljanje se je ustavilo zaradi napake v programu PadForge. Podrobnosti so v dnevniški datoteki.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Slika se še pošilja na krmilnik. Želite ustaviti pošiljanje?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Datoteke Controller Pak (*.mpk)|*.mpk|Vse datoteke (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak priključek {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Ponastavi geometrijo menija</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Ponastavi celico</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Ponastavi občutljivost</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Ponastavi pospešek</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Ponastavi mrtvo območje</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Ponastavi čas držanja</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Ponastavi okno pritiska</value></data>
@@ -1976,7 +1983,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Katera koli plast</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Se izvaja neprekinjeno, dokler je ta navidezni krmilnik aktiven. Gumb sprožilca ni potreben.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Naredi</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Plast, Vir, Prag, Smer, Zadrži gumbe sprožilca, Ponavljanje</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Dodaj dejanje</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Vrsta</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Navidezni gumbi</value></data>
@@ -2002,7 +2008,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pritisk gumba miške</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Spust gumba miške</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Drsenje z miško</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz sledilne ploščice</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Gumbi</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombinacija tipk</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Kombinacija tipk v obliki {Key1}{Key2}. Mogoče jo je urejati.</value></data>
@@ -2133,6 +2138,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ponavljaj {0} vsakih {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Miška X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Miška Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Vodoravni odmik</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Navpični odmik</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Izberi na zaslonu</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Zajem čez {0} …</value></data>
@@ -2167,6 +2174,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Obrnjena polovica</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ni preslikane naprave</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Neznana naprava</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Klik sledilne ploščice</value></data>
@@ -2609,7 +2617,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Dol (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Gor (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Vklop</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Gumb za vklop ciljanja, Način vklopa, Prag lažjega ciljanja</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Gumb za vklop ciljanja, Način vklopa, Vklop žiroskopa, Ponovno središčenje, Prag lažjega ciljanja</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Izbirni pogoji, ki omejijo, kdaj je žiroskop dejaven. Nastavite lahko odklon desne palice in gumb za vklop ciljanja. Žiroskop deluje le, dokler so izpolnjeni vsi nastavljeni pogoji.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokalno</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Igralec</value></data>
@@ -2646,6 +2654,27 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Ponastavi prag lažjega ciljanja</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Ponastavi gumb za vklop ciljanja</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Ponastavi način vklopa</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Plast</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Plast, katere nastavitev vklopa žiroskopa prikazujejo in spreminjajo spodnje vrstice.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Vklop žiroskopa</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Kdaj žiroskop deluje na tej plasti, poleg gumba za vklop. Preklopna plast, nastavljena na Enako kot osnovna, sledi osnovni plasti.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Vedno vklopljeno</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Enako kot osnovna</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Med držanjem</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Med nedržanjem</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Preklop ob vsakem pritisku</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Gumbi za vklop žiroskopa</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Gumbi, ki jih bere vklop žiroskopa, na kateremkoli krmilniku te reže.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Potrebno</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Ali zadošča en označen gumb ali morajo biti držani vsi označeni gumbi.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Kateri koli gumb</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Vsi gumbi</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Ponovno središčenje ob vklopu žiroskopa</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ob vsakem vklopu žiroskopa vzame lego krmilnika kot izhodiščno točko.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Ponastavi vklop žiroskopa</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Ponastavi gumbe za vklop žiroskopa</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Ponastavi potrebno</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Ponastavi ponovno središčenje ob vklopu žiroskopa</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ponastavi palico za vklop</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ponastavi smer vklopa</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Prepuščanje gibanja</value></data>
@@ -2656,6 +2685,25 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Igra prebere gibanje z občutljivostjo, glajenjem in krivuljo, nastavljenimi tukaj.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ponastavi nastavitve prepuščanja</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Občutljivost</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Samo, dokler</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ta vir šteje le, dokler se tudi ta vhod na istem krmilniku bere kot pritisnjen. Preizkus območja iz uvoza se bere kot razpon palice ali sprožilca, ki ga preverja.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>In dokler</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Drugi vhod, na katerega ta vir še čaka.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Spremeni vhod</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Izbere drug vhod, na katerega se čaka.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Krivulja</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Branje tega vhoda potencira s to potenco, preden poganja izhod. 0 in 1 ga pustita premega. Nad 1 je počasnejše blizu sredine.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Zunanji razpon</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Izhod doseže polno vrednost pri tolikšnem deležu giba. 100 % pomeni izklopljeno.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Izravnava mrtvega območja</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Izhod se začne s tolikšno vrednostjo, takoj ko se vhod premakne. 0 pomeni izklopljeno.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Oblika mrtvega območja</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Izklopljeno pusti branje pri miru. Osno meri samo to os. Radialno meri par palic skupaj.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Izklopljeno</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Osno</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radialno</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Notranje mrtvo območje</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Pod tolikšnim deležem giba se vhod bere kot na sredini.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Množitelj občutljivosti žiroskopa za posamezen vir. 1.0 = privzeta vrednost mehanizma (500°/s → poln odklon). Vrednosti nad 1.0 so bolj občutljive. Vrednosti pod 1.0 so manj občutljive.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Množitelj občutljivosti nagnjenosti za posamezen vir. 1.0 = 90° nagnjenosti za poln odklon. Vrednosti nad 1.0 dosežejo poln odklon z manjšo nagnjenostjo.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Nagibanje žiroskopa X</value></data>
@@ -3236,6 +3284,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Raven</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Časovna omejitev nedejavnosti</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Število sekund, preden se navidezni krmilnik uniči, ko so vse njegove preslikane naprave brez povezave. 0 to onemogoči. Preostali krmilniki iste vrste se pomaknejo navzgor, da zapolnijo vrzel, in se znova povežejo z nižjimi režami.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekund (0 = nikoli)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Dodaj plast</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Dodajte preklopno plast: drugo tabelo preslikav, ki se aktivira, dokler je gumb pridržan ali preklopljen.</value></data>
@@ -3347,6 +3396,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ponastavi hitrost odvijanja</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ponastavi notranje mrtvo območje kota</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ponastavi zunanje mrtvo območje kota</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Mrtvo območje palice</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Pod tem odklonom se palica bere kot na sredini, zato se krmiljenje ne kopiči.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Ponastavi mrtvo območje palice</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ponastavi notranje mrtvo območje nagnjenosti</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ponastavi zunanje mrtvo območje nagnjenosti</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ponastavi usmerjenost krmilnika</value></data>
@@ -3452,6 +3504,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>od {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Ta avtomobil zahteva več navora, kot ga ima volan, zato je vrh krivulje odrezan.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Občutek v sredini, servo podpora, dušenje, trenje, oprijem, stalna hitrost, navor volana</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Občutek v sredini, servo podpora, dušenje, oprijem, stalna hitrost, navor volana</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kako močno krmiljenje drži središče pri nizki hitrosti. 100 % je izvirna vrednost avtomobila.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servo podpora</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Koliko servo krmiljenje odvzame, ko narašča zavijanje. Več pomeni lažje krmiljenje stran od središča.</value></data>
@@ -3593,7 +3646,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Ponastavi visoke tone</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ponastavi mejo tonov</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Vse, kar predvaja privzeti sistemski izhod, vzporedno kopira na vgrajeni zvočnik tega krmilnika. Deluje prek USB in Bluetootha.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Izbrana naprava nima vgrajenega zvočnika. Zvoki makrov za ta krmilnik se predvajajo na privzetem sistemskem izhodu.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge nima poti do zvočnika na izbrani napravi prek te povezave. Zvoki makrov za ta krmilnik se predvajajo na privzetem sistemskem izhodu.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brskalniški preizkusni paket za DualSense avtorja Xuezhou Dai (daidr): referenca za okvirjanje CRC poročil funkcij Sony in preizkusne ukaze vdelane programske opreme, ki jih PadForge posreduje z navideznih na fizične krmilnike.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Prikaži zaslon Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Predvaja slike na VMU vsakega krmilnika Dreamcast v priključku Bliss-Box, ki napaja to režo, nato pa vsak priključek vrne na njegovo nastavitev zaslona.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Prikaži slike Dreamcast: {0} × {1} ms, število ponovitev {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Vsaka slika je prikazana vsaj sekundo, saj adapter vsako prejeto sliko shrani v pomnilnik, zasnovan za 100 000 zapisov, ki ga nova slika vsako sekundo doseže v približno enem dnevu. Slike imajo 48 × 32 črno-belih slikovnih pik in so iz datoteke BMP ali PNG, datoteke .lcd programa VMU Animator ali ikone Dreamcast .vms.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Vsaka slika je prikazana vsaj sekundo. PadForge adapterju pošlje največ eno sliko na sekundo, saj adapter vsako prejeto sliko shrani v svoj pomnilnik. Slike imajo 48 × 32 črno-belih slikovnih pik in so iz datoteke BMP ali PNG, datoteke .lcd programa VMU Animator ali ikone Dreamcast .vms.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Slike</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Dodaj sliko …</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Odstrani sliko</value></data>
@@ -4113,15 +4166,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Ko je plast vklopljena s preklopom, se sama izklopi po toliko milisekundah, v katerih ni dejaven noben preslikan vnos plasti. Časovnik se začne ob vklopu plasti in se znova zažene ob vsakem vnosu plasti. Pri 0 plast ostane vklopljena, dokler je sami ne izklopite.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Ponastavi mrtvo območje finega nastavljanja na 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Ponastavi hitrost finega nastavljanja na 100% na sekundo.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Ponastavi na vračanje ravni na 100% ob spustu.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Ponastavi samodejni preklic na 0 (plast ostane vklopljena, dokler je ne izklopite).</value>
   </data>
@@ -4189,6 +4233,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Območje kazalca</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (držanje)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (spust)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (vklop)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Izberite konfiguracijo, da vidite, kaj se prenese.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kaj se prenese</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Postane</value></data>
@@ -4825,7 +4872,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Pritiski smeri se pomikajo po celicah in sprožijo vsako na novo izbrano celico, brez „Način proženja“ ali „Vnos za klik“. Slog „Hitra vrstica“ se pomika brez proženja in sproži s svojim kontrolnikom „Sproži“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Izboljšani protokol Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Omogoči dodatne gumbe in senzorje gibanja na podprtih krmilnikih Flydigi.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Programska oprema Flydigi se izvaja: {0}. Uporablja lahko isti vmesnik krmilnika kot PadForge, za krmilnik Vader 5 Pro pa so poročali o ponavljajočih se prekinitvah povezave, ko sta imela dostop oba. Če se ta krmilnik prekinja in znova povezuje, med uporabo programa PadForge ustavite storitev, krmilnik pustite skrit in storitev odstranite s seznama dovoljenih v HidHide ali v nastavitvah poskusite izklopiti „Izboljšani protokol Flydigi“, kar pa ni potrjeno, da pomaga.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Programska oprema Flydigi se izvaja: {0}. S krmilnikom komunicira prek vmesnika, ki ga uporablja PadForge. Če se ta krmilnik prekinja in znova povezuje, to programsko opremo ustavite med uporabo programa PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Dovoli oddaljene spremembe dodelitev</value>
   </data>
@@ -5485,9 +5532,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izberi, kaj prikazuje …</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrivni prikaz zaslona PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Še ni ničesar za prikaz. Na strani Prekrivni prikaz zaslona, pod Dodatki, izberite, kaj prikazuje.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Preklopi merilni križ</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Preklopi povečevalnik</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Vsi merilni križi</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Merilni križ</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>

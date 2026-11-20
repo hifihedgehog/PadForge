@@ -100,12 +100,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Apex5ProfileSlot_SaysTheSwitchBank()
+        public void Apex5RawSlot_KeepsTheSwitchBank()
         {
             var reply = new byte[32];
             reply[0] = 0x04; reply[1] = 0x5A; reply[2] = 0xA5; reply[3] = 0xA1; reply[6] = 5;
             Assert.Equal(5, Proto.ParseApex5RawSlot(reply));
-            Assert.Equal(1, Proto.ParseApex5ProfileSlot(reply));
             reply[6] = 9;
             Assert.Equal(-1, Proto.ParseApex5RawSlot(reply));
         }

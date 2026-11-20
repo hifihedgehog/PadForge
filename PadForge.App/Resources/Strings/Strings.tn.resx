@@ -1071,7 +1071,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela thothomelo ya dimotoro tse dikgolo kwa ditrigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Thothomelo ya trigger go tswa mo bass ya modumo wa sistimi</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone tsa go sekama, Ntlha ya controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go simolola go maka, Mokgwa wa go simolola, Moedi wa Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go simolola go maka, Mokgwa wa go simolola, Gyro e buletswe, Busetsa bogareng, Moedi wa Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>E bulela ditshupo tsa touchpad e</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Go kgotlha, go tobetsa, go phutha, dibopego</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Gatisa tsa gago</value></data>
@@ -1089,7 +1089,6 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu e ntšhwa</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tlosa sele ya bofelo</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Leina</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Motswedi, Threshold, Direction, Consume Trigger Buttons, Boeletsa</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Sedirisiwa se</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yotlhe</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Motshameki kgotsa Lefatshe</value></data>
@@ -1186,4 +1185,11 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Diragatsa</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Sedirisiwa se se sa itsiweng</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Fela fa</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Motswedi o o balwa fela fa tsenyo e le yone e balwa e tobeditswe mo taolong e le nngwe. Teko ya karolo e e tswang mo thomelong e balwa jaaka karolo ya molamu kgotsa ya trigger e e e tlhatlhobang.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Gape fa</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Tsenyo ya bobedi e motswedi o le one o e emetseng.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Fetola tsenyo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>E tlhopha tsenyo e nngwe e e emelwang.</value></data>
 </root>

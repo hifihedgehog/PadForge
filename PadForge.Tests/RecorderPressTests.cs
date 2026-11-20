@@ -265,5 +265,106 @@ namespace PadForge.Tests
                 SettingsManager.UserSettings = settings;
             }
         }
+
+        /// <summary>
+        /// The recording a completed one starts at once, the other half of
+        /// an axis or the Down key after the Up key, listens to the device
+        /// the first one listened to. A cell click names one device, and the
+        /// second input of the pair lands under the same column.
+        /// </summary>
+        [Fact]
+        public void TheSecondHalfOfAPairListensToTheDeviceOfTheFirst()
+        {
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            RecorderService recorder = null;
+            try
+            {
+                UserDevice first = Device("First"), second = Device("Second");
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    SettingsManager.UserDevices.Items.Add(first);
+                    SettingsManager.UserDevices.Items.Add(second);
+                }
+                var vm = new MainViewModel();
+                var pad = vm.Pads[0];
+                pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = first.InstanceGuid, Name = "First", IsOnline = true });
+                pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = second.InstanceGuid, Name = "Second", IsOnline = true });
+                recorder = new RecorderService(vm);
+                void Tick() => PollTick.Invoke(recorder, new object[] { null, EventArgs.Empty });
+                void Release()
+                {
+                    Array.Clear(first.InputState.Buttons);
+                    Array.Clear(second.InputState.Buttons);
+                }
+
+                // The positive half of a stick axis from the second device's
+                // cell, then its negative half started from the completion,
+                // as the window starts it.
+                var axisRow = System.Linq.Enumerable.First(pad.Mappings, m => m.HasNegDirection);
+                int completions = 0;
+                void StartNegativeHalf(object s, RecordingResult r)
+                {
+                    if (++completions == 1)
+                        recorder.StartFollowUpRecording(axisRow, 0, negRecording: true);
+                }
+                recorder.RecordingCompleted += StartNegativeHalf;
+                recorder.ListenOnly = second.InstanceGuid;
+                recorder.StartRecording(axisRow, 0);
+                second.InputState.Buttons[5] = true;
+                Tick();
+                Assert.Equal(1, completions);
+                Assert.True(recorder.IsRecording);
+                Release();
+                Tick();
+                // An input on the first device is not taken.
+                first.InputState.Buttons[3] = true;
+                Tick();
+                Assert.True(recorder.IsRecording);
+                Assert.Equal(1, completions);
+                // One on the second lands.
+                second.InputState.Buttons[6] = true;
+                Tick();
+                Assert.False(recorder.IsRecording);
+                Assert.Equal(2, completions);
+                recorder.RecordingCompleted -= StartNegativeHalf;
+                Release();
+
+                // The Up key of a key source from the second device's cell,
+                // then its Down key started from the completion.
+                var keyRow = System.Linq.Enumerable.Single(pad.Mappings, m => m.TargetSettingName == "ButtonA");
+                var keys = new MappingSourceItem { Kind = "Incremental" };
+                completions = 0;
+                void StartDownKey(object s, RecordingResult r)
+                {
+                    if (++completions == 1)
+                        recorder.StartRecordingExtraSourceParam(keyRow, keys, 0, RecorderService.ParamTarget.Down, followUp: true);
+                }
+                recorder.RecordingCompleted += StartDownKey;
+                recorder.ListenOnly = second.InstanceGuid;
+                recorder.StartRecordingExtraSourceParam(keyRow, keys, 0, RecorderService.ParamTarget.Up);
+                second.InputState.Buttons[5] = true;
+                Tick();
+                Assert.Equal("Button 5", keys.ParamUp);
+                Assert.True(recorder.IsRecording);
+                first.InputState.Buttons[3] = true;
+                Tick();
+                Assert.True(recorder.IsRecording);
+                Assert.Equal(string.Empty, keys.ParamDown ?? string.Empty);
+                second.InputState.Buttons[6] = true;
+                Tick();
+                Assert.False(recorder.IsRecording);
+                Assert.Equal("Button 6", keys.ParamDown);
+                recorder.RecordingCompleted -= StartDownKey;
+            }
+            finally
+            {
+                if (recorder != null && recorder.IsRecording) recorder.CancelRecording();
+                SettingsManager.UserDevices = devices;
+                SettingsManager.UserSettings = settings;
+            }
+        }
     }
 }

@@ -772,6 +772,9 @@ namespace PadForge.Common.Input
             public bool PcmCapable;
             public bool PcmMuLaw;
             public bool PcmArmed;
+            /// <summary>The Flydigi session told the grips are wanted. A
+            /// session opened in its place starts with them not wanted.</summary>
+            public object PcmArmedFor;
             public ISampleProvider PcmSource;
             public TritonPcmLowPassProvider PcmFilter;
             public long PcmLastContentMs;
@@ -2565,11 +2568,13 @@ namespace PadForge.Common.Input
 
             if (audible) s.PcmLastContentMs = nowMs;
             bool want = testActive || (nowMs - s.PcmLastContentMs) < PcmHangoverMs;
-            if (want != s.PcmArmed)
+            if (want != s.PcmArmed || (want && !ReferenceEquals(s.PcmArmedFor, pad)))
             {
                 // The pad's stream stays up through the quiet inside a cue,
                 // and goes back to the pad's own rumble once the cue is over.
+                // A session opened in place of the armed one is armed too.
                 s.PcmArmed = want;
+                s.PcmArmedFor = want ? pad : null;
                 pad.SetGripPcmWanted(want);
             }
             if (!audible)

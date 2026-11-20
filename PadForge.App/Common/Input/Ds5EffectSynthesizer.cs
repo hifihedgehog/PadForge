@@ -1196,6 +1196,20 @@ namespace PadForge.Common.Input
             return block;
         }
 
+        /// <summary>The Adaptive Triggers tab's setting for one trigger as
+        /// its 11-byte block, for a pad that takes the block and no
+        /// DualSense report (#586, the Flydigi lane).</summary>
+        internal static void EncodeUserTrigger(DeviceSlotConfig cfg, bool right, Span<byte> block)
+        {
+            if (cfg == null || block.Length < 11) return;
+            if (right)
+                EncodeTrigger(cfg.RightTriggerMode, cfg.RightStartPosition, cfg.RightEndPosition,
+                    cfg.RightStrength, cfg.RightFrequency, block);
+            else
+                EncodeTrigger(cfg.LeftTriggerMode, cfg.LeftStartPosition, cfg.LeftEndPosition,
+                    cfg.LeftStrength, cfg.LeftFrequency, block);
+        }
+
         /// <summary>Encodes one trigger's 11-byte effect block (mode +
         /// 10 parameter bytes). The simple modes (Feedback / Weapon /
         /// Vibration) use scalar opcodes 0x01/0x02/0x06 with the
@@ -1222,20 +1236,6 @@ namespace PadForge.Common.Input
         /// multi-position zones are at trigger positions 0..9 mapped
         /// linearly across the byte range.</para>
         /// </summary>
-        /// <summary>The Adaptive Triggers tab's setting for one trigger as
-        /// its 11-byte block, for a pad that takes the block and no
-        /// DualSense report (#586, the Flydigi lane).</summary>
-        internal static void EncodeUserTrigger(DeviceSlotConfig cfg, bool right, Span<byte> block)
-        {
-            if (cfg == null || block.Length < 11) return;
-            if (right)
-                EncodeTrigger(cfg.RightTriggerMode, cfg.RightStartPosition, cfg.RightEndPosition,
-                    cfg.RightStrength, cfg.RightFrequency, block);
-            else
-                EncodeTrigger(cfg.LeftTriggerMode, cfg.LeftStartPosition, cfg.LeftEndPosition,
-                    cfg.LeftStrength, cfg.LeftFrequency, block);
-        }
-
         private static void EncodeTrigger(
             AdaptiveTriggerMode mode,
             byte startPosition,

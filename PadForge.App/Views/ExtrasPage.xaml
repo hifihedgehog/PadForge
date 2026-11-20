@@ -682,6 +682,11 @@
                     <Style x:Key="DzLabel" TargetType="TextBlock" BasedOn="{StaticResource ExtraLabel}">
                         <Setter Property="Width" Value="300"/>
                     </Style>
+                    <!-- A row's gray note starts at the control column: the label's 300 and its 12. -->
+                    <Style x:Key="ExtraRowNote" TargetType="TextBlock" BasedOn="{StaticResource ExtraSmall}">
+                        <Setter Property="Margin" Value="312,-4,12,10"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                    </Style>
                 </StackPanel.Resources>
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
@@ -2404,12 +2409,12 @@
                                         Minimum="80" Maximum="2000" SmallChange="10" LargeChange="100" IsSnapToTickEnabled="True" TickFrequency="10"
                                         Value="{Binding LensWidth, Mode=TwoWay}"
                                         AutomationProperties.AutomationId="Magnifier_LensWidth"
-                                        AutomationProperties.Name="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}"/>
+                                        AutomationProperties.Name="{Binding LensWidthName, TargetNullValue=''}"/>
                                 <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
                                          Text="{Binding LensWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         AutomationProperties.Name="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}"/>
+                                         AutomationProperties.Name="{Binding LensWidthName, TargetNullValue=''}"/>
                                 <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
-                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensWidth" SettingLabel="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensWidth_58536"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensWidth" SettingLabel="{Binding LensWidthName}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensWidth_58536"/>
                             </controls:SettingRow>
                             <controls:SettingRow MinHeight="44" Visibility="{Binding IsRound, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                 <TextBlock Text="{Binding Extras_Magnifier_Height, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>

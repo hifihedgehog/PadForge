@@ -55,20 +55,10 @@ namespace PadForge.Services
         /// later must not have to know this exists. It is idempotent and
         /// cheap, so calling it too often is free and calling it too seldom
         /// is a silent regression.</para>
-        /// <para>N/A by design, and each for its own reason:</para>
-        /// <para>PeripheralSwitchMigration.AssignLive (#494) assigns a PC
-        /// peripheral's output row, which has no stick or gyro for a stamp to
-        /// fold into. Calling this there would clear the stamps before a
-        /// gamepad is assigned.</para>
-        /// <para>WorkshopGyroRatchetDescriptors has no ratchet field on
-        /// PadSetting and no ratchet control in any view, so there is no
-        /// user-facing setting to fold it into. It stays a runtime overlay
-        /// (InputManager's gyro engage config) until a card exists.</para>
-        /// <para>ParamFlickRotationOffsetDeg has no card. It is read by the
-        /// flick-stick angle path (SourceKindRuntime) and there is no
-        /// rotation-offset control to fold it into, so it stays on the source
-        /// until one exists. That is a real remaining gap, not a deliberate
-        /// exclusion.</para></summary>
+        /// <para>Not called by PeripheralSwitchMigration.AssignLive (#494),
+        /// by design: it assigns a PC peripheral's output row, which has no
+        /// stick or gyro for a stamp to fold into. Calling this there would
+        /// clear the stamps before a gamepad is assigned.</para></summary>
         public static bool ApplyToAssignedDevice(int slotIndex, PadSetting ps, string deviceGuid = null)
         {
             if (ps == null) return false;
@@ -119,6 +109,13 @@ namespace PadForge.Services
                 set.WorkshopGyroEngageInvert = false;
             }
 
+            // ── gyro activation by layer, the ratchet and the re-center ───
+            if (HasGyroStamps(set))
+            {
+                changed |= FoldGyroStamps(set, ps);
+                ClearGyroStamps(set);
+            }
+
             // A target whose rows tune it differently keeps its rows' tuning.
             var kept = TargetsKeepingTheirRows(set);
 
@@ -140,6 +137,107 @@ namespace PadForge.Services
             return changed;
         }
 
+
+        /// <summary>True when <paramref name="set"/> still carries one of the
+        /// three gyro stamps: the ratchet, the activation by layer or the
+        /// re-center.</summary>
+        internal static bool HasGyroStamps(MappingSet set)
+            => set != null
+               && (!string.IsNullOrEmpty(set.WorkshopGyroActivation)
+                   || !string.IsNullOrEmpty(set.WorkshopGyroRatchetDescriptors)
+                   || set.WorkshopGyroRecenterOnEngage);
+
+        /// <summary><para>Moves the slot's gyro stamps onto
+        /// <paramref name="ps"/>, the Gyro card's Gyro On rows and its
+        /// Re-Center switch, where the card still holds none. Leaves the
+        /// stamps on the set: the caller clears them once every device that
+        /// takes them has (<see cref="ClearGyroStamps"/>).</para>
+        /// <para>Steam's ratchet is the Base layer's "on while not held" on
+        /// any of its buttons, which is how the Gyro card writes it. The
+        /// translator stamps at most one of the two
+        /// (ConfigTranslator.FinalizeGyroActivation returns after the
+        /// ratchet and sets it nowhere else), so the ratchet stands in only
+        /// for a missing activation.</para></summary>
+        internal static bool FoldGyroStamps(MappingSet set, PadSetting ps)
+        {
+            if (set == null || ps == null) return false;
+            bool changed = false;
+            string activation = set.WorkshopGyroActivation;
+            if (string.IsNullOrEmpty(activation) && !string.IsNullOrEmpty(set.WorkshopGyroRatchetDescriptors))
+                activation = "Base=Release,Any," + set.WorkshopGyroRatchetDescriptors;
+            if (!string.IsNullOrEmpty(activation) && string.IsNullOrEmpty(ps.GyroActivation))
+            {
+                ps.GyroActivation = activation;
+                changed = true;
+            }
+            if (set.WorkshopGyroRecenterOnEngage && ps.GyroRecenterOnEngage != "1")
+            {
+                ps.GyroRecenterOnEngage = "1";
+                changed = true;
+            }
+            return changed;
+        }
+
+        /// <summary>Clears the three gyro stamps once they are folded.</summary>
+        internal static void ClearGyroStamps(MappingSet set)
+        {
+            if (set == null) return;
+            set.WorkshopGyroActivation = "";
+            set.WorkshopGyroRatchetDescriptors = "";
+            set.WorkshopGyroRecenterOnEngage = false;
+        }
+
+        /// <summary><para>Folds the gyro stamps of a stored set of slots
+        /// onto the devices already assigned there, for a file saved before
+        /// the engine stopped reading the stamps. The device's assignment
+        /// already happened, so <see cref="ApplyToAssignedDevice"/> will not
+        /// run for it again, and without this the user's gyro activation
+        /// would stop.</para>
+        /// <para><paramref name="entries"/> are the stored assignments (a
+        /// UserSetting or a profile's entry): the slot, the checksum naming
+        /// the device's PadSetting in <paramref name="padSettings"/>, and a
+        /// way to point the entry at another PadSetting. A PadSetting that
+        /// entries on another slot share is copied before the fold, so the
+        /// other slot's device keeps its own. A slot with no assigned device
+        /// keeps its stamps for the assignment to fold. Returns the
+        /// PadSettings, grown by any copy.</para></summary>
+        internal static PadSetting[] FoldCarriedGyroStamps(MappingSet[] sets,
+            IReadOnlyList<(int Slot, string Checksum, Action<string> Repoint)> entries, PadSetting[] padSettings)
+        {
+            if (sets == null || entries == null || padSettings == null) return padSettings;
+            var list = new List<PadSetting>(padSettings);
+            for (int slot = 0; slot < sets.Length; slot++)
+            {
+                var set = sets[slot];
+                if (!HasGyroStamps(set)) continue;
+                bool folded = false;
+                foreach (var e in entries)
+                {
+                    if (e.Slot != slot || string.IsNullOrEmpty(e.Checksum)) continue;
+                    int at = list.FindIndex(p => p != null && p.PadSettingChecksum == e.Checksum);
+                    if (at < 0) continue;
+                    bool shared = false;
+                    foreach (var o in entries)
+                        if (o.Slot != slot && o.Checksum == e.Checksum) { shared = true; break; }
+                    if (!shared)
+                    {
+                        FoldGyroStamps(set, list[at]);
+                    }
+                    else
+                    {
+                        var copy = list[at].CloneDeep();
+                        FoldGyroStamps(set, copy);
+                        copy.UpdateChecksum();
+                        if (!list.Exists(p => p != null && p.PadSettingChecksum == copy.PadSettingChecksum))
+                            list.Add(copy);
+                        e.Repoint?.Invoke(copy.PadSettingChecksum);
+                    }
+                    folded = true;
+                }
+                if (folded) ClearGyroStamps(set);
+            }
+            return list.ToArray();
+        }
 
         /// <summary>The battery light colors an import set for the slot (#561),
         /// onto the device's own Lighting card where it still holds the
@@ -544,6 +642,10 @@ namespace PadForge.Services
             }
             return changed;
         }
+
+        /// <summary>True for the six outputs a device card shapes.</summary>
+        internal static bool IsCardTarget(string target)
+            => !string.IsNullOrEmpty(target) && CardTargets.Contains(target);
 
         /// <summary>The six outputs a device card shapes.</summary>
         private static readonly HashSet<string> CardTargets = new(StringComparer.Ordinal)

@@ -364,6 +364,37 @@ namespace PadForge.Tests
             Assert.False(watch.Look(board, depth, false, now += InputActivity.HoldMs + 1));
         }
 
+        /// <summary>The pointer and the other inputs the idle test counts
+        /// are input on a device asked about with gamepad false too: the
+        /// Wii remote's IR in view, a Joy-Con 2 moved as a mouse, a Ring-Con
+        /// squeezed past its slop and an NFC tag on the reader. Only the
+        /// gamepad test counted them.</summary>
+        [Fact]
+        public void ThePointerTheRingAndATag_AreInput_OnAnyDevice()
+        {
+            var watch = new InputActivity();
+            long now = 0;
+            void Sends(Action<CustomInputState> set)
+            {
+                var device = Guid.NewGuid();
+                var state = new CustomInputState();
+                Assert.False(watch.Look(device, state, gamepad: false, nowMs: now += 33));
+                set(state);
+                Assert.True(watch.Look(device, state, false, now += 33));
+            }
+            Sends(s => s.Ir.Detected = true);
+            Sends(s => s.JoyCon2MouseDX = 0.5f);
+            Sends(s => s.JoyCon2MouseDY = -0.5f);
+            Sends(s => s.RingConStrain = IdleInputDetector.RingConSlop + 0.01f);
+            Sends(s => s.NfcTag = new[] { false, true });
+
+            // A ring inside its slop is at rest.
+            var ring = Guid.NewGuid();
+            var still = new CustomInputState { RingConStrain = IdleInputDetector.RingConSlop };
+            Assert.False(watch.Look(ring, still, false, now += 33));
+            Assert.False(watch.Look(ring, still, false, now += 33));
+        }
+
         /// <summary>The service asks about each mapped device on the
         /// dashboard's lane, only for one that is connected and only while
         /// the engine reads devices.</summary>
@@ -1210,5 +1241,40 @@ namespace PadForge.Tests
             At(window, "HomePageView.AddDeviceRequested += (s, e) => SelectNavItemByTag(\"Devices\");");
             At(window, "PadPageView.AddDeviceRequested += (s, e) => SelectNavItemByTag(\"Devices\");");
         }
+
+        /// <summary>A card's live model draws the meshes of its rider decals,
+        /// whose files only the model it was drawn from held. The still keeps
+        /// the live model and lets that model go, so the live model holds the
+        /// files itself, and the next Xbox Series model reads none of its
+        /// Decal-*.obj files again.</summary>
+        [Fact]
+        public void ALiveModelHoldsTheFilesOfItsRiderDecals() => RunSta(() =>
+        {
+            var still = ControllerStill.Render("XboxSeries", "Carbon");
+            Assert.NotNull(ControllerStill.LiveModelOf(still));
+            for (int i = 0; i < 3; i++)
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            var flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static;
+            var kept = (System.Collections.IDictionary)typeof(ControllerModelBase).GetField("s_parsed", flags).GetValue(null);
+            var decals = new List<string>();
+            var gone = new List<string>();
+            lock (typeof(ControllerModelBase).GetField("s_parsedGate", flags).GetValue(null))
+            {
+                foreach (System.Collections.DictionaryEntry entry in kept)
+                {
+                    string name = (string)entry.Key;
+                    if (name.IndexOf(".XboxSeries.Carbon.Decal-", StringComparison.Ordinal) < 0) continue;
+                    decals.Add(name);
+                    if (!((WeakReference<System.Windows.Media.Media3D.Model3DGroup>)entry.Value).TryGetTarget(out _))
+                        gone.Add(name);
+                }
+            }
+            Assert.True(decals.Count >= 4, $"only {decals.Count} decal files were read");
+            Assert.True(gone.Count == 0, "let go while the card draws them: " + string.Join(", ", gone));
+            GC.KeepAlive(still);
+        });
     }
 }

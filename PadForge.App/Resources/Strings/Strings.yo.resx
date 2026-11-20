@@ -153,6 +153,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ó lọ sílẹ̀</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Àwòrán</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Àkójọ</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>ìjáde {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ìjáde {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Ìṣípòpadà</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Tẹ ìdarí kan nínú àwòrán, lẹ́yìn náà tẹ ohun tí yóò darí rẹ̀ lórí ẹ̀rọ rẹ.</value></data>
@@ -278,7 +279,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Tẹ "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kò sí ọ̀rọ̀)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ọ̀rọ̀</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ìṣẹ́jú</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nọ́mbà olùṣeré…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nọ́mbà olùṣeré</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Olùṣeré</value></data>
@@ -609,6 +609,8 @@
   <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>Tún kọ́kọ́rọ́ tẹ̀ nígbà tí a dì í mú</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Máòsì X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Máòsì Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Ìyàsípò ìdábùú</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Ìyàsípò òòró</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Ipò</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Dì mú</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mọ́tò òsì</value></data>
@@ -631,6 +633,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Ìdajì</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Kò sí ẹ̀rọ tí a so pọ̀</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Ẹ̀rọ àìmọ̀</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} ìka {1} X</value></data>
@@ -837,6 +840,21 @@
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Tún deadzone tò</value></data>
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Tún ìtẹ̀ ìjáde tò</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ìfọkànsí</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Kìkì nígbà tí</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Orísun yìí máa ń kà kìkì nígbà tí ìgbéwọlé yìí náà bá ń kà bí èyí tí a tẹ̀ lórí olùdarí kan náà. Àyẹ̀wò agbègbè láti inú ètò tí a gbé wọlé máa ń kà bí ìwọ̀n ọ̀pá tàbí tírígà tí ó ń yẹ̀ wò.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Àti nígbà tí</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ìgbéwọlé kejì tí orísun yìí tún ń dúró dè.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Yí ìgbéwọlé padà</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ń yan ìgbéwọlé mìíràn láti dúró dè.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Ìtẹ̀</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ń gbé kíkà ìgbéwọlé yìí sí agbára yìí kí ó tó darí ìjáde. 0 àti 1 máa ń fi í sílẹ̀ ní títọ́. Ju 1 lọ máa ń lọ́ra ní ìtòsí àárín.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ìwọ̀n òde</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ìjáde máa ń dé òpin rẹ̀ ní iye ìrìn yìí. 100% túmọ̀ sí pípa.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ìjáde máa ń bẹ̀rẹ̀ láti iye yìí ní kété tí ìgbéwọlé bá ti yí. 0 túmọ̀ sí pípa.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Ìrísí deadzone</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Pa máa ń fi kíkà sílẹ̀ bí ó ti wà. Axial máa ń wọn ákísì yìí nìkan. Radial máa ń wọn àwọn ákísì ọ̀pá méjèèjì papọ̀.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Pa</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Ìtẹ̀sí gyro X</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Ìtẹ̀sí gyro Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Ìtẹ̀sí gyro</value></data>
@@ -1948,7 +1966,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ìmìtìtì tírígà láti inú baasi ohùn ètò</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Àwọn deadzone ìtẹ̀sí, Ìdojúkọ adarí</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, ìmúdẹ̀rọ, Ìmúyára, Ìtẹ̀ ìjáde</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọ́tìnnì ìfojúsùn, Ipò ìbẹ̀rẹ̀, Ààlà ìfojúsùn rírọrùn</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bọ́tìnnì ìfojúsùn, Ipò ìbẹ̀rẹ̀, Gyro tàn, Ìtúnto àárín, Ààlà ìfojúsùn rírọrùn</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Lo touchpad bí ọ̀pá tàbí D-pad</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Apá ìbòjú tí touchpad ń dé</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ìlù kékeré bí ìka rẹ ṣe ń rìn</value></data>
@@ -1960,7 +1978,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Agbára tírígà kọ̀ọ̀kan, pípààrọ̀ mọ́tò, ìmìtìtì adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Ìjáde MIDI</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Ṣe</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Ìpele, Orísun, Ààlà, Ìtọ́sọ́nà, Consume Trigger Buttons, Tún ṣe</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Àkójọ àṣàyàn tuntun</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Fi sẹ́ẹ̀lì kún</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Yọ sẹ́ẹ̀lì tó kẹ́yìn kúrò</value></data>

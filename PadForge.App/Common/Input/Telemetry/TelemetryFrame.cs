@@ -63,6 +63,10 @@ namespace PadForge.Common.Input.Telemetry
     internal sealed class TelemetryFrame
     {
         public float SpeedMs;
+        /// <summary>The format sent <see cref="SpeedMs"/>. A custom format
+        /// with no Speed field leaves it at 0, which is no reading, so a
+        /// wheel's centering does not take it for a parked car.</summary>
+        public bool SpeedReported;
         public float Rpm;
         /// <summary>0 when the game sends none. The reader then supplies the
         /// highest RPM seen and sets <see cref="MaxRpmLearned"/>.</summary>
@@ -101,6 +105,7 @@ namespace PadForge.Common.Input.Telemetry
         public void Reset(int variableCount)
         {
             SpeedMs = 0f;
+            SpeedReported = false;
             Rpm = 0f;
             MaxRpm = 0f;
             MaxRpmLearned = false;
@@ -125,6 +130,7 @@ namespace PadForge.Common.Input.Telemetry
         public void CopyTo(TelemetryFrame dst)
         {
             dst.SpeedMs = SpeedMs;
+            dst.SpeedReported = SpeedReported;
             dst.Rpm = Rpm;
             dst.MaxRpm = MaxRpm;
             dst.MaxRpmLearned = MaxRpmLearned;

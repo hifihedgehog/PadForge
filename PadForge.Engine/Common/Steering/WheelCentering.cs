@@ -61,6 +61,11 @@ namespace PadForge.Engine.Steering
 
         public bool Has(CenteringEffects effect) => (Effects & effect) != 0;
 
+        /// <summary>The friction the wheel is sent, in N·m: the
+        /// setting's, or none on a wheel with no friction effect. The
+        /// composer sends it and the card's chart draws it.</summary>
+        public double FrictionSent => Has(CenteringEffects.Friction) ? Friction : 0;
+
         /// <summary>The torque taken for a wheel that is on no list and
         /// has no figure entered, in N·m. A figure above the wheel's own
         /// makes every force weaker, never stronger, so the start is
@@ -163,7 +168,8 @@ namespace PadForge.Engine.Steering
         /// always full.</summary>
         public int FrictionSaturation;
 
-        // What the card shows.
+        // What the card shows. Speed (m/s) and Grip are the ones in use, as the game or the settings gave them:
+        // the curve keeps its own floor (SteeringCurve.LeastSpeed) to itself.
         public double AngleDegrees, TorqueNm, Speed, Grip;
 
         /// <summary>The damping in effect, in N·m·s/rad: the wheel's own
@@ -226,6 +232,16 @@ namespace PadForge.Engine.Steering
         /// measured, in seconds: a poll, a report each way and the
         /// firmware's own step, taken long.</summary>
         public const double UnmeasuredDelay = 0.010;
+
+        /// <summary>The shortest and the longest loop delay, in seconds,
+        /// that the Release Test stores and the stability rule runs on:
+        /// one range for both, so a wheel is run on the delay it was
+        /// measured at.</summary>
+        public const double LeastDelay = 0.002, MostDelay = 0.040;
+
+        /// <summary>A measured delay inside <see cref="LeastDelay"/> and
+        /// <see cref="MostDelay"/>.</summary>
+        public static double DelayWithin(double delay) => Math.Clamp(delay, LeastDelay, MostDelay);
 
         /// <summary>The most of the slope at center the wheel's own
         /// spring takes. The spring runs at one of the coefficients the
@@ -294,13 +310,25 @@ namespace PadForge.Engine.Steering
 
         public const double CalmDegrees = 5.0;
 
+        /// <summary>The steps the curve is sampled at: speed in quarter
+        /// meters a second, grip in fiftieths.</summary>
+        private const double SpeedStep = 0.25, GripStep = 0.02;
+
+        /// <summary>How far, in steps, a speed or a grip has to be from
+        /// the step the curve was built at before the curve moves: a
+        /// quarter step past the halfway point, so a reading that wavers
+        /// on the edge of two steps keeps one curve.</summary>
+        private const double StepHold = 0.75;
+
         private SteeringCurve _curve;
         private string _curveCar;
         private double _curveWeight, _curveOnCenter, _curveAssist, _curveSpeed, _curveGrip, _curveLock;
+
+        // The curve is rebuilt in place, so the work kept for it is kept for a build: each build counts one up.
+        private int _curveBuild;
         private readonly double[] _pc = new double[SteeringCurve.Steps + 1];
         private double _pcCap = -1, _pcSpringSlope = -1, _pcSpringLimit = -1;
-        private SteeringCurve _pcCurve;
-        private SteeringCurve _splitCurve;
+        private int _pcBuild, _splitBuild;
         private WheelCalibration _splitMeasured;
         private double _splitTorque = -1, _splitSlope, _splitLimit, _splitSteepest;
         private int _splitCoefficient;
@@ -360,7 +388,7 @@ namespace PadForge.Engine.Steering
             double torqueLimit = s.WheelTorque;
             // A measurement is in the newton meters of the torque figure it was taken with.
             measured = Scaled(measured, torqueLimit);
-            double delay = measured != null ? Math.Clamp(measured.Delay, 0.002, 0.030) : UnmeasuredDelay;
+            double delay = measured != null ? DelayWithin(measured.Delay) : UnmeasuredDelay;
             double inertia = measured != null ? measured.Inertia : UnmeasuredInertia;
 
             // The wheel's own spring, at a coefficient whose strength is known: a line under the curve from
@@ -406,8 +434,7 @@ namespace PadForge.Engine.Steering
             // Friction steadies a small swing as damping does: over a swing of amplitude A at the wheel's own
             // frequency it takes out the energy a damper of 4 F / (pi A w) would. Counted at SteadySwing, it
             // keeps a PC part with no damper from having no slope at all.
-            bool wheelFriction = s.Has(CenteringEffects.Friction);
-            double friction = (wheelFriction ? s.Friction : 0) + (measured != null ? measured.Friction : 0);
+            double friction = s.FrictionSent + (measured != null ? measured.Friction : 0);
             double frequency = Math.Sqrt(Math.Max(_curve.CenterSlope, 1e-6) / inertia);
             double frictionAsDamping = 4.0 * friction / (Math.PI * SteadySwing * frequency);
 
@@ -447,9 +474,7 @@ namespace PadForge.Engine.Steering
             frame.DamperCoefficient = damperCoefficient;
             // The damper has the wheel's whole torque to push back with (the class's last paragraph).
             frame.DamperSaturation = damperCoefficient > 0 ? 10000 : 0;
-            frame.FrictionSaturation = wheelFriction
-                ? (int)Math.Clamp(Math.Round(s.Friction / torqueLimit * 1000.0) * 10.0, 0, 10000)
-                : 0;
+            frame.FrictionSaturation = (int)Math.Clamp(Math.Round(s.FrictionSent / torqueLimit * 1000.0) * 10.0, 0, 10000);
 
             // The guard reads a wheel the PC's force is on. Before the force starts, a swing is a hand's or
             // the wheel's own turn at power-on, and counting it took the force down before it had come in.
@@ -457,8 +482,8 @@ namespace PadForge.Engine.Steering
             frame.AngleDegrees = angle * 180.0 / Math.PI;
             frame.Damping = damping;
             frame.TorqueNm = (pcTorque + springTorque) * Math.Sign(angle);
-            frame.Speed = _curve.Speed;
-            frame.Grip = _curve.Grip;
+            frame.Speed = Math.Max(0, speed);
+            frame.Grip = grip;
             frame.HeldBack = _guard.Factor < 1.0;
             frame.Stopped = _stopped || _guard.Factor <= 0;
             return frame;
@@ -507,7 +532,7 @@ namespace PadForge.Engine.Steering
         /// strength between theirs.</summary>
         private void EnsureSplit(WheelCalibration measured, double torqueLimit)
         {
-            if (ReferenceEquals(_splitCurve, _curve) && ReferenceEquals(_splitMeasured, measured) && _splitTorque == torqueLimit)
+            if (_splitBuild == _curveBuild && ReferenceEquals(_splitMeasured, measured) && _splitTorque == torqueLimit)
                 return;
             _splitSlope = 0;
             _splitLimit = 0;
@@ -534,23 +559,27 @@ namespace PadForge.Engine.Steering
                 }
             }
             _splitSteepest = _splitSlope > 0 ? SteepestRise(_curve, _splitSlope, _splitLimit) : _curve.SteepestSlope;
-            _splitCurve = _curve;
+            _splitBuild = _curveBuild;
             _splitMeasured = measured;
             _splitTorque = torqueLimit;
         }
 
         private void EnsureCurve(in CenteringSettings s, double speed, double grip, double halfRange)
         {
-            // Speed in quarter meters a second and grip in fiftieths, so a moving car rebuilds the table a few
-            // times a second at most.
-            double quantSpeed = Math.Round(Math.Max(0, speed) * 4.0) / 4.0;
-            double quantGrip = Math.Round(grip * 50.0) / 50.0;
+            // The curve moves a step of speed or grip at a time, and holds a step until the reading is well into
+            // the next (StepHold), so a game speed that wavers on the edge of two steps keeps one curve. A car that
+            // brakes at 1 g still crosses about 39 steps a second, and the curve is rebuilt that often, in its own
+            // tables: a moving car costs the polling thread work but no allocation.
+            double quantSpeed = Held(Math.Max(0, speed), _curveSpeed, SpeedStep);
+            double quantGrip = Held(grip, _curveGrip, GripStep);
             if (_curve != null && _curveCar == s.Car.Id && _curveWeight == s.WeightPercent
                 && _curveOnCenter == s.OnCenterPercent && _curveAssist == s.AssistPercent
                 && _curveSpeed == quantSpeed && _curveGrip == quantGrip && _curveLock == halfRange)
                 return;
-            _curve = new SteeringCurve(s.Car, s.Car.Feel.Scaled(s.WeightPercent, s.OnCenterPercent, s.AssistPercent),
-                quantSpeed, quantGrip, halfRange);
+            var feel = s.Car.Feel.Scaled(s.WeightPercent, s.OnCenterPercent, s.AssistPercent);
+            if (_curve == null) _curve = new SteeringCurve(s.Car, feel, quantSpeed, quantGrip, halfRange);
+            else _curve.Rebuild(s.Car, feel, quantSpeed, quantGrip, halfRange);
+            _curveBuild++;
             _curveCar = s.Car.Id;
             _curveWeight = s.WeightPercent;
             _curveOnCenter = s.OnCenterPercent;
@@ -559,6 +588,12 @@ namespace PadForge.Engine.Steering
             _curveGrip = quantGrip;
             _curveLock = halfRange;
         }
+
+        /// <summary>A reading on the steps of <paramref name="step"/>: the
+        /// step the curve was built at while the reading stays within
+        /// <see cref="StepHold"/> of it, the nearest step otherwise.</summary>
+        private double Held(double reading, double built, double step)
+            => _curve != null && Math.Abs(reading - built) <= StepHold * step ? built : Math.Round(reading / step) * step;
 
         /// <summary>The limit for a spring of this slope from center, so
         /// the wheel's own spring never gives more than the car asks:
@@ -604,7 +639,7 @@ namespace PadForge.Engine.Steering
         /// the tires' limit, it falls with the curve.</summary>
         private void EnsurePcTable(double springSlope, double springLimit, double cap)
         {
-            if (ReferenceEquals(_pcCurve, _curve) && _pcCap == cap && _pcSpringSlope == springSlope && _pcSpringLimit == springLimit)
+            if (_pcBuild == _curveBuild && _pcCap == cap && _pcSpringSlope == springSlope && _pcSpringLimit == springLimit)
                 return;
             double held = 0;
             _pc[0] = 0;
@@ -616,7 +651,7 @@ namespace PadForge.Engine.Steering
                 held = Math.Min(rest, held + most);
                 _pc[i] = held;
             }
-            _pcCurve = _curve;
+            _pcBuild = _curveBuild;
             _pcCap = cap;
             _pcSpringSlope = springSlope;
             _pcSpringLimit = springLimit;

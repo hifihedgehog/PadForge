@@ -1064,6 +1064,26 @@ namespace PadForge.Tests
 
         // ── letting go of the pick ─────────────────────────────────────
 
+        /// <summary>Escape pressed in a box the user types into is left to
+        /// that box: the bar of the picked control, which holds the box,
+        /// stays open under the edit. Escape anywhere else on the page lets
+        /// go of the pick.</summary>
+        [Fact]
+        public void EscapeInABoxBeingTypedIntoIsLeftToTheBox()
+        {
+            RunSta(() =>
+            {
+                Assert.True(PadPage.EscapeBelongsToTheBox(new TextBox()));
+                Assert.True(PadPage.EscapeBelongsToTheBox(new RichTextBox()));
+                Assert.True(PadPage.EscapeBelongsToTheBox(new PasswordBox()));
+                Assert.False(PadPage.EscapeBelongsToTheBox(new Button()));
+                Assert.False(PadPage.EscapeBelongsToTheBox(new ComboBox()));
+                Assert.False(PadPage.EscapeBelongsToTheBox(new Border()));
+                Assert.False(PadPage.EscapeBelongsToTheBox(null));
+            });
+            Assert.Matches(@"if \(e\.Key != Key\.Escape \|\| e\.Handled\) return;\s*if \(EscapeBelongsToTheBox\(e\.OriginalSource\)\) return;", CodeBehind());
+        }
+
         /// <summary>A click on the picture that lands on no control lets go
         /// of the picked one, and its bar and its ring go (owner,
         /// 2026-11-14): there was no way to put the bar away again. The
@@ -1113,13 +1133,13 @@ namespace PadForge.Tests
             Assert.Matches(@"if \(down is not Point at \|\| _pictureClickActed \|\| _pictureDragged\) return;\s*if \(!IsPictureClick\(at, e\.GetPosition\(PictureHost\)\)\) return;\s*if \(!IsBarePicture\(e\.OriginalSource as DependencyObject\)\) return;\s*LetGoOfThePick\(\);", code);
             Assert.Matches(@"if \(IsAControlOverThePicture\(at\)\) return false;\s*if \(ReferenceEquals\(at, PictureHost\)\) return true;", code);
             Assert.Matches(@"if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsPictureView \|\| vm\.IsMapAllActive\) return;\s*if \(vm\.PickedRow == null\) return;\s*string recording = vm\.CurrentRecordingTarget;\s*if \(!string\.IsNullOrEmpty\(recording\)\)\s*ControllerElementRecordRequested\?\.Invoke\(this, recording\);\s*vm\.PickedTarget = null;", code);
-            Assert.Matches(@"if \(e\.Key != Key\.Escape \|\| e\.Handled\) return;\s*if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsPictureView \|\| vm\.PickedRow == null\) return;\s*if \(vm\.IsMapAllActive \|\| !string\.IsNullOrEmpty\(vm\.CurrentRecordingTarget\)\) return;\s*vm\.PickedTarget = null;\s*e\.Handled = true;", code);
+            Assert.Matches(@"if \(e\.Key != Key\.Escape \|\| e\.Handled\) return;\s*if \(EscapeBelongsToTheBox\(e\.OriginalSource\)\) return;\s*if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsPictureView \|\| vm\.PickedRow == null\) return;\s*if \(vm\.IsMapAllActive \|\| !string\.IsNullOrEmpty\(vm\.CurrentRecordingTarget\)\) return;\s*vm\.PickedTarget = null;\s*e\.Handled = true;", code);
 
             // With the bar gone the picture takes back the room it kept for
             // it: left as it was, it stayed small over an empty band. The
             // bar's coming is heard from the bar itself, once it has a height.
             Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.ShowPictureBar\)\)\s*\{[^}]*if \(sender is PadViewModel barVm && !barVm\.ShowPictureBar\) SyncButtonsLayout\(\);\s*\}", code);
-            Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, OneLineBarHeight\(\), ref _barMeasured\);", code);
+            Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, PlainBarHeight\(\), ref _barMeasured\);", code);
             double lastBar = 87;
             Assert.Equal(0, PadPage.SteadyFoldedHeight(false, 87, ref lastBar));
             Assert.Equal(600, PadPage.PictureHeightFor(800, 20, 0, 178, 1));

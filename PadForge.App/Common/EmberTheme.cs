@@ -162,9 +162,6 @@ namespace PadForge.Common
             SetBrush("SubRowTextBrush", dark ? Color.FromRgb(0xCF, 0xD7, 0xE3) : Color.FromRgb(0x2D, 0x39, 0x4B));
             // The picked item of a list that stands on a card.
             SetBrush("EmberCardPickBrush", dark ? Color.FromRgb(0x24, 0x16, 0x0D) : Color.FromRgb(0xFF, 0xEA, 0xDF));
-            // The ring on a control of the picture under the pointer (#574):
-            // the boards' ember at 60 percent, and on light the deeper ember
-            // at 60 percent.
             // An input pill of a macro's trigger: its edge and its words.
             SetBrush("InputChipEdgeBrush", dark ? Color.FromRgb(0x33, 0x50, 0x6A) : Color.FromRgb(0x9D, 0xBB, 0xD2));
             SetBrush("InputChipTextBrush", dark ? Color.FromRgb(0xCF, 0xE6, 0xF5) : Color.FromRgb(0x1D, 0x4B, 0x6B));

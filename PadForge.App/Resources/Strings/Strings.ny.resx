@@ -432,6 +432,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Bwerezani {0} pa {1} ms iliyonse</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mbewa X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mbewa Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Kusuntha kopingasa</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Kusuntha koyimirira</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Gwirani</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mota yakumanzere</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mota yakumanja</value></data>
@@ -1363,7 +1365,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Imatumiza kunjenjemera kwa mota zazikulu ku ma trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kunjenjemera kwa trigger kochokera ku bass ya mawu a kompyuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ma deadzone opendekera, Kaimidwe ka controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Batani loyatsa kuloza, Njira yoyatsira, Malire a Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Batani loyatsa kuloza, Njira yoyatsira, Gyro yoyatsidwa, Kubwezera pakati, Malire a Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Imayatsa gesture za touchpad iyi</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Kusesa, kugogoda, kutsina, mawonekedwe</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Jambulani zanu</value></data>
@@ -1387,7 +1389,6 @@
   <data name="Menu_EditCell" xml:space="preserve"><value>Sinthani selo</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Dzina</value></data>
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Chithunzi</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Gwero, Threshold, Direction, Consume Trigger Buttons, Bwerezani</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Chipangizo ichi</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola yonse</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yaikidwa</value></data>
@@ -1508,10 +1509,24 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Chowongolera chili mu Xbox mode sichinayankhe ngati Apex 4, choncho palibe chomwe chatumizidwa ndipo Windows yachibwezeretsa. Chibwezereni ku DInput mode ndi switchi yake.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows sinasamutsire chowongolera ku WinUSB, choncho palibe chomwe chatumizidwa. Chibwezereni ku DInput mode ndi switchi yake.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kwaimitsidwa. Zimitsani ndi kuyatsa chowongolera ndi switchi yake musanatumizenso.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Port ya sikirini sinatseguke, choncho palibe chomwe chatumizidwa. Zimitsani ndi kuyatsa chowongolera ndi switchi yake ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Chithunzi chili ndi mafelemu ambiri kuposa omwe sikirini ya chowongolerachi ingasunge.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Chithunzi chikutumizidwa kale ku chowongolerachi. Dikirani kuti chimalize.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Sikirini yapempha chithunzi pa adiresi yomwe PadForge sililembapo, choncho palibe chomwe chatumizidwa. Zimitsani ndi kuyatsa chowongolera ndi switchi yake ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Chithunzi chatumizidwa, koma chowongolera sichinabwerere ku njira ya DInput. Chibwezeretseni ndi switchi yake.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Chowongolera sichinalandire lamulo loti chikonzekere, choncho palibe chomwe chatumizidwa. Onetsetsani kuti chalumikizidwa ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Kutumiza kwaima chifukwa cha vuto mu PadForge. Fayilo ya log ili ndi tsatanetsatane.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Chithunzi chikutumizidwabe ku chowongolera. Muimitse kutumiza?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Gwiritsani</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Chipangizo chosadziwika</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Pokhapokha pamene</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Gwero ili limawerengedwa pokhapokha cholowetsa ichi chikuwerengedwanso ngati chakanikizidwa pa chowongolera chomwecho. Kuyesa kwa malo kochokera ku kapangidwe kolowetsedwa kumawerengedwa ngati gawo la ndodo kapena trigger lomwe kumayesa.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Komanso pamene</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Cholowetsa chachiwiri chomwe gwero ili limadikiriranso.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Sinthani cholowetsa</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Imasankha cholowetsa china choti idikire.</value></data>
 </root>

@@ -198,6 +198,29 @@ namespace PadForge.ViewModels
         /// from the device, which the first live refresh does.</summary>
         internal bool CenterKnown { get; set; }
 
+        /// <summary>Whether the live refresh has found where the tag's
+        /// input is in a device's state. It does so once.</summary>
+        internal bool InputFound { get; set; }
+
+        /// <summary>The device the level is read on, or null for one the
+        /// device list did not hold. Found again whenever the device list
+        /// changed (<see cref="DevicesSeen"/>, <see cref="DevicesVersion"/>).</summary>
+        internal PadForge.Engine.Data.UserDevice Device { get; set; }
+
+        /// <summary>The device list <see cref="Device"/> was found in.</summary>
+        internal PadForge.Common.Input.DeviceList DevicesSeen { get; set; }
+
+        /// <summary>That list's change count when <see cref="Device"/> was
+        /// found.</summary>
+        internal int DevicesVersion { get; set; }
+
+        /// <summary>The input's index among the state's axes, or among its
+        /// sliders when <see cref="InputIsSlider"/> is set. -1 reads 0.</summary>
+        internal int InputIndex { get; set; } = -1;
+
+        /// <summary>The input is a slider, as against an axis.</summary>
+        internal bool InputIsSlider { get; set; }
+
         private double _level;
 
         /// <summary>Where the input stands in its range, 0 to 1. A centered
@@ -285,9 +308,6 @@ namespace PadForge.ViewModels
 
         /// <summary>Where the source's mode and its keys are kept.</summary>
         MappingSourceItem ModeHolder { get; }
-
-        /// <summary>The source is the row's first.</summary>
-        bool IsFirstSource { get; }
 
         /// <summary>The id of the device the source reads, empty for any.</summary>
         string LineDeviceGuid { get; }

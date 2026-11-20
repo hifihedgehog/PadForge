@@ -2733,26 +2733,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>
-        /// Static check: is HIDMaestro available on this machine? Currently
-        /// returns true if the embedded SDK can construct a context (which
-        /// it always can — the driver, profiles, and signing tools all ship
-        /// inside HIDMaestro.Core.dll). Reserved for future use if we ever
-        /// detect a missing prerequisite.
-        /// </summary>
-        public static bool CheckHMaestroInstalled()
-        {
-            try
-            {
-                using var ctx = new HMContext();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         // ─────────────────────────────────────────────
         //  Slot activity check
         // ─────────────────────────────────────────────

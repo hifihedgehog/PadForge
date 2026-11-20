@@ -252,6 +252,10 @@ namespace PadForge.ViewModels
         {
             public string Value { get; init; }
             public string Name  { get; init; }
+            // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+            // by Equals, and an item equal only to itself made the box write null and drop the pick.
+            public override bool Equals(object obj) => obj is KindChoice o && string.Equals(o.Value, Value, System.StringComparison.Ordinal);
+            public override int GetHashCode() => Value?.GetHashCode(System.StringComparison.Ordinal) ?? 0;
         }
 
         // Cached once per culture so the WPF Kind ComboBox bindings
@@ -344,6 +348,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(KindChoices));
             OnPropertyChanged(nameof(KindLabel));
+            OnPropertyChanged(nameof(RecordButtonText));
         }
 
         private MappingItem _parentMappingItem;
@@ -705,6 +710,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsGyroLeanSource));
                     OnPropertyChanged(nameof(IsParamAccelApplicable));
+                    OnPropertyChanged(nameof(IsShapingShown));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -1496,7 +1502,14 @@ namespace PadForge.ViewModels
         /// re-stamp to a real field here the day it got a checkbox: the
         /// re-stamp preserved values but also resurrected them over an
         /// uncheck, so an authorable field cannot ride it.</summary>
-        public Engine.Data.MappingSource ToDomain() => new()
+        public Engine.Data.MappingSource ToDomain()
+        {
+            var src = ToDomainFields();
+            StoreShapingAndGates(src);
+            return src;
+        }
+
+        private Engine.Data.MappingSource ToDomainFields() => new()
         {
             Kind = _kind ?? "Direct",
             DeviceGuid = _deviceGuid ?? "",
@@ -1573,6 +1586,7 @@ namespace PadForge.ViewModels
                 ParamReverseMultiplier = src.ParamReverseMultiplier >= 1 ? src.ParamReverseMultiplier : 4.0,
                 ParamRapidTriggerDistance = Engine.Data.MappingSource.EffectiveRapidTriggerDistance(src.ParamRapidTriggerDistance),
             };
+            item.LoadShapingAndGates(src);
             // Last, with the kind and the Descriptor in.
             item.RememberSavedDescriptorController(src.DescriptorDeviceGuid);
             return item;

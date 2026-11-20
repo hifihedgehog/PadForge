@@ -1012,12 +1012,6 @@ namespace PadForge.Tests
             Shot("sticks-900.png", 636, 3000);
         }
 
-        /// <summary>The Devices page (#574) in the states its board draws, at the page's width beside
-        /// the sidebar of a 1280-wide window (1016), of a 1440-wide one (1176) and of a 900-wide one
-        /// (636, where the panel stands under the list). The view model holds the board's rows, made here, and the
-        /// slots' chips are put in after each pick, since a pick builds them again from the slot
-        /// statics, which nothing here touches. A picture with a fold open closes it again after,
-        /// since its state is the app's.</summary>
         /// <summary>Draws the Devices board's pictures with its devices'
         /// walks standing in for the device tree, which does not hold them,
         /// and puts the walk back after: a USB device under a host
@@ -1048,6 +1042,12 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The Devices page (#574) in the states its board draws, at the page's width beside
+        /// the sidebar of a 1280-wide window (1016), of a 1440-wide one (1176) and of a 900-wide one
+        /// (636, where the panel stands under the list). The view model holds the board's rows, made here, and the
+        /// slots' chips are put in after each pick, since a pick builds them again from the slot
+        /// statics, which nothing here touches. A picture with a fold open closes it again after,
+        /// since its state is the app's.</summary>
         private static void DrawDevicesPage(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
         {
             const double PageWidth = 1016, Narrow = 636;

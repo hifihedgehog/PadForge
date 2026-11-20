@@ -903,6 +903,21 @@ namespace PadForge.Engine.Data
         /// (volatile per-slot state, not persisted).</summary>
         [XmlElement] public string GyroAimEngageMode { get; set; } = "Hold";
 
+        /// <summary>Buttons that turn the gyro on, by layer, in the
+        /// <see cref="PadForge.Engine.Data.GyroActivation"/> text form
+        /// ("layer=Mode,Any|All,button|button" joined by ";"). The engaged
+        /// layer's entry applies, else Base's, else none, ANDed with the
+        /// engage button above. Buttons are device-free descriptors, held on
+        /// any device of the slot. Empty = no buttons, the gyro stays on.
+        /// The first device on the slot with an entry sets it, as the engage
+        /// button does.</summary>
+        [XmlElement] public string GyroActivation { get; set; } = "";
+
+        /// <summary>"1" re-centers the gyro each time it turns on, taking the
+        /// controller's pose as the resting point (Steam's Use Relative).
+        /// Any device on the slot with it on turns it on for the slot.</summary>
+        [XmlElement] public string GyroRecenterOnEngage { get; set; } = "0";
+
         /// <summary>Top-level invert toggle for the projected pitch
         /// axis. Applies post-tuning, after Player/World projection,
         /// so its effect is consistent across gyro spaces.</summary>
@@ -1787,6 +1802,8 @@ namespace PadForge.Engine.Data
             sb.Append(GyroAimEngageButton); sb.Append('|');
             sb.Append(GyroAimEngageDeviceGuid); sb.Append('|');
             sb.Append(GyroAimEngageMode); sb.Append('|');
+            sb.Append(GyroActivation); sb.Append('|');
+            sb.Append(GyroRecenterOnEngage); sb.Append('|');
             // Trigger rumble routing (#102)
             sb.Append(LeftTriggerRouteSource); sb.Append('|');
             sb.Append(RightTriggerRouteSource); sb.Append('|');
@@ -2490,7 +2507,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSmoothingThresholdDegPerSec),
             nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
             nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
-            nameof(GyroAimEngageMode),
+            nameof(GyroAimEngageMode), nameof(GyroActivation), nameof(GyroRecenterOnEngage),
             nameof(GyroInvertPitch), nameof(GyroInvertYaw), nameof(GyroInvertRoll),
             nameof(GyroApplyTuningToPassthrough),
             // Axis inversion

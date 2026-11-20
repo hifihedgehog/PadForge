@@ -55,7 +55,7 @@ namespace PadForge.Tests
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
                 "DotNet", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
                 "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp",
-                "OpenFlydigi", "FlydigiSpaceStationMac", "FlydigiApex4Linux",
+                "FlydigiSpaceStationMac", "FlydigiApex4Linux",
             }),
             ("About_License_MitSdkLoader", new[] { "GameInput" }),
             ("About_License_Apache2", new[] { "Bluepad32", "ProtobufNet", "Vosk" }),
@@ -100,7 +100,7 @@ namespace PadForge.Tests
             ("About_License_Several", new[]
             {
                 "ArcadeIoRefs", "BlissBoxRefs", "BleControllerRefs", "RfcommIcadeRefs", "DjiRemoteRefs", "GameModRefs",
-                "Ds4HeadsetRefs", "GunConRefs", "AnalogKeyboardRefs", "HidDeviceRefs", "IForceRefs", "IconSources",
+                "Ds4HeadsetRefs", "GunConRefs", "OpenFlydigi", "AnalogKeyboardRefs", "HidDeviceRefs", "IForceRefs", "IconSources",
                 "InstrumentRefs", "IrohFlexInput", "Kaldi", "KeyboardScreenRefs", "LightingRefs", "Linuxmotehook",
                 "LogitechLedRefs", "MenuRefs", "MingwRuntime", "Nefcon", "FalconRefs", "OpenXrRefs",
                 "PeripheralOutputRefs", "PortMidiRtMidi", "ProfileImportRefs", "Psmoveapi", "TelemetryRefs",

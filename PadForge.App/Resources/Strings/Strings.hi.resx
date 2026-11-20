@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>कोई नहीं</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>सेकंड</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>मिनट (0 = कभी नहीं)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>असाइन नहीं</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← बाएँ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ऊपर)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll नहीं मिली</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll नहीं मिली। SDL3.dll को PadForge.exe के पास रखें। इसे यहाँ से डाउनलोड करें: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll नहीं मिली। PadForge को दोबारा डाउनलोड करें।</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ड्राइवर कार्रवाई विफल: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>सेटिंग्स क्लिपबोर्ड पर कॉपी की गईं।</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>डिवाइस की जानकारी क्लिपबोर्ड पर कॉपी की गई।</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>कम</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>चित्र</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>सूची</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} आउटपुट</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} आउटपुट</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>मोशन</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>किसी कंट्रोल पर क्लिक करें और फिर वह इनपुट दबाएँ जिससे उसे चलाना है।</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>वे गेम जिन्हें PadForge नहीं जानता</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>उन मॉड के लिए जो भेजने से पहले चल रहे DSX को खोजते हैं।</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>क्या दिखता है</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>खुले मेनू का रिंग, ग्रिड या बार</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ़्ट लेयर चालू होने पर लेयर का नाम, उतनी देर के लिए जितनी वह लेयर तय करती है</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफ़ाइल बदलने पर प्रोफ़ाइल का नाम</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>खुले मेनू का रिंग, ग्रिड या बार।</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ़्ट लेयर चालू होने पर लेयर का नाम, उतनी देर के लिए जितनी वह लेयर तय करती है।</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफ़ाइल बदलने पर प्रोफ़ाइल का नाम।</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>पता कॉपी करें</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>स्क्रीन पर जगह</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>फ़ोन कनेक्ट करें</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>लॉन्च पर इंजन अपने-आप शुरू करें</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>विंडो से फ़ोकस हटने पर भी पोलिंग जारी रखें</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>पोलिंग दर (जब तक कोई प्रोफ़ाइल इसे ओवरराइड न करे)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>इंजन हर डिवाइस को पढ़ता है और वर्चुअल कंट्रोलर को प्रति सेकंड इतनी बार अपडेट करता है, 60 से 10000 तक। ऊँची दर प्रोसेसर का ज़्यादा समय लेती है। Windows इंजन को एक सेकंड में अधिकतम लगभग 2000 बार जगाता है, इसलिए इससे ऊँची दर पर इंजन हर बार जागने पर कई पास चलाता है। जब अपनी पोलिंग दर वाली कोई प्रोफ़ाइल सक्रिय होती है, तब इसकी जगह वही दर लागू होती है। प्रोफ़ाइल के निष्क्रिय होने पर यह मान वापस आ जाता है।</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>इंजन हर डिवाइस को पढ़ता है और वर्चुअल कंट्रोलर को प्रति सेकंड इतनी बार अपडेट करता है, 60 से 10000 तक। ऊँची दर प्रोसेसर का ज़्यादा समय लेती है। इस पीसी पर Windows इंजन को एक सेकंड में अधिकतम {0} बार जगाता है, इसलिए इससे ऊँची दर पर इंजन हर बार जागने पर कई पास चलाता है। जब अपनी पोलिंग दर वाली कोई प्रोफ़ाइल सक्रिय होती है, तब इसकी जगह वही दर लागू होती है। प्रोफ़ाइल के निष्क्रिय होने पर यह मान वापस आ जाता है।</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>गेम से डिवाइस छिपाएँ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide से डिवाइस छिपाने और लो-लेवल इनपुट हुक के लिए मास्टर स्विच। बंद होने पर कोई डिवाइस नहीं छिपता, चाहे हर डिवाइस की अपनी सेटिंग कुछ भी हो।</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>लॉन्च के बीच डिवाइस छिपाए रखें</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>टाइप किए गए वर्णों के बीच मिलीसेकंड, अधिकतम 1000। 0 होने पर पूरा टेक्स्ट एक साथ टाइप होता है।</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>निष्क्रिय होने पर डिस्कनेक्ट</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>विवरण</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>मिनट</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB से जुड़ने पर Bluetooth डिस्कनेक्ट करें</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>क्विक चार्ज। जब यह कंट्रोलर Bluetooth से कनेक्ट रहते हुए बताता है कि वह चार्ज हो रहा है, तो Bluetooth लिंक तोड़ दिया जाता है ताकि वह रेडियो पर बिजली खर्च किए बिना चार्ज हो। कोई भी USB पावर स्रोत चलता है, वॉल चार्जर भी। अगर केबल लगी रहते आप Bluetooth फिर चालू करते हैं, तो अगली बार केबल निकालने तक उसे नहीं छेड़ा जाता।</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade कंट्रोलर के रूप में पढ़ें</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU सक्रिय प्रोफ़ाइल का नाम दिखाता है और हर बार प्रोफ़ाइल बदलने पर उसे बदल देता है।</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU प्रोफ़ाइल सूची में सक्रिय प्रोफ़ाइल का स्थान दिखाता है। डिफ़ॉल्ट प्रोफ़ाइल 0 है।</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU सक्रिय प्रोफ़ाइल का अपना चित्र दिखाता है, या चित्र न हो तो उसका नाम। हर प्रोफ़ाइल का अपना चित्र रहता है।</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU दिन का समय दिखाता है, जो हर मिनट दोबारा लिखा जाता है। एडैप्टर हर चित्र ऐसी मेमोरी में रखता है जो 100,000 बार लिखने के लिए बनी है, और चौबीसों घंटे दिखाने पर यह सीमा लगभग दस हफ़्तों में आ जाती है।</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU वे घंटे और मिनट दिखाता है जो PadForge को पैड मिलने के बाद बीते हैं, और यह हर मिनट दोबारा लिखा जाता है। दस सेकंड से ज़्यादा पोर्ट से बाहर रहा पैड फिर शून्य से शुरू करता है। एडैप्टर हर चित्र ऐसी मेमोरी में रखता है जो 100,000 बार लिखने के लिए बनी है, और चौबीसों घंटे दिखाने पर यह सीमा लगभग दस हफ़्तों में आ जाती है।</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU दिन का समय दिखाता है, जो हर मिनट दोबारा लिखा जाता है। एडैप्टर हर चित्र अपनी ही मेमोरी में रखता है, इसलिए PadForge उसे इससे ज़्यादा बार नहीं लिखता।</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU वे घंटे और मिनट दिखाता है जो PadForge को पैड मिलने के बाद बीते हैं, और यह हर मिनट दोबारा लिखा जाता है। दस सेकंड से ज़्यादा पोर्ट से बाहर रहा पैड फिर शून्य से शुरू करता है। एडैप्टर हर चित्र अपनी ही मेमोरी में रखता है, इसलिए PadForge उसे मिनट में एक बार से ज़्यादा नहीं लिखता।</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU आपका चुना हुआ चित्र दिखाता है: BMP या PNG, VMU Animator की .lcd फ़ाइल या Dreamcast का .vms आइकन। चित्र 48 गुणा 32 श्वेत-श्याम पिक्सेल में काटे जाते हैं।</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>चित्र चुनें…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} के लिए चित्र चुनें…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox मोड वाले कंट्रोलर ने Apex 4 के रूप में जवाब नहीं दिया, इसलिए कुछ नहीं भेजा गया और Windows के पास वह वापस आ गया है। उसे उसके अपने स्विच से वापस DInput मोड में करें।</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ने कंट्रोलर को WinUSB पर नहीं ले जाया, इसलिए कुछ नहीं भेजा गया। उसे उसके अपने स्विच से वापस DInput मोड में करें।</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>रोक दिया गया। दोबारा भेजने से पहले कंट्रोलर को उसके अपने स्विच से बंद करके फिर चालू करें।</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>स्क्रीन का पोर्ट नहीं खुला, इसलिए कुछ भेजा नहीं गया। कंट्रोलर को उसके अपने स्विच से बंद करके फिर चालू करें और दोबारा भेजें।</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>चित्र में इस कंट्रोलर की स्क्रीन की क्षमता से ज़्यादा फ़्रेम हैं।</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>इस कंट्रोलर को पहले से एक चित्र भेजा जा रहा है। उसके पूरा होने तक रुकें।</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>स्क्रीन ने चित्र ऐसे पते पर माँगा जहाँ PadForge नहीं लिखता, इसलिए कुछ भेजा नहीं गया। कंट्रोलर को उसके अपने स्विच से बंद करके फिर चालू करें और दोबारा भेजें।</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>चित्र भेज दिया गया, लेकिन कंट्रोलर DInput मोड में वापस नहीं लौटा। उसे उसके अपने स्विच से वापस करें।</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>कंट्रोलर ने उसे तैयार करने वाला कमांड नहीं लिया, इसलिए कुछ भेजा नहीं गया। जाँचें कि वह कनेक्ट है और दोबारा भेजें।</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge में एक त्रुटि होने से भेजना रुक गया। विवरण लॉग फ़ाइल में हैं।</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>कंट्रोलर तक अभी चित्र जा रहा है। भेजना रोक दें?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak फ़ाइलें (*.mpk)|*.mpk|सभी फ़ाइलें (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak पोर्ट {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>मेनू ज्यामिति रीसेट करें</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>सेल रीसेट करें</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>संवेदनशीलता रीसेट करें</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>त्वरण रीसेट करें</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>डेडज़ोन रीसेट करें</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>दबाए रखने का समय रीसेट करें</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>दबाने की समय-सीमा रीसेट करें</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>कोई भी लेयर</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>जब तक यह वर्चुअल कंट्रोलर सक्रिय है, लगातार चलता है। किसी ट्रिगर बटन की ज़रूरत नहीं।</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>क्या करें</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>लेयर, स्रोत, थ्रेशोल्ड, दिशा, ट्रिगर बटन रोक लें, दोहराएँ</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>क्रिया जोड़ें</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>प्रकार</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>वर्चुअल बटन</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>माउस बटन दबाना</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>माउस बटन छोड़ना</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>माउस स्क्रॉल</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>टचपैड ओवरले टॉगल करें</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>बटन</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>कुंजी कॉम्बो</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>कुंजी कॉम्बो {Key1}{Key2} फ़ॉर्मेट में। संपादित किया जा सकता है।</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} को हर {1} ms पर दोहराएँ</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>माउस X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>माउस Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>क्षैतिज ऑफ़सेट</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ऊर्ध्वाधर ऑफ़सेट</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>अंतराल</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>स्क्रीन पर चुनें</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} में कैप्चर होगा…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>उलटा आधा</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>कोई डिवाइस मैप नहीं है</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>अज्ञात डिवाइस</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>टचपैड क्लिक</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>नीचे (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ऊपर (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>सक्रियण</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>निशाना सक्रियण बटन, सक्रियण मोड, आसान निशाना थ्रेशोल्ड</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>निशाना सक्रियण बटन, सक्रियण मोड, जाइरो चालू, फिर से केंद्रित करना, आसान निशाना थ्रेशोल्ड</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>वैकल्पिक शर्तें जो तय करती हैं कि जाइरो कब सक्रिय रहे। दाईं स्टिक का झुकाव और निशाना सक्रियण बटन, दोनों अलग-अलग कॉन्फ़िगर किए जा सकते हैं। जाइरो तभी चलता है जब कॉन्फ़िगर की गई हर शर्त पूरी हो।</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>लोकल</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>प्लेयर</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>आसान निशाना थ्रेशोल्ड रीसेट करें</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>निशाना सक्रियण बटन रीसेट करें</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>सक्रियण मोड रीसेट करें</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>लेयर</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>वह लेयर जिसकी जाइरो चालू सेटिंग नीचे की पंक्तियाँ दिखाती और बदलती हैं।</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>जाइरो चालू</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>सक्रियण बटन के अलावा, जाइरो इस लेयर पर कब काम करे। “बेस जैसा” पर सेट की गई शिफ़्ट लेयर बेस का अनुसरण करती है।</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>हमेशा चालू</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>बेस जैसा</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>दबाए रखने तक</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>न दबाए रहने तक</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>हर दबाने पर बदलें</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>जाइरो चालू बटन</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>वे बटन जिन्हें जाइरो चालू पढ़ता है, इस स्लॉट के किसी भी कंट्रोलर पर।</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>आवश्यकता</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>चुना गया एक बटन काफ़ी है या हर चुने गए बटन को दबाए रखना होगा।</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>कोई भी बटन</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>हर बटन</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>जाइरो चालू होने पर फिर से केंद्रित करें</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>जाइरो चालू होने पर हर बार कंट्रोलर की मौजूदा स्थिति को विश्राम बिंदु मान लेता है।</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>जाइरो चालू रीसेट करें</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>जाइरो चालू बटन रीसेट करें</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>आवश्यकता रीसेट करें</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>जाइरो चालू होने पर फिर से केंद्रित करना रीसेट करें</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>सक्रियण स्टिक रीसेट करें</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>सक्रियण दिशा रीसेट करें</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>मोशन पासथ्रू</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>गेम वह मोशन पढ़ता है जिस पर यहाँ तय की गई संवेदनशीलता, स्मूदिंग और वक्र लगे हों।</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>पासथ्रू ट्यूनिंग रीसेट करें</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>केवल तब जब</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>यह स्रोत तभी गिना जाता है जब इसी कंट्रोलर पर यह इनपुट भी दबा हुआ पढ़ा जाए। इंपोर्ट से आई ज़ोन जाँच उस स्टिक या ट्रिगर की सीमा के रूप में पढ़ी जाती है जिसे वह जाँचती है।</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>और तब जब</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>दूसरा इनपुट जिसका यह स्रोत भी इंतज़ार करता है।</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>इनपुट बदलें</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>इंतज़ार करने के लिए दूसरा इनपुट चुनता है।</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>कर्व</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>इस इनपुट के मान को आउटपुट चलाने से पहले इस घात तक उठाता है। 0 और 1 उसे सीधा रखते हैं। 1 से ऊपर का मान केंद्र के पास धीमा होता है।</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>बाहरी सीमा</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>आउटपुट गति के इतने हिस्से पर पूरा हो जाता है। 100% बंद है।</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>एंटी डेडज़ोन</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>इनपुट के हिलते ही आउटपुट इतने से शुरू होता है। 0 बंद है।</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>डेडज़ोन का आकार</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>बंद मान को जस का तस छोड़ता है। अक्षीय केवल इसी अक्ष को मापता है। रेडियल स्टिक की जोड़ी को साथ में मापता है।</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>बंद</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>अक्षीय</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>रेडियल</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>भीतरी डेडज़ोन</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>गति के इतने हिस्से से नीचे इनपुट केंद्र पर पढ़ा जाता है।</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>हर स्रोत के लिए जाइरो संवेदनशीलता का गुणक। 1.0 = इंजन का डिफ़ॉल्ट (500°/s → पूरा झुकाव)। 1.0 से ऊपर के मान ज़्यादा संवेदनशील होते हैं। 1.0 से नीचे के मान कम संवेदनशील।</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>हर स्रोत के लिए झुकाव संवेदनशीलता का गुणक। 1.0 = 90° झुकाने पर स्टिक का पूरा झुकाव। 1.0 से ऊपर के मान कम झुकाने पर ही पूरे झुकाव तक पहुँच जाते हैं।</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>जाइरो टिल्ट X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>स्तर</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>निष्क्रियता टाइमआउट</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>जब किसी वर्चुअल कंट्रोलर के सभी मैप किए गए डिवाइस ऑफ़लाइन हों, तो उसे हटाए जाने से पहले के सेकंड। 0 पर यह बंद रहता है। उसी प्रकार के बचे हुए कंट्रोलर खाली जगह भरने के लिए ऊपर खिसकते हैं और निचले स्लॉट से फिर जुड़ जाते हैं।</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>सेकंड (0 = कभी नहीं)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>लेयर जोड़ें</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>शिफ़्ट लेयर जोड़ें। यह दूसरी मैपिंग तालिका है, जो किसी बटन के दबे रहने या टॉगल होने पर सक्रिय होती है।</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>अनवाइंड दर रीसेट करें</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>कोण का भीतरी डेडज़ोन रीसेट करें</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>कोण का बाहरी डेडज़ोन रीसेट करें</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>स्टिक का डेडज़ोन</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>इस झुकाव से नीचे स्टिक केंद्र पर पढ़ी जाती है, इसलिए स्टीयरिंग जमा नहीं होती।</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>स्टिक का डेडज़ोन रीसेट करें</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>झुकाव का भीतरी डेडज़ोन रीसेट करें</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>झुकाव का बाहरी डेडज़ोन रीसेट करें</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>कंट्रोलर की दिशा रीसेट करें</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>में से {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>यह कार व्हील के पास मौजूद टॉर्क से ज़्यादा माँगती है, इसलिए वक्र का ऊपरी हिस्सा कट जाता है।</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>ऑन-सेंटर अनुभव, पावर असिस्ट, डैम्पिंग, घर्षण, ग्रिप, स्थिर गति, व्हील टॉर्क</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>ऑन-सेंटर अनुभव, पावर असिस्ट, डैम्पिंग, ग्रिप, स्थिर गति, व्हील टॉर्क</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>कम गति पर स्टीयरिंग अपना केंद्र कितनी मज़बूती से थामे रखती है। 100% कार का अपना मान है।</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>पावर असिस्ट</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>कॉर्नरिंग बढ़ने पर पावर स्टीयरिंग कितना बोझ हटाती है। अधिक होने पर केंद्र से दूर स्टीयरिंग हल्की रहती है।</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ऊँचे टोन रीसेट करें</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>टोन सीमा रीसेट करें</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>सिस्टम का डिफ़ॉल्ट आउटपुट जो भी चलाता है, उसे साथ-साथ इस कंट्रोलर के अंतर्निहित स्पीकर पर भी चलाता है। USB और Bluetooth दोनों पर काम करता है।</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>चुने गए डिवाइस में अंतर्निहित स्पीकर नहीं है। इस पैड की मैक्रो ध्वनियाँ सिस्टम के डिफ़ॉल्ट आउटपुट पर चलती हैं।</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>इस कनेक्शन पर PadForge के पास चुने गए डिवाइस के स्पीकर तक कोई रास्ता नहीं है। इस पैड की मैक्रो ध्वनियाँ सिस्टम के डिफ़ॉल्ट आउटपुट पर चलती हैं।</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) का ब्राउज़र DualSense टेस्ट सूट: Sony फ़ीचर-रिपोर्ट की CRC फ़्रेमिंग और उन फ़र्मवेयर टेस्ट कमांड का संदर्भ जिन्हें PadForge वर्चुअल से भौतिक पैड तक आगे भेजता है।</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast स्क्रीन दिखाएँ</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>इस स्लॉट को इनपुट देने वाले Bliss-Box पोर्ट के हर Dreamcast पैड के VMU पर चित्र चलाता है, फिर हर पोर्ट को उसकी अपनी स्क्रीन सेटिंग पर लौटा देता है।</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast चित्र दिखाएँ: {0} × {1} ms, दोहराव संख्या {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>हर चित्र कम से कम एक सेकंड दिखता है, क्योंकि एडैप्टर भेजे गए हर चित्र को ऐसी मेमोरी में रखता है जो 100,000 बार लिखने के लिए बनी है, और हर सेकंड नया चित्र भेजने पर यह सीमा लगभग एक दिन में आ जाती है। चित्र 48 गुणा 32 श्वेत-श्याम पिक्सेल के होते हैं, जो BMP या PNG, VMU Animator की .lcd फ़ाइल या Dreamcast के .vms आइकन से लिए जाते हैं।</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>हर चित्र कम से कम एक सेकंड दिखता है। PadForge एडैप्टर को एक सेकंड में अधिकतम एक चित्र भेजता है, क्योंकि एडैप्टर भेजे गए हर चित्र को अपनी ही मेमोरी में रखता है। चित्र 48 गुणा 32 श्वेत-श्याम पिक्सेल के होते हैं, जो BMP या PNG, VMU Animator की .lcd फ़ाइल या Dreamcast के .vms आइकन से लिए जाते हैं।</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>चित्र</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>चित्र जोड़ें…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>चित्र निकालें</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>जब लेयर टॉगल से चालू हो, तब लेयर का अपना कोई मैप किया गया इनपुट इतने मिलीसेकंड तक सक्रिय न रहने पर वह खुद बंद हो जाती है। टाइमर लेयर के सक्रिय होते ही शुरू होता है और लेयर के हर इनपुट पर फिर से शुरू होता है। 0 पर लेयर तब तक चालू रहती है जब तक आप उसे खुद टॉगल से बंद न करें।</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ट्रिम डेडज़ोन को 25% पर रीसेट करें।</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ट्रिम गति को 100% प्रति सेकंड पर रीसेट करें।</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>छोड़ने पर स्तर को वापस 100% पर लाने वाली सेटिंग पर रीसेट करें।</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>अपने-आप रद्द को 0 पर रीसेट करें (लेयर टॉगल से बंद किए जाने तक चालू रहती है)।</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop प्रोफ़ाइल</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop मैक्रो</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>कर्सर क्षेत्र</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (होल्ड)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (रिलीज़)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (सक्रियण)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>क्या-क्या आता है, यह देखने के लिए कोई कॉन्फ़िग चुनें।</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>क्या-क्या आता है</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>बनता है</value></data>
@@ -4825,7 +4872,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>दिशा दबाने पर सेल एक-एक करके बदलते हैं और हर नया चुना गया सेल चलता है, “चलने का मोड” या “क्लिक इनपुट” के बिना। हॉटबार शैली बिना चलाए आगे बढ़ती है और अपने “चलाएँ” कंट्रोल से चलाती है।</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi एन्हांस्ड प्रोटोकॉल</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>समर्थित Flydigi कंट्रोलर पर अतिरिक्त बटन और मोशन सेंसर सक्षम करता है।</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi सॉफ़्टवेयर चल रहा है: {0}। यह PadForge वाला ही कंट्रोलर इंटरफ़ेस उपयोग कर सकता है, और रिपोर्ट मिली है कि दोनों की पहुँच होने पर Vader 5 Pro बार-बार डिस्कनेक्ट होता रहा। अगर यह कंट्रोलर कटकर फिर कनेक्ट होता है, तो PadForge का उपयोग करते समय सेवा रोक दें, कंट्रोलर को छिपा रखें और सेवा को HidHide व्हाइटलिस्ट से निकाल दें, या सेटिंग्स में "Flydigi एन्हांस्ड प्रोटोकॉल" बंद करके देखें, हालाँकि इससे मदद मिलना पक्का नहीं है।</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi सॉफ़्टवेयर चल रहा है: {0}। यह कंट्रोलर से उसी इंटरफ़ेस पर बात करता है जिसे PadForge उपयोग करता है। अगर यह कंट्रोलर कटकर फिर कनेक्ट होता है, तो PadForge का उपयोग करते समय उस सॉफ़्टवेयर को रोक दें।</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>रिमोट से असाइनमेंट बदलने की अनुमति दें</value>
   </data>
@@ -5485,9 +5532,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>चुनें कि क्या दिखे…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge स्क्रीन ओवरले</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अभी दिखाने के लिए कुछ नहीं है। एक्स्ट्रा के अंतर्गत स्क्रीन ओवरले पेज पर चुनें कि क्या दिखे।</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रीन ओवरले टॉगल करें</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>क्रॉसहेयर टॉगल करें</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>मैग्निफ़ायर टॉगल करें</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>हर क्रॉसहेयर</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>क्रॉसहेयर</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रीन ओवरले टॉगल करें</value></data>

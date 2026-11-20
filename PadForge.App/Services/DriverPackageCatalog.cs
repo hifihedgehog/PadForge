@@ -23,8 +23,10 @@ namespace PadForge.Services
     /// CryptCATPutCatAttrInfo, CryptCATPutMemberInfo, CryptCATPutAttrInfo and
     /// CryptCATPersistStore, with each member's indirect data from
     /// CryptSIPCreateIndirectData. For PadForge's three packages the catalog
-    /// written here equals the one Inf2Cat 10.0.26100 wrote, entry for entry
-    /// (DriverPackageCatalogTests holds what that tool wrote).</para>
+    /// written here equaled the one Inf2Cat 10.0.26100 wrote, entry for entry,
+    /// when both were run on the same files on 2026-11-19.
+    /// DriverPackageCatalogTests holds what that tool wrote for one frozen
+    /// test package and checks this writer against it.</para>
     ///
     /// <list type="bullet">
     /// <item>One catalog per name an INF's CatalogFile entry gives

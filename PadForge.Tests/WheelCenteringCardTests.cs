@@ -989,4 +989,49 @@ public class WheelCenteringCardTests
         foreach (string shown in new[] { "CenteringLiveAngle", "CenteringPreview", "CenteringStatusText", "CenteringSpeedText", "CenteringMeasured" })
             Assert.DoesNotContain("nameof(PadViewModel." + shown + ")", window);
     }
+
+    /// <summary>The chart's friction band is the friction the wheel is
+    /// sent: none on a wheel with no friction effect, whatever the
+    /// setting says, as WheelCentering.Step sends it none
+    /// (audit C6-O2).</summary>
+    [Fact]
+    public void TheChartDrawsTheFrictionTheWheelIsSent()
+    {
+        var generic = Loaded(new PadSetting { CenteringMode = "1", CenteringFriction = "45" }, Generic);
+        Assert.NotNull(generic.CenteringPreview);
+        Assert.Equal(0.0, generic.CenteringPreview.Friction);
+        var native = Loaded(new PadSetting { CenteringMode = "1", CenteringFriction = "45" }, Native);
+        Assert.Equal(0.45, native.CenteringPreview.Friction, 9);
+    }
+
+    /// <summary>The Friction row shows only on a wheel that runs a
+    /// friction effect: elsewhere the wheel is sent none, and the
+    /// setting changes nothing. The More row's hint leaves it out
+    /// there, and follows the wheel when it changes.</summary>
+    [Fact]
+    public void TheFrictionRowShowsOnlyOnAWheelWithAFrictionEffect()
+    {
+        var s = Strings.Instance;
+        var native = Loaded(VehicleSetting(), Native);
+        Assert.True(native.CenteringFrictionShown);
+        Assert.Equal(s.Pad_More_Centering, native.CenteringMoreHint);
+
+        var generic = Loaded(VehicleSetting(), Generic);
+        Assert.False(generic.CenteringFrictionShown);
+        Assert.Equal(s.Pad_More_Centering_NoFriction, generic.CenteringMoreHint);
+        Assert.Equal("On-center feel, power assist, damping, grip, fixed speed, wheel torque", s.Pad_More_Centering_NoFriction);
+
+        var changed = new List<string>();
+        generic.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+        generic.SetCenteringWheel(Native);
+        Assert.True(generic.CenteringFrictionShown);
+        Assert.Contains(nameof(PadViewModel.CenteringFrictionShown), changed);
+        Assert.Contains(nameof(PadViewModel.CenteringMoreHint), changed);
+
+        var more = Page().Descendants().Single(e => e.Name.LocalName == "MoreRow"
+            && (string)e.Attributes().SingleOrDefault(a => a.Name.LocalName == "AutomationProperties.AutomationId") == "Pad_More_Centering");
+        Assert.Equal("{Binding CenteringMoreHint}", (string)more.Attribute("Hint"));
+        var row = more.Descendants().Single(e => e.Name.LocalName == "SettingRow" && e.ToString().Contains("Pad_Centering_Friction,"));
+        Assert.Equal("{Binding CenteringFrictionShown, Converter={StaticResource BoolToVisibilityConverter}}", (string)row.Attribute("Visibility"));
+    }
 }

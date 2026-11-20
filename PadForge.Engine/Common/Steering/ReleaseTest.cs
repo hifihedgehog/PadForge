@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PadForge.Engine.Steering
 {
@@ -46,7 +47,10 @@ namespace PadForge.Engine.Steering
     /// motor and then waits for rest.</para>
     ///
     /// <para>One step runs per poll: <see cref="Step"/> takes the axis
-    /// and a millisecond clock and answers the frame to send.</para>
+    /// and a millisecond clock and answers the frame to send. The search
+    /// for the damping, a simulated release for each ratio it tries, is
+    /// too long for a poll: it runs on a worker, and the polls send
+    /// nothing until its answer is in.</para>
     /// </summary>
     public sealed class ReleaseTest
     {
@@ -135,6 +139,7 @@ namespace PadForge.Engine.Steering
         private readonly WheelCalibration _previous;
         private readonly double _torque, _halfRange, _speed, _grip, _increment, _springCap, _span;
         private readonly WheelCentering _centering = new WheelCentering();
+        private readonly Action<Action> _schedule;
 
         private Phase _phase = Phase.Settle;
         private int _stage;
@@ -156,15 +161,19 @@ namespace PadForge.Engine.Steering
         private double _rampLevel, _stepLevel, _pushSign;
         private int _forceSign = 1;
         private double _friction, _inertia, _delay, _stepAcceleration;
+
+        // The delay the step's fit read. _delay is the one the measurement stores for the stability rule, and the
+        // one the test's own waits and brakes allow for: on a coarse axis it is never under UnmeasuredDelay. The
+        // damper and the spring are read against _lag, the moment the force reached the wheel, since a lag taken
+        // longer than the wheel's reads either one weak or not at all.
+        private double _lag;
         private readonly double[] _damper = new double[WheelCalibration.DamperCoefficients.Length];
         private readonly double[] _spring = new double[WheelCalibration.SpringCoefficients.Length];
         private int _damperIndex, _springIndex;
         private long _stepEnd;
         private bool _braking;
-        private int _ratioStep;
-        private double _bestRatio, _bestPast;
-        private readonly double[] _pasts = new double[RatioSteps + 1];
-        private WheelCalibration _result;
+        private RatioSearch _search;
+        private WheelCalibration _result, _signOnly;
 
         private readonly List<double> _before = new List<double>(ReleaseMs);
         private readonly List<double> _after = new List<double>(ReleaseMs);
@@ -188,6 +197,9 @@ namespace PadForge.Engine.Steering
         /// begins.</summary>
         public double Damping { get; private set; }
 
+        /// <summary>The test waits for its search for the return ratio.</summary>
+        internal bool Searching => _phase == Phase.Search;
+
         /// <summary>Progress from 0 to 1 for the window.</summary>
         public double Progress { get; private set; }
 
@@ -198,7 +210,15 @@ namespace PadForge.Engine.Steering
         /// earlier test, or null. The first release centers with it,
         /// as the wheel centered before this test.</param>
         public ReleaseTest(in CenteringSettings settings, WheelCalibration previous = null)
+            : this(settings, previous, null)
         {
+        }
+
+        /// <param name="schedule">Runs the search for the return ratio
+        /// off the polling thread. Null is the thread pool.</param>
+        internal ReleaseTest(in CenteringSettings settings, WheelCalibration previous, Action<Action> schedule)
+        {
+            _schedule = schedule;
             _settings = new CenteringSettings(true, settings.Car, settings.WeightPercent, settings.OnCenterPercent,
                 settings.AssistPercent, settings.DampingPercent, settings.Friction, false, settings.FixedSpeed,
                 settings.GripChoice, settings.WheelTorque, settings.Range, settings.Effects, settings.DamperSteps);
@@ -414,8 +434,10 @@ namespace PadForge.Engine.Steering
                         if (++_damperIndex < _damper.Length) Enter(Phase.DamperStep, tick, angle);
                         else
                         {
-                            // The spring's strongest coefficient first. One that shows no spring ends the
-                            // spring's part, since a weaker coefficient shows less.
+                            // The spring's strongest coefficient first, then each weaker one. A reading of 0
+                            // does not end the part: the push may be too weak to move a stiff spring a
+                            // degree, and a weaker coefficient still reads. Only a wheel that runs away
+                            // under the push ends it (SpringRamp), since a weaker spring holds it less.
                             _springIndex = _spring.Length - 1;
                             Enter(Phase.SpringSettle, tick, angle);
                         }
@@ -458,18 +480,21 @@ namespace PadForge.Engine.Steering
                 }
 
                 case Phase.SpringStop:
-                    if (Still(ref frame, angle, tick, 300) || elapsed > 3000)
-                    {
-                        _ratioStep = 0;
-                        _bestRatio = 0;
-                        _bestPast = double.MaxValue;
-                        Enter(Phase.Search, tick, angle);
-                    }
+                    if (Still(ref frame, angle, tick, 300) || elapsed > 3000) Enter(Phase.Search, tick, angle);
                     break;
 
                 case Phase.Search:
-                    // One return ratio a poll, so no poll waits on the whole search.
-                    if (SearchStep()) Enter(Phase.PushBefore, tick, angle);
+                    // The search is handed to a worker on the first poll here, and every poll after it returns at
+                    // once, sending nothing, until the answer is in.
+                    if (_search == null)
+                    {
+                        _search = new RatioSearch(Measurement(0), _settings, _speed, _grip, _halfRange, ReleaseAngle);
+                        (_schedule ?? OnThreadPool)(_search.Run);
+                    }
+                    if (!_search.Done) break;
+                    if (_search.Failed) { End(ReleaseTestOutcome.Unreadable); break; }
+                    _result = Measurement(_search.Ratio);
+                    Enter(Phase.PushBefore, tick, angle);
                     break;
 
                 case Phase.PushBefore:
@@ -560,11 +585,15 @@ namespace PadForge.Engine.Steering
         /// earlier measurement where it has one that pushes the way
         /// this test found, or nothing but the sign, so the wheel
         /// centers the way it did before the test, pushed the right
-        /// way.</summary>
-        private WheelCalibration BeforeMeasurement()
+        /// way. The sign is known from the ramp on, so the measurement
+        /// of the sign alone is made once: the release asks for it each
+        /// poll, and the composer keeps its work for a measurement by
+        /// reference.</summary>
+        internal WheelCalibration BeforeMeasurement()
         {
             if (_previous != null && _previous.ForceSign == _forceSign) return _previous;
-            return _forceSign > 0 ? null : new WheelCalibration
+            if (_forceSign > 0) return null;
+            return _signOnly ??= new WheelCalibration
             {
                 Inertia = WheelCentering.UnmeasuredInertia, Delay = WheelCentering.UnmeasuredDelay, WheelTorque = _torque, ForceSign = -1,
                 DamperMid = _torque / 10.0 * WheelCalibration.DamperCoefficients[0] / 10000.0, DamperFull = _torque / 10.0,
@@ -609,10 +638,12 @@ namespace PadForge.Engine.Steering
             double c2 = (n * (s2 * y2 - y1 * s3) - s1 * (s1 * y2 - y1 * s2) + y0 * (s1 * s3 - s2 * s2)) / det;
             if (c2 <= 0) return false;
             _stepAcceleration = 2.0 * c2;
-            _delay = Math.Clamp(-c1 / (2.0 * c2), 0.001, 0.040);
+            _lag = WheelCentering.DelayWithin(-c1 / (2.0 * c2));
+            _delay = _lag;
             // The lowest point of a parabola drawn through few counts is known to a few milliseconds at
             // best, and a delay read short lets the wheel swing. So an axis that showed fewer than
-            // CoarseCounts counts over the step keeps no delay under the one taken for an unmeasured wheel.
+            // CoarseCounts counts over the step keeps no delay under the one taken for an unmeasured wheel,
+            // for the stability rule. The damper and the spring are still read against the fitted lag.
             if (_grain > 0 && Math.Abs(travel) < CoarseCounts * _grain)
                 _delay = Math.Max(_delay, WheelCentering.UnmeasuredDelay);
             return true;
@@ -665,7 +696,7 @@ namespace PadForge.Engine.Steering
         private double ReadDamper()
         {
             if (_samples.Count < 8) return 0;
-            double t = (_samples[^1].tick - _phaseStart) / 1000.0 - _delay;
+            double t = (_samples[^1].tick - _phaseStart) / 1000.0 - _lag;
             double moved = Math.Abs(_samples[^1].angle - _phaseAngle);
             double free = (_stepLevel * _torque - _friction) / _inertia;
             if (t <= 0.02 || free <= 0) return 0;
@@ -708,7 +739,7 @@ namespace PadForge.Engine.Steering
             // Under a degree of travel is a spring too stiff for this push to read.
             if (moved < 1.0 * Deg) return 0;
 
-            long lag = (long)Math.Round(_delay * 1000.0);
+            long lag = (long)Math.Round(_lag * 1000.0);
             double PushAt(ref int at, long tick)
             {
                 // The push that had reached the motor at this tick: the one commanded a delay earlier.
@@ -811,59 +842,104 @@ namespace PadForge.Engine.Steering
             return true;
         }
 
-        /// <summary>Tries one return ratio against a simulation of the
-        /// measured wheel: the least damping, of the wheel's inertia
-        /// against the curve's stiffness at center, that returns it
-        /// from the release angle without overshoot. A wheel that swings
-        /// past center at every ratio takes the least ratio that comes
-        /// near the best of them. True once the ratio is chosen.</summary>
-        private bool SearchStep()
-        {
-            double ratio = _ratioStep * 0.1;
-            double past = SimulatedOvershoot(ratio);
-            _pasts[_ratioStep] = past;
-            if (past < _bestPast) _bestPast = past;
-            // The ratios run from the least, so the first that stops the swing is the least that does.
-            if (past <= NoOvershootDegrees) _bestRatio = ratio;
-            else
-            {
-                if (++_ratioStep <= RatioSteps) return false;
-                for (int i = 0; i <= RatioSteps; i++)
-                {
-                    if (_pasts[i] > _bestPast + NearBestDegrees) continue;
-                    _bestRatio = i * 0.1;
-                    break;
-                }
-            }
-            _result = Measurement(_bestRatio);
-            return true;
-        }
-
-        private WheelCalibration Measurement(double ratio) => new WheelCalibration
+        private WheelCalibration Measurement(double ratio) => WithRatio(new WheelCalibration
         {
             Inertia = _inertia, Friction = _friction, Delay = _delay,
             DamperMid = _damper[0], DamperFull = _damper[1],
             SpringThird = _spring[0], SpringTwoThirds = _spring[1], SpringFull = _spring[2],
-            ForceSign = _forceSign, ReturnRatio = ratio, WheelTorque = _torque,
+            ForceSign = _forceSign, WheelTorque = _torque,
+        }, ratio);
+
+        private static WheelCalibration WithRatio(WheelCalibration m, double ratio) => new WheelCalibration
+        {
+            Inertia = m.Inertia, Friction = m.Friction, Delay = m.Delay,
+            DamperMid = m.DamperMid, DamperFull = m.DamperFull,
+            SpringThird = m.SpringThird, SpringTwoThirds = m.SpringTwoThirds, SpringFull = m.SpringFull,
+            ForceSign = m.ForceSign, ReturnRatio = ratio, WheelTorque = m.WheelTorque,
         };
 
-        /// <summary>The swing past center, in degrees, of the measured
-        /// wheel let go from the release angle with this return
-        /// ratio.</summary>
-        private double SimulatedOvershoot(double ratio)
+        private static void OnThreadPool(Action work) => _ = Task.Run(work);
+
+        /// <summary>
+        /// The search for the return ratio: the least damping, of the
+        /// wheel's inertia against the curve's stiffness at center, that
+        /// returns the measured wheel from the release angle without
+        /// overshoot, tried on a simulation of it. A wheel that swings
+        /// past center at every ratio takes the least ratio that comes
+        /// near the best of them. It reads only what it was made with,
+        /// so it runs on any thread, and the poll reads its answer once
+        /// <see cref="Done"/> is set.
+        /// </summary>
+        private sealed class RatioSearch
         {
-            var measured = Measurement(ratio);
-            var plant = new WheelPlant
+            private readonly WheelCalibration _measured;
+            private readonly CenteringSettings _settings;
+            private readonly double _speed, _grip, _halfRange, _releaseAngle;
+            private volatile bool _done;
+
+            public RatioSearch(WheelCalibration measured, in CenteringSettings settings, double speed, double grip,
+                double halfRange, double releaseAngle)
             {
-                Inertia = _inertia, Friction = _friction, Delay = _delay, WheelTorque = _torque,
-                DamperStrength = measured.DampingAt, SpringStrength = measured.SpringStiffnessAt,
-                HalfRange = _halfRange, ForceSign = _forceSign,
-            };
-            plant.Angle = ReleaseAngle * Deg;
-            var centering = new WheelCentering();
-            centering.ResetAtFull();
-            var trace = plant.Run(centering, _settings, measured, _speed, _grip, ReleaseMs);
-            return WheelPlant.Overshoot(trace, 1) / Deg;
+                _measured = measured;
+                _settings = settings;
+                _speed = speed;
+                _grip = grip;
+                _halfRange = halfRange;
+                _releaseAngle = releaseAngle;
+            }
+
+            /// <summary>The answer is in: <see cref="Ratio"/>, or
+            /// <see cref="Failed"/>.</summary>
+            public bool Done => _done;
+
+            public double Ratio { get; private set; }
+
+            /// <summary>The simulation threw. The test ends unreadable.</summary>
+            public bool Failed { get; private set; }
+
+            public void Run()
+            {
+                try { Ratio = Find(); }
+                catch (Exception) { Failed = true; }
+                // Written last, and volatile, so a poll that sees it sees the answer.
+                _done = true;
+            }
+
+            private double Find()
+            {
+                var pasts = new double[RatioSteps + 1];
+                double best = double.MaxValue;
+                for (int step = 0; step <= RatioSteps; step++)
+                {
+                    double past = SimulatedOvershoot(step * 0.1);
+                    // The ratios run from the least, so the first that stops the swing is the least that does.
+                    if (past <= NoOvershootDegrees) return step * 0.1;
+                    pasts[step] = past;
+                    best = Math.Min(best, past);
+                }
+                for (int step = 0; step <= RatioSteps; step++)
+                    if (pasts[step] <= best + NearBestDegrees) return step * 0.1;
+                return 0;
+            }
+
+            /// <summary>The swing past center, in degrees, of the measured
+            /// wheel let go from the release angle with this return
+            /// ratio.</summary>
+            private double SimulatedOvershoot(double ratio)
+            {
+                var measured = WithRatio(_measured, ratio);
+                var plant = new WheelPlant
+                {
+                    Inertia = measured.Inertia, Friction = measured.Friction, Delay = measured.Delay, WheelTorque = measured.WheelTorque,
+                    DamperStrength = measured.DampingAt, SpringStrength = measured.SpringStiffnessAt,
+                    HalfRange = _halfRange, ForceSign = measured.ForceSign,
+                };
+                plant.Angle = _releaseAngle * Deg;
+                var centering = new WheelCentering();
+                centering.ResetAtFull();
+                var trace = plant.Run(centering, _settings, measured, _speed, _grip, ReleaseMs);
+                return WheelPlant.Overshoot(trace, 1) / Deg;
+            }
         }
     }
 }

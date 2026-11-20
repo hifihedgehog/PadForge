@@ -148,6 +148,9 @@ namespace PadForge.Engine
         private short _centerLevel;
         private (int Coefficient, int Saturation) _centerSpringSet, _centerDamperSet, _centerFrictionSet;
         private PadForge.Engine.Steering.CenteringEffects _centerRefused;
+        /// <summary>The driver refused centering's constant force, which is
+        /// not asked for again until centering lets go.</summary>
+        private bool _centerForceRefused;
         private IntPtr _centerHandle;
 
         // ─────────────────────────────────────────────
@@ -414,6 +417,19 @@ namespace PadForge.Engine
         /// and rumble.</summary>
         private void SetGameForces(UserDevice ud, ISdlInputDevice device, PadSetting ps, Vibration v)
         {
+            // A device that holds one effect gives it to Vehicle mode's centering
+            // while centering holds it, and the game's force and rumble wait, the
+            // rule the auto-center spring keeps with rumble (HoldsOnlyTheSpring).
+            if (device.HasHaptic && CenteringHoldsAnEffect && RoomOf(device.HapticHandle) == EffectRoom.One)
+            {
+                if (_main.Created)
+                    StopAndDestroyHapticEffect(device);
+                LeftMotorSpeed = 0;
+                RightMotorSpeed = 0;
+                IsActive = true;
+                return;
+            }
+
             // Parse gain settings from PadSetting.
             int overallGain = TryParseInt(ps.ForceOverall, 100);
             int leftGain = TryParseInt(ps.LeftMotorStrength, 100);
@@ -461,6 +477,17 @@ namespace PadForge.Engine
                 // wheel whose effect never landed produced complete silence
                 // while the cache stayed unadvanced and the write retried every
                 // poll. Log once per failure run; a success re-arms it.
+                if (!success && CenteringHoldsAnEffect && RoomOf(device.HapticHandle) == EffectRoom.Unknown
+                    && GameRefusedBesideCentering(device, snapshot, overallGain))
+                {
+                    LeftMotorSpeed = 0;
+                    RightMotorSpeed = 0;
+                    IsActive = true;
+                    return;
+                }
+                if (success && CenteringHoldsAnEffect)
+                    NoteRoom(device, EffectRoom.Enough, "runs the game's effect beside Vehicle mode's centering");
+
                 bool dirLogWorthy = success || !_lastDirFailed;
                 _lastDirFailed = !success;
                 if (!success && dirLogWorthy)
@@ -539,6 +566,13 @@ namespace PadForge.Engine
                 if (device.HasHaptic)
                 {
                     scalarSuccess = SetHapticForces(device, finalLeft, finalRight);
+                    if (CenteringHoldsAnEffect && RumbleRefusedBesideCentering(device, scalarSuccess, finalLeft, finalRight))
+                    {
+                        LeftMotorSpeed = 0;
+                        RightMotorSpeed = 0;
+                        IsActive = true;
+                        return;
+                    }
                     if (SpringKeepsTheOnlyEffect(device, scalarSuccess, finalLeft, finalRight, springCoeff))
                     {
                         LeftMotorSpeed = 0;
@@ -1125,7 +1159,7 @@ namespace PadForge.Engine
             _centerHeld = true;
             uint features = device.HapticFeatures;
 
-            if ((features & SDL_HAPTIC_CONSTANT) != 0)
+            if ((features & SDL_HAPTIC_CONSTANT) != 0 && !_centerForceRefused)
             {
                 short level = frame.Level;
                 bool changed = _centerForce.Created
@@ -1148,7 +1182,12 @@ namespace PadForge.Engine
                         effect.constant.direction.type = SDL_HAPTIC_POLAR;
                         effect.constant.direction.dir0 = 9000;
                     }
-                    if (ApplyEffect(device, ref effect, _centerForce)) _centerLevel = level;
+                    if (ApplyCenteringEffect(device, ref effect, _centerForce)) _centerLevel = level;
+                    else if (!_centerForce.Created)
+                    {
+                        _centerForceRefused = true;
+                        SdlDiagLog.WriteLine($"HAPTICDIAG {device.VendorId:X4}:{device.ProductId:X4} refused centering's force");
+                    }
                 }
             }
 
@@ -1196,7 +1235,7 @@ namespace PadForge.Engine
             effect.condition.center0 = 0;
             effect.condition.deadband0 = 0;
 
-            if (ApplyEffect(device, ref effect, slot))
+            if (ApplyCenteringEffect(device, ref effect, slot))
             {
                 applied = (coefficient, saturation);
                 return;
@@ -1232,8 +1271,92 @@ namespace PadForge.Engine
             _centerDamperSet = default;
             _centerFrictionSet = default;
             _centerRefused = PadForge.Engine.Steering.CenteringEffects.None;
+            _centerForceRefused = false;
             _centerHandle = IntPtr.Zero;
             _centerHeld = false;
+        }
+
+        /// <summary>Centering holds at least one effect on the wheel.</summary>
+        private bool CenteringHoldsAnEffect => _centerHeld
+            && (_centerForce.Created || _centerSpring.Created || _centerDamper.Created || _centerFriction.Created);
+
+        /// <summary>Makes or updates one of centering's effects. Refused
+        /// beside the game's effect, the game's is let go and centering's is
+        /// tried alone, once per device: a device that then runs it holds one
+        /// effect, which centering keeps (<see cref="HoldsOnlyTheSpring"/>
+        /// learns the same for the auto-center spring).</summary>
+        private bool ApplyCenteringEffect(ISdlInputDevice device, ref SDL_HapticEffect effect, EffectSlot slot)
+        {
+            IntPtr haptic = device.HapticHandle;
+            if (RoomOf(haptic) == EffectRoom.One && _main.Created)
+                StopAndDestroyHapticEffect(device);
+            if (ApplyEffect(device, ref effect, slot))
+            {
+                if (_main.Created)
+                    NoteRoom(device, EffectRoom.Enough, "runs Vehicle mode's centering beside the game's effect");
+                else if (CenteringEffectsCreated() > 1)
+                    NoteRoom(device, EffectRoom.Enough, "runs two of Vehicle mode's centering effects at once");
+                return true;
+            }
+            if (!_main.Created || RoomOf(haptic) != EffectRoom.Unknown)
+                return false;
+            StopAndDestroyHapticEffect(device);
+            if (ApplyEffect(device, ref effect, slot))
+            {
+                NoteRoom(device, EffectRoom.One, "holds one effect: Vehicle mode's centering keeps it and the game waits");
+                return true;
+            }
+            NoteRoom(device, EffectRoom.Enough, "refused Vehicle mode's centering even alone");
+            return false;
+        }
+
+        private int CenteringEffectsCreated()
+            => (_centerForce.Created ? 1 : 0) + (_centerSpring.Created ? 1 : 0)
+               + (_centerDamper.Created ? 1 : 0) + (_centerFriction.Created ? 1 : 0);
+
+        /// <summary>The game's force or condition was refused while centering
+        /// held the wheel: centering lets go and the game's effect is tried
+        /// alone, once per device. True when it then ran: the device holds one
+        /// effect, the game's is let go, centering takes the wheel back at the
+        /// next poll, and the game waits.</summary>
+        private bool GameRefusedBesideCentering(ISdlInputDevice device, DirectionalSnapshot snapshot, int overallGain)
+        {
+            ReleaseCentering(device);
+            bool alone = snapshot.HasConditionData && snapshot.ConditionAxisCount > 0
+                ? SetConditionHapticForces(device, snapshot, overallGain)
+                : SetDirectionalHapticForces(device, snapshot, overallGain);
+            if (alone)
+            {
+                NoteRoom(device, EffectRoom.One, "holds one effect: Vehicle mode's centering keeps it and the game waits");
+                StopAndDestroyHapticEffect(device);
+                return true;
+            }
+            NoteRoom(device, EffectRoom.Enough, "refused the game's effect even alone");
+            return false;
+        }
+
+        /// <summary>The rumble twin of <see cref="GameRefusedBesideCentering"/>.
+        /// <paramref name="written"/> says the rumble went out beside
+        /// centering.</summary>
+        private bool RumbleRefusedBesideCentering(ISdlInputDevice device, bool written, ushort left, ushort right)
+        {
+            if (written)
+            {
+                if (_main.Created)
+                    NoteRoom(device, EffectRoom.Enough, "runs rumble beside Vehicle mode's centering");
+                return false;
+            }
+            if (RoomOf(device.HapticHandle) != EffectRoom.Unknown)
+                return false;
+            ReleaseCentering(device);
+            if (SetHapticForces(device, left, right))
+            {
+                NoteRoom(device, EffectRoom.One, "holds one effect: Vehicle mode's centering keeps it and rumble waits");
+                StopAndDestroyHapticEffect(device);
+                return true;
+            }
+            NoteRoom(device, EffectRoom.Enough, "refused rumble even alone");
+            return false;
         }
 
         // ─────────────────────────────────────────────

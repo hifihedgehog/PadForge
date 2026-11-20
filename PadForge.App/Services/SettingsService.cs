@@ -266,6 +266,12 @@ namespace PadForge.Services
                 // before anything consumes the data.
                 data.MigrateLegacySchema();
 
+                // A file saved while the engine still read the gyro stamps
+                // keeps them on slots whose devices are already assigned.
+                // Fold them onto those devices' Gyro cards now: assignment,
+                // the only other fold, will not run for them again.
+                data.FoldCarriedGyroStamps();
+
                 // Pre-deserialization migrations applied to every PadSetting
                 // before they're handed out to UserSettings or the VM.
                 //
@@ -1058,14 +1064,13 @@ namespace PadForge.Services
                     // reset the geometry to the full-screen identity map.
                     var preservedPointer = CaptureTouchpadPointerParams(row);
 
-                    // Same reason, same shape: preserve the response-curve /
-                    // outer-range channel (translator v11) across the
-                    // clear+rebuild. ParamCurveExponent / ParamRangeOuter have
-                    // no VM card (only the Workshop translator stamps them),
-                    // so the row's own pre-rebuild sources are the only source
-                    // of truth. Without this an imported response curve
-                    // survived exactly until the first pad-page save.
-                    var preservedCurveRange = CaptureCurveRangeParams(row);
+                    // A flick source's values ride the Flick Stick card, whose
+                    // push into the row is skipped while the card is unseeded
+                    // or the device never stored it, and the rebuild below
+                    // starts every source fresh. The row's own values are
+                    // carried across for those saves. Every other per-source
+                    // value rebuilds from the source line's own controls.
+                    var preservedFlick = CaptureFlickParams(row);
 
                     // Phase 2C. Clear and rebuild Sources from the UI
                     // state so MappingSet is fully authoritative for
@@ -1136,7 +1141,7 @@ namespace PadForge.Services
                         else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
                         { half = true; clean = clean.Substring(1); }
 
-                        rebuiltSources.Add(new MappingSource
+                        var primarySource = new MappingSource
                         {
                             Kind = mapping.PrimaryKindSource?.DescriptorKind ?? "Direct",
                             DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
@@ -1153,7 +1158,11 @@ namespace PadForge.Services
                             Sensitivity = mapping.Sensitivity > 0 ? mapping.Sensitivity : 1.0,
                             ParamRapidTriggerDistance = mapping.PrimaryKindSource?.ParamRapidTriggerDistance
                                 ?? MappingSource.DefaultRapidTriggerDistance,
-                        });
+                        };
+                        // The source line's shaping dials and gates (the row's
+                        // own, edited under the first source).
+                        mapping.StoreShapingAndGates(primarySource);
+                        rebuiltSources.Add(primarySource);
 
                         // For bipolar axis rows, also encode the Neg
                         // descriptor as a paired source with Invert
@@ -1173,7 +1182,7 @@ namespace PadForge.Services
                             { nhalf = true; ncl = ncl.Substring(1); }
                             // Negative source: flip Invert relative to
                             // primary's encoded inversion.
-                            rebuiltSources.Add(new MappingSource
+                            var negSource = new MappingSource
                             {
                                 Kind = "Direct",
                                 DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
@@ -1197,7 +1206,11 @@ namespace PadForge.Services
                                 MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
                                 IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
                                 Sensitivity = mapping.Sensitivity > 0 ? mapping.Sensitivity : 1.0,
-                            });
+                            };
+                            // The same axis, so the same shaping. A gate
+                            // belongs to the source that carries it.
+                            mapping.StoreShapingAndGates(negSource, gates: false);
+                            rebuiltSources.Add(negSource);
                         }
                     }
 
@@ -1231,14 +1244,13 @@ namespace PadForge.Services
                     // way: the descriptor is a normal input and #225's headline is
                     // the shift-layer host, so layer rows must carry the card's
                     // knobs too.
-                    ApplyFlickStickParamsToRow(row, padVm, slot);
+                    ApplyFlickStickParamsToRow(row, padVm, slot, preservedFlick);
 
                     // Restore the absolute-pointer region geometry captured
                     // before the rebuild (#9 B-15). No card sources these, so
                     // the pre-rebuild values are re-stamped onto the matching
                     // rebuilt pointer sources.
                     ApplyTouchpadPointerParamsToRow(row, preservedPointer);
-                    ApplyCurveRangeParamsToRow(row, preservedCurveRange);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1316,6 +1328,7 @@ namespace PadForge.Services
                     src.ParamWindUnwindRate = cfg.WindUnwind;
                     src.ParamAngleInnerDz = cfg.AngleInner;
                     src.ParamAngleOuterDz = cfg.AngleOuter;
+                    src.ParamStickDeadzone = cfg.StickDeadZone / 100.0;
                     src.ParamMotionInnerDz = cfg.MotionInner;
                     src.ParamMotionOuterDz = cfg.MotionOuter;
                     src.ParamControllerOrientation = cfg.Orient;
@@ -1341,7 +1354,8 @@ namespace PadForge.Services
         // slot+device), applying the same defaults the UI load path uses. A guid-less
         // source falls back to the live UI config for the selected stick.
         private static (bool Active, string Kind, double WindRange, double WindPower, double WindUnwind,
-            double AngleInner, double AngleOuter, double MotionInner, double MotionOuter, string Orient)
+            double AngleInner, double AngleOuter, double MotionInner, double MotionOuter, string Orient,
+            double StickDeadZone)
             ReadDeviceSteering(int slot, string deviceGuid, int stickIdx, PadViewModel padVm)
         {
             // The SELECTED device's latest steering lives in the live StickConfigs (the UI),
@@ -1354,16 +1368,16 @@ namespace PadForge.Services
             if (useUi)
             {
                 var s = padVm.StickConfigs?.FirstOrDefault(x => x.Index == stickIdx);
-                if (s == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+                if (s == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward", 15);
                 // Motion fields are constants now — per-stick Motion Lean moved to Motion
                 // Steering, which supplies its own inner/outer/orient via the cfg override.
                 return (s.IsSteeringActive, s.SteeringKind, s.WindRangeDeg, s.WindPower, s.WindUnwindRate,
-                    s.AngleInnerDz, s.AngleOuterDz, 15, 135, "Forward");
+                    s.AngleInnerDz, s.AngleOuterDz, 15, 135, "Forward", s.SteerStickDeadZone);
             }
             PadSetting ps = Guid.TryParse(deviceGuid, out var g)
                 ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
                 : null;
-            if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
+            if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward", 15);
             string kind = ps.GetRawMapping($"Stick{stickIdx}SteerKind");
             // MotionLeanX is no longer a per-stick mode — it's driven by Motion Steering
             // (gyro tab) via its own override. Treat a stored per-stick MotionLeanX as
@@ -1378,7 +1392,8 @@ namespace PadForge.Services
                 D($"Stick{stickIdx}SteerWindUnwind", 1800),
                 D($"Stick{stickIdx}SteerAngleInner", 0),
                 D($"Stick{stickIdx}SteerAngleOuter", 10),
-                15, 135, "Forward");
+                15, 135, "Forward",
+                D($"Stick{stickIdx}SteerDeadZone", 15));
         }
 
         // Resolves a stick-axis target (standard Left/Right or Extended RawAxis{n}) to a
@@ -1538,81 +1553,42 @@ namespace PadForge.Services
             }
         }
 
-        // Captures the response-curve / outer-range channel (translator v11)
-        // from a row's sources before the save rebuild clears them. Direct
-        // analog of CaptureTouchpadPointerParams above, same reason:
-        // ParamCurveExponent / ParamRangeOuter have no VM card to re-stamp
-        // from, so the pre-rebuild sources are the only source of truth.
-        // Keyed by (device, descriptor); captures only sources carrying a
-        // non-default value (the common case returns an empty list).
+        // Captures each flick source's card values before the save rebuild
+        // starts the row's sources fresh. Keyed by (device, descriptor).
         private static System.Collections.Generic.List<(string device, string desc, MappingSource stamp)>
-            CaptureCurveRangeParams(MappingRow row)
+            CaptureFlickParams(MappingRow row)
         {
             var list = new System.Collections.Generic.List<(string, string, MappingSource)>();
             if (row?.Sources == null) return list;
             foreach (var s in row.Sources)
             {
-                // v18 widened the channel: anti-deadzone floor, mouse-feel
-                // knobs (smoothing / threshold / accel / trackball), and
-                // the per-source AND gate all ride the same no-VM-card
-                // capture. The captured source object itself is the stamp
-                // carrier (it is about to be discarded by the rebuild).
-                // v26 widened it again: the radial stick-deadzone stamps
-                // and the second AND gate are no-VM-card fields the rebuild
-                // would otherwise wipe on the first pad-page save. The flick
-                // rotation offset HAS a card row now (Flick Stick card), but
-                // it stays in this net because the push is skipped while that
-                // card is unseeded, and the rebuild does not wait for it.
-                // ParamAccel LEFT the net (round 40 follow-up): the row
-                // editors author it now, it rides the VM round-trip like
-                // Invert / Bidirectional, and a net re-stamp would resurrect
-                // a value the user just zeroed, the exact defect the
-                // InvertOutput net was deleted for.
-                if (s == null
-                    || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
-                        && s.ParamAntiDeadzone <= 0
-                        && string.IsNullOrEmpty(s.GateDescriptor)
-                        && string.IsNullOrEmpty(s.Gate2Descriptor)
-                        && s.ParamStickDeadZoneShape == 0
-                        && s.ParamStickDeadZoneInner <= 0
-                        && s.ParamFlickRotationOffsetDeg == 0))
-                {
-                    continue;
-                }
+                if (s == null || !Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(s.Descriptor)) continue;
                 list.Add((s.DeviceGuid ?? "", s.Descriptor ?? "", s));
             }
             return list;
         }
 
-        // Re-stamps the captured curve/range params onto the rebuilt sources.
-        // The rebuild strips the I/H prefix back off, so the rebuilt
-        // descriptor matches the captured (already-clean) one exactly; a
-        // source re-authored to a different descriptor correctly keeps the
-        // off default, since the translator stamped the params for the
-        // descriptor it emitted.
-        private static void ApplyCurveRangeParamsToRow(MappingRow row,
+        // Puts a captured flick source's values back on the rebuilt source of
+        // the same (device, descriptor), for a save the card does not push.
+        private static void RestoreFlickParams(MappingSource src,
             System.Collections.Generic.List<(string device, string desc, MappingSource stamp)> preserved)
         {
-            if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
-            foreach (var src in row.Sources)
+            if (src == null || preserved == null) return;
+            foreach (var p in preserved)
             {
-                if (src == null) continue;
-                foreach (var p in preserved)
-                {
-                    if (string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
-                        && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (p.stamp.ParamCurveExponent > 0) src.ParamCurveExponent = p.stamp.ParamCurveExponent;
-                        if (p.stamp.ParamRangeOuter > 0) src.ParamRangeOuter = p.stamp.ParamRangeOuter;
-                        if (p.stamp.ParamAntiDeadzone > 0) src.ParamAntiDeadzone = p.stamp.ParamAntiDeadzone;
-                        if (!string.IsNullOrEmpty(p.stamp.GateDescriptor)) src.GateDescriptor = p.stamp.GateDescriptor;
-                        if (!string.IsNullOrEmpty(p.stamp.Gate2Descriptor)) src.Gate2Descriptor = p.stamp.Gate2Descriptor;
-                        if (p.stamp.ParamStickDeadZoneShape != 0) src.ParamStickDeadZoneShape = p.stamp.ParamStickDeadZoneShape;
-                        if (p.stamp.ParamStickDeadZoneInner > 0) src.ParamStickDeadZoneInner = p.stamp.ParamStickDeadZoneInner;
-                        if (p.stamp.ParamFlickRotationOffsetDeg != 0) src.ParamFlickRotationOffsetDeg = p.stamp.ParamFlickRotationOffsetDeg;
-                        break;
-                    }
-                }
+                if (!string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
+                    || !string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                src.ParamFlickCountsPer360 = p.stamp.ParamFlickCountsPer360;
+                src.ParamFlickTime = p.stamp.ParamFlickTime;
+                src.ParamFlickThreshold = p.stamp.ParamFlickThreshold;
+                src.ParamFlickSnapMode = p.stamp.ParamFlickSnapMode;
+                src.ParamFlickSnapStrength = p.stamp.ParamFlickSnapStrength;
+                src.ParamFlickDeadzoneAngle = p.stamp.ParamFlickDeadzoneAngle;
+                src.ParamFlickSmooth = p.stamp.ParamFlickSmooth;
+                src.ParamFlickOnEngage = p.stamp.ParamFlickOnEngage;
+                src.ParamFlickRotationOffsetDeg = p.stamp.ParamFlickRotationOffsetDeg;
+                return;
             }
         }
 
@@ -1625,7 +1601,8 @@ namespace PadForge.Services
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<PadViewModel, object>
             _flickStickCardSeeded = new();
 
-        private static void ApplyFlickStickParamsToRow(MappingRow row, PadViewModel padVm, int slot)
+        private static void ApplyFlickStickParamsToRow(MappingRow row, PadViewModel padVm, int slot,
+            System.Collections.Generic.List<(string device, string desc, MappingSource stamp)> preserved = null)
         {
             if (row?.Sources == null || padVm == null) return;
             bool cardSeeded = _flickStickCardSeeded.TryGetValue(padVm, out _);
@@ -1642,7 +1619,7 @@ namespace PadForge.Services
                 {
                     // Unseeded card: the VM carries ctor defaults, not
                     // user edits, so keep the source's existing params.
-                    if (!cardSeeded) continue;
+                    if (!cardSeeded) { RestoreFlickParams(src, preserved); continue; }
                     src.ParamFlickCountsPer360 = padVm.FlickCountsPer360;
                     src.ParamFlickTime = padVm.FlickTime;
                     src.ParamFlickThreshold = padVm.FlickThreshold;
@@ -1658,9 +1635,9 @@ namespace PadForge.Services
                 PadSetting ps = Guid.TryParse(src.DeviceGuid, out var g)
                     ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
                     : null;
-                if (ps == null) continue; // keep the source's existing params
+                if (ps == null) { RestoreFlickParams(src, preserved); continue; } // keep the source's own values
                 if (string.IsNullOrEmpty(ps.GetRawMapping("FlickStickDots")))
-                    continue; // card never stored for this device: keep import values
+                { RestoreFlickParams(src, preserved); continue; } // card never stored for this device: keep import values
                 double D(string key, double dflt)
                     => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
                         System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
@@ -3860,6 +3837,8 @@ namespace PadForge.Services
                 padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
                 padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+                padVm.GyroActivation = ps.GyroActivation ?? "";
+                padVm.GyroRecenterOnEngage = ps.GyroRecenterOnEngage == "1";
                 // The engine's reader (InputService.TryParseBoolPs), so a stored
                 // "true" shows checked where the engine runs it.
                 padVm.GyroInvertPitch = InputService.TryParseBoolPs(ps.GyroInvertPitch, false);
@@ -4712,8 +4691,6 @@ namespace PadForge.Services
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes, string[] slotProfileIds, string[] slotModel3DAppearances)
             => item.SetTopology(slotCreated, slotControllerTypes, slotProfileIds, slotModel3DAppearances);
-
-        /// <summary>
 
         /// <summary>Set when LoadProfiles compacted gappy profile slot data
         /// in memory. The post-load IsDirty clear would otherwise discard the
@@ -5878,6 +5855,8 @@ namespace PadForge.Services
                     ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
                     ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
                     ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
+                    ps.GyroActivation = padVm.GyroActivation ?? "";
+                    ps.GyroRecenterOnEngage = padVm.GyroRecenterOnEngage ? "1" : "0";
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
                     ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
                     ps.GyroSimulation = padVm.GyroSimulation ? "1" : "0";
@@ -6024,6 +6003,7 @@ namespace PadForge.Services
                         ps.SetRawMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
                         ps.SetRawMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
                         ps.SetRawMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerDeadZone", stick.SteerStickDeadZone.ToString(ic));
                     }
 
                     foreach (var trig in padVm.TriggerConfigs)
@@ -6158,6 +6138,13 @@ namespace PadForge.Services
                 // no way to reach it.
                 KeyboardTakeovers = _mainVm.Settings.KeyboardTakeovers.Count > 0
                     ? _mainVm.Settings.KeyboardTakeovers.ToArray()
+                    : null,
+                // An Apex 4 node a screen send moved to WinUSB and has not
+                // given back stays owed through a reset (#586), for the same
+                // reason: the record is what gives it back to the Xbox driver
+                // at the next start.
+                FlydigiScreenBindings = _mainVm.Settings.FlydigiScreenBindings.Count > 0
+                    ? _mainVm.Settings.FlydigiScreenBindings.ToArray()
                     : null,
             });
             // LoadAppSettings can't reset the language: a fresh
@@ -6860,6 +6847,25 @@ namespace PadForge.Services
             if (Profiles != null)
                 foreach (var p in Profiles)
                     p?.MigrateLegacySchema();
+        }
+
+        /// <summary>Folds the gyro stamps a file saved before the Gyro card
+        /// owned them still carries onto the devices already assigned to
+        /// those slots, in the live slots, every stored profile and the
+        /// Default profile's snapshot
+        /// (<see cref="WorkshopTuningApplier.FoldCarriedGyroStamps"/>).</summary>
+        public void FoldCarriedGyroStamps()
+        {
+            if (Settings != null)
+                PadSettings = WorkshopTuningApplier.FoldCarriedGyroStamps(SlotMappingSets,
+                    Settings.Where(s => s != null)
+                        .Select(s => (s.MapTo, s.PadSettingChecksum, (Action<string>)(c => s.PadSettingChecksum = c)))
+                        .ToList(),
+                    PadSettings);
+            if (Profiles != null)
+                foreach (var p in Profiles)
+                    p?.FoldCarriedGyroStamps();
+            AppSettings?.DefaultProfileSnapshot?.FoldCarriedGyroStamps();
         }
     }
 
@@ -8390,6 +8396,19 @@ namespace PadForge.Services
         [XmlArrayItem("PlayStationConfig")]
         public ViewModels.DeviceSlotConfigData[] LegacyDeviceSlotConfigs { get; set; }
         public bool ShouldSerializeLegacyDeviceSlotConfigs() => false;
+
+        /// <summary>This profile's share of
+        /// <see cref="SettingsFileData.FoldCarriedGyroStamps"/>: its entries,
+        /// its PadSettings and its sets.</summary>
+        public void FoldCarriedGyroStamps()
+        {
+            if (Entries == null) return;
+            PadSettings = WorkshopTuningApplier.FoldCarriedGyroStamps(SlotMappingSets,
+                Entries.Where(e => e != null)
+                    .Select(e => (e.MapTo, e.PadSettingChecksum, (Action<string>)(c => e.PadSettingChecksum = c)))
+                    .ToList(),
+                PadSettings);
+        }
 
         /// <summary>Adopts the legacy spelling when the new one is absent,
         /// then clears it. Called by SettingsFileData.MigrateLegacySchema

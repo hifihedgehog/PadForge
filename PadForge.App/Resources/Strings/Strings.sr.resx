@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ништа</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>секунди</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>минута (0 = никад)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Хц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Недодељено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← лево)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ горе)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll није пронађен</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll није пронађен. Ставите SDL3.dll поред PadForge.exe. Преузмите га са https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll није пронађен. Преузмите PadForge поново.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Операција драјвера није успела: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Подешавања су копирана у оставу.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Подаци о уређају су копирани у оставу.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ниска</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Слика</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Списак</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Излаз: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Излаза: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Покрет</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Кликните на контролу, па притисните улаз који треба да њоме управља.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Игре које PadForge не познаје</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>За модове који траже покренут DSX пре слања.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Шта се приказује</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Прстен, мрежа или трака менија док је отворен</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назив слоја када се шифт слој укључи, на време које тај слој зада</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назив профила када се профил промени</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Прстен, мрежа или трака менија док је отворен.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назив слоја када се шифт слој укључи, на време које тај слој зада.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назив профила када се профил промени.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирај адресу</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Положај на екрану</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Повежите телефон</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Аутоматски покрени механизам при покретању</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Настави очитавање када прозор изгуби фокус</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Учесталост очитавања (осим ако је профил не замени)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Механизам очитава све уређаје и ажурира виртуелне контролере толико пута у секунди, од 60 до 10000. Већа учесталост троши више процесорског времена. Windows буди механизам највише око 2000 пута у секунди, па при већој учесталости механизам при сваком буђењу изврши неколико пролаза. Док је активан профил са сопственом учесталошћу очитавања, примењује се та учесталост. Ова вредност се враћа када се профил деактивира.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Механизам очитава све уређаје и ажурира виртуелне контролере толико пута у секунди, од 60 до 10000. Већа учесталост троши више процесорског времена. На овом рачунару Windows буди механизам највише {0} пута у секунди, па при већој учесталости механизам при сваком буђењу изврши неколико пролаза. Док је активан профил са сопственом учесталошћу очитавања, примењује се та учесталост. Ова вредност се враћа када се профил деактивира.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Сакриј уређаје од игара</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главни прекидач за скривање уређаја помоћу драјвера HidHide и пресретање улаза на ниском нивоу. Када је искључен, ниједан уређај није сакривен, без обзира на подешавања појединачних уређаја.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Задржи уређаје скривене између покретања</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Милисекунде између откуцаних знакова, до 1000. Са 0 се цео текст куца одједном.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Прекид везе при неактивности</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Детаљи</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>минута</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Прекини Bluetooth везу при прикључивању USB кабла</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Брзо пуњење. Када овај контролер пријави да се пуни док је повезан преко Bluetooth везе, Bluetooth веза се прекида да би се пунио без напајања радија. Рачуна се сваки USB извор напајања, укључујући зидне пуњаче. Ако поново укључите Bluetooth док је кабл и даље прикључен, веза се не дира до следећег искључивања кабла.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Очитавај као iCade контролер</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU приказује назив активног профила и прати сваку промену профила.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU приказује место активног профила на листи профила. Подразумевани профил је 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU приказује сопствену слику активног профила, или његов назив ако слику нема. Сваки профил чува сопствену слику.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU приказује тренутно време, које се поново уписује једном у минуту. Адаптер чува сваку слику у меморији предвиђеној за 100.000 уписа, што се на овај начин достиже након отприлике десет недеља непрекидног приказа.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU приказује сате и минуте откако је PadForge пронашао контролер, који се поново уписују једном у минуту. Контролер који је изван порта дуже од десет секунди почиње поново од нуле. Адаптер чува сваку слику у меморији предвиђеној за 100.000 уписа, што се на овај начин достиже након отприлике десет недеља непрекидног приказа.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU приказује тренутно време, које се поново уписује једном у минуту. Адаптер чува сваку слику у сопственој меморији, па је PadForge поново уписује не чешће од тога.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU приказује сате и минуте откако је PadForge пронашао контролер, који се поново уписују једном у минуту. Контролер који је изван порта дуже од десет секунди почиње поново од нуле. Адаптер чува сваку слику у сопственој меморији, па је PadForge поново уписује не чешће него једном у минуту.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU приказује слику коју изаберете: BMP или PNG, VMU Animator .lcd датотеку или Dreamcast .vms икону. Слике се своде на 48 × 32 црно-бела пиксела.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Изабери слику…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Изабери слику за {0}…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Контролер у Xbox режиму није одговорио као Apex 4, па ништа није послато и Windows га је добио назад. Вратите га у DInput режим његовим прекидачем.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows није преместио контролер на WinUSB, па ништа није послато. Вратите га у DInput режим његовим прекидачем.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Заустављено. Искључите и укључите контролер његовим прекидачем пре новог слања.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Порт екрана се није отворио, па ништа није послато. Искључите и укључите контролер његовим прекидачем и пошаљите поново.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Слика има више кадрова него што екран овог контролера може да прими.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Слика се већ шаље на овај контролер. Сачекајте да се заврши.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Екран је затражио слику на адреси на коју PadForge не уписује, па ништа није послато. Искључите и укључите контролер његовим прекидачем и пошаљите поново.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Слика је послата, али се контролер није вратио у DInput режим. Вратите га његовим прекидачем.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контролер није примио команду која га припрема, па ништа није послато. Проверите да ли је повезан и пошаљите поново.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Слање је заустављено због грешке у PadForge. Детаљи се налазе у датотеци евиденције.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Слика још иде на контролер. Зауставити слање?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak датотеке (*.mpk)|*.mpk|Све датотеке (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Ресетуј геометрију менија</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Ресетуј ћелију</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Ресетуј осетљивост</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Ресетуј убрзање</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Ресетуј мртву зону</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Ресетуј време држања</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Ресетуј прозор притиска</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Било који слој</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ради непрекидно док је овај виртуелни контролер активан. Није потребно дугме покретача.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Изврши</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Слој, Извор, Праг, Смер, Блокирај дугмад покретача, Понављање</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Додај радњу</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Тип</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуелна дугмад</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Притисак дугмета миша</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Отпуштање дугмета миша</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Померање точкића миша</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј тачпеда</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Дугмад</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Комбинација тастера</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Комбинација тастера у формату {Key1}{Key2}. Може се уређивати.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Понављај {0} сваких {1} мс</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Миш X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Миш Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Хоризонтални померај</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Вертикални померај</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Интервал</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Изабери на екрану</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Бележење за {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Обрнута половина</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Није мапиран ниједан уређај</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Непознат уређај</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Клик тачпеда</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Доле (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Горе (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Активирање</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Дугме за активирање нишањења, Смер активирања, Праг лаког нишањења</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Дугме за активирање нишањења, Смер активирања, Жироскоп укључен, Поновно центрирање, Праг лаког нишањења</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Опциони услови који ограничавају када је жироскоп активан. Могу се подесити отклон десне палице и дугме за активирање нишањења. Жироскоп ради само док је сваки подешени услов активан.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локални</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Играч</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Ресетуј праг лаког нишањења</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Ресетуј дугме за активирање нишањења</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Ресетуј режим активирања</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Слој</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Слој чије подешавање Жироскоп укључен приказују и мењају редови испод.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Жироскоп укључен</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Када жироскоп ради на овом слоју, поврх дугмета за активирање. Шифт слој подешен на „Исто као основни“ прати основни слој.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Увек укључен</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Исто као основни</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Док је притиснуто</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Док није притиснуто</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Пребацуј при сваком притиску</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Дугмад за укључење жироскопа</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Дугмад која Жироскоп укључен прати, на било ком контролеру овог слота.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Потребно</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Да ли је довољно једно означено дугме или се морају држати сва означена дугмад.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Било које дугме</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Свако дугме</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Поново центрирај када се жироскоп укључи</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Узима положај контролера као тачку мировања сваки пут када се жироскоп укључи.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Ресетуј Жироскоп укључен</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Ресетуј дугмад за укључење жироскопа</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Ресетуј Потребно</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Ресетуј поновно центрирање при укључењу жироскопа</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ресетуј палицу за активирање</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ресетуј смер активирања</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Пропуштање покрета</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Игра чита покрет са осетљивошћу, изглађивањем и кривом подешеним овде.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ресетуј подешавања пропуштања</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Осетљивост</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Само док</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Овај извор се рачуна само док се и овај улаз на истом контролеру чита као притиснут. Тест зоне из увоза чита се као опсег палице или окидача који проверава.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>И док</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Други улаз на који овај извор такође чека.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Промени улаз</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Бира други улаз на који се чека.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Крива</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Степенује очитавање овог улаза овом вредношћу пре него што покрене излаз. 0 и 1 га остављају праволинијским. Изнад 1 је спорије близу центра.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Спољни опсег</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Излаз достиже максимум при овом делу ходa. 100% је искључено.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Анти-мртва зона</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Излаз почиње од ове вредности чим се улаз помери. 0 је искључено.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Облик мртве зоне</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Искључено не дира очитавање. Аксијална мери само ову осу. Радијална мери пар палица заједно.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Искључено</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Аксијална</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Радијална</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Унутрашња мртва зона</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Испод овог дела хода улаз се чита као центриран.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множилац осетљивости жироскопа за појединачни извор. 1.0 = подразумевана вредност механизма (500°/с → пун отклон). Вредности изнад 1.0 су осетљивије. Вредности испод 1.0 су мање осетљиве.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Множилац осетљивости нагињања за појединачни извор. 1.0 = 90° нагињања за пун отклон. Вредности изнад 1.0 достижу пун отклон уз мање нагињања.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Жироскоп: нагнутост X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Ниво</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Време неактивности</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Број секунди пре уклањања виртуелног контролера када су сви његови мапирани уређаји ван мреже. 0 искључује. Преостали контролери истог типа померају се нагоре да попуне празнину и поново се везују за ниже слотове.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунди (0 = никад)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Додај слој</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Додајте слој: другу табелу мапирања која се активира док се дугме држи или укључи прекидачем.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ресетуј брзину одмотавања</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ресетуј унутрашњу мртву зону угла</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ресетуј спољну мртву зону угла</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Мртва зона палице</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Испод овог отклона палица се чита као центрирана, па се управљање не нагомилава.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Ресетуј мртву зону палице</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ресетуј унутрашњу мртву зону нагињања</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ресетуј спољну мртву зону нагињања</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ресетуј оријентацију контролера</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>од {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Овај аутомобил тражи више момента него што волан има, па је врх криве одсечен.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Осећај у центру, серво помоћ, пригушење, трење, приањање, фиксна брзина, момент волана</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Осећај у центру, серво помоћ, пригушење, приањање, фиксна брзина, момент волана</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Колико чврсто управљање држи центар при малој брзини. 100% је као код самог аутомобила.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Серво помоћ</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Колико серво помоћ олакшава како расте убрзање у кривини. Више значи лакше управљање даље од центра.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Ресетуј високе тонове</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ресетуј границу тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Паралелно копира све што подразумевани системски излаз репродукује на уграђени звучник овог контролера. Ради преко USB и Bluetooth везе.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Изабрани уређај нема уграђени звучник. Звукови макроа за овај контролер репродукују се на подразумеваном системском излазу.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge нема путању до звучника на изабраном уређају преко ове везе. Звукови макроа за овај контролер репродукују се на подразумеваном системском излазу.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Скуп тестова за DualSense у прегледачу, аутор Xuezhou Dai (daidr): референца за Sony CRC уоквиравање feature извештаја и команде за тестирање фирмвера које PadForge прослеђује са виртуелних на физичке контролере.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Прикажи Dreamcast екран</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Приказује слике на VMU сваког Dreamcast контролера у Bliss-Box порту који шаље улаз овом слоту, а затим враћа сваки порт на његово подешавање екрана.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Прикажи Dreamcast слике: {0} × {1} мс, број понављања {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Свака слика се приказује најмање једну секунду, јер адаптер сваку послату слику чува у меморији предвиђеној за 100.000 уписа, што нова слика сваке секунде достиже за отприлике један дан. Слике су 48 × 32 црно-бела пиксела из BMP или PNG датотеке, VMU Animator .lcd датотеке или Dreamcast .vms иконе.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Свака слика се приказује најмање једну секунду. PadForge шаље адаптеру највише једну слику у секунди, јер адаптер сваку послату слику чува у сопственој меморији. Слике су 48 × 32 црно-бела пиксела из BMP или PNG датотеке, VMU Animator .lcd датотеке или Dreamcast .vms иконе.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Слике</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Додај слику…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Уклони слику</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Док је слој укључен, сам се искључује након оволико милисекунди без иједног активног мапираног улаза тог слоја. Тајмер почиње када се слој активира и поново креће при сваком улазу слоја. 0 држи слој укљученим док га сами не искључите.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Ресетуј мртву зону подешавања на 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Ресетуј брзину подешавања на 100% у секунди.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Ресетуј на враћање нивоа на 100% при отпуштању.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Ресетуј аутоматско отказивање на 0 (слој остаје укључен док се не искључи).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop профил</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop макро</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Област курсора</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (држање)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (отпуштање)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (активирање)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Изаберите конфигурацију да видите шта се преноси.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Шта се преноси</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Постаје</value></data>
@@ -4825,7 +4872,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Притисци смера прелазе кроз ћелије и активирају сваку новоизабрану ћелију, без „Режим активирања“ и „Улаз за клик“. „Трака пречица“ помера избор без активирања и активира својом контролом „Активирај“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi проширени протокол</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Омогућава додатну дугмад и сензоре покрета на подржаним Flydigi контролерима.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi софтвер је покренут: {0}. Може да користи исти интерфејс контролера као PadForge, а пријављено је да се Vader 5 Pro више пута прекидао када су оба имала приступ. Ако се овај контролер прекида и поново повезује, зауставите услугу док користите PadForge, држите контролер сакривеним и уклоните услугу са HidHide листе дозвољених, или покушајте да искључите „Flydigi проширени протокол“ у Подешавањима, мада није потврђено да то помаже.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi софтвер је покренут: {0}. Комуницира са контролером преко интерфејса који користи PadForge. Ако се овај контролер прекида и поново повезује, зауставите тај софтвер док користите PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Дозволи удаљене промене доделе</value>
   </data>
@@ -5485,9 +5532,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Изабери шта приказује…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge оверлеј екрана</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Још нема ничега за приказ. Изаберите шта приказује на страници Оверлеј екрана, под Додацима.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Прикажи/сакриј нишан</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Прикажи/сакриј лупу</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Сваки нишан</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Нишан</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј екрана</value></data>

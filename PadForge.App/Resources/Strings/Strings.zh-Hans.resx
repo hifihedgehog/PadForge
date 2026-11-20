@@ -117,6 +117,7 @@
   <data name="Common_None" xml:space="preserve"><value>无</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>秒</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>分钟（0 = 永不）</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未分配</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -237,7 +238,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>（← 左）</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>（↑ 上）</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>未找到 SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>未找到 SDL3.dll。请将 SDL3.dll 放置在 PadForge.exe 旁边。下载地址：https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>未找到 SDL3.dll。请重新下载 PadForge。</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>驱动操作失败：{0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>设置已复制到剪贴板。</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>设备信息已复制到剪贴板。</value></data>
@@ -418,7 +419,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>启动时自动运行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>窗口失去焦点时继续轮询</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>轮询率（除非配置文件覆盖）</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>引擎每秒读取所有设备并更新虚拟控制器的次数，范围为 60 到 10000。轮询率越高，占用的处理器时间越多。Windows 每秒最多唤醒引擎约 2000 次，因此轮询率更高时，每次唤醒会运行多个处理周期。带有自己轮询率的配置文件处于活动状态时，按该轮询率运行。配置文件停用后恢复为此值。</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>引擎每秒读取所有设备并更新虚拟控制器的次数，范围为 60 到 10000。轮询率越高，占用的处理器时间越多。在这台电脑上，Windows 每秒最多唤醒引擎 {0} 次，因此轮询率更高时，每次唤醒会运行多个处理周期。带有自己轮询率的配置文件处于活动状态时，按该轮询率运行。配置文件停用后恢复为此值。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>对游戏隐藏设备</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 设备隐藏和底层输入钩子的总开关。关闭后，无论单个设备设置如何，所有设备都不会被隐藏。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>窗口</value></data>
@@ -1108,7 +1109,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>任意层</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>在此虚拟控制器激活时持续运行。无需触发按钮。</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>执行</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>层、来源、阈值、方向、拦截触发按钮、重复</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>添加动作</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>类型</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>虚拟按键</value></data>
@@ -1134,7 +1134,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>按下鼠标按钮</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>释放鼠标按钮</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触控板叠加层</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>按钮</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>组合键</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>按键组合，格式为 {Key1}{Key2}，可编辑</value></data>
@@ -1287,6 +1286,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>反转半程</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>未映射设备</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>未知设备</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>配置文件</value></data>
@@ -1862,7 +1862,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>下 (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>上 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>激活</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>激活按键、激活模式、Easy Aim 阈值</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>激活按键、激活模式、陀螺仪开启、重新居中、Easy Aim 阈值</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>可选条件，用以限制陀螺仪何时生效。右摇杆偏移与激活按键各自可门控输出。可单独配置或同时配置。两者都配置时必须同时满足，陀螺仪才会触发。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>玩家</value></data>
@@ -1899,6 +1899,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>重置 Easy Aim 阈值</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>重置激活键</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>重置激活模式</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>层</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>下方各行所显示和更改的“陀螺仪开启”设置所属的层。</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>陀螺仪开启</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>陀螺仪在此层何时生效，叠加在激活按键之上。设为“与 Base 相同”的 Shift 层沿用 Base 层的设置。</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>始终开启</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>与 Base 相同</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>按住时</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>未按住时</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>每按一次切换</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>陀螺仪开启按键</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>“陀螺仪开启”所读取的按键，适用于此插槽的任何控制器。</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>需要</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>勾选的按键中按住一个即可，还是必须全部按住。</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>任一按键</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>每个按键</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>陀螺仪开启时重新居中</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>每次陀螺仪开启时，将控制器当前的姿态作为静止点。</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>重置陀螺仪开启</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>重置陀螺仪开启按键</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>重置需要</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>重置陀螺仪开启时重新居中</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>重置激活摇杆</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>重置激活方向</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>运动透传</value></data>
@@ -1909,6 +1930,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>游戏读取的运动数据已应用此处设置的灵敏度、平滑和曲线。</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>仅当</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>仅当同一控制器上的此输入同样读作按下时，此来源才生效。导入的区域测试读作它所检查的摇杆或扳机范围。</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>且当</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>此来源同样等待的第二个输入。</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>更改输入</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>选择另一个要等待的输入。</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>曲线</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>在驱动输出之前，将此输入的读数提升到该次幂。0 和 1 保持为直线。大于 1 时，靠近中心处变化更慢。</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>外部范围</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>行程达到这一比例时，输出达到最大值。100% 为关闭。</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>反死区</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>输入一动，输出就从这一数值开始。0 为关闭。</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>死区形状</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>“关”不处理读数。“轴向”只测量此轴。“径向”将摇杆的两个轴一起测量。</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>关</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>轴向</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>径向</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>内部死区</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>行程低于这一比例时，输入读作居中。</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>每个输入源的倾斜灵敏度倍率。1.0 = 倾斜 90° 达到满偏转。大于 1.0 的值只需更小的倾斜即可达到满偏转。</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>陀螺仪倾角 X</value></data>
@@ -1975,6 +2015,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>正在停止引擎…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非活动超时</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>当所有映射设备都离线时，虚拟控制器被销毁前的秒数。0 表示禁用。剩余的同类型控制器会上移以填补空缺，并重新绑定到较低的槽位。</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒（0 = 永不）</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>用户模式虚拟 HID 控制器引擎（替代 ViGEmBus 和 vJoy）。</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -2662,6 +2703,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>重置回绕速率</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>重置角度内死区</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>重置角度外死区</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>摇杆死区</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>偏移低于此值时，摇杆读作居中，因此不会累积转向。</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>重置摇杆死区</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>重置倾斜内死区</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>重置倾斜外死区</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
@@ -2725,6 +2769,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>上限 {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>这辆车索取的扭矩超过方向盘所能给出的，所以曲线顶部被截去。</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>中心手感、助力、阻尼、摩擦、抓地力、固定速度、方向盘扭矩</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>中心手感、助力、阻尼、抓地力、固定速度、方向盘扭矩</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>低速时转向保持中心的力度。100% 为该车自身的数值。</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>助力</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>随着侧向加速度增大，助力转向减去多少力度。数值越大，偏离中心后转向越轻。</value></data>
@@ -2859,9 +2904,9 @@
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>镜像来源</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>选择镜像到手柄扬声器的播放设备。将特定声音发送到单独播放设备的游戏可以指向该设备。</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>将系统默认输出播放的内容并行复制到此手柄的内置扬声器。USB 和蓝牙均可用。</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>通过此连接，PadForge 无法访问所选设备上的扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>新建声音宏</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>还没有声音宏。创建一个并选择声音文件和触发条件。</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所选设备没有内置扬声器。此手柄的宏声音将在系统默认输出上播放。</value></data>
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏与菜单”中打开此宏</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>镜像来源、耳机音量、缓冲、输出路径</value></data>
@@ -3290,7 +3335,6 @@
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>可选。程序用作当前目录的文件夹。不是程序文件所在的文件夹。留空则使用默认值。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>详情</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>通过USB连接时断开蓝牙</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。当此控制器在蓝牙连接期间报告正在充电时，将断开蓝牙链接，使其充电时不再为无线模块供电。任何USB电源都有效，包括墙充。若在插着线时重新开启蓝牙，将保持不动，直到下次拔线。</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>作为 iCade 控制器读取</value></data>
@@ -3332,8 +3376,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU 显示当前配置文件的名称，并随每次配置文件切换更新。</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU 显示当前配置文件在配置文件列表中的位置。默认配置文件为 0。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU 显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示 PadForge 找到手柄后经过的小时和分钟，每分钟重写一次。手柄离开端口超过十秒后，计时从零重新开始。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。适配器把每幅图片存入自己的存储器，因此 PadForge 重写的频率不会高于此。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示 PadForge 找到手柄后经过的小时和分钟，每分钟重写一次。手柄离开端口超过十秒后，计时从零重新开始。适配器把每幅图片存入自己的存储器，因此 PadForge 重写的频率不会高于每分钟一次。</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU 显示您选择的图片：BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。图片会转为 48×32 的黑白像素。</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>选择图片…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>为 {0} 选择图片…</value></data>
@@ -3378,6 +3422,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>处于 Xbox 模式的控制器没有以 Apex 4 的身份应答，因此没有发送任何内容，Windows 已将其收回。请用控制器自带的开关将其切换回 DInput 模式。</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows 没有将控制器切换到 WinUSB，因此没有发送任何内容。请用控制器自带的开关将其切换回 DInput 模式。</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>已停止。再次发送前，请用控制器自带的开关将其关闭再打开。</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>屏幕的端口无法打开，因此未发送任何内容。请用控制器自带的开关将其关闭再打开，然后重新发送。</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>这张图片的帧数超过了此控制器屏幕所能容纳的数量。</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>已有一张图片正在发送到此控制器。请等待其完成。</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>屏幕要求把图片写入 PadForge 不会写入的地址，因此未发送任何内容。请用控制器自带的开关将其关闭再打开，然后重新发送。</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>图片已发送，但控制器没有切换回 DInput 模式。请用控制器自带的开关将其切换回去。</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>控制器没有接受使其准备就绪的命令，因此未发送任何内容。请检查它是否已连接，然后重新发送。</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>发送因 PadForge 中的错误而停止。日志文件中有详细信息。</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>图片仍在发送到控制器。要停止发送吗？</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>控制器记忆卡文件 (*.mpk)|*.mpk|所有文件 (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>控制器记忆卡 端口 {0}.mpk</value></data>
@@ -3532,6 +3583,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>偏低</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>图示</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>列表</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} 个输出</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} 个输出</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>体感</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>点击一个控件，然后按下要驱动它的输入。</value></data>
@@ -3601,9 +3653,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge 不认识的游戏</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>供在发送前查找运行中 DSX 的模组使用。</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>显示内容</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>菜单打开时显示其环形、网格或条形</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift 层开启时显示该层的名称，时长由该层设定</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>配置文件切换时显示配置文件的名称</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>菜单打开时显示其环形、网格或条形。</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift 层开启时显示该层的名称，时长由该层设定。</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>配置文件切换时显示配置文件的名称。</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>复制地址</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>屏幕位置</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>连接手机</value></data>
@@ -3790,7 +3842,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>显示 Dreamcast 屏幕</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>在为此槽位提供输入的 Bliss-Box 端口中，每个 Dreamcast 手柄的 VMU 上播放图片，然后将各端口恢复为其自己的屏幕设置。</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>显示 {0} 张 Dreamcast 图片，每张 {1} 毫秒，共 {2} 次</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>由于适配器会把收到的每张图片写入额定 10 万次写入的存储器，每张图片至少显示一秒。每秒换一张图片，约一天即达到该次数。图片为 48×32 的黑白像素，可来自 BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>每张图片至少显示一秒。PadForge 每秒最多向适配器发送一张图片，因为适配器会把收到的每张图片存入自己的存储器。图片为 48×32 的黑白像素，可来自 BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>图片</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>添加图片…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>移除图片</value></data>
@@ -3845,7 +3897,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>重置菜单布局</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>重置单元格</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>重置灵敏度</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>重置加速度</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>重置死区</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>重置按住时长</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>重置按键判定窗口</value></data>
@@ -3920,9 +3971,6 @@
   <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>重置指南键 LED 亮度</value></data>
   <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>重置指南键 LED 模式</value></data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>将自动取消重置为 0（层保持开启，直到手动切换关闭）。</value></data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>将微调死区重置为 25%。</value></data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>将微调速度重置为每秒 100%。</value></data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>重置为松开时保持值回到 100%。</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>无活动后自动取消</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>当层处于切换开启状态时，如果层自身映射的输入在这段毫秒数内均未激活，层会自动关闭。计时器在层激活时启动，并在每次层输入时重新计时。0 表示层保持开启，直到你手动关闭。</value></data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
@@ -3936,6 +3984,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>每 {1} ms 重复 {0}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>鼠标 X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>鼠标 Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>水平偏移</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>垂直偏移</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>间隔</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>在屏幕上拾取</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} 秒后捕获…</value></data>
@@ -4004,6 +4054,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>创意工坊配置文件</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>创意工坊宏</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>光标区域</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0}（按住）</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0}（释放）</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0}（进入）</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>选择一个配置以查看转换内容。</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>转换内容</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>转换为</value></data>
@@ -4774,7 +4827,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向按键逐格移动并触发每个新选中的单元格，不使用“触发模式”或“点击输入”。“快捷栏”样式只移动不触发，用它自己的“触发”控制来触发。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 增强协议</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>启用受支持的 Flydigi 手柄的额外按键和体感传感器。</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 软件正在运行：{0}。它可以使用与 PadForge 相同的手柄接口，且有报告称一台 Vader 5 Pro 在两者都能访问时反复断开。如果此手柄出现断开重连，请在使用 PadForge 时停止该服务，或保持手柄隐藏并将该服务从 HidHide 白名单中移除，或尝试在设置中关闭"Flydigi 增强协议"，其效果尚未确认。</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 软件正在运行：{0}。它通过 PadForge 使用的接口与手柄通信。如果此手柄出现断开重连，请在使用 PadForge 时停止该软件。</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>允许远程更改分配</value>
   </data>
@@ -5434,9 +5487,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>选择显示内容…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 屏幕叠加层</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>暂无可显示的内容。请在附加功能下的屏幕叠加层页面上选择显示内容。</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>切换准星</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>切换放大镜</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>所有准星</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>准星</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>

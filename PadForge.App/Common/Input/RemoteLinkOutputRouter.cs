@@ -228,13 +228,19 @@ namespace PadForge.Common.Input
             OutputEffectCodec.CenteringTail centering = default)
         {
             if (!_byPath.TryGetValue(path, out var target)) return false;
-            byte[] payload = OutputEffectCodec.EncodeWheel(hasCond, dir, force, peak, ac, effect,
+            // The poll ships the frame on every pass. It is written into a
+            // buffer on the stack and compared there, and an array is made
+            // only for a frame that goes out.
+            Span<byte> frame = stackalloc byte[OutputEffectCodec.WheelFrameMax];
+            int length = OutputEffectCodec.EncodeWheel(frame, hasCond, dir, force, peak, ac, effect,
                 period, pc, nc, off, db, ps, ns, condGain, rangeDeg, ledMask, ledValid, rangeLeftToWheel, centering);
+            ReadOnlySpan<byte> payload = frame[..length];
             lock (target.Gate)
             {
-                if (target.Wheel != null && payload.AsSpan().SequenceEqual(target.Wheel)) return true;
-                if (!Dispatch(target, LinkMessageType.Output, payload)) return false;
-                target.Wheel = payload;
+                if (target.Wheel != null && payload.SequenceEqual(target.Wheel)) return true;
+                byte[] sent = payload.ToArray();
+                if (!Dispatch(target, LinkMessageType.Output, sent)) return false;
+                target.Wheel = sent;
                 return true;
             }
         }
@@ -439,6 +445,21 @@ namespace PadForge.Common.Input
                 _outputLease.TryRemove(localDevicePath, out _);
             }
         }
+
+        /// <summary>How many times this PC's pass has written a wheel's
+        /// range, auto-center or LEDs, by path. The owner's record of what a
+        /// peer last set on the wheel holds the count it saw, so a peer's
+        /// settings go back on a wheel the local pass wrote in between.</summary>
+        private static readonly ConcurrentDictionary<string, int> _localWheelSettings = new(StringComparer.OrdinalIgnoreCase);
+
+        public static void NoteLocalWheelSettings(string localDevicePath)
+        {
+            if (!string.IsNullOrEmpty(localDevicePath))
+                _localWheelSettings.AddOrUpdate(localDevicePath, 1, static (_, count) => count + 1);
+        }
+
+        public static int LocalWheelSettings(string localDevicePath)
+            => !string.IsNullOrEmpty(localDevicePath) && _localWheelSettings.TryGetValue(localDevicePath, out int count) ? count : 0;
 
         /// <summary>Owner: true while a peer's relay holds the output lease on this LOCAL
         /// device, so the local output pipeline must skip its write (the relay is the sole

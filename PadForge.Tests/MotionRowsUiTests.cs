@@ -690,7 +690,7 @@ namespace PadForge.Tests
             using var session = new RecorderSession(gyro: true, accel: true);
             session.Device.InputState.Accel[1] = G;
             var row = session.Row(MappingSetMigrator.MotionGyroTarget);
-            session.Recorder.StartRecording(row, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(row, 0);
             Assert.True(session.Recorder.IsRecording);
             Assert.Equal(string.Format(Strings.Instance.Status_RecordingMotionPrompt_Format, row.TargetLabel), session.ViewModel.StatusText);
 
@@ -715,7 +715,7 @@ namespace PadForge.Tests
             bool ended = false;
             session.Recorder.RecordingTimedOut += (_, _) => ended = true;
             var gyroRow = session.Row(MappingSetMigrator.MotionGyroTarget);
-            session.Recorder.StartRecording(gyroRow, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(gyroRow, 0);
             Assert.False(session.Recorder.IsRecording);
             Assert.True(ended);
             Assert.False(gyroRow.IsRecording);
@@ -723,7 +723,7 @@ namespace PadForge.Tests
                 session.ViewModel.StatusText);
 
             // The same controller's accelerometer records.
-            session.Recorder.StartRecording(session.Row(MappingSetMigrator.MotionAccelTarget), 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(session.Row(MappingSetMigrator.MotionAccelTarget), 0);
             Assert.True(session.Recorder.IsRecording);
         }
 
@@ -732,7 +732,7 @@ namespace PadForge.Tests
         {
             using var session = new RecorderSession(gyro: false, accel: true);
             var row = session.Row(MappingSetMigrator.MotionAccelTarget);
-            session.Recorder.StartRecording(row, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(row, 0);
             Assert.True(session.Recorder.IsRecording);
 
             session.Device.InputState.Accel[1] = G;     // the stream starts
@@ -773,7 +773,7 @@ namespace PadForge.Tests
             {
                 using var session = new RecorderSession(gyro: true, accel: true);
                 var row = session.Row(target);
-                session.Recorder.StartRecording(row, 0, session.Device.InstanceGuid, negRecording: negRecording);
+                session.Recorder.StartRecording(row, 0, negRecording: negRecording);
                 session.Device.InputState.Axis[axis] = pushed;
                 for (int i = 0; i < 20 && session.Recorder.IsRecording; i++) session.Tick();
                 Assert.False(session.Recorder.IsRecording, $"{target} never recorded");
@@ -787,7 +787,7 @@ namespace PadForge.Tests
         {
             using var session = new RecorderSession(gyro: true, accel: true);
             var row = session.Row(MappingSetMigrator.MotionPitchTarget);
-            session.Recorder.StartRecording(row, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(row, 0);
             Assert.Equal(string.Format(Strings.Instance.Status_RecordingPrompt_Format, row.TargetLabel), session.ViewModel.StatusText);
             // Turning the controller records nothing here.
             session.Device.InputState.Gyro[0] = 3f;

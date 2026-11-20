@@ -341,9 +341,11 @@ namespace PadForge.Tests
             var under = Assert.Single(line.Descendants(), e => Part(e) == "Under");
             Assert.Equal("FlexLinePanel", under.Name.LocalName);
             var three = Kids(under);
-            Assert.Equal(new[] { "ContentControl", "StackPanel", "ContentControl" }, three.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "ContentControl", "StackPanel", "ContentControl", "ContentControl" }, three.Select(e => e.Name.LocalName));
             Assert.Equal(("{Binding ModeHolder}", "{StaticResource SourceModeSettings}"), ((string)three[0].Attribute("Content"), (string)three[0].Attribute("ContentTemplate")));
             Assert.Equal(("{Binding}", "{StaticResource SourceDials}"), ((string)three[2].Attribute("Content"), (string)three[2].Attribute("ContentTemplate")));
+            // The source's own shaping and the inputs it waits on, where it has them.
+            Assert.Equal(("{Binding ShapingHolder}", "{StaticResource SourceShaping}"), ((string)three[3].Attribute("Content"), (string)three[3].Attribute("ContentTemplate")));
 
             // The deadzone: for an input that presses at one, read by a mode that reads the input.
             Assert.Equal("DeadzoneGroup", Name(three[1]));
@@ -387,17 +389,19 @@ namespace PadForge.Tests
                 },
                 Groups(Keyed(page, "SourceModeSettings")));
 
-            // The dials of an input. A reset that is a command of its own is named by the command.
+            // The dials of an input. Each reset says "Reset" and the row's own label
+            // (SettingResetButton): the gyro's said "Reset Sensitivity" under
+            // "Gyro Sensitivity", and the trim's gave sentences of their own.
             var dials = Keyed(page, "SourceDials");
             Assert.Equal(new[]
                 {
                     ("IsInvertOutputApplicable", "Pad_InvertOutput", "InvertOutput", "Reset_MappingItem_InvertOutput_5776"),
-                    ("IsGyroSource", "Mapping_GyroSensitivity", "GyroSensitivity", "ResetGyroSensitivityCommand"),
-                    ("IsGyroLeanSource", "Mapping_GyroSensitivity", "Sensitivity", "ResetSensitivityCommand"),
-                    ("IsParamAccelApplicable", "Pad_Mapping_Accel", "ParamAccel", "ResetParamAccelCommand"),
-                    ("IsMouseCursorSource", "Mapping_MouseCursorSensitivity", "MouseCursorSensitivity", "ResetMouseCursorSensitivityCommand"),
-                    ("IsIrPointerSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"),
-                    ("IsMouseMotionSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"),
+                    ("IsGyroSource", "Mapping_GyroSensitivity", "GyroSensitivity", "Reset_Mapping_GyroSensitivity"),
+                    ("IsGyroLeanSource", "Mapping_GyroSensitivity", "Sensitivity", "Reset_Mapping_LeanSensitivity"),
+                    ("IsParamAccelApplicable", "Pad_Mapping_Accel", "ParamAccel", "Reset_Mapping_ParamAccel"),
+                    ("IsMouseCursorSource", "Mapping_MouseCursorSensitivity", "MouseCursorSensitivity", "Reset_Mapping_MouseCursorSensitivity"),
+                    ("IsIrPointerSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "Reset_Mapping_IrPointerSensitivity"),
+                    ("IsMouseMotionSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "Reset_Mapping_MouseMotionSensitivity"),
                 },
                 Groups(dials));
             // A mode that reads keys leaves the input unread, so it shows no dial.
@@ -479,9 +483,9 @@ namespace PadForge.Tests
                 {
                     ("IsMultiSource", "Pad_Combine_Label", "CombineMode", "Reset_MappingItem_CombineMode_4340"),
                     ("DataContext.IsActiveLayerInheriting", "Pad_Shift_NoInherit", "NoInherit", "Reset_MappingItem_NoInherit_5788"),
-                    (null, "Pad_Mapping_TrimDeadzone", "TrimDeadzone", "ResetTrimDeadzoneCommand"),
-                    (null, "Pad_Mapping_TrimRate", "TrimRate", "ResetTrimRateCommand"),
-                    (null, "Pad_Mapping_TrimReset", "TrimResetOnRelease", "ResetTrimResetOnReleaseCommand"),
+                    (null, "Pad_Mapping_TrimDeadzone", "TrimDeadzone", "Reset_Mapping_TrimDeadzone"),
+                    (null, "Pad_Mapping_TrimRate", "TrimRate", "Reset_Mapping_TrimRate"),
+                    (null, "Pad_Mapping_TrimReset", "TrimResetOnRelease", "Reset_Mapping_TrimResetOnRelease"),
                     ("CanUseMotionAngle", "Pad_Mapping_MotionMode", "MotionResponse", "Reset_MappingItem_MotionResponse_4614"),
                     ("ShowMotionSpeedSettings", "Pad_Mapping_MotionTopSpeed", "MotionSpeed", "Reset_MappingItem_MotionSpeed_4624"),
                     ("ShowMotionSpeedSettings", "Pad_Mapping_MotionStartSpeed", "MotionMinSpeed", "Reset_MappingItem_MotionMinSpeed_4630"),
@@ -548,8 +552,6 @@ namespace PadForge.Tests
 
             Assert.Same(row, first.Row);
             Assert.Same(row, second.Row);
-            Assert.True(first.IsFirstSource);
-            Assert.False(second.IsFirstSource);
             Assert.Same(row.PrimaryKindSource, first.ModeHolder);
             Assert.Same(added, second.ModeHolder);
             // The first source's holder is no source of its own, and offers
@@ -737,6 +739,62 @@ namespace PadForge.Tests
             Assert.True(row.IsPrimaryDescriptor);
             Assert.Equal(string.Empty, row.SourceDescriptor ?? string.Empty);
             Assert.Equal("Direct", row.PrimaryKindSource?.Kind ?? "Direct");
+        }
+
+        /// <summary>An added source's Record names itself in the new
+        /// language after a language change, as the first source's does.</summary>
+        [Fact]
+        public void AnAddedSourcesRecordNameFollowsALanguageChange()
+        {
+            var source = new MappingSourceItem { Kind = "Direct" };
+            var said = new List<string>();
+            source.PropertyChanged += (_, e) => said.Add(e.PropertyName);
+            source.RefreshCulture();
+            Assert.Contains(nameof(MappingSourceItem.RecordButtonText), said);
+            Assert.Contains(nameof(MappingSourceItem.LineRecordText), said);
+        }
+
+        /// <summary>A source whose mode reads keys, with a device and no key
+        /// yet, reads alike as the first source and as an added one: its
+        /// device, not Unassigned. With no device either, both read
+        /// Unassigned. One template draws both lines.</summary>
+        [Fact]
+        public void AKeySourceWithADeviceAndNoKeysReadsAlikeFirstAndAdded()
+        {
+            string device = GuidText(Guid.NewGuid());
+            var row = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            row.LoadFirstSource(new MappingSource { Kind = "Incremental", DeviceGuid = device }, _ => "Pad");
+            Assert.True(row.IsLineKeyMode);
+            var added = new MappingSourceItem { Kind = "Incremental", DeviceGuid = device, DeviceLabel = "Pad" };
+            row.ExtraSources.Add(added);
+            IMappingSourceLine first = row, second = added;
+            Assert.False(second.IsLineUnassigned);
+            Assert.False(first.IsLineUnassigned);
+
+            var bare = new MappingItem("B", "ButtonB", MappingCategory.Buttons);
+            bare.LoadFirstSource(new MappingSource { Kind = "Incremental" }, _ => "Pad");
+            var bareAdded = new MappingSourceItem { Kind = "Incremental" };
+            bare.ExtraSources.Add(bareAdded);
+            Assert.True(((IMappingSourceLine)bare).IsLineUnassigned);
+            Assert.True(bareAdded.IsLineUnassigned);
+        }
+
+        /// <summary>A first source whose mode reads keys loads with its
+        /// device's name, as an added source does, with keys or with none.</summary>
+        [Fact]
+        public void AFirstKeySourceLoadsWithItsDevicesName()
+        {
+            string device = GuidText(Guid.NewGuid());
+            var row = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            row.LoadFirstSource(new MappingSource { Kind = "Incremental", DeviceGuid = device }, g => g == device ? "Pad" : "");
+            Assert.Equal("Pad", ((IMappingSourceLine)row).LineDeviceLabel);
+
+            row.LoadFirstSource(new MappingSource { Kind = "Incremental", DeviceGuid = device, ParamUp = "Button 5", ParamUpDeviceGuid = device }, g => g == device ? "Pad" : "");
+            Assert.Equal("Pad", ((IMappingSourceLine)row).LineDeviceLabel);
+
+            // A source that reads a descriptor again leaves the holder no name.
+            row.LoadFirstSource(new MappingSource { Kind = "Direct", DeviceGuid = device, Descriptor = "Button 1" }, g => g == device ? "Pad" : "");
+            Assert.Equal(string.Empty, row.PrimaryKindSource.DeviceLabel ?? string.Empty);
         }
 
         /// <summary>Remove on the first source's line: the next source

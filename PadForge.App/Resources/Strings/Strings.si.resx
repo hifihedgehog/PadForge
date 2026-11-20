@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>කිසිවක් නැත</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>තත්පර</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>මිනිත්තු (0 = කිසි විටෙක නැත)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>පවරා නැත</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← වමට)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ඉහළට)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll හමු නොවීය</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll හමු නොවීය. SDL3.dll ගොනුව PadForge.exe අසල තබන්න. එය https://github.com/libsdl-org/SDL/releases වෙතින් බාගන්න</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll හමු නොවීය. PadForge නැවත බාගන්න.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ධාවක මෙහෙයුම අසමත් විය: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>සැකසීම් පසුරු පුවරුවට පිටපත් කරන ලදී.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>උපාංග තොරතුරු පසුරු පුවරුවට පිටපත් කරන ලදී.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>අඩුයි</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>රූපය</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ලැයිස්තුව</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>ප්‍රතිදානය: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ප්‍රතිදාන: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>චලනය</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>පාලනයක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge නොදන්නා ක්‍රීඩා</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>යැවීමට පෙර ධාවනය වන DSX එකක් සොයන මොඩ් සඳහා.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>පෙන්වන දේ</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>මෙනුවක් විවෘතව ඇති අතරතුර එහි වළල්ල, ජාලකය හෝ තීරුව</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ක්‍රියාත්මක වන විට, එම ස්ථරය සකසන කාලය සඳහා එම ස්ථරයේ නම</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>පැතිකඩ මාරු වන විට පැතිකඩෙහි නම</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>මෙනුවක් විවෘතව ඇති අතරතුර එහි වළල්ල, ජාලකය හෝ තීරුව.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ක්‍රියාත්මක වන විට, එම ස්ථරය සකසන කාලය සඳහා එම ස්ථරයේ නම.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>පැතිකඩ මාරු වන විට පැතිකඩෙහි නම.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ලිපිනය පිටපත් කරන්න</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>තිරය මත ස්ථානය</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>දුරකථනයක් සම්බන්ධ කරන්න</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>දියත් කරන විට එන්ජිම ස්වයංක්‍රීයව අරඹන්න</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>කවුළුවේ නාභිගත බව නැති වූ විට විමසීම දිගටම කරන්න</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>විමසුම් අනුපාතය (පැතිකඩක් එය අභිබවා නොයන්නේ නම්)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>එන්ජිම සෑම උපාංගයක්ම කියවා අතථ්‍ය පාලක යාවත්කාලීන කරන්නේ තත්පරයකට මෙම වාර ගණනකි, 60 සිට 10000 දක්වා. ඉහළ අනුපාතයක් වැඩි ප්‍රොසෙසර කාලයක් භාවිත කරයි. Windows එන්ජිම අවදි කරන්නේ තත්පරයකට උපරිම වශයෙන් ආසන්න වශයෙන් 2000 වතාවක් පමණි, එබැවින් ඊට වැඩි අනුපාතයක් එක් එක් අවදි කිරීමේදී ධාවන වට කිහිපයක් ක්‍රියාත්මක කරයි. තමන්ගේම විමසීම් අනුපාතයක් ඇති පැතිකඩක් සක්‍රිය අතරතුර, ඒ වෙනුවට එම අනුපාතය යෙදේ. පැතිකඩ අක්‍රිය වූ විට මෙම අගය නැවත යෙදේ.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>එන්ජිම සෑම උපාංගයක්ම කියවා අතථ්‍ය පාලක යාවත්කාලීන කරන්නේ තත්පරයකට මෙම වාර ගණනකි, 60 සිට 10000 දක්වා. ඉහළ අනුපාතයක් වැඩි ප්‍රොසෙසර කාලයක් භාවිත කරයි. මෙම PC එකේ Windows එන්ජිම අවදි කරන්නේ තත්පරයකට උපරිම වශයෙන් {0} වතාවක් පමණි, එබැවින් ඊට වැඩි අනුපාතයක් එක් එක් අවදි කිරීමේදී ධාවන වට කිහිපයක් ක්‍රියාත්මක කරයි. තමන්ගේම විමසීම් අනුපාතයක් ඇති පැතිකඩක් සක්‍රිය අතරතුර, ඒ වෙනුවට එම අනුපාතය යෙදේ. පැතිකඩ අක්‍රිය වූ විට මෙම අගය නැවත යෙදේ.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ක්‍රීඩාවලින් උපාංග සඟවන්න</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide උපාංග සැඟවීම සහ පහළ මට්ටමේ ආදාන හුක් සඳහා ප්‍රධාන ස්විචය. අක්‍රිය විට, එක් එක් උපාංගයේ සැකසීම් කුමක් වුවත් කිසිදු උපාංගයක් සඟවන්නේ නැත.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>දියත් කිරීම් අතර උපාංග සඟවා තබන්න</value></data>
@@ -923,7 +925,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ටයිප් කරන අක්ෂර අතර මිලිතත්පර, 1000 දක්වා. 0 නම් මුළු පෙළම එකවර ටයිප් කරයි.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>අක්‍රිය විට විසන්ධි කිරීම</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>විස්තර</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>මිනිත්තු</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB හරහා සම්බන්ධ කළ විට Bluetooth විසන්ධි කරන්න</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ඉක්මන් ආරෝපණය. Bluetooth හරහා සම්බන්ධව සිටියදී මෙම පාලකය ආරෝපණය වන බව වාර්තා කළ විට, Bluetooth සබැඳිය විසන්ධි කරනු ලැබේ, එවිට රේඩියෝව බලගන්වන්නේ නැතිව එය ආරෝපණය වේ. බිත්ති චාජර් ඇතුළු ඕනෑම USB බල ප්‍රභවයක් ගණන් ගැනේ. කේබලය සම්බන්ධව තිබියදී ඔබ Bluetooth නැවත ක්‍රියාත්මක කළහොත්, ඊළඟ වතාවේ ගලවන තෙක් එය එසේම තබනු ලැබේ.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade පාලකයක් ලෙස කියවන්න</value></data>
@@ -965,8 +966,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU සක්‍රිය පැතිකඩේ නම පෙන්වන අතර සෑම පැතිකඩ මාරුවක්ම අනුගමනය කරයි.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU පැතිකඩ ලැයිස්තුවේ සක්‍රිය පැතිකඩේ ස්ථානය පෙන්වයි. පෙරනිමි පැතිකඩ 0 වේ.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU සක්‍රිය පැතිකඩේම පින්තූරය පෙන්වයි, නැතහොත් පින්තූරයක් නැති විට එහි නම පෙන්වයි. සෑම පැතිකඩක්ම තමන්ගේම පින්තූරයක් තබා ගනී.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU දවසේ වේලාව පෙන්වයි, එය මිනිත්තුවකට වරක් නැවත ලියනු ලැබේ. ඇඩැප්ටරය සෑම පින්තූරයක්ම ලිවීම් 100,000කට ශ්‍රේණිගත මතකයක තබා ගනී. දිවා රෑ පුරා පෙන්වීමෙන් සති දහයක් පමණ ගත වූ පසු මෙය එම සීමාවට ළඟා වේ.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge පෑඩය සොයාගත් දා සිට ගත වූ පැය සහ මිනිත්තු VMU පෙන්වයි, එය මිනිත්තුවකට වරක් නැවත ලියනු ලැබේ. තත්පර දහයකට වඩා තම තොටෙන් ඉවත්ව සිටින පෑඩයක් නැවත ශුන්‍යයෙන් ආරම්භ වේ. ඇඩැප්ටරය සෑම පින්තූරයක්ම ලිවීම් 100,000කට ශ්‍රේණිගත මතකයක තබා ගනී. දිවා රෑ පුරා පෙන්වීමෙන් සති දහයක් පමණ ගත වූ පසු මෙය එම සීමාවට ළඟා වේ.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU දවසේ වේලාව පෙන්වයි, එය මිනිත්තුවකට වරක් නැවත ලියනු ලැබේ. ඇඩැප්ටරය සෑම පින්තූරයක්ම තමන්ගේම මතකයේ ගබඩා කරන බැවින් PadForge එය ඊට වඩා නිතර නැවත ලියන්නේ නැත.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge පෑඩය සොයාගත් දා සිට ගත වූ පැය සහ මිනිත්තු VMU පෙන්වයි, එය මිනිත්තුවකට වරක් නැවත ලියනු ලැබේ. තත්පර දහයකට වඩා තම තොටෙන් ඉවත්ව සිටින පෑඩයක් නැවත ශුන්‍යයෙන් ආරම්භ වේ. ඇඩැප්ටරය සෑම පින්තූරයක්ම තමන්ගේම මතකයේ ගබඩා කරන බැවින් PadForge එය මිනිත්තුවකට වරකට වඩා නිතර නැවත ලියන්නේ නැත.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU ඔබ තෝරන පින්තූරයක් පෙන්වයි: BMP හෝ PNG, VMU Animator .lcd ගොනුවක් හෝ Dreamcast .vms අයිකනයක්. පින්තූර කළු සුදු පික්සල 48 × 32 ප්‍රමාණයට කපනු ලැබේ.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>පින්තූරය තෝරන්න…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} සඳහා පින්තූරය තෝරන්න…</value></data>
@@ -1011,6 +1012,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox ප්‍රකාරයේ පාලකය Apex 4 එකක් ලෙස පිළිතුරු නොදුන් බැවින් කිසිවක් යවා නැත, Windows එය නැවත ලබාගෙන ඇත. එහිම ස්විචයෙන් එය නැවත DInput ප්‍රකාරයට මාරු කරන්න.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows පාලකය WinUSB වෙත ගෙන නොගිය බැවින් කිසිවක් යවා නැත. එහිම ස්විචයෙන් එය නැවත DInput ප්‍රකාරයට මාරු කරන්න.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>නවත්වන ලදී. නැවත යැවීමට පෙර පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කරන්න.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>තිරයේ තොට විවෘත නොවූ බැවින් කිසිවක් යවා නැත. පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>මෙම පාලකයේ තිරයට දරාගත හැකි ප්‍රමාණයට වඩා රාමු පින්තූරයේ ඇත.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>පින්තූරයක් දැනටමත් මෙම පාලකයට යවමින් පවතී. එය අවසන් වන තෙක් රැඳී සිටින්න.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>PadForge නොලියන ලිපිනයක පින්තූරය තිරය ඉල්ලූ බැවින් කිසිවක් යවා නැත. පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>පින්තූරය යවන ලදී, නමුත් පාලකය නැවත DInput ප්‍රකාරයට මාරු නොවීය. එය එහිම ස්විචයෙන් නැවත මාරු කරන්න.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>පාලකය සූදානම් කරන විධානය එය භාර නොගත් බැවින් කිසිවක් යවා නැත. එය සම්බන්ධ වී ඇත්දැයි පරීක්ෂා කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge තුළ ඇති වූ දෝෂයක් නිසා යැවීම නතර විය. විස්තර ලොග් ගොනුවේ ඇත.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>පින්තූරයක් තවමත් පාලකය වෙත යමින් පවතී. යැවීම නවත්වන්නද?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ගොනු (*.mpk)|*.mpk|සියලු ගොනු (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak තොට {0}.mpk</value></data>
@@ -1505,7 +1513,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>මෙනු ජ්‍යාමිතිය යළි සකසන්න</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>කොටුව යළි සකසන්න</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>සංවේදීතාව යළි සකසන්න</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>ත්වරණය යළි සකසන්න</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>රඳවා තබන කාලය යළි සකසන්න</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>එබීමේ කාල සීමාව යළි සකසන්න</value></data>
@@ -1786,7 +1793,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ඕනෑම ස්ථරයක්</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකය සක්‍රිය අතරතුර අඛණ්ඩව ධාවනය වේ. සක්‍රියකාරක බොත්තමක් අවශ්‍ය නැත.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>කරන්න</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>ස්ථරය, මූලාශ්‍රය, සීමා අගය, දිශාව, සක්‍රියකාරක බොත්තම් අවශෝෂණය කරන්න, පුනරාවර්තනය</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>ක්‍රියාවක් එක් කරන්න</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>වර්ගය</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>අතථ්‍ය බොත්තම්</value></data>
@@ -1812,7 +1818,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>මූසික බොත්තම එබීම</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>මූසික බොත්තම මුදා හැරීම</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>මූසික අනුචලනය</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ ටොගල් කරන්න</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>බොත්තම්</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>යතුරු සංයෝජනය</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} ආකෘතියෙන් යතුරු සංයෝජනය. සංස්කරණය කළ හැක.</value></data>
@@ -1943,6 +1948,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>සෑම {1} ms කට වරක් {0} පුනරාවර්තනය කරන්න</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>මූසික X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>මූසික Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>තිරස් විස්ථාපනය</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>සිරස් විස්ථාපනය</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>කාල පරතරය</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>තිරයෙන් තෝරන්න</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} කින් ග්‍රහණය කරයි…</value></data>
@@ -1977,6 +1984,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>ප්‍රතිලෝම අර්ධ</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>උපාංගයක් සිතියම්ගත කර නැත</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>නොදන්නා උපාංගය</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ටච්පෑඩ් ක්ලික් කිරීම</value></data>
@@ -2419,7 +2427,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>පහළ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ඉහළ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>සක්‍රිය කිරීම</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම, සක්‍රිය කිරීමේ ප්‍රකාරය, පහසු ඉලක්ක සීමා අගය</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම, සක්‍රිය කිරීමේ ප්‍රකාරය, ගයිරෝ සක්‍රිය, නැවත මධ්‍යගත කිරීම, පහසු ඉලක්ක සීමා අගය</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන කාලය සීමා කරන විකල්ප කොන්දේසි. දකුණු ස්ටික් අපගමනය සහ ඉලක්ක සක්‍රිය කිරීමේ බොත්තම එක එකක් වෙන වෙනම වින්‍යාස කළ හැක. වින්‍යාස කළ සෑම කොන්දේසියක්ම සක්‍රිය වන අතරතුර පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ස්ථානීය</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ක්‍රීඩකයා</value></data>
@@ -2456,6 +2464,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>පහසු ඉලක්ක සීමා අගය යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>සක්‍රිය කිරීමේ ප්‍රකාරය යළි සකසන්න</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>ස්ථරය</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>පහත පේළි පෙන්වන සහ වෙනස් කරන ගයිරෝ සක්‍රිය සැකසුම අයත් ස්ථරය.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ගයිරෝ සක්‍රිය</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>සක්‍රිය කිරීමේ බොත්තමට අමතරව, මෙම ස්ථරයේ ගයිරෝ ක්‍රියා කරන්නේ කවදාද යන්න. “මූලික ස්ථරය ලෙසම” ලෙස සකසා ඇති මාරු ස්ථරයක් මූලික ස්ථරය අනුගමනය කරයි.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>සැමවිට සක්‍රිය</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>මූලික ස්ථරය ලෙසම</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>අල්ලාගෙන සිටින අතරතුර</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>අල්ලා නොසිටින අතරතුර</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>සෑම එබීමකදීම මාරු කිරීම</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ගයිරෝ සක්‍රිය බොත්තම්</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකේ ඕනෑම පාලකයක ගයිරෝ සක්‍රිය කියවන බොත්තම්.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>අවශ්‍යතාව</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>සලකුණු කළ එක් බොත්තමක් ප්‍රමාණවත්ද, නැතහොත් සලකුණු කළ සෑම බොත්තමක්ම අල්ලාගෙන සිටිය යුතුද යන්න.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ඕනෑම බොත්තමක්</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>සෑම බොත්තමක්ම</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන විට නැවත මධ්‍යගත කරන්න</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන සෑම විටම පාලකයේ ඉරියව්ව විවේක ලක්ෂ්‍යය ලෙස ගනී.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ගයිරෝ සක්‍රිය යළි සකසන්න</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>ගයිරෝ සක්‍රිය බොත්තම් යළි සකසන්න</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>අවශ්‍යතාව යළි සකසන්න</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන විට නැවත මධ්‍යගත කිරීම යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>සක්‍රිය කිරීමේ ස්ටික් යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>සක්‍රිය කිරීමේ දිශාව යළි සකසන්න</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>චලන පාස්ත්‍රූ</value></data>
@@ -2466,6 +2495,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ක්‍රීඩාව මෙහි සකසා ඇති සංවේදීතාව, සුමට කිරීම සහ වක්‍රය සමඟ චලනය කියවයි.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>පාස්ත්‍රූ සුසර කිරීම යළි සකසන්න</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>අතරතුර පමණක්</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>මෙම ආදානය එම පාලකයේම එබූ ලෙස කියවෙන අතරතුර පමණක් මෙම මූලාශ්‍රය ගණන් ගනී. ආයාත කිරීමකින් ලැබුණු කලාප පරීක්ෂණයක් එය පරීක්ෂා කරන ස්ටික් හෝ ට්‍රිගර් පරාසය ලෙස කියවේ.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>සහ අතරතුර</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>මෙම මූලාශ්‍රය රඳා පවතින දෙවන ආදානයක්.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ආදානය වෙනස් කරන්න</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>මෙම මූලාශ්‍රය රඳා පවතින වෙනත් ආදානයක් තෝරයි.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>වක්‍රය</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>ප්‍රතිදානය ධාවනය කිරීමට පෙර මෙම ආදානයේ කියවීම මෙම ඝාතයට නංවයි. 0 සහ 1 එය සරල රේඛීයව තබයි. 1 ට වැඩි අගයක් මධ්‍යය අසල මන්දගාමී වේ.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>බාහිර පරාසය</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>චලනයෙන් මෙම ප්‍රමාණයට ළඟා වූ විට ප්‍රතිදානය පූර්ණ වේ. 100% විට එය ක්‍රියාවිරහිතයි.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ප්‍රති-ඩෙඩ්සෝන්</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ආදානය චලනය වූ වහාම ප්‍රතිදානය මෙම ප්‍රමාණයෙන් ආරම්භ වේ. 0 විට එය ක්‍රියාවිරහිතයි.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>ඩෙඩ්සෝන් හැඩය</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>“ක්‍රියාවිරහිතයි” කියවීම එලෙසම තබයි. “අක්ෂීය” මෙම අක්ෂය පමණක් මනියි. “අරීය” ස්ටික් යුගලය එකට මනියි.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ක්‍රියාවිරහිතයි</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>අක්ෂීය</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>අරීය</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>අභ්‍යන්තර ඩෙඩ්සෝන්</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>චලනයෙන් මෙම ප්‍රමාණයට අඩුවෙන් ආදානය මධ්‍යගත ලෙස කියවේ.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>මූලාශ්‍රය අනුව ගයිරෝ සංවේදීතා ගුණකය. 1.0 = එන්ජිමේ පෙරනිමිය (500°/s → සම්පූර්ණ අපගමනය). 1.0 ට වැඩි අගයන් වඩා සංවේදී වේ. 1.0 ට අඩු අගයන් අඩුවෙන් සංවේදී වේ.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>මූලාශ්‍රය අනුව ඇලවීම් සංවේදීතා ගුණකය. 1.0 = සම්පූර්ණ අපගමනය සඳහා ඇලවීම 90°. 1.0 ට වැඩි අගයන් අඩු ඇලවීමකින් සම්පූර්ණ අපගමනයට ළඟා වේ.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ගයිරෝ ඇලවීම X</value></data>
@@ -3004,6 +3052,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>මට්ටම</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>අක්‍රියතා කල් ඉකුත්වීම</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>අතථ්‍ය පාලකයක සියලු සිතියම්ගත උපාංග නොබැඳි විට එය විනාශ කිරීමට පෙර තත්පර ගණන. 0 අක්‍රිය කරයි. එම වර්ගයේම ඉතිරි පාලක හිඩැස පිරවීමට ඉහළට මාරු වී පහළ ස්ලොට්වලට නැවත බැඳේ.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>තත්පර (0 = කිසි විටෙක නැත)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ස්ථරයක් එක් කරන්න</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>මාරු ස්ථරයක් එක් කරන්න. බොත්තමක් ඔබාගෙන සිටින විට හෝ ටොගල් කළ විට සක්‍රිය වන දෙවන සිතියම්ගත කිරීම් වගුවකි.</value></data>
@@ -3115,6 +3164,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>ලිහීමේ වේගය යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>කෝණ අභ්‍යන්තර ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>කෝණ බාහිර ඩෙඩ්සෝන් යළි සකසන්න</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>ස්ටික් ඩෙඩ්සෝන්</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>මෙම අපගමනයට අඩුවෙන් ස්ටික් මධ්‍යගත ලෙස කියවෙන බැවින් සුක්කානම් හැසිරවීමක් ගොඩනැගෙන්නේ නැත.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>ස්ටික් ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>ඇලවීමේ අභ්‍යන්තර ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ඇලවීමේ බාහිර ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>පාලකයේ දිශානතිය යළි සකසන්න</value></data>
@@ -3220,6 +3272,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>මෙම මෝටර් රථය සුක්කානමට ඇති ප්‍රමාණයට වඩා ව්‍යාවර්තයක් ඉල්ලයි, එබැවින් වක්‍රයේ ඉහළ කොටස කපා හැරේ.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>මධ්‍ය දැනීම, බල සහාය, අවමන්දනය, ඝර්ෂණය, ග්‍රහණය, ස්ථිර වේගය, සුක්කානම් ව්‍යාවර්තය</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>මධ්‍ය දැනීම, බල සහාය, අවමන්දනය, ග්‍රහණය, ස්ථිර වේගය, සුක්කානම් ව්‍යාවර්තය</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>අඩු වේගයේදී සුක්කානම එහි මැද කෙතරම් තදින් රඳවා ගනීද යන්න. 100% යනු මෝටර් රථයේම අගයයි.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>බල සහාය</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>හැරවීම වැඩි වන විට බල සුක්කානම කොපමණ උත්සාහයක් ඉවත් කරනවාද යන්න. වැඩි අගයක් යනු මැදින් ඉවතදී සැහැල්ලු සුක්කානමකි.</value></data>
@@ -3361,7 +3414,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ඉහළ නාද යළි සකසන්න</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>නාද සීමාව යළි සකසන්න</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>පද්ධති පෙරනිමි ප්‍රතිදානය වාදනය කරන ඕනෑම දෙයක් සමාන්තරව මෙම පාලකයේ ඇතුළත් ස්පීකරයට පිටපත් කරයි. USB සහ Bluetooth හරහා ක්‍රියා කරයි.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>තෝරාගත් උපාංගයේ ඇතුළත් ස්පීකරයක් නැත. මෙම පෑඩය සඳහා මැක්‍රෝ ශබ්ද පද්ධති පෙරනිමි ප්‍රතිදානයේ වාදනය වේ.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>මෙම සම්බන්ධතාවය හරහා තෝරාගත් උපාංගයේ ස්පීකරයකට PadForge සතුව මාර්ගයක් නැත. මෙම පෑඩය සඳහා මැක්‍රෝ ශබ්ද පද්ධති පෙරනිමි ප්‍රතිදානයේ වාදනය වේ.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) විසින් සාදන ලද බ්‍රවුසර DualSense පරීක්ෂණ කට්ටලය: PadForge අතථ්‍ය පෑඩවලින් භෞතික පෑඩවලට යොමු කරන Sony feature-report CRC රාමුකරණය සහ ස්ථිරාංග පරීක්ෂණ විධාන සඳහා යොමුව.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3775,7 +3828,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast තිරය පෙන්වන්න</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකට ආදානය සපයන Bliss-Box තොටක ඇති සෑම Dreamcast පෑඩ් එකකම VMU මත පින්තූර වාදනය කර, පසුව සෑම තොටක්ම එහිම තිර සැකසුමට ආපසු ලබා දෙයි.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast පින්තූර පෙන්වන්න: {0} × {1} ms, පුනරාවර්තන ගණන {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>සෑම පින්තූරයක්ම අවම වශයෙන් තත්පරයක් පෙන්වයි, මන්ද ඇඩැප්ටරය තමාට එවන සෑම පින්තූරයක්ම ලිවීම් 100,000 කට ශ්‍රේණිගත මතකයක තබා ගන්නා අතර, සෑම තත්පරයකම නව පින්තූරයක් එවුවහොත් දළ වශයෙන් දිනකින් එම සීමාවට ළඟා වේ. පින්තූර යනු BMP හෝ PNG ගොනුවකින්, VMU Animator .lcd ගොනුවකින් හෝ Dreamcast .vms අයිකනයකින් ලබාගත් 48 × 32 කළු සුදු පික්සල වේ.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>සෑම පින්තූරයක්ම අවම වශයෙන් තත්පරයක් පෙන්වයි. ඇඩැප්ටරය තමාට එවන සෑම පින්තූරයක්ම තමන්ගේම මතකයේ ගබඩා කරන බැවින් PadForge ඇඩැප්ටරයට තත්පරයකට උපරිම වශයෙන් එක් පින්තූරයක් පමණක් යවයි. පින්තූර යනු BMP හෝ PNG ගොනුවකින්, VMU Animator .lcd ගොනුවකින් හෝ Dreamcast .vms අයිකනයකින් ලබාගත් 48 × 32 කළු සුදු පික්සල වේ.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>පින්තූර</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>පින්තූරය එක් කරන්න…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>පින්තූරය ඉවත් කරන්න</value></data>
@@ -3852,15 +3905,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ස්ථරය ටොගල් කර ඇති අතරතුර, ස්ථරයේම සිතියම්ගත ආදාන කිසිවක් සක්‍රිය නොවී මෙම මිලිතත්පර ගණනට පසු එය තමන්ම අක්‍රිය වේ. ස්ථරය සක්‍රිය වූ විට ටයිමරය ආරම්භ වන අතර සෑම ස්ථර ආදානයකදීම නැවත ආරම්භ වේ. 0 නම් ඔබම ටොගල් කර අක්‍රිය කරන තෙක් ස්ථරය සක්‍රියව තබයි.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ට්‍රිම් ඩෙඩ්සෝන් 25% වෙත යළි සකසන්න.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ට්‍රිම් වේගය තත්පරයට 100% වෙත යළි සකසන්න.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>මුදා හැරීමේදී මට්ටම 100% වෙත ආපසු ගෙන ඒම වෙත යළි සකසන්න.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>ස්වයං-අවලංගු කිරීම 0 වෙත යළි සකසන්න (ටොගල් කර අක්‍රිය කරන තෙක් ස්ථරය සක්‍රියව පවතී).</value>
   </data>
@@ -3928,6 +3972,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop පැතිකඩ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop මැක්‍රෝව</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>කර්සර කලාපය</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (අල්ලාගැනීම)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (මුදාහැරීම)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (සක්‍රිය කිරීම)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ලැබෙන දේ බැලීමට වින්‍යාසයක් තෝරන්න.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ලැබෙන දේ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>බවට පත්වේ</value></data>
@@ -4553,7 +4600,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>දිශා එබීම් කොටු හරහා පියවරෙන් පියවර ගොස් අලුතින් තෝරාගත් සෑම කොටුවක්ම ක්‍රියාත්මක කරයි. මෙම හොට්බාර් හැසිරීම "ක්‍රියාත්මක කිරීමේ මාදිලිය" හෝ "ක්ලික් ආදානය" භාවිත නොකරයි.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi දියුණු කළ ප්‍රොටෝකෝලය</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>සහාය දක්වන Flydigi පාලකවල අමතර බොත්තම් සහ චලන සංවේදක සක්‍රිය කරයි.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi මෘදුකාංගය ධාවනය වෙමින් පවතී: {0}. එයට PadForge භාවිත කරන පාලක අතුරුමුහුණතම භාවිත කළ හැකි අතර, දෙකටම ප්‍රවේශය තිබූ අතරතුර Vader 5 Pro එකක් නැවත නැවත විසන්ධි වූ බව වාර්තා වී ඇත. මෙම පාලකය විසන්ධි වී නැවත සම්බන්ධ වේ නම්, PadForge භාවිත කරන අතරතුර සේවාව නවත්වන්න, පාලකය සඟවා තබා HidHide සුදු ලැයිස්තුවෙන් සේවාව ඉවත් කරන්න, නැතහොත් සැකසීම් තුළ "Flydigi දියුණු කළ ප්‍රොටෝකෝලය" අක්‍රිය කර බලන්න. අවසාන ක්‍රමය උපකාරී වන බව තහවුරු කර නැත.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi මෘදුකාංගය ධාවනය වෙමින් පවතී: {0}. එය PadForge භාවිත කරන අතුරුමුහුණත හරහා පාලකය සමඟ සන්නිවේදනය කරයි. මෙම පාලකය විසන්ධි වී නැවත සම්බන්ධ වේ නම්, PadForge භාවිත කරන අතරතුර එම මෘදුකාංගය නවත්වන්න.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>දුරස්ථ පැවරුම් වෙනස් කිරීමට ඉඩ දෙන්න</value>
   </data>

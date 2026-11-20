@@ -66,7 +66,9 @@ namespace PadForge.Tests
             foreach (string file in AppXaml())
             {
                 string text = File.ReadAllText(file);
-                foreach (Match m in Regex.Matches(text, @"<ui:NumberBox\b[^>]*>"))
+                // A property element (<ui:NumberBox.ToolTip>) is part of a
+                // box, not a box of its own.
+                foreach (Match m in Regex.Matches(text, @"<ui:NumberBox(?=[\s/>])[^>]*>"))
                 {
                     boxes++;
                     int line = text.Take(m.Index).Count(c => c == '\n') + 1;

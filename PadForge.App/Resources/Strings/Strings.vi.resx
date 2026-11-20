@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>giây</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>phút (0 = không bao giờ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Chưa gán</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← trái)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ lên)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Không tìm thấy SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Không tìm thấy SDL3.dll. Hãy đặt SDL3.dll bên cạnh PadForge.exe. Hãy tải xuống từ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Không tìm thấy SDL3.dll. Hãy tải PadForge xuống lại.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Thao tác với trình điều khiển thất bại: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Đã sao chép thiết lập vào bảng nhớ tạm.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Đã sao chép thông tin thiết bị vào bảng nhớ tạm.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Yếu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hình ảnh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Danh sách</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} đầu ra</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} đầu ra</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Chuyển động</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Nhấp vào một điều khiển rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Trò chơi PadForge chưa biết</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Cho các mod tìm DSX đang chạy trước khi gửi.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Nội dung hiển thị</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Vòng tròn, lưới hoặc thanh của một menu khi nó đang mở</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp khi một lớp chuyển bật lên, trong khoảng thời gian mà lớp đó đặt</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Tên của hồ sơ khi hồ sơ thay đổi</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Vòng tròn, lưới hoặc thanh của một menu khi nó đang mở.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp khi một lớp chuyển bật lên, trong khoảng thời gian mà lớp đó đặt.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Tên của hồ sơ khi hồ sơ thay đổi.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Sao chép địa chỉ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vị trí trên màn hình</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Kết nối điện thoại</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Tự khởi động bộ máy khi mở chương trình</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Tiếp tục thăm dò khi cửa sổ mất tiêu điểm</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Tần số thăm dò (trừ khi hồ sơ ghi đè)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Bộ máy đọc mọi thiết bị và cập nhật các tay cầm ảo với số lần này mỗi giây, từ 60 đến 10000. Tần số càng cao thì càng tốn thời gian của bộ xử lý. Windows đánh thức bộ máy tối đa khoảng 2000 lần mỗi giây, nên với tần số cao hơn, bộ máy chạy nhiều lượt trong mỗi lần được đánh thức. Khi một hồ sơ có tần số thăm dò riêng đang hoạt động, tần số đó được áp dụng thay thế. Giá trị này trở lại khi hồ sơ ngừng hoạt động.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Bộ máy đọc mọi thiết bị và cập nhật các tay cầm ảo với số lần này mỗi giây, từ 60 đến 10000. Tần số càng cao thì càng tốn thời gian của bộ xử lý. Trên máy tính này, Windows đánh thức bộ máy tối đa {0} lần mỗi giây, nên với tần số cao hơn, bộ máy chạy nhiều lượt trong mỗi lần được đánh thức. Khi một hồ sơ có tần số thăm dò riêng đang hoạt động, tần số đó được áp dụng thay thế. Giá trị này trở lại khi hồ sơ ngừng hoạt động.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ẩn thiết bị khỏi trò chơi</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Công tắc tổng cho việc ẩn thiết bị bằng HidHide và các hook đầu vào cấp thấp. Khi tắt, không thiết bị nào bị ẩn, bất kể thiết lập của từng thiết bị.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Giữ thiết bị ẩn giữa các lần chạy</value></data>
@@ -937,7 +939,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Số mili giây giữa các ký tự được gõ, tối đa 1000. 0 sẽ gõ toàn bộ văn bản cùng lúc.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Ngắt kết nối khi nhàn rỗi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Chi tiết</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>phút</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Ngắt Bluetooth khi cắm qua USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Sạc nhanh. Khi tay cầm này báo đang sạc trong lúc kết nối qua Bluetooth, liên kết Bluetooth sẽ bị ngắt để nó sạc mà không phải cấp điện cho bộ thu phát vô tuyến. Mọi nguồn điện USB đều được tính, kể cả sạc tường. Nếu bạn bật lại Bluetooth trong khi cáp vẫn cắm, kết nối sẽ được giữ nguyên cho đến lần rút cáp tiếp theo.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Đọc như tay cầm iCade</value></data>
@@ -979,8 +980,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU hiển thị tên của hồ sơ đang hoạt động và thay đổi theo mỗi lần chuyển hồ sơ.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU hiển thị vị trí của hồ sơ đang hoạt động trong danh sách hồ sơ. Hồ sơ Mặc định là 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU hiển thị hình riêng của hồ sơ đang hoạt động, hoặc tên của nó nếu không có hình. Mỗi hồ sơ giữ hình riêng của mình.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU hiển thị giờ trong ngày, được ghi lại mỗi phút một lần. Bộ chuyển đổi lưu mỗi hình vào bộ nhớ có tuổi thọ 100.000 lần ghi, con số mà chế độ này đạt tới sau khoảng mười tuần hiển thị liên tục ngày đêm.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU hiển thị số giờ và phút kể từ khi PadForge tìm thấy tay cầm, được ghi lại mỗi phút một lần. Tay cầm rời khỏi cổng quá mười giây sẽ bắt đầu lại từ số không. Bộ chuyển đổi lưu mỗi hình vào bộ nhớ có tuổi thọ 100.000 lần ghi, con số mà chế độ này đạt tới sau khoảng mười tuần hiển thị liên tục ngày đêm.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU hiển thị giờ trong ngày, được ghi lại mỗi phút một lần. Bộ chuyển đổi lưu mỗi hình vào bộ nhớ riêng của nó, nên PadForge ghi lại không thường xuyên hơn mức đó.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU hiển thị số giờ và phút kể từ khi PadForge tìm thấy tay cầm, được ghi lại mỗi phút một lần. Tay cầm rời khỏi cổng quá mười giây sẽ bắt đầu lại từ số không. Bộ chuyển đổi lưu mỗi hình vào bộ nhớ riêng của nó, nên PadForge ghi lại không thường xuyên hơn mỗi phút một lần.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU hiển thị một hình bạn chọn: tệp BMP hoặc PNG, tệp .lcd của VMU Animator hoặc biểu tượng .vms của Dreamcast. Hình được cắt về 48 x 32 điểm ảnh đen trắng.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Chọn hình…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Chọn hình cho {0}…</value></data>
@@ -1025,6 +1026,13 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Tay cầm ở chế độ Xbox không phản hồi như một Apex 4 nên chưa có gì được gửi và Windows đã nhận lại nó. Hãy chuyển nó về chế độ DInput bằng công tắc riêng của nó.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows không chuyển được tay cầm sang WinUSB nên chưa có gì được gửi. Hãy chuyển nó về chế độ DInput bằng công tắc riêng của nó.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Đã dừng. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó trước khi gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Không mở được cổng của màn hình nên chưa có gì được gửi. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Hình có nhiều khung hơn mức màn hình của tay cầm này chứa được.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Một hình đang được gửi đến tay cầm này. Hãy chờ cho đến khi gửi xong.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Màn hình yêu cầu hình tại một địa chỉ mà PadForge không ghi vào, nên chưa có gì được gửi. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Hình đã được gửi, nhưng tay cầm chưa chuyển lại chế độ DInput. Hãy chuyển lại bằng công tắc riêng của nó.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Tay cầm không nhận lệnh chuẩn bị, nên chưa có gì được gửi. Hãy kiểm tra tay cầm đã được kết nối chưa và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Việc gửi đã dừng vì một lỗi trong PadForge. Tệp nhật ký có chi tiết.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Một hình vẫn đang được gửi đến tay cầm. Dừng việc gửi?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Tệp Controller Pak (*.mpk)|*.mpk|Tất cả tệp (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak cổng {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Đặt lại bố trí menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Đặt lại ô</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Đặt lại độ nhạy</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Đặt lại gia tốc</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Đặt lại vùng chết</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Đặt lại thời gian giữ</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Đặt lại khoảng thời gian nhấn</value></data>
@@ -1976,7 +1983,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bất kỳ lớp nào</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Chạy liên tục khi tay cầm ảo này đang hoạt động. Không cần nút kích hoạt.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Thực hiện</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Lớp, Nguồn, Ngưỡng, Hướng, Chặn các nút kích hoạt, Lặp lại</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Thêm hành động</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Loại</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Nút ảo</value></data>
@@ -2002,7 +2008,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Nhấn nút chuột</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Thả nút chuột</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Cuộn chuột</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ bàn cảm ứng</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Nút</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tổ hợp phím</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tổ hợp phím theo định dạng {Key1}{Key2}. Có thể chỉnh sửa.</value></data>
@@ -2133,6 +2138,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Lặp lại {0} mỗi {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Chuột X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Chuột Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Độ lệch ngang</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Độ lệch dọc</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Khoảng thời gian</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Chọn trên màn hình</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Lấy vị trí sau {0}…</value></data>
@@ -2167,6 +2174,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Đảo ngược một nửa</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Chưa ánh xạ thiết bị nào</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Thiết bị không xác định</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Nhấp bàn cảm ứng</value></data>
@@ -2609,7 +2617,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Xuống (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Lên (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Kích hoạt</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Nút kích hoạt ngắm, chế độ kích hoạt, Ngưỡng ngắm dễ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Nút kích hoạt ngắm, chế độ kích hoạt, Bật con quay hồi chuyển, Căn lại tâm, Ngưỡng ngắm dễ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Các điều kiện tùy chọn giới hạn thời điểm con quay hồi chuyển hoạt động. Độ lệch cần phải và nút kích hoạt ngắm đều có thể được cấu hình riêng. Con quay hồi chuyển chỉ hoạt động khi mọi điều kiện đã cấu hình đều thỏa.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Cục bộ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Người chơi</value></data>
@@ -2646,6 +2654,27 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Đặt lại ngưỡng ngắm dễ</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Đặt lại nút kích hoạt ngắm</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Đặt lại chế độ kích hoạt</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Lớp</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Lớp mà các hàng bên dưới hiển thị và thay đổi thiết lập Bật con quay hồi chuyển.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Bật con quay hồi chuyển</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Khi nào con quay hồi chuyển hoạt động trên lớp này, bên cạnh nút kích hoạt. Một lớp chuyển đặt là Giống lớp cơ sở sẽ theo lớp cơ sở.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Luôn bật</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Giống lớp cơ sở</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Khi đang giữ</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Khi không giữ</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Chuyển đổi sau mỗi lần nhấn</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Nút bật con quay hồi chuyển</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Các nút mà Bật con quay hồi chuyển đọc, trên mọi tay cầm của ô này.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Yêu cầu</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Chỉ cần một nút đã chọn là đủ hay phải giữ mọi nút đã chọn.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Một nút bất kỳ</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Mọi nút</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Căn lại tâm khi con quay hồi chuyển bật</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Lấy tư thế của tay cầm làm điểm nghỉ mỗi khi con quay hồi chuyển bật.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Đặt lại Bật con quay hồi chuyển</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Đặt lại Nút bật con quay hồi chuyển</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Đặt lại Yêu cầu</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Đặt lại Căn lại tâm khi con quay hồi chuyển bật</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Đặt lại cần kích hoạt</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Đặt lại hướng kích hoạt</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Truyền thẳng chuyển động</value></data>
@@ -2656,6 +2685,25 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Trò chơi đọc chuyển động với độ nhạy, làm mượt và đường cong đặt ở đây.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Đặt lại tinh chỉnh truyền thẳng</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Chỉ khi</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Nguồn này chỉ được tính khi đầu vào này cũng đang được nhấn trên cùng tay cầm. Một phép thử vùng từ bản nhập được hiểu là khoảng của cần hoặc cò mà nó kiểm tra.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Và khi</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Đầu vào thứ hai mà nguồn này cũng chờ.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Đổi đầu vào</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Chọn một đầu vào khác để chờ.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Đường cong</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Nâng giá trị đọc của đầu vào này lên lũy thừa này trước khi nó điều khiển đầu ra. 0 và 1 giữ nguyên dạng thẳng. Trên 1 thì chậm hơn ở gần tâm.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Phạm vi ngoài</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Đầu ra đạt mức đầy ở phần hành trình này. 100% là tắt.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Chống vùng chết</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Đầu ra bắt đầu từ mức này ngay khi đầu vào di chuyển. 0 là tắt.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Hình dạng vùng chết</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Tắt giữ nguyên giá trị đọc. Theo trục đo riêng trục này. Hướng tâm đo cả cặp cần cùng nhau.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Tắt</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Theo trục</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Hướng tâm</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Vùng chết trong</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Dưới phần hành trình này, đầu vào được đọc là ở giữa.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Hệ số nhân độ nhạy con quay hồi chuyển theo từng nguồn. 1.0 = mặc định của bộ máy (500°/s → độ lệch tối đa). Giá trị trên 1.0 nhạy hơn. Giá trị dưới 1.0 kém nhạy hơn.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Hệ số nhân độ nhạy nghiêng theo từng nguồn. 1.0 = nghiêng 90° cho độ lệch tối đa. Giá trị trên 1.0 đạt độ lệch tối đa với độ nghiêng ít hơn.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Con quay hồi chuyển nghiêng X</value></data>
@@ -3236,6 +3284,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Mức</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Thời gian chờ không hoạt động</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Số giây trước khi một tay cầm ảo bị hủy khi mọi thiết bị đã ánh xạ của nó đều ngoại tuyến. 0 để tắt. Các tay cầm còn lại cùng loại sẽ dồn lên để lấp chỗ trống và gắn lại vào các khe thấp hơn.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>giây (0 = không bao giờ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Thêm lớp</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Thêm một lớp shift. Một bảng ánh xạ thứ hai được kích hoạt khi một nút được giữ hoặc bật/tắt.</value></data>
@@ -3347,6 +3396,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Đặt lại tốc độ trả lái</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Đặt lại vùng chết trong của góc</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Đặt lại vùng chết ngoài của góc</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Vùng chết của cần</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Dưới độ lệch này, cần được đọc là ở giữa, nên không có lực lái nào tích lũy.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Đặt lại vùng chết của cần</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Đặt lại vùng chết trong của độ ngả</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Đặt lại vùng chết ngoài của độ ngả</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Đặt lại hướng tay cầm</value></data>
@@ -3452,6 +3504,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>trên {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Xe này yêu cầu mô-men lớn hơn vô lăng có, nên phần đỉnh của đường cong bị cắt bớt.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Cảm giác ở tâm, trợ lực lái, giảm chấn, ma sát, độ bám, tốc độ cố định, mô-men vô lăng</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Cảm giác ở tâm, trợ lực lái, giảm chấn, độ bám, tốc độ cố định, mô-men vô lăng</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Tay lái giữ tâm chắc đến mức nào ở tốc độ thấp. 100% là độ chắc của chính chiếc xe.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Trợ lực lái</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Trợ lực lái giảm bớt bao nhiêu lực khi lực ngang tăng dần. Càng cao thì tay lái càng nhẹ khi xa tâm.</value></data>
@@ -3593,7 +3646,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Đặt lại âm cao</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Đặt lại giới hạn âm</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sao chép song song mọi thứ mà đầu ra mặc định của hệ thống đang phát sang loa tích hợp của tay cầm này. Hoạt động qua USB và Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Thiết bị đã chọn không có loa tích hợp. Âm thanh macro của tay cầm này phát trên đầu ra mặc định của hệ thống.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge không có đường tới loa trên thiết bị đã chọn qua kết nối này. Âm thanh macro của tay cầm này phát trên đầu ra mặc định của hệ thống.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Bộ kiểm thử DualSense trên trình duyệt của Xuezhou Dai (daidr): tài liệu tham chiếu cho cách đóng khung CRC của feature report Sony và các lệnh kiểm thử firmware mà PadForge chuyển tiếp từ tay cầm ảo sang tay cầm vật lý.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Hiện màn hình Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Phát các hình trên VMU của từng tay cầm Dreamcast cắm vào một cổng Bliss-Box đang cấp cho khe này, rồi trả mỗi cổng về thiết lập màn hình riêng của nó.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Hiện hình Dreamcast: {0} × {1} ms, số lần lặp {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Mỗi hình hiển thị ít nhất một giây, vì bộ chuyển đổi lưu mọi hình được gửi đến vào bộ nhớ có tuổi thọ 100.000 lần ghi, con số mà việc gửi một hình mới mỗi giây sẽ đạt tới trong khoảng một ngày. Hình có kích thước 48 x 32 điểm ảnh đen trắng, lấy từ tệp BMP hoặc PNG, tệp .lcd của VMU Animator hoặc biểu tượng .vms của Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Mỗi hình hiển thị ít nhất một giây. PadForge gửi cho bộ chuyển đổi tối đa một hình mỗi giây, vì bộ chuyển đổi lưu mọi hình được gửi đến vào bộ nhớ riêng của nó. Hình có kích thước 48 x 32 điểm ảnh đen trắng, lấy từ tệp BMP hoặc PNG, tệp .lcd của VMU Animator hoặc biểu tượng .vms của Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Hình</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Thêm hình…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Gỡ bỏ hình</value></data>
@@ -4113,15 +4166,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Khi lớp đang được bật, nó tự tắt sau số mili giây này nếu không đầu vào đã ánh xạ nào của chính lớp đó hoạt động. Bộ đếm thời gian bắt đầu khi lớp được kích hoạt và chạy lại ở mỗi đầu vào của lớp. 0 giữ lớp bật cho đến khi bạn tự tắt nó.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Đặt lại vùng chết vi chỉnh về 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Đặt lại tốc độ vi chỉnh về 100% mỗi giây.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Đặt lại về chế độ đưa mức về 100% khi thả.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Đặt lại tự hủy về 0 (lớp vẫn bật cho đến khi được tắt).</value>
   </data>
@@ -4189,6 +4233,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Hồ sơ Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Vùng con trỏ</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (giữ)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (nhả)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (kích hoạt)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chọn một cấu hình để xem những gì được chuyển sang.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Những gì được chuyển sang</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Thành</value></data>
@@ -4825,7 +4872,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Các lần nhấn hướng sẽ đi lần lượt qua các ô và kích hoạt từng ô mới được chọn, không dùng Thời điểm kích hoạt hay Đầu vào nhấp. Kiểu Hotbar bước mà không kích hoạt, và kích hoạt bằng điều khiển "Kích hoạt" riêng của nó.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Giao thức nâng cao Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Bật các nút bổ sung và cảm biến chuyển động trên các tay cầm Flydigi được hỗ trợ.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Phần mềm Flydigi đang chạy: {0}. Nó có thể dùng cùng giao diện tay cầm với PadForge, và đã có báo cáo Vader 5 Pro bị ngắt kết nối liên tục khi cả hai cùng truy cập. Nếu tay cầm này bị rớt rồi kết nối lại, hãy dừng dịch vụ đó khi dùng PadForge, giữ tay cầm ở trạng thái ẩn và gỡ dịch vụ khỏi danh sách cho phép của HidHide, hoặc thử tắt "Giao thức nâng cao Flydigi" trong Thiết lập, dù chưa xác nhận là cách này có ích.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Phần mềm Flydigi đang chạy: {0}. Nó giao tiếp với tay cầm qua giao diện mà PadForge dùng. Nếu tay cầm này bị rớt rồi kết nối lại, hãy dừng phần mềm đó khi bạn dùng PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Cho phép thay đổi việc gán từ xa</value>
   </data>
@@ -5485,9 +5532,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Chọn nội dung hiển thị…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Lớp phủ màn hình PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Chưa có gì để hiển thị. Hãy chọn nội dung hiển thị trên trang Lớp phủ màn hình, trong mục Tiện ích.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Bật/tắt tâm ngắm</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Bật/tắt kính lúp</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Mọi tâm ngắm</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Tâm ngắm</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>

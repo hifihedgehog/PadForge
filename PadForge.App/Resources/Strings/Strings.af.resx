@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekondes</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minute (0 = nooit)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nie toegewys nie</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← links)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ op)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nie gevind nie</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nie gevind nie. Plaas SDL3.dll langs PadForge.exe. Laai dit af by https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll nie gevind nie. Laai PadForge weer af.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Dryweroperasie het misluk: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Instellings na knipbord gekopieer.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Toestelinligting na knipbord gekopieer.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Laag</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Prent</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lys</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Uitset: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Uitsette: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Beweging</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik op 'n kontrole en druk dan die invoer wat dit moet aandryf.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Speletjies wat PadForge nie ken nie</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Vir mods wat soek na ’n lopende DSX voordat hulle stuur.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat wys</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Die ring, rooster of balk van 'n kieslys terwyl dit oop is</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Die laag se naam wanneer 'n skuiflaag aangaan, vir die tyd wat daardie laag instel</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Die profiel se naam wanneer die profiel verander</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Die ring, rooster of balk van 'n kieslys terwyl dit oop is.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Die laag se naam wanneer 'n skuiflaag aangaan, vir die tyd wat daardie laag instel.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Die profiel se naam wanneer die profiel verander.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopieer adres</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plek op die skerm</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Koppel 'n foon</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Begin enjin outomaties by opstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Gaan voort met peil wanneer die venster fokus verloor</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Pollingfrekwensie (tensy 'n profiel dit oorheers)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Die enjin lees elke toestel en werk die virtuele controllers soveel keer per sekonde op, van 60 tot 10000. 'n Hoër frekwensie gebruik meer verwerkertyd. Windows maak die enjin hoogstens ongeveer 2000 keer per sekonde wakker, so 'n hoër frekwensie voer by elke wakker word etlike rondtes uit. Terwyl 'n profiel met sy eie peilfrekwensie aktief is, geld daardie frekwensie in die plek. Hierdie waarde kom terug wanneer die profiel deaktiveer.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Die enjin lees elke toestel en werk die virtuele controllers soveel keer per sekonde op, van 60 tot 10000. 'n Hoër frekwensie gebruik meer verwerkertyd. Op hierdie rekenaar maak Windows die enjin hoogstens {0} keer per sekonde wakker, so 'n hoër frekwensie voer by elke wakker word etlike rondtes uit. Terwyl 'n profiel met sy eie peilfrekwensie aktief is, geld daardie frekwensie in die plek. Hierdie waarde kom terug wanneer die profiel deaktiveer.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Versteek toestelle vir speletjies</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hoofskakelaar vir HidHide-toestelversteking en laevlak-invoerhake. Wanneer dit af is, word geen toestelle versteek nie, ongeag per-toestel-instellings.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hou toestelle versteek tussen lanserings</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekondes tussen getikte karakters, tot 1000. 0 tik die hele teks op een slag.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Ontkoppel by ledigheid</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Besonderhede</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minute</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Ontkoppel Bluetooth wanneer dit oor USB ingeprop is</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wanneer hierdie controller aandui dat dit laai terwyl dit oor Bluetooth gekoppel is, word die Bluetooth-verbinding verbreek sodat dit laai sonder om die radio aan te dryf. Enige USB-kragbron tel, insluitend muurlaaiers. As jy Bluetooth weer aanskakel terwyl die kabel ingeprop bly, word dit met rus gelaat tot die volgende keer dat dit uitgeprop word.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lees as iCade-controller</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>Die VMU wys die aktiewe profiel se naam en volg elke profielwissel.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>Die VMU wys die aktiewe profiel se plek in die profiellys. Die verstekprofiel is 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>Die VMU wys die aktiewe profiel se eie prent, of sy naam as dit geen het nie. Elke profiel hou sy eie prent.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Die VMU wys die tyd van die dag, een keer per minuut herskryf. Die adapter hou elke prent in geheue wat vir 100 000 skryfbewerkings geskik is, wat dit na ongeveer tien weke se dag-en-nag-vertoon bereik.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Die VMU wys die ure en minute sedert PadForge die toestel gevind het, een keer per minuut herskryf. 'n Toestel wat langer as tien sekondes uit sy poort is, begin weer by nul. Die adapter hou elke prent in geheue wat vir 100 000 skryfbewerkings geskik is, wat dit na ongeveer tien weke se dag-en-nag-vertoon bereik.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Die VMU wys die tyd van die dag, een keer per minuut herskryf. Die adapter stoor elke prent in sy eie geheue, so PadForge herskryf dit nie gouer as dit nie.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Die VMU wys die ure en minute sedert PadForge die toestel gevind het, een keer per minuut herskryf. 'n Toestel wat langer as tien sekondes uit sy poort is, begin weer by nul. Die adapter stoor elke prent in sy eie geheue, so PadForge herskryf dit nie gouer as een keer per minuut nie.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>Die VMU wys 'n prent wat jy kies: 'n BMP of PNG, 'n VMU Animator-.lcd-lêer of 'n Dreamcast-.vms-ikoon. Prente word tot 48 by 32 swart-en-wit piksels gesny.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Kies prent…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Kies prent vir {0}…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Die controller in Xbox-modus het nie as 'n Apex 4 geantwoord nie, so niks is gestuur nie en Windows het dit terug. Skakel dit met sy eie skakelaar terug na DInput-modus.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows het die controller nie na WinUSB geskuif nie, so niks is gestuur nie. Skakel dit met sy eie skakelaar terug na DInput-modus.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Gestop. Skakel die controller met sy eie skakelaar af en aan voordat jy weer stuur.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Die skerm se poort het nie oopgegaan nie, so niks is gestuur nie. Skakel die controller met sy eie skakelaar af en aan en stuur weer.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Die prent het meer raampies as wat hierdie controller se skerm kan hou.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>'n Prent word reeds na hierdie controller gestuur. Wag totdat dit klaar is.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Die skerm het die prent gevra by 'n adres waarheen PadForge nie skryf nie, so niks is gestuur nie. Skakel die controller met sy eie skakelaar af en aan en stuur weer.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Die prent is gestuur, maar die controller het nie teruggeskakel na DInput-modus nie. Skakel dit met sy eie skakelaar terug.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Die controller het nie die opdrag aanvaar wat dit gereed maak nie, so niks is gestuur nie. Maak seker dit is gekoppel en stuur weer.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Die stuur het gestop weens 'n fout in PadForge. Die loglêer bevat die besonderhede.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>'n Prent is nog op pad na die controller. Stop die stuur?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-lêers (*.mpk)|*.mpk|Alle lêers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak poort {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Stel kieslysgeometrie terug</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Stel sel terug</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Stel sensitiwiteit terug</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Stel versnelling terug</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Stel dooisone terug</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Stel houtyd terug</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Stel drukvenster terug</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Enige laag</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Loop aaneenlopend solank hierdie virtuele controller aktief is. Geen snellerknoppie nodig nie.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Doen</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Laag, Bron, Drempel, Rigting, Verbruik snellerknoppies, Herhaal</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Voeg aksie by</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipe</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuele knoppies</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Muisknoppie druk</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Muisknoppie los</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Muis rol</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Wissel raakplaat-overlay</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knoppies</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Sleutelkombinasie</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Sleutelkombinasie in {Key1}{Key2}-formaat. Wysigbaar.</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Herhaal {0} elke {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Muis X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Muis Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horisontale verskuiwing</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertikale verskuiwing</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Kies op skerm</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Vang vas oor {0}…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Omgekeerde helfte</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Geen toestel toegewys nie</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Onbekende toestel</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Raakplaatklik</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Af (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Op (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivering</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Mik-aktiveerknoppie, Aktiveermodus, Easy Aim-drempel</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Mik-aktiveerknoppie, Aktiveermodus, Giro aan, Hersentreer, Easy Aim-drempel</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Opsionele hekke wat beperk wanneer giro aktief is. Regterstokkie-uitwyking en die mik-aktiveerknoppie kan elk gestel word. Giro werk slegs terwyl elke gestelde hek aktief is.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Speler</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Stel Easy Aim-drempel terug</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Stel mik-aktiveerknoppie terug</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Stel aktiveermodus terug</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Laag</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Die laag wie se Giro aan-instelling die rye hieronder wys en verander.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giro aan</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Wanneer die giro op hierdie laag werk, bo-op die aktiveerknoppie. 'n Skuiflaag wat op Dieselfde as Basis gestel is, volg Basis.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Altyd aan</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Dieselfde as Basis</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Terwyl gehou</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Terwyl nie gehou nie</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Wissel by elke druk</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Giro aan-knoppies</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Die knoppies wat Giro aan lees, op enige controller van hierdie gleuf.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Vereis</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Of een gemerkte knoppie genoeg is of elke gemerkte knoppie gehou moet word.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Enige knoppie</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Elke knoppie</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Hersentreer wanneer giro aangaan</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Neem die controller se houding as die rusput elke keer as die giro aangaan.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Stel giro aan terug</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Stel giro aan-knoppies terug</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Stel vereis terug</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Stel hersentreer wanneer giro aangaan terug</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Stel aktiveerstokkie terug</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Stel aktiveerrigting terug</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdeurlating</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Die speletjie lees die beweging met die sensitiwiteit, gladmaking en kurwe wat hier ingestel is.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Stel deurlatinginstelling terug</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Slegs terwyl</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Hierdie bron tel slegs terwyl hierdie invoer ook as gedruk lees op dieselfde controller. 'n Sonetoets uit 'n invoer lees as die stokkie- of snellerbereik wat dit nagaan.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>En terwyl</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>'n Tweede invoer waarop hierdie bron ook wag.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Verander invoer</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Kies 'n ander invoer om op te wag.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurwe</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Verhef hierdie invoer se lesing tot hierdie mag voordat dit die uitset aandryf. 0 en 1 laat dit reguit. Bo 1 is stadiger naby die middel.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Buitenste bereik</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Die uitset bereik vol by soveel van die beweging. 100% is af.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-dooisone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Die uitset begin by soveel sodra die invoer beweeg. 0 is af.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Dooisonevorm</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Af los die lesing uit. Aksiaal meet hierdie as alleen. Radiaal meet die stokkiepaar saam.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Af</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Aksiaal</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiaal</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Binneste dooisone</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Onder soveel van die beweging lees die invoer as gesentreer.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Giro-sensitiwiteitsvermenigvuldiger per bron. 1.0 = die enjin se verstek (500°/s → volle uitwyking). Waardes bo 1.0 is sensitiewer. Waardes onder 1.0 is minder sensitief.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Kantelsensitiwiteitsvermenigvuldiger per bron. 1.0 = 90° kanteling vir volle uitwyking. Waardes bo 1.0 bereik volle uitwyking met minder kanteling.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Giro-kanteling X</value></data>
@@ -2923,6 +2971,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Vlak</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Onaktiwiteitsuitteltyd</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekondes voordat 'n virtuele controller vernietig word wanneer al sy toegewysde toestelle vanlyn is. 0 skakel dit af. Oorblywende controllers van dieselfde tipe skuif op om die gaping te vul en bind weer aan laer gleuwe.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekondes (0 = nooit)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Voeg laag by</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg 'n Shift-laag by. 'n Tweede toewysingstabel wat aktief is terwyl 'n knoppie gehou of gewissel word.</value></data>
@@ -3034,6 +3083,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Stel afwindingstempo terug</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Stel hoek-binneste dooisone terug</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Stel hoek-buitenste dooisone terug</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Stokkie-dooisone</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Onder hierdie uitwyking lees die stokkie as gesentreer, so geen stuurwerk bou op nie.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Stel stokkie-dooisone terug</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Stel leun-binneste dooisone terug</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Stel leun-buitenste dooisone terug</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Stel controller-oriëntasie terug</value></data>
@@ -3139,6 +3191,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>van {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Hierdie motor vra meer wringkrag as die stuurwiel het, so die bokant van die kurwe word afgesny.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Sentreergevoel, kragbystand, demping, wrywing, greep, vaste spoed, wielwringkrag</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Sentreergevoel, kragbystand, demping, greep, vaste spoed, wielwringkrag</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hoe sterk die stuur sy middel by lae spoed hou. 100% is die motor se eie.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Kragbystand</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hoeveel die kragstuur wegneem soos kornering toeneem. Meer is ligter stuur weg van die middel.</value></data>
@@ -3280,7 +3333,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Stel hoë tone terug</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Stel toonlimiet terug</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopieer alles wat die stelselverstekuitvoer speel gelyktydig na hierdie controller se ingeboude luidspreker. Werk oor USB en Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Die gekose toestel het geen ingeboude luidspreker nie. Makroklanke vir hierdie controller speel op die stelselverstekuitvoer.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge het geen pad na 'n luidspreker op die gekose toestel oor hierdie verbinding nie. Makroklanke vir hierdie controller speel op die stelselverstekuitvoer.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brauseripõhine DualSense'i testikomplekt, autor Xuezhou Dai (daidr): viide Sony funktsiooniaruannete CRC-raamistusele ja püsivara testikäskudele, mida PadForge edastab virtuaalsetelt mängupultidelt füüsilistele.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3693,7 +3746,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Wys Dreamcast-skerm</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Speel prentjies op die VMU van elke Dreamcast-pad in ’n Bliss-Box-poort wat hierdie gleuf voed, en stel dan elke poort terug na sy eie skerminstelling.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Wys Dreamcast-prentjies: {0} × {1} ms, herhaaltelling {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Elke prent word minstens ’n sekonde lank gewys, aangesien die adapter elke prent wat daarheen gestuur word in geheue stoor wat vir 100,000 skryfhandelinge gegradeer is, wat ’n nuwe prent elke sekonde in ongeveer ’n dag bereik. Prente is 48 by 32 swart-en-wit pixels uit ’n BMP of PNG, ’n VMU Animator .lcd-lêer of ’n Dreamcast .vms-ikoon.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Elke prent word minstens ’n sekonde lank gewys. PadForge stuur die adapter hoogstens een prent per sekonde, aangesien die adapter elke prent wat daarheen gestuur word in sy eie geheue stoor. Prente is 48 by 32 swart-en-wit pixels uit ’n BMP of PNG, ’n VMU Animator .lcd-lêer of ’n Dreamcast .vms-ikoon.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Prente</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Voeg prent by…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Verwyder prent</value></data>
@@ -3770,15 +3823,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Terwyl die laag aangewissel is, skakel dit homself weer af na hierdie aantal millisekondes sonder dat enige van die laag se eie toegewysde invoere aktief is. Die tydhouer begin wanneer die laag aktiveer en begin weer by elke laaginvoer. 0 hou die laag aan totdat jy dit self afskakel.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Stel die trim-dooisone terug na 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Stel die trimspoed terug na 100% per sekonde.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Stel terug na die vlak wat by los na 100% terugspring.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Stel outomatiese kansellasie terug na 0 (die laag bly aan totdat dit afgeskakel word).</value>
   </data>
@@ -3846,6 +3890,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profiel</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Wyserstreek</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hou)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (los)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktiveer)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Kies 'n konfigurasie om te sien wat oorkom.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat oorkom</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Word</value></data>
@@ -4431,7 +4478,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Rigtingdrukke stap deur die selle en aktiveer elke nuut gekose sel. Hierdie aksiebalkgedrag gebruik nie Aktiveringsmodus of Klik-invoer nie.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi-uitgebreide protokol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Skakel ekstra knoppies en bewegingsensors aan op ondersteunde Flydigi-controllers.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-sagteware loop: {0}. Dit kan dieselfde controllerkoppelvlak as PadForge gebruik, en 'n Vader 5 Pro is aangemeld wat herhaaldelik ontkoppel het terwyl albei toegang gehad het. As hierdie controller wegval en weer koppel, stop die diens terwyl jy PadForge gebruik, hou die controller versteek en verwyder die diens van die HidHide-witlys, of probeer om “Flydigi-uitgebreide protokol” in Instellings af te skakel, wat nie bevestig is om te help nie.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-sagteware loop: {0}. Dit praat met die controller oor die koppelvlak wat PadForge gebruik. As hierdie controller wegval en weer koppel, stop daardie sagteware terwyl jy PadForge gebruik.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Laat afstandstoewysingswysigings toe</value>
   </data>

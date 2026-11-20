@@ -184,7 +184,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← wala)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ taas)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Wala makit-i ang SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Wala makit-i ang SDL3.dll. Ibutang ang SDL3.dll tupad sa PadForge.exe. I-download kini gikan sa https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Wala makit-i ang SDL3.dll. I-download pag-usab ang PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Napakyas ang operasyon sa driver: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Nakopya ang mga setting sa clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Nakopya ang impormasyon sa device sa clipboard.</value></data>
@@ -429,7 +429,6 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teksto</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Langan tali sa matag letra</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisegundo tali sa matag gi-type nga karakter, hangtod 1000. Ang 0 mo-type sa tibuok teksto dungan.</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuto</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>I-disconnect ang Bluetooth kon nakasaksak sa USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Kon kini nga controller moingon nga nag-charge kini samtang konektado pinaagi sa Bluetooth, putlon ang koneksyon sa Bluetooth aron mo-charge kini nga dili mogamit sa radyo. Maihap ang bisan unsang tinubdan sa kuryente sa USB, lakip ang mga charger sa bungbong. Kon imong i-on balik ang Bluetooth samtang nakasaksak pa ang kable, pasagdan kini hangtod sa sunod nga pagkuha sa saksak.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Basaha isip iCade nga controller</value></data>
@@ -471,8 +470,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>Ipakita sa VMU ang ngalan sa aktibong profile ug mosunod kini sa matag pagbalhin og profile.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>Ipakita sa VMU ang posisyon sa aktibong profile sa listahan sa mga profile. Ang Default nga profile mao ang 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>Ipakita sa VMU ang kaugalingong hulagway sa aktibong profile, o ang ngalan niini kon wala kini hulagway. Ang matag profile adunay kaugalingong hulagway.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Ipakita sa VMU ang oras sa adlaw, gisulat pag-usab kausa matag minuto. Gitipigan sa adapter ang matag hulagway sa memorya nga gi-rate para sa 100,000 ka pagsulat, nga maabot niini human sa mga napulo ka semana nga pagpakita adlaw ug gabii.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Ipakita sa VMU ang mga oras ug minuto sukad nakit-an sa PadForge ang pad, gisulat pag-usab kausa matag minuto. Ang pad nga nawala sa port niini sulod sa kapin sa napulo ka segundo magsugod pag-usab sa zero. Gitipigan sa adapter ang matag hulagway sa memorya nga gi-rate para sa 100,000 ka pagsulat, nga maabot niini human sa mga napulo ka semana nga pagpakita adlaw ug gabii.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Ipakita sa VMU ang oras sa adlaw, gisulat pag-usab kausa matag minuto. Gitipigan sa adapter ang matag hulagway sa kaugalingong memorya niini, busa dili kini isulat pag-usab sa PadForge nga mas kanunay pa niana.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Ipakita sa VMU ang mga oras ug minuto sukad nakit-an sa PadForge ang pad, gisulat pag-usab kausa matag minuto. Ang pad nga nawala sa port niini sulod sa kapin sa napulo ka segundo magsugod pag-usab sa zero. Gitipigan sa adapter ang matag hulagway sa kaugalingong memorya niini, busa dili kini isulat pag-usab sa PadForge nga mas kanunay pa sa kausa matag minuto.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>Ipakita sa VMU ang hulagway nga imong pilion: BMP o PNG, VMU Animator nga .lcd file o Dreamcast nga .vms icon. Putlon ang mga hulagway ngadto sa 48 por 32 ka itom ug puti nga pixel.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Pili og hulagway…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Pili og hulagway para sa {0}…</value></data>
@@ -517,6 +516,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Ang controller sa Xbox mode wala motubag isip Apex 4, mao nga walay napadala ug nabalik na kini sa Windows. Ibalik kini sa DInput mode gamit ang kaugalingong switch niini.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Wala ibalhin sa Windows ang controller ngadto sa WinUSB, mao nga walay napadala. Ibalik kini sa DInput mode gamit ang kaugalingong switch niini.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Gihunong. Palonga ug padaga ang controller gamit ang kaugalingong switch niini sa dili pa ka magpadala pag-usab.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Wala maablihi ang port sa screen, busa walay napadala. Palonga ug padaga ang controller gamit ang kaugalingong switch niini ug ipadala pag-usab.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Mas daghan ang frame sa hulagway kaysa makaya sa screen niini nga controller.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Adunay hulagway nga gipadala na niini nga controller. Hulata nga mahuman kini.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Gipangayo sa screen ang hulagway sa address nga dili gisulatan sa PadForge, busa walay napadala. Palonga ug padaga ang controller gamit ang kaugalingong switch niini ug ipadala pag-usab.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Napadala ang hulagway, apan wala mobalik ang controller sa DInput mode. Ibalik kini gamit ang kaugalingong switch niini.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Wala dawata sa controller ang command nga nag-andam niini, busa walay napadala. Susiha nga konektado kini ug ipadala pag-usab.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Mihunong ang pagpadala tungod sa usa ka error sa PadForge. Anaa sa log file ang mga detalye.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gipadala pa ang usa ka hulagway ngadto sa controller. Hunongon ang pagpadala?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Mga file sa Controller Pak (*.mpk)|*.mpk|Tanang file (*.*)|*.*</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Ibalik ang Controller Pak</value></data>
@@ -910,7 +916,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>I-reset ang geometry sa menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>I-reset ang cell</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>I-reset ang sensitivity</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>I-reset ang acceleration</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>I-reset ang deadzone</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>I-reset ang oras sa pagkupti</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>I-reset ang interval</value></data>
@@ -1125,7 +1130,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bisan unsang layer</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Padayon nga modagan samtang aktibo kini nga virtual nga controller. Walay trigger button nga gikinahanglan.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Buhata</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Gigikanan, Threshold, Direksyon, Consume Trigger Buttons, Balikon</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Idugang ang aksyon</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Klase</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtual nga mga button</value></data>
@@ -1148,7 +1152,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pagpislit sa button sa mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Pagbuhi sa button sa mouse</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Scroll sa mouse</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>I-toggle ang touchpad overlay</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombinasyon sa key</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Gidugayon</value></data>
@@ -1252,6 +1255,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Balika ang {0} matag {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Pinahigda nga offset</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Patindog nga offset</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pilia sa screen</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Kuhaon sulod sa {0}…</value></data>
@@ -1279,6 +1284,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Katunga</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Walay device nga gi-map</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Wala mailhi nga device</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Click sa touchpad</value></data>
@@ -1639,6 +1645,14 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>I-reset ang threshold sa Easy Aim</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion passthrough</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Samtang lamang</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Moihap lamang kini nga source samtang ang input nga kini gipindot usab sa samang controller. Ang zone test gikan sa usa ka import mabasa isip ang range sa stick o trigger nga gisusi niini.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ug samtang</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ikaduhang input nga gihulat usab niini nga source.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Usba ang input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Mopili og laing input nga hulaton.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurba</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Gipataas ang basa niini nga input ngadto niini nga power sa dili pa kini magdrive sa output. Ang 0 ug 1 magpabilin niini nga tul-id. Labaw sa 1 mas hinay duol sa sentro.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplier sa gyro sensitivity matag tinubdan. 1.0 = default sa engine (500°/s → tibuok deflection). Ang mga bili labaw sa 1.0 mas sensitibo. Ang mga bili ubos sa 1.0 dili kaayo sensitibo.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplier sa sensitivity sa hilig matag tinubdan. 1.0 = 90° nga hilig alang sa tibuok deflection. Ang mga bili labaw sa 1.0 makaabot sa tibuok deflection sa mas gamay nga hilig.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Hilig sa gyro X</value></data>
@@ -2029,6 +2043,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Lebel</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout sa walay kalihokan</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Mga segundo una pa tangtangon ang virtual nga controller kung offline na ang tanang device nga gi-mapping niini. Ang 0 mopalong niini. Ang nahabilin nga mga controller nga parehas og klase mosaka aron pun-on ang kal-ang ug ibalhin sa mas ubos nga mga slot.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundo (0 = dili gayud)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Idugang ang layer</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Pagdugang og shift nga layer. Ikaduhang talaan sa mapping nga moandar samtang gikuptan o gi-toggle ang usa ka button.</value></data>
@@ -2122,6 +2137,9 @@
   <data name="Pad_Steering_Reset_Mode" xml:space="preserve"><value>I-reset ang mode sa pagmaneho</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>I-reset ang sulod nga deadzone sa anggulo</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>I-reset ang gawas nga deadzone sa anggulo</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Deadzone sa stick</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Ubos niini nga pagliko, mabasa ang stick nga anaa sa sentro, busa walay steering nga motigom.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>I-reset ang deadzone sa stick</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>I-reset ang sulod nga deadzone sa pagkiling</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>I-reset ang gawas nga deadzone sa pagkiling</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>I-reset ang oryentasyon sa controller</value></data>
@@ -2225,6 +2243,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sa {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kini nga sakyanan nangayo og mas daghang torque kaysa anaa sa manibela, mao nga naputol ang ibabaw sa kurba.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Pagbati sa sentro, power assist, damping, friksyon, kapit, pirmi nga katulin, torque sa manibela</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Pagbati sa sentro, power assist, damping, kapit, pirmi nga katulin, torque sa manibela</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Unsa kakusog ang pagkupot sa steering sa sentro niini sa hinay nga katulin. Ang 100% mao ang kaugalingon sa sakyanan.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Power assist</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Pila ang gikuha sa power steering samtang mosaka ang pagliko. Ang mas daghan mas gaan nga steering layo sa sentro.</value></data>
@@ -2345,7 +2364,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>I-reset ang tag-as nga tono</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>I-reset ang limitasyon sa tono</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopyahon ang bisan unsa nga ipatokar sa default output sa sistema ngadto sa built-in nga speaker niini nga controller, dungan. Molihok pinaagi sa USB ug Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Walay built-in nga speaker ang napiling device. Ang mga tingog sa macro niini nga pad motokar sa default output sa sistema.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Walay agianan ang PadForge ngadto sa speaker sa napiling device pinaagi niini nga koneksyon. Ang mga tingog sa macro niini nga pad motokar sa default output sa sistema.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
@@ -2818,6 +2837,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profile sa Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro sa Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Rehiyon sa cursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (kupot)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (buhi)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (engage)</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Limpyo</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Bahin</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Gilaktawan</value></data>
@@ -3248,7 +3270,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Menu_IconScale" xml:space="preserve"><value>Gidak-on sa icon</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Gidak-on sa icon kumpara sa normal nga gidak-on sa icon sa menu, gikan 25% hangtod 200%. Ang paghawan sa icon mo-reset niini sa 100%.</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Mag-enable og dugang nga mga button ug motion sensor sa gisuportahang mga Flydigi controller.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Nagdagan ang Flydigi software: {0}. Mahimo niini gamiton ang parehas nga controller interface sa PadForge, ug adunay Vader 5 Pro nga gi-report nga balik-balik nga madiskonekta samtang pareho silang adunay access. Kung kini nga controller mawala ug mokonektar pag-usab, hunonga ang serbisyo samtang naggamit sa PadForge, itago ang controller ug tangtanga ang serbisyo sa whitelist sa HidHide, o sulayi pagpatay ang "Flydigi Enhanced Protocol" sa Mga setting, nga wala pa makumpirma nga makatabang.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Nagdagan ang Flydigi software: {0}. Nakigsulti kini sa controller pinaagi sa interface nga gigamit sa PadForge. Kung kini nga controller mawala ug mokonektar pag-usab, hunonga kana nga software samtang naggamit ka sa PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Tugoti ang remote nga pagbag-o sa assignment</value>
   </data>
@@ -3854,6 +3876,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ubos</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hulagway</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} ka output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ka output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Lihok</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>I-click ang usa ka control, dayon pislita ang input nga magpalihok niini.</value></data>
@@ -3887,7 +3910,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpahapsay, Pagpaspas, Kurba sa output</value></data>
   <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Frame sa reperensya</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Magdudula o Kalibutan</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sa pag-engage sa aim, mode sa pag-engage, Threshold sa Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sa pag-engage sa aim, mode sa pag-engage, Gyro naka-on, Ibalik sa tunga, Threshold sa Easy Aim</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, mga porma</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrola ang suga niini nga device, pagkupti sa suga</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain matag motor, rumble sa trigger, Rumble sa anggulo sa steering, Makanunayon nga pwersa</value></data>
@@ -3913,8 +3936,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Mga dula nga wala mailhi sa PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para sa mga mod nga mangita og nagdagan nga DSX sa dili pa sila mopadala.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Unsay makita</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar sa usa ka menu samtang abli kini</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang ngalan sa profile kung mausab ang profile</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar sa usa ka menu samtang abli kini.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang ngalan sa profile kung mausab ang profile.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Dapit sa screen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ikonektar ang telepono</value></data>
@@ -4102,4 +4125,9 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Mga shift nga layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Gibali</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Kinapungkayan</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Porma sa deadzone</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Ang Naka-off dili mohilabot sa basa. Ang Axial mosukod niini nga axis lamang. Ang Radial mosukod sa parisan sa stick nga magkauban.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Sulod nga deadzone</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ubos niini nga bahin sa lihok, mabasa ang input nga anaa sa sentro.</value></data>
 </root>

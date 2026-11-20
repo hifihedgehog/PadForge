@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Fără</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>secunde</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minute (0 = niciodată)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Neatribuit</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← stânga)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ sus)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nu a fost găsit</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nu a fost găsit. Puneți SDL3.dll lângă PadForge.exe. Descărcați-l de la https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll nu a fost găsit. Descărcați PadForge din nou.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operațiunea driverului a eșuat: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Setările au fost copiate în clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informațiile despre dispozitiv au fost copiate în clipboard.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Scăzută</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imagine</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listă</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Ieșire: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ieșiri: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Mișcare</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Faceți clic pe un control, apoi apăsați intrarea care să-l comande.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jocuri necunoscute de PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Pentru modificările care caută un DSX în execuție înainte de a trimite.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ce se afișează</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Inelul, grila sau bara unui meniu cât timp este deschis</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului când se activează un strat de comutare, pe durata stabilită de acel strat</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Numele profilului când se schimbă profilul</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Inelul, grila sau bara unui meniu cât timp este deschis.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului când se activează un strat de comutare, pe durata stabilită de acel strat.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Numele profilului când se schimbă profilul.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiere adresă</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Poziție pe ecran</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Conectare telefon</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Pornire automată a motorului la lansare</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuare interogare când fereastra pierde focalizarea</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Rată de interogare (dacă un profil nu o înlocuiește)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motorul citește fiecare dispozitiv și actualizează controlerele virtuale de atâtea ori pe secundă, între 60 și 10000. O rată mai mare folosește mai mult timp de procesor. Windows trezește motorul de cel mult 2000 de ori pe secundă, deci o rată mai mare execută mai multe cicluri la fiecare trezire. Cât timp este activ un profil cu propria rată de interogare, se aplică acea rată. Această valoare revine când profilul se dezactivează.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Motorul citește fiecare dispozitiv și actualizează controlerele virtuale de atâtea ori pe secundă, între 60 și 10000. O rată mai mare folosește mai mult timp de procesor. Pe acest PC, Windows trezește motorul de cel mult {0} de ori pe secundă, deci o rată mai mare execută mai multe cicluri la fiecare trezire. Cât timp este activ un profil cu propria rată de interogare, se aplică acea rată. Această valoare revine când profilul se dezactivează.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ascundere dispozitive față de jocuri</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Comutator principal pentru ascunderea dispozitivelor prin HidHide și pentru interceptările de intrare de nivel scăzut. Când este dezactivat, nu se ascunde niciun dispozitiv, indiferent de setările fiecărui dispozitiv.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Păstrare dispozitive ascunse între lansări</value></data>
@@ -937,7 +939,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisecunde între caracterele tastate, până la 1000. Cu 0, întregul text este tastat dintr-odată.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Deconectare la inactivitate</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalii</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minute</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deconectare Bluetooth la conectarea prin USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Încărcare rapidă. Când acest controler raportează că se încarcă în timp ce este conectat prin Bluetooth, legătura Bluetooth este întreruptă, astfel încât se încarcă fără să alimenteze radioul. Contează orice sursă de alimentare USB, inclusiv încărcătoarele de priză. Dacă reactivați Bluetooth cât timp cablul rămâne conectat, controlerul este lăsat în pace până la următoarea deconectare a cablului.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Citire ca controler iCade</value></data>
@@ -979,8 +980,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU-ul afișează numele profilului activ și se actualizează la fiecare schimbare de profil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU-ul afișează poziția profilului activ în lista de profiluri. Profilul Implicit este 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU-ul afișează imaginea proprie a profilului activ sau numele acestuia când nu are imagine. Fiecare profil își păstrează propria imagine.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU-ul afișează ora, rescrisă o dată pe minut. Adaptorul păstrează fiecare imagine într-o memorie garantată pentru 100.000 de scrieri, prag atins după aproximativ zece săptămâni de afișare continuă.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ul afișează orele și minutele scurse de când PadForge a găsit controlerul, rescrise o dată pe minut. Un controler scos din port pentru mai mult de zece secunde o ia de la zero. Adaptorul păstrează fiecare imagine într-o memorie garantată pentru 100.000 de scrieri, prag atins după aproximativ zece săptămâni de afișare continuă.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU-ul afișează ora, rescrisă o dată pe minut. Adaptorul stochează fiecare imagine în propria memorie, deci PadForge o rescrie cel mult la acest interval.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ul afișează orele și minutele scurse de când PadForge a găsit controlerul, rescrise o dată pe minut. Un controler scos din port pentru mai mult de zece secunde o ia de la zero. Adaptorul stochează fiecare imagine în propria memorie, deci PadForge o rescrie cel mult o dată pe minut.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU-ul afișează o imagine aleasă de dvs.: un fișier BMP sau PNG, un fișier .lcd VMU Animator sau o pictogramă Dreamcast .vms. Imaginile sunt reduse la 48 pe 32 de pixeli alb-negru.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Alegere imagine…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Alegere imagine pentru {0}…</value></data>
@@ -1025,6 +1026,13 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Controlerul aflat în modul Xbox nu a răspuns ca Apex 4, așa că nu a fost trimis nimic și Windows a primit controlerul înapoi. Treceți controlerul înapoi în modul DInput din comutatorul său.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nu a mutat controlerul la WinUSB, așa că nu a fost trimis nimic. Treceți controlerul înapoi în modul DInput din comutatorul său.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Oprit. Opriți și porniți controlerul din comutatorul său înainte de a trimite din nou.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Portul ecranului nu a putut fi deschis, deci nu s-a trimis nimic. Opriți și porniți controlerul din comutatorul său și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Imaginea are mai multe cadre decât poate păstra ecranul acestui controler.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>O imagine este deja în curs de trimitere către acest controler. Așteptați să se termine.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ecranul a cerut imaginea la o adresă în care PadForge nu scrie, deci nu s-a trimis nimic. Opriți și porniți controlerul din comutatorul său și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Imaginea a fost trimisă, dar controlerul nu a revenit la modul DInput. Readuceți-l din comutatorul său.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Controlerul nu a primit comanda care îl pregătește, deci nu s-a trimis nimic. Verificați dacă este conectat și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Trimiterea s-a oprit din cauza unei erori în PadForge. Fișierul jurnal conține detaliile.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>O imagine încă se trimite la controler. Opriți trimiterea?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fișiere Controller Pak (*.mpk)|*.mpk|Toate fișierele (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Resetare geometrie meniu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Resetare celulă</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Resetare sensibilitate</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Resetare accelerație</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Resetare zonă moartă</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Resetare timp de menținere</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Resetare fereastră de apăsare</value></data>
@@ -1976,7 +1983,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Orice strat</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Rulează continuu cât timp acest controler virtual este activ. Nu este necesar niciun buton declanșator.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Execută</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Strat, Sursă, Prag, Direcție, Blocare butoane declanșatoare, Repetare</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Adăugare acțiune</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tip</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Butoane virtuale</value></data>
@@ -2002,7 +2008,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Apăsare buton mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Eliberare buton mouse</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Defilare mouse</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Comutare suprapunere touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Butoane</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinație de taste</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinație de taste în formatul {Key1}{Key2}. Editabilă.</value></data>
@@ -2133,6 +2138,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Repetare {0} la fiecare {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Decalaj orizontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Decalaj vertical</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Alegere pe ecran</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Captură în {0}…</value></data>
@@ -2167,6 +2174,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Jumătate inversată</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Niciun dispozitiv mapat</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Dispozitiv necunoscut</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic touchpad</value></data>
@@ -2609,7 +2617,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Jos (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Sus (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activare</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buton de activare a țintirii, Mod de activare, Prag de țintire ușoară</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buton de activare a țintirii, Mod de activare, Giroscop activ, Recentrare, Prag de țintire ușoară</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Condiții opționale care limitează momentele în care giroscopul este activ. Puteți configura atât deplasarea stickului drept, cât și butonul de activare a țintirii. Giroscopul funcționează doar cât timp toate condițiile configurate sunt îndeplinite.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jucător</value></data>
@@ -2646,6 +2654,27 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Resetare prag de țintire ușoară</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Resetare buton de activare a țintirii</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Resetare mod de activare</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Strat</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Stratul ale cărui setări Giroscop activ sunt afișate și modificate în rândurile de mai jos.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giroscop activ</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Când funcționează giroscopul pe acest strat, pe lângă butonul de activare. Un strat de comutare setat la La fel ca Baza urmează Baza.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Mereu activ</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>La fel ca Baza</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Cât timp este ținut apăsat</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Cât timp nu este ținut apăsat</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Comutare la fiecare apăsare</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Butoane Giroscop activ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Butoanele pe care le citește Giroscop activ, de pe orice controler al acestui slot.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Necesită</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Dacă este suficient un singur buton bifat sau trebuie ținute apăsate toate butoanele bifate.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Oricare buton</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Fiecare buton</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Recentrare la pornirea giroscopului</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ia poziția controlerului ca punct de repaus de fiecare dată când se pornește giroscopul.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Resetare Giroscop activ</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Resetare butoane Giroscop activ</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Resetare Necesită</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Resetare recentrare la pornirea giroscopului</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Resetare stick de activare</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetare direcție de activare</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmitere directă a mișcării</value></data>
@@ -2656,6 +2685,25 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jocul citește mișcarea cu sensibilitatea, netezirea și curba stabilite aici.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetare reglaje transmitere directă</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Doar cât timp</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Această sursă contează doar cât timp această intrare este citită ca apăsată și pe același controler. O condiție de zonă dintr-un import este citită ca intervalul stickului sau al trăgaciului pe care îl verifică.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Și cât timp</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>O a doua intrare pe care o așteaptă și această sursă.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Schimbare intrare</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Alege o altă intrare de așteptat.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curbă</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ridică valoarea citită a acestei intrări la această putere înainte să comande ieșirea. 0 și 1 o lasă dreaptă. Peste 1 este mai lentă aproape de centru.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Interval exterior</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ieșirea ajunge la maxim la această parte din cursă. 100% înseamnă dezactivat.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zonă moartă</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ieșirea pornește de la această valoare imediat ce intrarea se mișcă. 0 înseamnă dezactivat.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forma zonei moarte</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Dezactivat lasă valoarea citită neschimbată. Axială măsoară doar această axă. Radială măsoară perechea de stickuri împreună.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Dezactivat</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axială</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radială</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zonă moartă interioară</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Sub această parte din cursă intrarea este citită ca fiind la centru.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicator de sensibilitate a giroscopului pentru fiecare sursă. 1.0 = valoarea implicită a motorului (500°/s → deplasare completă). Valorile peste 1.0 sunt mai sensibile. Valorile sub 1.0 sunt mai puțin sensibile.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicator de sensibilitate la înclinare pentru fiecare sursă. 1.0 = 90° de înclinare pentru deplasare completă. Valorile peste 1.0 ajung la deplasarea completă cu mai puțină înclinare.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Înclinare giroscop X</value></data>
@@ -3236,6 +3284,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Nivel</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timp de inactivitate</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secunde până la distrugerea unui controler virtual când toate dispozitivele mapate pe el sunt deconectate. 0 dezactivează. Controlerele rămase de același tip urcă pentru a umple golul și se leagă din nou la sloturile inferioare.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secunde (0 = niciodată)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Adăugare strat</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Adaugă un strat de comutare. Un al doilea tabel de mapare care se activează cât timp un buton este ținut apăsat sau comutat.</value></data>
@@ -3347,6 +3396,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Resetare rată de desfășurare</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Resetare zonă moartă interioară a unghiului</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Resetare zonă moartă exterioară a unghiului</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zonă moartă a stickului</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Sub această deplasare stickul este citit ca fiind la centru, deci nu se acumulează nicio virare.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Resetare zonă moartă a stickului</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Resetare zonă moartă interioară a înclinării</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Resetare zonă moartă exterioară a înclinării</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Resetare orientare controler</value></data>
@@ -3452,6 +3504,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>din {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Această mașină cere mai mult cuplu decât are volanul, așa că vârful curbei este tăiat.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Senzație la centru, servodirecție, amortizare, frecare, aderență, viteză fixă, cuplu volan</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Senzație la centru, servodirecție, amortizare, aderență, viteză fixă, cuplu volan</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Cât de ferm își ține direcția centrul la viteză mică. 100% este valoarea mașinii reale.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servodirecție</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Cât de mult efort ia servodirecția pe măsură ce crește accelerația în viraj. Mai mult înseamnă o direcție mai ușoară departe de centru.</value></data>
@@ -3593,7 +3646,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Resetare tonuri înalte</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetare limită de ton</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copiază în paralel tot ce redă ieșirea implicită a sistemului în difuzorul integrat al acestui controler. Funcționează prin USB și Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Dispozitivul selectat nu are difuzor integrat. Sunetele macrocomenzilor pentru acest controler se redau pe ieșirea implicită a sistemului.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge nu are nicio cale către un difuzor al dispozitivului selectat prin această conexiune. Sunetele macrocomenzilor pentru acest controler se redau pe ieșirea implicită a sistemului.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suită de testare DualSense în browser de Xuezhou Dai (daidr): referință pentru încadrarea CRC a rapoartelor de funcții Sony și pentru comenzile de testare a firmware-ului pe care PadForge le transmite de la controlerele virtuale la cele fizice.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Afișare ecran Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Redă imagini pe VMU-ul fiecărui controler Dreamcast dintr-un port Bliss-Box care alimentează acest slot, apoi readuce fiecare port la propria setare de ecran.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Afișare imagini Dreamcast: {0} × {1} ms, număr de repetări {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Fiecare imagine se afișează cel puțin o secundă, deoarece adaptorul păstrează fiecare imagine primită într-o memorie garantată pentru 100.000 de scrieri, prag pe care o imagine nouă pe secundă îl atinge în aproximativ o zi. Imaginile au 48 pe 32 de pixeli alb-negru și provin dintr-un fișier BMP sau PNG, dintr-un fișier .lcd VMU Animator sau dintr-o pictogramă Dreamcast .vms.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Fiecare imagine se afișează cel puțin o secundă. PadForge trimite adaptorului cel mult o imagine pe secundă, deoarece adaptorul stochează fiecare imagine primită în propria memorie. Imaginile au 48 pe 32 de pixeli alb-negru și provin dintr-un fișier BMP sau PNG, dintr-un fișier .lcd VMU Animator sau dintr-o pictogramă Dreamcast .vms.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Imagini</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Adăugare imagine…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Eliminare imagine</value></data>
@@ -4113,15 +4166,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Cât timp stratul este activat prin comutare, se dezactivează singur după atâtea milisecunde în care nicio intrare mapată pe strat nu este activă. Temporizatorul pornește când stratul se activează și repornește la fiecare intrare a stratului. 0 menține stratul activ până când îl dezactivați singur.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Resetează zona moartă de ajustare la 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Resetează viteza de ajustare la 100% pe secundă.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Resetează la readucerea nivelului la 100% la eliberare.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Resetează anularea automată la 0 (stratul rămâne activ până la dezactivare).</value>
   </data>
@@ -4189,6 +4233,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macrocomandă Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Regiune cursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ținere)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (eliberare)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activare)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Alegeți o configurație pentru a vedea ce se transferă.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ce se transferă</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Devine</value></data>
@@ -4825,7 +4872,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Apăsările de direcție parcurg celulele și declanșează fiecare celulă nou selectată, fără „Mod de declanșare” sau „Intrare de clic”. Stilul Bară rapidă se deplasează fără a declanșa și declanșează cu propria comandă „Declanșare”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocol îmbunătățit Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Activează butoane suplimentare și senzori de mișcare pe controlerele Flydigi acceptate.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Software-ul Flydigi rulează: {0}. Poate folosi aceeași interfață a controlerului ca PadForge, iar un Vader 5 Pro a fost raportat ca deconectându-se în mod repetat când ambele aveau acces. Dacă acest controler se deconectează și se reconectează, opriți serviciul cât timp folosiți PadForge, mențineți controlerul ascuns și eliminați serviciul din lista de aplicații permise HidHide sau încercați să dezactivați „Protocol îmbunătățit Flydigi” din Setări, deși nu este confirmat că ajută.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Software-ul Flydigi rulează: {0}. Comunică cu controlerul prin interfața pe care o folosește PadForge. Dacă acest controler se deconectează și se reconectează, opriți acel software cât timp folosiți PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Permitere modificări de atribuire de la distanță</value>
   </data>
@@ -5485,9 +5532,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Alegeți ce afișează…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Suprapunere ecran PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nu există încă nimic de afișat. Alegeți ce afișează pe pagina Suprapunere ecran, din Extra.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Comutare reticul</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Comutare lupă</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Toate reticulele</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Reticul</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>

@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>ஏதுமில்லை</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>வினாடி</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>நிமிடம் (0 = ஒருபோதும் இல்லை)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ஒதுக்கப்படாதது</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← இடது)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ மேல்)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll கிடைக்கவில்லை</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll கிடைக்கவில்லை. SDL3.dll-ஐ PadForge.exe-க்கு அருகில் வைக்கவும். இதை இங்கிருந்து பதிவிறக்கவும்: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll கிடைக்கவில்லை. PadForge-ஐ மீண்டும் பதிவிறக்கவும்.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>இயக்கி செயல்பாடு தோல்வியடைந்தது: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>அமைப்புகள் கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டன.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>சாதனத் தகவல் கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>குறைவு</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>படம்</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>பட்டியல்</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>வெளியீடு: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>வெளியீடுகள்: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>அசைவு</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge அறியாத கேம்கள்</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>அனுப்பும் முன் இயங்கும் DSX-ஐத் தேடும் மோடுகளுக்கு.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>எது காட்டப்படும்</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>திறந்திருக்கும் போது மெனுவின் வளையம், கட்டம் அல்லது பட்டை</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஆன் ஆகும்போது அடுக்கின் பெயர், அந்த அடுக்கு அமைக்கும் நேரத்திற்கு</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>சுயவிவரம் மாறும்போது அதன் பெயர்</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>திறந்திருக்கும் போது மெனுவின் வளையம், கட்டம் அல்லது பட்டை.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஆன் ஆகும்போது அடுக்கின் பெயர், அந்த அடுக்கு அமைக்கும் நேரத்திற்கு.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>சுயவிவரம் மாறும்போது அதன் பெயர்.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>முகவரியை நகலெடு</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>திரையில் இடம்</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ஃபோனை இணை</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>தொடங்கும்போது இன்ஜினைத் தானாகத் தொடங்கு</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>சாளரம் ஃபோகஸை இழந்தாலும் போலிங்கைத் தொடர்</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>போலிங் வீதம் (சுயவிவரம் இதை மேலெழுதாதவரை)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>இன்ஜின் ஒவ்வொரு சாதனத்தையும் படித்து மெய்நிகர் கட்டுப்படுத்திகளை வினாடிக்கு இத்தனை முறை புதுப்பிக்கிறது, இது 60 முதல் 10000 வரை இருக்கலாம். அதிக வீதம் அதிகச் செயலி நேரத்தைப் பயன்படுத்தும். Windows இன்ஜினை வினாடிக்கு அதிகபட்சம் சுமார் 2000 முறை மட்டுமே எழுப்புவதால், அதைவிட அதிக வீதத்தில் ஒவ்வொரு எழுப்பலிலும் பல சுற்றுகள் இயங்கும். தனக்கெனப் போலிங் வீதம் கொண்ட சுயவிவரம் செயலில் இருக்கும்போது, அதற்குப் பதிலாக அந்த வீதமே பொருந்தும். அந்தச் சுயவிவரம் செயலிழக்கும்போது இந்த மதிப்பு திரும்பும்.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>இன்ஜின் ஒவ்வொரு சாதனத்தையும் படித்து மெய்நிகர் கட்டுப்படுத்திகளை வினாடிக்கு இத்தனை முறை புதுப்பிக்கிறது, இது 60 முதல் 10000 வரை இருக்கலாம். அதிக வீதம் அதிகச் செயலி நேரத்தைப் பயன்படுத்தும். இந்தக் கணினியில் Windows இன்ஜினை வினாடிக்கு அதிகபட்சம் {0} முறை மட்டுமே எழுப்புவதால், அதைவிட அதிக வீதத்தில் ஒவ்வொரு எழுப்பலிலும் பல சுற்றுகள் இயங்கும். தனக்கெனப் போலிங் வீதம் கொண்ட சுயவிவரம் செயலில் இருக்கும்போது, அதற்குப் பதிலாக அந்த வீதமே பொருந்தும். அந்தச் சுயவிவரம் செயலிழக்கும்போது இந்த மதிப்பு திரும்பும்.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>கேம்களிடமிருந்து சாதனங்களை மறை</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide சாதன மறைப்புக்கும் கீழ்நிலை உள்ளீட்டு ஹூக்குகளுக்குமான முதன்மை சுவிட்ச். இது ஆஃப் ஆக இருக்கும்போது, ஒவ்வொரு சாதனத்தின் அமைப்புகள் எதுவாக இருந்தாலும் எந்தச் சாதனமும் மறைக்கப்படாது.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>தொடக்கங்களுக்கு இடையிலும் சாதனங்களை மறைத்தே வை</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>தட்டச்சு செய்யப்படும் எழுத்துகளுக்கு இடையிலான மில்லிவினாடிகள், அதிகபட்சம் 1000. 0 எனில் முழு உரையும் ஒரே நேரத்தில் தட்டச்சு செய்யப்படும்.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>செயலற்றபோது துண்டிப்பு</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>விவரங்கள்</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>நிமிடம்</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB வழியாகச் செருகியிருக்கும்போது Bluetooth-ஐத் துண்டி</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>விரைவு சார்ஜ். இந்தக் கட்டுப்படுத்தி Bluetooth வழியாக இணைந்திருக்கும்போது சார்ஜ் ஆவதாகத் தெரிவித்தால், ரேடியோவுக்கு மின்சக்தி செலவிடாமல் சார்ஜ் ஆகும்படி Bluetooth இணைப்பு துண்டிக்கப்படும். சுவர் சார்ஜர்கள் உட்பட எந்த USB மின் மூலமும் இதில் அடங்கும். கேபிள் செருகியிருக்கும்போதே Bluetooth-ஐ மீண்டும் இயக்கினால், அடுத்த முறை கேபிளைக் கழற்றும் வரை அது அப்படியே விடப்படும்.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade கட்டுப்படுத்தியாகப் படி</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU செயலிலுள்ள சுயவிவரத்தின் பெயரைக் காட்டும், ஒவ்வொரு சுயவிவர மாற்றத்தையும் பின்தொடரும்.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>சுயவிவரப் பட்டியலில் செயலிலுள்ள சுயவிவரத்தின் இடத்தை VMU காட்டும். இயல்புநிலைச் சுயவிவரம் 0 ஆகும்.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU செயலிலுள்ள சுயவிவரத்தின் சொந்தப் படத்தைக் காட்டும், படம் இல்லையெனில் அதன் பெயரைக் காட்டும். ஒவ்வொரு சுயவிவரமும் தனக்கெனப் படத்தை வைத்திருக்கும்.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU தற்போதைய நேரத்தைக் காட்டும், அது நிமிடத்திற்கு ஒருமுறை மீண்டும் எழுதப்படும். அடாப்டர் ஒவ்வொரு படத்தையும் 100,000 எழுதுதல்களை மட்டுமே தாங்கும் நினைவகத்தில் வைக்கிறது, இடைவிடாமல் காட்டினால் சுமார் பத்து வாரங்களில் இந்த எண்ணிக்கை எட்டப்படும்.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge பேடைக் கண்டறிந்ததிலிருந்து கடந்த மணிநேரங்களையும் நிமிடங்களையும் VMU காட்டும், அது நிமிடத்திற்கு ஒருமுறை மீண்டும் எழுதப்படும். பத்து வினாடிகளுக்கு மேல் போர்ட்டிலிருந்து நீக்கப்பட்டிருந்த பேட் மீண்டும் பூஜ்ஜியத்திலிருந்து தொடங்கும். அடாப்டர் ஒவ்வொரு படத்தையும் 100,000 எழுதுதல்களை மட்டுமே தாங்கும் நினைவகத்தில் வைக்கிறது, இடைவிடாமல் காட்டினால் சுமார் பத்து வாரங்களில் இந்த எண்ணிக்கை எட்டப்படும்.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU தற்போதைய நேரத்தைக் காட்டும், அது நிமிடத்திற்கு ஒருமுறை மீண்டும் எழுதப்படும். அடாப்டர் ஒவ்வொரு படத்தையும் தனது சொந்த நினைவகத்தில் சேமிப்பதால், PadForge அதை இதைவிட அடிக்கடி மீண்டும் எழுதுவதில்லை.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge பேடைக் கண்டறிந்ததிலிருந்து கடந்த மணிநேரங்களையும் நிமிடங்களையும் VMU காட்டும், அது நிமிடத்திற்கு ஒருமுறை மீண்டும் எழுதப்படும். பத்து வினாடிகளுக்கு மேல் போர்ட்டிலிருந்து நீக்கப்பட்டிருந்த பேட் மீண்டும் பூஜ்ஜியத்திலிருந்து தொடங்கும். அடாப்டர் ஒவ்வொரு படத்தையும் தனது சொந்த நினைவகத்தில் சேமிப்பதால், PadForge அதை நிமிடத்திற்கு ஒருமுறைக்கு மேல் அடிக்கடி மீண்டும் எழுதுவதில்லை.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>நீங்கள் தேர்ந்தெடுக்கும் படத்தை VMU காட்டும்: BMP அல்லது PNG, VMU Animator .lcd கோப்பு அல்லது Dreamcast .vms ஐகான். படங்கள் 48 × 32 கருப்பு-வெள்ளைப் பிக்சல்களாக வெட்டப்படும்.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>படத்தைத் தேர்ந்தெடு…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0}-க்கான படத்தைத் தேர்ந்தெடு…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox பயன்முறையிலிருந்த கட்டுப்படுத்தி Apex 4 ஆகப் பதிலளிக்கவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை, Windows அதைத் திரும்பப் பெற்றுவிட்டது. அதை அதன் சொந்த சுவிட்சால் மீண்டும் DInput பயன்முறைக்கு மாற்றவும்.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows கட்டுப்படுத்தியை WinUSB க்கு நகர்த்தவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. அதை அதன் சொந்த சுவிட்சால் மீண்டும் DInput பயன்முறைக்கு மாற்றவும்.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>நிறுத்தப்பட்டது. மீண்டும் அனுப்பும் முன் கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கவும்.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>திரையின் போர்ட் திறக்கவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கி மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியின் திரை தாங்கும் அளவைவிட படத்தில் அதிக பிரேம்கள் உள்ளன.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ஒரு படம் ஏற்கெனவே இந்தக் கட்டுப்படுத்திக்கு அனுப்பப்பட்டுக் கொண்டிருக்கிறது. அது முடியும் வரை காத்திருக்கவும்.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>PadForge எழுதாத ஒரு முகவரியில் திரை படத்தைக் கேட்டது, எனவே எதுவும் அனுப்பப்படவில்லை. கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கி மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>படம் அனுப்பப்பட்டது, ஆனால் கட்டுப்படுத்தி DInput பயன்முறைக்குத் திரும்பவில்லை. அதன் சொந்த சுவிட்சால் மீண்டும் மாற்றவும்.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>படத்துக்குத் தயார்படுத்தும் கட்டளையைக் கட்டுப்படுத்தி ஏற்கவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. அது இணைக்கப்பட்டுள்ளதா எனச் சரிபார்த்து மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge-இல் ஏற்பட்ட பிழையால் அனுப்புதல் நின்றது. விவரங்கள் பதிவுக் கோப்பில் உள்ளன.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ஒரு படம் இன்னும் கட்டுப்படுத்திக்குச் சென்றுகொண்டிருக்கிறது. அனுப்புவதை நிறுத்தவா?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak கோப்புகள் (*.mpk)|*.mpk|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak போர்ட் {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>மெனு வடிவியலை மீட்டமை</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>கலத்தை மீட்டமை</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>உணர்திறனை மீட்டமை</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>முடுக்கத்தை மீட்டமை</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>டெட்ஜோனை மீட்டமை</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>பிடிப்பு நேரத்தை மீட்டமை</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>அழுத்தக் கால வரம்பை மீட்டமை</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>எந்த அடுக்கும்</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி செயலில் இருக்கும்போது தொடர்ந்து இயங்கும். தூண்டிப் பொத்தான் தேவையில்லை.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>செய்</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>அடுக்கு, மூலம், வரம்பு, திசை, தூண்டிப் பொத்தான்களைத் தடு, மீண்டும் செய்</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>செயலைச் சேர்</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>வகை</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>மெய்நிகர் பொத்தான்கள்</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>சுட்டிப் பொத்தான் அழுத்தம்</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>சுட்டிப் பொத்தான் விடுவிப்பு</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>சுட்டி உருட்டல்</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>டச்பேட் மேலடுக்கை நிலைமாற்று</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>பொத்தான்கள்</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>விசைச் சேர்க்கை</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} வடிவத்தில் விசைச் சேர்க்கை. திருத்தலாம்.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0}-ஐ ஒவ்வொரு {1} ms-க்கும் மீண்டும் செய்</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>சுட்டி X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>சுட்டி Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>கிடைமட்ட நகர்வு</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>செங்குத்து நகர்வு</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>இடைவெளி</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>திரையில் தேர்ந்தெடு</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>பதிவாக இன்னும் {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>தலைகீழ் பாதி</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>எந்தச் சாதனமும் மேப் செய்யப்படவில்லை</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>அறியப்படாத சாதனம்</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>டச்பேட் கிளிக்</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>கீழ் (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>மேல் (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>செயல்படுத்தல்</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>குறிவைப்புச் செயல்படுத்தும் பொத்தான், செயல்படுத்தும் பயன்முறை, எளிய குறிவைப்பு வரம்பு</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>குறிவைப்புச் செயல்படுத்தும் பொத்தான், செயல்படுத்தும் பயன்முறை, கைரோ ஆன், மறுமையம், எளிய குறிவைப்பு வரம்பு</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>கைரோ எப்போது செயலில் இருக்கும் என்பதை வரம்பிடும் விருப்பத்தேர்வான கட்டுப்பாடுகள். வலது ஸ்டிக் விலகல், குறிவைப்புச் செயல்படுத்தும் பொத்தான் ஆகிய ஒவ்வொன்றையும் உள்ளமைக்கலாம். உள்ளமைக்கப்பட்ட ஒவ்வொரு கட்டுப்பாடும் செயலில் இருக்கும்போது மட்டுமே கைரோ செயல்படும்.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>லோக்கல்</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>பிளேயர்</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>எளிய குறிவைப்பு வரம்பை மீட்டமை</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>குறிவைப்புச் செயல்படுத்தும் பொத்தானை மீட்டமை</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>செயல்படுத்தும் பயன்முறையை மீட்டமை</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>அடுக்கு</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>கீழுள்ள வரிசைகள் எந்த அடுக்கின் கைரோ ஆன் அமைப்பைக் காட்டி மாற்றுகின்றனவோ அந்த அடுக்கு.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>கைரோ ஆன்</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>இந்த அடுக்கில் செயல்படுத்தும் பொத்தானுக்கு மேலாக கைரோ எப்போது செயல்படும் என்பது. அடிப்படையைப் போலவே என அமைக்கப்பட்ட ஷிஃப்ட் அடுக்கு அடிப்படையைப் பின்பற்றும்.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>எப்போதும் ஆன்</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>அடிப்படையைப் போலவே</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>பிடித்திருக்கும்போது</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>பிடிக்காதபோது</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>ஒவ்வொரு அழுத்தத்திலும் மாற்று</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>கைரோ ஆன் பொத்தான்கள்</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டின் எந்தக் கட்டுப்படுத்தியிலும் கைரோ ஆன் படிக்கும் பொத்தான்கள்.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>தேவை</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>தேர்வுசெய்த ஒரு பொத்தான் போதுமா அல்லது தேர்வுசெய்த எல்லாப் பொத்தான்களையும் பிடித்திருக்க வேண்டுமா என்பது.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ஏதேனும் ஒரு பொத்தான்</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>ஒவ்வொரு பொத்தானும்</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>கைரோ ஆன் ஆகும்போது மறுமையமாக்கு</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>கைரோ ஆன் ஆகும் ஒவ்வொரு முறையும் கட்டுப்படுத்தியின் நிலையை ஓய்வுப் புள்ளியாக எடுக்கும்.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>கைரோ ஆன் அமைப்பை மீட்டமை</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>கைரோ ஆன் பொத்தான்களை மீட்டமை</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>தேவையை மீட்டமை</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>கைரோ ஆன் ஆகும்போது மறுமையமாக்குவதை மீட்டமை</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>செயல்படுத்தும் ஸ்டிக்கை மீட்டமை</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>செயல்படுத்தும் திசையை மீட்டமை</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>அசைவு பாஸ்த்ரூ</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>இங்கு அமைத்த உணர்திறன், மென்மையாக்கம், வளைவு ஆகியவற்றுடன் கேம் அசைவைப் படிக்கும்.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>பாஸ்த்ரூ சரிசெய்தலை மீட்டமை</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>இது இருக்கும்போது மட்டும்</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>இதே கட்டுப்படுத்தியில் இந்த உள்ளீடும் அழுத்தப்பட்டதாகப் படிக்கப்படும்போது மட்டுமே இந்த மூலம் கணக்கில் கொள்ளப்படும். இறக்குமதியிலிருந்து வரும் மண்டலச் சோதனை, அது சரிபார்க்கும் ஸ்டிக் அல்லது டிரிகர் வரம்பாகப் படிக்கப்படும்.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>மேலும் இது இருக்கும்போது</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>இந்த மூலம் காத்திருக்கும் இரண்டாவது உள்ளீடு.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>உள்ளீட்டை மாற்று</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>காத்திருக்க வேண்டிய வேறொரு உள்ளீட்டைத் தேர்ந்தெடுக்கும்.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>வளைவு</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>இந்த உள்ளீட்டின் அளவீட்டை, வெளியீட்டை இயக்கும் முன், இந்த எண்ணின் படிக்கு உயர்த்தும். 0 மற்றும் 1 அதை நேராகவே விடும். 1க்கு மேல் இருந்தால் மையத்தின் அருகில் மெதுவாக இருக்கும்.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>வெளிப்புற வரம்பு</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>பயணத்தின் இவ்வளவு பகுதியில் வெளியீடு முழுமையை எட்டும். 100% என்றால் செயலில் இல்லை.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ஆன்டி-டெட்ஜோன்</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>உள்ளீடு நகர்ந்தவுடனேயே வெளியீடு இவ்வளவிலிருந்து தொடங்கும். 0 என்றால் செயலில் இல்லை.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>டெட்ஜோன் வடிவம்</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>ஆஃப் அளவீட்டைத் தொடாமல் விடும். அச்சுவழி இந்த அச்சை மட்டும் தனியாக அளக்கும். ஆரவழி ஸ்டிக் இணையை ஒன்றாகச் சேர்த்து அளக்கும்.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ஆஃப்</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>அச்சுவழி</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>ஆரவழி</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>உள் டெட்ஜோன்</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>பயணத்தின் இவ்வளவு பகுதிக்குக் கீழ் உள்ளீடு மையத்தில் இருப்பதாகப் படிக்கப்படும்.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான கைரோ உணர்திறன் பெருக்கி. 1.0 = இன்ஜினின் இயல்புநிலை (500°/s → முழு விலகல்). 1.0-க்கு மேலான மதிப்புகள் அதிக உணர்திறன் கொண்டவை. 1.0-க்குக் கீழான மதிப்புகள் குறைந்த உணர்திறன் கொண்டவை.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான சாய்வு உணர்திறன் பெருக்கி. 1.0 = முழு விலகலுக்கு 90° சாய்வு. 1.0-க்கு மேலான மதிப்புகள் குறைவான சாய்விலேயே முழு விலகலை எட்டும்.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>கைரோ சாய்ப்பு X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>நிலை</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>செயலின்மை நேரமுடிவு</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் மேப் செய்யப்பட்ட சாதனங்கள் அனைத்தும் ஆஃப்லைனில் இருக்கும்போது, அது அழிக்கப்படுவதற்கு முன் உள்ள வினாடிகள். 0 எனில் முடக்கப்படும். அதே வகையில் மீதமுள்ள கட்டுப்படுத்திகள் இடைவெளியை நிரப்ப மேலே நகர்ந்து, குறைந்த எண் ஸ்லாட்டுகளுடன் மீண்டும் பிணையும்.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>வினாடி (0 = ஒருபோதும் இல்லை)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>அடுக்கைச் சேர்</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ஒரு ஷிஃப்ட் அடுக்கைச் சேர்க்கும். ஒரு பொத்தான் பிடிக்கப்பட்டிருக்கும்போது அல்லது நிலைமாற்றப்படும்போது செயல்படும் இரண்டாவது மேப்பிங் அட்டவணை.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>திரும்பும் வீதத்தை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>கோண உள் டெட்ஜோனை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>கோண வெளி டெட்ஜோனை மீட்டமை</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>ஸ்டிக் டெட்ஜோன்</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>இந்த விலகலுக்குக் கீழ் ஸ்டிக் மையத்தில் இருப்பதாகப் படிக்கப்படும், எனவே ஸ்டீயரிங் உருவாகாது.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>ஸ்டிக் டெட்ஜோனை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>சாய்வு உள் டெட்ஜோனை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>சாய்வு வெளி டெட்ஜோனை மீட்டமை</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>கட்டுப்படுத்தித் திசையமைவை மீட்டமை</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>இந்த கார் வீலில் உள்ளதை விட அதிக டார்க் கேட்கிறது, அதனால் வளைவின் மேல்பகுதி வெட்டப்படுகிறது.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>மைய உணர்வு, பவர் அசிஸ்ட், டேம்பிங், உராய்வு, பிடிப்பு, நிலையான வேகம், வீல் டார்க்</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>மைய உணர்வு, பவர் அசிஸ்ட், டேம்பிங், பிடிப்பு, நிலையான வேகம், வீல் டார்க்</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>குறைந்த வேகத்தில் ஸ்டீயரிங் தன் மையத்தை எவ்வளவு உறுதியாகப் பிடித்திருக்கும். 100% என்பது காரின் சொந்த அளவு.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>பவர் அசிஸ்ட்</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>கார்னரிங் கூடும்போது பவர் ஸ்டீயரிங் எவ்வளவு குறைக்கிறது. அதிகமானால் மையத்திலிருந்து விலகும்போது ஸ்டீயரிங் இலகுவாகும்.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>உயர் தொனிகளை மீட்டமை</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>தொனி வரம்பை மீட்டமை</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>கணினியின் இயல்புநிலை வெளியீடு இயக்கும் எதையும், அதே நேரத்தில் இந்தக் கட்டுப்படுத்தியின் உள்ளமைந்த ஸ்பீக்கருக்கும் நகலெடுக்கும். USB மற்றும் Bluetooth வழியாக வேலை செய்யும்.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தில் உள்ளமைந்த ஸ்பீக்கர் இல்லை. இந்தப் பேடுக்கான மேக்ரோ ஒலிகள் கணினியின் இயல்புநிலை வெளியீட்டில் ஒலிக்கும்.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தில் இந்த இணைப்பு வழியாக ஸ்பீக்கருக்குச் செல்லும் பாதை PadForge-இடம் இல்லை. இந்தப் பேடுக்கான மேக்ரோ ஒலிகள் கணினியின் இயல்புநிலை வெளியீட்டில் ஒலிக்கும்.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) உருவாக்கிய, உலாவியில் இயங்கும் DualSense சோதனைத் தொகுப்பு: PadForge மெய்நிகர் பேடுகளிலிருந்து இயற்பியல் பேடுகளுக்கு அனுப்பும் Sony ஃபீச்சர்-ரிப்போர்ட் CRC ஃப்ரேமிங் மற்றும் நிலைபொருள் சோதனைக் கட்டளைகளுக்கான மேற்கோள்.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast திரையைக் காட்டு</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும் Bliss-Box போர்ட்டில் உள்ள ஒவ்வொரு Dreamcast பேடின் VMU-விலும் படங்களைக் காட்டி, பிறகு ஒவ்வொரு போர்ட்டையும் அதன் சொந்தத் திரை அமைப்புக்குத் திருப்பும்.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast படங்களைக் காட்டு: {0} × {1} ms, மீள்செயல் எண்ணிக்கை {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ஒவ்வொரு படமும் குறைந்தது ஒரு வினாடி காட்டப்படும், ஏனெனில் அடாப்டர் தனக்கு அனுப்பப்படும் ஒவ்வொரு படத்தையும் 100,000 எழுதுதல்களை மட்டுமே தாங்கும் நினைவகத்தில் வைக்கிறது, ஒவ்வொரு வினாடியும் ஒரு புதிய படம் என்றால் சுமார் ஒரு நாளில் அந்த எண்ணிக்கை எட்டப்படும். படங்கள், BMP அல்லது PNG, VMU Animator .lcd கோப்பு அல்லது Dreamcast .vms ஐகானிலிருந்து பெறப்படும் 48 × 32 கருப்பு-வெள்ளைப் பிக்சல்கள்.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ஒவ்வொரு படமும் குறைந்தது ஒரு வினாடி காட்டப்படும். அடாப்டர் தனக்கு அனுப்பப்படும் ஒவ்வொரு படத்தையும் தனது சொந்த நினைவகத்தில் சேமிப்பதால், PadForge அடாப்டருக்கு வினாடிக்கு அதிகபட்சம் ஒரு படத்தை மட்டுமே அனுப்புகிறது. படங்கள், BMP அல்லது PNG, VMU Animator .lcd கோப்பு அல்லது Dreamcast .vms ஐகானிலிருந்து பெறப்படும் 48 × 32 கருப்பு-வெள்ளைப் பிக்சல்கள்.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>படங்கள்</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>படத்தைச் சேர்…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>படத்தை அகற்று</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>அடுக்கு ஆன் செய்யப்பட்டிருக்கும்போது, அடுக்கின் சொந்த மேப் செய்யப்பட்ட உள்ளீடுகள் எதுவும் செயலில் இல்லாமல் இத்தனை மில்லிவினாடிகள் கடந்தால் அது தானாகவே ஆஃப் ஆகும். அடுக்கு செயல்படும்போது டைமர் தொடங்கும், ஒவ்வொரு அடுக்கு உள்ளீட்டிலும் மீண்டும் தொடங்கும். 0 எனில், நீங்களே ஆஃப் செய்யும் வரை அடுக்கு ஆன் நிலையிலேயே இருக்கும்.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>டிரிம் டெட்ஜோனை 25%-க்கு மீட்டமைக்கும்.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>டிரிம் வேகத்தை வினாடிக்கு 100%-க்கு மீட்டமைக்கும்.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>விடும்போது அளவை 100%-க்குத் திருப்பும் நிலைக்கு மீட்டமைக்கும்.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>தானியங்கி ரத்தை 0-க்கு மீட்டமைக்கும் (ஆஃப் செய்யும் வரை அடுக்கு ஆன் நிலையிலேயே இருக்கும்).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop சுயவிவரம்</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop மேக்ரோ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>கர்சர் பகுதி</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (பிடிப்பு)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (விடுவிப்பு)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (செயல்படுத்தல்)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>வந்து சேர்வதைக் காண ஓர் உள்ளமைவைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>எவை வந்து சேரும்</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ஆகும்</value></data>
@@ -4825,7 +4872,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>திசை அழுத்தங்கள் கலங்களில் படிப்படியாக நகர்ந்து, புதிதாகத் தேர்ந்தெடுக்கப்படும் ஒவ்வொரு கலத்தையும் தூண்டும், "தூண்டல் பயன்முறை" அல்லது "கிளிக் உள்ளீடு" இல்லாமல். "ஹாட்பார்" பாணி தூண்டாமல் நகரும், தன் சொந்த "தூண்டு" கட்டுப்பாட்டால் தூண்டும்.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi மேம்படுத்தப்பட்ட நெறிமுறை</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>ஆதரிக்கப்படும் Flydigi கட்டுப்படுத்திகளில் கூடுதல் பொத்தான்களையும் அசைவு சென்சார்களையும் இயக்கும்.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi மென்பொருள் இயங்குகிறது: {0}. அது PadForge பயன்படுத்தும் அதே கட்டுப்படுத்தி இடைமுகத்தைப் பயன்படுத்தக்கூடும், இரண்டுக்கும் அணுகல் இருந்தபோது ஒரு Vader 5 Pro மீண்டும் மீண்டும் துண்டிக்கப்பட்டதாகத் தெரிவிக்கப்பட்டுள்ளது. இந்தக் கட்டுப்படுத்தி துண்டிக்கப்பட்டு மீண்டும் இணைந்தால், PadForge-ஐப் பயன்படுத்தும்போது சேவையை நிறுத்தவும், கட்டுப்படுத்தியை மறைத்தே வைத்து சேவையை HidHide அனுமதிப்பட்டியலிலிருந்து அகற்றவும், அல்லது அமைப்புகளில் "Flydigi மேம்படுத்தப்பட்ட நெறிமுறை" என்பதை ஆஃப் செய்து பார்க்கவும், இது உதவும் என்பது உறுதிசெய்யப்படவில்லை.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi மென்பொருள் இயங்குகிறது: {0}. PadForge பயன்படுத்தும் இடைமுகம் வழியாக அது கட்டுப்படுத்தியுடன் தொடர்புகொள்கிறது. இந்தக் கட்டுப்படுத்தி துண்டிக்கப்பட்டு மீண்டும் இணைந்தால், PadForge-ஐப் பயன்படுத்தும்போது அந்த மென்பொருளை நிறுத்தவும்.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>தொலைவிலிருந்து ஒதுக்கீடுகளை மாற்ற அனுமதி</value>
   </data>
@@ -5485,9 +5532,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>எதைக் காட்டுவது என்பதைத் தேர்ந்தெடு…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge திரை மேலடுக்கு</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>இன்னும் காட்ட எதுவும் இல்லை. கூடுதல் பிரிவில் உள்ள திரை மேலடுக்கு பக்கத்தில் எதைக் காட்டுவது என்பதைத் தேர்ந்தெடுக்கவும்.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>குறுக்குக்கோட்டை நிலைமாற்று</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>பெரிதாக்கியை நிலைமாற்று</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>ஒவ்வொரு குறுக்குக்கோடும்</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>குறுக்குக்கோடு</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>

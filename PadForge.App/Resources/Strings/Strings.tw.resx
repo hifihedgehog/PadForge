@@ -748,7 +748,6 @@
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Yi cell a ɛtwa toɔ no</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Din</value></data>
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Adeyɛ</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, San yɛ</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player anaa Wiase</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Hwehwɛ devices</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Ne nyinaa</value></data>
@@ -822,4 +821,11 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Fa di dwuma</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Device a wonnim</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Bere a wɔmia nko ara</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Source yi kan nko ara bere a wɔmia input yi nso wɔ controller koro no ara so. Zone sɔhwɛ a efi import mu kan sɛ stick anaa trigger kwan a ɛhwɛ no.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ne bere a wɔmia</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Input a ɛto so abien a source yi nso twɛn no.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Sesa input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Paw input foforo a ɛbɛtwɛn no.</value></data>
 </root>

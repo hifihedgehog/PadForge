@@ -641,7 +641,7 @@ namespace PadForge.Tests
         {
             using var session = new RecorderSession();
             var row = session.Row(target);
-            session.Recorder.StartRecording(row, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(row, 0);
             Assert.True(session.Recorder.IsRecording);
 
             // One press of cross moves both, the button in the first tick.

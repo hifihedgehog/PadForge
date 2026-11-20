@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>ምንም</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ሰከንድ</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>ደቂቃ (0 = በጭራሽ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>አልተመደበም</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ግራ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ላይ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll አልተገኘም</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll አልተገኘም። SDL3.dllን ከPadForge.exe አጠገብ ያስቀምጡ። ከዚህ ያውርዱት፦ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll አልተገኘም። PadForge እንደገና ያውርዱ።</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>የአሽከርካሪ ክዋኔ አልተሳካም፦ {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ቅንብሮች ወደ ቅንጥብ ሰሌዳ ተቀድተዋል።</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>የመሣሪያ መረጃ ወደ ቅንጥብ ሰሌዳ ተቀድቷል።</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ዝቅተኛ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ምስል</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ዝርዝር</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>ውጤት፦ {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ውጤቶች፦ {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>እንቅስቃሴ</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>በምስሉ ላይ አንድ አካል ጠቅ አድርግና ከዚያ ሊያንቀሳቅሰው የሚገባውን ግብዓት ተጫን።</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge የማያውቃቸው ጨዋታዎች</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ከመላካቸው በፊት የሚሠራ DSX ለሚፈልጉ ሞዶች።</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>የሚታየው</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>መገለጫው ሲቀየር የመገለጫው ስም</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው።</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም።</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>መገለጫው ሲቀየር የመገለጫው ስም።</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>አድራሻ ቅዳ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>በማያ ገጽ ላይ ያለ ቦታ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ስልክ አገናኝ</value></data>
@@ -632,7 +634,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ሲከፈት ሞተሩን በራስ-ሰር አስጀምር</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>መስኮቱ ትኩረት ሲያጣ ንባቡን ቀጥል</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>የንባብ ድግግሞሽ (መገለጫ ካልሻረው በስተቀር)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ሞተሩ እያንዳንዱን መሣሪያ ያነባል እና ምናባዊ መቆጣጠሪያዎቹን በሰከንድ ይህን ያህል ጊዜ ያዘምናል፣ ከ60 እስከ 10000። ከፍ ያለ ድግግሞሽ ተጨማሪ የፕሮሰሰር ጊዜ ይወስዳል። Windows ሞተሩን በሰከንድ ቢበዛ ወደ 2000 ጊዜ ገደማ ይቀሰቅሳል፣ ስለዚህ ከዚያ በላይ ያለ ድግግሞሽ በእያንዳንዱ መቀስቀስ ብዙ ዙሮችን ያካሂዳል። የራሱ የንባብ ፍጥነት ያለው መገለጫ ንቁ ሲሆን፣ በምትኩ ያ ፍጥነት ይሠራል። መገለጫው ሲቦዝን ይህ እሴት ይመለሳል።</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>ሞተሩ እያንዳንዱን መሣሪያ ያነባል እና ምናባዊ መቆጣጠሪያዎቹን በሰከንድ ይህን ያህል ጊዜ ያዘምናል፣ ከ60 እስከ 10000። ከፍ ያለ ድግግሞሽ ተጨማሪ የፕሮሰሰር ጊዜ ይወስዳል። በዚህ ኮምፒውተር ላይ Windows ሞተሩን በሰከንድ ቢበዛ {0} ጊዜ ይቀሰቅሳል፣ ስለዚህ ከዚያ በላይ ያለ ድግግሞሽ በእያንዳንዱ መቀስቀስ ብዙ ዙሮችን ያካሂዳል። የራሱ የንባብ ፍጥነት ያለው መገለጫ ንቁ ሲሆን፣ በምትኩ ያ ፍጥነት ይሠራል። መገለጫው ሲቦዝን ይህ እሴት ይመለሳል።</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>መሣሪያዎችን ከጨዋታዎች ደብቅ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>ለHidHide የመሣሪያ መደበቂያ እና ለዝቅተኛ ደረጃ የግብዓት መንጠቆዎች ዋና ማብሪያ። ሲጠፋ፣ የእያንዳንዱ መሣሪያ ቅንብር ምንም ይሁን ምን ምንም መሣሪያ አይደበቅም።</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>መሣሪያዎችን በማስጀመሪያዎች መካከል እንደተደበቁ አቆይ</value></data>
@@ -923,7 +925,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>በሚተየቡ ቁምፊዎች መካከል ያሉ ሚሊሰከንዶች፣ እስከ 1000። 0 ሙሉውን ጽሑፍ በአንድ ጊዜ ይተይባል።</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ሥራ ሲፈታ ግንኙነት ማቋረጥ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ዝርዝሮች</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ደቂቃ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>በUSB ሲሰካ Bluetooth አቋርጥ</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ፈጣን ኃይል መሙላት። ይህ መቆጣጠሪያ በBluetooth ተገናኝቶ ሳለ ኃይል እየሞላ መሆኑን ሲያሳውቅ፣ ሬዲዮውን ሳያንቀሳቅስ እንዲሞላ የBluetooth ግንኙነቱ ይቋረጣል። የግድግዳ ቻርጀሮችን ጨምሮ ማንኛውም የUSB ኃይል ምንጭ ይቆጠራል። ገመዱ እንደተሰካ Bluetooth መልሰህ ካበራህ፣ እስከሚቀጥለው መንቀል ድረስ አይነካም።</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>እንደ iCade መቆጣጠሪያ አንብብ</value></data>
@@ -965,8 +966,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU የንቁ መገለጫውን ስም ያሳያል፣ እያንዳንዱን የመገለጫ ለውጥም ይከተላል።</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU ንቁው መገለጫ በመገለጫ ዝርዝሩ ውስጥ ያለውን ቦታ ያሳያል። ነባሪው መገለጫ 0 ነው።</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU የንቁ መገለጫውን የራሱን ምስል ያሳያል፣ ምስል ከሌለው ደግሞ ስሙን። እያንዳንዱ መገለጫ የራሱን ምስል ይይዛል።</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU የቀኑን ሰዓት ያሳያል፣ በደቂቃ አንድ ጊዜ እንደገና ይጻፋል። አስማሚው እያንዳንዱን ምስል 100,000 ጊዜ ለመጻፍ በተሠራ ማህደረ ትውስታ ውስጥ ይይዛል፣ ሌት ተቀን ሲታይ ይህ በአሥር ሳምንት ገደማ ይደርሳል።</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge ፓዱን ካገኘ ወዲህ ያሉትን ሰዓታትና ደቂቃዎች ያሳያል፣ በደቂቃ አንድ ጊዜ እንደገና ይጻፋል። ከወደቡ ከአሥር ሰከንድ በላይ የወጣ ፓድ እንደገና ከዜሮ ይጀምራል። አስማሚው እያንዳንዱን ምስል 100,000 ጊዜ ለመጻፍ በተሠራ ማህደረ ትውስታ ውስጥ ይይዛል፣ ሌት ተቀን ሲታይ ይህ በአሥር ሳምንት ገደማ ይደርሳል።</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU የቀኑን ሰዓት ያሳያል፣ በደቂቃ አንድ ጊዜ እንደገና ይጻፋል። አስማሚው እያንዳንዱን ምስል በራሱ ማህደረ ትውስታ ውስጥ ያከማቻል፣ ስለዚህ PadForge ከዚያ በላይ ደጋግሞ አይጽፈውም።</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge ፓዱን ካገኘ ወዲህ ያሉትን ሰዓታትና ደቂቃዎች ያሳያል፣ በደቂቃ አንድ ጊዜ እንደገና ይጻፋል። ከወደቡ ከአሥር ሰከንድ በላይ የወጣ ፓድ እንደገና ከዜሮ ይጀምራል። አስማሚው እያንዳንዱን ምስል በራሱ ማህደረ ትውስታ ውስጥ ያከማቻል፣ ስለዚህ PadForge በደቂቃ ከአንድ ጊዜ በላይ እንደገና አይጽፈውም።</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU የምትመርጠውን ምስል ያሳያል: BMP ወይም PNG፣ የVMU Animator .lcd ፋይል ወይም የDreamcast .vms አዶ። ምስሎች ወደ 48 በ32 ጥቁርና ነጭ ፒክሰሎች ይቆረጣሉ።</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ምስል ምረጥ…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>ለ{0} ምስል ምረጥ…</value></data>
@@ -1011,6 +1012,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>በXbox ሁነታ ያለው መቆጣጠሪያ እንደ Apex 4 አልመለሰም፣ ስለዚህ ምንም አልተላከም፣ Windowsም መልሶ ይዞታል። በራሱ ማብሪያ ወደ DInput ሁነታ መልሰህ ቀይረው።</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows መቆጣጠሪያውን ወደ WinUSB አላዛወረውም፣ ስለዚህ ምንም አልተላከም። በራሱ ማብሪያ ወደ DInput ሁነታ መልሰህ ቀይረው።</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ቆሟል። እንደገና ከመላክህ በፊት መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራው።</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>የማያ ገጹ ወደብ አልተከፈተም፣ ስለዚህ ምንም አልተላከም። መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራውና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>ምስሉ የዚህ መቆጣጠሪያ ማያ ገጽ ከሚይዘው በላይ ፍሬሞች አሉት።</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ወደዚህ መቆጣጠሪያ አንድ ምስል አስቀድሞ እየተላከ ነው። እስኪጨርስ ድረስ ጠብቅ።</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>ማያ ገጹ ምስሉን PadForge በማይጽፍበት አድራሻ ላይ ጠየቀ፣ ስለዚህ ምንም አልተላከም። መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራውና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>ምስሉ ተልኳል፣ ነገር ግን መቆጣጠሪያው ወደ DInput ሁነታ አልተመለሰም። በራሱ ማብሪያ መልሰህ ቀይረው።</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>መቆጣጠሪያው እሱን የሚያዘጋጀውን ትዕዛዝ አልተቀበለም፣ ስለዚህ ምንም አልተላከም። መገናኘቱን አረጋግጥና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>መላኩ PadForge ውስጥ በተፈጠረ ስህተት ቆሟል። ዝርዝሩ በምዝግብ ፋይሉ ውስጥ አለ።</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ምስል አሁንም ወደ መቆጣጠሪያው እየሄደ ነው። መላኩ ይቁም?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>የController Pak ፋይሎች (*.mpk)|*.mpk|ሁሉም ፋይሎች (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ወደብ {0}.mpk</value></data>
@@ -1505,7 +1513,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>የምናሌ ጂኦሜትሪን ዳግም አስጀምር</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>ሕዋስን ዳግም አስጀምር</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>ትብነትን ዳግም አስጀምር</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>ፍጥነት መጨመርን ዳግም አስጀምር</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>የመያዣ ጊዜን ዳግም አስጀምር</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>የመጫኛ ጊዜ መስኮትን ዳግም አስጀምር</value></data>
@@ -1786,7 +1793,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ማንኛውም ንብርብር</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ ንቁ እስከሆነ ድረስ ያለማቋረጥ ይሠራል። የአንቂ አዝራር አያስፈልግም።</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>አድርግ</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>ንብርብር፣ ምንጭ፣ ገደብ፣ አቅጣጫ፣ የአንቂ አዝራሮችን ዋጥ፣ ድገም</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>ድርጊት አክል</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>አይነት</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ምናባዊ አዝራሮች</value></data>
@@ -1812,7 +1818,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>የመዳፊት አዝራር መጫን</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>የመዳፊት አዝራር መልቀቅ</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>የመዳፊት ማሸብለል</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢን ቀያይር</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>አዝራሮች</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>የቁልፍ ጥምረት</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>የቁልፍ ጥምረት በ{Key1}{Key2} ቅርጸት። ሊስተካከል ይችላል።</value></data>
@@ -1943,6 +1948,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} በየ{1} ms ድገም</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>መዳፊት X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>መዳፊት Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>አግድም ፈረቃ</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ቁመታዊ ፈረቃ</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ክፍተት</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>በማያ ገጽ ላይ ምረጥ</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>በ{0} ውስጥ ይያዛል…</value></data>
@@ -1977,6 +1984,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>የተገለበጠ ግማሽ</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>ምንም መሣሪያ አልተዛመደም</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>ያልታወቀ መሣሪያ</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ጠቅታ</value></data>
@@ -2419,7 +2427,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ታች (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ላይ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ማንቃት</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>የአላማ ማንቂያ አዝራር፣ የማንቂያ ሁነታ፣ የቀላል አላማ ገደብ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>የአላማ ማንቂያ አዝራር፣ የማንቂያ ሁነታ፣ ጋይሮ ማብራት፣ ዳግም መሃል ማድረግ፣ የቀላል አላማ ገደብ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ጋይሮ መቼ ንቁ እንደሚሆን የሚገድቡ አማራጭ ሁኔታዎች። የቀኝ ስቲክ ማፈንገጥ እና የአላማ ማንቂያ አዝራር እያንዳንዳቸው ሊዋቀሩ ይችላሉ። ጋይሮ የሚሠራው እያንዳንዱ የተዋቀረ ሁኔታ ንቁ ሲሆን ብቻ ነው።</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>አካባቢያዊ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ተጫዋች</value></data>
@@ -2456,6 +2464,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>የቀላል አላማ ገደብን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>የአላማ ማንቂያ አዝራርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>የማንቃት ሁነታን ዳግም አስጀምር</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>ንብርብር</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>ከታች ያሉት ረድፎች የ«ጋይሮ ማብራት» ቅንብሩን የሚያሳዩበትና የሚቀይሩበት ንብርብር።</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ጋይሮ ማብራት</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>ጋይሮው በዚህ ንብርብር ላይ የሚሠራበት ጊዜ፣ ከማንቂያ አዝራሩ በተጨማሪ። «እንደ መሠረት» የተዘጋጀ የሺፍት ንብርብር መሠረቱን ይከተላል።</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>ሁልጊዜ በርቶ</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>እንደ መሠረት</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>ሲያዝ</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>ሳይያዝ</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>በእያንዳንዱ መጫን ቀያይር</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>የጋይሮ ማብራት አዝራሮች</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>«ጋይሮ ማብራት» የሚያነባቸው አዝራሮች፣ በዚህ ማስገቢያ በማንኛውም መቆጣጠሪያ ላይ።</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>የሚያስፈልገው</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>አንድ ምልክት የተደረገበት አዝራር በቂ መሆኑን ወይም ምልክት የተደረገባቸው አዝራሮች በሙሉ መያዝ እንዳለባቸው።</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ማንኛውም አዝራር</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>እያንዳንዱ አዝራር</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ጋይሮ ሲበራ ዳግም መሃል አድርግ</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ጋይሮው በበራ ቁጥር የመቆጣጠሪያውን አቀማመጥ እንደ ማረፊያ ነጥብ ይወስዳል።</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ጋይሮ ማብራትን ዳግም አስጀምር</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>የጋይሮ ማብራት አዝራሮችን ዳግም አስጀምር</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>የሚያስፈልገውን ዳግም አስጀምር</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>«ጋይሮ ሲበራ ዳግም መሃል አድርግ»ን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>የማንቂያ ስቲክን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>የማንቂያ አቅጣጫን ዳግም አስጀምር</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>የእንቅስቃሴ ማሳለፍ</value></data>
@@ -2466,6 +2495,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ጨዋታው እንቅስቃሴውን እዚህ በተዘጋጁት ትብነት፣ ማለስለስ እና ኩርባ ያነባል።</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>የማሳለፍ ቅንብሮችን ዳግም አስጀምር</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ትብነት</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>ሲጫን ብቻ</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ይህ ምንጭ የሚቆጠረው ይህ ግብዓት በተመሳሳዩ መቆጣጠሪያ ላይ እንደተጫነ ሲነበብ ብቻ ነው። ከማስመጣት የመጣ የቀጠና ሙከራ የሚፈትሸው የስቲክ ወይም የቀስቅሴ ክልል ሆኖ ይነበባል።</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>እና ሲጫን</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ይህ ምንጭ የሚጠብቀው ሁለተኛ ግብዓት።</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ግብዓት ቀይር</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>የሚጠበቅ ሌላ ግብዓት ይመርጣል።</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>ኩርባ</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>የዚህን ግብዓት ንባብ ውጤቱን ከመንዳቱ በፊት ወደዚህ ኃይል ያሳድገዋል። 0 እና 1 ቀጥ አድርገው ይተዉታል። ከ1 በላይ በመሃል አካባቢ ቀርፋፋ ነው።</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>የውጭ ክልል</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>ውጤቱ በዚህ የጉዞ መጠን ሙሉ ይደርሳል። 100% ማለት ጠፍቷል።</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ፀረ-የሞተ ቀጠና</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ግብዓቱ እንደተንቀሳቀሰ ውጤቱ ከዚህ መጠን ይጀምራል። 0 ማለት ጠፍቷል።</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>የሞተ ቀጠና ቅርጽ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>«ጠፍቷል» ንባቡን እንዳለ ይተወዋል። «በዘንግ» ይህን ዘንግ ብቻውን ይለካል። «ክብ» የስቲኩን ጥንድ በአንድ ላይ ይለካል።</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>በዘንግ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>ክብ</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>የውስጥ የሞተ ቀጠና</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>ከዚህ የጉዞ መጠን በታች ግብዓቱ መሃል ላይ እንዳለ ይነበባል።</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የጋይሮ ትብነት ማባዣ። 1.0 = የኢንጂኑ ነባሪ (500°/s → ሙሉ ማፈንገጥ)። ከ1.0 በላይ ያሉ እሴቶች ይበልጥ ትብ ናቸው። ከ1.0 በታች ያሉ እሴቶች ትብነታቸው ያነሰ ነው።</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የማዘንበል ትብነት ማባዣ። 1.0 = ለሙሉ ማፈንገጥ 90° ማዘንበል። ከ1.0 በላይ ያሉ እሴቶች በትንሽ ማዘንበል ሙሉ ማፈንገጥ ይደርሳሉ።</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>የጋይሮ ማዘንበል X</value></data>
@@ -3007,6 +3055,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>ደረጃ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>የእንቅስቃሴ-አልባነት ጊዜ ገደብ</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ሁሉም የተዛመዱ መሣሪያዎቹ ከመስመር ውጭ ሲሆኑ አንድ ምናባዊ መቆጣጠሪያ ከመጥፋቱ በፊት የሚቆጠሩ ሰከንዶች። 0 ያሰናክላል። የቀሩት ተመሳሳይ ዓይነት መቆጣጠሪያዎች ክፍተቱን ለመሙላት ወደ ላይ ይሸጋገራሉ እና ከዝቅተኛ ቦታዎች ጋር እንደገና ይታሰራሉ።</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ሰከንድ (0 = በጭራሽ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ንብርብር አክል</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>የመቀየሪያ ንብርብር አክል። አዝራር ተጭኖ ሲያዝ ወይም ሲቀያየር የሚነቃ ሁለተኛ የማዛመጃ ሰንጠረዥ።</value></data>
@@ -3118,6 +3167,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>የመፍታት ፍጥነትን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>የማዕዘን ውስጣዊ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>የማዕዘን ውጫዊ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>የስቲክ የሞተ ቀጠና</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ከዚህ ማፈንገጥ በታች ስቲኩ መሃል ላይ እንዳለ ይነበባል፣ ስለዚህ ምንም መሪ ማዞር አይከማችም።</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>የስቲክ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>የማዘንበል ውስጣዊ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>የማዘንበል ውጫዊ የሞተ ቀጠናን ዳግም አስጀምር</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>የመቆጣጠሪያ አቅጣጫን ዳግም አስጀምር</value></data>
@@ -3223,6 +3275,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ከ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ይህ መኪና መሪው ካለው በላይ ቶርክ ይጠይቃል፣ ስለዚህ የኩርባው ጫፍ ተቆርጧል።</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>የመሃል ስሜት፣ የኃይል ድጋፍ፣ ማርገቢያ፣ ሰበቃ፣ ቁርኝት፣ ቋሚ ፍጥነት፣ የመሪ ሞተር ቶርክ</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>የመሃል ስሜት፣ የኃይል ድጋፍ፣ ማርገቢያ፣ ቁርኝት፣ ቋሚ ፍጥነት፣ የመሪ ሞተር ቶርክ</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>በዝቅተኛ ፍጥነት መሪው መሃሉን ምን ያህል አጥብቆ እንደሚይዝ። 100% የመኪናው የራሱ ነው።</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>የኃይል ድጋፍ</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>መታጠፍ ሲጨምር የኃይል መሪው ምን ያህል ጥረት እንደሚቀንስ። ብዙ ሲሆን ከመሃል ርቆ መሪው ቀላል ይሆናል።</value></data>
@@ -3364,7 +3417,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ከፍተኛ ቃናዎችን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>የቃና ገደብን ዳግም አስጀምር</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>የስርዓቱ ነባሪ ውጽዓት የሚያጫውተውን ማንኛውንም ነገር በትይዩ ወደዚህ መቆጣጠሪያ አብሮገነብ ድምጽ ማጉያ ይቀዳል። በUSB እና በBluetooth ይሠራል።</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>የተመረጠው መሣሪያ አብሮገነብ ድምጽ ማጉያ የለውም። የዚህ መቆጣጠሪያ የማክሮ ድምጾች በስርዓቱ ነባሪ ውጽዓት ላይ ይጫወታሉ።</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge በዚህ ግንኙነት ላይ በተመረጠው መሣሪያ ወዳለ ድምጽ ማጉያ የሚደርስበት መንገድ የለውም። የዚህ መቆጣጠሪያ የማክሮ ድምጾች በስርዓቱ ነባሪ ውጽዓት ላይ ይጫወታሉ።</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>በXuezhou Dai (daidr) የተሠራ በአሳሽ የሚሠራ የDualSense መሞከሪያ ስብስብ፦ PadForge ከምናባዊ ወደ አካላዊ መቆጣጠሪያዎች ለሚያስተላልፋቸው የSony feature ሪፖርት CRC ክፈፎች እና የፈርምዌር የሙከራ ትዕዛዞች ማጣቀሻ።</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3778,7 +3831,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>የDreamcast ማያ አሳይ</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ይህን ቦታ በሚመግብ Bliss-Box ወደብ ውስጥ ባለ እያንዳንዱ የDreamcast ፓድ VMU ላይ ስዕሎችን ያጫውታል፣ ከዚያ እያንዳንዱን ወደብ ወደ ራሱ የማያ ቅንብር ይመልሳል።</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>የDreamcast ስዕሎችን አሳይ፦ {0} × {1} ms፣ የድግግሞሽ ብዛት {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>እያንዳንዱ ስዕል ቢያንስ ለአንድ ሰከንድ ይታያል፣ ምክንያቱም አስማሚው የሚላክለትን እያንዳንዱን ስዕል 100,000 ጊዜ ለመጻፍ በተሰላ ማህደረ ትውስታ ውስጥ ያስቀምጣል፣ በየሰከንዱ አዲስ ስዕል ሲላክ ይህ ገደብ በአንድ ቀን ገደማ ይደርሳል። ስዕሎቹ ከBMP ወይም PNG፣ ከVMU Animator .lcd ፋይል ወይም ከDreamcast .vms አዶ የተወሰዱ 48 በ32 ጥቁርና ነጭ ፒክሰሎች ናቸው።</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>እያንዳንዱ ስዕል ቢያንስ ለአንድ ሰከንድ ይታያል። አስማሚው የሚላክለትን እያንዳንዱን ስዕል በራሱ ማህደረ ትውስታ ውስጥ ስለሚያከማች PadForge ለአስማሚው በሰከንድ ቢበዛ አንድ ስዕል ይልካል። ስዕሎቹ ከBMP ወይም PNG፣ ከVMU Animator .lcd ፋይል ወይም ከDreamcast .vms አዶ የተወሰዱ 48 በ32 ጥቁርና ነጭ ፒክሰሎች ናቸው።</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>ስዕሎች</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>ስዕል አክል…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>ስዕል አስወግድ</value></data>
@@ -3855,15 +3908,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ንብርብሩ በቀያይር ሲበራ፣ ከንብርብሩ የራሱ የተዛመዱ ግብዓቶች አንዳቸውም ሳይሠሩ ይህን ያህል ሚሊሰከንዶች ካለፉ በኋላ ራሱን መልሶ ያጠፋል። ሰዓት ቆጣሪው ንብርብሩ ሲነቃ ይጀምራል፣ በእያንዳንዱ የንብርብር ግብዓትም እንደገና ይጀምራል። 0 ንብርብሩን ራስዎ እስኪያጠፉት ድረስ በርቶ ያቆየዋል።</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>የትሪም የሞተ ቀጠናን ወደ 25% ዳግም አስጀምር።</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>የትሪም ፍጥነትን ወደ በሰከንድ 100% ዳግም አስጀምር።</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>ሲለቀቅ ደረጃውን ወደ 100% ወደመመለስ ዳግም አስጀምር።</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>ራስ-ሰር ስረዛን ወደ 0 ዳግም አስጀምር (ንብርብሩ እስኪጠፋ ድረስ በርቶ ይቆያል)።</value>
   </data>
@@ -3931,6 +3975,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>የወርክሾፕ መገለጫ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>የወርክሾፕ ማክሮ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>የጠቋሚ ክልል</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (መያዝ)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (መልቀቅ)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ማንቃት)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>የሚተላለፈውን ለማየት ውቅር ይምረጡ።</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>የሚተላለፈው</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>የሚሆነው</value></data>
@@ -4560,7 +4607,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>የአቅጣጫ መጫኖች በሕዋሶቹ ውስጥ ይራመዳሉ እና አዲስ የተመረጠውን እያንዳንዱን ሕዋስ ያስነሳሉ። ይህ የሆትባር ባህሪ «የማስነሻ ሁነታ» ወይም «የጠቅታ ግብዓት» አይጠቀምም።</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi የተሻሻለ ፕሮቶኮል</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>በሚደገፉ Flydigi መቆጣጠሪያዎች ላይ ተጨማሪ አዝራሮችን እና የእንቅስቃሴ ዳሳሾችን ያነቃል።</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>የFlydigi ሶፍትዌር እየሠራ ነው: {0}። ከPadForge ጋር አንድ አይነት የመቆጣጠሪያ በይነገጽ ሊጠቀም ይችላል፣ እና ሁለቱም መዳረሻ በነበራቸው ጊዜ Vader 5 Pro ደጋግሞ ሲቋረጥ ተዘግቧል። ይህ መቆጣጠሪያ ተቋርጦ እንደገና ከተገናኘ፣ PadForge በሚጠቀሙበት ጊዜ አገልግሎቱን ያቁሙ፣ መቆጣጠሪያውን ተደብቆ ያቆዩት እና አገልግሎቱን ከHidHide የተፈቀደ ዝርዝር ያስወግዱ፣ ወይም በቅንብሮች ውስጥ «Flydigi የተሻሻለ ፕሮቶኮል» ለማጥፋት ይሞክሩ፣ ይህ እንደሚረዳ ግን አልተረጋገጠም።</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>የFlydigi ሶፍትዌር እየሠራ ነው: {0}። PadForge በሚጠቀምበት በይነገጽ በኩል ከመቆጣጠሪያው ጋር ይገናኛል። ይህ መቆጣጠሪያ ተቋርጦ እንደገና ከተገናኘ፣ PadForge በሚጠቀሙበት ጊዜ ያንን ሶፍትዌር ያቁሙ።</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>የርቀት የመመደብ ለውጦችን ፍቀድ</value>
   </data>

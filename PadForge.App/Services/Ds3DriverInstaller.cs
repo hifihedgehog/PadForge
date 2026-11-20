@@ -320,10 +320,14 @@ namespace PadForge.Services
             using (var my = new X509Store(StoreName.My, StoreLocation.LocalMachine))
             {
                 my.Open(OpenFlags.ReadOnly);
-                foreach (var c in my.Certificates.Find(
-                             X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false))
-                    if (c.NotAfter > DateTime.Now.AddDays(30) && c.HasPrivateKey)
-                        return c.Thumbprint;
+                var all = my.Certificates;
+                try
+                {
+                    string usable = UsableSigningThumbprint(
+                        all.Find(X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false), DateTime.Now);
+                    if (usable != null) return usable;
+                }
+                finally { CloseAll(all); }
             }
             // The test host adds no certificate to this PC's stores.
             if (OffLimitsForTest)
@@ -432,6 +436,31 @@ namespace PadForge.Services
                 return true;
             }
             catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
+        }
+
+        /// <summary>The thumbprint of the first certificate in
+        /// <paramref name="found"/> that has its private key and stays good
+        /// for more than 30 days after <paramref name="now"/>, or null. Every
+        /// certificate a store hands out is a handle of its own, so each one
+        /// in <paramref name="found"/> is closed here, the one picked
+        /// too.</summary>
+        internal static string UsableSigningThumbprint(X509Certificate2Collection found, DateTime now)
+        {
+            string thumbprint = null;
+            foreach (var c in found)
+            {
+                if (thumbprint == null && c.NotAfter > now.AddDays(30) && c.HasPrivateKey)
+                    thumbprint = c.Thumbprint;
+                c.Dispose();
+            }
+            return thumbprint;
+        }
+
+        /// <summary>Closes every certificate in a collection a store handed
+        /// out.</summary>
+        private static void CloseAll(X509Certificate2Collection certificates)
+        {
+            foreach (var c in certificates) c.Dispose();
         }
 
         /// <summary>The certificate with this thumbprint from
@@ -2448,8 +2477,15 @@ namespace PadForge.Services
                 {
                     using var store = new X509Store(name, StoreLocation.LocalMachine);
                     store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-                    if (store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false).Count > 0)
-                        return true;
+                    var all = store.Certificates;
+                    try
+                    {
+                        var found = all.Find(X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false);
+                        bool any = found.Count > 0;
+                        CloseAll(found);
+                        if (any) return true;
+                    }
+                    finally { CloseAll(all); }
                 }
             }
             catch { }
@@ -2716,14 +2752,19 @@ namespace PadForge.Services
             {
                 using var store = new X509Store(name, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite | OpenFlags.OpenExistingOnly);
-                foreach (var c in store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false))
+                var all = store.Certificates;
+                try
                 {
-                    using (c)
+                    foreach (var c in all.Find(X509FindType.FindBySubjectDistinguishedName, Ds3CertSubject, false))
                     {
-                        if (name == StoreName.My && c.HasPrivateKey) DeletePrivateKey(c, log);
-                        store.Remove(c);
+                        using (c)
+                        {
+                            if (name == StoreName.My && c.HasPrivateKey) DeletePrivateKey(c, log);
+                            store.Remove(c);
+                        }
                     }
                 }
+                finally { CloseAll(all); }
             }
             log("Removed PadForge's driver signing certificate.");
         }

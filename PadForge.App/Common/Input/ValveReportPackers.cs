@@ -182,7 +182,7 @@ namespace PadForge.Common.Input
         /// <summary>A pad's analog pressure while a finger is on it or it is
         /// clicked: full scale. SDL reads the word over 32768
         /// (SDL_hidapi_steamdeck.c 272 and 284, SDL_hidapi_steam_triton.c 273
-        /// and 270), so 32767 is pressure 1.0, what HIDMaestro's own encoder
+        /// and 285), so 32767 is pressure 1.0, what HIDMaestro's own encoder
         /// sends for a touch that carries no pressure of its own. The packers
         /// once wrote 0xFFFF on a click and 0 on a touch, which SDL read as
         /// 2.0 and 0.</summary>
@@ -195,7 +195,7 @@ namespace PadForge.Common.Input
         /// persona frames carry: the 2026 pad's IMU timestamp, the SInput
         /// frame's, and the DualShock 4's frame timestamp. It wraps every
         /// 71.6 minutes as a 32-bit word does. SDL_hidapi_steam_triton.c
-        /// (274 to 277) moves its sensor clock by the word's difference from
+        /// (289 to 292) moves its sensor clock by the word's difference from
         /// the last report, in microseconds, and its Uint32 subtraction
         /// carries across the wrap.</summary>
         internal static uint MicrosNow()

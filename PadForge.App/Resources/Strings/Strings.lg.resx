@@ -732,7 +732,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Esindika okukankana kwa mmota enkulu ku triggers</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Okukankana kwa triggers okuva ku bass mu ddoboozi lya kompyuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzones z'okwekiika, Obulagirizi bwa controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Eppeesa ly'okutandika aim, Enkola y'okutandika, Ekipimo kya Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Eppeesa ly'okutandika aim, Enkola y'okutandika, Gyro ekola, Okuddamu okuteeka wakati, Ekipimo kya Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Etandika gestures za touchpad eno</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Okusika, okukonya, okunyiga, ebifaananyi</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Kwata gestures zo</value></data>
@@ -743,7 +743,6 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu empya</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Ggyawo akasenge akasembayo</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Erinnya</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Ensibuko, Threshold, Oludda, Consume Trigger Buttons, Ddamu</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Ekyuma kino</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yonna</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kebera shakers</value></data>

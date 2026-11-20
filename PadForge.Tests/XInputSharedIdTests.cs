@@ -92,6 +92,57 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A write asks OpenXInput once for the pad's number and
+        /// never waits on it. A busy answer with no handle kept is no
+        /// failure: the write is refused without the cooldown, and the poll
+        /// thread's next frame asks again. It slept a millisecond twice on
+        /// the poll thread, then waited out a second's cooldown.</summary>
+        [Fact]
+        public void ABusyNumber_IsAskedOnce_AndCostsNoCooldown()
+        {
+            int asked = 0;
+            XInputSlotIdentity.AnswerForTest = _ => { asked++; return new XInputSlotIdentity.Answer(XInputSlotIdentity.Kind.Busy); };
+            var pad = Pad("XInput#3");
+            XboxImpulseHidWriter.InvalidateCachedTargets();
+            Assert.False(XboxImpulseHidWriter.Write(pad, 65535, 0, 0, 0));
+            Assert.Equal(1, asked);
+            Assert.False(XboxImpulseHidWriter.CoolingDown(pad.DevicePath, Environment.TickCount64));
+        }
+
+        /// <summary>An unchanged answer makes no garbage: a number whose
+        /// generation and path have not moved answers with the string it
+        /// had. Each ask made a 512-character buffer and a new string, on
+        /// every motor change of an Xbox pad on the poll thread.</summary>
+        [Fact]
+        public void AnUnchangedAnswer_MakesNoGarbage()
+        {
+            const string path = @"\\?\hid#vid_045e&pid_0b13&ig_00#unchanged#{ec87f1e3-c13b-4100-b5f7-8b84d54260cb}";
+            char[] buffer = new char[512];
+            path.CopyTo(0, buffer, 0, path.Length);
+            var identity = new XInputSlotIdentity.OpenXInputIdentity
+            {
+                cbSize = 24, requiredCch = (uint)path.Length + 1, generation = 0x7A000041, interfaceCount = 1,
+            };
+            var first = XInputSlotIdentity.AnswerOf(2, 0, identity, buffer);
+            Assert.Equal(XInputSlotIdentity.Kind.Found, first.Kind);
+            Assert.Equal(path, first.InterfacePath);
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            var again = XInputSlotIdentity.AnswerOf(2, 0, identity, buffer);
+            long made = GC.GetAllocatedBytesForCurrentThread() - before;
+            Assert.Same(first.InterfacePath, again.InterfacePath);
+            Assert.Equal(0, made);
+
+            // A new generation on the number is another interface's answer.
+            identity.generation = 0x7A000042;
+            var moved = XInputSlotIdentity.AnswerOf(2, 0, identity, buffer);
+            Assert.NotSame(first.InterfacePath, moved.InterfacePath);
+            Assert.Equal(0x7A000042ul, moved.Generation);
+            // Busy and empty answers say so, and leave the kept one alone.
+            Assert.Equal(XInputSlotIdentity.Kind.Busy, XInputSlotIdentity.AnswerOf(2, 170, identity, buffer).Kind);
+            Assert.Equal(XInputSlotIdentity.Kind.None, XInputSlotIdentity.AnswerOf(2, 1167, identity, buffer).Kind);
+            Assert.Same(moved.InterfacePath, XInputSlotIdentity.AnswerOf(2, 0, identity, buffer).InterfacePath);
+        }
+
         /// <summary>A slot whose device carries another id has changed hands
         /// since SDL listed the pad: no write, and the cooldown.</summary>
         [Fact]

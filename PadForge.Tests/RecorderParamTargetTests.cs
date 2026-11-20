@@ -77,7 +77,7 @@ namespace PadForge.Tests
             var source = new MappingSourceItem { Kind = kind };
             row.ExtraSources.Add(source);
 
-            session.Recorder.StartRecording(other, 0, session.Device.InstanceGuid);
+            session.Recorder.StartRecording(other, 0);
             Assert.True(session.Recorder.IsRecording);
             session.Recorder.StartRecordingExtraSourceParam(row, source, 0, target);
             Assert.True(session.Recorder.IsRecording);

@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekunder</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutter (0 = aldrig)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ikke tildelt</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← venstre)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ op)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ikke fundet</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll blev ikke fundet. Placer SDL3.dll ved siden af PadForge.exe. Download den fra https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ikke fundet. Download PadForge igen.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Driverhandlingen mislykkedes: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Indstillingerne er kopieret til udklipsholderen.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Enhedsoplysningerne er kopieret til udklipsholderen.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Lavt</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Billede</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Bevægelse</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik på en kontrol, og tryk på det input, der skal styre den.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Spil, PadForge ikke kender</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Til mods, der leder efter en kørende DSX, før de sender.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hvad der vises</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens navn, når profilen skifter</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens navn, når profilen skifter.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopier adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placering på skærmen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Tilslut en telefon</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Start motoren automatisk ved opstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Fortsæt aflæsning, når vinduet mister fokus</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Aflæsningsfrekvens (medmindre en profil tilsidesætter den)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motoren aflæser alle enheder og opdaterer de virtuelle controllere så mange gange i sekundet, fra 60 til 10000. En højere frekvens bruger mere processortid. Windows vækker motoren højst omkring 2000 gange i sekundet, så en højere frekvens kører flere gennemløb ved hver opvågning. Mens en profil med sin egen aflæsningsfrekvens er aktiv, gælder den frekvens i stedet. Denne værdi gælder igen, når profilen deaktiveres.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Motoren aflæser alle enheder og opdaterer de virtuelle controllere så mange gange i sekundet, fra 60 til 10000. En højere frekvens bruger mere processortid. På denne pc vækker Windows motoren højst {0} gange i sekundet, så en højere frekvens kører flere gennemløb ved hver opvågning. Mens en profil med sin egen aflæsningsfrekvens er aktiv, gælder den frekvens i stedet. Denne værdi gælder igen, når profilen deaktiveres.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skjul enheder for spil</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hovedkontakt for skjulning af enheder med HidHide og input-hooks på lavt niveau. Når den er slået fra, skjules ingen enheder, uanset indstillingerne for hver enkelt enhed.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hold enheder skjult mellem opstarter</value></data>
@@ -937,7 +939,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunder mellem de skrevne tegn, op til 1000. 0 skriver hele teksten på én gang.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Afbryd ved inaktivitet</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detaljer</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutter</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Afbryd Bluetooth, når der er tilsluttet via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hurtig opladning. Når denne controller melder, at den oplades, mens den er forbundet via Bluetooth, afbrydes Bluetooth-forbindelsen, så den oplades uden at skulle forsyne radioen med strøm. Enhver USB-strømkilde tæller med, også vægopladere. Hvis du slår Bluetooth til igen, mens kablet stadig sidder i, får den lov at være, indtil kablet tages ud næste gang.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Læs som iCade-controller</value></data>
@@ -979,8 +980,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU'en viser den aktive profils navn og følger med ved hvert profilskift.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU'en viser den aktive profils position i profillisten. Profilen Standard er 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU'en viser den aktive profils eget billede eller dens navn, når den ikke har noget. Hver profil har sit eget billede.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU'en viser klokkeslættet, som skrives på ny én gang i minuttet. Adapteren gemmer hvert billede i hukommelse, der er beregnet til 100.000 skrivninger, hvilket dette når efter cirka ti ugers visning døgnet rundt.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU'en viser timer og minutter, siden PadForge fandt controlleren, og skrives på ny én gang i minuttet. En controller, der har været ude af porten i mere end ti sekunder, starter forfra fra nul. Adapteren gemmer hvert billede i hukommelse, der er beregnet til 100.000 skrivninger, hvilket dette når efter cirka ti ugers visning døgnet rundt.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU'en viser klokkeslættet, som skrives på ny én gang i minuttet. Adapteren gemmer hvert billede i sin egen hukommelse, så PadForge skriver det ikke oftere end det.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU'en viser timer og minutter, siden PadForge fandt controlleren, og skrives på ny én gang i minuttet. En controller, der har været ude af porten i mere end ti sekunder, starter forfra fra nul. Adapteren gemmer hvert billede i sin egen hukommelse, så PadForge skriver det ikke oftere end én gang i minuttet.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU'en viser et billede, du vælger: en BMP eller PNG, en .lcd-fil fra VMU Animator eller et .vms-ikon fra Dreamcast. Billeder tilpasses til 48 gange 32 sort-hvide pixels.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Vælg billede…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Vælg billede til {0}…</value></data>
@@ -1025,6 +1026,13 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Controlleren i Xbox-tilstand svarede ikke som en Apex 4, så intet blev sendt, og Windows har den tilbage. Skift den tilbage til DInput-tilstand med dens egen kontakt.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows flyttede ikke controlleren til WinUSB, så intet blev sendt. Skift den tilbage til DInput-tilstand med dens egen kontakt.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stoppet. Sluk og tænd controlleren med dens egen kontakt, før du sender igen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Skærmens port kunne ikke åbnes, så intet blev sendt. Sluk og tænd controlleren med dens egen kontakt, og send igen.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Billedet har flere billedruder, end denne controllers skærm kan rumme.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Et billede er allerede på vej til denne controller. Vent, til det er færdigt.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Skærmen bad om billedet på en adresse, som PadForge ikke skriver til, så intet blev sendt. Sluk og tænd controlleren med dens egen kontakt, og send igen.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Billedet blev sendt, men controlleren skiftede ikke tilbage til DInput-tilstand. Skift den tilbage med dens egen kontakt.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Controlleren modtog ikke den kommando, der gør den klar, så intet blev sendt. Kontrollér, at den er tilsluttet, og send igen.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Afsendelsen stoppede på grund af en fejl i PadForge. Logfilen har detaljerne.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Et billede er stadig på vej til controlleren. Stop afsendelsen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-filer (*.mpk)|*.mpk|Alle filer (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Nulstil menugeometri</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Nulstil celle</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Nulstil følsomhed</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Nulstil acceleration</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Nulstil dødzone</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Nulstil holdetid</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Nulstil tryktidsvindue</value></data>
@@ -1976,7 +1983,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Alle lag</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Kører konstant, mens denne virtuelle controller er aktiv. Ingen udløserknap nødvendig.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Gør</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Lag, Kilde, Tærskel, Retning, Bloker udløserknapper, Gentag</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tilføj handling</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Type</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuelle knapper</value></data>
@@ -2002,7 +2008,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Museknaptryk</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Museknapslip</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Muserulning</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Slå touchpad-overlay til/fra</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knapper</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tastekombination</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tastekombination i formatet {Key1}{Key2}. Kan redigeres.</value></data>
@@ -2133,6 +2138,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Gentag {0} hver {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mus X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mus Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Vandret forskydning</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Lodret forskydning</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Vælg på skærmen</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Registrerer om {0}…</value></data>
@@ -2167,6 +2174,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Inverteret halv</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ingen enhed tildelt</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Ukendt enhed</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpadklik</value></data>
@@ -2609,7 +2617,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ned (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Op (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivering</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktiveringsknap til sigte, Aktiveringstilstand, Tærskel for nemt sigte</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktiveringsknap til sigte, Aktiveringstilstand, Gyro til, Gencentrer, Tærskel for nemt sigte</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valgfrie betingelser, der begrænser, hvornår gyroen er aktiv. Udslag på højre stick og knappen til aktivering af sigte kan hver især konfigureres. Gyroen virker kun, mens alle konfigurerede betingelser er opfyldt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spiller</value></data>
@@ -2646,6 +2654,27 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Nulstil tærskel for nemt sigte</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Nulstil knap til aktivering af sigte</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Nulstil aktiveringstilstand</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Lag</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Det lag, hvis indstilling for Gyro til de følgende rækker viser og ændrer.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyro til</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Hvornår gyroen virker på dette lag, ud over aktiveringsknappen. Et skiftelag, der er sat til Samme som Basis, følger Basis.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Altid til</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Samme som Basis</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Mens holdt nede</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Mens ikke holdt nede</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Skift ved hvert tryk</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Knapper til Gyro til</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>De knapper, som Gyro til aflæser, på enhver controller i denne plads.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Kræver</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Om én afkrydset knap er nok, eller om alle afkrydsede knapper skal holdes nede.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Én knap</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Alle knapper</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Gencentrer, når gyroen slås til</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Tager controllerens stilling som hvilepunkt, hver gang gyroen slås til.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Nulstil Gyro til</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Nulstil knapper til Gyro til</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Nulstil Kræver</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Nulstil Gencentrer, når gyroen slås til</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Nulstil aktiveringsstick</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Nulstil aktiveringsretning</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Videresendelse af bevægelse</value></data>
@@ -2656,6 +2685,25 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Spillet læser bevægelsen med den følsomhed, udjævning og kurve, der er indstillet her.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Nulstil justering af videresendelse</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Følsomhed</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Kun mens</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Denne kilde tæller kun, mens dette input også registreres som trykket på den samme controller. En zonetest fra en import læses som det stick- eller triggerområde, den kontrollerer.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Og mens</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Et andet input, som denne kilde også venter på.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Skift input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Vælger et andet input at vente på.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Hæver dette inputs værdi til denne potens, før den styrer outputtet. 0 og 1 lader det være lineært. Over 1 er langsommere nær midten.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ydre område</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Outputtet når fuld styrke ved så stor en del af udslaget. 100% er slået fra.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-dødzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Outputtet starter ved så meget, så snart inputtet bevæger sig. 0 er slået fra.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Dødzoneform</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Fra lader aflæsningen være. Aksial måler denne akse alene. Radial måler stickparret samlet.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Fra</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Aksial</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Indre dødzone</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Under så stor en del af udslaget læses inputtet som centreret.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator for gyrofølsomhed pr. kilde. 1.0 = motorens standard (500°/s → fuldt udslag). Værdier over 1.0 er mere følsomme. Værdier under 1.0 er mindre følsomme.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator for hældningsfølsomhed pr. kilde. 1.0 = 90° hældning for fuldt udslag. Værdier over 1.0 når fuldt udslag med mindre hældning.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyrohældning X</value></data>
@@ -3236,6 +3284,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveau</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout ved inaktivitet</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekunder, før en virtuel controller fjernes, når alle dens tildelte enheder er offline. 0 slår det fra. Resterende controllere af samme type rykker op for at udfylde hullet og bindes igen til lavere pladser.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekunder (0 = aldrig)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tilføj lag</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tilføj et skiftelag. En ekstra tildelingstabel, der aktiveres, mens en knap holdes nede eller er slået til.</value></data>
@@ -3347,6 +3396,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Nulstil afviklingshastighed</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Nulstil indre dødzone for vinkel</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Nulstil ydre dødzone for vinkel</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Stickdødzone</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Under dette udslag læses sticken som centreret, så der ikke opbygges nogen styring.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Nulstil stickdødzone</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Nulstil indre dødzone for hældning</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Nulstil ydre dødzone for hældning</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Nulstil controllerens retning</value></data>
@@ -3452,6 +3504,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>af {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Denne bil kræver mere moment, end rattet har, så toppen af kurven er skåret af.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Følelse ved midten, servohjælp, dæmpning, friktion, vejgreb, fast hastighed, ratmoment</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Følelse ved midten, servohjælp, dæmpning, vejgreb, fast hastighed, ratmoment</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hvor stærkt styretøjet holder sin midte ved lav hastighed. 100 % er bilens egen værdi.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servohjælp</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hvor meget servostyringen tager af, når sidekraften vokser. Mere giver lettere styring væk fra midten.</value></data>
@@ -3593,7 +3646,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Nulstil høje toner</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nulstil tonegrænse</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopierer alt, hvad systemets standardoutput afspiller, til denne controllers indbyggede højttaler samtidig. Virker via USB og Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Den valgte enhed har ingen indbygget højttaler. Makrolyde for denne controller afspilles på systemets standardoutput.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge har ingen vej til en højttaler på den valgte enhed over denne forbindelse. Makrolyde for denne controller afspilles på systemets standardoutput.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testsuite til DualSense i browseren af Xuezhou Dai (daidr): reference for CRC-indramningen af Sonys feature reports og de firmware-testkommandoer, som PadForge videresender fra virtuelle til fysiske controllere.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Vis Dreamcast-skærm</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Afspiller billeder på VMU'en i hver Dreamcast-controller i en Bliss-Box-port, der forsyner denne plads, og sætter derefter hver port tilbage til dens egen skærmindstilling.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Vis Dreamcast-billeder: {0} × {1} ms, antal gentagelser {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Hvert billede vises i mindst ét sekund, da adapteren gemmer alle billeder, den modtager, i hukommelse, der er beregnet til 100.000 skrivninger, hvilket et nyt billede hvert sekund når på cirka et døgn. Billederne er 48 gange 32 sort-hvide pixels fra en BMP eller PNG, en .lcd-fil fra VMU Animator eller et .vms-ikon fra Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Hvert billede vises i mindst ét sekund. PadForge sender adapteren højst ét billede i sekundet, da adapteren gemmer alle billeder, den modtager, i sin egen hukommelse. Billederne er 48 gange 32 sort-hvide pixels fra en BMP eller PNG, en .lcd-fil fra VMU Animator eller et .vms-ikon fra Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Billeder</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Tilføj billede…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Fjern billede</value></data>
@@ -4113,15 +4166,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Mens laget er slået til, slår det sig selv fra igen efter så mange millisekunder uden aktivitet på lagets egne tildelte input. Timeren starter, når laget aktiveres, og starter forfra ved hvert input på laget. 0 holder laget til, indtil du selv slår det fra.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Nulstil dødzonen for justering til 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Nulstil justeringshastigheden til 100% pr. sekund.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Nulstil til, at niveauet springer tilbage til 100% ved slip.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Nulstil automatisk annullering til 0 (laget forbliver slået til, indtil det slås fra).</value>
   </data>
@@ -4189,6 +4233,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Markørområde</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hold)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (slip)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivér)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Vælg en konfiguration for at se, hvad der overføres.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Hvad der overføres</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bliver til</value></data>
@@ -4825,7 +4872,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Tryk på retninger går gennem cellerne og udløser hver nyvalgt celle, uden Affyringstilstand eller Klikinput. Stilen Hotbar går igennem uden at affyre og affyrer med sin egen kontrol Affyr.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Udvidet Flydigi-protokol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktiverer ekstra knapper og bevægelsessensorer på understøttede Flydigi-controllere.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-software kører: {0}. Det kan bruge den samme controllergrænseflade som PadForge, og en Vader 5 Pro er blevet rapporteret at afbryde gentagne gange, mens begge havde adgang. Hvis denne controller mister forbindelsen og forbinder igen, så stop tjenesten, mens du bruger PadForge, hold controlleren skjult, og fjern tjenesten fra listen over tilladte programmer i HidHide, eller prøv at slå ”Udvidet Flydigi-protokol” fra i Indstillinger, hvilket ikke er bekræftet at hjælpe.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-software kører: {0}. Den taler med controlleren over den grænseflade, PadForge bruger. Hvis denne controller mister forbindelsen og forbinder igen, så stop den software, mens du bruger PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Tillad tildelingsændringer på afstand</value>
   </data>
@@ -5485,9 +5532,6 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Vælg, hvad det viser…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skærmoverlay</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Intet at vise endnu. Vælg, hvad det viser, på siden Skærmoverlay under Ekstra.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Slå skærmoverlay til/fra</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Slå trådkors til/fra</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Slå forstørrelsesglas til/fra</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Alle trådkors</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Trådkors</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Slå skærmoverlay til/fra</value></data>

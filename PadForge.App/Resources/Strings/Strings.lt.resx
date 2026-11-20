@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Nėra</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>s</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>min (0 = niekada)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nepriskirta</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kairėn)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ aukštyn)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nerastas</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nerastas. Įdėkite SDL3.dll šalia PadForge.exe. Atsisiųskite jį iš https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll nerastas. Atsisiųskite „PadForge“ iš naujo.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Tvarkyklės operacija nepavyko: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Nustatymai nukopijuoti į mainų sritį.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Įrenginio informacija nukopijuota į mainų sritį.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Žemas</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Vaizdas</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Sąrašas</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Išvestis: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Išvesčių: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Judesys</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Spustelėkite valdiklio elementą, tada paspauskite įvestį, kuri jį valdys.</value></data>
@@ -429,9 +431,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Žaidimai, kurių „PadForge“ nepažįsta</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modifikacijoms, kurios prieš siųsdamos ieško veikiančio DSX.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kas rodoma</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Meniu žiedas, tinklelis ar juosta, kol jis atidarytas</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Sluoksnio pavadinimas, kai įjungiamas lygiavertis sluoksnis, tiek laiko, kiek nustato tas sluoksnis</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilio pavadinimas, kai profilis pasikeičia</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Meniu žiedas, tinklelis ar juosta, kol jis atidarytas.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Sluoksnio pavadinimas, kai įjungiamas lygiavertis sluoksnis, tiek laiko, kiek nustato tas sluoksnis.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilio pavadinimas, kai profilis pasikeičia.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopijuoti adresą</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vieta ekrane</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Prijunkite telefoną</value></data>
@@ -627,7 +629,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Automatiškai paleisti variklį paleidžiant programą</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Tęsti apklausą, kai langas neaktyvus</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Apklausos dažnis (jei profilis jo nepakeičia)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Variklis nuskaito kiekvieną įrenginį ir atnaujina virtualius valdiklius tiek kartų per sekundę, nuo 60 iki 10000. Didesnis dažnis naudoja daugiau procesoriaus laiko. „Windows“ pažadina variklį daugiausia apie 2000 kartų per sekundę, todėl esant didesniam dažniui kiekvieną kartą pažadinus atliekama keletas ciklų. Kol aktyvus profilis su savo apklausos dažniu, taikomas jo dažnis. Šis nustatymas grįžta, kai profilis išjungiamas.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Variklis nuskaito kiekvieną įrenginį ir atnaujina virtualius valdiklius tiek kartų per sekundę, nuo 60 iki 10000. Didesnis dažnis naudoja daugiau procesoriaus laiko. Šiame kompiuteryje „Windows“ pažadina variklį daugiausia {0} kartų per sekundę, todėl esant didesniam dažniui kiekvieną kartą pažadinus atliekama keletas ciklų. Kol aktyvus profilis su savo apklausos dažniu, taikomas jo dažnis. Šis nustatymas grįžta, kai profilis išjungiamas.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Slėpti įrenginius nuo žaidimų</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pagrindinis „HidHide“ įrenginių slėpimo ir žemo lygio įvesties perėmimo jungiklis. Kai išjungta, joks įrenginys neslepiamas, nepaisant atskirų įrenginių nustatymų.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Laikyti įrenginius paslėptus tarp paleidimų</value></data>
@@ -918,7 +920,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekundės tarp įvedamų simbolių, daugiausia 1000. 0 įveda visą tekstą iš karto.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Atjungimas neveikiant</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Išsami informacija</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>min</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Atjungti „Bluetooth“, kai prijungtas USB kabeliu</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Greitas įkrovimas. Kai šis valdiklis, prijungtas per „Bluetooth“, praneša, kad kraunasi, „Bluetooth“ ryšys nutraukiamas, kad jis krautųsi nemaitindamas radijo modulio. Tinka bet koks USB maitinimo šaltinis, įskaitant sieninius įkroviklius. Jei vėl įjungsite „Bluetooth“, kol kabelis prijungtas, ryšys nebus liečiamas iki kito atjungimo.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Skaityti kaip „iCade“ valdiklį</value></data>
@@ -960,8 +961,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU rodo aktyvaus profilio pavadinimą ir atsinaujina kiekvieną kartą perjungus profilį.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU rodo aktyvaus profilio vietą profilių sąraše. Numatytasis profilis yra 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU rodo aktyvaus profilio paveikslėlį arba, jei jo nėra, profilio pavadinimą. Kiekvienas profilis turi savo paveikslėlį.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU rodo paros laiką, perrašomą kartą per minutę. Adapteris kiekvieną paveikslėlį saugo atmintyje, skirtoje 100 000 įrašymų, o šis režimas tą ribą pasiekia maždaug po dešimties savaičių nepertraukiamo rodymo.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU rodo valandas ir minutes nuo tada, kai „PadForge“ aptiko pultą, perrašomas kartą per minutę. Jei pultas ilgiau nei dešimt sekundžių būna ištrauktas iš prievado, laikas skaičiuojamas iš naujo nuo nulio. Adapteris kiekvieną paveikslėlį saugo atmintyje, skirtoje 100 000 įrašymų, o šis režimas tą ribą pasiekia maždaug po dešimties savaičių nepertraukiamo rodymo.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU rodo paros laiką, perrašomą kartą per minutę. Adapteris kiekvieną paveikslėlį saugo savo atmintyje, todėl „PadForge“ jį perrašo ne dažniau.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU rodo valandas ir minutes nuo tada, kai „PadForge“ aptiko pultą, perrašomas kartą per minutę. Jei pultas ilgiau nei dešimt sekundžių būna ištrauktas iš prievado, laikas skaičiuojamas iš naujo nuo nulio. Adapteris kiekvieną paveikslėlį saugo savo atmintyje, todėl „PadForge“ jį perrašo ne dažniau nei kartą per minutę.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU rodo jūsų pasirinktą paveikslėlį: BMP ar PNG, „VMU Animator“ .lcd failą arba „Dreamcast“ .vms piktogramą. Paveikslėliai apkarpomi iki 48 × 32 juodai baltų pikselių.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Pasirinkti paveikslėlį…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Pasirinkti paveikslėlį profiliui „{0}“…</value></data>
@@ -1006,6 +1007,13 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Valdiklis „Xbox“ režimu neatsakė kaip „Apex 4“, todėl nieko nenusiųsta, o „Windows“ jį atgavo. Perjunkite jį atgal į „DInput“ režimą jo paties jungikliu.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>„Windows“ neperkėlė valdiklio į „WinUSB“, todėl nieko nenusiųsta. Perjunkite jį atgal į „DInput“ režimą jo paties jungikliu.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Sustabdyta. Prieš siųsdami dar kartą, išjunkite ir vėl įjunkite valdiklį jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Ekrano prievadas neatsidarė, todėl nieko nebuvo išsiųsta. Išjunkite ir vėl įjunkite valdiklį jo paties jungikliu ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Paveikslėlyje yra daugiau kadrų, nei telpa šio valdiklio ekrane.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Paveikslėlis į šį valdiklį jau siunčiamas. Palaukite, kol baigsis.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ekranas paprašė paveikslėlio adresu, į kurį „PadForge“ nerašo, todėl nieko nebuvo išsiųsta. Išjunkite ir vėl įjunkite valdiklį jo paties jungikliu ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Paveikslėlis išsiųstas, bet valdiklis negrįžo į „DInput“ režimą. Perjunkite jį atgal jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Valdiklis nepriėmė komandos, kuri jį paruošia, todėl nieko nebuvo išsiųsta. Patikrinkite, ar jis prijungtas, ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Siuntimas sustojo dėl „PadForge“ klaidos. Išsami informacija yra žurnalo faile.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Paveikslėlis dar siunčiamas į valdiklį. Sustabdyti siuntimą?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>„Controller Pak“ failai (*.mpk)|*.mpk|Visi failai (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak prievadas {0}.mpk</value></data>
@@ -1500,7 +1508,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Nustatyti meniu geometriją iš naujo</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Nustatyti langelį iš naujo</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Nustatyti jautrumą iš naujo</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Nustatyti pagreitį iš naujo</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Nustatyti nejautros zoną iš naujo</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Nustatyti laikymo trukmę iš naujo</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Nustatyti paspaudimo langą iš naujo</value></data>
@@ -1781,7 +1788,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bet kuris sluoksnis</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Veikia nuolat, kol šis virtualus valdiklis aktyvus. Paleidiklio mygtuko nereikia.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Atlikti</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Sluoksnis, šaltinis, slenkstis, kryptis, sulaikyti paleidiklio mygtukus, kartojimas</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Pridėti veiksmą</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipas</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtualūs mygtukai</value></data>
@@ -1807,7 +1813,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pelės mygtuko paspaudimas</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Pelės mygtuko atleidimas</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Pelės slinkimas</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Rodyti / slėpti jutiklinio skydelio perdangą</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Mygtukai</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Klavišų derinys</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Klavišų derinys formatu {Klavišas1}{Klavišas2}. Galima redaguoti.</value></data>
@@ -1938,6 +1943,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Kartoti {0} kas {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Pelė X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Pelė Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horizontalus poslinkis</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertikalus poslinkis</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalas</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pasirinkti ekrane</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Fiksuojama po {0}…</value></data>
@@ -1972,6 +1979,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Apversta pusė</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nepriskirtas joks įrenginys</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Nežinomas įrenginys</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Jutiklinio skydelio paspaudimas</value></data>
@@ -2414,7 +2422,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Žemyn (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Aukštyn (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Įjungimas</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Taikymo įjungimo mygtukas, įjungimo režimas, lengvo taikymo slenkstis</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Taikymo įjungimo mygtukas, įjungimo režimas, giroskopo įjungimas, centravimas iš naujo, lengvo taikymo slenkstis</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pasirenkamos sąlygos, ribojančios, kada giroskopas aktyvus. Galima atskirai sukonfigūruoti dešiniosios svirtelės nuokrypį ir taikymo įjungimo mygtuką. Giroskopas veikia tik tada, kai tenkinamos visos sukonfigūruotos sąlygos.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Vietinė</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Žaidėjo</value></data>
@@ -2451,6 +2459,27 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Nustatyti lengvo taikymo slenkstį iš naujo</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Nustatyti taikymo įjungimo mygtuką iš naujo</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Nustatyti įjungimo režimą iš naujo</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Sluoksnis</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Sluoksnis, kurio nustatymą „Giroskopas įjungtas“ rodo ir keičia žemiau esančios eilutės.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giroskopas įjungtas</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Kada giroskopas veikia šiame sluoksnyje, be įjungimo mygtuko. Lygiavertis sluoksnis, nustatytas į „Kaip pagrindinis“, seka pagrindinį sluoksnį.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Visada įjungta</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Kaip pagrindinis</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Kol laikoma</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Kol nelaikoma</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Perjungti kiekvienu paspaudimu</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Giroskopo įjungimo mygtukai</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Mygtukai, kuriuos nuskaito „Giroskopas įjungtas“, bet kuriame šio lizdo valdiklyje.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Reikia</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Ar pakanka vieno pažymėto mygtuko, ar turi būti laikomi visi pažymėti mygtukai.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Bet kuris mygtukas</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Kiekvienas mygtukas</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Centruoti iš naujo, kai giroskopas įsijungia</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Kaskart, kai giroskopas įsijungia, valdiklio padėtis tampa ramybės tašku.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Nustatyti „Giroskopas įjungtas“ iš naujo</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Nustatyti giroskopo įjungimo mygtukus iš naujo</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Nustatyti „Reikia“ iš naujo</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Nustatyti centravimą iš naujo, kai giroskopas įsijungia, iš naujo</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Nustatyti įjungimo svirtelę iš naujo</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Nustatyti įjungimo kryptį iš naujo</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Tiesioginis judesio perdavimas</value></data>
@@ -2461,6 +2490,25 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Žaidimas gauna judesį su čia nustatytu jautrumu, glotninimu ir kreive.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Nustatyti tiesioginio perdavimo nustatymus iš naujo</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Jautrumas</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Tik kol</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Šis šaltinis skaičiuojamas tik tada, kai šis įvestis tame pačiame valdiklyje taip pat nuskaitoma kaip paspausta. Importuoto sąrašo zonos tikrinimas nuskaitomas kaip svirtelės ar gaiduko ruožas, kurį jis tikrina.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ir kol</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Antra įvestis, kurios šis šaltinis taip pat laukia.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Keisti įvestį</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Pasirenka kitą įvestį, kurios reikia laukti.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kreivė</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Prieš valdydama išvestį, šios įvesties rodmenį pakelia šiuo laipsniu. 0 ir 1 palieka tiesią. Didesnė nei 1 reikšmė lėtesnė šalia centro.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Išorinis diapazonas</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Išvestis pasiekia viršutinę ribą, nukeliavus tiek eigos. 100% yra išjungta.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Nejautros zonos kompensacija</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Išvestis prasideda nuo šios reikšmės, vos tik įvestis pajuda. 0 yra išjungta.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Nejautros zonos forma</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>„Išjungta“ rodmens nekeičia. „Ašinė“ matuoja tik šią ašį. „Radialinė“ matuoja visą svirtelių porą kartu.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Išjungta</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Ašinė</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radialinė</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Vidinė nejautros zona</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Žemiau šios eigos dalies įvestis nuskaitoma kaip centre.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio giroskopo jautrumo daugiklis. 1.0 = variklio numatytoji reikšmė (500°/s → visas nuokrypis). Didesnės nei 1.0 reikšmės jautresnės. Mažesnės nei 1.0 – mažiau jautrios.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio pakrypimo jautrumo daugiklis. 1.0 = 90° pakrypimo visam nuokrypiui. Didesnės nei 1.0 reikšmės visą nuokrypį pasiekia mažiau pakreipus.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Giroskopo pakreipimas X</value></data>
@@ -3035,6 +3083,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Lygis</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Neveiklumo laikas</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekundės, po kurių virtualus valdiklis sunaikinamas, kai visi jam priskirti įrenginiai atsijungę. 0 išjungia. Likę to paties tipo valdikliai pasislenka aukštyn, užpildo tarpą ir susiejami su mažesnio numerio lizdais.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>s (0 = niekada)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Pridėti sluoksnį</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Pridėti perjungimo sluoksnį. Tai antra priskyrimų lentelė, kuri aktyvuojama laikant ar perjungus mygtuką.</value></data>
@@ -3146,6 +3195,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Nustatyti atsukimo greitį iš naujo</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Nustatyti kampo vidinę nejautros zoną iš naujo</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Nustatyti kampo išorinę nejautros zoną iš naujo</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Svirtelės nejautros zona</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Žemiau šio nuokrypio svirtelė nuskaitoma kaip centre, todėl posūkis nesikaupia.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Nustatyti svirtelės nejautros zoną iš naujo</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Nustatyti pakrypimo vidinę nejautros zoną iš naujo</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Nustatyti pakrypimo išorinę nejautros zoną iš naujo</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Nustatyti valdiklio orientaciją iš naujo</value></data>
@@ -3251,6 +3303,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>iš {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Šis automobilis reikalauja didesnio momento, nei turi vairas, todėl kreivės viršus nukerpamas.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Pojūtis centre, vairo stiprintuvas, slopinimas, trintis, sukibimas, pastovus greitis, vairo momentas</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Pojūtis centre, vairo stiprintuvas, slopinimas, sukibimas, pastovus greitis, vairo momentas</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kaip stipriai vairas laikosi centre mažu greičiu. 100% yra paties automobilio reikšmė.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Vairo stiprintuvas</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kiek vairo stiprintuvas palengvina vairavimą didėjant posūkio apkrovai. Daugiau reiškia lengvesnį vairą toliau nuo centro.</value></data>
@@ -3392,7 +3445,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Nustatyti aukštus tonus iš naujo</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nustatyti tono ribą iš naujo</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Lygiagrečiai perduoda viską, ką leidžia numatytoji sistemos išvestis, į šio valdiklio integruotą garsiakalbį. Veikia per USB ir „Bluetooth“.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Pasirinktas įrenginys neturi integruoto garsiakalbio. Šio pulto makrokomandų garsai leidžiami numatytojoje sistemos išvestyje.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>„PadForge“ neturi kelio į pasirinkto įrenginio garsiakalbį per šį ryšį. Šio pulto makrokomandų garsai leidžiami numatytojoje sistemos išvestyje.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Naršyklėje veikiantis „DualSense“ testavimo rinkinys, autorius Xuezhou Dai (daidr): etalonas „Sony“ funkcijų ataskaitų CRC rėminimui ir programinės aparatinės įrangos bandymo komandoms, kurias „PadForge“ perduoda iš virtualių į fizinius pultus.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3806,7 +3859,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Rodyti „Dreamcast“ ekraną</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Rodo paveikslėlius kiekvieno „Dreamcast“ pulto, prijungto prie šiam lizdui duomenis teikiančio „Bliss-Box“ prievado, VMU ekrane, o paskui grąžina kiekvieno prievado ekrano nustatymą.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Rodyti „Dreamcast“ paveikslėlius: {0} × {1} ms, kartojimų skaičius {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Kiekvienas paveikslėlis rodomas bent sekundę, nes adapteris kiekvieną gautą paveikslėlį saugo atmintyje, skirtoje 100 000 įrašymų, o keičiant paveikslėlį kas sekundę ši riba pasiekiama maždaug per parą. Paveikslėliai yra 48 × 32 juodai baltų pikselių iš BMP ar PNG, „VMU Animator“ .lcd failo arba „Dreamcast“ .vms piktogramos.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Kiekvienas paveikslėlis rodomas bent sekundę. „PadForge“ adapteriui siunčia daugiausia vieną paveikslėlį per sekundę, nes adapteris kiekvieną gautą paveikslėlį saugo savo atmintyje. Paveikslėliai yra 48 × 32 juodai baltų pikselių iš BMP ar PNG, „VMU Animator“ .lcd failo arba „Dreamcast“ .vms piktogramos.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Paveikslėliai</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Pridėti paveikslėlį…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Pašalinti paveikslėlį</value></data>
@@ -3883,15 +3936,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Kai sluoksnis perjungtas į įjungtą būseną, jis pats išsijungia po tiek milisekundžių, per kurias nė viena paties sluoksnio priskirta įvestis nebuvo aktyvi. Laikmatis pradeda skaičiuoti įsijungus sluoksniui ir prasideda iš naujo po kiekvienos sluoksnio įvesties. 0 palieka sluoksnį įjungtą, kol patys jo neišjungsite.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Grąžinti koregavimo nejautros zoną į 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Grąžinti koregavimo greitį į 100% per sekundę.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Atkurti numatytąjį: atleidus lygis grąžinamas į 100%.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Grąžinti automatinį atšaukimą į 0 (sluoksnis lieka įjungtas, kol bus išjungtas).</value>
   </data>
@@ -3959,6 +4003,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profilis</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makrokomanda</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Žymeklio sritis</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (laikymas)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atleidimas)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (įjungimas)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pasirinkite konfigūraciją, kad pamatytumėte, kas perkeliama.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas perkeliama</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Tampa</value></data>
@@ -4588,7 +4635,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Krypčių paspaudimai pereina per langelius ir suveikdina kiekvieną naujai pasirinktą langelį. Šis greitųjų veiksmų juostos elgesys nenaudoja suveikimo režimo ar spustelėjimo įvesties.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>„Flydigi“ išplėstinis protokolas</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Įjungia papildomus mygtukus ir judesio jutiklius palaikomuose „Flydigi“ valdikliuose.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Veikia „Flydigi“ programinė įranga: {0}. Ji gali naudoti tą pačią valdiklio sąsają kaip „PadForge“, ir buvo pranešta, kad „Vader 5 Pro“ pakartotinai atsijungdavo, kai prieigą turėjo abi programos. Jei šis valdiklis atsijungia ir vėl prisijungia, naudodami „PadForge“ sustabdykite tarnybą, palikite valdiklį paslėptą ir pašalinkite tarnybą iš „HidHide“ leidžiamų programų sąrašo arba pabandykite skiltyje „Nustatymai“ išjungti „Flydigi“ išplėstinį protokolą, nors nepatvirtinta, kad tai padeda.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Veikia „Flydigi“ programinė įranga: {0}. Ji su valdikliu bendrauja per sąsają, kurią naudoja „PadForge“. Jei šis valdiklis atsijungia ir vėl prisijungia, naudodami „PadForge“ sustabdykite tą programinę įrangą.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Leisti nuotolinius priskyrimų pakeitimus</value>
   </data>

@@ -117,6 +117,7 @@
   <data name="Common_None" xml:space="preserve"><value>Aucun</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>secondes</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutes (0 = jamais)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Non assigné</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -237,7 +238,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← gauche)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ haut)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll introuvable</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll introuvable. Placez SDL3.dll à côté de PadForge.exe. Téléchargez-le depuis https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll introuvable. Téléchargez de nouveau PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Échec de l'opération du pilote : {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Paramètres copiés dans le presse-papiers.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informations de l'appareil copiées dans le presse-papiers.</value></data>
@@ -418,7 +419,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Démarrer automatiquement le moteur au lancement</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuer la scrutation en arrière-plan</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Taux de scrutation (sauf si un profil le remplace)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Le moteur lit chaque périphérique et met à jour les contrôleurs virtuels ce nombre de fois par seconde, de 60 à 10000. Un taux plus élevé consomme plus de temps processeur. Windows réveille le moteur environ 2000 fois par seconde au maximum, donc un taux plus élevé exécute plusieurs passes à chaque réveil. Tant qu’un profil avec son propre taux de scrutation est actif, ce taux s’applique. Cette valeur reprend effet quand le profil se désactive.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Le moteur lit chaque périphérique et met à jour les contrôleurs virtuels ce nombre de fois par seconde, de 60 à 10000. Un taux plus élevé consomme plus de temps processeur. Sur ce PC, Windows réveille le moteur au maximum {0} fois par seconde, donc un taux plus élevé exécute plusieurs passes à chaque réveil. Tant qu’un profil avec son propre taux de scrutation est actif, ce taux s’applique. Cette valeur reprend effet quand le profil se désactive.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Masquer les appareils des jeux</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Commutateur principal pour le masquage des appareils HidHide et les hooks d'entrée bas niveau. Lorsque désactivé, aucun appareil n'est masqué quels que soient les paramètres individuels.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenêtre</value></data>
@@ -1108,7 +1109,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Tout calque</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'exécute en continu tant que ce contrôleur virtuel est actif. Aucun bouton déclencheur requis.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Faire</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Calque, Source, Seuil, Direction, Consommer les boutons déclencheurs, Répétition</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajouter une action</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Type </value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Boutons virtuels</value></data>
@@ -1134,7 +1134,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Appui bouton souris</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Relâchement bouton souris</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Boutons </value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Combinaison de touches </value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Combinaison de touches au format {Touche1}{Touche2}. Modifiable.</value></data>
@@ -1287,6 +1286,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Demi inversé</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Aucun appareil assigné</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Appareil inconnu</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profils</value></data>
@@ -1862,7 +1862,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Bas (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Haut (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Activation</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton d'activation de la visée, Mode d'activation, Seuil Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton d'activation de la visée, Mode d'activation, Gyro actif, Recentrage, Seuil Easy Aim</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Restrictions optionnelles qui limitent l'activité du gyroscope. La déflexion du stick droit et un bouton d'activation peuvent chacun conditionner la sortie. Configurez l'un ou les deux. Si les deux sont configurés, ils doivent être actifs simultanément.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Joueur</value></data>
@@ -1899,6 +1899,27 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Réinitialiser le seuil Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Réinitialiser le bouton d'activation</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Réinitialiser le mode d'activation</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Couche</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>La couche dont les lignes ci-dessous affichent et modifient le réglage Gyro actif.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyro actif</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Quand le gyroscope agit sur cette couche, en plus du bouton d'activation. Une couche Shift réglée sur Identique à Base suit Base.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Toujours actif</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Identique à Base</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Tant que maintenu</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Tant que non maintenu</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Basculer à chaque appui</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Boutons de Gyro actif</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Les boutons que lit Gyro actif, sur toute manette de cet emplacement.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Requis</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Indique si un seul bouton coché suffit ou si tous les boutons cochés doivent être maintenus.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>N'importe quel bouton</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Tous les boutons</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Recentrer à l'activation du gyroscope</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Prend la position de la manette comme point de repos chaque fois que le gyroscope s'active.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Réinitialiser Gyro actif</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Réinitialiser les boutons de Gyro actif</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Réinitialiser Requis</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Réinitialiser Recentrer à l'activation du gyroscope</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Réinitialiser le stick d'activation</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Réinitialiser la direction d'activation</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmission du mouvement</value></data>
@@ -1909,6 +1930,25 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Le jeu lit le mouvement avec la sensibilité, le lissage et la courbe définis ici.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Réinitialiser le réglage de transmission</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Seulement pendant</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Cette source ne compte que tant que cette entrée est aussi lue comme appuyée sur la même manette. Un test de zone issu d'un import se lit comme la plage de stick ou de gâchette qu'il vérifie.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Et pendant</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Une seconde entrée que cette source attend aussi.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Changer l'entrée</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Choisit une autre entrée à attendre.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Courbe</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Élève la lecture de cette entrée à cette puissance avant qu'elle ne pilote la sortie. 0 et 1 la laissent linéaire. Au-dessus de 1, elle est plus lente près du centre.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Plage extérieure</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>La sortie atteint son maximum à cette part de la course. 100% désactive le réglage.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zone morte</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>La sortie démarre à cette valeur dès que l'entrée bouge. 0 désactive le réglage.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forme de la zone morte</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Désactivé laisse la lecture intacte. Axiale mesure cet axe seul. Radiale mesure la paire de sticks ensemble.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axiale</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiale</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zone Morte Intérieure</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>En dessous de cette part de la course, l'entrée est lue comme centrée.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1.0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1.0 = plus sensible. En dessous = moins sensible.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité d'inclinaison par source. 1.0 = 90° d'inclinaison pour une déflexion complète. Les valeurs supérieures à 1.0 atteignent la déflexion complète avec moins d'inclinaison.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inclinaison gyro réglable X</value></data>
@@ -1976,6 +2016,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Arrêt du moteur…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Délai d'inactivité</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secondes avant qu'un contrôleur virtuel soit détruit lorsque tous les appareils mappés sont hors ligne. 0 désactive. Les contrôleurs restants du même type remontent pour combler le vide et se relient aux slots inférieurs.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secondes (0 = jamais)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Moteur de contrôleur HID virtuel en mode utilisateur (remplace ViGEmBus et vJoy).</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -2663,6 +2704,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Réinitialiser la vitesse de déroulement</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Réinitialiser la zone morte intérieure d'angle</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'angle</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zone morte du stick</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>En dessous de cette déflexion, le stick est lu comme centré, donc aucune direction ne s'accumule.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Réinitialiser la zone morte du stick</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Réinitialiser la zone morte intérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Réinitialiser la zone morte extérieure d'inclinaison</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
@@ -2726,6 +2770,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sur {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Cette voiture demande plus de couple que le volant n'en a, donc le haut de la courbe est coupé.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Ressenti au centre, assistance de direction, amortissement, frottement, adhérence, vitesse fixe, couple du volant</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Ressenti au centre, assistance de direction, amortissement, adhérence, vitesse fixe, couple du volant</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>La fermeté avec laquelle la direction tient son centre à basse vitesse. 100 % correspond à celle de la voiture.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Assistance de direction</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>La part d'effort que la direction assistée retire quand l'accélération latérale augmente. Plus la valeur est haute, plus la direction est légère loin du centre.</value></data>
@@ -2867,7 +2912,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Réinitialiser les sons aigus</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Réinitialiser la limite de tonalité</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge n'a aucun chemin vers un haut-parleur du périphérique sélectionné via cette connexion. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparateur de gabarits de formes pour le pavé tactile (cercle / carré / triangle / Z / coche et gestes enregistrés personnalisés). Redérivation en C# de la référence JavaScript de Magrofuoco, Vatavu, Anthony et Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
@@ -3290,7 +3335,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>Facultatif. Le dossier que le programme utilise comme répertoire courant. Ce n'est pas le dossier où se trouve le fichier du programme. Laissez vide pour la valeur par défaut.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Déconnexion en cas d'inactivité</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Détails</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Déconnecter le Bluetooth lors du branchement USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Lorsque cette manette signale qu’elle charge alors qu’elle est connectée en Bluetooth, la liaison Bluetooth est coupée pour qu’elle charge sans alimenter la radio. Toute source d’alimentation USB compte, chargeurs muraux compris. Si vous réactivez le Bluetooth avec le câble branché, il est laissé tranquille jusqu’au prochain débranchement.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lire comme manette iCade</value></data>
@@ -3332,8 +3376,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>La VMU affiche le nom du profil actif et suit chaque changement de profil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>La VMU affiche la place du profil actif dans la liste des profils. Le profil par défaut est le 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>La VMU affiche l'image propre au profil actif, ou son nom s'il n'en a pas. Chaque profil garde sa propre image.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU affiche l'heure, réécrite une fois par minute. L'adaptateur garde chaque image dans une mémoire prévue pour cent mille écritures, que ce mode atteint après environ dix semaines d'affichage continu.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU affiche les heures et les minutes écoulées depuis que PadForge a trouvé la manette, réécrites une fois par minute. Une manette débranchée de son port plus de dix secondes repart de zéro. L'adaptateur garde chaque image dans une mémoire prévue pour cent mille écritures, que ce mode atteint après environ dix semaines d'affichage continu.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU affiche l'heure, réécrite une fois par minute. L'adaptateur stocke chaque image dans sa propre mémoire, donc PadForge ne la réécrit pas plus souvent.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU affiche les heures et les minutes écoulées depuis que PadForge a trouvé la manette, réécrites une fois par minute. Une manette débranchée de son port plus de dix secondes repart de zéro. L'adaptateur stocke chaque image dans sa propre mémoire, donc PadForge ne la réécrit pas plus souvent qu'une fois par minute.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>La VMU affiche une image de votre choix : un BMP ou un PNG, un fichier .lcd de VMU Animator ou une icône .vms de Dreamcast. Les images sont réduites à 48 sur 32 pixels noirs et blancs.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Choisir une image…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Choisir une image pour {0}…</value></data>
@@ -3378,6 +3422,13 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>La manette en mode Xbox n'a pas répondu comme une Apex 4, donc rien n'a été envoyé et Windows l'a récupérée. Repassez-la en mode DInput avec son propre interrupteur.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows n'a pas fait passer la manette à WinUSB, donc rien n'a été envoyé. Repassez-la en mode DInput avec son propre interrupteur.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Interrompu. Éteignez et rallumez la manette avec son propre interrupteur avant d'envoyer de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Le port de l'écran ne s'est pas ouvert, donc rien n'a été envoyé. Éteignez et rallumez la manette avec son propre interrupteur, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>L'image contient plus de trames que l'écran de cette manette ne peut en contenir.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Une image est déjà en cours d'envoi vers cette manette. Attendez qu'elle soit terminée.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>L'écran a demandé l'image à une adresse où PadForge n'écrit pas, donc rien n'a été envoyé. Éteignez et rallumez la manette avec son propre interrupteur, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>L'image a été envoyée, mais la manette n'est pas repassée en mode DInput. Remettez-la en mode DInput avec son propre interrupteur.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>La manette n'a pas pris la commande qui la prépare, donc rien n'a été envoyé. Vérifiez qu'elle est connectée, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>L'envoi s'est arrêté sur une erreur dans PadForge. Le fichier journal contient les détails.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Une image est encore en route vers la manette. Interrompre l'envoi ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fichiers Controller Pak (*.mpk)|*.mpk|Tous les fichiers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -3532,6 +3583,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Faible</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Image</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Sortie : {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Sorties : {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Mouvement</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Cliquez sur un contrôle, puis appuyez sur l'entrée qui doit le piloter.</value></data>
@@ -3601,9 +3653,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jeux que PadForge ne connaît pas</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Pour les mods qui cherchent un DSX en cours d'exécution avant d'envoyer.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ce qui s'affiche</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anneau, la grille ou la barre d'un menu tant qu'il est ouvert</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Le nom de la couche à l'activation d'une couche Shift, pendant la durée que cette couche définit</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Le nom du profil quand le profil change</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anneau, la grille ou la barre d'un menu tant qu'il est ouvert.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Le nom de la couche à l'activation d'une couche Shift, pendant la durée que cette couche définit.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Le nom du profil quand le profil change.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copier l'adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placer à l'écran</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Connecter un téléphone</value></data>
@@ -3790,7 +3842,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Afficher l'écran Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Affiche des images sur la VMU de chaque manette Dreamcast branchée dans un port Bliss-Box qui alimente cet emplacement, puis rend à chaque port son propre réglage d'écran.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Afficher des images Dreamcast : {0} × {1} ms, répétitions {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Chaque image s'affiche au moins une seconde, car l'adaptateur garde chaque image qu'il reçoit dans une mémoire prévue pour cent mille écritures, qu'une nouvelle image par seconde atteint en environ un jour. Les images font 48 sur 32 pixels noirs et blancs, depuis un BMP ou un PNG, un fichier .lcd de VMU Animator ou une icône .vms de Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Chaque image s'affiche au moins une seconde. PadForge envoie à l'adaptateur une image par seconde au maximum, car l'adaptateur stocke chaque image qu'il reçoit dans sa propre mémoire. Les images font 48 sur 32 pixels noirs et blancs, depuis un BMP ou un PNG, un fichier .lcd de VMU Animator ou une icône .vms de Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Images</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Ajouter une image…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Retirer l'image</value></data>
@@ -3845,7 +3897,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Réinitialiser la géométrie du menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Réinitialiser la cellule</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Réinitialiser l'accélération</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Réinitialiser la zone morte</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Réinitialiser le temps de maintien</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Réinitialiser la fenêtre d'appui</value></data>
@@ -3920,9 +3971,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Réinitialiser la luminosité de la LED Guide</value></data>
   <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Réinitialiser le mode de la LED Guide</value></data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Réinitialiser l'annulation automatique à 0 (la couche reste active jusqu'à sa désactivation).</value></data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte du trim à 25%.</value></data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>Réinitialiser la vitesse du trim à 100% par seconde.</value></data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Réinitialiser au retour du niveau à 100% au relâchement.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Annulation automatique après inactivité</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Tant que la couche est activée par bascule, elle se désactive d'elle-même après ce nombre de millisecondes sans aucune des entrées mappées propres à la couche. Le minuteur démarre à l'activation de la couche et repart à chaque entrée de la couche. 0 garde la couche active jusqu'à ce que vous la désactiviez vous-même.</value></data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
@@ -3936,6 +3984,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Répéter {0} toutes les {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Souris X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Souris Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Décalage horizontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Décalage vertical</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalle</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Choisir à l'écran</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capture dans {0}…</value></data>
@@ -4004,6 +4054,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Zone du curseur</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (maintien)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (relâchement)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (activation)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Choisissez une configuration pour voir ce qui est repris.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ce qui est repris</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Devient</value></data>
@@ -4774,7 +4827,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Les pressions directionnelles parcourent les cellules et déclenchent chaque cellule nouvellement sélectionnée, sans « Mode de déclenchement » ni « Entrée de clic ». Le style « Barre rapide » parcourt sans déclencher et déclenche avec sa propre commande « Déclencher ».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocole avancé Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Active les boutons supplémentaires et les capteurs de mouvement des manettes Flydigi compatibles.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Un logiciel Flydigi est en cours d'exécution : {0}. Il peut utiliser la même interface de manette que PadForge, et une Vader 5 Pro a été signalée se déconnectant à répétition pendant que les deux y avaient accès. Si cette manette se déconnecte et se reconnecte, arrêtez le service pendant l'utilisation de PadForge, gardez la manette masquée et retirez le service de la liste blanche HidHide, ou essayez de désactiver « Protocole avancé Flydigi » dans les Paramètres, sans garantie que cela aide.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Un logiciel Flydigi est en cours d'exécution : {0}. Il communique avec la manette via l'interface que PadForge utilise. Si cette manette se déconnecte et se reconnecte, arrêtez ce logiciel pendant l'utilisation de PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Autoriser les changements d'affectation à distance</value>
   </data>
@@ -5434,9 +5487,6 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Choisir ce qu'elle affiche…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Superposition d'écran PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Rien à afficher pour l'instant. Choisissez ce qu'elle affiche dans la page Superposition d'écran, sous Extras.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Basculer la superposition d'écran</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Basculer le réticule</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Basculer la loupe</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Tous les réticules</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Réticule</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Basculer la superposition d'écran</value></data>

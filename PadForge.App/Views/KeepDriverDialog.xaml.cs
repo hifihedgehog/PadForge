@@ -94,8 +94,8 @@ namespace PadForge.Views
             => now >= deadline ? 0 : (int)Math.Ceiling((deadline - now) / (double)Stopwatch.Frequency);
 
         /// <summary>The bar drains by the exact time left, at the timer's
-        /// step. The sentence counts whole seconds, its number in the code
-        /// face as the board draws it, and is made again only when the
+        /// step. The sentence counts whole seconds, its number in the body
+        /// face with tabular figures, and is made again only when the
         /// number changes, so a screen reader hears each second once.</summary>
         private void ShowRemaining()
         {

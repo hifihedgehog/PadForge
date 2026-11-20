@@ -19,8 +19,8 @@ namespace PadForge.Common
     /// largest share of what the program threw away while it sat still
     /// (measured 2026-11-16). The keys are watched with
     /// RegNotifyChangeKeyValue, so a change shows at the next read. Where
-    /// the watch cannot be set up, every read walks the keys again, as
-    /// before.</para>
+    /// the watch cannot be set up, every read tries again to open and watch
+    /// the keys it lacks, and walks the keys again, as before.</para>
     /// </summary>
     internal sealed class UninstallRegistry
     {
@@ -50,6 +50,8 @@ namespace PadForge.Common
         private readonly string _path;
         private RegistryKey[] _keys;
         private AutoResetEvent[] _changed;
+        /// <summary>Each view's watch is set and has not fired.</summary>
+        private bool[] _armed;
         private bool _watching;
         private IReadOnlyList<Entry> _entries;
 
@@ -70,46 +72,60 @@ namespace PadForge.Common
             {
                 lock (_gate)
                 {
-                    if (_keys == null) Watch();
+                    // A read with a key or a watch missing walks, after it
+                    // tries again to open and watch what is missing.
+                    bool walk = _entries == null || !_watching;
+                    if (!_watching) Watch();
                     // A change seen re-arms its watch before the walk, so a
                     // change during the walk shows at the next read.
-                    bool changed = false;
                     for (int i = 0; i < _changed.Length; i++)
                     {
                         if (_changed[i] != null && _changed[i].WaitOne(0))
                         {
-                            changed = true;
-                            if (!Arm(i)) _watching = false;
+                            walk = true;
+                            _armed[i] = Arm(i);
+                            if (!_armed[i]) _watching = false;
                         }
                     }
-                    if (_entries == null || changed || !_watching)
+                    if (walk)
                         _entries = Walk();
                     return _entries;
                 }
             }
         }
 
+        /// <summary>Opens each view's key that is not open and sets each
+        /// watch that is not set. The keys are watched when every view's
+        /// is.</summary>
         private void Watch()
         {
-            _keys = new RegistryKey[s_views.Length];
-            _changed = new AutoResetEvent[s_views.Length];
+            if (_keys == null)
+            {
+                _keys = new RegistryKey[s_views.Length];
+                _changed = new AutoResetEvent[s_views.Length];
+                _armed = new bool[s_views.Length];
+            }
             _watching = true;
             for (int i = 0; i < s_views.Length; i++)
             {
-                try
+                if (_keys[i] == null)
                 {
-                    using var root = RegistryKey.OpenBaseKey(_hive, s_views[i]);
-                    _keys[i] = root.OpenSubKey(_path, false);
+                    try
+                    {
+                        using var root = RegistryKey.OpenBaseKey(_hive, s_views[i]);
+                        _keys[i] = root.OpenSubKey(_path, false);
+                    }
+                    catch { }
                 }
-                catch { }
                 if (_keys[i] == null)
                 {
                     // A view with no key cannot say when one appears.
                     _watching = false;
                     continue;
                 }
-                _changed[i] = new AutoResetEvent(false);
-                if (!Arm(i)) _watching = false;
+                _changed[i] ??= new AutoResetEvent(false);
+                if (!_armed[i]) _armed[i] = Arm(i);
+                if (!_armed[i]) _watching = false;
             }
         }
 

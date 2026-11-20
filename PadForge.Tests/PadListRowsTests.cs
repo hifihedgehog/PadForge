@@ -153,6 +153,45 @@ namespace PadForge.Tests
             Assert.All(bindings.Skip(1), b => Assert.Equal("{x:Static strings:Strings.Instance}", (string)b.Attribute("Source")));
         }
 
+        /// <summary>Rows built again while a control records: the row that
+        /// records is still the one that flashes, and no other.</summary>
+        [Fact]
+        public void ARowBuiltWhileARecordingRunsIsFlaggedFromTheTarget()
+        {
+            var vm = new PadViewModel(0);
+            vm.RebuildMappings();
+            vm.CurrentRecordingTarget = "ButtonA";
+            Assert.True(vm.Mappings.First(m => m.TargetSettingName == "ButtonA").IsRecordTarget);
+
+            vm.RebuildMappings();
+            Assert.Equal(new[] { "ButtonA" }, vm.Mappings.Where(m => m.IsRecordTarget).Select(m => m.TargetSettingName));
+            vm.CurrentRecordingTarget = null;
+            Assert.DoesNotContain(vm.Mappings, m => m.IsRecordTarget);
+
+            // No recording: rows built again flash nothing.
+            vm.RebuildMappings();
+            Assert.DoesNotContain(vm.Mappings, m => m.IsRecordTarget);
+        }
+
+        /// <summary>A row the list no longer holds has no owner, whether
+        /// the rows were built again or the one row was taken out.</summary>
+        [Fact]
+        public void ARowTheListDropsLetsGoOfItsOwner()
+        {
+            var vm = new PadViewModel(0);
+            vm.RebuildMappings();
+            var built = vm.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.Same(vm, built.Owner);
+
+            vm.RebuildMappings();
+            Assert.Null(built.Owner);
+            Assert.All(vm.Mappings, m => Assert.Same(vm, m.Owner));
+
+            var taken = vm.Mappings[0];
+            vm.Mappings.RemoveAt(0);
+            Assert.Null(taken.Owner);
+        }
+
         /// <summary>A group's fold is kept by category on the view model,
         /// so it holds when the table builds its groups again. The two
         /// sticks' groups start folded, as the List board opens (#574), and
@@ -235,13 +274,14 @@ namespace PadForge.Tests
             var counted = Assert.Single(style.Descendants(), e => e.Name.LocalName == "Binding"
                 && (string)e.Attribute("Path") == "ItemCount");
             var countText = counted.Parent;
-            Assert.Equal("{StaticResource FormatTextConverter}", (string)countText.Attribute("Converter"));
-            Assert.Equal(new[] { "ItemCount", "Pad_Band_Count_Format" }, countText.Elements().Select(b => (string)b.Attribute("Path")));
+            Assert.Equal("{StaticResource OneOrManyFormatConverter}", (string)countText.Attribute("Converter"));
+            Assert.Equal(new[] { "ItemCount", "Pad_Band_Count_One_Format", "Pad_Band_Count_Format" }, countText.Elements().Select(b => (string)b.Attribute("Path")));
             var count = countText.Parent.Parent;
             Assert.Equal("TextBlock", count.Name.LocalName);
             Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)count.Attribute("Foreground"));
             Assert.Equal("13", (string)count.Attribute("FontSize"));
             Assert.Contains("{0}", PadForge.Resources.Strings.Strings.Instance.Pad_Band_Count_Format);
+            Assert.Contains("{0}", PadForge.Resources.Strings.Strings.Instance.Pad_Band_Count_One_Format);
 
             // The band's fill follows the theme.
             Assert.Contains("<SolidColorBrush x:Key=\"SteelBandBrush\" Color=\"#0F1520\"/>",

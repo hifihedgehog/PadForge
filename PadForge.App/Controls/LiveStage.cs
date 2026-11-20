@@ -68,6 +68,23 @@ namespace PadForge.Controls
             _viewport.Children.Add(new ModelVisual3D { Content = lights });
             _viewport.Children.Add(_shown);
             AddVisualChild(_viewport);
+            // The model is built only where the computer draws 3D with its
+            // graphics card, and a remote desktop session changes that while
+            // the program runs.
+            Loaded += (_, _) =>
+            {
+                RenderCapability.TierChanged -= OnTierChanged;
+                RenderCapability.TierChanged += OnTierChanged;
+                OnTierChanged(this, EventArgs.Empty);
+            };
+            Unloaded += (_, _) => RenderCapability.TierChanged -= OnTierChanged;
+        }
+
+        /// <summary>Builds the model, or drops it, when the tier no longer
+        /// agrees with what the stage holds.</summary>
+        private void OnTierChanged(object sender, EventArgs e)
+        {
+            if ((_instance != null) != (Model != null && DrawsIn3D)) ModelChanged();
         }
 
         /// <summary>Whether this computer draws 3D with its graphics card. A

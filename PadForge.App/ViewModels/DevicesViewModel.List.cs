@@ -276,15 +276,6 @@ namespace PadForge.ViewModels
             private set => SetProperty(ref _connectedTotal, value);
         }
 
-        private int _mainShown;
-
-        /// <summary>The main list's count, after the segments and the search.</summary>
-        public int MainShown
-        {
-            get => _mainShown;
-            private set => SetProperty(ref _mainShown, value);
-        }
-
         private int _notConnectedCount;
 
         /// <summary>The Not Connected line's count.</summary>
@@ -347,7 +338,6 @@ namespace PadForge.ViewModels
                 else if (Shows(DevicePageList.NotConnected, d)) { notConnected++; notConnectedNames.Add(d.DeviceName); }
             }
             ConnectedTotal = total;
-            MainShown = shown;
             NotConnectedCount = notConnected;
             NotConnectedHint = string.Join(", ", notConnectedNames);
             ShowNoMatch = shown + notConnected == 0

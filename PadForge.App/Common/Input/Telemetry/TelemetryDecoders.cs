@@ -68,9 +68,11 @@ namespace PadForge.Common.Input.Telemetry
             {
                 float vx = F32(p, 32), vy = F32(p, 36), vz = F32(p, 40);
                 f.SpeedMs = MathF.Sqrt(vx * vx + vy * vy + vz * vz);
+                f.SpeedReported = true;
                 return true;
             }
             f.SpeedMs = F32(p, 244 + shift);
+            f.SpeedReported = true;
             f.Throttle = p[303 + shift] / 255f;
             f.Brake = p[304 + shift] / 255f;
             f.Clutch = p[305 + shift] / 255f;
@@ -185,6 +187,7 @@ namespace PadForge.Common.Input.Telemetry
             // format. The layout above follows the format alone.
             f.F1Year = year >= 2023 && p[2] != 0 ? 2000 + p[2] : year;
             f.SpeedMs = U16(p, e) / 3.6f;
+            f.SpeedReported = true;
             f.Throttle = F32(p, e + 2);
             f.Steering = F32(p, e + 6);
             f.Brake = F32(p, e + 10);
@@ -215,6 +218,7 @@ namespace PadForge.Common.Input.Telemetry
             if (p.Length != 264 && p.Length != 280) return false;
             f.Source = TelemetrySource.Codemasters;
             f.SpeedMs = F32(p, 28);
+            f.SpeedReported = true;
             f.Throttle = F32(p, 116);
             f.Steering = F32(p, 120);
             f.Brake = F32(p, 124);
@@ -261,6 +265,7 @@ namespace PadForge.Common.Input.Telemetry
             f.Source = TelemetrySource.EaSportsWrc;
             f.Gear = EaSportsWrcGear(b[37 + pad], b[38 + pad], b[39 + pad]);
             f.SpeedMs = F32(b, 41 + pad);
+            f.SpeedReported = true;
             f.MaxRpm = F32(b, 185 + pad);
             f.Rpm = F32(b, 193 + pad);
             f.Throttle = F32(b, 197 + pad);
@@ -301,6 +306,7 @@ namespace PadForge.Common.Input.Telemetry
             int gear = p[10];
             f.Gear = gear == 0 ? -1 : gear - 1;
             f.SpeedMs = F32(p, 12);
+            f.SpeedReported = true;
             f.Rpm = F32(p, 16);
             f.Handbrake = (BinaryPrimitives.ReadUInt32LittleEndian(p.Slice(44)) & 4u) != 0 ? 1f : 0f;
             f.Throttle = F32(p, 48);
@@ -355,6 +361,7 @@ namespace PadForge.Common.Input.Telemetry
             f.Throttle = p[30] / 255f;
             f.Clutch = p[31] / 255f;
             f.SpeedMs = F32(p, 36);
+            f.SpeedReported = true;
             f.Rpm = U16(p, 40);
             f.MaxRpm = U16(p, 42);
             f.Steering = (sbyte)p[44] / 127f;
@@ -413,6 +420,7 @@ namespace PadForge.Common.Input.Telemetry
             f.Rpm = I32(physics, 20);
             f.Steering = F32(physics, 24);
             f.SpeedMs = F32(physics, 28) / 3.6f;
+            f.SpeedReported = true;
             f.Clutch = 1f - F32(physics, 364);
             f.MaxRpm = I32(statics, 412);
             f.DrivingReported = true;
@@ -476,7 +484,7 @@ namespace PadForge.Common.Input.Telemetry
                     }
                     if (reader.TokenType != JsonTokenType.Number) continue;
                     double v = reader.GetDouble();
-                    if (isSpeed) { f.SpeedMs = (float)Math.Abs(v); speed = true; }
+                    if (isSpeed) { f.SpeedMs = (float)Math.Abs(v); f.SpeedReported = true; speed = true; }
                     else if (isRpm) { f.Rpm = (float)v; rpm = true; }
                     else if (isGear) { f.Gear = v < 0 ? -1 : (int)Math.Round(v); gear = true; }
                     else if (isSteer) f.Steering = (float)-v;

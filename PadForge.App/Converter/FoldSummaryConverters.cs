@@ -159,6 +159,27 @@ namespace PadForge.Converters
     }
 
     /// <summary>
+    /// A count with its noun: the count, then the format for exactly one and
+    /// the format for any other number, both bound to the strings table so
+    /// each language says its own words. One output reads "1 output" and
+    /// none or several read "0 outputs". Empty until the count is a number.
+    /// </summary>
+    public sealed class OneOrManyFormatConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length != 3) return string.Empty;
+            if (values[0] is not int count) return string.Empty;
+            if ((count == 1 ? values[1] : values[2]) is not string format || format.Length == 0) return string.Empty;
+            try { return string.Format(culture ?? CultureInfo.CurrentCulture, format, count); }
+            catch (FormatException) { return string.Empty; }
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
+    }
+
+    /// <summary>
     /// A fold's hint that names the rows the fold shows (#574). The values
     /// come in pairs, whether a row shows and then its name, in the rows'
     /// order, and a last value with no rule before it is a name that always

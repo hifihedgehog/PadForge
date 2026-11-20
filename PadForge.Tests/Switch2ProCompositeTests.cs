@@ -1353,7 +1353,8 @@ namespace PadForge.Tests
             var held = new InputManager.SelfVirtualSuppressions();
             try
             {
-                XInputSlotIdentity.AnswerForTest = slot => served[slot];
+                var asked = new int[XInputSlotIdentity.SlotCount];
+                XInputSlotIdentity.AnswerForTest = slot => { asked[slot]++; return served[slot]; };
                 InputManager.UsbipAncestryOf = path =>
                 {
                     walked.Add(path);
@@ -1367,11 +1368,16 @@ namespace PadForge.Tests
                 Assert.True(held.PassOver(1, "", "XInput#0", 0x045E, 0x02FF));
                 Assert.False(held.PassOver(2, "", "XInput#1", 0x045E, 0x02FF));
                 Assert.False(held.PassOver(3, "", "XInput#2", 0x045E, 0x02FF));
-                Assert.False(held.PassOver(4, "", "XInput#3", 0x045E, 0x02FF));
+                // OpenXInput busy with the number: asked once, never let
+                // through unasked. The joystick is closed and not recorded,
+                // so the next sweep opens it and asks again.
+                Assert.True(held.PassOver(4, "", "XInput#3", 0x045E, 0x02FF));
+                Assert.False(held.Contains(4));
+                Assert.Equal(1, asked[3]);
                 Assert.False(held.PassOver(5, "", "XInput#4", 0x045E, 0x02FF));
                 Assert.False(held.PassOver(6, "", "XInput#5", 0x045E, 0x02FF));
                 Assert.True(held.PassOver(7, "", "XInput#6", 0x045E, 0x02FF));
-                Assert.Equal(new[] { persona, forwarded, onAPort, null, null, null, stampedPersona }, walked);
+                Assert.Equal(new[] { persona, forwarded, onAPort, null, null, stampedPersona }, walked);
 
                 // HIDMaestro's serial settles it for as long as SDL lists
                 // the joystick: no clock lets it back in.
@@ -1382,12 +1388,17 @@ namespace PadForge.Tests
                 // The path the walk starts from: the interface behind a
                 // number, nothing for a number with none, and any other
                 // path as it is.
-                Assert.Equal(persona, InputManager.AncestryPathOf("XInput#0"));
-                Assert.Null(InputManager.AncestryPathOf("XInput#3"));
-                Assert.Null(InputManager.AncestryPathOf("XInput#4"));
-                Assert.Null(InputManager.AncestryPathOf("XInput#5"));
-                Assert.Equal(onAPort, InputManager.AncestryPathOf(onAPort));
-                Assert.Null(InputManager.AncestryPathOf(null));
+                Assert.Equal(persona, InputManager.AncestryPathOf("XInput#0", out bool busy));
+                Assert.False(busy);
+                Assert.Null(InputManager.AncestryPathOf("XInput#3", out busy));
+                Assert.True(busy);
+                Assert.Null(InputManager.AncestryPathOf("XInput#4", out busy));
+                Assert.False(busy);
+                Assert.Null(InputManager.AncestryPathOf("XInput#5", out busy));
+                Assert.False(busy);
+                Assert.Equal(onAPort, InputManager.AncestryPathOf(onAPort, out busy));
+                Assert.False(busy);
+                Assert.Null(InputManager.AncestryPathOf(null, out busy));
             }
             finally
             {

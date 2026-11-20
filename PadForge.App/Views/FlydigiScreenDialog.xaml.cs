@@ -27,13 +27,18 @@ namespace PadForge.Views
     /// <summary>
     /// Sends a picture to a Flydigi Apex screen (#586). The preview is drawn
     /// from the frames that go out, decoded back, so it shows what the pad
-    /// gets. Nothing reaches the pad until Send. The picture, its fit and
-    /// the profile's picture are the active profile's, as the Dreamcast and
-    /// keyboard screens keep them.
+    /// gets. Nothing reaches the pad until Send. The dialog keeps the
+    /// profile's picture, which is the active profile's as the Dreamcast
+    /// and keyboard screens keep theirs. The chosen picture and its fit
+    /// are for the one upload and are not saved.
     /// </summary>
     public partial class FlydigiScreenDialog : DialogWindow
     {
-        private readonly FlydigiApexSession _pad;
+        /// <summary>The pad, by its device. Each Send takes the pad's session
+        /// as it is then: a send makes the pad leave and come back with a
+        /// new one, and the dialog kept the one it opened with.</summary>
+        private readonly Guid _device;
+        private readonly FlydigiApexModel _model;
         private readonly FlydigiScreenSender.Apex4Binding _binding;
         private readonly string _profileName;
         private readonly int _profileNumber;
@@ -49,11 +54,12 @@ namespace PadForge.Views
         private readonly DispatcherTimer _previewTimer;
         private CancellationTokenSource _sending;
 
-        private FlydigiScreenDialog(FlydigiApexSession pad, FlydigiScreenSender.Apex4Binding binding,
+        private FlydigiScreenDialog(Guid device, FlydigiApexModel model, FlydigiScreenSender.Apex4Binding binding,
             string profileName, int profileNumber, string profilePicture)
         {
             InitializeComponent();
-            _pad = pad;
+            _device = device;
+            _model = model;
             _binding = binding;
             _profileName = profileName ?? string.Empty;
             _profileNumber = profileNumber;
@@ -64,17 +70,23 @@ namespace PadForge.Views
             ChooseProfilePictureButton.Content = new TextBlock { Text = choose, TextTrimming = TextTrimming.CharacterEllipsis };
             ChooseProfilePictureButton.ToolTip = choose;
 
+            // The timer comes first: each pick below builds the preview,
+            // which stops it.
+            _previewTimer = new DispatcherTimer(DispatcherPriority.Render, Dispatcher);
+            _previewTimer.Tick += (_, _) => NextPreviewFrame();
+            Closed += (_, _) => _previewTimer.Stop();
+
             foreach (FlydigiScreenSource source in Enum.GetValues(typeof(FlydigiScreenSource)))
                 SourceBox.Items.Add(new ComboBoxItem { Content = SourceName(source), Tag = source });
             foreach (FlydigiScreenFit fit in Enum.GetValues(typeof(FlydigiScreenFit)))
                 FitBox.Items.Add(new ComboBoxItem { Content = FitName(fit), Tag = fit });
             SourceBox.SelectedIndex = 0;
             FitBox.SelectedIndex = 0;
-
-            _previewTimer = new DispatcherTimer(DispatcherPriority.Render, Dispatcher);
-            _previewTimer.Tick += (_, _) => NextPreviewFrame();
-            Closed += (_, _) => _previewTimer.Stop();
             Closing += OnClosing;
+            // Send follows the pad's session, which comes and goes.
+            Action changed = () => Dispatcher.BeginInvoke(new Action(UpdateButtons));
+            FlydigiApexService.Changed += changed;
+            Closed += (_, _) => FlydigiApexService.Changed -= changed;
             Rebuild();
         }
 
@@ -84,10 +96,10 @@ namespace PadForge.Views
 
         private bool _sent;
 
-        internal static Result Show(Window owner, FlydigiApexSession pad, FlydigiScreenSender.Apex4Binding binding,
+        internal static Result Show(Window owner, Guid device, FlydigiApexModel model, FlydigiScreenSender.Apex4Binding binding,
             string profileName, int profileNumber, string profilePicture)
         {
-            var dialog = new FlydigiScreenDialog(pad, binding, profileName, profileNumber, profilePicture);
+            var dialog = new FlydigiScreenDialog(device, model, binding, profileName, profileNumber, profilePicture);
             if (owner != null) dialog.Owner = owner;
             else dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
@@ -129,7 +141,7 @@ namespace PadForge.Views
             };
         }
 
-        private FlydigiApexModel Model => _pad?.Identity.Model ?? FlydigiApexModel.None;
+        private FlydigiApexModel Model => _model;
 
         private void SourceBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -224,11 +236,16 @@ namespace PadForge.Views
         private void UpdateButtons()
         {
             bool idle = !Sending;
-            SendButton.IsEnabled = idle && _picture != null && _pad != null && !_pad.Failed;
+            SendButton.IsEnabled = CanSend(idle, _picture, _device);
             SourceBox.IsEnabled = FitBox.IsEnabled = ChoosePictureButton.IsEnabled = idle;
             ChooseProfilePictureButton.IsEnabled = RemoveProfilePictureButton.IsEnabled = idle;
             CloseButton.Content = idle ? Strings.Instance.Common_Close : Strings.Instance.Common_Cancel;
         }
+
+        /// <summary>Send is on while nothing is being sent, there is a
+        /// picture, and the pad has a session now.</summary>
+        internal static bool CanSend(bool idle, FlydigiScreenPicture picture, Guid device)
+            => idle && picture != null && FlydigiApexService.SessionOf(device) != null;
 
         private string PickPicture()
         {
@@ -269,7 +286,12 @@ namespace PadForge.Views
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Sending || _picture == null || _pad == null) return;
+            var pad = FlydigiApexService.SessionOf(_device);
+            if (Sending || _picture == null || pad == null)
+            {
+                UpdateButtons();
+                return;
+            }
             var s = Strings.Instance;
             if (Model == FlydigiApexModel.Apex4
                 && MessageBox.Show(this, s.FlydigiScreen_Apex4Confirm, s.FlydigiScreen_Title,
@@ -288,7 +310,7 @@ namespace PadForge.Views
             };
             try
             {
-                await FlydigiScreenSender.SendAsync(_pad, picture, _binding, progress, _sending.Token);
+                await FlydigiScreenSender.SendAsync(pad, picture, _binding, progress, _sending.Token);
                 _sent = true;
                 SendProgress.Value = 1;
                 StatusText.Text = Model == FlydigiApexModel.Apex4 ? s.FlydigiScreen_Done_Apex4 : s.FlydigiScreen_Done_Serial;
@@ -304,7 +326,7 @@ namespace PadForge.Views
             catch (Exception ex)
             {
                 PadForge.Engine.SdlDiagLog.WriteLine("FLYDIGI screen send fault: " + ex.GetType().Name);
-                StatusText.Text = FailureText(FlydigiScreenFailure.NoReply);
+                StatusText.Text = FailureText(FlydigiScreenFailure.Fault);
             }
             finally
             {
@@ -341,14 +363,22 @@ namespace PadForge.Views
                 FlydigiScreenFailure.NotWired => s.FlydigiScreen_Fail_NotWired,
                 FlydigiScreenFailure.NoPort => s.FlydigiScreen_Fail_NoPort,
                 FlydigiScreenFailure.SeveralPorts => s.FlydigiScreen_Fail_SeveralPorts,
-                FlydigiScreenFailure.PortDidNotOpen => s.FlydigiScreen_Fail_PortDidNotOpen,
+                // Space Station is named only when it runs: any refused open
+                // ends here, and the program is one cause of it.
+                FlydigiScreenFailure.PortDidNotOpen => string.IsNullOrEmpty(PadForge.Common.Input.FlydigiServiceWatch.Running)
+                    ? s.FlydigiScreen_Fail_PortDidNotOpenPlain : s.FlydigiScreen_Fail_PortDidNotOpen,
                 FlydigiScreenFailure.Refused => s.FlydigiScreen_Fail_Refused,
                 FlydigiScreenFailure.NoXboxPad => s.FlydigiScreen_Fail_NoXboxPad,
                 FlydigiScreenFailure.OtherXboxPads => s.FlydigiScreen_Fail_OtherXboxPads,
                 FlydigiScreenFailure.NotApex4 => s.FlydigiScreen_Fail_NotApex4,
                 FlydigiScreenFailure.BindFailed => s.FlydigiScreen_Fail_BindFailed,
                 FlydigiScreenFailure.Canceled => s.FlydigiScreen_Fail_Canceled,
-                FlydigiScreenFailure.TooManyFrames => s.FlydigiScreen_Fail_Refused,
+                FlydigiScreenFailure.TooManyFrames => s.FlydigiScreen_Fail_TooManyFrames,
+                FlydigiScreenFailure.Busy => s.FlydigiScreen_Fail_Busy,
+                FlydigiScreenFailure.BadAddress => s.FlydigiScreen_Fail_BadAddress,
+                FlydigiScreenFailure.NotSwitchedBack => s.FlydigiScreen_Fail_NotSwitchedBack,
+                FlydigiScreenFailure.SwitchNotSent => s.FlydigiScreen_Fail_SwitchNotSent,
+                FlydigiScreenFailure.Fault => s.FlydigiScreen_Fail_Fault,
                 _ => s.FlydigiScreen_Fail_NoReply,
             };
         }

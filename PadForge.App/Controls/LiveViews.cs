@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace PadForge.Controls
 {
@@ -361,11 +362,31 @@ namespace PadForge.Controls
             if (trail.Count > TrailLength) trail.RemoveAt(0);
         }
 
+        private bool _sampling, _landed0, _landed1;
+
+        /// <summary>The six values arrive one binding at a time, so a point
+        /// is taken once they all have, at DataBind priority, after the
+        /// update that set them and before the frame is drawn. A finger that
+        /// went down in that update starts a new trail.</summary>
         private static void OnPointChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var view = (TouchSurface)d;
-            Follow(view._trail0, view.Down0, view.X0, view.Y0);
-            Follow(view._trail1, view.Down1, view.X1, view.Y1);
+            if (e.Property == Down0Property && (bool)e.NewValue) view._landed0 = true;
+            if (e.Property == Down1Property && (bool)e.NewValue) view._landed1 = true;
+            if (view._sampling) return;
+            view._sampling = true;
+            view.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(view.Sample));
+        }
+
+        private void Sample()
+        {
+            _sampling = false;
+            if (_landed0) _trail0.Clear();
+            if (_landed1) _trail1.Clear();
+            _landed0 = _landed1 = false;
+            Follow(_trail0, Down0, X0, Y0);
+            Follow(_trail1, Down1, X1, Y1);
+            InvalidateVisual();
         }
 
         protected override Size MeasureOverride(Size availableSize)

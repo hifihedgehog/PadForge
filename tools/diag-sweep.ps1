@@ -309,9 +309,8 @@ public static class W {
     $walkSaw = $allDesc.Count
     Note "descendants=$walkSaw"
 
-    # ---- Every page of the sidebar (#574). Devices opens its two folds, so
-    # the rows of the devices PadForge remembers and of the other inputs
-    # realize too. ----
+    # ---- Every page of the sidebar (#574). Devices opens its fold, so the
+    # rows of the devices PadForge remembers realize too. ----
     foreach ($p in @('Dashboard:Home', 'Devices:Devices', 'Profiles:Profiles', 'Settings:Settings', 'About:About')) {
         $tag, $label = $p.Split(':')
         if ((Go $tag $label) -and $tag -eq 'Devices') {
@@ -323,7 +322,7 @@ public static class W {
     }
 
     # ---- A controller's page: the first controller entry (Nav_Pad and its
-    # number), then each of the six sections and the parts of Buttons and of
+    # number), then each of the six sections and the parts of Mappings and of
     # Macros & Menus, by the ids capture_all.ps1's PadTabs table names. ----
     $navList = $win.FindFirst($TS::Children,
         (New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, 'NavigationItems')))

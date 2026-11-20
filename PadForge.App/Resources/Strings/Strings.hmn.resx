@@ -144,6 +144,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Tsawg</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Duab</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Teev npe</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Kev txav</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Nyem ib qho khawm hauv daim duab, ces nias lub khawm los yog txav tus pas ntawm koj lub khoom siv uas yuav tswj nws.</value></data>
@@ -1428,7 +1429,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Xa kev co ntawm cov motor loj mus rau cov trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kev co trigger los ntawm suab bass ntawm lub computer</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone thaum qaij, Kev taw ntawm lub controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Khawm qhib kev tsom, Hom qhib, Ciam tsom yooj yim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Khawm qhib kev tsom, Hom qhib, Qhib gyro, Rov tso rau nruab nrab, Ciam tsom yooj yim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Siv touchpad ua stick lossis D-pad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Qhib cov kev txav ntawm touchpad no</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Rub, kov, nias ob ntiv, kos duab</value></data>
@@ -1440,7 +1441,6 @@
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Lub zog txhua lub motor, kev co trigger, Kev co raws kev tig, Zog tas li</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Lub zog txhua lub trigger, pauv motor, kev co trigger adaptive, Zog trigger tas li</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Ua</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Qhov chaw los, Threshold, Sab, Zais cov khawm trigger, Rov ua dua</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Hloov npe</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu tshiab</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tshem tawm lub cell kawg</value></data>
@@ -1595,4 +1595,10 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Siv</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kab nkhaus</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Tsa tus nqi ntawm qhov input no mus rau lub zog no ua ntej nws tswj output. 0 thiab 1 tso nws ncaj. Siab dua 1 yuav qeeb dua ze nruab nrab.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Range sab nraud</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Output mus txog puv thaum txav mus txog qhov no. 100% yog kaw.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Output pib ntawm qhov no thaum input pib txav. 0 yog kaw.</value></data>
 </root>

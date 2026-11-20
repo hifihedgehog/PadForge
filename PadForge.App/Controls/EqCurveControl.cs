@@ -58,7 +58,8 @@ namespace PadForge.Controls
         private static readonly Pen GridPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x38, 0xC8, 0xC8, 0xC8))), 1));
         private static readonly Pen ZeroPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x70, 0xC8, 0xC8, 0xC8))), 1));
         // The grid's labels take the theme's tertiary text where the app has
-        // one, and this frozen gray where it does not (a test's bare host).
+        // one (LabelBrush), and this frozen gray where it does not (a test's
+        // bare host).
         private static readonly Brush LabelFallback = Frozen(new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8)));
         private static readonly Pen CurvePen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A))), 2));
         private static readonly Brush HandleFill = Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)));
@@ -87,6 +88,24 @@ namespace PadForge.Controls
             // to left (#505). Without the pin WPF would mirror the whole
             // drawing, and the axis labels with it, into backward text.
             FlowDirection = FlowDirection.LeftToRight;
+            SetResourceReference(LabelBrushProperty, "TextFillColorTertiaryBrush");
+        }
+
+        private static readonly DependencyProperty LabelBrushProperty =
+            DependencyProperty.Register("LabelBrush", typeof(Brush), typeof(EqCurveControl),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        /// <summary>The theme's tertiary text, held as a resource reference,
+        /// so a theme change draws the labels again in the new theme's
+        /// color.</summary>
+        private Brush LabelBrush => GetValue(LabelBrushProperty) as Brush ?? LabelFallback;
+
+        /// <summary>The labels are laid out for the display's scale, so a
+        /// move to a display of another scale draws them again.</summary>
+        protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
+        {
+            base.OnDpiChanged(oldDpi, newDpi);
+            InvalidateVisual();
         }
 
         private static void OnBandsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -142,7 +161,7 @@ namespace PadForge.Controls
 
             dc.DrawRectangle(Bg, null, new Rect(0, 0, w, h));
 
-            var labelBrush = TryFindResource("TextFillColorTertiaryBrush") as Brush ?? LabelFallback;
+            var labelBrush = LabelBrush;
             foreach (double hz in GridHz)
             {
                 double x = Math.Round(XOf(hz)) + 0.5;
@@ -205,9 +224,11 @@ namespace PadForge.Controls
             return EqResponse.MagnitudeDb(one, vm.FrequencyHz, Rate);
         }
 
-        private static FormattedText Text(string s, Brush b, double size) =>
+        /// <summary>A label laid out for the pixels per DIP of the display the
+        /// control is on.</summary>
+        private FormattedText Text(string s, Brush b, double size) =>
             new(s, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                Face, size, b, 1.25);
+                Face, size, b, VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
         // ── interaction ─────────────────────────────────────────────────────
 

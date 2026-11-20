@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ոչ մեկը</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>մվ</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>վայրկյան</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>րոպե (0 = երբեք)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Հց</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Չնշանակված</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ձախ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ վերև)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll-ը չի գտնվել</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll-ը չի գտնվել։ Տեղադրեք SDL3.dll-ը PadForge.exe-ի կողքին։ Ներբեռնեք այն՝ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll-ը չի գտնվել։ Նորից ներբեռնեք PadForge-ը։</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Դրայվերի գործողությունը ձախողվեց՝ {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Կարգավորումները պատճենվեցին փոխանակման բուֆեր։</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Սարքի տվյալները պատճենվեցին փոխանակման բուֆեր։</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ցածր</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} ելք</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ելք</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Շարժում</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Սեղմեք կառավարման տարրի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Խաղեր, որոնք PadForge-ը չի ճանաչում</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Մոդերի համար, որոնք ուղարկելուց առաջ որոնում են աշխատող DSX։</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ինչ է երևում</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ընտրացանկի օղակը, ցանցը կամ գոտին՝ բաց լինելու ժամանակ</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, երբ տեղաշարժի շերտը միանում է, այդ շերտի սահմանած ժամանակով</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Պրոֆիլի անունը, երբ պրոֆիլը փոխվում է</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ընտրացանկի օղակը, ցանցը կամ գոտին՝ բաց լինելու ժամանակ։</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, երբ տեղաշարժի շերտը միանում է, այդ շերտի սահմանած ժամանակով։</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Պրոֆիլի անունը, երբ պրոֆիլը փոխվում է։</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճենել հասցեն</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Տեղը էկրանին</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Միացրեք հեռախոսը</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Մեխանիզմի ինքնամեկնարկ գործարկման ժամանակ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Շարունակել հարցումը, երբ պատուհանը կորցնում է կիզակետը</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Հարցման հաճախականություն (եթե պրոֆիլը չի վերագրում)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Մեխանիզմը կարդում է բոլոր սարքերը և թարմացնում վիրտուալ կառավարիչները վայրկյանում այդքան անգամ՝ 60-ից մինչև 10000։ Ավելի բարձր հաճախականությունը ավելի շատ պրոցեսորային ժամանակ է օգտագործում։ Windows-ը մեխանիզմը արթնացնում է վայրկյանում առավելագույնը մոտ 2000 անգամ, ուստի ավելի բարձր հաճախականության դեպքում մեխանիզմը յուրաքանչյուր արթնացման ժամանակ մի քանի անցում է կատարում։ Եթե ակտիվ է սեփական հարցման հաճախականությամբ պրոֆիլ, գործում է այդ հաճախականությունը։ Այս արժեքը վերադառնում է, երբ պրոֆիլը ապաակտիվանում է։</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Մեխանիզմը կարդում է բոլոր սարքերը և թարմացնում վիրտուալ կառավարիչները վայրկյանում այդքան անգամ՝ 60-ից մինչև 10000։ Ավելի բարձր հաճախականությունը ավելի շատ պրոցեսորային ժամանակ է օգտագործում։ Այս համակարգչում Windows-ը մեխանիզմը արթնացնում է վայրկյանում առավելագույնը {0} անգամ, ուստի ավելի բարձր հաճախականության դեպքում մեխանիզմը յուրաքանչյուր արթնացման ժամանակ մի քանի անցում է կատարում։ Եթե ակտիվ է սեփական հարցման հաճախականությամբ պրոֆիլ, գործում է այդ հաճախականությունը։ Այս արժեքը վերադառնում է, երբ պրոֆիլը ապաակտիվանում է։</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Թաքցնել սարքերը խաղերից</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide-ով սարքերի թաքցման և ցածր մակարդակի մուտքի կեռերի գլխավոր անջատիչ։ Երբ անջատված է, ոչ մի սարք չի թաքցվում՝ անկախ սարքի առանձին կարգավորումներից։</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Թողնել սարքերը քողարկված գործարկումների միջև</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Միլիվայրկյաններ մուտքագրված նիշերի միջև՝ մինչև 1000։ 0-ը մուտքագրում է ամբողջ տեքստը միանգամից։</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Անջատում անգործության դեպքում</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Մանրամասներ</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>րոպե</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Անջատել Bluetooth-ը, երբ միացված է USB-ով</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Արագ լիցքավորում։ Երբ այս կառավարիչը հայտնում է, որ լիցքավորվում է Bluetooth-ով միացած վիճակում, Bluetooth կապն անջատվում է, որպեսզի այն լիցքավորվի առանց ռադիոն սնուցելու։ Ցանկացած USB սնման աղբյուր հաշվվում է, այդ թվում պատի լիցքավորիչները։ Եթե Bluetooth-ը նորից միացնեք, մինչ մալուխը մնում է միացված, այն չի շոշափվի մինչև հաջորդ անջատումը։</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Կարդալ որպես iCade կառավարիչ</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU-ն ցույց է տալիս ակտիվ պրոֆիլի անունը և հետևում է պրոֆիլի յուրաքանչյուր փոփոխությանը։</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU-ն ցույց է տալիս ակտիվ պրոֆիլի տեղը պրոֆիլների ցանկում։ Լռելյայն պրոֆիլը 0 է։</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU-ն ցույց է տալիս ակտիվ պրոֆիլի սեփական պատկերը, իսկ եթե այն չունի՝ անունը։ Յուրաքանչյուր պրոֆիլ պահում է իր պատկերը։</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU-ն ցույց է տալիս օրվա ժամը, որը վերագրվում է րոպեն մեկ։ Ադապտերը յուրաքանչյուր պատկեր պահում է 100,000 գրառման համար նախատեսված հիշողության մեջ, որին այս ռեժիմը հասնում է շուրջօրյա ցուցադրման մոտ տասը շաբաթ հետո։</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ն ցույց է տալիս ժամերն ու րոպեները այն պահից, երբ PadForge-ը գտել է պադը, և վերագրվում է րոպեն մեկ։ Պորտից տաս վայրկյանից ավելի դուրս մնացած պադը սկսում է նորից զրոյից։ Ադապտերը յուրաքանչյուր պատկեր պահում է 100,000 գրառման համար նախատեսված հիշողության մեջ, որին այս ռեժիմը հասնում է շուրջօրյա ցուցադրման մոտ տասը շաբաթ հետո։</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU-ն ցույց է տալիս օրվա ժամը, որը վերագրվում է րոպեն մեկ։ Ադապտերը յուրաքանչյուր պատկեր պահում է իր սեփական հիշողության մեջ, ուստի PadForge-ը այն դրանից ավելի հաճախ չի վերագրում։</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU-ն ցույց է տալիս ժամերն ու րոպեները այն պահից, երբ PadForge-ը գտել է պադը, և վերագրվում է րոպեն մեկ։ Պորտից տաս վայրկյանից ավելի դուրս մնացած պադը սկսում է նորից զրոյից։ Ադապտերը յուրաքանչյուր պատկեր պահում է իր սեփական հիշողության մեջ, ուստի PadForge-ը այն րոպեն մեկից ավելի հաճախ չի վերագրում։</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU-ն ցույց է տալիս ձեր ընտրած պատկերը՝ BMP կամ PNG, VMU Animator-ի .lcd ֆայլ կամ Dreamcast-ի .vms պատկերակ։ Պատկերները կտրվում են մինչև 48 × 32 սև ու սպիտակ պիքսել։</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Ընտրել պատկեր…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Ընտրել պատկեր {0}-ի համար…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox ռեժիմի կառավարիչը չպատասխանեց որպես Apex 4, ուստի ոչինչ չուղարկվեց, և Windows-ը այն հետ ստացավ։ Իր անջատիչով նորից անցկացրեք այն DInput ռեժիմի։</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows-ը կառավարիչը չտեղափոխեց WinUSB, ուստի ոչինչ չուղարկվեց։ Իր անջատիչով նորից անցկացրեք այն DInput ռեժիմի։</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Կանգնեցվեց։ Նորից ուղարկելուց առաջ անջատեք և նորից միացրեք կառավարիչը իր անջատիչով։</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Էկրանի պորտը չբացվեց, ուստի ոչինչ չուղարկվեց։ Անջատեք և նորից միացրեք կառավարիչը իր անջատիչով և նորից ուղարկեք։</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Պատկերն ավելի շատ կադր ունի, քան տեղավորվում է այս կառավարչի էկրանում։</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Այս կառավարչին պատկեր արդեն ուղարկվում է։ Սպասեք, մինչև ավարտվի։</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Էկրանը պատկերը պահանջեց մի հասցեով, որտեղ PadForge-ը չի գրում, ուստի ոչինչ չուղարկվեց։ Անջատեք և նորից միացրեք կառավարիչը իր անջատիչով և նորից ուղարկեք։</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Պատկերն ուղարկվեց, բայց կառավարիչը չանցավ նորից DInput ռեժիմի։ Այն նորից փոխեք իր անջատիչով։</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Կառավարիչը չընդունեց այն պատրաստող հրամանը, ուստի ոչինչ չուղարկվեց։ Ստուգեք, որ այն միացված է, և նորից ուղարկեք։</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Ուղարկումը կանգ առավ PadForge-ի սխալի պատճառով։ Մանրամասները գրանցամատյանի ֆայլում են։</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Պատկերը դեռ ուղարկվում է կառավարչին։ Կանգնեցնե՞լ ուղարկումը։</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ֆայլեր (*.mpk)|*.mpk|Բոլոր ֆայլերը (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak պորտ {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Վերականգնել ընտրացանկի երկրաչափությունը</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Վերականգնել վանդակը</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Վերականգնել զգայունությունը</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Վերականգնել արագացումը</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Վերականգնել մեռյալ գոտին</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Վերականգնել պահման ժամանակը</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Վերականգնել սեղմման պատուհանը</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Ցանկացած շերտ</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Աշխատում է անընդհատ, քանի դեռ այս վիրտուալ կառավարիչը ակտիվ է։ Գործարկիչ կոճակ պետք չէ։</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Կատարել</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Շերտ, աղբյուր, շեմ, ուղղություն, կլանել գործարկիչի կոճակները, կրկնել</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ավելացնել գործողություն</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Տեսակ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Վիրտուալ կոճակներ</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Մկնիկի կոճակի սեղմում</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Մկնիկի կոճակի բաց թողնում</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Մկնիկի ոլորում</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Փոխանջատել հպահարթակի վերադիրը</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Ստեղների համադրություն</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Ստեղների համադրություն {Key1}{Key2} ձևաչափով։ Խմբագրելի է։</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Կրկնել {0}՝ յուրաքանչյուր {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Մկնիկի X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Մկնիկի Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Հորիզոնական շեղում</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Ուղղահայաց շեղում</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Ընդմիջում</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Ընտրել էկրանին</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Վերցվում է {0}-ից…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Շրջված կես</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Սարք չի կապակցված</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Անհայտ սարք</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Հպահարթակի սեղմում</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ներքև (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Վերև (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Միացում</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Միացման կոճակ, միացման ռեժիմ, հեշտ նպատակադրման շեմ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Միացման կոճակ, միացման ռեժիմ, գիրոյի միացում, վերակենտրոնացում, հեշտ նպատակադրման շեմ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Կամընտիր դարպասներ, որոնք սահմանափակում են, թե երբ է գիրոն ակտիվ։ Աջ ձողի շեղումը և նպատակադրման միացման կոճակը կարող են առանձին կարգավորվել։ Գիրոն աշխատում է միայն երբ բոլոր կարգավորված դարպասները ակտիվ են։</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Տեղական</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Խաղացող</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Վերականգնել հեշտ նպատակադրման շեմը</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Վերականգնել նպատակադրման միացման կոճակը</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Վերականգնել միացման ռեժիմը</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Շերտ</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Շերտը, որի «Գիրոյի միացում» կարգավորումը ցույց են տալիս և փոխում ներքևի տողերը։</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Գիրոյի միացում</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Երբ է գիրոն աշխատում այս շերտում, միացման կոճակից բացի։ «Նույնը, ինչ հիմնականը» դրված տեղաշարժի շերտը հետևում է հիմնականին։</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Միշտ միացված</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Նույնը, ինչ հիմնականը</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Պահելու ընթացքում</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Չպահելու ընթացքում</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Փոխարկել ամեն սեղմումով</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Գիրոյի միացման կոճակներ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Կոճակները, որոնք կարդում է «Գիրոյի միացում»-ը, այս բնիկի ցանկացած կառավարչի վրա։</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Պահանջվում է</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Բավարար է նշված մեկ կոճակը, թե պետք է պահել նշված բոլոր կոճակները։</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Ցանկացած կոճակ</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Բոլոր կոճակները</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Վերակենտրոնացնել, երբ գիրոն միանում է</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ամեն անգամ, երբ գիրոն միանում է, կառավարչի դիրքը վերցնում է որպես հանգստի կետ։</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Վերականգնել գիրոյի միացումը</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Վերականգնել գիրոյի միացման կոճակները</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Վերականգնել պահանջը</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Վերականգնել վերակենտրոնացումը գիրոյի միացման ժամանակ</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Վերականգնել միացման ձողը</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Վերականգնել միացման ուղղությունը</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Շարժման փոխանցում</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Խաղը կարդում է շարժումն այստեղ սահմանված զգայունությամբ, հարթեցմամբ և կորով։</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Վերականգնել փոխանցման կարգավորումները</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Միայն երբ</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Այս աղբյուրը հաշվվում է միայն այն ժամանակ, երբ այս մուտքը նույն կառավարչի վրա նույնպես սեղմված է երևում։ Ներմուծումից եկած գոտու ստուգումը երևում է որպես ձողի կամ ձգանի այն տիրույթը, որը ստուգում է։</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Եվ երբ</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Երկրորդ մուտք, որին այս աղբյուրը նույնպես սպասում է։</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Փոխել մուտքը</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ընտրում է սպասելու համար մեկ այլ մուտք։</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Կորագիծ</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Այս մուտքի ընթերցումը բարձրացնում է այս աստիճանի՝ նախքան ելքը կառավարելը։ 0-ն և 1-ը այն թողնում են ուղիղ։ 1-ից բարձր արժեքը կենտրոնի մոտ ավելի դանդաղ է։</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Արտաքին տիրույթ</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ելքը հասնում է լրիվի ընթացքի այսքան մասում։ 100%-ը անջատված է։</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Հակամեռյալ գոտի</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ելքը սկսվում է այսքանից, հենց որ մուտքը շարժվում է։ 0-ն անջատված է։</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Մեռյալ գոտու ձև</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>«Անջատված»-ը ընթերցումը չի փոխում։ «Առանցքային»-ը չափում է միայն այս առանցքը։ «Շառավղային»-ը չափում է ձողերի զույգը միասին։</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Անջատված</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Առանցքային</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Շառավղային</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Ներքին մեռյալ գոտի</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ընթացքի այսքանից ցածր մուտքը կենտրոնացված է երևում։</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Աղբյուրի գիրոյի զգայունության բազմապատկիչ։ 1.0 = շարժիչի լռելյայնը (500°/վ → լրիվ շեղում)։ 1.0-ից բարձր արժեքներն ավելի զգայուն են։ 1.0-ից ցածր արժեքներն ավելի քիչ զգայուն են։</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Աղբյուրի թեքման զգայունության բազմապատկիչ։ 1.0 = լրիվ շեղման համար 90° թեքում։ 1.0-ից բարձր արժեքները լրիվ շեղման են հասնում ավելի քիչ թեքումով։</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Գիրոյի թեքում X</value></data>
@@ -3004,6 +3052,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Մակարդակ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Անգործության ժամանակամիջոց</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Վայրկյանների քանակը, որից հետո վիրտուալ կառավարիչը ոչնչացվում է, երբ նրա բոլոր կապակցված սարքերը անջատված են։ 0-ն անջատում է այն։ Նույն տիպի մնացած կառավարիչները տեղափոխվում են վերև՝ բացը լրացնելու համար և նորից կապվում ավելի փոքր համարով սլոթերին։</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>վայրկյան (0 = երբեք)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ավելացնել շերտ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ավելացնել shift շերտ։ Կապակցումների երկրորդ աղյուսակ, որն ակտիվանում է, երբ կոճակը պահվում կամ փոխանջատվում է։</value></data>
@@ -3115,6 +3164,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Վերականգնել արձակման արագությունը</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Վերականգնել անկյան ներքին մեռյալ գոտին</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Վերականգնել անկյան արտաքին մեռյալ գոտին</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Ձողի մեռյալ գոտի</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Այս շեղումից ցածր ձողը կենտրոնացված է երևում, ուստի ղեկավարում չի կուտակվում։</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Վերականգնել ձողի մեռյալ գոտին</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Վերականգնել թեքման ներքին մեռյալ գոտին</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Վերականգնել թեքման արտաքին մեռյալ գոտին</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Վերականգնել կառավարիչի դիրքավորումը</value></data>
@@ -3220,6 +3272,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m-ից</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Այս մեքենան ղեկի ունեցածից ավելի մոմենտ է պահանջում, ուստի կորի վերին մասը կտրվում է։</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>կենտրոնում զգացողություն, ուժային օգնություն, մարում, շփում, կպչունություն, ֆիքսված արագություն, ղեկի շարժիչի մոմենտ</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>կենտրոնում զգացողություն, ուժային օգնություն, մարում, կպչունություն, ֆիքսված արագություն, ղեկի շարժիչի մոմենտ</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Որքան ամուր է ղեկը պահում իր կենտրոնը ցածր արագությամբ։ 100%-ը մեքենայի սեփական արժեքն է։</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ուժային օգնություն</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Որքան է ուժային ղեկը հեռացնում շրջադարձի աճի հետ։ Ավելին նշանակում է կենտրոնից հեռու ավելի թեթև ղեկ։</value></data>
@@ -3361,7 +3414,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Վերականգնել բարձր տոները</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Վերականգնել տոնի սահմանը</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Պատճենում է այն ամենը, ինչ նվագարկում է համակարգի լռելյայն ելքը, այս կառավարիչի ներկառուցված բարձրախոսին՝ զուգահեռաբար։ Աշխատում է USB-ով և Bluetooth-ով։</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Ընտրված սարքը ներկառուցված բարձրախոս չունի։ Այս կառավարիչի մակրո ձայները նվագարկվում են համակարգի լռելյայն ելքով։</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge-ը այս կապով ընտրված սարքի բարձրախոսին ճանապարհ չունի։ Այս կառավարչի մակրո ձայները նվագարկվում են համակարգի լռելյայն ելքով։</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Բրաուզերային DualSense թեստային փաթեթ՝ Xuezhou Dai (daidr)։ Հղում է Sony feature-report CRC շրջանակավորման և որոնվածքի թեստային հրամանների համար, որոնք PadForge-ը փոխանցում է վիրտուալ կառավարիչներից ֆիզիկականներին։</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3775,7 +3828,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Ցուցադրել Dreamcast էկրանը</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Նկարներ է ցուցադրում այս սլոթը սնուցող Bliss-Box պորտի յուրաքանչյուր Dreamcast պադի VMU-ի վրա, ապա յուրաքանչյուր պորտ վերադարձնում է իր սեփական էկրանի կարգավորմանը։</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Ցուցադրել Dreamcast նկարներ՝ {0} × {1} մվ, կրկնությունների քանակ՝ {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Յուրաքանչյուր նկար ցուցադրվում է առնվազն մեկ վայրկյան, քանի որ ադապտերը իրեն ուղարկված յուրաքանչյուր նկար պահում է 100,000 գրառման համար նախատեսված հիշողության մեջ, որին ամեն վայրկյան նոր նկարը հասնում է մոտ մեկ օրում։ Նկարները 48 × 32 սև-սպիտակ պիքսել են՝ BMP կամ PNG ֆայլից, VMU Animator .lcd ֆայլից կամ Dreamcast .vms պատկերակից։</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Յուրաքանչյուր նկար ցուցադրվում է առնվազն մեկ վայրկյան։ PadForge-ը ադապտերին ուղարկում է վայրկյանում առավելագույնը մեկ նկար, քանի որ ադապտերը իրեն ուղարկված յուրաքանչյուր նկար պահում է իր սեփական հիշողության մեջ։ Նկարները 48 × 32 սև-սպիտակ պիքսել են՝ BMP կամ PNG ֆայլից, VMU Animator .lcd ֆայլից կամ Dreamcast .vms պատկերակից։</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Նկարներ</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Ավելացնել նկար…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Հեռացնել նկարը</value></data>
@@ -3852,15 +3905,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Երբ շերտը միացված է, այն ինքնին նորից անջատվում է այս քանակի միլիվայրկյանից հետո, եթե շերտի սեփական կապակցված մուտքերից ոչ մեկը ակտիվ չէ։ Ժամաչափը սկսվում է շերտի միացման պահին և վերսկսվում է շերտի յուրաքանչյուր մուտքի դեպքում։ 0-ն շերտը պահում է միացած, մինչև ինքներդ անջատեք։</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Վերականգնել ճշգրտման մեռյալ գոտին մինչև 25%։</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Վերականգնել ճշգրտման արագությունը մինչև 100% վայրկյանում։</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Վերականգնել. բաց թողնելիս մակարդակը վերադարձնել 100%-ի։</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Վերականգնել ինքնաչեղարկումը մինչև 0 (շերտը մնում է միացած, մինչև անջատվի)։</value>
   </data>
@@ -3928,6 +3972,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop պրոֆիլ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop մակրո</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Կուրսորի տարածք</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (պահելիս)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (բաց թողնելիս)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (միացում)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Ընտրեք կոնֆիգուրացիա՝ տեսնելու, թե ինչ է փոխանցվում։</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ինչ է փոխանցվում</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Դառնում է</value></data>
@@ -4557,7 +4604,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Ուղղության սեղմումները քայլ առ քայլ անցնում են վանդակներով և գործարկում յուրաքանչյուր նոր ընտրված վանդակ։ Այս արագ գոտու վարքը չի օգտագործում Գործարկման ռեժիմը կամ Սեղմման մուտքը։</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi-ի ընդլայնված արձանագրություն</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Միացնում է լրացուցիչ կոճակներ և շարժման սենսորներ աջակցվող Flydigi կառավարիչների վրա։</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ի ծրագրակազմը աշխատում է՝ {0}։ Այն կարող է օգտագործել PadForge-ի հետ նույն կառավարչի ինտերֆեյսը, և հաղորդվել է, որ Vader 5 Pro-ն բազմիցս անջատվում է, երբ երկուսն էլ մուտք են ունեցել։ Եթե այս կառավարիչն անջատվում և նորից միանում է, կանգնեցրեք ծառայությունը PadForge-ից օգտվելիս, կառավարիչը պահեք թաքցված և ծառայությունը հանեք HidHide-ի սպիտակ ցուցակից, կամ փորձեք Կարգավորումներում անջատել «Flydigi-ի ընդլայնված արձանագրությունը», որը հաստատված չէ, թե օգնում է։</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ի ծրագրակազմը աշխատում է՝ {0}։ Այն կառավարչի հետ խոսում է PadForge-ի օգտագործած ինտերֆեյսով։ Եթե այս կառավարիչն անջատվում և նորից միանում է, կանգնեցրեք այդ ծրագրակազմը PadForge-ից օգտվելիս։</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Թույլատրել հեռակա նշանակման փոփոխությունները</value>
   </data>

@@ -634,6 +634,14 @@ namespace PadForge.ViewModels
         private double _angleOuterDz = 10;
         public double AngleOuterDz { get => _angleOuterDz; set => SetProperty(ref _angleOuterDz, Math.Clamp(value, 0, 89)); }
 
+        private double _steerStickDeadZone = 15;
+        /// <summary>The stick's radial dead zone for both steering modes, in
+        /// percent of full deflection: below it the stick reads as centered,
+        /// so no wind accrues and no angle is output. The steering source
+        /// reads it as MappingSource.ParamStickDeadzone, since the raw-axis
+        /// read under the steering math applies none.</summary>
+        public double SteerStickDeadZone { get => _steerStickDeadZone; set => SetProperty(ref _steerStickDeadZone, Math.Clamp(value, 0, 90)); }
+
         // Motion-lean deadzones + controller orientation moved to PadViewModel's
         // Motion Steering (gyro tab); the per-stick steering modes here are Winding
         // and Angle only, which use the Wind*/Angle* params above.
@@ -647,6 +655,8 @@ namespace PadForge.ViewModels
         private ICommand _resetAngleInnerDzCommand, _resetAngleOuterDzCommand;
         public ICommand ResetAngleInnerDzCommand => _resetAngleInnerDzCommand ??= new RelayCommand(() => AngleInnerDz = 0);
         public ICommand ResetAngleOuterDzCommand => _resetAngleOuterDzCommand ??= new RelayCommand(() => AngleOuterDz = 10);
+        private ICommand _resetSteerStickDeadZoneCommand;
+        public ICommand ResetSteerStickDeadZoneCommand => _resetSteerStickDeadZoneCommand ??= new RelayCommand(() => SteerStickDeadZone = 15);
 
         // ── Reset commands ──
 
@@ -670,6 +680,7 @@ namespace PadForge.ViewModels
             SteeringModeIndex = 0;
             WindRangeDeg = 900; WindPower = 1; WindUnwindRate = 1800;
             AngleInnerDz = 0; AngleOuterDz = 10;
+            SteerStickDeadZone = 15;
         });
 
         private ICommand _resetDeadZoneShapeCommand;

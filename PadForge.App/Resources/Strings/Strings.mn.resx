@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Байхгүй</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>секунд</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>минут (0 = хэзээ ч үгүй)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Оноогоогүй</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← зүүн)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ дээш)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll олдсонгүй</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll олдсонгүй. SDL3.dll-ийг PadForge.exe-ийн хажууд байрлуулна уу. Үүнийг дараах хаягаас татаж авна уу: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll олдсонгүй. PadForge-ийг дахин татаж авна уу.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Драйверийн үйлдэл амжилтгүй: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Тохиргоог түр санах ойд хууллаа.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Төхөөрөмжийн мэдээллийг түр санах ойд хууллаа.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Бага</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Зураг</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Жагсаалт</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} гаралт</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} гаралт</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Хөдөлгөөн</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Удирдлага дээр дараад, түүнийг удирдах оролтыг төхөөрөмж дээрээ дарна уу.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge танихгүй тоглоомууд</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Илгээхээсээ өмнө ажиллаж буй DSX хайдаг модуудад.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Юу харагдах</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхарга идэвхжихэд тухайн давхаргын тохируулсан хугацаанд түүний нэр</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхарга идэвхжихэд тухайн давхаргын тохируулсан хугацаанд түүний нэр.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Хаягийг хуулах</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Дэлгэц дээрх байрлал</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Утас холбох</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Нээхэд хөдөлгүүрийг автоматаар эхлүүлэх</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Цонх идэвхгүй болоход уншилтыг үргэлжлүүлэх</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Уншилтын давтамж (профайл өөрчлөөгүй бол)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Хөдөлгүүр секундэд энэ тооны удаа (60-аас 10000 хүртэл) төхөөрөмж бүрийг уншиж, виртуал контроллерүүдийг шинэчилнэ. Давтамж өндөр байх тусам процессорын илүү их хугацааг ашиглана. Windows хөдөлгүүрийг секундэд хамгийн ихдээ 2000 орчим удаа сэрээдэг тул үүнээс өндөр давтамжид хөдөлгүүр сэрэх бүртээ хэд хэдэн давталт хийнэ. Өөрийн уншилтын давтамжтай профайл идэвхтэй үед тэр давтамж үйлчилнэ. Профайл идэвхгүй болоход энэ утга буцаж үйлчилнэ.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Хөдөлгүүр секундэд энэ тооны удаа (60-аас 10000 хүртэл) төхөөрөмж бүрийг уншиж, виртуал контроллерүүдийг шинэчилнэ. Давтамж өндөр байх тусам процессорын илүү их хугацааг ашиглана. Энэ компьютер дээр Windows хөдөлгүүрийг секундэд хамгийн ихдээ {0} удаа сэрээдэг тул үүнээс өндөр давтамжид хөдөлгүүр сэрэх бүртээ хэд хэдэн давталт хийнэ. Өөрийн уншилтын давтамжтай профайл идэвхтэй үед тэр давтамж үйлчилнэ. Профайл идэвхгүй болоход энэ утга буцаж үйлчилнэ.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Төхөөрөмжийг тоглоомоос нуух</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide-ын төхөөрөмж нуух болон доод түвшний оролтын дэгээний ерөнхий унтраалга. Унтраалттай үед төхөөрөмж тус бүрийн тохиргооноос үл хамааран ямар ч төхөөрөмж нуугдахгүй.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Дахин нээх хооронд төхөөрөмжийг нуусан хэвээр үлдээх</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Бичих тэмдэгт хоорондын миллисекунд, 1000 хүртэл. 0 бол бүх текстийг нэг дор бичнэ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Сул үед салгах</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Дэлгэрэнгүй</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>минут</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-ээр залгахад Bluetooth-ийг салгах</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Хурдан цэнэглэлт. Bluetooth-ээр холбогдсон байхдаа энэ контроллер цэнэглэгдэж байгаагаа мэдээлэхэд Bluetooth холболт тасарч, радиог тэжээлгүйгээр цэнэглэгдэнэ. Ханын цэнэглэгч зэрэг аливаа USB тэжээлийн эх үүсвэр тооцогдоно. Кабель залгаатай байхад та Bluetooth-ийг дахин асаавал дараагийн удаа салгах хүртэл түүнийг хөндөхгүй.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade контроллер гэж унших</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU идэвхтэй профайлын нэрийг харуулж, профайл солигдох бүрд дагаж өөрчлөгдөнө.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU идэвхтэй профайлын жагсаалт дахь байрыг харуулна. Үндсэн профайл 0 байна.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU идэвхтэй профайлын өөрийн зургийг, зураггүй бол нэрийг нь харуулна. Профайл бүр өөрийн зурагтай.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU өдрийн цагийг харуулж, минут тутамд дахин бичнэ. Адаптер зураг бүрийг 100 000 удаа бичихэд зориулагдсан санах ойд хадгалдаг бөгөөд тасралтгүй харуулбал энэ тоонд ойролцоогоор арван долоо хоногийн дараа хүрнэ.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge геймпадыг илрүүлснээс хойшхи цаг, минутыг харуулж, минут тутамд дахин бичнэ. Портоосоо арван секундээс удаан салсан геймпад тэгээс дахин эхэлнэ. Адаптер зураг бүрийг 100 000 удаа бичихэд зориулагдсан санах ойд хадгалдаг бөгөөд тасралтгүй харуулбал энэ тоонд ойролцоогоор арван долоо хоногийн дараа хүрнэ.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU өдрийн цагийг харуулж, минут тутамд дахин бичнэ. Адаптер зураг бүрийг өөрийн санах ойд хадгалдаг тул PadForge түүнийг үүнээс олон удаа дахин бичдэггүй.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU PadForge геймпадыг илрүүлснээс хойшхи цаг, минутыг харуулж, минут тутамд дахин бичнэ. Портоосоо арван секундээс удаан салсан геймпад тэгээс дахин эхэлнэ. Адаптер зураг бүрийг өөрийн санах ойд хадгалдаг тул PadForge түүнийг минутад нэгээс олон удаа дахин бичдэггүй.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU таны сонгосон зургийг харуулна: BMP эсвэл PNG, VMU Animator .lcd файл эсвэл Dreamcast .vms дүрс тэмдэг. Зургийг 48 × 32 хэмжээтэй хар цагаан пиксел болгон тайрна.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Зураг сонгох…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Зураг сонгох: {0}…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox горимд байгаа контроллер Apex 4 гэж хариулсангүй тул юу ч илгээгдээгүй бөгөөд Windows түүнийг буцааж авлаа. Түүнийг өөрийн шилжүүлэгчээр нь DInput горимд буцааж шилжүүлнэ үү.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows контроллерыг WinUSB руу шилжүүлсэнгүй тул юу ч илгээгдсэнгүй. Түүнийг өөрийн шилжүүлэгчээр нь DInput горимд буцааж шилжүүлнэ үү.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Зогсоолоо. Дахин илгээхийн өмнө контроллерыг өөрийн унтраалгаар нь унтрааж асаана уу.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Дэлгэцийн порт нээгдээгүй тул юу ч илгээгдсэнгүй. Контроллерыг өөрийн унтраалгаар нь унтрааж асаагаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Зураг энэ контроллерын дэлгэцэд багтахаас олон кадртай байна.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Энэ контроллер руу зураг аль хэдийн илгээгдэж байна. Дуустал нь хүлээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Дэлгэц зургийг PadForge бичдэггүй хаягаар хүссэн тул юу ч илгээгдсэнгүй. Контроллерыг өөрийн унтраалгаар нь унтрааж асаагаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Зураг илгээгдсэн боловч контроллер DInput горим руу буцаж шилжсэнгүй. Түүнийг өөрийн унтраалгаар нь буцааж шилжүүлнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Контроллер өөрийг нь бэлтгэх тушаалыг хүлээж аваагүй тул юу ч илгээгдсэнгүй. Холбогдсон эсэхийг нь шалгаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge дотор гарсан алдааны улмаас илгээлт зогслоо. Дэлгэрэнгүйг лог файлаас харна уу.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Зураг контроллер руу илгээгдсээр байна. Илгээхийг зогсоох уу?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлууд (*.mpk)|*.mpk|Бүх файл (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Цэсний геометрийг дахин тохируулах</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Нүдийг дахин тохируулах</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Мэдрэмжийг дахин тохируулах</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Хурдатгалыг дахин тохируулах</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Дарж барих хугацааг дахин тохируулах</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Дарах хугацааны цонхыг дахин тохируулах</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Аль ч давхарга</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Энэ виртуал контроллер идэвхтэй үед тасралтгүй ажиллана. Идэвхжүүлэгч товч шаардлагагүй.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Хийх</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Давхарга, Эх үүсвэр, Босго, Чиглэл, Идэвхжүүлэгч товчнуудыг шингээх, Давтах</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Үйлдэл нэмэх</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Төрөл</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуал товчнууд</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Хулганы товч дарах</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Хулганы товч суллах</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Хулганаар гүйлгэх</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлейг сэлгэх</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Товчнууд</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Товчлуурын хослол</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} хэлбэрийн товчлуурын хослол. Засах боломжтой.</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Давтах: {0}, {1} мс тутам</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Хулгана X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Хулгана Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Хэвтээ шилжилт</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Босоо шилжилт</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Интервал</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Дэлгэцээс сонгох</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} секундын дараа авна…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Урвуу хагас</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Төхөөрөмж оноогоогүй</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Үл мэдэгдэх төхөөрөмж</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Мэдрэгч самбар дарах</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Доош (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Дээш (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Идэвхжүүлэх</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Онилго идэвхжүүлэх товч, Идэвхжүүлэх горим, Хялбар онилгын босго</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Онилго идэвхжүүлэх товч, Идэвхжүүлэх горим, Гироскоп асах, Дахин төвлөрүүлэх, Хялбар онилгын босго</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоп хэзээ идэвхтэй байхыг хязгаарлах нэмэлт хаалтууд. Баруун стикийн хазайлт болон онилго идэвхжүүлэх товчийг тус тусад нь тохируулж болно. Гироскоп зөвхөн тохируулсан бүх хаалт идэвхтэй үед ажиллана.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локал</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Тоглогч</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Хялбар онилгын босгыг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Онилго идэвхжүүлэх товчийг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Идэвхжүүлэх горимыг дахин тохируулах</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Давхарга</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Доорх мөрүүд энэ давхаргын “Гироскоп асах” тохиргоог харуулж, өөрчилнө.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Гироскоп асах</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Идэвхжүүлэх товчоос гадна энэ давхарга дээр гироскоп хэзээ ажиллахыг заана. “Үндсэнтэй адил” гэж тохируулсан сэлгэх давхарга Үндсэн давхаргыг дагана.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Үргэлж асаалттай</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Үндсэнтэй адил</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Дарж байх үед</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Дараагүй үед</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Дарах бүрт сэлгэх</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Гироскоп асах товчнууд</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Энэ слотын аль ч контроллер дээрх, “Гироскоп асах” тохиргооны уншдаг товчнууд.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Шаардлага</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Тэмдэглэсэн нэг товч хангалттай юу, эсвэл тэмдэглэсэн бүх товчийг дарж байх ёстой юу.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Аль нэг товч</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Бүх товч</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Гироскоп асахад дахин төвлөрүүлэх</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Гироскоп асах бүрт контроллерын тухайн байрлалыг тайван цэг болгон авна.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Гироскоп асахыг дахин тохируулах</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Гироскоп асах товчнуудыг дахин тохируулах</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Шаардлагыг дахин тохируулах</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Гироскоп асахад дахин төвлөрүүлэхийг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Идэвхжүүлэх стикийг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Идэвхжүүлэх чиглэлийг дахин тохируулах</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Хөдөлгөөний шууд дамжуулалт</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Тоглоом энд тохируулсан мэдрэмж, зөөллөлт, муруйтай хөдөлгөөнийг уншина.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Шууд дамжуулалтын тохиргоог дахин тохируулах</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Зөвхөн дараах үед</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Энэ эх үүсвэр зөвхөн ижил контроллер дээр энэ оролт мөн дарагдсан гэж уншигдах үед тооцогдоно. Импортоос ирсэн бүсийн шалгалт нь өөрийн шалгадаг стик эсвэл гохын мужаар уншигдана.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Мөн дараах үед</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Энэ эх үүсвэрийн мөн хүлээдэг хоёр дахь оролт.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Оролт солих</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Хүлээх өөр оролт сонгоно.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Муруй</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Энэ оролтын утгыг гаралтад өгөхөөс өмнө энэ зэрэгт дэвшүүлнэ. 0 ба 1 үед шулуун хэвээр үлдэнэ. 1-ээс дээш үед төв орчимд удаан болно.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Гадаад муж</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Гаралт явалтын энэ хэмжээнд бүрэн утгандаа хүрнэ. 100% үед унтраалттай.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Үхсэн бүсийн нөхөлт</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Оролт хөдөлмөгц гаралт энэ хэмжээнээс эхэлнэ. 0 үед унтраалттай.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Үхсэн бүсийн хэлбэр</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>“Унтраалттай” үед утгыг өөрчлөхгүй. “Тэнхлэгийн” нь энэ тэнхлэгийг дангаар нь хэмжинэ. “Радиал” нь стикийн хос тэнхлэгийг хамт хэмжинэ.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Унтраалттай</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Тэнхлэгийн</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Радиал</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Дотоод үхсэн бүс</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Явалтын энэ хэмжээнээс доош үед оролт төвдөө байгаа гэж уншигдана.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн гироскопын мэдрэмжийн үржүүлэгч. 1.0 = хөдөлгүүрийн үндсэн утга (500°/с → бүтэн хазайлт). 1.0-ээс их утга илүү мэдрэмтгий. 1.0-ээс бага утга бага мэдрэмтгий.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн хэвийлтийн мэдрэмжийн үржүүлэгч. 1.0 = бүтэн хазайлтад 90° хэвийлт. 1.0-ээс их утга бага хэвийлтээр бүтэн хазайлтад хүрнэ.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Гироскопын хэвийлт X</value></data>
@@ -3046,6 +3094,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Түвшин</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Идэвхгүй байдлын хугацаа</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Виртуал контроллерийн оноосон бүх төхөөрөмж офлайн болсны дараа түүнийг устгахаас өмнөх секунд. 0 бол идэвхгүй. Үлдсэн ижил төрлийн контроллерүүд хоосон зайг нөхөхөөр дээш шилжиж, бага дугаартай слотуудад дахин холбогдоно.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунд (0 = хэзээ ч үгүй)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Давхарга нэмэх</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift давхарга нэмэх. Товч дарж барих эсвэл сэлгэх үед идэвхждэг хоёр дахь оноолтын хүснэгт.</value></data>
@@ -3157,6 +3206,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Задрах хурдыг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Өнцгийн дотоод үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Өнцгийн гадаад үхсэн бүсийг дахин тохируулах</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Стикийн үхсэн бүс</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Энэ хазайлтаас доош үед стик төвдөө байгаа гэж уншигдах тул жолоодлого хуримтлагдахгүй.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Стикийн үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Налалтын дотоод үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Налалтын гадаад үхсэн бүсийг дахин тохируулах</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Контроллерийн чиглэлийг дахин тохируулах</value></data>
@@ -3262,6 +3314,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Энэ машин жолооны өгч чадахаас их эргүүлэх момент шаарддаг тул муруйн оргил хэсэг тасарна.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Төв орчмын мэдрэмж, хүчлүүрийн туслалцаа, сааруулалт, үрэлт, барьц, тогтмол хурд, жолооны момент</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Төв орчмын мэдрэмж, хүчлүүрийн туслалцаа, сааруулалт, барьц, тогтмол хурд, жолооны момент</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Бага хурдад жолоо төвөө хэр хүчтэй барихыг заана. 100% нь машины өөрийнх.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Хүчлүүрийн туслалцаа</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Эргэлт ихсэх тусам жолооны хүчлүүр хүчин чармайлтыг хэр их хасахыг заана. Их байх тусам төвөөс холдоход жолоо хөнгөн болно.</value></data>
@@ -3403,7 +3456,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Өндөр аяыг дахин тохируулах</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Аяны хязгаарыг дахин тохируулах</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Системийн үндсэн гаралтаар тоглож буй бүхнийг энэ контроллерын суурилуулсан чанга яригч руу зэрэг хуулна. USB болон Bluetooth-ээр ажиллана.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Сонгосон төхөөрөмжид суурилуулсан чанга яригч байхгүй. Энэ контроллерын макро дуу системийн үндсэн гаралтаар тоглоно.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge энэ холболтоор сонгосон төхөөрөмжийн чанга яригч руу хүрэх замгүй. Энэ контроллерын макро дуу системийн үндсэн гаралтаар тоглоно.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-ийн хөтөч дээр ажилладаг DualSense туршилтын багц: Sony feature report-ын CRC хүрээлэлт болон PadForge-ийн виртуал контроллероос физик контроллер руу дамжуулдаг фирмвэрийн туршилтын командуудын лавлагаа.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3817,7 +3870,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast дэлгэц харуулах</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Энэ слотыг тэжээдэг Bliss-Box порт дахь Dreamcast контроллер бүрийн VMU дээр зураг тоглуулаад, порт бүрийг өөрийн дэлгэцийн тохиргоонд буцаана.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast зураг харуулах: {0} × {1} мс, давталтын тоо {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Зураг бүр дор хаяж нэг секунд харагдана, учир нь адаптер илгээсэн зураг бүрийг 100,000 бичилтэд зориулсан санах ойд хадгалдаг ба секунд тутам шинэ зураг илгээвэл ойролцоогоор нэг өдөрт үүнд хүрнэ. Зургууд нь BMP эсвэл PNG, VMU Animator .lcd файл эсвэл Dreamcast .vms дүрс тэмдгээс авсан 48 × 32 хэмжээтэй хар цагаан пиксел.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Зураг бүр дор хаяж нэг секунд харагдана. Адаптер илгээсэн зураг бүрийг өөрийн санах ойд хадгалдаг тул PadForge адаптер руу секундэд нэгээс олон зураг илгээдэггүй. Зургууд нь BMP эсвэл PNG, VMU Animator .lcd файл эсвэл Dreamcast .vms дүрс тэмдгээс авсан 48 × 32 хэмжээтэй хар цагаан пиксел.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Зургууд</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Зураг нэмэх…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Зураг хасах</value></data>
@@ -3894,15 +3947,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Давхарга сэлгэгдэн асаалттай байх үед давхаргын өөрийн оноосон оролтуудын аль нь ч идэвхгүй байсаар энэ хэдэн миллисекунд өнгөрвөл өөрөө унтарна. Хугацаа давхарга идэвхжихэд эхэлж, давхаргын оролт бүрт дахин эхэлнэ. 0 бол таныг өөрөө унтраах хүртэл давхарга асаалттай байна.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Тохируулгын үхсэн бүсийг 25% болгож дахин тохируулах.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Тохируулгын хурдыг секундэд 100% болгож дахин тохируулах.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Суллахад түвшинг 100% руу буцаахаар дахин тохируулах.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Автомат цуцлалтыг 0 болгож дахин тохируулах (давхаргыг унтраах хүртэл асаалттай байна).</value>
   </data>
@@ -3970,6 +4014,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop профайл</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop макро</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Курсорын муж</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (барих)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (суллах)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (идэвхжүүлэх)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Юу шилжихийг харахын тулд тохиргоо сонгоно уу.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Шилжих зүйлс</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Болох</value></data>
@@ -4580,7 +4627,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Чиглэлийн даралт нүднүүдээр алхаж, шинээр сонгогдсон нүд бүрийг ажиллуулна. Энэ үйлдэл Ажиллах горим эсвэл Дарах оролтыг ашиглахгүй.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi өргөтгөсөн протокол</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Дэмжигдсэн Flydigi контроллерууд дээр нэмэлт товч болон хөдөлгөөний мэдрэгчийг идэвхжүүлнэ.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi програм ажиллаж байна: {0}. Энэ нь PadForge-тэй ижил контроллерын интерфейсийг ашиглаж болох бөгөөд хоёулаа хандалттай үед Vader 5 Pro удаа дараа салж байсан тухай мэдээлэгдсэн. Хэрэв энэ контроллер салж дахин холбогдвол PadForge ашиглах үедээ үйлчилгээг зогсоох, контроллерыг нуусан хэвээр байлгаж үйлчилгээг HidHide-ийн зөвшөөрөгдсөн жагсаалтаас хасах, эсвэл Тохиргоо доторх «Flydigi өргөтгөсөн протокол»-ыг унтраагаад үзнэ үү. Сүүлийнх нь тусалдаг нь батлагдаагүй.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi програм ажиллаж байна: {0}. Энэ нь PadForge-ийн ашигладаг интерфейсээр контроллертой харилцдаг. Хэрэв энэ контроллер салж дахин холбогдвол PadForge ашиглах үедээ тэр програмыг зогсооно уу.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Алсаас хуваарилалт өөрчлөхийг зөвшөөрөх</value>
   </data>

@@ -29,8 +29,8 @@ namespace PadForge.Views
             /// item the removal takes.</summary>
             public string Detail { get; init; }
 
-            /// <summary>The row's first line: the kind, its first letter
-            /// upper.</summary>
+            /// <summary>The row's first line: the kind, as its string gives
+            /// it.</summary>
             public string Title { get; init; }
 
             /// <summary>What becomes of the item, at the row's end.</summary>

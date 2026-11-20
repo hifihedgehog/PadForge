@@ -232,23 +232,12 @@ namespace PadForge.Tests
             };
         }
 
-        private static readonly MethodInfo Capture = typeof(SettingsService)
-            .GetMethod("CaptureCurveRangeParams", BindingFlags.NonPublic | BindingFlags.Static);
-        private static readonly MethodInfo Restamp = typeof(SettingsService)
-            .GetMethod("ApplyCurveRangeParamsToRow", BindingFlags.NonPublic | BindingFlags.Static);
-
         /// <summary>A row's sources after the editor's save: each source
-        /// through its row item (MappingSourceItem.FromDomain, ToDomain),
-        /// then the stamps the editor has no card for put back by
-        /// SettingsService's own capture and re-stamp, as the save does.</summary>
+        /// through its row item (MappingSourceItem.FromDomain, ToDomain), as
+        /// the save rebuilds the added sources. The source line owns every
+        /// per-source value the chain reads, shaping included.</summary>
         public static System.Collections.Generic.List<MappingSource> Saved(MappingRow row)
-        {
-            object preserved = Capture.Invoke(null, new object[] { row });
-            var rebuilt = new MappingRow { Target = row.Target, LayerMask = row.LayerMask, CombineMode = row.CombineMode };
-            rebuilt.Sources.AddRange(row.Sources.Select(s => MappingSourceItem.FromDomain(s).ToDomain()));
-            Restamp.Invoke(null, new[] { rebuilt, preserved });
-            return rebuilt.Sources;
-        }
+            => row.Sources.Select(s => MappingSourceItem.FromDomain(s).ToDomain()).ToList();
 
         private static MappingSet[] Clone(MappingSet[] sets)
         {

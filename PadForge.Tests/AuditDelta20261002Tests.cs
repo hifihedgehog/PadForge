@@ -1308,12 +1308,22 @@ namespace PadForge.Tests
         public void EverySourceFieldThatSavesMarksTheFileDirty()
         {
             string item = RepoText("PadForge.App", "ViewModels", "MappingSourceItem.cs");
-            int start = item.IndexOf("public Engine.Data.MappingSource ToDomain() => new()", StringComparison.Ordinal);
-            Assert.True(start >= 0, "ToDomain moved");
+            int start = item.IndexOf("private Engine.Data.MappingSource ToDomainFields() => new()", StringComparison.Ordinal);
+            Assert.True(start >= 0, "ToDomainFields moved");
+            Assert.Contains("var src = ToDomainFields();", item);
+            Assert.Contains("StoreShapingAndGates(src);", item);
             int end = item.IndexOf("};", start, StringComparison.Ordinal);
             var saved = Regex.Matches(item.Substring(start, end - start), @"^\s+(\w+) = ", RegexOptions.Multiline)
                 .Select(m => m.Groups[1].Value).ToList();
+            // The source's own shaping and its gates are stored by a step of their own.
+            string shaping = RepoText("PadForge.App", "ViewModels", "MappingSourceItem.Shaping.cs");
+            int store = shaping.IndexOf("internal void StoreShapingAndGates(", StringComparison.Ordinal);
+            Assert.True(store >= 0, "StoreShapingAndGates moved");
+            int stored = shaping.IndexOf("\n        }", store, StringComparison.Ordinal);
+            saved.AddRange(Regex.Matches(shaping.Substring(store, stored - store), @"dst\.(\w+) = ").Select(m => m.Groups[1].Value));
             Assert.Contains("ParamRapidTriggerDistance", saved);
+            Assert.Contains("GateDescriptor", saved);
+            Assert.Contains("ParamCurveExponent", saved);
 
             string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
             int wire = window.IndexOf("msi.PropertyChanged += (s, e) =>", StringComparison.Ordinal);

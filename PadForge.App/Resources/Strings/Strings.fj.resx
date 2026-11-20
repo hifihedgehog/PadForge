@@ -170,7 +170,6 @@
 
   <!-- ═══ Device Types ═══ -->
 
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Naba ni dauqito…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Naba ni dauqito</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Dauqito</value></data>
@@ -745,7 +744,7 @@
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Yavavala mai na bass ni domo ni sisitemu</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone ni seva, Ituvaki ni controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, vakamalumutaki, Vakatotolotaki, Kaba ni output</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bulukau ni Aim Engage, Ivakarau ni Engage, Iyalayala ni Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bulukau ni Aim Engage, Ivakarau ni Engage, Gyro Vakayacori, Vakalomataki Tale, Iyalayala ni Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Vakayacora na gesture ni touchpad oqo</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Tasoso, tabaki, dreta vata, ivakatakarakara</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Katona na nomu</value></data>
@@ -760,7 +759,6 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu vou</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kauta tani na sela i otioti</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Yaca</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Vakaruataka</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakadikeva na shaker</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Dauqito se Vuravura</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Na vanua, na levu kei na matata ni dua na menu e tuvai ena menu ga, ena iwasewase [Macro kei na Menu] ni dua na controller.</value></data>
@@ -851,4 +849,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Vakayagataka</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E vakalevutaka na wiliwili ni curu oqo ki na kaukauwa oqo ni bera ni vakayagataka na output. Na 0 kei na 1 e tiko dodonu kina. Ni sivia na 1 e berabera cake voleka ina loma.</value></data>
 </root>

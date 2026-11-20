@@ -111,25 +111,35 @@ namespace PadForge.Engine.Steering
         private readonly double[] _lateral = new double[Steps + 1];
 
         /// <summary>Handwheel angle at the end of the table, in radians.</summary>
-        public double Lock { get; }
+        public double Lock { get; private set; }
 
-        public double Speed { get; }
-        public double Grip { get; }
+        public double Speed { get; private set; }
+        public double Grip { get; private set; }
 
         /// <summary>The steepest the torque rises along the curve, in
         /// N·m per radian of handwheel.</summary>
-        public double SteepestSlope { get; }
+        public double SteepestSlope { get; private set; }
 
         /// <summary>The slope at center, in N·m per radian of handwheel.</summary>
-        public double CenterSlope { get; }
+        public double CenterSlope { get; private set; }
 
         /// <summary>The greatest torque inside the lock, in N·m.</summary>
-        public double PeakTorque { get; }
+        public double PeakTorque { get; private set; }
 
         /// <summary>The handwheel angle of <see cref="PeakTorque"/>, in radians.</summary>
-        public double PeakAngle { get; }
+        public double PeakAngle { get; private set; }
 
         public SteeringCurve(SteeringVehicle car, SteeringFeel feel, double speed, double grip, double lockRadians)
+            => Build(car, feel, speed, grip, lockRadians);
+
+        /// <summary>Samples the curve again, for another car, speed, grip
+        /// or lock, into the same tables. The force feedback pass keeps
+        /// one curve a wheel and rebuilds it as the car's speed changes,
+        /// so a moving car costs the polling thread no allocation.</summary>
+        internal void Rebuild(SteeringVehicle car, SteeringFeel feel, double speed, double grip, double lockRadians)
+            => Build(car, feel, speed, grip, lockRadians);
+
+        private void Build(SteeringVehicle car, SteeringFeel feel, double speed, double grip, double lockRadians)
         {
             if (speed < LeastSpeed) speed = LeastSpeed;
             if (grip < 0.05) grip = 0.05;

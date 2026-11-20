@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Κανένα</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>δευτερόλεπτα</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>λεπτά (0 = ποτέ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Χωρίς ανάθεση</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← αριστερά)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ πάνω)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε. Τοποθετήστε το SDL3.dll δίπλα στο PadForge.exe. Λήψη του από https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε. Κατεβάστε ξανά το PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Η λειτουργία του προγράμματος οδήγησης απέτυχε: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Οι ρυθμίσεις αντιγράφηκαν στο πρόχειρο.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Οι πληροφορίες συσκευής αντιγράφηκαν στο πρόχειρο.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Χαμηλή</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Εικόνα</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Λίστα</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Έξοδος: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Έξοδοι: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Κίνηση</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Κάντε κλικ σε ένα στοιχείο ελέγχου και πατήστε την είσοδο που θα το ελέγχει.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Παιχνίδια που το PadForge δεν γνωρίζει</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Για mod που αναζητούν ένα DSX σε λειτουργία πριν στείλουν.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Τι εμφανίζεται</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ο δακτύλιος, το πλέγμα ή η γραμμή ενός μενού όσο είναι ανοιχτό</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όταν ενεργοποιείται ένα επίπεδο shift, για τον χρόνο που ορίζει το επίπεδο</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Το όνομα του προφίλ όταν αλλάζει το προφίλ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ο δακτύλιος, το πλέγμα ή η γραμμή ενός μενού όσο είναι ανοιχτό.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όταν ενεργοποιείται ένα επίπεδο shift, για τον χρόνο που ορίζει το επίπεδο.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Το όνομα του προφίλ όταν αλλάζει το προφίλ.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Αντιγραφή διεύθυνσης</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Θέση στην οθόνη</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Σύνδεση τηλεφώνου</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Αυτόματη εκκίνηση της μηχανής κατά την έναρξη</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Συνέχιση δειγματοληψίας όταν το παράθυρο χάνει την εστίαση</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Ρυθμός δειγματοληψίας (εκτός αν τον παρακάμπτει ένα προφίλ)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Η μηχανή διαβάζει κάθε συσκευή και ενημερώνει τα εικονικά χειριστήρια τόσες φορές το δευτερόλεπτο, από 60 έως 10000. Ένας υψηλότερος ρυθμός καταναλώνει περισσότερο χρόνο επεξεργαστή. Τα Windows ξυπνούν τη μηχανή το πολύ περίπου 2000 φορές το δευτερόλεπτο, οπότε ένας υψηλότερος ρυθμός εκτελεί περισσότερα περάσματα σε κάθε ξύπνημα. Όσο είναι ενεργό ένα προφίλ με δικό του ρυθμό δειγματοληψίας, ισχύει εκείνος ο ρυθμός. Αυτή η τιμή επανέρχεται όταν το προφίλ απενεργοποιηθεί.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Η μηχανή διαβάζει κάθε συσκευή και ενημερώνει τα εικονικά χειριστήρια τόσες φορές το δευτερόλεπτο, από 60 έως 10000. Ένας υψηλότερος ρυθμός καταναλώνει περισσότερο χρόνο επεξεργαστή. Σε αυτόν τον υπολογιστή, τα Windows ξυπνούν τη μηχανή το πολύ {0} φορές το δευτερόλεπτο, οπότε ένας υψηλότερος ρυθμός εκτελεί περισσότερα περάσματα σε κάθε ξύπνημα. Όσο είναι ενεργό ένα προφίλ με δικό του ρυθμό δειγματοληψίας, ισχύει εκείνος ο ρυθμός. Αυτή η τιμή επανέρχεται όταν το προφίλ απενεργοποιηθεί.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Απόκρυψη συσκευών από τα παιχνίδια</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Γενικός διακόπτης για την απόκρυψη συσκευών μέσω HidHide και για τα hooks εισόδου χαμηλού επιπέδου. Όταν είναι κλειστός, καμία συσκευή δεν αποκρύπτεται, ανεξάρτητα από τις ρυθμίσεις ανά συσκευή.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Διατήρηση απόκρυψης συσκευών μεταξύ εκκινήσεων</value></data>
@@ -937,7 +939,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Χιλιοστά του δευτερολέπτου μεταξύ των χαρακτήρων που πληκτρολογούνται, έως 1000. Με 0, ολόκληρο το κείμενο πληκτρολογείται αμέσως.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Αποσύνδεση σε αδράνεια</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Λεπτομέρειες</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>λεπτά</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Αποσύνδεση Bluetooth κατά τη σύνδεση μέσω USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Γρήγορη φόρτιση. Όταν αυτό το χειριστήριο αναφέρει ότι φορτίζει ενώ είναι συνδεδεμένο μέσω Bluetooth, η σύνδεση Bluetooth διακόπτεται, ώστε να φορτίζει χωρίς να τροφοδοτεί τον πομποδέκτη. Μετρά κάθε πηγή τροφοδοσίας USB, ακόμη και οι φορτιστές τοίχου. Αν ενεργοποιήσετε ξανά το Bluetooth ενώ το καλώδιο παραμένει συνδεδεμένο, η σύνδεση δεν διακόπτεται μέχρι την επόμενη αποσύνδεση του καλωδίου.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Ανάγνωση ως χειριστήριο iCade</value></data>
@@ -979,8 +980,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>Η VMU δείχνει το όνομα του ενεργού προφίλ και ακολουθεί κάθε αλλαγή προφίλ.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>Η VMU δείχνει τη θέση του ενεργού προφίλ στη λίστα προφίλ. Το Προεπιλεγμένο προφίλ είναι το 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>Η VMU δείχνει την εικόνα του ενεργού προφίλ ή το όνομά του, όταν δεν έχει εικόνα. Κάθε προφίλ διατηρεί τη δική του εικόνα.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Η VMU δείχνει την ώρα, η οποία ξαναγράφεται μία φορά το λεπτό. Ο προσαρμογέας κρατά κάθε εικόνα σε μνήμη με αντοχή 100.000 εγγραφών, όριο που αυτή η λειτουργία φτάνει μετά από περίπου δέκα εβδομάδες συνεχούς προβολής όλο το εικοσιτετράωρο.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Η VMU δείχνει τις ώρες και τα λεπτά από τη στιγμή που το PadForge βρήκε το χειριστήριο, και ξαναγράφεται μία φορά το λεπτό. Ένα χειριστήριο που μένει εκτός θύρας πάνω από δέκα δευτερόλεπτα ξεκινά ξανά από το μηδέν. Ο προσαρμογέας κρατά κάθε εικόνα σε μνήμη με αντοχή 100.000 εγγραφών, όριο που αυτή η λειτουργία φτάνει μετά από περίπου δέκα εβδομάδες συνεχούς προβολής όλο το εικοσιτετράωρο.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Η VMU δείχνει την ώρα, η οποία ξαναγράφεται μία φορά το λεπτό. Ο προσαρμογέας αποθηκεύει κάθε εικόνα στη δική του μνήμη, γι' αυτό το PadForge την ξαναγράφει το πολύ τόσο συχνά.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Η VMU δείχνει τις ώρες και τα λεπτά από τη στιγμή που το PadForge βρήκε το χειριστήριο, και ξαναγράφεται μία φορά το λεπτό. Ένα χειριστήριο που μένει εκτός θύρας πάνω από δέκα δευτερόλεπτα ξεκινά ξανά από το μηδέν. Ο προσαρμογέας αποθηκεύει κάθε εικόνα στη δική του μνήμη, γι' αυτό το PadForge την ξαναγράφει το πολύ μία φορά το λεπτό.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>Η VMU δείχνει μια εικόνα της επιλογής σας: ένα BMP ή PNG, ένα αρχείο .lcd του VMU Animator ή ένα εικονίδιο .vms του Dreamcast. Οι εικόνες περικόπτονται σε 48 επί 32 ασπρόμαυρα εικονοστοιχεία.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Επιλογή εικόνας…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Επιλογή εικόνας για {0}…</value></data>
@@ -1025,6 +1026,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Το χειριστήριο σε λειτουργία Xbox δεν απάντησε ως Apex 4, οπότε δεν στάλθηκε τίποτα και τα Windows το έχουν ξανά. Επαναφέρετέ το σε λειτουργία DInput με τον δικό του διακόπτη.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Τα Windows δεν μετακίνησαν το χειριστήριο στο WinUSB, οπότε δεν στάλθηκε τίποτα. Επαναφέρετέ το σε λειτουργία DInput με τον δικό του διακόπτη.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Διακόπηκε. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη πριν στείλετε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Η θύρα της οθόνης δεν άνοιξε, γι' αυτό δεν στάλθηκε τίποτα. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Η εικόνα έχει περισσότερα καρέ από όσα χωρά η οθόνη αυτού του χειριστηρίου.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Μια εικόνα στέλνεται ήδη σε αυτό το χειριστήριο. Περιμένετε να ολοκληρωθεί.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Η οθόνη ζήτησε την εικόνα σε διεύθυνση στην οποία το PadForge δεν γράφει, γι' αυτό δεν στάλθηκε τίποτα. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Η εικόνα στάλθηκε, αλλά το χειριστήριο δεν επανήλθε στη λειτουργία DInput. Επαναφέρετέ το με τον δικό του διακόπτη.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Το χειριστήριο δεν δέχτηκε την εντολή που το προετοιμάζει, γι' αυτό δεν στάλθηκε τίποτα. Ελέγξτε ότι είναι συνδεδεμένο και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Η αποστολή σταμάτησε από ένα σφάλμα στο PadForge. Το αρχείο καταγραφής έχει τις λεπτομέρειες.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Μια εικόνα εξακολουθεί να στέλνεται στο χειριστήριο. Να διακοπεί η αποστολή?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Αρχεία Controller Pak (*.mpk)|*.mpk|Όλα τα αρχεία (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak θύρα {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Επαναφορά γεωμετρίας μενού</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Επαναφορά κελιού</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Επαναφορά ευαισθησίας</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Επαναφορά επιτάχυνσης</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Επαναφορά χρόνου κρατήματος</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Επαναφορά χρονικού παραθύρου πατήματος</value></data>
@@ -1976,7 +1983,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Οποιοδήποτε επίπεδο</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Εκτελείται συνεχώς όσο αυτό το εικονικό χειριστήριο είναι ενεργό. Δεν απαιτείται κουμπί εναύσματος.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Ενέργειες</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Επίπεδο, Πηγή, Κατώφλι, Κατεύθυνση, Κατακράτηση κουμπιών εναύσματος, Επανάληψη</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Προσθήκη ενέργειας</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Τύπος</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Εικονικά κουμπιά</value></data>
@@ -2002,7 +2008,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Πάτημα κουμπιού ποντικιού</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Απελευθέρωση κουμπιού ποντικιού</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Κύλιση ποντικιού</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης επιφάνειας αφής</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Συνδυασμός πλήκτρων</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Συνδυασμός πλήκτρων σε μορφή {Key1}{Key2}. Επεξεργάσιμο.</value></data>
@@ -2133,6 +2138,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Επανάληψη {0} κάθε {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Ποντίκι X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Ποντίκι Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Οριζόντια μετατόπιση</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Κάθετη μετατόπιση</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Διάστημα</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Επιλογή στην οθόνη</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Καταγραφή σε {0}…</value></data>
@@ -2167,6 +2174,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Ανεστραμμένο μισό</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Καμία αντιστοιχισμένη συσκευή</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Άγνωστη συσκευή</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Κλικ επιφάνειας αφής</value></data>
@@ -2609,7 +2617,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Κάτω (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Πάνω (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ενεργοποίηση</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Κουμπί ενεργοποίησης στόχευσης, Λειτουργία ενεργοποίησης, Κατώφλι εύκολης στόχευσης</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Κουμπί ενεργοποίησης στόχευσης, Λειτουργία ενεργοποίησης, Ενεργό γυροσκόπιο, Επανακέντρωση, Κατώφλι εύκολης στόχευσης</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Προαιρετικές προϋποθέσεις που περιορίζουν το πότε είναι ενεργό το γυροσκόπιο. Η απόκλιση του δεξιού μοχλού και το κουμπί ενεργοποίησης στόχευσης μπορούν να ρυθμιστούν ξεχωριστά. Το γυροσκόπιο λειτουργεί μόνο όσο είναι ενεργή κάθε ρυθμισμένη προϋπόθεση.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Τοπικός</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Παίκτης</value></data>
@@ -2646,6 +2654,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Επαναφορά κατωφλίου εύκολης στόχευσης</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Επαναφορά κουμπιού ενεργοποίησης στόχευσης</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Επαναφορά λειτουργίας ενεργοποίησης</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Επίπεδο</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Το επίπεδο του οποίου τη ρύθμιση Ενεργό γυροσκόπιο δείχνουν και αλλάζουν οι παρακάτω γραμμές.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Ενεργό γυροσκόπιο</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Πότε λειτουργεί το γυροσκόπιο σε αυτό το επίπεδο, επιπλέον του κουμπιού ενεργοποίησης. Ένα επίπεδο shift που έχει οριστεί σε Ίδιο με το βασικό ακολουθεί το βασικό.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Πάντα ενεργό</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Ίδιο με το βασικό</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Όσο κρατιέται</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Όσο δεν κρατιέται</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Εναλλαγή σε κάθε πάτημα</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Κουμπιά ενεργού γυροσκοπίου</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Τα κουμπιά που διαβάζει το Ενεργό γυροσκόπιο, σε οποιοδήποτε χειριστήριο αυτής της θέσης.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Απαιτείται</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Αν αρκεί ένα επιλεγμένο κουμπί ή πρέπει να κρατιούνται όλα τα επιλεγμένα κουμπιά.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Οποιοδήποτε κουμπί</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Κάθε κουμπί</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Επανακέντρωση όταν ενεργοποιείται το γυροσκόπιο</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Παίρνει τη στάση του χειριστηρίου ως σημείο ηρεμίας κάθε φορά που ενεργοποιείται το γυροσκόπιο.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Επαναφορά ενεργού γυροσκοπίου</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Επαναφορά κουμπιών ενεργού γυροσκοπίου</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Επαναφορά απαιτούμενου</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Επαναφορά επανακέντρωσης όταν ενεργοποιείται το γυροσκόπιο</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Επαναφορά μοχλού ενεργοποίησης</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Επαναφορά κατεύθυνσης ενεργοποίησης</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Διέλευση κίνησης</value></data>
@@ -2656,6 +2685,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Το παιχνίδι διαβάζει την κίνηση με την ευαισθησία, την εξομάλυνση και την καμπύλη που ορίζονται εδώ.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Επαναφορά ρυθμίσεων διέλευσης</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Μόνο όσο</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Αυτή η πηγή μετρά μόνο όσο αυτή η είσοδος διαβάζεται επίσης ως πατημένη στο ίδιο χειριστήριο. Ένας έλεγχος ζώνης από εισαγωγή διαβάζεται ως το εύρος μοχλού ή σκανδάλης που ελέγχει.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Και όσο</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Μια δεύτερη είσοδος που περιμένει επίσης αυτή η πηγή.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Αλλαγή εισόδου</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Επιλέγει μια άλλη είσοδο προς αναμονή.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Καμπύλη</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ανεβάζει την ανάγνωση αυτής της εισόδου σε αυτή την ισχύ πριν οδηγήσει την έξοδο. Το 0 και το 1 την αφήνουν ευθεία. Πάνω από 1 είναι πιο αργή κοντά στο κέντρο.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Εξωτερικό εύρος</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Η έξοδος φτάνει στο μέγιστο σε τόσο της διαδρομής. Το 100% είναι ανενεργό.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Αντι-νεκρή ζώνη</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Η έξοδος ξεκινά από αυτή την τιμή μόλις κινηθεί η είσοδος. Το 0 είναι ανενεργό.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Σχήμα νεκρής ζώνης</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Το Ανενεργό αφήνει την ανάγνωση ως έχει. Η Αξονική μετρά μόνο αυτόν τον άξονα. Η Ακτινική μετρά μαζί το ζεύγος μοχλών.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Ανενεργό</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Αξονική</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Ακτινική</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Εσωτερική νεκρή ζώνη</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Κάτω από αυτό το ποσοστό της διαδρομής η είσοδος διαβάζεται ως κεντραρισμένη.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Πολλαπλασιαστής ευαισθησίας γυροσκοπίου ανά πηγή. 1.0 = η προεπιλογή της μηχανής (500°/s → πλήρης απόκλιση). Οι τιμές πάνω από 1.0 είναι πιο ευαίσθητες. Οι τιμές κάτω από 1.0 είναι λιγότερο ευαίσθητες.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Πολλαπλασιαστής ευαισθησίας κλίσης ανά πηγή. 1.0 = κλίση 90° για πλήρη απόκλιση. Οι τιμές πάνω από 1.0 φτάνουν στην πλήρη απόκλιση με μικρότερη κλίση.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Γυροσκόπιο: κλίση X</value></data>
@@ -3236,6 +3284,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Στάθμη</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Χρονικό όριο αδράνειας</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Δευτερόλεπτα μέχρι να καταστραφεί ένα εικονικό χειριστήριο όταν όλες οι αντιστοιχισμένες συσκευές του είναι εκτός σύνδεσης. Το 0 το απενεργοποιεί. Τα υπόλοιπα χειριστήρια του ίδιου τύπου μετακινούνται προς τα πάνω για να καλύψουν το κενό και συνδέονται ξανά σε χαμηλότερες υποδοχές.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>δευτερόλεπτα (0 = ποτέ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Προσθήκη επιπέδου</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Προσθέτει ένα επίπεδο shift: έναν δεύτερο πίνακα αντιστοιχίσεων που ενεργοποιείται όσο κρατιέται ένα κουμπί ή όταν γίνεται εναλλαγή.</value></data>
@@ -3347,6 +3396,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Επαναφορά ρυθμού εκτύλιξης</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Επαναφορά εσωτερικής νεκρής ζώνης γωνίας</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Επαναφορά εξωτερικής νεκρής ζώνης γωνίας</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Νεκρή ζώνη μοχλού</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Κάτω από αυτή την απόκλιση ο μοχλός διαβάζεται ως κεντραρισμένος, οπότε δεν συσσωρεύεται διεύθυνση.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης μοχλού</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Επαναφορά εσωτερικής νεκρής ζώνης γερσίματος</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Επαναφορά εξωτερικής νεκρής ζώνης γερσίματος</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Επαναφορά προσανατολισμού χειριστηρίου</value></data>
@@ -3452,6 +3504,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>από {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Αυτό το αυτοκίνητο ζητά περισσότερη ροπή από όση έχει η τιμονιέρα, γι' αυτό η κορυφή της καμπύλης κόβεται.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Αίσθηση στο κέντρο, υποβοήθηση, απόσβεση, τριβή, πρόσφυση, σταθερή ταχύτητα, ροπή τιμονιέρας</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Αίσθηση στο κέντρο, υποβοήθηση, απόσβεση, πρόσφυση, σταθερή ταχύτητα, ροπή τιμονιέρας</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Πόσο σταθερά κρατά το τιμόνι το κέντρο του σε χαμηλή ταχύτητα. Το 100% είναι το βάρος του ίδιου του αυτοκινήτου.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Υποβοήθηση</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Πόσο αφαιρεί το υδραυλικό τιμόνι καθώς μεγαλώνει η πλευρική επιτάχυνση. Όσο περισσότερο, τόσο ελαφρύτερο το τιμόνι μακριά από το κέντρο.</value></data>
@@ -3593,7 +3646,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Επαναφορά υψηλών τόνων</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Επαναφορά ορίου τόνου</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Αντιγράφει παράλληλα ό,τι αναπαράγει η προεπιλεγμένη έξοδος του συστήματος στο ενσωματωμένο ηχείο αυτού του χειριστηρίου. Λειτουργεί μέσω USB και Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Η επιλεγμένη συσκευή δεν έχει ενσωματωμένο ηχείο. Οι ήχοι μακροεντολών για αυτό το χειριστήριο αναπαράγονται στην προεπιλεγμένη έξοδο του συστήματος.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Το PadForge δεν έχει διαδρομή προς ηχείο στην επιλεγμένη συσκευή μέσω αυτής της σύνδεσης. Οι ήχοι μακροεντολών για αυτό το χειριστήριο αναπαράγονται στην προεπιλεγμένη έξοδο του συστήματος.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Σουίτα δοκιμών DualSense για πρόγραμμα περιήγησης, του Xuezhou Dai (daidr): αναφορά για την πλαισίωση CRC των αναφορών feature της Sony και για τις εντολές δοκιμής υλικολογισμικού που προωθεί το PadForge από τα εικονικά στα φυσικά χειριστήρια.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Εμφάνιση οθόνης Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Αναπαράγει εικόνες στη VMU κάθε χειριστηρίου Dreamcast σε θύρα Bliss-Box που τροφοδοτεί αυτή την υποδοχή και έπειτα επαναφέρει κάθε θύρα στη δική της ρύθμιση οθόνης.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Εμφάνιση εικόνων Dreamcast: {0} × {1} ms, πλήθος επαναλήψεων {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Κάθε εικόνα εμφανίζεται για τουλάχιστον ένα δευτερόλεπτο, επειδή ο προσαρμογέας κρατά κάθε εικόνα που του στέλνεται σε μνήμη με αντοχή 100.000 εγγραφών, όριο που μια νέα εικόνα κάθε δευτερόλεπτο φτάνει σε περίπου μία ημέρα. Οι εικόνες είναι 48 επί 32 ασπρόμαυρα εικονοστοιχεία από ένα BMP ή PNG, ένα αρχείο .lcd του VMU Animator ή ένα εικονίδιο .vms του Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Κάθε εικόνα εμφανίζεται για τουλάχιστον ένα δευτερόλεπτο. Το PadForge στέλνει στον προσαρμογέα το πολύ μία εικόνα το δευτερόλεπτο, επειδή ο προσαρμογέας αποθηκεύει κάθε εικόνα που του στέλνεται στη δική του μνήμη. Οι εικόνες είναι 48 επί 32 ασπρόμαυρα εικονοστοιχεία από ένα BMP ή PNG, ένα αρχείο .lcd του VMU Animator ή ένα εικονίδιο .vms του Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Εικόνες</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Προσθήκη εικόνας…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Αφαίρεση εικόνας</value></data>
@@ -4113,15 +4166,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Όσο το επίπεδο είναι ενεργοποιημένο με εναλλαγή, απενεργοποιείται μόνο του μετά από τόσα χιλιοστά του δευτερολέπτου χωρίς να είναι ενεργή καμία από τις αντιστοιχισμένες εισόδους του ίδιου του επιπέδου. Το χρονόμετρο ξεκινά όταν ενεργοποιείται το επίπεδο και μηδενίζεται με κάθε είσοδο του επιπέδου. Με 0, το επίπεδο μένει ενεργό μέχρι να το απενεργοποιήσετε εσείς.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Επαναφορά της νεκρής ζώνης τριμαρίσματος στο 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Επαναφορά της ταχύτητας τριμαρίσματος στο 100% ανά δευτερόλεπτο.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Επαναφορά στην άμεση επιστροφή της στάθμης στο 100% κατά την απελευθέρωση.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Επαναφορά της αυτόματης ακύρωσης στο 0 (το επίπεδο μένει ενεργό μέχρι να απενεργοποιηθεί).</value>
   </data>
@@ -4189,6 +4233,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Προφίλ Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Μακροεντολή Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Περιοχή δρομέα</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (κράτημα)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (απελευθέρωση)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ενεργοποίηση)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Επιλέξτε μια διαμόρφωση για να δείτε τι μεταφέρεται.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Τι μεταφέρεται</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Γίνεται</value></data>
@@ -4825,7 +4872,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Τα πατήματα κατεύθυνσης μετακινούνται βήμα βήμα στα κελιά και ενεργοποιούν κάθε νέο επιλεγμένο κελί, χωρίς «Λειτουργία ενεργοποίησης» ή «Είσοδος κλικ». Το στιλ «Γραμμή ενεργειών» μετακινείται χωρίς να ενεργοποιεί και ενεργοποιεί με το δικό του χειριστήριο «Ενεργοποίηση».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Βελτιωμένο πρωτόκολλο Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Ενεργοποιεί επιπλέον κουμπιά και αισθητήρες κίνησης σε υποστηριζόμενα χειριστήρια Flydigi.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Εκτελείται λογισμικό της Flydigi: {0}. Μπορεί να χρησιμοποιεί την ίδια διεπαφή χειριστηρίου με το PadForge, και έχει αναφερθεί ότι ένα Vader 5 Pro αποσυνδεόταν επανειλημμένα όσο είχαν πρόσβαση και τα δύο. Αν αυτό το χειριστήριο αποσυνδέεται και επανασυνδέεται, σταματήστε την υπηρεσία όσο χρησιμοποιείτε το PadForge, κρατήστε το χειριστήριο κρυμμένο και αφαιρέστε την υπηρεσία από τη λίστα επιτρεπόμενων του HidHide ή δοκιμάστε να απενεργοποιήσετε το «Βελτιωμένο πρωτόκολλο Flydigi» στις Ρυθμίσεις, κάτι που δεν έχει επιβεβαιωθεί ότι βοηθά.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Εκτελείται λογισμικό της Flydigi: {0}. Επικοινωνεί με το χειριστήριο μέσω της διεπαφής που χρησιμοποιεί το PadForge. Αν αυτό το χειριστήριο αποσυνδέεται και επανασυνδέεται, σταματήστε αυτό το λογισμικό όσο χρησιμοποιείτε το PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Να επιτρέπονται απομακρυσμένες αλλαγές αναθέσεων</value>
   </data>
@@ -5485,9 +5532,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Επιλογή του τι δείχνει…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Επικάλυψη οθόνης PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Δεν υπάρχει ακόμα τίποτα για εμφάνιση. Επιλέξτε τι δείχνει στη σελίδα Επικάλυψη οθόνης, στην ενότητα Επιπλέον.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Εναλλαγή σταυρονήματος</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Εναλλαγή μεγεθυντή</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Κάθε σταυρόνημα</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Σταυρόνημα</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>

@@ -838,4 +838,85 @@ public sealed class WheelCenteringTests(ITestOutputHelper output)
         steady.Reset();
         Assert.Equal(1.0, steady.Factor);
     }
+
+    /// <summary>The curve is sampled at steps of speed and grip. A
+    /// game's speed or grip that wavers on the edge of two steps keeps
+    /// one curve, and one that keeps changing, a car braking hard,
+    /// rebuilds the same curve in place, so the polling thread allocates
+    /// nothing for it (audit C6-1).</summary>
+    [Fact]
+    public void AChangingSpeedRebuildsTheCurveInPlace_AndAWaveringOneKeepsIt()
+    {
+        var s = Settings(SteeringVehicle.Sedan, 8.0);
+        var centering = new WheelCentering();
+        long tick = 10_000;
+        centering.Step(s, null, 0.05, 20.12, 0.509, tick++);
+        var curve = centering.Curve;
+        double speed = curve.Speed, grip = curve.Grip;
+        for (int i = 0; i < 200; i++)
+        {
+            bool odd = (i & 1) != 0;
+            centering.Step(s, null, 0.05, odd ? 20.12 : 20.13, odd ? 0.509 : 0.511, tick++);
+            Assert.Equal(speed, centering.Curve.Speed);
+            Assert.Equal(grip, centering.Curve.Grip);
+        }
+
+        // A speed and a grip well into another step move the curve, in the same tables.
+        centering.Step(s, null, 0.05, 21.0, 0.60, tick++);
+        Assert.Equal(21.0, centering.Curve.Speed);
+        Assert.Equal(0.60, centering.Curve.Grip, 9);
+        Assert.Same(curve, centering.Curve);
+        var fresh = new SteeringCurve(s.Car, s.Car.Feel.Scaled(s.WeightPercent, s.OnCenterPercent, s.AssistPercent), 21.0, 0.60,
+            s.Range * Math.PI / 360.0);
+        Assert.Equal(fresh.SteepestSlope, centering.Curve.SteepestSlope);
+        Assert.Equal(fresh.Torque(10 * Deg), centering.Curve.Torque(10 * Deg));
+
+        // Braking at 1 g with a poll a millisecond crosses a quarter meter a second every 25 polls.
+        double braking = 40;
+        foreach (long bytes in AllocationWindow.Clean(() =>
+        {
+            braking -= 0.00981;
+            if (braking < 5) braking = 40;
+            centering.Step(s, null, 0.05, braking, 1.0, tick++);
+        }, 2000))
+            Assert.Equal(0, bytes);
+    }
+
+    /// <summary>The stability rule runs on the delay the Release Test
+    /// measured, up to the longest the test stores: a wheel measured at
+    /// 38 ms gets the damping a 38 ms loop needs, not a 30 ms one's
+    /// (audit C6-6).</summary>
+    [Fact]
+    public void TheStabilityRuleRunsOnTheWholeMeasuredDelay()
+    {
+        var s = new CenteringSettings(true, SteeringVehicle.Sedan, 100, 100, 100, 100, 0.0, false, 60 * Mph, 1, 8.0, 900,
+            CenteringEffects.All, 1000);
+        WheelCalibration Wheel(double delay) => new()
+        {
+            Inertia = 0.02, Friction = 0.0, Delay = delay, WheelTorque = 8.0,
+            DamperMid = 5.0 * WheelCalibration.DamperCoefficients[0] / 10000.0, DamperFull = 5.0,
+        };
+        double DampingAt(double delay) => new WheelCentering().Step(s, Wheel(delay), 0.05, 60 * Mph, 1.0, 10_000).Damping;
+        double at30 = DampingAt(0.030), at38 = DampingAt(0.038);
+        output.WriteLine($"damping {at30:F3} at 30 ms, {at38:F3} at 38 ms");
+        Assert.True(at30 > 0);
+        Assert.InRange(at38 / at30, 38 / 30.0 * 0.98, 38 / 30.0 * 1.02);
+    }
+
+    /// <summary>A car the game reports stopped reads 0 on the card: the
+    /// frame carries the speed in use, and the model's floor stays
+    /// inside the curve (audit C6-9).</summary>
+    [Fact]
+    public void AStoppedCarReadsZero_AndTheCurveKeepsItsFloor()
+    {
+        var s = Settings(SteeringVehicle.Sedan, 8.0);
+        var centering = new WheelCentering();
+        var frame = centering.Step(s, null, 0.05, 0.0, 0.7, 10_000);
+        Assert.Equal(0.0, frame.Speed);
+        Assert.Equal(0.7, frame.Grip);
+        Assert.Equal(SteeringCurve.LeastSpeed, centering.Curve.Speed);
+        Assert.Equal(0.0, new CenteringLive(true, frame, true, true).Speed);
+        frame = centering.Step(s, null, 0.05, 30.1, 0.7, 10_001);
+        Assert.Equal(30.1, frame.Speed);
+    }
 }

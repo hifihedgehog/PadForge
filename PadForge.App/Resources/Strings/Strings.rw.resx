@@ -128,7 +128,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ibumoso)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ hejuru)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ntiyabonetse</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ntiyabonetse. Shyira SDL3.dll iruhande rwa PadForge.exe. Uyikure kuri https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ntiyabonetse. Ongera ukuremo PadForge.</value></data>
   <data name="Status_ProfileCreatedEmpty_Format" xml:space="preserve"><value>Umwirondoro "{0}" wakozwe (nta kirimo).</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Umwirondoro "{0}" wakozwe.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Umwirondoro "{0}" wasibwe.</value></data>
@@ -157,6 +157,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iri hasi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ishusho</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Urutonde</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Igisohoka: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ibisohoka: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Imigendere</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kanda ku gice cy'umugenzuzi, hanyuma ukande icyinjizwa kigomba kugikoresha.</value></data>
@@ -323,7 +324,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Andika "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(nta nyandiko)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Inyandiko</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>iminota</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nimero y'umukinnyi…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nimero y'umukinnyi</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Umukinnyi</value></data>
@@ -659,6 +659,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Subiramo {0} buri {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Imbeba X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Imbeba Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Intera itambitse</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Intera ihagaze</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intera y'igihe</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Uburyo</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Gufata</value></data>
@@ -682,6 +684,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Kimwe cya kabiri</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nta gikoresho gihujwe</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Igikoresho kitazwi</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Gukanda touchpad</value></data>
@@ -877,6 +880,14 @@
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Gusubiza uko byari biri: ibipimo</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Gusubiza uko byari biri: deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Gusa igihe</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Iyi nkomoko ibarwa gusa igihe iki cyinjiza na cyo gisomwa nk'ikanzwe kuri controller imwe. Igerageza ry'agace rivuye mu byinjijwe risomwa nk'urugero rw'inkoni cyangwa rwa trigger rigenzura.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Kandi igihe</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Icyinjiza cya kabiri iyi nkomoko na yo itegereza.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Hindura icyinjiza</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ihitamo ikindi cyinjiza cyo gutegereza.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Umurongo uhetamye</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Izamura igipimo cy'iki cyinjiza kuri iki kigero mbere y'uko kiyobora igisohoka. 0 na 1 biragisiga kigororotse. Hejuru ya 1 biratinda hafi yo hagati.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Umuvuduko w'imbeba X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Umuvuduko w'imbeba Y</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Aho imbeba iri X</value></data>
@@ -1788,7 +1799,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera trigger kunyeganyega</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone zo guhengama, icyerekezo cya controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, koroshya, kwihutisha, umurongo uhetamye w'isohoka</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buto yo gufungura kuboneza, uburyo bwo gufungura, urugero rwa Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Buto yo gufungura kuboneza, uburyo bwo gufungura, Gyro ifunguye, gusubiza hagati, urugero rwa Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Koresha touchpad nk'agati cyangwa D-pad</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Igice cya ecran touchpad igeraho</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, gukoraho, gukomatanya intoki, imiterere</value></data>
@@ -1801,7 +1812,6 @@
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guhindura icyerekezo, Momentum, igisubizo, kwihutisha, fling</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontorola ya Extended</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Kora</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Urwego, Inkomoko, Urugero, Icyerekezo, Consume Trigger Buttons, Gusubiramo</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Hindura izina</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu nshya</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Ongeraho igice</value></data>
@@ -1943,4 +1953,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Shyira mu bikorwa</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Deadzone y'imbere</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Munsi y'iki gice cy'urugendo, icyinjiza gisomwa nk'aho kiri hagati.</value></data>
 </root>

@@ -83,6 +83,62 @@ namespace PadForge.Tests
 
         // ── A row's part, link and battery ──
 
+        /// <summary>The Details card and Copy Details name the link the
+        /// panel's Link tile names: Bluetooth, USB, PS/2 or I2C.</summary>
+        [Fact]
+        public void TheDetailsCardAndCopyDetailsNameEveryLink()
+        {
+            var page = Page();
+            var details = page.Descendants().Where(e => e.Name.LocalName == "DockPanel"
+                && e.Elements().Any(k => Attr(k, "Text") == S("Devices_Detail_Link"))).ToList();
+            Assert.NotEmpty(details);
+            foreach (var row in details)
+                Assert.Contains("SelectedDevice.HasLink", Attr(row, "Visibility"));
+            Assert.DoesNotContain("IsBluetoothLink", RepoText("PadForge.App", "Views", "DevicesPage.xaml"));
+            Assert.Contains("SelectedDevice.LinkText", RepoText("PadForge.App", "Views", "DevicesPage.xaml"));
+
+            Assert.Equal("BT", DevicesPage.DossierLink(DeviceLink.Bluetooth));
+            Assert.Equal("USB", DevicesPage.DossierLink(DeviceLink.Usb));
+            Assert.Equal("PS/2", DevicesPage.DossierLink(DeviceLink.Ps2));
+            Assert.Equal("I2C", DevicesPage.DossierLink(DeviceLink.I2c));
+            Assert.Null(DevicesPage.DossierLink(DeviceLink.None));
+            string code = RepoText("PadForge.App", "Views", "DevicesPage.xaml.cs");
+            Assert.Contains("DossierLink(dev.Link)", code);
+            Assert.DoesNotContain("if (dev.IsBluetoothLink)", code);
+        }
+
+        /// <summary>A link read while the device was away, or from a walk that
+        /// ended before it settled, is read again once the row is online.</summary>
+        [Fact]
+        public void ARowComingOnlineReadsItsLinkAgain()
+        {
+            var walk = DeviceTransport.TreeWalk;
+            var tree = new List<PadForge.Engine.AncestryHop>();
+            int walks = 0;
+            DeviceTransport.ForgetLinks();
+            DeviceTransport.TreeWalk = path => { walks++; return tree.ToArray(); };
+            try
+            {
+                var row = Row("DualSense Wireless Controller", "Gamepad", DualSenseUsb, false, 0x054C, 0x0CE6);
+                Assert.False(row.HasLink);
+                Assert.Equal(1, walks);
+                Assert.False(row.HasLink);
+                Assert.Equal(1, walks);
+
+                tree.Add(new PadForge.Engine.AncestryHop(@"HID\VID_054C&PID_0CE6&MI_03\8&1A2B3C4D&0&0000", Array.Empty<string>(), "HidUsb"));
+                tree.Add(new PadForge.Engine.AncestryHop(@"USB\VID_054C&PID_0CE6\7&1&0&4", Array.Empty<string>(), "HidUsb"));
+                tree.Add(new PadForge.Engine.AncestryHop(@"PCI\VEN_1022&DEV_15B7\4&1&0&0441", Array.Empty<string>(), "USBXHCI"));
+                row.IsOnline = true;
+                Assert.True(row.HasLink);
+                Assert.Equal(DeviceLink.Usb, row.Link);
+            }
+            finally
+            {
+                DeviceTransport.TreeWalk = walk;
+                DeviceTransport.ForgetLinks();
+            }
+        }
+
         [Fact]
         public void ARowKnowsItsPartItsLinkAndWhetherItsBatteryIsLow()
         {
@@ -314,7 +370,7 @@ namespace PadForge.Tests
             vm.Connection = DeviceConnection.NotConnected;
             Assert.Equal(new[] { "Wheel: B Wheel", "Mouse: D Mouse" }, Parts(vm.MainView));
             Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), Rows(vm.MainView));
-            Assert.Equal(2, vm.MainShown);
+            Assert.Equal(2, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Empty(Rows(vm.NotConnectedView));
             Assert.False(vm.HasNotConnected);
             Assert.Equal(2, vm.ConnectedTotal);
@@ -405,7 +461,7 @@ namespace PadForge.Tests
                 "Other: All Touchpads (Merged), All Consumer Controls (Merged)",
             }, Parts(vm.MainView));
             Assert.Equal(3, vm.ConnectedTotal);
-            Assert.Equal(7, vm.MainShown);
+            Assert.Equal(7, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
 
             vm.Filter = DeviceFilter.Keyboard;
             Assert.Equal(new[] { "Keyboard: A Keyboard, All Keyboards (Merged)" }, Parts(vm.MainView));
@@ -692,14 +748,22 @@ namespace PadForge.Tests
         // ── The table's form ──
 
         [Fact]
-        public void TheListShowsLinkAndBatteryAsColumnsFrom660() => RunSta(() =>
+        public void TheListShowsLinkAndBatteryAsColumnsFromTableMin() => RunSta(() =>
         {
-            Assert.False(DevicesPage.IsWide(659.5));
-            Assert.True(DevicesPage.IsWide(660));
+            Assert.False(DevicesPage.IsWide(DevicesPage.TableMin - 0.5));
+            Assert.True(DevicesPage.IsWide(DevicesPage.TableMin));
             // The room the columns and the row's insets take, and what is
-            // then left a name at the least width.
+            // then left a name at the least width. The Remove column is the
+            // button's width and its margin, read from the page.
+            var page = Page();
+            var removeButton = Named(page, "RowRemoveButton");
+            Assert.Equal("8,0,0,0", Attr(removeButton, "Margin"));
+            var removeStyle = Keyed(page, "DeviceRowRemoveButton");
+            double remove = 8 + double.Parse(removeStyle.Elements()
+                .Single(e => Attr(e, "Property") == "Width").Attribute("Value").Value, System.Globalization.CultureInfo.InvariantCulture);
+            Assert.Equal(36, remove);
             const double insets = 18 + 16, tile = 40, gap = 14, link = 104, battery = 108, usedBy = 104;
-            Assert.Equal(DevicesPage.TableMin - 214, insets + tile + gap + (gap + link) + (gap + battery) + (gap + usedBy));
+            Assert.Equal(DevicesPage.TableMin - 214, insets + tile + gap + (gap + link) + (gap + battery) + (gap + usedBy) + remove);
 
             // Every row and the head read it from the list card.
             var metadata = (FrameworkPropertyMetadata)DevicesPage.IsWideTableProperty.GetMetadata(typeof(FrameworkElement));

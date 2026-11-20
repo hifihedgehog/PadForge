@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>ບໍ່ມີ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ວິນາທີ</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>ນາທີ (0 = ບໍ່ເຄີຍ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ບໍ່ໄດ້ກຳນົດ</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ຊ້າຍ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ຂຶ້ນ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>ບໍ່ພົບ SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>ບໍ່ພົບ SDL3.dll. ວາງ SDL3.dll ໄວ້ຄຽງຂ້າງ PadForge.exe. ດາວໂຫຼດມັນໄດ້ຈາກ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>ບໍ່ພົບ SDL3.dll. ດາວໂຫຼດ PadForge ອີກຄັ້ງ.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ການດຳເນີນການຂອງໄດຣເວີລົ້ມເຫຼວ: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ສຳເນົາການຕັ້ງຄ່າໄປຄລິບບອດແລ້ວ.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ສຳເນົາຂໍ້ມູນອຸປະກອນໄປຄລິບບອດແລ້ວ.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ໃກ້ໝົດ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ຮູບພາບ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ລາຍການ</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} ເອົາພຸດ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ເອົາພຸດ</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>ການເຄື່ອນໄຫວ</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ຄລິກສ່ວນຄວບຄຸມໃນຮູບ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ເກມທີ່ PadForge ບໍ່ຮູ້ຈັກ</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ສຳລັບມອດທີ່ຊອກຫາ DSX ທີ່ກຳລັງເຮັດວຽກກ່ອນຈະສົ່ງ.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ສິ່ງທີ່ສະແດງ</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ວົງ, ຕາຕະລາງ ຫຼື ແຖບຂອງເມນູໃນຂະນະທີ່ມັນເປີດຢູ່</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນເມື່ອປ່ຽນຊັ້ນ, ຕາມໄລຍະເວລາທີ່ຊັ້ນນັ້ນກຳນົດ</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ເມື່ອໂປຣໄຟລ໌ປ່ຽນ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ວົງ, ຕາຕະລາງ ຫຼື ແຖບຂອງເມນູໃນຂະນະທີ່ມັນເປີດຢູ່.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນເມື່ອປ່ຽນຊັ້ນ, ຕາມໄລຍະເວລາທີ່ຊັ້ນນັ້ນກຳນົດ.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ເມື່ອໂປຣໄຟລ໌ປ່ຽນ.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ສຳເນົາທີ່ຢູ່</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ຕຳແໜ່ງເທິງໜ້າຈໍ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ເຊື່ອມຕໍ່ໂທລະສັບ</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ເລີ່ມເອັນຈິນອັດຕະໂນມັດເມື່ອເປີດໂປຣແກຣມ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ອ່ານຕໍ່ເມື່ອໜ້າຕ່າງບໍ່ຢູ່ໃນໂຟກັສ</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນ (ເວັ້ນເສຍແຕ່ໂປຣໄຟລ໌ຈະກຳນົດແທນ)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ເອັນຈິນອ່ານທຸກອຸປະກອນ ແລະ ອັບເດດຕົວຄວບຄຸມສະເໝືອນເທົ່າຈຳນວນຄັ້ງນີ້ຕໍ່ວິນາທີ, ຕັ້ງແຕ່ 60 ຫາ 10000. ອັດຕາທີ່ສູງຂຶ້ນຈະໃຊ້ເວລາຂອງໂປຣເຊັສເຊີຫຼາຍຂຶ້ນ. Windows ປຸກເອັນຈິນໄດ້ປະມານ 2000 ຄັ້ງຕໍ່ວິນາທີເປັນຢ່າງຫຼາຍ, ສະນັ້ນອັດຕາທີ່ສູງກວ່ານັ້ນຈະເຮັດວຽກຫຼາຍຮອບໃນແຕ່ລະຄັ້ງທີ່ຖືກປຸກ. ໃນຂະນະທີ່ໂປຣໄຟລ໌ທີ່ມີອັດຕາການອ່ານຂອງຕົນເອງເປີດໃຊ້ຢູ່, ຈະໃຊ້ອັດຕານັ້ນແທນ. ຄ່ານີ້ຈະກັບມາເມື່ອໂປຣໄຟລ໌ຖືກປິດໃຊ້.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>ເອັນຈິນອ່ານທຸກອຸປະກອນ ແລະ ອັບເດດຕົວຄວບຄຸມສະເໝືອນເທົ່າຈຳນວນຄັ້ງນີ້ຕໍ່ວິນາທີ, ຕັ້ງແຕ່ 60 ຫາ 10000. ອັດຕາທີ່ສູງຂຶ້ນຈະໃຊ້ເວລາຂອງໂປຣເຊັສເຊີຫຼາຍຂຶ້ນ. ໃນ PC ນີ້, Windows ປຸກເອັນຈິນໄດ້ {0} ຄັ້ງຕໍ່ວິນາທີເປັນຢ່າງຫຼາຍ, ສະນັ້ນອັດຕາທີ່ສູງກວ່ານັ້ນຈະເຮັດວຽກຫຼາຍຮອບໃນແຕ່ລະຄັ້ງທີ່ຖືກປຸກ. ໃນຂະນະທີ່ໂປຣໄຟລ໌ທີ່ມີອັດຕາການອ່ານຂອງຕົນເອງເປີດໃຊ້ຢູ່, ຈະໃຊ້ອັດຕານັ້ນແທນ. ຄ່ານີ້ຈະກັບມາເມື່ອໂປຣໄຟລ໌ຖືກປິດໃຊ້.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນຈາກເກມ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>ສະວິດຫຼັກສຳລັບການເຊື່ອງອຸປະກອນດ້ວຍ HidHide ແລະ ຮຸກອິນພຸດລະດັບຕ່ຳ. ເມື່ອປິດ, ຈະບໍ່ມີອຸປະກອນໃດຖືກເຊື່ອງ ບໍ່ວ່າການຕັ້ງຄ່າຂອງແຕ່ລະອຸປະກອນຈະເປັນແນວໃດ.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນໄວ້ລະຫວ່າງການເປີດແຕ່ລະຄັ້ງ</value></data>
@@ -923,7 +925,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ມິນລິວິນາທີລະຫວ່າງແຕ່ລະຕົວອັກສອນທີ່ພິມ, ສູງສຸດ 1000. 0 ຈະພິມຂໍ້ຄວາມທັງໝົດໃນເທື່ອດຽວ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ຕັດການເຊື່ອມຕໍ່ເມື່ອບໍ່ໃຊ້ງານ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ລາຍລະອຽດ</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ນາທີ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ຕັດ Bluetooth ເມື່ອສຽບສາຍ USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ສາກໄວ. ເມື່ອຕົວຄວບຄຸມນີ້ລາຍງານວ່າກຳລັງສາກໄຟ ຂະນະເຊື່ອມຕໍ່ຜ່ານ Bluetooth, ການເຊື່ອມຕໍ່ Bluetooth ຈະຖືກຕັດ ເພື່ອໃຫ້ມັນສາກໄຟໂດຍບໍ່ຕ້ອງໃຊ້ພະລັງງານກັບວິທະຍຸ. ແຫຼ່ງໄຟ USB ໃດກໍໄດ້ ລວມທັງສາກຕິດຝາ. ຖ້າທ່ານເປີດ Bluetooth ຄືນ ຂະນະທີ່ສາຍຍັງສຽບຢູ່, ມັນຈະຖືກປະໄວ້ຈົນກວ່າຈະຖອດສາຍຄັ້ງຕໍ່ໄປ.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>ອ່ານເປັນຕົວຄວບຄຸມ iCade</value></data>
@@ -965,8 +966,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU ສະແດງຊື່ຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ ແລະ ປ່ຽນຕາມທຸກຄັ້ງທີ່ສະຫຼັບໂປຣໄຟລ໌.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU ສະແດງລຳດັບຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ໃນລາຍການໂປຣໄຟລ໌. ໂປຣໄຟລ໌ຄ່າເລີ່ມຕົ້ນແມ່ນ 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU ສະແດງຮູບຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ ຫຼື ຊື່ຂອງມັນເມື່ອບໍ່ມີຮູບ. ແຕ່ລະໂປຣໄຟລ໌ເກັບຮູບຂອງຕົນເອງ.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ສະແດງເວລາຂອງມື້ ໂດຍຂຽນໃໝ່ນາທີລະເທື່ອ. ອະແດັບເຕີເກັບແຕ່ລະຮູບໄວ້ໃນໜ່ວຍຄວາມຈຳທີ່ຮອງຮັບການຂຽນ 100,000 ເທື່ອ ເຊິ່ງການນີ້ຈະໃຊ້ໝົດຫຼັງຈາກສະແດງຕະຫຼອດເວລາປະມານສິບອາທິດ.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU ສະແດງຊົ່ວໂມງ ແລະ ນາທີນັບຕັ້ງແຕ່ PadForge ພົບແພດ ໂດຍຂຽນໃໝ່ນາທີລະເທື່ອ. ແພດທີ່ອອກຈາກພອດເກີນສິບວິນາທີ ຈະເລີ່ມນັບໃໝ່ຈາກສູນ. ອະແດັບເຕີເກັບແຕ່ລະຮູບໄວ້ໃນໜ່ວຍຄວາມຈຳທີ່ຮອງຮັບການຂຽນ 100,000 ເທື່ອ ເຊິ່ງການນີ້ຈະໃຊ້ໝົດຫຼັງຈາກສະແດງຕະຫຼອດເວລາປະມານສິບອາທິດ.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ສະແດງເວລາຂອງມື້ ໂດຍຂຽນໃໝ່ນາທີລະເທື່ອ. ອະແດັບເຕີເກັບແຕ່ລະຮູບໄວ້ໃນໜ່ວຍຄວາມຈຳຂອງມັນເອງ, ສະນັ້ນ PadForge ຈຶ່ງຂຽນມັນໃໝ່ບໍ່ເລື້ອຍກວ່ານັ້ນ.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU ສະແດງຊົ່ວໂມງ ແລະ ນາທີນັບຕັ້ງແຕ່ PadForge ພົບແພດ ໂດຍຂຽນໃໝ່ນາທີລະເທື່ອ. ແພດທີ່ອອກຈາກພອດເກີນສິບວິນາທີ ຈະເລີ່ມນັບໃໝ່ຈາກສູນ. ອະແດັບເຕີເກັບແຕ່ລະຮູບໄວ້ໃນໜ່ວຍຄວາມຈຳຂອງມັນເອງ, ສະນັ້ນ PadForge ຈຶ່ງຂຽນມັນໃໝ່ບໍ່ເລື້ອຍກວ່ານາທີລະເທື່ອ.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU ສະແດງຮູບທີ່ທ່ານເລືອກ: BMP ຫຼື PNG, ໄຟລ໌ .lcd ຂອງ VMU Animator ຫຼື ໄອຄອນ .vms ຂອງ Dreamcast. ຮູບຈະຖືກຕັດເປັນ 48 × 32 ພິກເຊວ ສີດຳ ແລະ ຂາວ.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ເລືອກຮູບ…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>ເລືອກຮູບສຳລັບ {0}…</value></data>
@@ -1011,6 +1012,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>ຕົວຄວບຄຸມໃນໂໝດ Xbox ບໍ່ໄດ້ຕອບເປັນ Apex 4 ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ ແລະ Windows ໄດ້ມັນຄືນແລ້ວ. ສະຫຼັບມັນກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ບໍ່ໄດ້ຍ້າຍຕົວຄວບຄຸມໄປ WinUSB ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ສະຫຼັບມັນກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ຢຸດແລ້ວ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ ກ່ອນທີ່ທ່ານຈະສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>ພອດຂອງໜ້າຈໍບໍ່ເປີດ, ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>ຮູບນີ້ມີເຟຣມຫຼາຍກວ່າທີ່ໜ້າຈໍຂອງຕົວຄວບຄຸມນີ້ເກັບໄດ້.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ມີຮູບໜຶ່ງກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມນີ້ຢູ່ແລ້ວ. ລໍຖ້າໃຫ້ມັນສຳເລັດກ່ອນ.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>ໜ້າຈໍຂໍຮູບຢູ່ທີ່ຢູ່ທີ່ PadForge ບໍ່ໄດ້ຂຽນລົງ, ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>ສົ່ງຮູບແລ້ວ, ແຕ່ຕົວຄວບຄຸມບໍ່ໄດ້ປ່ຽນກັບໄປໂໝດ DInput. ປ່ຽນມັນກັບຄືນດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>ຕົວຄວບຄຸມບໍ່ຮັບຄຳສັ່ງທີ່ກຽມມັນໃຫ້ພ້ອມ, ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ກວດເບິ່ງວ່າມັນເຊື່ອມຕໍ່ຢູ່ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ການສົ່ງຢຸດລົງຍ້ອນຂໍ້ຜິດພາດໃນ PadForge. ໄຟລ໌ບັນທຶກມີລາຍລະອຽດ.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ຮູບຍັງກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມ. ຢຸດການສົ່ງບໍ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ໄຟລ໌ Controller Pak (*.mpk)|*.mpk|ທຸກໄຟລ໌ (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ພອດ {0}.mpk</value></data>
@@ -1505,7 +1513,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>ຄືນຄ່າຮູບຊົງເມນູ</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>ຄືນຄ່າເຊວ</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>ຄືນຄ່າຄວາມອ່ອນໄຫວ</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>ຄືນຄ່າຄວາມເລັ່ງ</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນ</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>ຄືນຄ່າເວລາກົດຄ້າງ</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>ຄືນຄ່າຊ່ວງເວລາກົດ</value></data>
@@ -1786,7 +1793,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ຊັ້ນໃດກໍໄດ້</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ເຮັດວຽກຕໍ່ເນື່ອງຂະນະທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ເຮັດວຽກຢູ່. ບໍ່ຕ້ອງມີປຸ່ມເປີດໃຊ້.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>ເຮັດ</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>ຊັ້ນ, ແຫຼ່ງ, ຄ່າເກນ, ທິດທາງ, ສະກັດປຸ່ມເປີດໃຊ້, ເຮັດຊ້ຳ</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>ເພີ່ມການກະທຳ</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ປະເພດ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ປຸ່ມສະເໝືອນ</value></data>
@@ -1812,7 +1818,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>ກົດປຸ່ມເມົ້າ</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>ປ່ອຍປຸ່ມເມົ້າ</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>ໝຸນລໍ້ເມົ້າ</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>ສະຫຼັບໂອເວີເລທັດແພດ</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ປຸ່ມ</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>ຊຸດປຸ່ມ</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>ຊຸດປຸ່ມໃນຮູບແບບ {Key1}{Key2}. ແກ້ໄຂໄດ້.</value></data>
@@ -1943,6 +1948,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>ເຮັດຊ້ຳ {0} ທຸກໆ {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>ເມົ້າ X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>ເມົ້າ Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>ໄລຍະເລື່ອນແນວນອນ</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ໄລຍະເລື່ອນແນວຕັ້ງ</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ໄລຍະຫ່າງ</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>ເລືອກເທິງໜ້າຈໍ</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ກຳລັງເກັບໃນ {0}…</value></data>
@@ -1977,6 +1984,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>ເຄິ່ງປີ້ນ</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>ບໍ່ມີອຸປະກອນທີ່ແມັບ</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>ອຸປະກອນທີ່ບໍ່ຮູ້ຈັກ</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ຄລິກທັດແພດ</value></data>
@@ -2419,7 +2427,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ລົງ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ຂຶ້ນ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ການເປີດໃຊ້</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ປຸ່ມເປີດການເລັງ, ໂໝດການເປີດໃຊ້, ຄ່າເກນການເລັງງ່າຍ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ປຸ່ມເປີດການເລັງ, ໂໝດການເປີດໃຊ້, ເປີດໄຈໂຣ, ຕັ້ງຈຸດກາງໃໝ່, ຄ່າເກນການເລັງງ່າຍ</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ເງື່ອນໄຂທາງເລືອກທີ່ຈຳກັດວ່າໄຈໂຣເຮັດວຽກເມື່ອໃດ. ຕັ້ງຄ່າການເບນສະຕິກຂວາ ແລະ ປຸ່ມເປີດການເລັງໄດ້ແຕ່ລະອັນ. ໄຈໂຣທຳງານສະເພາະເມື່ອທຸກເງື່ອນໄຂທີ່ຕັ້ງໄວ້ເຮັດວຽກ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ທ້ອງຖິ່ນ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ຜູ້ຫຼິ້ນ</value></data>
@@ -2456,6 +2464,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>ຄືນຄ່າ ຄ່າເກນການເລັງງ່າຍ</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>ຄືນຄ່າປຸ່ມເປີດການເລັງ</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>ຄືນຄ່າໂໝດການເປີດໃຊ້</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>ຊັ້ນ</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>ຊັ້ນທີ່ແຖວລຸ່ມນີ້ສະແດງ ແລະ ປ່ຽນການຕັ້ງຄ່າ “ເປີດໄຈໂຣ” ຂອງມັນ.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ເປີດໄຈໂຣ</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>ເມື່ອໃດທີ່ໄຈໂຣເຮັດວຽກໃນຊັ້ນນີ້, ນອກເໜືອຈາກປຸ່ມເປີດການເລັງ. ຊັ້ນປ່ຽນທີ່ຕັ້ງເປັນ “ຄືກັບຊັ້ນພື້ນຖານ” ຈະເຮັດຕາມຊັ້ນພື້ນຖານ.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>ເປີດຕະຫຼອດ</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>ຄືກັບຊັ້ນພື້ນຖານ</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>ຂະນະກົດຄ້າງ</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>ຂະນະບໍ່ໄດ້ກົດຄ້າງ</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>ສະຫຼັບທຸກຄັ້ງທີ່ກົດ</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ປຸ່ມເປີດໄຈໂຣ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ “ເປີດໄຈໂຣ” ອ່ານ, ຢູ່ໃນຕົວຄວບຄຸມໃດກໍໄດ້ຂອງຊ່ອງນີ້.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>ຕ້ອງການ</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>ວ່າປຸ່ມທີ່ໝາຍໄວ້ປຸ່ມດຽວກໍພໍ ຫຼື ຕ້ອງກົດຄ້າງທຸກປຸ່ມທີ່ໝາຍໄວ້.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ປຸ່ມໃດກໍໄດ້</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>ທຸກປຸ່ມ</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ຕັ້ງຈຸດກາງໃໝ່ເມື່ອໄຈໂຣເປີດ</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ໃຊ້ທ່າຂອງຕົວຄວບຄຸມເປັນຈຸດພັກທຸກຄັ້ງທີ່ໄຈໂຣເປີດ.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ຄືນຄ່າເປີດໄຈໂຣ</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>ຄືນຄ່າປຸ່ມເປີດໄຈໂຣ</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>ຄືນຄ່າຕ້ອງການ</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>ຄືນຄ່າຕັ້ງຈຸດກາງໃໝ່ເມື່ອໄຈໂຣເປີດ</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>ຄືນຄ່າສະຕິກເປີດໃຊ້</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ຄືນຄ່າທິດທາງການເປີດໃຊ້</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>ການສົ່ງຜ່ານການເຄື່ອນໄຫວ</value></data>
@@ -2466,6 +2495,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ເກມອ່ານການເຄື່ອນໄຫວພ້ອມຄວາມອ່ອນໄຫວ, ການເຮັດໃຫ້ລຽບ ແລະ ເສັ້ນໂຄ້ງທີ່ຕັ້ງໄວ້ໃນນີ້.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>ຄືນຄ່າການປັບແຕ່ງການສົ່ງຜ່ານ</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ຄວາມອ່ອນໄຫວ</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>ສະເພາະຂະນະ</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ແຫຼ່ງນີ້ນັບສະເພາະຂະນະທີ່ອິນພຸດນີ້ຖືກອ່ານວ່າກົດຢູ່ເຊັ່ນກັນໃນຕົວຄວບຄຸມດຽວກັນ. ການທົດສອບເຂດຈາກການນຳເຂົ້າຈະອ່ານເປັນຊ່ວງຂອງສະຕິກ ຫຼື ໄກທີ່ມັນກວດ.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>ແລະ ຂະນະ</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ອິນພຸດທີສອງທີ່ແຫຼ່ງນີ້ລໍຖ້າເຊັ່ນກັນ.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ປ່ຽນອິນພຸດ</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>ເລືອກອິນພຸດອື່ນເພື່ອລໍຖ້າ.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>ເສັ້ນໂຄ້ງ</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>ຍົກຄ່າທີ່ອ່ານໄດ້ຂອງອິນພຸດນີ້ຂຶ້ນກຳລັງນີ້ ກ່ອນທີ່ມັນຈະຂັບເອົາພຸດ. 0 ແລະ 1 ປ່ອຍໃຫ້ເປັນເສັ້ນຊື່. ສູງກວ່າ 1 ຈະຊ້າລົງໃກ້ຈຸດກາງ.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>ຊ່ວງດ້ານນອກ</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>ເອົາພຸດຈະເຕັມທີ່ເມື່ອເຖິງສ່ວນນີ້ຂອງໄລຍະເຄື່ອນ. 100% ແມ່ນປິດ.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ແອນຕີເດດໂຊນ</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ເອົາພຸດເລີ່ມຕົ້ນທີ່ຄ່ານີ້ທັນທີທີ່ອິນພຸດເຄື່ອນ. 0 ແມ່ນປິດ.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>ຮູບຊົງເດດໂຊນ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>ປິດ ປ່ອຍຄ່າທີ່ອ່ານໄວ້ຕາມເດີມ. ຕາມແກນ ວັດແກນນີ້ແຍກຕ່າງຫາກ. ລັດສະໝີ ວັດຄູ່ແກນຂອງສະຕິກພ້ອມກັນ.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ປິດ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>ຕາມແກນ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>ລັດສະໝີ</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>ເດດໂຊນດ້ານໃນ</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>ຕ່ຳກວ່າສ່ວນນີ້ຂອງໄລຍະເຄື່ອນ ອິນພຸດຈະຖືກອ່ານວ່າຢູ່ຈຸດກາງ.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ຕົວຄູນຄວາມອ່ອນໄຫວໄຈໂຣຂອງແຕ່ລະແຫຼ່ງ. 1.0 = ຄ່າເລີ່ມຕົ້ນຂອງເອັນຈິນ (500°/s → ການເບນເຕັມ). ຄ່າສູງກວ່າ 1.0 ອ່ອນໄຫວກວ່າ. ຄ່າຕ່ຳກວ່າ 1.0 ອ່ອນໄຫວໜ້ອຍກວ່າ.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ຕົວຄູນຄວາມອ່ອນໄຫວການອຽງຂອງແຕ່ລະແຫຼ່ງ. 1.0 = ອຽງ 90° ສຳລັບການເບນເຕັມ. ຄ່າສູງກວ່າ 1.0 ໄປເຖິງການເບນເຕັມດ້ວຍການອຽງໜ້ອຍກວ່າ.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ການອຽງໄຈໂຣ X</value></data>
@@ -3027,6 +3075,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>ລະດັບ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>ໝົດເວລາເມື່ອບໍ່ມີການໃຊ້ງານ</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ຈຳນວນວິນາທີກ່ອນທີ່ຕົວຄວບຄຸມສະເໝືອນຈະຖືກທຳລາຍ ເມື່ອອຸປະກອນທີ່ແມັບໄວ້ທັງໝົດອອບລາຍ. 0 ປິດໃຊ້. ຕົວຄວບຄຸມປະເພດດຽວກັນທີ່ເຫຼືອຢູ່ຈະເລື່ອນຂຶ້ນມາເຕີມບ່ອນວ່າງ ແລະ ຜູກກັບຊ່ອງທີ່ຕ່ຳກວ່າໃໝ່.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ວິນາທີ (0 = ບໍ່ເຄີຍ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ເພີ່ມຊັ້ນ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ເພີ່ມຊັ້ນ Shift. ຕາຕະລາງການແມັບທີສອງທີ່ເຮັດວຽກໃນຂະນະທີ່ກົດຄ້າງ ຫຼື ສະຫຼັບປຸ່ມ.</value></data>
@@ -3138,6 +3187,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>ຄືນຄ່າອັດຕາການຄາຍການໝຸນ</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນດ້ານໃນຂອງມຸມ</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນດ້ານນອກຂອງມຸມ</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>ເດດໂຊນສະຕິກ</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ຕ່ຳກວ່າການເບນນີ້ ສະຕິກຈະຖືກອ່ານວ່າຢູ່ຈຸດກາງ, ຈຶ່ງບໍ່ມີການລ້ຽວສະສົມຂຶ້ນ.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນສະຕິກ</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນດ້ານໃນຂອງການອຽງ</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນດ້ານນອກຂອງການອຽງ</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>ຄືນຄ່າທິດທາງຂອງຕົວຄວບຄຸມ</value></data>
@@ -3243,6 +3295,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ຈາກ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ລົດຄັນນີ້ຕ້ອງການແຮງບິດຫຼາຍກວ່າທີ່ພວງມາໄລມີ ສະນັ້ນສ່ວນເທິງສຸດຂອງເສັ້ນໂຄ້ງຈຶ່ງຖືກຕັດອອກ.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>ຄວາມຮູ້ສຶກຢູ່ຈຸດກາງ, ແຮງຊ່ວຍພວງມາໄລ, ການໜ່ວງ, ແຮງສຽດທານ, ການຍຶດເກາະ, ຄວາມໄວຄົງທີ່, ແຮງບິດພວງມາໄລ</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>ຄວາມຮູ້ສຶກຢູ່ຈຸດກາງ, ແຮງຊ່ວຍພວງມາໄລ, ການໜ່ວງ, ການຍຶດເກາະ, ຄວາມໄວຄົງທີ່, ແຮງບິດພວງມາໄລ</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ພວງມາໄລຍຶດຈຸດກາງແໜ້ນເທົ່າໃດທີ່ຄວາມໄວຕ່ຳ. 100% ແມ່ນຄ່າຂອງລົດແທ້.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>ແຮງຊ່ວຍພວງມາໄລ</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ພວງມາໄລເພົາເວີຊ່ວຍຜ່ອນແຮງໄດ້ເທົ່າໃດເມື່ອການເຂົ້າໂຄ້ງເພີ່ມຂຶ້ນ. ຄ່າຫຼາຍຂຶ້ນເຮັດໃຫ້ພວງມາໄລເບົາຂຶ້ນເມື່ອຫ່າງຈາກຈຸດກາງ.</value></data>
@@ -3384,7 +3437,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ຄືນຄ່າໂທນສູງ</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ຄືນຄ່າຂີດຈຳກັດໂທນ</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ສຳເນົາສິ່ງທີ່ຂາອອກຄ່າເລີ່ມຕົ້ນຂອງລະບົບຫຼິ້ນ ໄປຫາລຳໂພງໃນຕົວຂອງຕົວຄວບຄຸມນີ້ ພ້ອມກັນ. ໃຊ້ໄດ້ຜ່ານ USB ແລະ Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ອຸປະກອນທີ່ເລືອກບໍ່ມີລຳໂພງໃນຕົວ. ສຽງມາໂຄຣຂອງຕົວຄວບຄຸມນີ້ຈະຫຼິ້ນໃນຂາອອກຄ່າເລີ່ມຕົ້ນຂອງລະບົບ.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge ບໍ່ມີທາງໄປຫາລຳໂພງຂອງອຸປະກອນທີ່ເລືອກຜ່ານການເຊື່ອມຕໍ່ນີ້. ສຽງມາໂຄຣຂອງຕົວຄວບຄຸມນີ້ຈະຫຼິ້ນໃນຂາອອກຄ່າເລີ່ມຕົ້ນຂອງລະບົບ.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ຊຸດທົດສອບ DualSense ໃນບຣາວເຊີ ໂດຍ Xuezhou Dai (daidr): ເອກະສານອ້າງອີງສຳລັບໂຄງສ້າງ CRC ຂອງລາຍງານຟີເຈີຂອງ Sony ແລະ ຄຳສັ່ງທົດສອບເຟີມແວ ທີ່ PadForge ສົ່ງຕໍ່ຈາກຕົວຄວບຄຸມສະເໝືອນໄປຫາຕົວຄວບຄຸມຕົວຈິງ.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3796,7 +3849,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>ສະແດງໜ້າຈໍ Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ສະແດງຮູບໃນ VMU ຂອງແພດ Dreamcast ແຕ່ລະອັນໃນພອດ Bliss-Box ທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້, ແລ້ວຄືນແຕ່ລະພອດໃຫ້ກັບການຕັ້ງຄ່າໜ້າຈໍຂອງມັນເອງ.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>ສະແດງຮູບ Dreamcast: {0} × {1} ms, ຈຳນວນເທື່ອຊ້ຳ {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ແຕ່ລະຮູບສະແດງຢ່າງໜ້ອຍໜຶ່ງວິນາທີ, ເພາະອະແດັບເຕີເກັບທຸກຮູບທີ່ຖືກສົ່ງໄປໄວ້ໃນໜ່ວຍຄວາມຈຳທີ່ທົນການຂຽນໄດ້ 100,000 ເທື່ອ, ເຊິ່ງການສົ່ງຮູບໃໝ່ທຸກວິນາທີຈະໃຊ້ໝົດໃນປະມານໜຶ່ງມື້. ຮູບມີຂະໜາດ 48 ຄູນ 32 ພິກເຊລ ສີດຳ-ຂາວ ຈາກໄຟລ໌ BMP ຫຼື PNG, ໄຟລ໌ .lcd ຂອງ VMU Animator ຫຼື ໄອຄອນ .vms ຂອງ Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ແຕ່ລະຮູບສະແດງຢ່າງໜ້ອຍໜຶ່ງວິນາທີ. PadForge ສົ່ງຮູບໄປຫາອະແດັບເຕີໄດ້ຫຼາຍສຸດວິນາທີລະຮູບ, ເພາະອະແດັບເຕີເກັບທຸກຮູບທີ່ຖືກສົ່ງໄປໄວ້ໃນໜ່ວຍຄວາມຈຳຂອງມັນເອງ. ຮູບມີຂະໜາດ 48 ຄູນ 32 ພິກເຊລ ສີດຳ-ຂາວ ຈາກໄຟລ໌ BMP ຫຼື PNG, ໄຟລ໌ .lcd ຂອງ VMU Animator ຫຼື ໄອຄອນ .vms ຂອງ Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>ຮູບ</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>ເພີ່ມຮູບ…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>ລຶບຮູບ</value></data>
@@ -3873,15 +3926,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ໃນຂະນະທີ່ຊັ້ນຖືກສະຫຼັບເປີດ, ມັນຈະປິດຕົວເອງຫຼັງຈາກຈຳນວນມິລລິວິນາທີນີ້ ເມື່ອບໍ່ມີອິນພຸດທີ່ແມັບໄວ້ຂອງຊັ້ນນັ້ນເຮັດວຽກ. ຕົວຈັບເວລາເລີ່ມເມື່ອຊັ້ນເປີດໃຊ້ ແລະ ເລີ່ມໃໝ່ທຸກເທື່ອທີ່ມີອິນພຸດຂອງຊັ້ນ. 0 ຈະຄົງຊັ້ນໄວ້ຈົນກວ່າທ່ານຈະສະຫຼັບປິດເອງ.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ຄືນຄ່າເດດໂຊນການປັບລະອຽດເປັນ 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ຄືນຄ່າຄວາມໄວການປັບລະອຽດເປັນ 100% ຕໍ່ວິນາທີ.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>ຄືນຄ່າເປັນການດີດລະດັບກັບຄືນ 100% ເມື່ອປ່ອຍ.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>ຄືນຄ່າການຍົກເລີກອັດຕະໂນມັດເປັນ 0 (ຊັ້ນຄົງເປີດຢູ່ຈົນກວ່າຈະສະຫຼັບປິດ).</value>
   </data>
@@ -3949,6 +3993,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>ໂປຣໄຟລ໌ເວີກຊັອບ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ມາໂຄຣເວີກຊັອບ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ພື້ນທີ່ຕົວຊີ້</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ກົດຄ້າງ)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ປ່ອຍ)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ເຂົ້າ)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ເລືອກຄອນຟິກເພື່ອເບິ່ງສິ່ງທີ່ນຳເຂົ້າມາໄດ້.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ສິ່ງທີ່ນຳເຂົ້າມາໄດ້</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ກາຍເປັນ</value></data>
@@ -4578,7 +4625,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>ການກົດທິດທາງຈະເລື່ອນຜ່ານເຊວ ແລະ ເຮັດວຽກເຊວທີ່ຫາກໍເລືອກໃໝ່ແຕ່ລະອັນ ພຶດຕິກຳຮັອດບານີ້ບໍ່ໃຊ້ “ໂໝດການເຮັດວຽກ” ຫຼື “ອິນພຸດຄລິກ”</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>ໂປຣໂຕຄອນເສີມຂອງ Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>ເປີດໃຊ້ປຸ່ມເພີ່ມເຕີມ ແລະ ເຊັນເຊີການເຄື່ອນໄຫວໃນຕົວຄວບຄຸມ Flydigi ທີ່ຮອງຮັບ</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>ຊອບແວ Flydigi ກຳລັງເຮັດວຽກຢູ່: {0} ມັນອາດໃຊ້ອິນເຕີເຟດຕົວຄວບຄຸມດຽວກັນກັບ PadForge ແລະ ມີລາຍງານວ່າ Vader 5 Pro ຕັດການເຊື່ອມຕໍ່ຊ້ຳໆ ເມື່ອທັງສອງເຂົ້າເຖິງພ້ອມກັນ ຖ້າຕົວຄວບຄຸມນີ້ຫຼຸດ ແລະ ເຊື່ອມຕໍ່ຄືນ ໃຫ້ຢຸດບໍລິການນັ້ນຂະນະໃຊ້ PadForge, ເຊື່ອງຕົວຄວບຄຸມໄວ້ ແລະ ລຶບບໍລິການອອກຈາກລາຍຊື່ອະນຸຍາດຂອງ HidHide ຫຼື ລອງປິດ “ໂປຣໂຕຄອນເສີມຂອງ Flydigi” ໃນການຕັ້ງຄ່າ ເຊິ່ງຍັງບໍ່ໄດ້ຢືນຢັນວ່າຊ່ວຍໄດ້</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>ຊອບແວ Flydigi ກຳລັງເຮັດວຽກຢູ່: {0}. ມັນສື່ສານກັບຕົວຄວບຄຸມຜ່ານອິນເຕີເຟດທີ່ PadForge ໃຊ້. ຖ້າຕົວຄວບຄຸມນີ້ຫຼຸດ ແລະ ເຊື່ອມຕໍ່ຄືນ ໃຫ້ຢຸດຊອບແວນັ້ນຂະນະທີ່ທ່ານໃຊ້ PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>ອະນຸຍາດໃຫ້ປ່ຽນການກຳນົດຈາກທາງໄກ</value>
   </data>

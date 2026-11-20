@@ -325,7 +325,7 @@ namespace PadForge.Tests
 
             using var rowSession = new MidiSession();
             var row = rowSession.Row("LeftThumbAxisX");
-            rowSession.Recorder.StartRecording(row, 0, rowSession.Device.InstanceGuid);
+            rowSession.Recorder.StartRecording(row, 0);
             rowSession.Device.InputState.Midi.PitchBend = 65535;
             rowSession.Tick();
             Assert.False(rowSession.Recorder.IsRecording);

@@ -74,6 +74,32 @@ namespace PadForge.Tests
             Assert.Equal(row, Assert.Single(vm.Settings.KeyboardTakeovers).Row);
             Assert.True(KeyboardTakeovers.IsTakenOver(row));
         }
+
+        /// <summary>An Apex 4 node a screen send moved to WinUSB and has not
+        /// given back (#586) stays owed through a reset, so the next start
+        /// gives it back to the Xbox driver.</summary>
+        [Fact]
+        public void ResetToDefaults_KeepsEveryApex4NodeOwedBack()
+        {
+            SettingsManager.UserSettings = new SettingsCollection();
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.Profiles = new List<ProfileData>();
+            SettingsManager.ActiveProfileId = null;
+            SettingsManager.PendingDefaultSnapshot = null;
+            SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
+            SettingsManager.SlotEnabled = new bool[InputManager.MaxPads];
+            SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            var vm = new MainViewModel();
+            var settings = new SettingsService(vm);
+            _ = new InputService(vm) { SettingsService = settings };
+
+            const string node = @"USB\VID_04B4&PID_2412&MI_02\1";
+            vm.Settings.FlydigiScreenBindings.Add(node);
+
+            settings.ResetToDefaults();
+
+            Assert.Equal(node, Assert.Single(vm.Settings.FlydigiScreenBindings));
+        }
     }
 
     /// <summary>Every key of a keyboard read over WinUSB reaches a key index,

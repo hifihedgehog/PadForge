@@ -301,7 +301,6 @@ namespace PadForge.Tests
             Assert.All(stamped, s =>
             {
                 Assert.Equal("Gamepad Paddle4|Touchpad 1 Finger 0 Down", s.WorkshopGyroRatchetDescriptors);
-                Assert.Equal(new[] { "Gamepad Paddle4", "Touchpad 1 Finger 0 Down" }, s.WorkshopGyroRatchetList);
             });
         }
 
@@ -312,7 +311,6 @@ namespace PadForge.Tests
             var dst = new MappingSet();
             src.CopyWorkshopStampsTo(dst);
             Assert.Equal("Gamepad Paddle4", dst.WorkshopGyroRatchetDescriptors);
-            Assert.Equal(new[] { "Gamepad Paddle4" }, dst.WorkshopGyroRatchetList);
         }
     }
 }

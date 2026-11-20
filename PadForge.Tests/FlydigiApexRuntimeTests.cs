@@ -235,7 +235,6 @@ namespace PadForge.Tests
             Assert.Equal(afterFirst, sent.Count);
             engine.Set(FlydigiTriggerSide.Right, new byte[11], ours: true, 30);
             Assert.True(sent.Last().IsOff);
-            engine.Forget();
             engine.Clear(FlydigiTriggerSide.Right);
             Assert.True(sent.Last().IsOff);
         }

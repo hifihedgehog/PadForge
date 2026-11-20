@@ -120,10 +120,6 @@ namespace PadForge.Common.Input.Flydigi
             return true;
         }
 
-        /// <summary>The Apex 4, 5 and 6 Pro all play trigger effects: the
-        /// first two resist, the third vibrates.</summary>
-        internal static bool HasTriggerEffects(UserDevice ud) => ModelOf(ud) != FlydigiApexModel.None;
-
         /// <summary>The Apex 6 Pro's grips play samples.</summary>
         internal static bool HasVoiceCoils(UserDevice ud) => ModelOf(ud) == FlydigiApexModel.Apex6Pro;
 
@@ -317,8 +313,12 @@ namespace PadForge.Common.Input.Flydigi
         internal static void Unassigned(Guid device)
         {
             if (!s_entries.TryGetValue(device, out var entry) || entry.LetGo) return;
+            // A session still asking the pad what it is has nothing to let go
+            // yet: the pass after it comes up does it.
+            var session = Volatile.Read(ref entry.Session);
+            if (session == null) return;
             entry.LetGo = true;
-            try { Volatile.Read(ref entry.Session)?.Quiet(); } catch { }
+            try { session.Quiet(); } catch { }
         }
 
         /// <summary>Releases every pad's triggers and stops its rumble,
@@ -347,14 +347,24 @@ namespace PadForge.Common.Input.Flydigi
                 s_sweep?.Dispose();
                 s_sweep = null;
             }
+            // On the pool, as Close does: each close writes the stop frames,
+            // which can wait on the pad, and the engine stops on the UI
+            // thread. The wait is bounded, so a pad that hangs holds no one.
+            var closing = new List<System.Threading.Tasks.Task>();
             foreach (var pair in s_entries)
             {
                 var session = Interlocked.Exchange(ref pair.Value.Session, null);
-                try { session?.Dispose(); } catch { }
+                if (session != null)
+                    closing.Add(System.Threading.Tasks.Task.Run(() => { try { session.Dispose(); } catch { } }));
             }
+            try { System.Threading.Tasks.Task.WaitAll(closing.ToArray(), ShutdownWaitMs); } catch { }
             s_entries.Clear();
             s_byPath.Clear();
         }
+
+        /// <summary>How long <see cref="Shutdown"/> waits for the sessions'
+        /// stop frames.</summary>
+        internal const int ShutdownWaitMs = 2000;
 
         /// <summary>Lets sessions open again after <see cref="Shutdown"/>,
         /// for an engine that is started a second time.</summary>

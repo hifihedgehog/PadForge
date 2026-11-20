@@ -18,9 +18,11 @@ namespace PadForge.Common.Input
     /// write plumbing (the current raw-HID-output writer pattern; the old
     /// <c>Ds5RawHidWriter</c>/vJoy model is gone as of v3).</para>
     ///
-    /// <para>Phase 1: G29 / G920 / G923 family constant force + autocenter +
-    /// range. Older G25/G27/Driving Force/MOMO devices use the same shape and
-    /// light up by adding PIDs to <see cref="IsLogitechWheel"/>.</para>
+    /// <para>The wheels driven here are the ones <see cref="IsLogitechWheel"/>
+    /// lists: the G29, the G923 for PlayStation and PC, the G27, the G25, the
+    /// Driving Force GT and Pro, the two MOMO wheels, the Driving Force and
+    /// the WingMan Formula Force GP. The G920 and the Xbox G923 speak HID++
+    /// 2.0 and stay on SDL's path.</para>
     ///
     /// <para>The per-vendor command is 8 logical bytes (report ID 0 + 7 command
     /// bytes). <see cref="RawHidOutput"/> pads each write to the device's actual
@@ -32,9 +34,12 @@ namespace PadForge.Common.Input
     {
         public const ushort LogitechVid = 0x046D;
 
-        // Phase 1 native-mode PIDs. Compatibility-mode PIDs (e.g. 0xC298 DFGT
-        // legacy) are intentionally absent — when a wheel boots in DInput-compat
-        // mode the lookup misses and FFB falls back to the SDL path silently.
+        // The wheels that take the classic lg4ff commands, by product id. A
+        // wheel with several modes that starts in its Driving Force mode
+        // reports 0xC294 (new-lg4ff, lg4ff_alternate_modes), and on arrival
+        // is told to switch to its native mode (SwitchToNativeMode). Until it
+        // comes back as its own model, and on a Driving Force itself, 0xC294
+        // is driven as that wheel: 270 degrees and no range command.
         public static bool IsLogitechWheel(ushort vid, ushort pid)
         {
             if (vid != LogitechVid) return false;
@@ -87,12 +92,30 @@ namespace PadForge.Common.Input
             return (byte)((levelS16 + 0x8000) >> 8);
         }
 
-        // Per-(devicePath, slot) download-vs-refresh state. Logitech wants a
-        // download op (0x1) on first arm, then refresh (0xc) on updates; a stop
-        // (0x3) resets it. Keyed by path#slot. The FFB loop is single-threaded
-        // per slot; ConcurrentDictionary guards against the rare cross-thread
-        // teardown race.
-        private static readonly ConcurrentDictionary<string, bool> _loaded = new();
+        // Per-(devicePath, slot) loaded effect: the type byte of the effect the
+        // slot holds (0x00 constant, 0x0b spring, 0x0c damper, 0x0e friction),
+        // or -1 for none. Logitech wants a download op (0x1) on first arm, then
+        // refresh (0xc) on updates of the same type; a stop (0x3) resets it.
+        // Keyed by path#slot. The FFB loop is single-threaded per slot;
+        // ConcurrentDictionary guards against the rare cross-thread teardown race.
+        private static readonly ConcurrentDictionary<string, int> _loaded = new();
+
+        private const int NoEffect = -1;
+
+        /// <summary>The op a write of an effect of <paramref name="type"/>
+        /// to a slot takes: a refresh (0xc) of the effect the slot holds, or a
+        /// download (0x1). A slot that holds an effect of another type is
+        /// stopped first: new-lg4ff never refreshes a slot into another type,
+        /// and downloads a slot's effect afresh after a stop (lg4ff_update_slot,
+        /// op 3 and then 1). The first slot switched between a game's constant
+        /// force and a game's spring with a refresh.</summary>
+        private static int OpFor(string devicePath, string key, int slot, byte type)
+        {
+            if (!_loaded.TryGetValue(key, out int held) || held == NoEffect) return 0x1;
+            if (held == type) return 0xc;
+            WriteStopEffect(devicePath, slot);
+            return 0x1;
+        }
 
         /// <summary>Clears the per-slot download/refresh state for a device. Called on
         /// unplug/reassign so the next effect re-downloads (op 0x1) instead of refreshing
@@ -120,15 +143,14 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             string key = devicePath + "#" + slot;
-            bool wasLoaded = _loaded.TryGetValue(key, out bool v) && v;
-            int op = wasLoaded ? 0xc : 0x1;                 // refresh : download
+            int op = OpFor(devicePath, key, slot, 0x00);    // refresh : download
             byte[] cmd = new byte[7];
             cmd[0] = (byte)((0x10 << slot) | op);
             cmd[1] = 0x00;                                  // FF_CONSTANT effect type
             cmd[2 + slot] = TranslateForce(levelS16);       // force at index 2+slot
             if (levelAtEverySlot) cmd[2] = cmd[3] = cmd[4] = cmd[5] = cmd[2 + slot];
             bool ok = RawHidOutput.Write(devicePath, BuildReport(cmd));
-            if (ok) _loaded[key] = true;
+            if (ok) _loaded[key] = 0x00;
             return ok;
         }
 
@@ -139,7 +161,7 @@ namespace PadForge.Common.Input
             byte[] cmd = new byte[7];
             cmd[0] = (byte)((0x10 << slot) | 0x3);
             bool ok = RawHidOutput.Write(devicePath, BuildReport(cmd));
-            _loaded[devicePath + "#" + slot] = false;
+            _loaded[devicePath + "#" + slot] = NoEffect;
             return ok;
         }
 
@@ -252,6 +274,100 @@ namespace PadForge.Common.Input
             return ok & RawHidOutput.Write(devicePath, BuildReport(fine));
         }
 
+        // ─────────────────────────────────────────────
+        //  Native mode for a wheel with several modes
+        // ─────────────────────────────────────────────
+
+        // A wheel with several modes starts in its Driving Force mode, which
+        // reports 0xC294 and turns 270 degrees, until the host tells it to
+        // switch. The model shows in bcdDevice, checked in new-lg4ff's order
+        // (lg4ff_main_checklist): the G29 before the DFGT and the G27 before
+        // the G25, whose masks also match them, and the Driving Force Pro
+        // last. The G923 is told apart only in its PlayStation mode, which
+        // reports 0xC267 (lg4ff_g923_ident_info lists no Driving Force mode).
+        private static readonly (ushort Mask, ushort Result, ushort RealPid)[] DrivingForceModeModels =
+        {
+            (0xfff8, 0x1350, 0xC24F), // G29 (lg4ff_g29_ident_info)
+            (0xff00, 0x8900, 0xC24F), // G29 (lg4ff_g29_ident_info2)
+            (0xff00, 0x1300, 0xC29A), // Driving Force GT (lg4ff_dfgt_ident_info)
+            (0xfff0, 0x1230, 0xC29B), // G27 (lg4ff_g27_ident_info)
+            (0xff00, 0x1200, 0xC299), // G25 (lg4ff_g25_ident_info)
+            (0xf000, 0x1000, 0xC298), // Driving Force Pro (lg4ff_dfp_ident_info)
+        };
+
+        /// <summary>The native model a wheel that reports
+        /// <paramref name="pid"/> is switched to, told by its
+        /// <paramref name="bcdDevice"/> (new-lg4ff
+        /// lg4ff_identify_multimode_wheel), or 0 for every wheel that is not
+        /// switched: one in its own mode, one in a compatibility mode other
+        /// than Driving Force, a Driving Force itself, or a model nothing
+        /// lists.</summary>
+        internal static ushort RealProductId(ushort vid, ushort pid, ushort bcdDevice)
+        {
+            if (vid != LogitechVid) return 0;
+            if (pid == 0xC294)
+            {
+                foreach (var (mask, result, real) in DrivingForceModeModels)
+                    if ((bcdDevice & mask) == result) return real;
+                return 0;
+            }
+            if (pid == 0xC267 && (bcdDevice & 0xff00) == 0x3800) return 0xC266; // G923 (lg4ff_g923_ident_info)
+            return 0;
+        }
+
+        /// <summary>The output reports, report ID first, that tell a wheel
+        /// with several modes to switch to its native mode, or none. As
+        /// new-lg4ff does on every probe (lg4ff_handle_multimode_wheel), only a
+        /// wheel in its Driving Force mode or a G923 in its PlayStation mode is
+        /// switched. A wheel in another mode of its own was put there by
+        /// someone, and stays. The Driving Force mode takes the model's own
+        /// switch (lg4ff_get_mode_switch_command with the real id twice):
+        /// EXT_CMD9 for the G29, the G27 and the DFGT, sent after the command
+        /// that makes the switch last only until the next USB reset, EXT_CMD16
+        /// for the G25 and EXT_CMD1 for the Driving Force Pro. The G923 takes
+        /// its switch in report 0x30 (lg4ff_switch_from_ps_mode). The wheel
+        /// then detaches and comes back as its native model.</summary>
+        internal static byte[][] NativeModeReports(ushort vid, ushort pid, ushort bcdDevice)
+        {
+            ushort real = RealProductId(vid, pid, bcdDevice);
+            if (real == 0) return Array.Empty<byte[]>();
+            if (pid == 0xC267)
+                return new[] { Report(0x30, 0xf8, 0x09, 0x07, 0x01, 0x01, 0x00, 0x00) };   // lg4ff_mode_switch_30_g923
+            byte[] revert = Report(0x00, 0xf8, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00);          // revert mode upon USB reset
+            return real switch
+            {
+                0xC24F => new[] { revert, Report(0x00, 0xf8, 0x09, 0x05, 0x01, 0x01, 0x00, 0x00) }, // lg4ff_mode_switch_ext09_g29
+                0xC29B => new[] { revert, Report(0x00, 0xf8, 0x09, 0x04, 0x01, 0x00, 0x00, 0x00) }, // lg4ff_mode_switch_ext09_g27
+                0xC29A => new[] { revert, Report(0x00, 0xf8, 0x09, 0x03, 0x01, 0x00, 0x00, 0x00) }, // lg4ff_mode_switch_ext09_dfgt
+                0xC299 => new[] { Report(0x00, 0xf8, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00) },         // lg4ff_mode_switch_ext16_g25
+                0xC298 => new[] { Report(0x00, 0xf8, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00) },         // lg4ff_mode_switch_ext01_dfp
+                _ => Array.Empty<byte[]>(),
+            };
+        }
+
+        private static byte[] Report(byte id, params byte[] cmd7)
+        {
+            byte[] report = new byte[8];
+            report[0] = id;
+            Array.Copy(cmd7, 0, report, 1, 7);
+            return report;
+        }
+
+        /// <summary>Tells a wheel that has just arrived in a mode other than
+        /// its own to switch to its native mode (<see cref="NativeModeReports"/>).
+        /// Returns true once every report went out. The wheel stays in the
+        /// device list until its USB reset takes it away, as the kernel leaves
+        /// its input device in place.</summary>
+        public static bool SwitchToNativeMode(string devicePath, ushort vid, ushort pid, ushort bcdDevice)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return false;
+            var reports = NativeModeReports(vid, pid, bcdDevice);
+            if (reports.Length == 0) return false;
+            foreach (var report in reports)
+                if (!RawHidOutput.Write(devicePath, report)) return false;
+            return true;
+        }
+
         // ── Condition effects: spring (0x0b) / damper (0x0c) / friction (0x0e) ──
         // Byte layout + scaling from lg4ff_update_slot. Coefficients/saturation/
         // deadband arrive in DirectInput units (coeff/offset ±10000, sat/deadband
@@ -277,7 +393,8 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(devicePath)) return false;
             string key = devicePath + "#" + slot;
-            int op = (_loaded.TryGetValue(key, out bool ld) && ld) ? 0xc : 0x1;
+            byte type = ffbType == 8 ? (byte)EffSpring : ffbType == 11 && capFriction ? (byte)EffFriction : (byte)EffDamper;
+            int op = OpFor(devicePath, key, slot, type);
 
             // lg4ff: k1 = left_coeff = negative, k2 = right_coeff = positive,
             // clip = right_saturation = positive (calculate_spring/resistance +
@@ -324,7 +441,7 @@ namespace PadForge.Common.Input
                 cmd[6] = (byte)ScaleU16(clip, 8);
             }
             bool ok = RawHidOutput.Write(devicePath, BuildReport(cmd));
-            if (ok) _loaded[key] = true;
+            if (ok) _loaded[key] = type;
             return ok;
         }
 

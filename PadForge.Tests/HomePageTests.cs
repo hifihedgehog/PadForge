@@ -177,6 +177,13 @@ namespace PadForge.Tests
             int live = At(numbers, "<TextBlock x:Name=\"EngineLive\"");
             int devices = At(numbers, "<TextBlock x:Name=\"EngineDevices\" Text=\"{Binding OnlineDevices, Mode=OneWay}\"");
             Assert.True(rate < live && live < devices);
+            // The Display face is for 18 px and up: the two lines are set in
+            // the body face at 14, and only their 28 px numbers carry Display.
+            foreach (int at in new[] { rate, live })
+            {
+                string open = numbers.Substring(at, numbers.IndexOf('>', at) - at);
+                Assert.DoesNotContain("DisplayFontFamily", open);
+            }
             foreach (string label in new[] { "Home_Stat_PollingRate", "Home_Stat_ControllersLive", "Home_Stat_DevicesConnected" })
                 At(numbers, "Text=\"{Binding " + label + ", Source={x:Static strings:Strings.Instance}}\"/>");
             Assert.Equal(3, Count(numbers, "<TextBlock Style=\"{StaticResource StatLabel}\""));
@@ -184,13 +191,13 @@ namespace PadForge.Tests
             // order, and a screen reader hears it whole. It is cold blue
             // while there is a rate, in every state but stopped.
             At(numbers, "AutomationProperties.Name=\"{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontSize=\"28\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", numbers);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 At(numbers, "<DataTrigger Binding=\"{Binding EngineStateKey}\" Value=\"" + state + "\"><Setter Property=\"Foreground\" Value=\"{DynamicResource ColdBrush}\"/></DataTrigger>");
             // How many of the controllers are live, said whole to a screen reader.
             At(numbers, "AutomationProperties.Name=\"{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontSize=\"28\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
 
             // The numbers close the card: nothing stands after them.
             Assert.Matches(new Regex("</controls:FlexLinePanel>\\s*</controls:FlexLinePanel>\\s*</Grid>\\s*</Border>\\s*$"), engine.TrimEnd().Substring(0, engine.TrimEnd().LastIndexOf("<!--", StringComparison.Ordinal)).TrimEnd());

@@ -1055,8 +1055,14 @@ namespace PadForge.Models3D
         /// is emptied into its host and dropped
         /// (<see cref="AttachRiderDecal"/>). Its file then had nothing
         /// holding it: the next collection let it go while the model still
-        /// drew its meshes, and the next model read the file again.</summary>
+        /// drew its meshes, and the next model read the file again. A Home
+        /// card's <see cref="LiveModel"/> draws the model's meshes after the
+        /// model is let go, so it holds these files too (<see cref="Files"/>).</summary>
         private readonly List<Model3DGroup> _files = new();
+
+        /// <summary>The files this model was built from, for a
+        /// <see cref="LiveModel"/> that outlives it.</summary>
+        internal IReadOnlyList<Model3DGroup> Files => _files;
 
         private static Model3DGroup TryLoadModelFrom(string modelName, string filename)
         {

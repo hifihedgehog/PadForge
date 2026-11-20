@@ -1084,7 +1084,6 @@
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dinoto le Ditaolo</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Matsoho</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Etsa</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Mohlodi, Threshold, Nqa, Consume Trigger Buttons, Pheta</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menyu e ntjha</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Eketsa sele</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tlosa sele ya ho qetela</value></data>
@@ -1198,4 +1197,13 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Sebedisa</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Sesebediswa se sa tsejweng</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Feela Ha</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Mohlodi ona o balwa feela ha kenyo ena le yona e balwa e tobetswe tafoleng ya taolo e le nngwe. Teko ya sebaka e tswang thepong e kentsweng e balwa e le sebaka sa molamu kapa sa sethunya seo e se lekolang.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Mme Ha</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Kenyo ya bobedi eo mohlodi ona le wona o e emetseng.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Fetola Kenyo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>E kgetha kenyo e nngwe e tla emelwa.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E phahamisa palo ya kenyo ena ho matla ana pele e kganna sephetho. 0 le 1 di e tlohela e otlolohile. Ka hodimo ho 1 e lieha haufi le bohareng.</value></data>
 </root>

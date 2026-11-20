@@ -32,8 +32,6 @@ namespace PadForge.ViewModels
 
         public MappingSourceItem ModeHolder => PrimaryKindSource;
 
-        public bool IsFirstSource => true;
-
         /// <summary>The first source reads keys of its mode's own
         /// (Incremental, Ramp, Invert On Hold), so it has no input to pick
         /// and none of the three switches.</summary>
@@ -55,7 +53,7 @@ namespace PadForge.ViewModels
 
         public bool IsLineUnassigned => IsPrimaryDescriptor
             ? string.IsNullOrEmpty(SourceDescriptor) && string.IsNullOrEmpty(PrimarySourceDeviceGuid)
-            : PrimaryKindSource == null || !PrimaryKindSource.HasAnyBoundFeed;
+            : PrimaryKindSource?.IsLineUnassigned ?? true;
 
         private string _lineLetter = string.Empty;
 
@@ -181,6 +179,7 @@ namespace PadForge.ViewModels
         internal void RaiseLineFacts()
         {
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsLineKeyMode)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ShapingHolder)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ShowsLineDeadZone)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LineDeviceGuid)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LineDeviceLabel)));
@@ -294,6 +293,7 @@ namespace PadForge.ViewModels
                 Sensitivity = source.Sensitivity > 0 ? source.Sensitivity : 1.0;
                 PrimarySourceDeviceGuid = source.DeviceGuid ?? string.Empty;
                 PrimarySourceDeviceLabel = deviceLabelOf?.Invoke(source.DeviceGuid) ?? string.Empty;
+                LoadShapingAndGates(source);
                 LoadPrimaryKind(source);
                 return;
             }
@@ -308,7 +308,13 @@ namespace PadForge.ViewModels
             MouseCursorSensitivity = 1.0;
             IrPointerSensitivity = 1.0;
             Sensitivity = 1.0;
+            // A mode that reads keys keeps these on its own holder.
+            LoadShapingAndGates(null);
             LoadPrimaryKind(readsKeys ? source : null);
+            // The mode's holder carries the source's device, and its line
+            // names it, as an added source's line names its own.
+            if (readsKeys && PrimaryKindSource != null)
+                PrimaryKindSource.DeviceLabel = deviceLabelOf?.Invoke(source.DeviceGuid) ?? string.Empty;
         }
 
         private RelayCommand _removeFirstSourceCommand;

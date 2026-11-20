@@ -194,6 +194,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← skerda)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ riba)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ka atxadu</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ka atxadu. Baxa PadForge otu bes.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operason di driver falha: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Konfigurason kopiadu pa área di transferénsia.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Ka konsigi kopia: {0}</value></data>
@@ -298,6 +299,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baxu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imajen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} saída</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} saída</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Muvimentu</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klika na un kontrolu, dipôs karga un botãu/eixu na bu dispozitivu pa kontrola-l.</value></data>
@@ -513,7 +515,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Skrebe "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sen testu)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Testu</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutu</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lê suma komandu iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lê suma tekladu</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Lê suma sticks di Tekken</value></data>
@@ -791,7 +792,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Ripoi jeometria di menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Ripoi sélula</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Ripoi sensibilidadi</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Ripoi aselerason</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Ripoi zona morta</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Ripoi tempu di sigura</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Ripoi janela di karga</value></data>
@@ -1057,7 +1057,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Kualker kamada</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ta roda sen para timenti es komandu virtual sta ativu. Ka ta prisiza botãu di gatilhu.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Faze</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Kamada, Fonti, Limiar, Direson, Konsumi botãu di gatilhu, Ripitison</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Adisiona ason</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipu</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botãu virtual</value></data>
@@ -1083,7 +1082,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Karga botãu di mouse</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Solta botãu di mouse</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Rolajen di mouse</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Alterna overlay di touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botãu</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombinason di tékla</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Durason</value></data>
@@ -1194,6 +1192,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ripiti {0} kada {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Disvíu orizontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Disvíu vertikal</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalu</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Skodji na ekran</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Ta kaptura en {0}…</value></data>
@@ -1225,6 +1225,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Invertidu metadi</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Sen dispozitivu mapiadu</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Dispozitivu diskonxedu</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Klik na touchpad</value></data>
@@ -1574,7 +1575,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Baxu (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Riba (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ativason</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botãu di ativason di mira, Modu di ativason, Limiar di Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botãu di ativason di mira, Modu di ativason, Gyro ligadu, Rikentra, Limiar di Easy Aim</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jogador</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mundu</value></data>
@@ -1600,10 +1601,50 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Ripoi limiar di Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Ripoi botãu di ativason di mira</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Ripoi modu di ativason</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Kamada</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Kamada ki se konfigurason Gyro ligadu ta mostradu y mudadu na linhas di baxu.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyro ligadu</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Óra ki gyro ta funsiona na es kamada, alén di botãu di ativason. Un kamada di shift konfiguradu ku Mésmu ki Bazi ta sigi Bazi.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Senpri ligadu</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Mésmu ki Bazi</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Timenti ki sta primidu</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Timenti ki ka sta primidu</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Alterna na kada toki</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Botõis di Gyro ligadu</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Botõis ki Gyro ligadu ta lé, na kualker komandu di es slot.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Prisiza</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Si un botãu markadu ta txiga o si tudu botãu markadu debe sta primidu.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Kualker botãu</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Tudu botãu</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Rikentra óra ki gyro ta liga</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ta toma pozison di komandu komu pontu di diskansu kada bes ki gyro ta liga.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Ripoi Gyro ligadu</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Ripoi botõis di Gyro ligadu</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Ripoi Prisiza</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Ripoi Rikentra óra ki gyro ta liga</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ripoi stick di ativason</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ripoi direson di ativason</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Passthrough di muvimentu</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidadi</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Só timenti</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Es fonti ta konta só timenti ki es entrada tanbe ta lédu komu primidu na mésmu komandu. Un testi di zona di un importason ta lédu komu faxa di stick o gatilhu ki el ta verifika.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Y timenti</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Un sigundu entrada ki es fonti tanbe ta spera.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Muda entrada</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ta skodje otu entrada pa spera.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurva</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ta leva leitura di es entrada pa es poténsia antis di el kumanda saída. 0 y 1 ta dexa-l diretu. Riba di 1 é más lentu pertu di sentru.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Faxa sterna</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Saída ta txiga máximu na es parti di kursu. 100% é disligadu.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zona morta</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Saída ta kumesa na es valor asin ki entrada ta mexe. 0 é disligadu.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forma di zona morta</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Disligadu ta dexa leitura sima el sta. Axial ta mede só es eixu. Radial ta mede par di stick djuntu.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Disligadu</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axial</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zona morta interna</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Abaxu di es parti di kursu, entrada ta lédu komu sentradu.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Inérsia</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velosidadi di mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velosidadi di mouse Y</value></data>
@@ -2035,6 +2076,9 @@
   <data name="Pad_Steering_Orient_Backward" xml:space="preserve"><value>Pa tras</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ripoi zona morta interna di ángulu</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ripoi zona morta esterna di ángulu</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zona morta di stick</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Abaxu di es disvíu, stick ta lédu komu sentradu, pa ka djunta nenhun diresãu.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Ripoi zona morta di stick</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ripoi orientason di komandu</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (stick direitu)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick skérdu)</value></data>
@@ -2099,7 +2143,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Ripoi padron (Dizligadu)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ripoi padron (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Ripoi pa 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Dispozitivu skodjedu ka ten kolúna. Sons di makru di es komandu ta toka na saída padron di sistema.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakotis di son</value></data>
@@ -3039,7 +3082,7 @@
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Intervalu pa eixu. Zeru ta sigi intervalu di riba.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jogus ki PadForge ka ta konxe</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kuzé ki ta mostra</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Anel, grade o bara di un menu timenti ki e sta abertu</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Anel, grade o bara di un menu timenti ki e sta abertu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopia enderesu</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konekta un telemóvel</value></data>
   <data name="Extras_WebController_Step1" xml:space="preserve"><value>Pui telemóvel na mésmu redi ki es PC.</value></data>

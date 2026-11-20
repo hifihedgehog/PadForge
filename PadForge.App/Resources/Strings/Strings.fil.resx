@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuto (0 = hindi kailanman)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Hindi nakatalaga</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kaliwa)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ taas)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Hindi mahanap ang SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Hindi mahanap ang SDL3.dll. Ilagay ang SDL3.dll sa tabi ng PadForge.exe. I-download ito mula sa https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Hindi mahanap ang SDL3.dll. I-download muli ang PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Nabigo ang operasyon ng driver: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Nakopya sa clipboard ang mga setting.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Nakopya sa clipboard ang impormasyon ng device.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Mahina</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Galaw</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click ng control, pagkatapos ay pindutin ang input na dapat magpagalaw rito.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Mga Larong Hindi Kilala ng PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para sa mga mod na naghahanap ng tumatakbong DSX bago magpadala.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano ang Ipinapakita</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar ng isang menu habang bukas ito</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer kapag nag-on ang isang shift layer, sa haba ng oras na itinakda ng layer na iyon</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang pangalan ng profile kapag nagbago ang profile</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar ng isang menu habang bukas ito.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer kapag nag-on ang isang shift layer, sa haba ng oras na itinakda ng layer na iyon.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang pangalan ng profile kapag nagbago ang profile.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyahin ang Address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ilagay sa Screen</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ikonekta ang Telepono</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Awtomatikong simulan ang engine sa paglunsad</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Ituloy ang polling kapag nawalan ng focus ang window</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Polling rate (maliban kung may profile na nag-o-override)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Binabasa ng engine ang bawat device at ina-update ang mga virtual controller nang ganito karaming beses sa isang segundo, mula 60 hanggang 10000. Mas maraming oras ng processor ang ginagamit ng mas mataas na rate. Ginigising ng Windows ang engine nang humigit-kumulang 2000 beses sa isang segundo sa pinakamarami, kaya sa mas mataas na rate ay ilang pass ang pinapatakbo sa bawat paggising. Habang aktibo ang profile na may sariling polling rate, iyon ang masusunod. Babalik ang value na ito kapag na-deactivate ang profile.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Binabasa ng engine ang bawat device at ina-update ang mga virtual controller nang ganito karaming beses sa isang segundo, mula 60 hanggang 10000. Mas maraming oras ng processor ang ginagamit ng mas mataas na rate. Sa PC na ito, ginigising ng Windows ang engine nang hindi hihigit sa {0} beses sa isang segundo, kaya sa mas mataas na rate ay ilang pass ang pinapatakbo sa bawat paggising. Habang aktibo ang profile na may sariling polling rate, iyon ang masusunod. Babalik ang value na ito kapag na-deactivate ang profile.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Itago ang mga device sa mga laro</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Master switch para sa pagtatago ng device ng HidHide at sa mga low-level na input hook. Kapag naka-off, walang device na itatago anuman ang setting ng bawat device.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Panatilihing naka-cloak ang mga device sa pagitan ng mga paglunsad</value></data>
@@ -924,7 +926,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Mga millisecond sa pagitan ng mga na-type na character, hanggang 1000. Ang 0 ay tina-type ang buong text nang sabay-sabay.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>I-disconnect Kapag Idle</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalye</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuto</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>I-disconnect ang Bluetooth Kapag Nakasaksak sa USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Kapag iniulat ng controller na ito na nagcha-charge ito habang nakakonekta sa Bluetooth, ibinababa ang Bluetooth link para mag-charge ito nang hindi pinapagana ang radio. Kasama ang anumang pinagmumulan ng USB power, pati ang mga wall charger. Kung ibabalik mo ang Bluetooth habang nakasaksak pa rin ang cable, hindi ito gagalawin hanggang sa susunod na pagtanggal.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Basahin bilang iCade Controller</value></data>
@@ -966,8 +967,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>Ipinapakita ng VMU ang pangalan ng aktibong profile at sumusunod sa bawat pagpalit ng profile.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>Ipinapakita ng VMU ang puwesto ng aktibong profile sa listahan ng mga profile. Ang Default na profile ay 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>Ipinapakita ng VMU ang sariling larawan ng aktibong profile, o ang pangalan nito kung wala itong larawan. May sariling larawan ang bawat profile.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Ipinapakita ng VMU ang oras ng araw, isinusulat muli bawat minuto. Iniimbak ng adapter ang bawat larawan sa memoryang may rating na 100,000 pagsulat, na naaabot nito pagkatapos ng mga sampung linggo ng walang tigil na pagpapakita.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Ipinapakita ng VMU ang mga oras at minuto mula nang matagpuan ng PadForge ang pad, isinusulat muli bawat minuto. Ang pad na wala sa port nito nang mahigit sampung segundo ay nagsisimulang muli sa zero. Iniimbak ng adapter ang bawat larawan sa memoryang may rating na 100,000 pagsulat, na naaabot nito pagkatapos ng mga sampung linggo ng walang tigil na pagpapakita.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Ipinapakita ng VMU ang oras ng araw, isinusulat muli bawat minuto. Iniimbak ng adapter ang bawat larawan sa sarili nitong memorya, kaya hindi ito mas madalas na isinusulat muli ng PadForge kaysa rito.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Ipinapakita ng VMU ang mga oras at minuto mula nang matagpuan ng PadForge ang pad, isinusulat muli bawat minuto. Ang pad na wala sa port nito nang mahigit sampung segundo ay nagsisimulang muli sa zero. Iniimbak ng adapter ang bawat larawan sa sarili nitong memorya, kaya hindi ito mas madalas na isinusulat muli ng PadForge kaysa isang beses kada minuto.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>Ipinapakita ng VMU ang larawang pipiliin mo: isang BMP o PNG, isang .lcd file ng VMU Animator o isang .vms icon ng Dreamcast. Pinuputol ang mga larawan sa 48 by 32 na itim at puting pixel.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Pumili ng Larawan…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Pumili ng Larawan para sa {0}…</value></data>
@@ -1012,6 +1013,13 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Hindi sumagot bilang Apex 4 ang controller sa Xbox mode, kaya walang naipadala at nasa Windows na ulit ito. Ibalik ito sa DInput mode gamit ang sarili nitong switch.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Hindi nailipat ng Windows ang controller sa WinUSB, kaya walang naipadala. Ibalik ito sa DInput mode gamit ang sarili nitong switch.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Itinigil. I-off at i-on ang controller gamit ang sarili nitong switch bago magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Hindi nabuksan ang port ng screen, kaya walang naipadala. I-off at i-on ang controller gamit ang sarili nitong switch at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Mas maraming frame ang larawan kaysa sa kayang hawakan ng screen ng controller na ito.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>May larawang ipinapadala na sa controller na ito. Hintaying matapos ito.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Humiling ang screen ng larawan sa address na hindi sinusulatan ng PadForge, kaya walang naipadala. I-off at i-on ang controller gamit ang sarili nitong switch at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Naipadala ang larawan, pero hindi bumalik ang controller sa DInput mode. Ibalik ito gamit ang sarili nitong switch.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Hindi tinanggap ng controller ang command na naghahanda rito, kaya walang naipadala. Tiyaking nakakonekta ito at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Huminto ang pagpapadala dahil sa error sa PadForge. Nasa log file ang mga detalye.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>May larawang ipinapadala pa sa controller. Ihinto ang pagpapadala?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Mga File ng Controller Pak (*.mpk)|*.mpk|Lahat ng File (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>I-reset ang Geometry ng Menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>I-reset ang Cell</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>I-reset ang Sensitivity</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>I-reset ang Acceleration</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>I-reset ang Deadzone</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>I-reset ang Tagal ng Paghawak</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>I-reset ang Press Window</value></data>
@@ -1787,7 +1794,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Anumang Layer</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Tuloy-tuloy na tumatakbo habang aktibo ang virtual controller na ito. Hindi kailangan ng trigger button.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Gawin</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direksyon, Ubusin ang Trigger Button, Ulitin</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Magdagdag ng Action</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Uri</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Mga Virtual Button</value></data>
@@ -1813,7 +1819,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Pindot ng Mouse Button</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Bitaw ng Mouse Button</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>I-toggle ang Touchpad Overlay</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Mga Button</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Key Combo</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Key combo sa format na {Key1}{Key2}. Maaaring i-edit.</value></data>
@@ -1944,6 +1949,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ulitin ang {0} kada {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Pahalang na Offset</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Patayong Offset</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Kunin sa Screen</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Kumukuha sa {0}…</value></data>
@@ -1978,6 +1985,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Baligtad na Kalahati</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Walang naka-map na device</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Hindi kilalang device</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Click ng Touchpad</value></data>
@@ -2420,7 +2428,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ibaba (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Itaas (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim Engage Button, Engage Mode, Threshold ng Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim Engage Button, Engage Mode, Pag-on ng Gyro, I-recenter, Threshold ng Easy Aim</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Mga opsyonal na gate na naglilimita kung kailan aktibo ang gyro. Maaaring i-configure ang deflection ng kanang stick at ang aim engage button. Gumagana lang ang gyro habang aktibo ang bawat naka-configure na gate.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Player</value></data>
@@ -2457,6 +2465,27 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>I-reset ang Threshold ng Easy Aim</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>I-reset ang Button ng Aim Engage</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>I-reset ang Engage Mode</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Layer</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Ang layer na ang setting na Pag-on ng Gyro ay ipinapakita at binabago ng mga row sa ibaba.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Pag-on ng Gyro</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Kung kailan gumagana ang gyro sa layer na ito, bukod pa sa engage button. Sumusunod sa Base ang shift layer na nakatakda sa Kapareho ng Base.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Laging Naka-on</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Kapareho ng Base</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Habang Hawak</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Habang Hindi Hawak</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>I-toggle sa Bawat Pindot</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Mga Button ng Pag-on ng Gyro</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Ang mga button na binabasa ng Pag-on ng Gyro, sa alinmang controller ng slot na ito.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Kailangan</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Kung sapat na ang isang may-check na button o dapat hawak ang bawat may-check na button.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Anumang Button</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Bawat Button</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>I-recenter Kapag Nag-on ang Gyro</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ginagawang resting point ang pose ng controller sa bawat pag-on ng gyro.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>I-reset ang Pag-on ng Gyro</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>I-reset ang Mga Button ng Pag-on ng Gyro</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>I-reset ang Kailangan</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>I-reset ang I-recenter Kapag Nag-on ang Gyro</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>I-reset ang Engage Stick</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>I-reset ang Direksyon ng Engage</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
@@ -2467,6 +2496,14 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Binabasa ng laro ang motion gamit ang sensitivity, smoothing at curve na itinakda rito.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>I-reset ang Passthrough Tuning</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Habang Lamang</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Binibilang lang ang source na ito habang nababasa ring pinindot ang input na ito sa parehong controller. Ang zone test mula sa import ay binabasa bilang saklaw ng stick o trigger na sinusuri nito.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>At Habang</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Pangalawang input na hinihintay rin ng source na ito.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Palitan ang Input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Pumipili ng ibang input na hihintayin.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Itinataas ang basa ng input na ito sa power na ito bago nito patakbuhin ang output. Ang 0 at 1 ay nag-iiwan nitong tuwid. Ang higit sa 1 ay mas mabagal malapit sa gitna.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplier ng gyro sensitivity kada source. Ang 1.0 = default ng engine (500°/s → buong deflection). Ang mga halagang higit sa 1.0 ay mas sensitibo. Ang mga halagang mas mababa sa 1.0 ay mas hindi sensitibo.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplier ng tilt sensitivity kada source. Ang 1.0 = 90° ng tilt para sa buong deflection. Ang mga halagang higit sa 1.0 ay umaabot sa buong deflection nang mas kaunting tilt.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro Tilt X</value></data>
@@ -2858,6 +2895,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Kanang Motor</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout sa Kawalan ng Aktibidad</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Mga segundo bago wasakin ang isang virtual controller kapag offline ang lahat ng naka-map nitong device. Hindi pinapagana ng 0. Ang mga natitirang controller na may parehong uri ay umuusad pataas para punan ang puwang at muling nagbi-bind sa mas mababang slot.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundo (0 = hindi kailanman)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Magdagdag ng shift layer. Isang pangalawang mapping table na nag-a-activate habang hawak o naka-toggle ang isang button.</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>I-configure ang Base</value></data>
@@ -2966,6 +3004,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>I-reset ang Bilis ng Unwind</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>I-reset ang Inner Deadzone ng Anggulo</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>I-reset ang Outer Deadzone ng Anggulo</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Deadzone ng Stick</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Sa ibaba ng deflection na ito, nababasa ang stick na nasa gitna, kaya walang naiipong steering.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>I-reset ang Deadzone ng Stick</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>I-reset ang Inner Deadzone ng Lean</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>I-reset ang Outer Deadzone ng Lean</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>I-reset ang Oryentasyon ng Controller</value></data>
@@ -3071,6 +3112,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>sa {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Mas malaki ang torque na hinihingi ng kotseng ito kaysa sa kaya ng wheel, kaya pinutol ang tuktok ng kurba.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>pakiramdam sa gitna, power assist, damping, friction, grip, nakatakdang bilis, torque ng wheel</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>pakiramdam sa gitna, power assist, damping, grip, nakatakdang bilis, torque ng wheel</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Gaano katatag ang steering sa gitna sa mababang bilis. Ang 100% ay ang lakas mismo ng kotse.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Power Assist</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Gaano karami ang inaalis ng power steering habang tumitindi ang pagliko. Mas mataas, mas magaan ang steering malayo sa gitna.</value></data>
@@ -3212,7 +3254,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>I-reset ang Matataas na Tono</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>I-reset ang Limitasyon ng Tono</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kinokopya sa built-in na speaker ng controller na ito, nang sabay, ang anumang pinapatugtog ng default output ng system. Gumagana sa USB at Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Walang built-in na speaker ang napiling device. Ang mga tunog ng macro para sa pad na ito ay pinapatugtog sa default output ng system.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Walang daan ang PadForge papunta sa speaker ng napiling device sa koneksyong ito. Ang mga tunog ng macro para sa pad na ito ay pinapatugtog sa default output ng system.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser na test suite ng DualSense ni Xuezhou Dai (daidr): reference para sa CRC framing ng Sony feature report at mga firmware test command na ipinapasa ng PadForge mula sa virtual papunta sa pisikal na pad.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3626,7 +3668,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Ipakita ang Dreamcast Screen</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Nagpapalabas ng mga larawan sa VMU ng bawat Dreamcast pad sa isang Bliss-Box port na nagpapakain sa slot na ito, saka ibinabalik ang bawat port sa sarili nitong screen setting.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Ipakita ang mga larawang Dreamcast: {0} × {1} ms, bilang ng ulit {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Bawat larawan ay ipinapakita nang hindi bababa sa isang segundo, dahil iniimbak ng adapter ang bawat larawang ipinapadala rito sa memorya na may rating na 100,000 beses na pagsulat, na naaabot ng bagong larawan kada segundo sa loob ng halos isang araw. Ang mga larawan ay 48 by 32 itim at puting pixel mula sa BMP o PNG, isang VMU Animator .lcd file o isang Dreamcast .vms icon.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Bawat larawan ay ipinapakita nang hindi bababa sa isang segundo. Nagpapadala ang PadForge sa adapter ng isang larawan kada segundo sa pinakamarami, dahil iniimbak ng adapter ang bawat larawang ipinapadala rito sa sarili nitong memorya. Ang mga larawan ay 48 by 32 itim at puting pixel mula sa BMP o PNG, isang VMU Animator .lcd file o isang Dreamcast .vms icon.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Mga Larawan</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Magdagdag ng Larawan…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Alisin ang Larawan</value></data>
@@ -3703,15 +3745,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Habang naka-toggle on ang layer, kusa itong mag-o-off pagkatapos ng ganitong karaming millisecond na walang aktibong sariling naka-map na input ng layer. Nagsisimula ang timer kapag na-engage ang layer at nagre-restart sa bawat input ng layer. Ang 0 ay nagpapanatili sa layer hangga't hindi mo ito ino-off mismo.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>I-reset ang trim deadzone sa 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>I-reset ang trim speed sa 100% kada segundo.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>I-reset sa pagbabalik ng antas sa 100% pagbitaw.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>I-reset ang auto-cancel sa 0 (mananatiling on ang layer hanggang i-toggle off).</value>
   </data>
@@ -3779,6 +3812,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profile ng Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro ng Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Rehiyon ng Cursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hold)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (release)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (engage)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pumili ng config para makita kung ano ang mapupunta.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ano ang Mapupunta</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Magiging</value></data>
@@ -4408,7 +4444,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Ang mga pindot sa direksyon ay lumilipat sa mga cell at nagfi-fire sa bawat bagong napiling cell. Hindi gumagamit ng Fire Mode o Click Input ang hotbar behavior na ito.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi Enhanced Protocol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Ina-enable ang karagdagang button at motion sensor sa mga sinusuportahang Flydigi controller.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Tumatakbo ang software ng Flydigi: {0}. Maaari nitong gamitin ang parehong controller interface gaya ng PadForge, at may naiulat na paulit-ulit na nagdidiskonekta ang Vader 5 Pro habang pareho silang may access. Kung nagdidiskonekta at muling kumokonekta ang controller na ito, ihinto ang service habang ginagamit ang PadForge, panatilihing nakatago ang controller at alisin ang service sa HidHide whitelist, o subukang i-off ang "Flydigi Enhanced Protocol" sa Settings, na hindi pa kumpirmadong nakakatulong.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Tumatakbo ang software ng Flydigi: {0}. Nakikipag-usap ito sa controller sa interface na ginagamit ng PadForge. Kung nagdidiskonekta at muling kumokonekta ang controller na ito, ihinto ang software na iyon habang ginagamit ang PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Payagan ang Mga Pagbabago sa Remote Assignment</value>
   </data>
@@ -4988,4 +5024,11 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Password</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Magnifier (Habang Hawak)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ipinapakita ang magnifier habang hawak ang macro na ito, para sa pag-aim down sights. Itakda ito sa pahina ng Magnifier.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Hugis ng Deadzone</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Hindi ginagalaw ng Naka-off ang basa. Sinusukat ng Axial ang axis na ito lang. Sinusukat ng Radial ang magkapares na stick nang magkasama.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Naka-off</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axial</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Inner Deadzone</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Sa ibaba ng bahaging ito ng galaw, nababasa ang input na nasa gitna.</value></data>
 </root>

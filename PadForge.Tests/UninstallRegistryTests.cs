@@ -49,6 +49,29 @@ namespace PadForge.Tests
             Assert.True(registry.Walks <= 2, $"{registry.Walks} walks for four reads");
         }
 
+        /// <summary>A view whose key could not be opened is tried again on
+        /// the next read. It used to stay closed for the life of the
+        /// process, and its registrations never showed.</summary>
+        [Fact]
+        public void AViewThatCouldNotBeOpened_IsOpenedOnALaterRead()
+        {
+            string path = @"Software\PadForge.Tests\Uninstall-" + System.Guid.NewGuid().ToString("N");
+            try
+            {
+                var registry = new UninstallRegistry(RegistryHive.CurrentUser, path);
+                Assert.Empty(registry.Entries);
+
+                using (var key = Registry.CurrentUser.CreateSubKey(path + @"\Late"))
+                    key.SetValue("DisplayName", "Late arrival");
+
+                Assert.Contains(registry.Entries, e => e.SubKeyName == "Late" && e.DisplayName == "Late arrival");
+            }
+            finally
+            {
+                Registry.CurrentUser.DeleteSubKeyTree(path, throwOnMissingSubKey: false);
+            }
+        }
+
         private static IEnumerable<(string, string, string, string)> Walk()
         {
             foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })

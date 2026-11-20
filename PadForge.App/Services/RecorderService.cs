@@ -234,16 +234,23 @@ namespace PadForge.Services
         /// </summary>
         /// <param name="mapping">The mapping item to record a source for.</param>
         /// <param name="padIndex">The pad index (0–15) to read input from.</param>
-        /// <param name="deviceGuid">The specific device GUID to record from.</param>
-        /// <param name="neutralizeBaseline">When true, forces all buttons and POVs to
-        /// their neutral state in the baseline so that any press (even if currently held)
-        /// is detected as a fresh change. Used for auto-prompt follow-up recordings
-        /// where the previous input may still be physically held.</param>
-        public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
-            bool neutralizeBaseline = false, bool negRecording = false)
+        /// <remarks>The recording listens to every device of the slot, or to
+        /// <see cref="ListenOnly"/> when a cell click names one.</remarks>
+        public void StartRecording(MappingItem mapping, int padIndex, bool negRecording = false)
         {
             StartRecordingInternal(mapping, extraSource: null, padIndex,
-                neutralizeBaseline, negRecording, ParamTarget.None);
+                neutralizeBaseline: false, negRecording, ParamTarget.None, followUp: false);
+        }
+
+        /// <summary>Starts the recording a completed one prompts for at once:
+        /// the other half of an axis. It listens to the devices the recording
+        /// before it listened to, so a pair begun from a cell's device ends on
+        /// that device. It waits for the input that ended the first half to be
+        /// let go, which may still be held.</summary>
+        public void StartFollowUpRecording(MappingItem mapping, int padIndex, bool negRecording = false)
+        {
+            StartRecordingInternal(mapping, extraSource: null, padIndex,
+                neutralizeBaseline: true, negRecording, ParamTarget.None, followUp: true);
         }
 
         /// <summary>Starts cross-device recording for an ExtraSource row.
@@ -264,7 +271,7 @@ namespace PadForge.Services
             bool neutralizeBaseline = false, bool negRecording = false)
         {
             StartRecordingInternal(parent, extraSource, padIndex,
-                neutralizeBaseline, negRecording, ParamTarget.None);
+                neutralizeBaseline, negRecording, ParamTarget.None, followUp: false);
         }
 
         /// <summary>Starts cross-device recording that captures a button
@@ -273,12 +280,15 @@ namespace PadForge.Services
         /// buttons next to the Incremental / InvertOnHold pickers.
         /// Routes through the same poll loop as
         /// <see cref="StartRecordingExtraSource"/>; the only difference
-        /// is the write target in <see cref="CompleteRecording"/>.</summary>
+        /// is the write target in <see cref="CompleteRecording"/>.
+        /// Pass <paramref name="followUp"/>=true for the Down key a completed
+        /// Up key prompts for: it listens to the devices the Up key's
+        /// recording listened to.</summary>
         public void StartRecordingExtraSourceParam(MappingItem parent,
-            MappingSourceItem extraSource, int padIndex, ParamTarget target)
+            MappingSourceItem extraSource, int padIndex, ParamTarget target, bool followUp = false)
         {
             StartRecordingInternal(parent, extraSource, padIndex,
-                neutralizeBaseline: false, negRecording: false, target);
+                neutralizeBaseline: false, negRecording: false, target, followUp);
         }
 
         /// <summary>Starts a freeform recording session that doesn't write
@@ -589,15 +599,22 @@ namespace PadForge.Services
         /// or empty for every device of the slot. A click on a cell of the
         /// mappings list sets it to the device of the cell's column, so the
         /// input lands under the column that was clicked. The recording
-        /// that starts next takes it, and it is empty again after.</summary>
+        /// that starts next takes it, and it is empty again after. A
+        /// follow-up recording keeps the device of the one before it.</summary>
         internal Guid ListenOnly { get; set; }
+
+        /// <summary>The one device the last mapping recording listened to,
+        /// or empty for every device of the slot. A follow-up recording
+        /// listens to it again.</summary>
+        private Guid _listenedOnly;
 
         private void StartRecordingInternal(MappingItem mapping,
             MappingSourceItem extraSource, int padIndex,
-            bool neutralizeBaseline, bool negRecording, ParamTarget paramTarget)
+            bool neutralizeBaseline, bool negRecording, ParamTarget paramTarget, bool followUp)
         {
-            Guid only = ListenOnly;
+            Guid only = followUp ? _listenedOnly : ListenOnly;
             ListenOnly = Guid.Empty;
+            _listenedOnly = only;
             if (mapping == null)
                 return;
 

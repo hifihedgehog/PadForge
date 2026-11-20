@@ -167,10 +167,10 @@ namespace PadForge.Common.Telemetry
                 // The Game Telemetry row with no max RPM yet lights no LEDs, but its speed and its road
                 // still serve a wheel's centering (#588).
                 if (!have && PadForge.Common.Input.Telemetry.GameTelemetryRuntime.TryGetMotion(
-                        Environment.TickCount64, out float rowSpeed, out float rowGrip))
+                        Environment.TickCount64, out float rowSpeed, out bool rowHasSpeed, out float rowGrip))
                 {
                     best = new GameTelemetrySnapshot { Source = "Game Telemetry", Grip = rowGrip };
-                    best.SetSpeed(rowSpeed);
+                    if (rowHasSpeed) best.SetSpeed(rowSpeed);
                     have = true;
                 }
                 lock (_snapLock)

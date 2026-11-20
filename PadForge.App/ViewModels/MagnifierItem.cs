@@ -161,9 +161,14 @@ namespace PadForge.ViewModels
                 if (!Enum.IsDefined(value)) value = LensShape.Circle;
                 if (_d.LensShape == value) return;
                 _d.LensShape = value;
+                // A rectangle turned round is a circle of its width, since
+                // the page shows a round lens no height.
+                if (IsRound) _d.LensHeight = _d.LensWidth;
                 Changed();
                 OnPropertyChanged(nameof(LensShapeIndex));
                 OnPropertyChanged(nameof(IsRound));
+                OnPropertyChanged(nameof(LensHeight));
+                OnPropertyChanged(nameof(LensWidthName));
             }
         }
 
@@ -182,6 +187,11 @@ namespace PadForge.ViewModels
         /// <summary>A round lens has one size, its width. A rectangle has a
         /// width and a height.</summary>
         public bool IsRound => _d.LensShape == LensShape.Circle;
+
+        /// <summary>The name of the width's row as its label reads: Size for
+        /// a round lens, Width for a rectangle. Its slider, box and reset take
+        /// it.</summary>
+        public string LensWidthName => IsRound ? Strings.Instance.Extras_Magnifier_Size : Strings.Instance.Extras_Magnifier_Width;
 
         public int LensWidth
         {
@@ -373,6 +383,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(FollowIndex));
             OnPropertyChanged(nameof(LensShapeNames));
             OnPropertyChanged(nameof(LensShapeIndex));
+            OnPropertyChanged(nameof(LensWidthName));
         }
     }
 }

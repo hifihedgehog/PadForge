@@ -144,6 +144,9 @@ namespace PadForge.Common
                 // Profiles exported before the v4.x schema rename carry the
                 // per-(slot, device) configs under the legacy element name.
                 profile.MigrateLegacySchema();
+                // One exported while the engine still read the gyro stamps
+                // carries them beside the devices its entries assign.
+                profile.FoldCarriedGyroStamps();
                 // A profile exported before #494 may carry the Razer Chroma,
                 // Logitech LIGHTSYNC and Razer Sensa switches, each of which
                 // becomes an assignment of its row.

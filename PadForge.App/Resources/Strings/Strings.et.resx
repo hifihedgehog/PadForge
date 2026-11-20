@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Puudub</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekundit</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutit (0 = mitte kunagi)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Määramata</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← vasakule)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ üles)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ei leitud</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll puudub. Pange SDL3.dll faili PadForge.exe kõrvale. Laadige see alla aadressilt https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ei leitud. Laadige PadForge uuesti alla.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Draiveri toiming nurjus: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Sätted kopeeriti lõikelauale.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Seadme teave kopeeriti lõikelauale.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Madal</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pilt</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Loend</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Väljund: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Väljundeid: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Liikumine</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klõpsake juhtelemendil ja vajutage seejärel sisendit, mis seda juhtima peab.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Mängud, mida PadForge ei tunne</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modidele, mis otsivad enne saatmist töötavat DSX-i.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mida näidatakse</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menüü ring, ruudustik või riba, kui see on avatud</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kihi nimi, kui Shift-kiht sisse lülitub, selleks ajaks, mille see kiht määrab</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiili nimi, kui profiil vahetub</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menüü ring, ruudustik või riba, kui see on avatud.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kihi nimi, kui Shift-kiht sisse lülitub, selleks ajaks, mille see kiht määrab.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiili nimi, kui profiil vahetub.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopeeri aadress</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Asukoht ekraanil</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ühendage telefon</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Käivita mootor programmi avamisel automaatselt</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jätka küsitlemist, kui aken pole fookuses</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Küsitlussagedus (kui profiil seda ei alista)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mootor loeb kõiki seadmeid ja värskendab virtuaalseid kontrollereid nii mitu korda sekundis, vahemikus 60 kuni 10000. Kõrgem sagedus kasutab rohkem protsessoriaega. Windows äratab mootori üles kuni umbes 2000 korda sekundis, seega kõrgema sageduse korral tehakse igal äratamisel mitu läbimist. Kui aktiivne on oma küsitlussagedusega profiil, kehtib selle asemel profiili sagedus. See väärtus taastub, kui profiil inaktiveeritakse.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Mootor loeb kõiki seadmeid ja värskendab virtuaalseid kontrollereid nii mitu korda sekundis, vahemikus 60 kuni 10000. Kõrgem sagedus kasutab rohkem protsessoriaega. Selles arvutis äratab Windows mootori üles kuni {0} korda sekundis, seega kõrgema sageduse korral tehakse igal äratamisel mitu läbimist. Kui aktiivne on oma küsitlussagedusega profiil, kehtib selle asemel profiili sagedus. See väärtus taastub, kui profiil inaktiveeritakse.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Peida seadmed mängude eest</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pealüliti HidHide'i seadmete peitmise ja madala taseme sisendikonksude jaoks. Kui see on välja lülitatud, ei peideta ühtegi seadet, olenemata seadmepõhistest sätetest.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hoia seadmed käivituste vahel varjatuna</value></data>
@@ -924,7 +926,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekundid trükitud märkide vahel, kuni 1000. 0 trükib kogu teksti korraga.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Ühenduse katkestamine jõudeolekus</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Üksikasjad</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutit</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Katkesta Bluetooth-ühendus, kui seade on USB kaudu ühendatud</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Kiirlaadimine. Kui see kontroller teatab Bluetoothi kaudu ühendatuna, et laeb, katkestatakse Bluetooth-ühendus, et see laeks ilma raadiot toitmata. Arvesse läheb iga USB-toiteallikas, sh seinalaadijad. Kui lülitate Bluetoothi kaabli ühendatuks jäädes uuesti sisse, jäetakse see rahule kuni järgmise lahtiühendamiseni.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Loe iCade-kontrollerina</value></data>
@@ -966,8 +967,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU näitab aktiivse profiili nime ja muutub iga profiilivahetusega.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU näitab aktiivse profiili kohta profiililoendis. Profiil „Vaikimisi“ on 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU näitab aktiivse profiili enda pilti või selle puudumisel profiili nime. Igal profiilil on oma pilt.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU näitab kellaaega, mida kirjutatakse üle kord minutis. Adapter hoiab iga pilti mälus, mis on ette nähtud 100 000 kirjutuse jaoks, ja ööpäevaringsel kuvamisel saavutatakse see piir umbes kümne nädalaga.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU näitab tunde ja minuteid alates hetkest, mil PadForge mängupuldi leidis, ning seda kirjutatakse üle kord minutis. Kui mängupult on pordist väljas kauem kui kümme sekundit, algab arvestus uuesti nullist. Adapter hoiab iga pilti mälus, mis on ette nähtud 100 000 kirjutuse jaoks, ja ööpäevaringsel kuvamisel saavutatakse see piir umbes kümne nädalaga.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU näitab kellaaega, mida kirjutatakse üle kord minutis. Adapter salvestab iga pildi oma mällu, seega kirjutab PadForge seda üle mitte sagedamini.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU näitab tunde ja minuteid alates hetkest, mil PadForge mängupuldi leidis, ning seda kirjutatakse üle kord minutis. Kui mängupult on pordist väljas kauem kui kümme sekundit, algab arvestus uuesti nullist. Adapter salvestab iga pildi oma mällu, seega kirjutab PadForge seda üle mitte sagedamini kui kord minutis.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU näitab teie valitud pilti: BMP- või PNG-faili, VMU Animatori .lcd-faili või Dreamcasti .vms-ikooni. Pildid kärbitakse 48 × 32 must-valge piksli suuruseks.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Vali pilt…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Vali profiilile {0} pilt…</value></data>
@@ -1012,6 +1013,13 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xboxi režiimis kontroller ei vastanud Apex 4-na, seega ei saadetud midagi ja Windows sai selle tagasi. Lülitage see selle enda lülitiga tagasi DInputi režiimi.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ei viinud kontrollerit WinUSB-le, seega ei saadetud midagi. Lülitage see selle enda lülitiga tagasi DInputi režiimi.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Peatatud. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse enne uuesti saatmist.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Ekraani port ei avanenud, seega ei saadetud midagi. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse ning saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Pildil on rohkem kaadreid, kui selle kontrolleri ekraan mahutab.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Sellele kontrollerile saadetakse juba pilti. Oodake, kuni see lõpeb.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ekraan küsis pilti aadressilt, kuhu PadForge ei kirjuta, seega ei saadetud midagi. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse ning saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Pilt saadeti, kuid kontroller ei lülitunud tagasi DInput režiimi. Lülitage see tagasi selle enda lülitiga.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontroller ei võtnud vastu käsku, mis selle ette valmistab, seega ei saadetud midagi. Kontrollige, et see on ühendatud, ja saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Saatmine peatus PadForge veateate tõttu. Üksikasjad on logifailis.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrollerisse on pilt veel teel. Kas peatada saatmine?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Paki failid (*.mpk)|*.mpk|Kõik failid (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Paki port {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Lähtesta menüü geomeetria</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Lähtesta lahter</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Lähtesta tundlikkus</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Lähtesta kiirendus</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Lähtesta surnud tsoon</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Lähtesta hoidmisaeg</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Lähtesta vajutusaken</value></data>
@@ -1787,7 +1794,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Mis tahes kiht</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Töötab pidevalt, kuni see virtuaalne kontroller on aktiivne. Käivitusnuppu pole vaja.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Tee</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Kiht, Allikas, Lävi, Suund, Neela käivitusnupud, Kordus</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Lisa toiming</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tüüp</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuaalsed nupud</value></data>
@@ -1813,7 +1819,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Hiirenupu vajutus</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Hiirenupu vabastamine</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Hiirega kerimine</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Lülita puuteplaadi ülekate sisse/välja</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Nupud</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Klahvikombinatsioon</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Klahvikombinatsioon kujul {Key1}{Key2}. Muudetav.</value></data>
@@ -1944,6 +1949,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Korda {0} iga {1} ms järel</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Hiir X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Hiir Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horisontaalne nihe</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertikaalne nihe</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervall</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Vali ekraanilt</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Jäädvustamiseni {0}…</value></data>
@@ -1978,6 +1985,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Ümberpööratud pool</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Seadet pole vastendatud</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Tundmatu seade</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Puuteplaadi klõps</value></data>
@@ -2420,7 +2428,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Alla (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Üles (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Rakendumine</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Sihtimise rakendusnupp, Rakendusrežiim, Lihtsa sihtimise lävi</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Sihtimise rakendusnupp, Rakendusrežiim, Güroskoop sees, Uuesti keskendamine, Lihtsa sihtimise lävi</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valikulised piirangud, mis määravad, millal güroskoop on aktiivne. Seadistada saab nii parema kangi kõrvalekalde kui ka sihtimise rakendusnupu. Güroskoop töötab ainult siis, kui kõik seadistatud piirangud on aktiivsed.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Kohalik</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mängija</value></data>
@@ -2457,6 +2465,27 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Lähtesta lihtsa sihtimise lävi</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Lähtesta sihtimise rakendusnupp</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Lähtesta rakendumisrežiim</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Kiht</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Kiht, mille güroskoobi sisselülitamise sätet allolevad read näitavad ja muudavad.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Güroskoop sees</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Millal güroskoop sellel kihil töötab, lisaks rakendusnupule. Kiht, mille valik on Sama mis alus, järgib alust.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Alati sees</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Sama mis alus</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Hoidmise ajal</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Kui ei hoita</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Lülita iga vajutusega</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Güroskoobi nupud</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Nupud, mida güroskoobi sisselülitamine loeb, selle pesa mis tahes kontrolleril.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Nõutav</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Kas piisab ühest märgitud nupust või peab olema hoitud iga märgitud nupp.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Mis tahes nupp</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Iga nupp</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Keskenda uuesti güroskoobi sisselülitamisel</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Võtab kontrolleri asendi puhkepunktiks iga kord, kui güroskoop sisse lülitub.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Lähtesta güroskoop sees</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Lähtesta güroskoobi nupud</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Lähtesta nõutav</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Lähtesta uuesti keskendamine güroskoobi sisselülitamisel</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Lähtesta rakenduskang</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Lähtesta rakendussuund</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Liikumise läbilaskmine</value></data>
@@ -2467,6 +2496,25 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Mäng loeb liikumist siin määratud tundlikkuse, silumise ja kõveraga.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Lähtesta läbilaskmise häälestus</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Ainult kui</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>See allikas loeb ainult siis, kui ka see sisend on samal kontrolleril vajutatud. Impordi tsoonitest loetakse kangi või päästiku vahemikuna, mida see kontrollib.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ja kui</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Teine sisend, mida see allikas samuti ootab.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Muuda sisendit</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Valib teise sisendi, mida oodata.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kõver</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Tõstab selle sisendi näidu enne väljundi juhtimist sellesse astmesse. 0 ja 1 jätavad selle sirgeks. Üle 1 on keskkoha lähedal aeglasem.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Välisvahemik</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Väljund jõuab täisväärtuseni nii suure osa liikumisulatuse juures. 100% on väljas.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Surnud tsooni kompensatsioon</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Väljund algab nii suurelt kohe, kui sisend liigub. 0 on väljas.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Surnud tsooni kuju</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Väljas jätab näidu puutumata. Aksiaalne mõõdab ainult seda telge. Radiaalne mõõdab kangi telgede paari koos.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Väljas</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Aksiaalne</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiaalne</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Sisemine surnud tsoon</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Allpool seda osa liikumisulatusest loetakse sisend keskasendis olevaks.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine güroskoobi tundlikkuse kordaja. 1.0 = mootori vaikeväärtus (500°/s → täielik kõrvalekalle). Väärtused üle 1.0 on tundlikumad. Väärtused alla 1.0 on vähem tundlikud.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine kalde tundlikkuse kordaja. 1.0 = täielikuks kõrvalekaldeks on vaja 90° kallet. Väärtused üle 1.0 saavutavad täieliku kõrvalekalde väiksema kaldega.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Güroskoobi kalle X</value></data>
@@ -3045,6 +3093,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Tase</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tegevusetuse ajalõpp</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekundid, mille järel virtuaalne kontroller hävitatakse, kui kõik selle vastendatud seadmed on ühenduseta. 0 keelab. Allesjäänud sama tüüpi kontrollerid nihkuvad tühimiku täitmiseks ülespoole ja seotakse uuesti madalamate pesadega.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekundit (0 = mitte kunagi)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Lisa kiht</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Lisa Shift-kiht. Teine vastendustabel, mis aktiveerub, kui nuppu hoitakse all või lülitatakse.</value></data>
@@ -3156,6 +3205,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Lähtesta tagasikeeramise kiirus</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Lähtesta nurga sisemine surnud tsoon</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Lähtesta nurga välimine surnud tsoon</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Kangi surnud tsoon</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Allpool seda kõrvalekallet loetakse kang keskasendis olevaks, seega rooli ei keerata.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Lähtesta kangi surnud tsoon</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Lähtesta kallutuse sisemine surnud tsoon</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Lähtesta kallutuse välimine surnud tsoon</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Lähtesta kontrolleri suund</value></data>
@@ -3261,6 +3313,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>kui rool annab {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>See auto nõuab suuremat pöördemomenti, kui rool suudab, seega kõvera tipp lõigatakse ära.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Keskasendi tunnetus, roolivõimendus, summutus, hõõrdumine, haardumine, fikseeritud kiirus, rooli pöördemoment</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Keskasendi tunnetus, roolivõimendus, summutus, haardumine, fikseeritud kiirus, rooli pöördemoment</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kui kindlalt rooliseade madalal kiirusel keskasendis püsib. 100% on auto enda väärtus.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Roolivõimendus</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kui palju roolivõimendi kurvi tugevnedes vaeva vähendab. Suurem väärtus tähendab keskasendist eemal kergemat rooli.</value></data>
@@ -3402,7 +3455,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Lähtesta kõrged toonid</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Lähtesta tooni piir</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopeerib kõik, mida süsteemi vaikeväljund esitab, paralleelselt selle kontrolleri sisseehitatud kõlarisse. Töötab USB ja Bluetoothi kaudu.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valitud seadmel pole sisseehitatud kõlarit. Selle mängupuldi makrohelid esitatakse süsteemi vaikeväljundis.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Valitud seadme kõlarini ei ole sellel ühendusel PadForge'ile teed. Selle mängupuldi makrohelid esitatakse süsteemi vaikeväljundis.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brauseripõhine DualSense'i testikomplekt, autor Xuezhou Dai (daidr): viide Sony funktsiooniaruannete CRC-raamistusele ja püsivara testikäskudele, mida PadForge edastab virtuaalsetelt mängupultidelt füüsilistele.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3816,7 +3869,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Kuva Dreamcasti ekraan</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Esitab pilte iga sellele pesale andmeid andva Bliss-Box-pordi Dreamcasti mängupuldi VMU-l ja taastab seejärel iga pordi oma ekraanisätte.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Kuva Dreamcasti pilte: {0} × {1} ms, korduste arv {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Iga pilti näidatakse vähemalt sekund, sest adapter hoiab iga talle saadetud pilti mälus, mis on ette nähtud 100 000 kirjutuse jaoks, ja uue pildi saatmisel iga sekund saavutatakse see piir umbes ühe päevaga. Pildid on 48 × 32 must-valget pikslit BMP- või PNG-failist, VMU Animatori .lcd-failist või Dreamcasti .vms-ikoonist.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Iga pilti näidatakse vähemalt sekund. PadForge saadab adapterile kõige rohkem ühe pildi sekundis, sest adapter salvestab iga talle saadetud pildi oma mällu. Pildid on 48 × 32 must-valget pikslit BMP- või PNG-failist, VMU Animatori .lcd-failist või Dreamcasti .vms-ikoonist.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Pildid</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Lisa pilt…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Eemalda pilt</value></data>
@@ -3893,15 +3946,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Kui kiht on sisse lülitatud, lülitub see ise välja pärast nii mitut millisekundit, mille jooksul ükski kihi enda vastendatud sisend pole aktiivne. Taimer käivitub kihi aktiveerimisel ja algab uuesti iga kihi sisendiga. 0 hoiab kihti sees, kuni selle ise välja lülitate.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Lähtesta peenhäälestuse surnud tsoon väärtusele 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Lähtesta peenhäälestuse kiirus väärtusele 100% sekundis.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Lähtesta nii, et vabastamisel viiakse tase tagasi 100%-le.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Lähtesta automaatne tühistamine väärtusele 0 (kiht jääb sisse, kuni see välja lülitatakse).</value>
   </data>
@@ -3969,6 +4013,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshopi profiil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshopi makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kursoripiirkond</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hoidmine)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vabastamine)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (rakendumine)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Valige konfiguratsioon, et näha, mis üle tuleb.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Mis üle tuleb</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Muutub</value></data>
@@ -4595,7 +4642,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Suunavajutused liiguvad lahtrite vahel ja käivitavad iga uue valitud lahtri. See kiirriba käitumine ei kasuta käivitusrežiimi ega klõpsusisendit.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi täiustatud protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Lubab toetatud Flydigi kontrolleritel lisanupud ja liikumisandurid.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi tarkvara töötab: {0}. See võib kasutada sama kontrolleriliidest kui PadForge, ja on teatatud, et Vader 5 Pro katkestas korduvalt ühenduse, kui mõlemal oli juurdepääs. Kui see kontroller kaob ja ühendub uuesti, peatage teenus PadForge'i kasutamise ajaks, hoidke kontroller peidetuna ja eemaldage teenus HidHide'i lubatud loendist või proovige Sätete lehel välja lülitada „Flydigi täiustatud protokoll“, kuigi pole kinnitatud, et see aitab.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi tarkvara töötab: {0}. See suhtleb kontrolleriga liidese kaudu, mida PadForge kasutab. Kui see kontroller kaob ja ühendub uuesti, peatage see tarkvara PadForge kasutamise ajaks.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Luba kaugmääramise muudatused</value>
   </data>

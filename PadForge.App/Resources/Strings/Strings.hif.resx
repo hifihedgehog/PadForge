@@ -307,6 +307,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Aadha</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Koi device ke mapping nai hai</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Anjaan device</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Upar ke aadha</value></data>
@@ -394,6 +395,18 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Upar (Y+)</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Deadzone reset karo</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Khali jab tak</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ii source khali tab gina jaai jab ii input bhi usi controller pe dabaa hua dikhe. Import se aawa zone test uu stick ya trigger range jaisan padha jaai jiske uu check kare hai.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Aur jab tak</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ek dusra input jiske ii source bhi wait kare hai.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Input badlo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Wait kare ke liye dusra input chuno.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Output chalaae se pahile ii input ke reading ke ii power tak uthaae hai. 0 aur 1 ise seedha chhod dei. 1 se upar center ke paas dheere hoe hai.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Outer range</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Travel ke etna hissa pe output pura pahunch jaai. 100% pe ii off hai.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Input hile hi output etna se suru hoe hai. 0 pe ii off hai.</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
@@ -976,6 +989,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Kam</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Tasveer</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Motion</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Ek control pe click karo, phir uu input dabao jon ke ise chalae ke chahi.</value></data>
@@ -1003,7 +1017,7 @@
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, daaya haath</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Lean deadzone, controller orientation</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, smoothing, acceleration, output curve</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim engage button, engage mode, easy aim threshold</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim engage button, engage mode, gyro on, re-center, easy aim threshold</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Touchpad ke stick ya D-pad ke rakam use karo</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Is touchpad ke gesture chalu kare</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Apan khud ke record karo</value></data>

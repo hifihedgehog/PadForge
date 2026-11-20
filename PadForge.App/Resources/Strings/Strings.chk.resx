@@ -101,6 +101,7 @@
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Esor SDL3.dll</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Esor SDL3.dll. Kopwe uwato PadForge sefán.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Ewe engine a poputá.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Osukosuk: {0}</value></data>
@@ -650,7 +651,6 @@
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip file mi kepich image ren menu cell</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ren eú me eú motor, trigger rumble, Steering Angle Rumble, Constant Force</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Féri</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Féri sefál</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Siwili itan</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu minefé</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Apachaatá eú cell</value></data>

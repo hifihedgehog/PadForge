@@ -13,6 +13,10 @@ namespace PadForge.ViewModels
         public string Value { get; set; } = "";
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";
+        // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is SocdModeOption o && string.Equals(o.Value, Value, System.StringComparison.Ordinal);
+        public override int GetHashCode() => Value?.GetHashCode(System.StringComparison.Ordinal) ?? 0;
     }
 
     /// <summary>Which half of a Keyboard + Mouse slot a mapping row drives
@@ -32,6 +36,10 @@ namespace PadForge.ViewModels
     {
         public string Value { get; set; } = "";
         public string Name { get; set; } = "";
+        // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is KbmSurfaceOption o && string.Equals(o.Value, Value, System.StringComparison.Ordinal);
+        public override int GetHashCode() => Value?.GetHashCode(System.StringComparison.Ordinal) ?? 0;
     }
 
     /// <summary>One entry in the Keyboard or Mouse device dropdown: Windows
@@ -59,6 +67,10 @@ namespace PadForge.ViewModels
     {
         public int Vk { get; set; }
         public string Label { get; set; } = "";
+        // Equal by Vk: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is SocdKeyOption o && o.Vk.Equals(Vk);
+        public override int GetHashCode() => Vk.GetHashCode();
     }
 
     /// <summary>One editable SOCD key pair. VK edits reserialize the

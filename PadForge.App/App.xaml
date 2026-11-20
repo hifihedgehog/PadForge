@@ -127,8 +127,6 @@
                     <SolidColorBrush x:Key="SelectedTextBrush" Color="#FFFFFF"/>
                     <!-- The picked item of a list that stands on a card. -->
                     <SolidColorBrush x:Key="EmberCardPickBrush" Color="#24160D"/>
-                    <!-- The ring on a control of the picture under the
-                         pointer: the boards' ember at 60 percent. -->
                     <!-- An input pill of a macro's trigger: its edge and its words. -->
                     <SolidColorBrush x:Key="InputChipEdgeBrush" Color="#33506A"/>
                     <SolidColorBrush x:Key="InputChipTextBrush" Color="#CFE6F5"/>
@@ -1280,6 +1278,10 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            <!-- Every slider is the ember one. A slider that named no style
+                 drew the stock rail beside ember rows: 30 of the controller
+                 page did (seen 2026-11-20). -->
+            <Style TargetType="Slider" BasedOn="{StaticResource EmberSlider}"/>
 
             <!--
                 The rows of a settings card (#574), on every page: a setting's
@@ -1587,6 +1589,7 @@
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
             <conv:AnyOnConverter x:Key="AnyOnConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />
+            <conv:OneOrManyFormatConverter x:Key="OneOrManyFormatConverter" />
             <conv:ShownNamesConverter x:Key="ShownNamesConverter" />
             <conv:BracketPartConverter x:Key="BracketPartConverter" />
             <conv:OptionTextConverter x:Key="OptionTextConverter" />

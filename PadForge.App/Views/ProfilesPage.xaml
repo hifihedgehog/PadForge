@@ -17,7 +17,7 @@
             <Setter Property="Margin" Value="0,0,8,0"/>
         </Style>
         <!-- A button of a shortcut, as the board draws a key: 26 tall with
-             corners of 7 on the band's fill, its name at 12.5. -->
+             corners of 7 on the band's fill, its name at 12. -->
         <Style x:Key="ShortcutKey" TargetType="Border">
             <Setter Property="Height" Value="26"/>
             <Setter Property="CornerRadius" Value="7"/>
@@ -29,10 +29,9 @@
             <Setter Property="TextElement.FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        <!-- A controller type and its count on a profile's card: a pill 26
-             tall on the band's fill, the type's own symbol and the number in
-             one light steel. -->
-        <Style x:Key="TypeChip" TargetType="Border">
+        <!-- The words "No controllers" on the card of a profile that has
+             none: a pill 26 tall on the band's fill, in one light steel. -->
+        <Style x:Key="NoSlotsChip" TargetType="Border">
             <Setter Property="Height" Value="26"/>
             <Setter Property="CornerRadius" Value="13"/>
             <Setter Property="Padding" Value="7,0,9,0"/>
@@ -44,7 +43,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <!-- A small outlined word: Built-in on Default's card, and what a
-             starter profile makes. 11 in the quiet text color, corners of 5,
+             starter profile makes. 12 in the quiet text color, corners of 5,
              no fill. -->
         <Style x:Key="SmallTag" TargetType="Border">
             <Setter Property="CornerRadius" Value="5"/>
@@ -55,9 +54,6 @@
             <Setter Property="TextElement.FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        <!-- A starter profile's tile: the band's fill inside the card's
-             hairline with corners of 12, lifting one step under the pointer.
-             The whole tile is one button. -->
         <!-- One controller of a profile, on the profile's card (the approved
              "keep the frame" canvas): its picture as its own page shows it,
              on a stage like a Home card's, and under the picture the type's
@@ -233,6 +229,9 @@
             </Setter>
         </Style>
 
+        <!-- A starter profile's tile: the band's fill inside the card's
+             hairline with corners of 12, lifting one step under the pointer.
+             The whole tile is one button. -->
         <Style x:Key="StarterTile" TargetType="Button">
             <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
@@ -550,7 +549,7 @@
                                             <!-- A profile with no controllers says so,
                                                  where the pictures of one that has
                                                  them stand at the card's end. -->
-                                            <Border Grid.Row="2" Style="{StaticResource TypeChip}" Padding="9,0" Margin="0,8,0,0" HorizontalAlignment="Left"
+                                            <Border Grid.Row="2" Style="{StaticResource NoSlotsChip}" Padding="9,0" Margin="0,8,0,0" HorizontalAlignment="Left"
                                                     Visibility="{Binding HasNoSlots, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{Binding Profiles_NoSlots, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                             </Border>

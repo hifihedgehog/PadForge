@@ -165,7 +165,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← han kais)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ antap)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll i no stap</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll i no stap. Putim SDL3.dll klostu long PadForge.exe. Daunlodim em long https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll i no stap. Daunlodim PadForge gen.</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profail "{0}" i kamap.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profail "{0}" i raus pinis.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Rong long lodim ol seting: {0}</value></data>
@@ -204,6 +204,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Daun</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Piksa</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} aut</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} aut</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Muvmen</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik long wanpela kontrol, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
@@ -605,6 +606,8 @@
   <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Muvim maus i go long {0}, {1}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Maus X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maus Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Muv long sait</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Muv i go antap o daun</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Holim</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Raithan mota</value></data>
@@ -1209,6 +1212,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>long {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Dispela ka i askim moa torque long wil i gat, olsem na antap bilong lain i katim.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Pilim long namel, pawa halivim, damping, friction, grip, fiks spit, torque bilong wil</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Pilim long namel, pawa halivim, damping, grip, fiks spit, torque bilong wil</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hamas stiaring i holim namel strong taim spit i daun. 100% em i bilong ka yet.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Pawa halivim</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hamas pawa stiaring i rausim hevi taim ka i tanim moa. Moa i min stiaring i isi moa longwe long namel.</value></data>
@@ -1294,7 +1298,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset i go long default (Of)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset i go long default (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset i go long 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Masin yu makim i nogat spika insait. Ol nois bilong makro bilong dispela kontrola i pilai long default bilong sistem.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profail "{0}" i ekspot pinis.</value></data>
@@ -1929,7 +1932,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Salim guria bilong bikpela mota i go long ol triga</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Guria bilong triga long bes bilong nois bilong sistem</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, mekim isi, Spid i go antap, Kev bilong aut</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baten bilong aim, Pasin bilong kirap, Threshold bilong isi aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Baten bilong aim, Pasin bilong kirap, Onim gyro, Senta gen, Threshold bilong isi aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Yusim touchpad olsem stik o D-pad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Tanim on ol gesture bilong dispela touchpad</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Ol swipe, ol tap, ol pinch, ol sep</value></data>
@@ -1940,7 +1943,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Strong bilong wanwan triga, senisim mota, guria bilong adaptive triga, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tanim i go baksait, Momentum, Respons, Spid i go antap, flick</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Mekim</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Lea, Source, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Senisim nem</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nupela menu</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Rausim las sel</value></data>
@@ -1962,7 +1964,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol namba i lain Game Telemetry long [Ol masin]. Mapim ol long hap Ol mapin bilong wanpela kontrola o yusim ol long kirapim ol makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ples, sais na klia bilong wanpela menu yet yu setim long menu, long hap [Ol makro na menu] bilong wanpela kontrola.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wanem i soim</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Raun, grid o ba bilong wanpela menu taim em i op</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Raun, grid o ba bilong wanpela menu taim em i op.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopim adres</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Fon i konek i soim hia na long pes Ol masin, we yu givim long wanpela kontrola.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>I konek</value></data>
@@ -2120,9 +2122,23 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontrola long Xbox mod i no bekim olsem Apex 4, olsem na i no gat samting i go na Windows i kisim em bek. Senisim em i go bek long DInput mod long swis bilong en yet.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows i no muvim kontrola i go long WinUSB, olsem na i no gat samting i go. Senisim em i go bek long DInput mod long swis bilong en yet.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Em i stop. Ofim kontrola na onim gen long swis bilong en yet bipo yu salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Pot bilong skrin i no op, olsem na i no salim wanpela samting. Ofim kontrola na onim gen long swis bilong en yet na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Piksa i gat planti frem moa long ol frem skrin bilong dispela kontrola inap holim.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Wanpela piksa i wok long i go long dispela kontrola pinis. Wet inap em i pinis.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Skrin i askim piksa long wanpela adres PadForge i no save raitim, olsem na i no salim wanpela samting. Ofim kontrola na onim gen long swis bilong en yet na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Piksa i go pinis, tasol kontrola i no go bek long DInput mod. Senisim em i go bek long swis bilong en yet.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrola i no kisim tok we i redim em, olsem na i no salim wanpela samting. Lukim sapos em i konek na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Salim i stop long wanpela rong insait long PadForge. Fail bilong log i gat ol liklik toktok.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Wanpela piksa i go yet long kontrola. Stopim salim?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kev</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Litimapim namba bilong dispela input long dispela pawa bipo em i kirapim aut. 0 na 1 i lusim em i stret. Antap long 1 i isi moa long namel.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ausait hap</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Aut i kamap pulap long dispela hap bilong muv. 100% em i of.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Aut i stat long dispela hap taim input i muv. 0 em i of.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge i nogat rot i go long spika bilong masin yu makim long dispela konek. Ol nois bilong makro bilong dispela kontrola i pilai long default bilong sistem.</value></data>
 </root>

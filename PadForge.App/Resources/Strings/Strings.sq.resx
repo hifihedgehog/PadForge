@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Asnjë</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekonda</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuta (0 = kurrë)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>I pacaktuar</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← majtas)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ lart)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nuk u gjet</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nuk u gjet. Vendose SDL3.dll pranë PadForge.exe. Shkarkoje nga https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll nuk u gjet. Shkarko PadForge përsëri.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operacioni i drajverit dështoi: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Cilësimet u kopjuan në clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informacioni i pajisjes u kopjua në clipboard.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>E ulët</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imazh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listë</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} dalje</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} dalje</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Lëvizja</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kliko një kontroll, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Lojërat që PadForge nuk i njeh</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Për modet që kërkojnë një DSX në punë para se të dërgojnë.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Çfarë shfaqet</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Unaza, rrjeta ose shiriti i një menuje ndërsa është e hapur</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës kur aktivizohet një shtresë ndërrimi, për kohën që cakton ajo shtresë</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Emri i profilit kur ndryshon profili</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Unaza, rrjeta ose shiriti i një menuje ndërsa është e hapur.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës kur aktivizohet një shtresë ndërrimi, për kohën që cakton ajo shtresë.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Emri i profilit kur ndryshon profili.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopjo adresën</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vendi në ekran</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Lidh një telefon</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Nise motorin automatikisht gjatë hapjes</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Vazhdo sondazhin kur dritarja humb fokusin</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Frekuenca e leximit (përveç nëse e mbivendos një profil)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motori lexon çdo pajisje dhe përditëson kontrolluesit virtualë kaq herë në sekondë, nga 60 deri në 10000. Një frekuencë më e lartë përdor më shumë kohë procesori. Windows e zgjon motorin rreth 2000 herë në sekondë në maksimum, ndaj një frekuencë më e lartë kryen disa kalime në çdo zgjim. Ndërsa është aktiv një profil me shpejtësinë e vet të sondazhit, zbatohet ajo shpejtësi. Kjo vlerë kthehet kur profili çaktivizohet.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Motori lexon çdo pajisje dhe përditëson kontrolluesit virtualë kaq herë në sekondë, nga 60 deri në 10000. Një frekuencë më e lartë përdor më shumë kohë procesori. Në këtë kompjuter, Windows e zgjon motorin më së shumti {0} herë në sekondë, ndaj një frekuencë më e lartë kryen disa kalime në çdo zgjim. Ndërsa është aktiv një profil me shpejtësinë e vet të sondazhit, zbatohet ajo shpejtësi. Kjo vlerë kthehet kur profili çaktivizohet.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fshih pajisjet nga lojërat</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Çelësi kryesor për fshehjen e pajisjeve me HidHide dhe për grepat e hyrjes në nivel të ulët. Kur është çaktivizuar, asnjë pajisje nuk fshihet, pavarësisht cilësimeve për secilën pajisje.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mbaji pajisjet të fshehura mes hapjeve</value></data>
@@ -923,7 +925,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekonda ndërmjet karaktereve të shkruara, deri në 1000. Me 0 i gjithë teksti shkruhet menjëherë.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Shkëputje pas joaktivitetit</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detajet</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuta</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Shkëput Bluetooth kur lidhet me USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karikim i shpejtë. Kur ky kontrollues raporton se po karikohet ndërsa është i lidhur me Bluetooth, lidhja Bluetooth ndërpritet që të karikohet pa e ndezur radion. Çdo burim energjie USB llogaritet, përfshirë karikuesit e murit. Nëse e ndizni përsëri Bluetooth ndërsa kablloja mbetet e futur, ai lihet në paqe deri në shkëputjen tjetër.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lexo si kontrollues iCade</value></data>
@@ -965,8 +966,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU shfaq emrin e profilit aktiv dhe e ndjek çdo ndërrim profili.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU shfaq vendin e profilit aktiv në listën e profileve. Profili parazgjedhje është 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU shfaq imazhin e vetë profilit aktiv, ose emrin e tij kur nuk ka imazh. Çdo profil mban imazhin e vet.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU shfaq orën e ditës, të rishkruar një herë në minutë. Përshtatësi e mban çdo imazh në memorie të vlerësuar për 100,000 shkrime, të cilat arrihen pas rreth dhjetë javësh shfaqjeje pa ndërprerje.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU shfaq orët dhe minutat që nga koha kur PadForge e gjeti pad-in, të rishkruara një herë në minutë. Një pad jashtë portës së tij për më shumë se dhjetë sekonda fillon përsëri nga zero. Përshtatësi e mban çdo imazh në memorie të vlerësuar për 100,000 shkrime, të cilat arrihen pas rreth dhjetë javësh shfaqjeje pa ndërprerje.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU shfaq orën e ditës, të rishkruar një herë në minutë. Përshtatësi e ruan çdo imazh në memorien e vet, ndaj PadForge e rishkruan jo më shpesh se kaq.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU shfaq orët dhe minutat që nga koha kur PadForge e gjeti pad-in, të rishkruara një herë në minutë. Një pad jashtë portës së tij për më shumë se dhjetë sekonda fillon përsëri nga zero. Përshtatësi e ruan çdo imazh në memorien e vet, ndaj PadForge e rishkruan jo më shpesh se një herë në minutë.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU shfaq një imazh që zgjidhni: një BMP ose PNG, një skedar .lcd të VMU Animator ose një ikonë .vms të Dreamcast. Imazhet priten në 48 me 32 piksele bardhezi.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Zgjidh imazhin…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Zgjidh imazhin për {0}…</value></data>
@@ -1011,6 +1012,13 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontrolluesi në modalitetin Xbox nuk u përgjigj si Apex 4, ndaj nuk u dërgua asgjë dhe Windows e ka përsëri. Ktheje në modalitetin DInput me çelësin e tij.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nuk e lëvizi kontrolluesin te WinUSB, ndaj nuk u dërgua asgjë. Ktheje në modalitetin DInput me çelësin e tij.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>U ndal. Fike dhe ndize kontrolluesin me çelësin e tij para se të dërgosh përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Porta e ekranit nuk u hap, ndaj nuk u dërgua asgjë. Fike dhe ndize kontrolluesin me çelësin e tij dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Imazhi ka më shumë kuadro sesa mban ekrani i këtij kontrolluesi.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Një imazh po dërgohet tashmë te ky kontrollues. Prit të përfundojë.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ekrani kërkoi imazhin në një adresë ku PadForge nuk shkruan, ndaj nuk u dërgua asgjë. Fike dhe ndize kontrolluesin me çelësin e tij dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Imazhi u dërgua, por kontrolluesi nuk u kthye në mënyrën DInput. Ktheje me çelësin e tij.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolluesi nuk e pranoi komandën që e përgatit, ndaj nuk u dërgua asgjë. Kontrollo që është i lidhur dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Dërgimi u ndal nga një gabim në PadForge. Skedari i regjistrit ka detajet.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Një imazh po shkon ende te kontrolluesi. Të ndalohet dërgimi?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Skedarë Controller Pak (*.mpk)|*.mpk|Të gjithë skedarët (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
@@ -1505,7 +1513,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Rivendos gjeometrinë e menysë</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Rivendos qelizën</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Rivendos ndjeshmërinë</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Rivendos përshpejtimin</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Rivendos zonën e vdekur</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Rivendos kohën e mbajtjes</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Rivendos dritaren e shtypjes</value></data>
@@ -1786,7 +1793,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Çdo shtresë</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ekzekutohet vazhdimisht për sa kohë ky kontrollues virtual është aktiv. Nuk kërkohet buton këmbëze.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Bëj</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Shtresa, Burimi, Pragu, Drejtimi, Konsumo butonat e këmbëzës, Përsërit</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Shto veprim</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Lloji</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Butonat virtualë</value></data>
@@ -1812,7 +1818,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Shtypja e butonit të mausit</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Lëshimi i butonit të mausit</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Rrotullimi i mausit</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Ndërro mbivendosjen e touchpad</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Butonat</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombinim tastesh</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Kombinim tastesh në formatin {Key1}{Key2}. Mund të redaktohet.</value></data>
@@ -1943,6 +1948,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Përsërit {0} çdo {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Maus X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maus Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Zhvendosja horizontale</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Zhvendosja vertikale</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervali</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Zgjidh në ekran</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Kapja pas {0}…</value></data>
@@ -1977,6 +1984,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Gjysma e anasjellë</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Asnjë pajisje e hartëzuar</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Pajisje e panjohur</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Klik në touchpad</value></data>
@@ -2419,7 +2427,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Poshtë (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Lart (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivizimi</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butoni i aktivizimit të synimit, Mënyra e aktivizimit, Pragu i synimit të lehtë</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butoni i aktivizimit të synimit, Mënyra e aktivizimit, Xhira aktive, Ricentrimi, Pragu i synimit të lehtë</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Porta opsionale që kufizojnë kur është aktive xhira. Devijimi i levës së djathtë dhe butoni i aktivizimit të synimit mund të konfigurohen secili. Xhira lëshohet vetëm kur çdo portë e konfiguruar është aktive.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokale</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Lojtari</value></data>
@@ -2456,6 +2464,27 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Rivendos pragun e synimit të lehtë</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Rivendos butonin e aktivizimit të synimit</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Rivendos mënyrën e aktivizimit</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Shtresa</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Shtresa, cilësimin Xhira aktive të së cilës e shfaqin dhe e ndryshojnë rreshtat më poshtë.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Xhira aktive</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Kur punon xhira në këtë shtresë, përveç butonit të aktivizimit. Një shtresë ndërrimi e vendosur te Si baza ndjek Bazën.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Gjithmonë aktive</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Si baza</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Gjatë mbajtjes</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Kur nuk mbahet</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Ndërro me çdo shtypje</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Butonat e xhirës aktive</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Butonat që lexon Xhira aktive, në çdo kontrollues të këtij vendi.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Kërkon</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Nëse mjafton një buton i zgjedhur apo duhet të mbahen të gjithë butonat e zgjedhur.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Çdo buton</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Çdo buton i zgjedhur</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Ricentro kur xhira aktivizohet</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>E merr pozicionin e kontrolluesit si pikë qetësie sa herë që xhira aktivizohet.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Rivendos xhirën aktive</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Rivendos butonat e xhirës aktive</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Rivendos kërkesën</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Rivendos ricentrimin kur xhira aktivizohet</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Rivendos levën e aktivizimit</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Rivendos drejtimin e aktivizimit</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Kalim i drejtpërdrejtë i lëvizjes</value></data>
@@ -2466,6 +2495,25 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Loja lexon lëvizjen me ndjeshmërinë, zbutjen dhe kurbën e caktuara këtu.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Rivendos rregullimin e kalimit të drejtpërdrejtë</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ndjeshmëria</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Vetëm kur</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ky burim llogaritet vetëm kur edhe kjo hyrje lexohet si e shtypur në të njëjtin kontrollues. Një test zone nga një import lexohet si diapazoni i levës ose i këmbëzës që kontrollon.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Dhe kur</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Një hyrje e dytë që ky burim e pret gjithashtu.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Ndrysho hyrjen</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Zgjedh një hyrje tjetër për ta pritur.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurba</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E ngre leximin e kësaj hyrjeje në këtë fuqi para se të drejtojë daljen. 0 dhe 1 e lënë të drejtë. Mbi 1 është më e ngadaltë afër qendrës.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Diapazoni i jashtëm</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Dalja arrin plotësisht në këtë masë të lëvizjes. 100% është joaktiv.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zona e vdekur</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Dalja fillon në këtë masë sapo lëviz hyrja. 0 është joaktiv.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Forma e zonës së vdekur</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Joaktiv e lë leximin siç është. Aksiale mat vetëm këtë bosht. Radiale mat çiftin e levave së bashku.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Joaktiv</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Aksiale</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiale</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zona e vdekur e brendshme</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Nën këtë masë të lëvizjes hyrja lexohet si e qendërzuar.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Shumëzuesi i ndjeshmërisë së xhirës për burim. 1.0 = parazgjedhja e motorit (500°/s → devijim i plotë). Vlerat mbi 1.0 janë më të ndjeshme. Vlerat nën 1.0 janë më pak të ndjeshme.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Shumëzuesi i ndjeshmërisë së pjerrjes për burim. 1.0 = 90° pjerrje për devijim të plotë. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak pjerrje.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Pjerrje e xhirës X</value></data>
@@ -2990,6 +3038,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveli</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Afati i pasivitetit</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekonda para se një kontrollues virtual të shkatërrohet kur të gjitha pajisjet e tij të hartëzuara janë jashtë linje. 0 e çaktivizon. Kontrolluesit e mbetur të të njëjtit lloj lëvizin lart për të plotësuar boshllëkun dhe lidhen sërish me sloto më të ulëta.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonda (0 = kurrë)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Shto shtresë</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shto një shtresë shift. Një tabelë e dytë hartëzimesh që aktivizohet ndërsa një buton mbahet shtypur ose ndërrohet.</value></data>
@@ -3101,6 +3150,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Rivendos shpejtësinë e çmbështjelljes</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Rivendos zonën e vdekur të brendshme të këndit</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Rivendos zonën e vdekur të jashtme të këndit</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zona e vdekur e levës</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Nën këtë devijim leva lexohet si e qendërzuar, ndaj nuk grumbullohet drejtim.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Rivendos zonën e vdekur të levës</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Rivendos zonën e vdekur të brendshme të pjerrjes</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Rivendos zonën e vdekur të jashtme të pjerrjes</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Rivendos orientimin e kontrolluesit</value></data>
@@ -3206,6 +3258,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>nga {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kjo makinë kërkon më shumë moment sesa ka timoni, ndaj maja e kurbës pritet.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Ndjesia në qendër, ndihma e drejtimit, amortizimi, fërkimi, ngjitja, shpejtësia fikse, momenti i timonit</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Ndjesia në qendër, ndihma e drejtimit, amortizimi, ngjitja, shpejtësia fikse, momenti i timonit</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Sa fort e mban drejtimi qendrën me shpejtësi të ulët. 100% është ai i vetë makinës.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ndihma e drejtimit</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Sa e lehtëson drejtimi me ndihmë timonin ndërsa forca e kthesës rritet. Më shumë do të thotë drejtim më i lehtë larg qendrës.</value></data>
@@ -3347,7 +3400,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Rivendos tonet e larta</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Rivendos kufirin e tonit</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopjon çfarë luan dalja e parazgjedhur e sistemit te altoparlanti i integruar i këtij kontrolluesi, paralelisht. Funksionon me USB dhe Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Pajisja e zgjedhur nuk ka altoparlant të integruar. Tingujt e makrove për këtë kontrollues luhen në daljen e parazgjedhur të sistemit.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge nuk ka rrugë drejt një altoparlanti në pajisjen e zgjedhur përmes kësaj lidhjeje. Tingujt e makrove për këtë kontrollues luhen në daljen e parazgjedhur të sistemit.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Paketë testimi DualSense në shfletues nga Xuezhou Dai (daidr): referencë për kuadrimin CRC të feature report-eve të Sony dhe komandat e testimit të firmuerit që PadForge i përcjell nga kontrolluesit virtualë te ato fizikë.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3761,7 +3814,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Shfaq ekranin Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Shfaq imazhe në VMU-në e çdo kontrolluesi Dreamcast në një portë Bliss-Box që ushqen këtë slot, pastaj e kthen çdo portë te cilësimi i vet i ekranit.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Shfaq pamjet Dreamcast: {0} × {1} ms, numri i përsëritjeve {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Çdo imazh shfaqet të paktën për një sekondë, sepse përshtatësi e ruan çdo imazh që i dërgohet në një memorie të vlerësuar për 100 mijë shkrime, të cilat një imazh i ri çdo sekondë i arrin për rreth një ditë. Imazhet janë 48 me 32 piksel bardh e zi nga një BMP ose PNG, një skedar .lcd i VMU Animator ose një ikonë .vms e Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Çdo imazh shfaqet të paktën për një sekondë. PadForge i dërgon përshtatësit së shumti një imazh në sekondë, sepse përshtatësi e ruan çdo imazh që i dërgohet në memorien e vet. Imazhet janë 48 me 32 piksel bardh e zi nga një BMP ose PNG, një skedar .lcd i VMU Animator ose një ikonë .vms e Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Pamjet</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Shto pamje…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Hiq pamjen</value></data>
@@ -3838,15 +3891,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Kur shtresa është ndezur me ndërrim, ajo fiket vetë pas kaq milisekondash pa asnjë hyrje të hartëzuar të shtresës. Kohëmatësi nis kur shtresa angazhohet dhe riniset me çdo hyrje të shtresës. 0 e mban shtresën aktive derisa ta fikësh vetë.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Rivendos zonën e vdekur të rregullimit në 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Rivendos shpejtësinë e rregullimit në 100% në sekondë.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Rivendos kthimin e nivelit në 100% kur lëshohet.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Rivendos anulimin automatik në 0 (shtresa mbetet aktive derisa ta çaktivizosh).</value>
   </data>
@@ -3914,6 +3958,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Zona e kursorit</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (mbajtje)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lëshim)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivizim)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Zgjidh një konfigurim për të parë çfarë kalon.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Çfarë kalon</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bëhet</value></data>
@@ -4543,7 +4590,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Shtypjet e drejtimit kalojnë nëpër qeliza dhe aktivizojnë çdo qelizë të zgjedhur rishtazi. Kjo sjellje hotbar nuk përdor Modalitetin e aktivizimit ose Hyrjen e klikimit.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protokolli i zgjeruar Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktivizon butona shtesë dhe sensorë lëvizjeje në kontrolluesit e mbështetur Flydigi.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Softueri Flydigi është në punë: {0}. Ai mund të përdorë të njëjtën ndërfaqe kontrolluesi si PadForge, dhe është raportuar që një Vader 5 Pro shkëputet vazhdimisht kur të dyja kishin qasje. Nëse ky kontrollues shkëputet dhe rilidhet, ndalni shërbimin ndërsa përdorni PadForge, mbajeni kontrolluesin të fshehur dhe hiqni shërbimin nga lista e bardhë e HidHide, ose provoni të fikni «Protokolli i zgjeruar Flydigi» te Cilësimet, që nuk është konfirmuar se ndihmon.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Softueri Flydigi është në punë: {0}. Ai flet me kontrolluesin përmes ndërfaqes që përdor PadForge. Nëse ky kontrollues shkëputet dhe rilidhet, ndale atë softuer ndërsa përdor PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Lejo ndryshimet në caktimet në distancë</value>
   </data>

@@ -370,7 +370,7 @@ namespace PadForge.Common.Input
         /// what the all-devices target mode asks for.</para>
         ///
         /// <para>Service and characteristic UUIDs per
-        /// SDL_ble_switch2joystick.c:88,88. The command characteristic is
+        /// SDL_ble_switch2joystick.c:88,90. The command characteristic is
         /// write-without-response per the #153 hardware log. Blocking, worker
         /// thread only.</para></summary>
         private static bool TrySwitch2PowerOff(string serial)

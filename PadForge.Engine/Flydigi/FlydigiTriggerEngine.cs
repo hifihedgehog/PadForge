@@ -40,7 +40,6 @@ namespace PadForge.Engine.Flydigi
         private readonly bool _emulate;
         private readonly Action<FlydigiTriggerCommand> _send;
         private readonly object _gate = new();
-        private int _strengthPercent = 100;
 
         private sealed class Side
         {
@@ -90,13 +89,6 @@ namespace PadForge.Engine.Flydigi
         {
             _emulate = emulate;
             _send = send ?? throw new ArgumentNullException(nameof(send));
-        }
-
-        /// <summary>Scales every effect's force, 0 to 100.</summary>
-        public int StrengthPercent
-        {
-            get { lock (_gate) return _strengthPercent; }
-            set { lock (_gate) _strengthPercent = Math.Clamp(value, 0, 100); }
         }
 
         /// <summary>True while a rhythm is armed on either trigger, so
@@ -189,7 +181,7 @@ namespace PadForge.Engine.Flydigi
                 }
                 else s.ZonesArmed = false;
 
-                SendLocked(s, FlydigiTriggerTranslator.ScaleStrength(translated, _strengthPercent));
+                SendLocked(s, translated);
             }
         }
 
@@ -246,7 +238,7 @@ namespace PadForge.Engine.Flydigi
                 }
             }
             if (command.HasValue)
-                SendLocked(s, FlydigiTriggerTranslator.ScaleStrength(command.Value, _strengthPercent));
+                SendLocked(s, command.Value);
         }
 
         /// <summary>Steps the armed rhythms. The session calls it every
@@ -273,22 +265,7 @@ namespace PadForge.Engine.Flydigi
             if (nowMs - s.RhythmLastSendMs < RhythmMinimumSpacingMs) return;
             s.RhythmSent = rendered;
             s.RhythmLastSendMs = nowMs;
-            SendLocked(s, FlydigiTriggerTranslator.ScaleStrength(rendered, _strengthPercent), dedupe: false);
-        }
-
-        /// <summary>Forgets what the pad was sent, so the next block goes
-        /// out whatever it is. For a pad that came back: it may or may not
-        /// hold the effect it had (flydigi-apex4-linux triggers.py
-        /// reopened).</summary>
-        public void Forget()
-        {
-            lock (_gate)
-            {
-                _left.Last = null;
-                _right.Last = null;
-                _left.Disarm();
-                _right.Disarm();
-            }
+            SendLocked(s, rendered, dedupe: false);
         }
 
         private void SendLocked(Side s, FlydigiTriggerCommand command, bool dedupe = true)

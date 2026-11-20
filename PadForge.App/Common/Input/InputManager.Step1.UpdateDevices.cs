@@ -187,7 +187,9 @@ namespace PadForge.Common.Input
                     // PassOver makes the test, those three markers and the
                     // composite personas' ancestry walk, which also reads a
                     // persona's own USB serial, and records the id it
-                    // rejects.
+                    // rejects. A joystick whose number OpenXInput was busy
+                    // with is closed unrecorded, for the next sweep to ask
+                    // about again.
                     if (_suppressedSelfVirtualIds.PassOver(instanceId, wrapper.SerialNumber,
                             wrapper.DevicePath, wrapper.VendorId, wrapper.ProductId))
                     {
@@ -197,6 +199,13 @@ namespace PadForge.Common.Input
 
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
                     Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name} backend={wrapper.Backend} type={wrapper.JoystickType} path={wrapper.DevicePath}");
+                    // A Logitech wheel with several modes that arrives in its
+                    // Driving Force mode, or a G923 in its PlayStation mode,
+                    // is told to switch to its native mode, as new-lg4ff does
+                    // when it probes one. It then comes back as its own model.
+                    if (LogitechRawHidWriter.SwitchToNativeMode(wrapper.DevicePath, wrapper.VendorId,
+                            wrapper.ProductId, wrapper.ProductVersion))
+                        Engine.SdlDiagLog.WriteLine($"DEV LOGITECH {wrapper.ProductId:X4} bcdDevice {wrapper.ProductVersion:X4}: sent the switch to its native mode");
                     if (FlydigiServiceWatch.IsFlydigiDevice(wrapper.VendorId, wrapper.ProductId))
                     {
                         // #395: the one party PadForge cannot see is Flydigi's
@@ -4231,8 +4240,54 @@ namespace PadForge.Common.Input
     /// </summary>
     public class DeviceCollection
     {
-        public List<UserDevice> Items { get; } = new List<UserDevice>();
+        public DeviceList Items { get; } = new DeviceList();
         public object SyncRoot { get; } = new object();
+    }
+
+    /// <summary>The device records, counting each change to which records
+    /// it holds (<see cref="Version"/>). A reader that keeps a record it
+    /// found asks the list again only once the count moved, with no lock
+    /// taken to learn that. The changes are made through this type, so
+    /// each one counts: a change made through a List or IList reference
+    /// to it is not counted.</summary>
+    public sealed class DeviceList : List<UserDevice>
+    {
+        private int _version;
+
+        /// <summary>How many changes to the records the list has had.</summary>
+        public int Version => System.Threading.Volatile.Read(ref _version);
+
+        private void Changed() => System.Threading.Interlocked.Increment(ref _version);
+
+        public new UserDevice this[int index]
+        {
+            get => base[index];
+            set { base[index] = value; Changed(); }
+        }
+
+        public new void Add(UserDevice item) { base.Add(item); Changed(); }
+        public new void AddRange(IEnumerable<UserDevice> items) { base.AddRange(items); Changed(); }
+        public new void Insert(int index, UserDevice item) { base.Insert(index, item); Changed(); }
+        public new void InsertRange(int index, IEnumerable<UserDevice> items) { base.InsertRange(index, items); Changed(); }
+
+        public new bool Remove(UserDevice item)
+        {
+            bool removed = base.Remove(item);
+            if (removed) Changed();
+            return removed;
+        }
+
+        public new void RemoveAt(int index) { base.RemoveAt(index); Changed(); }
+        public new void RemoveRange(int index, int count) { base.RemoveRange(index, count); Changed(); }
+
+        public new int RemoveAll(Predicate<UserDevice> match)
+        {
+            int removed = base.RemoveAll(match);
+            if (removed > 0) Changed();
+            return removed;
+        }
+
+        public new void Clear() { base.Clear(); Changed(); }
     }
 
     /// <summary>

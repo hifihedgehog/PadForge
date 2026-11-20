@@ -29,7 +29,10 @@ namespace PadForge.ViewModels
         public SteeringCurve Reference { get; }
         public SteeringMeasures Measures { get; }
 
-        /// <summary>Friction in N·m, and the most torque the wheel gives.</summary>
+        /// <summary>The friction the wheel is sent in N·m
+        /// (<see cref="CenteringSettings.FrictionSent"/>), none on a wheel
+        /// with no friction effect, and the most torque the wheel
+        /// gives.</summary>
         public double Friction { get; }
         public double WheelTorque { get; }
 
@@ -51,7 +54,7 @@ namespace PadForge.ViewModels
             Curve = new SteeringCurve(settings.Car, feel, speed, grip, halfRange);
             Reference = new SteeringCurve(settings.Car, feel, ReferenceSpeed, grip, halfRange);
             Measures = SteeringMeasures.From(Curve);
-            Friction = settings.Friction;
+            Friction = settings.FrictionSent;
             WheelTorque = settings.WheelTorque;
             SpanDegrees = Math.Min(WidestSpanDegrees, settings.Range / 2.0);
 
@@ -346,6 +349,8 @@ namespace PadForge.ViewModels
         {
             if (facts == _centeringFacts) return;
             _centeringFacts = facts;
+            OnPropertyChanged(nameof(CenteringFrictionShown));
+            OnPropertyChanged(nameof(CenteringMoreHint));
             CenteringListedTorque = facts.ListedTorque;
             CenteringVehicleAvailable = facts.VehicleAvailable;
             CenteringSpringAvailable = facts.SpringAvailable;
@@ -401,6 +406,18 @@ namespace PadForge.ViewModels
             ps.CenteringWheelTorque = _centeringWheelTorque.ToString(ic);
             ps.CenteringWheelRange = _centeringWheelRange.ToString(ic);
         }
+
+        /// <summary>The Friction row shows on a wheel that runs a friction
+        /// effect. Elsewhere the wheel is sent no friction
+        /// (<see cref="CenteringSettings.FrictionSent"/>), so the setting
+        /// would change nothing.</summary>
+        public bool CenteringFrictionShown => (_centeringFacts.Effects & CenteringEffects.Friction) != 0;
+
+        /// <summary>The More row's hint: the rows under it, Friction left
+        /// out where that row does not show.</summary>
+        public string CenteringMoreHint => CenteringFrictionShown
+            ? Strings.Instance.Pad_More_Centering
+            : Strings.Instance.Pad_More_Centering_NoFriction;
 
         /// <summary>The settings as the engine reads them, from what the
         /// card shows now and what the wheel runs itself: the Release Test
@@ -647,6 +664,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(CenteringModeSpringLabel));
             OnPropertyChanged(nameof(CenteringReleaseStatus));
+            OnPropertyChanged(nameof(CenteringMoreHint));
             RefreshCenteringPreview();
         }
 

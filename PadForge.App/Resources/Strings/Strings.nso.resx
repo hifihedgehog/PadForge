@@ -407,6 +407,8 @@
   <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mause X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mause Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Šuthišo ya go rapama</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Šuthišo ya go tsepama</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Swara</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motoro wa lagoja</value></data>
@@ -1194,7 +1196,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E romela rumble ya dimotoro tše dikgolo go di-trigger</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Di-deadzone tša go sekama, Tebelelo ya controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, go boreledišwa, Koketšo ya lebelo, Kgopamo ya ditšweletšo</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go thoma go nepa, Mokgwa wa go thoma, Mollwane wa go nepa gabonolo</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Konopo ya go thoma go nepa, Mokgwa wa go thoma, Gyro e a šoma, Go bušetša bogareng, Mollwane wa go nepa gabonolo</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>E bulela di-gesture tša touchpad ye</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekota tša gago</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Bohlakahlaka bja LED, Paterone ya moraloki, Mokgwa wa LED ya go homotša</value></data>
@@ -1211,7 +1213,6 @@
   <data name="Menu_EditCell" xml:space="preserve"><value>Lokiša sele</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Leina</value></data>
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Aekhone</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Mothopo, Mollwane, Lehlakore, Metša dikonope tša trigger, Boeletša</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Sedirišwa se</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Khontroulara yohle</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Lekola dišikinyi</value></data>
@@ -1341,10 +1342,19 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Khontroulara yeo e lego mokgweng wa Xbox ga se ya araba bjalo ka Apex 4, ka gona ga go selo seo se romilwego gomme e bušeditšwe go Windows. E bušetše go mokgwa wa DInput ka switšhi ya yona.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ga se ya iša khontroulara go WinUSB, ka gona ga go selo seo se romilwego. E bušetše go mokgwa wa DInput ka switšhi ya yona.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Go emišitšwe. Tima khontroulara o e tšhume gape ka switšhi ya yona pele o romela gape.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Porota ya sekirini ga se ya bulega, ka gona ga go selo se se romilwego. Tima khontroulara o e tšhume gape ka switšhi ya yona gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Seswantšho se na le difreime tše dintši go feta tšeo sekirini sa khontroulara ye se ka di swarago.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Seswantšho se šetše se romelwa go khontroulara ye. Emela gore se fele.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Sekirini se kgopetše seswantšho atreseng yeo PadForge e sa ngwalelego go yona, ka gona ga go selo se se romilwego. Tima khontroulara o e tšhume gape ka switšhi ya yona gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Seswantšho se romilwe, eupša khontroulara ga se ya boela mokgweng wa DInput. E bušetše ka switšhi ya yona.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Khontroulara ga se ya amogela taelo ye e e lokišetšago, ka gona ga go selo se se romilwego. Lekola gore e kgokagantšwe gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Go romela go emišitšwe ke phošo ka gare ga PadForge. Faele ya log e na le dintlha.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Seswantšho se sa ntše se ya khontroulareng. Emiša go romela?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Diriša</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kgokolo</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E godiša palo ya tsenyo ye ka maatla a pele e laola setšweletšwa. 0 le 1 di e tlogela e otlologile. Godimo ga 1 e nanya kgauswi le bogare.</value></data>
 </root>

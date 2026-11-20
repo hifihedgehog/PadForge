@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Nav</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>s</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>min (0 = nekad)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nepiešķirts</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← pa kreisi)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ uz augšu)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nav atrasts</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nav atrasts. Novietojiet SDL3.dll blakus PadForge.exe. Lejupielādējiet to no https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll nav atrasts. Lejupielādējiet PadForge vēlreiz.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Draivera darbība neizdevās: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Iestatījumi nokopēti starpliktuvē.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Ierīces informācija nokopēta starpliktuvē.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Zems</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Attēls</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Saraksts</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Izvade: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Izvades: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Kustība</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Noklikšķiniet uz vadīklas un nospiediet ievadi, kas to vadīs.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Spēles, ko PadForge nepazīst</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modifikācijām, kas pirms sūtīšanas meklē darbojošos DSX.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kas tiek rādīts</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Izvēlnes gredzens, režģis vai josla, kamēr tā ir atvērta</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Slāņa nosaukums, kad ieslēdzas maiņas slānis, uz laiku, ko nosaka šis slānis</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profila nosaukums, kad profils mainās</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Izvēlnes gredzens, režģis vai josla, kamēr tā ir atvērta.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Slāņa nosaukums, kad ieslēdzas maiņas slānis, uz laiku, ko nosaka šis slānis.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profila nosaukums, kad profils mainās.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopēt adresi</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Novietojums ekrānā</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Pievienot tālruni</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Automātiski palaist dzinēju, startējot programmu</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Turpināt aptauju, kad logs zaudē fokusu</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Aptaujas biežums (ja vien profils to neaizstāj)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Dzinējs nolasa katru ierīci un atjaunina virtuālos kontrollerus šādu reižu skaitu sekundē, no 60 līdz 10000. Augstāks biežums prasa vairāk procesora laika. Windows pamodina dzinēju ne biežāk kā aptuveni 2000 reižu sekundē, tāpēc augstāka biežuma gadījumā dzinējs katrā pamodināšanas reizē veic vairākus ciklus. Kamēr ir aktīvs profils ar savu aptaujas biežumu, tiek izmantots tā biežums. Šī vērtība atjaunojas, kad profils tiek deaktivizēts.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Dzinējs nolasa katru ierīci un atjaunina virtuālos kontrollerus šādu reižu skaitu sekundē, no 60 līdz 10000. Augstāks biežums prasa vairāk procesora laika. Šajā datorā Windows pamodina dzinēju ne biežāk kā {0} reizes sekundē, tāpēc augstāka biežuma gadījumā dzinējs katrā pamodināšanas reizē veic vairākus ciklus. Kamēr ir aktīvs profils ar savu aptaujas biežumu, tiek izmantots tā biežums. Šī vērtība atjaunojas, kad profils tiek deaktivizēts.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Paslēpt ierīces no spēlēm</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Galvenais slēdzis HidHide ierīču slēpšanai un zema līmeņa ievades āķiem. Kad tas ir izslēgts, neviena ierīce netiek paslēpta neatkarīgi no katras ierīces iestatījumiem.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Saglabāt ierīču maskēšanu starp palaišanām</value></data>
@@ -937,7 +939,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekundes starp ierakstītajām rakstzīmēm, līdz 1000. Ar 0 viss teksts tiek ierakstīts uzreiz.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Atvienošana dīkstāvē</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Informācija</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>min</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Atvienot Bluetooth, kad pievienots ar USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Ātrā uzlāde. Kad šis kontrolleris ziņo, ka tiek uzlādēts, būdams savienots ar Bluetooth, Bluetooth savienojums tiek pārtraukts, lai tas uzlādētos, nebarojot radio. Der jebkurš USB barošanas avots, arī sienas lādētāji. Ja ieslēdzat Bluetooth atpakaļ, kamēr kabelis joprojām ir pievienots, tas netiek aiztikts līdz nākamajai atvienošanai.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lasīt kā iCade kontrolleri</value></data>
@@ -979,8 +980,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU rāda aktīvā profila nosaukumu un mainās līdz ar katru profila pārslēgšanu.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU rāda aktīvā profila vietu profilu sarakstā. Profils „Noklusējums” ir 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU rāda aktīvā profila attēlu vai tā nosaukumu, ja attēla nav. Katram profilam ir savs attēls.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU rāda diennakts laiku, kas tiek pārrakstīts reizi minūtē. Adapteris glabā katru attēlu atmiņā, kas paredzēta 100 000 ierakstiem, un šis režīms tos sasniedz pēc aptuveni desmit nedēļām nepārtrauktas rādīšanas.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU rāda stundas un minūtes kopš brīža, kad PadForge atrada spēļu pulti, un tās tiek pārrakstītas reizi minūtē. Ja spēļu pults ir atvienota no porta ilgāk par desmit sekundēm, skaitīšana sākas no nulles. Adapteris glabā katru attēlu atmiņā, kas paredzēta 100 000 ierakstiem, un šis režīms tos sasniedz pēc aptuveni desmit nedēļām nepārtrauktas rādīšanas.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU rāda diennakts laiku, kas tiek pārrakstīts reizi minūtē. Adapteris glabā katru attēlu savā atmiņā, tāpēc PadForge to pārraksta ne biežāk kā reizi minūtē.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU rāda stundas un minūtes kopš brīža, kad PadForge atrada spēļu pulti, un tās tiek pārrakstītas reizi minūtē. Ja spēļu pults ir atvienota no porta ilgāk par desmit sekundēm, skaitīšana sākas no nulles. Adapteris glabā katru attēlu savā atmiņā, tāpēc PadForge to pārraksta ne biežāk kā reizi minūtē.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU rāda jūsu izvēlētu attēlu: BMP vai PNG, VMU Animator .lcd failu vai Dreamcast .vms ikonu. Attēli tiek apgriezti līdz 48 × 32 melnbaltiem pikseļiem.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Izvēlēties attēlu…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Izvēlēties attēlu profilam {0}…</value></data>
@@ -1025,6 +1026,13 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox režīmā esošais kontrolleris neatbildēja kā Apex 4, tāpēc nekas netika nosūtīts un Windows to ir saņēmis atpakaļ. Pārslēdziet to atpakaļ DInput režīmā ar tā paša slēdzi.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nepārvietoja kontrolleri uz WinUSB, tāpēc nekas netika nosūtīts. Pārslēdziet to atpakaļ DInput režīmā ar tā paša slēdzi.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Apturēts. Pirms nosūtāt vēlreiz, izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Ekrāna ports neatvērās, tāpēc nekas netika nosūtīts. Izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Attēlā ir vairāk kadru, nekā var ietilpt šī kontrollera ekrānā.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Attēls šim kontrolleram jau tiek sūtīts. Pagaidiet, līdz tas beidzas.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Ekrāns pieprasīja attēlu adresē, uz kuru PadForge neraksta, tāpēc nekas netika nosūtīts. Izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Attēls tika nosūtīts, bet kontrolleris nepārslēdzās atpakaļ DInput režīmā. Pārslēdziet to atpakaļ ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kontrolleris nepieņēma komandu, kas to sagatavo, tāpēc nekas netika nosūtīts. Pārbaudiet, vai tas ir pievienots, un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Sūtīšana apstājās PadForge kļūdas dēļ. Informācija ir žurnāla failā.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Attēls vēl tiek sūtīts uz kontrolleri. Vai apturēt nosūtīšanu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak faili (*.mpk)|*.mpk|Visi faili (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ports {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Atiestatīt izvēlnes ģeometriju</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Atiestatīt šūnu</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Atiestatīt jutību</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Atiestatīt paātrinājumu</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Atiestatīt nejutības zonu</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Atiestatīt turēšanas laiku</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Atiestatīt nospiešanas logu</value></data>
@@ -1976,7 +1983,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Jebkurš slānis</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Darbojas nepārtraukti, kamēr šis virtuālais kontrolleris ir aktīvs. Trigera poga nav nepieciešama.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Darīt</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Slānis, avots, slieksnis, virziens, pārtvert trigera pogas, atkārtot</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Pievienot darbību</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tips</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuālās pogas</value></data>
@@ -2002,7 +2008,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Peles pogas nospiešana</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Peles pogas atlaišana</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Peles ritināšana</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Pārslēgt skārienpaliktņa pārklājumu</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Pogas</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Taustiņu kombinācija</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Taustiņu kombinācija formātā {Key1}{Key2}. Rediģējama.</value></data>
@@ -2133,6 +2138,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Atkārtot {0} ik pēc {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Peles X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Peles Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horizontālā nobīde</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertikālā nobīde</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervāls</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Izvēlēties ekrānā</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Uztveršana pēc {0}…</value></data>
@@ -2167,6 +2174,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Invertēta puse</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nav piesaistīta ierīce</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Nezināma ierīce</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Skārienpaliktņa klikšķis</value></data>
@@ -2609,7 +2617,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Lejup (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Augšup (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivizēšana</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivizēšanas svira, aktivizēšanas virziens, vieglās tēmēšanas slieksnis</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivizēšanas svira, aktivizēšanas virziens, žiroskopa ieslēgšana, atkārtota centrēšana, vieglās tēmēšanas slieksnis</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Neobligāti nosacījumi, kas ierobežo, kad žiroskops ir aktīvs. Var konfigurēt gan labās sviras novirzi, gan tēmēšanas aktivizēšanas pogu. Žiroskops darbojas tikai tad, kad ir aktīvi visi konfigurētie nosacījumi.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokālā</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spēlētāja</value></data>
@@ -2646,6 +2654,27 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Atiestatīt vieglās tēmēšanas slieksni</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Atiestatīt tēmēšanas aktivizēšanas pogu</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Atiestatīt aktivizēšanas režīmu</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Slānis</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Slānis, kura iestatījumu „Žiroskops ieslēgts” rādīs un mainīs zemāk esošās rindas.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Žiroskops ieslēgts</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Kad žiroskops darbojas šajā slānī, papildus aktivizēšanas pogai. Maiņas slānis ar izvēli „Tāpat kā pamata” seko pamata slānim.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Vienmēr ieslēgts</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Tāpat kā pamata</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Kamēr turēts</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Kamēr neturēts</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Pārslēgt ar katru nospiešanu</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Žiroskopa ieslēgšanas pogas</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Pogas, ko nolasa „Žiroskops ieslēgts”, jebkurā šīs vietas kontrollerī.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Nepieciešams</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Vai pietiek ar vienu atzīmēto pogu, vai jātur katra atzīmētā poga.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Jebkura poga</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Katra poga</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Atkārtoti centrēt, kad žiroskops ieslēdzas</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Katru reizi, kad žiroskops ieslēdzas, kontrollera stāvokli pieņem par miera punktu.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Atiestatīt žiroskopa ieslēgšanu</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Atiestatīt žiroskopa ieslēgšanas pogas</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Atiestatīt nepieciešamo</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Atiestatīt atkārtotu centrēšanu, kad žiroskops ieslēdzas</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Atiestatīt aktivizēšanas sviru</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Atiestatīt aktivizēšanas virzienu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Kustības tiešā pārsūtīšana</value></data>
@@ -2656,6 +2685,25 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Spēle nolasa kustību ar šeit iestatīto jutību, izlīdzināšanu un līkni.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Atiestatīt tiešās pārsūtīšanas regulējumu</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Jutība</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Tikai kamēr</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Šis avots tiek ņemts vērā tikai tad, kad šajā pašā kontrollerī arī šī ievade ir nospiesta. Importa zonas pārbaude tiek nolasīta kā sviras vai sprūda diapazons, ko tā pārbauda.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Un kamēr</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Otra ievade, ko šis avots arī gaida.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Mainīt ievadi</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Izvēlas citu ievadi, ko gaidīt.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Līkne</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Paaugstina šīs ievades rādījumu šādā pakāpē, pirms tas vada izvadi. Ar 0 un 1 tas paliek taisns. Virs 1 ir lēnāk pie centra.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ārējais diapazons</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Izvade sasniedz pilnu vērtību pie tik lielas gājiena daļas. 100% ir izslēgts.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Nejutības zonas kompensācija</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Izvade sākas ar tik lielu vērtību, tiklīdz ievade kustas. 0 ir izslēgts.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Nejutības zonas forma</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Izslēgts atstāj rādījumu nemainītu. Aksiāla mēra tikai šo asi. Radiāla mēra sviru pāri kopā.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Izslēgts</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Aksiāla</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiāla</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Iekšējā nejutības zona</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Zem šīs gājiena daļas ievade tiek nolasīta kā centrēta.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Katra avota žiroskopa jutības reizinātājs. 1.0 = dzinēja noklusējums (500°/s → pilna novirze). Vērtības virs 1.0 ir jutīgākas. Vērtības zem 1.0 ir mazāk jutīgas.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Katra avota sasvēruma jutības reizinātājs. 1.0 = 90° sasvērums pilnai novirzei. Vērtības virs 1.0 sasniedz pilnu novirzi ar mazāku sasvērumu.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Žiroskopa sasvērums X</value></data>
@@ -3236,6 +3284,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Līmenis</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Neaktivitātes taimauts</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekundes, pēc kurām virtuālais kontrolleris tiek likvidēts, ja visas tam piesaistītās ierīces ir bezsaistē. 0 atspējo. Atlikušie tā paša tipa kontrolleri pārbīdās uz augšu, lai aizpildītu tukšo vietu, un no jauna piesaistās zemākiem slotiem.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>s (0 = nekad)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Pievienot slāni</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Pievieno slāni. Tā ir otra piesaistu tabula, kas aktivizējas, kamēr poga tiek turēta vai pārslēgta.</value></data>
@@ -3347,6 +3396,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Atiestatīt atgriešanās ātrumu</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Atiestatīt leņķa iekšējo nejutības zonu</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Atiestatīt leņķa ārējo nejutības zonu</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Sviras nejutības zona</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Zem šīs novirzes svira tiek nolasīta kā centrēta, tāpēc stūrēšana nekrājas.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Atiestatīt sviras nejutības zonu</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Atiestatīt noliekuma iekšējo nejutības zonu</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Atiestatīt noliekuma ārējo nejutības zonu</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Atiestatīt kontrollera orientāciju</value></data>
@@ -3452,6 +3504,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>no {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Šī automašīna prasa lielāku griezes momentu, nekā stūrei ir, tāpēc līknes augšdaļa ir nogriezta.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Sajūta centrā, stūres pastiprinātājs, slāpēšana, berze, saķere, fiksētais ātrums, stūres griezes moments</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Sajūta centrā, stūres pastiprinātājs, slāpēšana, saķere, fiksētais ātrums, stūres griezes moments</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Cik stingri stūrēšana tur centru mazā ātrumā. 100% ir pašas automašīnas stingrība.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Stūres pastiprinātājs</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Cik daudz pastiprinātājs noņem, augot sānu paātrinājumam. Jo vairāk, jo vieglāka stūrēšana tālāk no centra.</value></data>
@@ -3593,7 +3646,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Atiestatīt augstos toņus</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atiestatīt toņu robežu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Paralēli kopē visu, ko atskaņo sistēmas noklusējuma izvade, uz šī kontrollera iebūvēto skaļruni. Darbojas ar USB un Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Atlasītajai ierīcei nav iebūvēta skaļruņa. Šīs spēļu pults makrosu skaņas tiek atskaņotas sistēmas noklusējuma izvadē.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge šajā savienojumā nav ceļa uz atlasītās ierīces skaļruni. Šīs spēļu pults makrosu skaņas tiek atskaņotas sistēmas noklusējuma izvadē.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Pārlūkprogrammas DualSense testu komplekts, autors Xuezhou Dai (daidr): atsauce Sony feature-report CRC kadrēšanai un aparātprogrammatūras testa komandām, ko PadForge pārsūta no virtuālajām uz fiziskajām spēļu pultīm.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Rādīt Dreamcast ekrānu</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Atskaņo attēlus katras Dreamcast spēļu pults VMU, kas pievienota Bliss-Box portam, kurš padod datus šim slotam, un pēc tam atjauno katra porta paša ekrāna iestatījumu.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Rādīt Dreamcast attēlus: {0} × {1} ms, atkārtojumu skaits {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Katrs attēls tiek rādīts vismaz sekundi, jo adapteris katru saņemto attēlu glabā atmiņā, kas paredzēta 100 000 ierakstiem, un, ja jauns attēls tiek sūtīts katru sekundi, šis skaits tiek sasniegts aptuveni dienas laikā. Attēli ir 48 × 32 melnbalti pikseļi no BMP vai PNG, VMU Animator .lcd faila vai Dreamcast .vms ikonas.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Katrs attēls tiek rādīts vismaz sekundi. PadForge adapterim sūta ne vairāk kā vienu attēlu sekundē, jo adapteris katru saņemto attēlu glabā savā atmiņā. Attēli ir 48 × 32 melnbalti pikseļi no BMP vai PNG, VMU Animator .lcd faila vai Dreamcast .vms ikonas.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Attēli</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Pievienot attēlu…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Noņemt attēlu</value></data>
@@ -4113,15 +4166,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Kamēr slānis ir ieslēgts, tas pats izslēdzas pēc norādītā milisekunžu skaita, ja nav aktīva neviena šī slāņa piesaistītā ievade. Taimeris sākas, kad slānis tiek aktivizēts, un sākas no jauna ar katru slāņa ievadi. Ar 0 slānis paliek ieslēgts, līdz to izslēdzat paši.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Atiestatīt korekcijas nejutības zonu uz 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Atiestatīt korekcijas ātrumu uz 100% sekundē.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Atiestatīt tā, lai atlaižot līmenis atgrieztos uz 100%.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Atiestatīt automātisko atcelšanu uz 0 (slānis paliek ieslēgts, līdz tiek izslēgts).</value>
   </data>
@@ -4189,6 +4233,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profils</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makross</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kursora apgabals</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (turēšana)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (atlaišana)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivizēšana)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Izvēlieties konfigurāciju, lai redzētu, kas tiek pārnests.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas tiek pārnests</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Kļūst par</value></data>
@@ -4825,7 +4872,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Virziena nospiešanas pārvietojas pa šūnām un izpilda katru jaunatlasīto šūnu, neizmantojot „Izpildes režīms” vai „Klikšķa ievade”. Stils „Ātrās piekļuves josla” pārvietojas bez izpildes un izpilda ar savu vadīklu „Izpildīt”.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi paplašinātais protokols</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Iespējo papildu pogas un kustību sensorus atbalstītajos Flydigi kontrolleros.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Darbojas Flydigi programmatūra: {0}. Tā var izmantot to pašu kontrollera saskarni kā PadForge, un ir ziņots, ka Vader 5 Pro atkārtoti atvienojās, kad piekļuve bija abām programmām. Ja šis kontrolleris atvienojas un atkal pievienojas, apturiet pakalpojumu, kamēr izmantojat PadForge, turiet kontrolleri paslēptu un noņemiet pakalpojumu no HidHide atļauto saraksta, vai mēģiniet iestatījumos izslēgt „Flydigi paplašinātais protokols”, lai gan nav apstiprināts, ka tas palīdz.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Darbojas Flydigi programmatūra: {0}. Tā sazinās ar kontrolleri pa saskarni, ko izmanto PadForge. Ja šis kontrolleris atvienojas un atkal pievienojas, apturiet šo programmatūru, kamēr izmantojat PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Atļaut attālas piešķiršanas izmaiņas</value>
   </data>
@@ -5485,9 +5532,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Izvēlēties, ko tas rāda…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekrāna pārklājums</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Pagaidām nav ko rādīt. Izvēlieties, ko tas rāda, lapā Ekrāna pārklājums sadaļā Papildiespējas.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Pārslēgt krustiņu</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Pārslēgt lupu</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Katrs krustiņš</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Krustiņš</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>

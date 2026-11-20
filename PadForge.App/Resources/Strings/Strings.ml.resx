@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>ഒന്നുമില്ല</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>സെക്കൻഡ്</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>മിനിറ്റ് (0 = ഒരിക്കലും വേണ്ട)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>നിയോഗിച്ചിട്ടില്ല</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ഇടത്)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ മുകളിലേക്ക്)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll കണ്ടെത്തിയില്ല</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll കണ്ടെത്തിയില്ല. SDL3.dll PadForge.exe-ന് അടുത്ത് സ്ഥാപിക്കുക. ഇത് ഡൗൺലോഡ് ചെയ്യുക: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll കണ്ടെത്തിയില്ല. PadForge വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ഡ്രൈവർ പ്രവർത്തനം പരാജയപ്പെട്ടു: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ക്രമീകരണങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ഉപകരണ വിവരങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>കുറവ്</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ചിത്രം</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>പട്ടിക</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>ഔട്ട്പുട്ട്: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ഔട്ട്പുട്ടുകൾ: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>മോഷൻ</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ഒരു കൺട്രോളിൽ ക്ലിക്ക് ചെയ്ത ശേഷം, അത് നിയന്ത്രിക്കേണ്ട ഇൻപുട്ട് അമർത്തുക.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge അറിയാത്ത ഗെയിമുകൾ</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>അയയ്ക്കുന്നതിന് മുമ്പ് പ്രവർത്തിക്കുന്ന DSX തിരയുന്ന മോഡുകൾക്കായി.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>കാണിക്കുന്നവ</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ഒരു മെനു തുറന്നിരിക്കുമ്പോൾ അതിന്റെ റിംഗ്, ഗ്രിഡ് അല്ലെങ്കിൽ ബാർ</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാകുമ്പോൾ ആ ലെയർ നിശ്ചയിക്കുന്ന സമയത്തേക്ക് ആ ലെയറിന്റെ പേര്</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>പ്രൊഫൈൽ മാറുമ്പോൾ പ്രൊഫൈലിന്റെ പേര്</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ഒരു മെനു തുറന്നിരിക്കുമ്പോൾ അതിന്റെ റിംഗ്, ഗ്രിഡ് അല്ലെങ്കിൽ ബാർ.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാകുമ്പോൾ ആ ലെയർ നിശ്ചയിക്കുന്ന സമയത്തേക്ക് ആ ലെയറിന്റെ പേര്.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>പ്രൊഫൈൽ മാറുമ്പോൾ പ്രൊഫൈലിന്റെ പേര്.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>വിലാസം പകർത്തുക</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>സ്ക്രീനിൽ സ്ഥാപിക്കുക</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ഒരു ഫോൺ കണക്റ്റ് ചെയ്യുക</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ലോഞ്ചിൽ എഞ്ചിൻ സ്വയം ആരംഭിക്കുക</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>വിൻഡോയ്ക്ക് ഫോക്കസ് നഷ്ടപ്പെടുമ്പോഴും പോളിംഗ് തുടരുക</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>പോളിംഗ് നിരക്ക് (പ്രൊഫൈൽ അസാധുവാക്കുന്നില്ലെങ്കിൽ)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>എഞ്ചിൻ എല്ലാ ഉപകരണങ്ങളും വായിക്കുകയും വെർച്വൽ കൺട്രോളറുകൾ അപ്ഡേറ്റ് ചെയ്യുകയും ചെയ്യുന്നത് സെക്കൻഡിൽ ഇത്രയും തവണയാണ്, 60 മുതൽ 10000 വരെ. ഉയർന്ന നിരക്ക് പ്രോസസ്സറിന്റെ കൂടുതൽ സമയം ഉപയോഗിക്കുന്നു. Windows എഞ്ചിനെ സെക്കൻഡിൽ പരമാവധി ഏകദേശം 2000 തവണ മാത്രമേ ഉണർത്തൂ, അതിനാൽ ഉയർന്ന നിരക്കിൽ ഓരോ ഉണർത്തലിലും എഞ്ചിൻ പല പാസുകൾ ഓടിക്കുന്നു. സ്വന്തം പോളിംഗ് നിരക്കുള്ള പ്രൊഫൈൽ സജീവമായിരിക്കുമ്പോൾ ആ നിരക്ക് ബാധകമാകും. പ്രൊഫൈൽ നിർജീവമാകുമ്പോൾ ഈ മൂല്യം തിരികെ വരും.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>എഞ്ചിൻ എല്ലാ ഉപകരണങ്ങളും വായിക്കുകയും വെർച്വൽ കൺട്രോളറുകൾ അപ്ഡേറ്റ് ചെയ്യുകയും ചെയ്യുന്നത് സെക്കൻഡിൽ ഇത്രയും തവണയാണ്, 60 മുതൽ 10000 വരെ. ഉയർന്ന നിരക്ക് പ്രോസസ്സറിന്റെ കൂടുതൽ സമയം ഉപയോഗിക്കുന്നു. ഈ PC-യിൽ Windows എഞ്ചിനെ സെക്കൻഡിൽ പരമാവധി {0} തവണ മാത്രമേ ഉണർത്തൂ, അതിനാൽ ഉയർന്ന നിരക്കിൽ ഓരോ ഉണർത്തലിലും എഞ്ചിൻ പല പാസുകൾ ഓടിക്കുന്നു. സ്വന്തം പോളിംഗ് നിരക്കുള്ള പ്രൊഫൈൽ സജീവമായിരിക്കുമ്പോൾ ആ നിരക്ക് ബാധകമാകും. പ്രൊഫൈൽ നിർജീവമാകുമ്പോൾ ഈ മൂല്യം തിരികെ വരും.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ഗെയിമുകളിൽ നിന്ന് ഉപകരണങ്ങൾ മറയ്ക്കുക</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide ഉപകരണം മറയ്ക്കലിനും ലോ-ലെവൽ ഇൻപുട്ട് ഹുക്കുകൾക്കുമുള്ള പ്രധാന സ്വിച്ച്. ഓഫായിരിക്കുമ്പോൾ, ഓരോ ഉപകരണത്തിന്റെയും ക്രമീകരണം പരിഗണിക്കാതെ ഒരു ഉപകരണവും മറയ്ക്കില്ല.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ലോഞ്ചുകൾക്കിടയിൽ ഉപകരണങ്ങൾ മറച്ചുനിർത്തുക</value></data>
@@ -922,7 +924,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ടൈപ്പ് ചെയ്യുന്ന അക്ഷരങ്ങൾക്കിടയിലെ മില്ലിസെക്കൻഡുകൾ, പരമാവധി 1000. 0 ആയാൽ മുഴുവൻ ടെക്സ്റ്റും ഒരുമിച്ച് ടൈപ്പ് ചെയ്യും.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>നിഷ്ക്രിയമാകുമ്പോൾ വിച്ഛേദിക്കുക</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>വിശദാംശങ്ങൾ</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>മിനിറ്റ്</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB വഴി പ്ലഗ് ചെയ്യുമ്പോൾ ബ്ലൂടൂത്ത് വിച്ഛേദിക്കുക</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ക്വിക്ക് ചാർജ്. ഈ കൺട്രോളർ ബ്ലൂടൂത്ത് വഴി കണക്റ്റ് ചെയ്തിരിക്കെ ചാർജ് ചെയ്യുന്നതായി റിപ്പോർട്ട് ചെയ്യുമ്പോൾ, റേഡിയോ പ്രവർത്തിപ്പിക്കാതെ ചാർജ് ആകാൻ ബ്ലൂടൂത്ത് ലിങ്ക് വിച്ഛേദിക്കുന്നു. വാൾ ചാർജറുകൾ ഉൾപ്പെടെ ഏത് USB പവർ സ്രോതസ്സും കണക്കാക്കും. കേബിൾ ഘടിപ്പിച്ചിരിക്കെ ബ്ലൂടൂത്ത് വീണ്ടും ഓണാക്കിയാൽ, അടുത്ത തവണ അൺപ്ലഗ് ചെയ്യുന്നതുവരെ അതിൽ തൊടില്ല.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade കൺട്രോളറായി വായിക്കുക</value></data>
@@ -964,8 +965,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>സജീവ പ്രൊഫൈലിന്റെ പേര് VMU കാണിക്കുകയും ഓരോ പ്രൊഫൈൽ മാറ്റവും പിന്തുടരുകയും ചെയ്യുന്നു.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>പ്രൊഫൈൽ പട്ടികയിൽ സജീവ പ്രൊഫൈലിനുള്ള സ്ഥാനം VMU കാണിക്കുന്നു. സ്ഥിരസ്ഥിതി പ്രൊഫൈൽ 0 ആണ്.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>സജീവ പ്രൊഫൈലിന്റെ സ്വന്തം ചിത്രം VMU കാണിക്കുന്നു, ചിത്രമില്ലെങ്കിൽ അതിന്റെ പേര്. ഓരോ പ്രൊഫൈലും അതിന്റെ ചിത്രം സൂക്ഷിക്കുന്നു.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ദിവസത്തിലെ സമയം കാണിക്കുന്നു, മിനിറ്റിൽ ഒരിക്കൽ വീണ്ടും എഴുതും. അഡാപ്റ്റർ ഓരോ ചിത്രവും 100,000 തവണ എഴുതാൻ റേറ്റ് ചെയ്ത മെമ്മറിയിലാണ് സൂക്ഷിക്കുന്നത്. ഇടതടവില്ലാതെ പ്രദർശിപ്പിച്ചാൽ ഏകദേശം പത്ത് ആഴ്ച കൊണ്ട് ഇതിലെത്തും.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge പാഡ് കണ്ടെത്തിയതിന് ശേഷമുള്ള മണിക്കൂറുകളും മിനിറ്റുകളും VMU കാണിക്കുന്നു, മിനിറ്റിൽ ഒരിക്കൽ വീണ്ടും എഴുതും. പത്ത് സെക്കൻഡിൽ കൂടുതൽ പോർട്ടിന് പുറത്തിരുന്ന പാഡ് പൂജ്യത്തിൽ നിന്ന് വീണ്ടും തുടങ്ങും. അഡാപ്റ്റർ ഓരോ ചിത്രവും 100,000 തവണ എഴുതാൻ റേറ്റ് ചെയ്ത മെമ്മറിയിലാണ് സൂക്ഷിക്കുന്നത്. ഇടതടവില്ലാതെ പ്രദർശിപ്പിച്ചാൽ ഏകദേശം പത്ത് ആഴ്ച കൊണ്ട് ഇതിലെത്തും.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU ദിവസത്തിലെ സമയം കാണിക്കുന്നു, മിനിറ്റിൽ ഒരിക്കൽ വീണ്ടും എഴുതും. അഡാപ്റ്റർ ഓരോ ചിത്രവും സ്വന്തം മെമ്മറിയിൽ സൂക്ഷിക്കുന്നതിനാൽ PadForge അതിൽ ഇതിലും കൂടുതൽ തവണ എഴുതുന്നില്ല.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge പാഡ് കണ്ടെത്തിയതിന് ശേഷമുള്ള മണിക്കൂറുകളും മിനിറ്റുകളും VMU കാണിക്കുന്നു, മിനിറ്റിൽ ഒരിക്കൽ വീണ്ടും എഴുതും. പത്ത് സെക്കൻഡിൽ കൂടുതൽ പോർട്ടിന് പുറത്തിരുന്ന പാഡ് പൂജ്യത്തിൽ നിന്ന് വീണ്ടും തുടങ്ങും. അഡാപ്റ്റർ ഓരോ ചിത്രവും സ്വന്തം മെമ്മറിയിൽ സൂക്ഷിക്കുന്നതിനാൽ PadForge അതിൽ മിനിറ്റിൽ ഒരിക്കലിൽ കൂടുതൽ എഴുതുന്നില്ല.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ചിത്രം VMU കാണിക്കുന്നു: BMP അല്ലെങ്കിൽ PNG, VMU Animator .lcd ഫയൽ, അല്ലെങ്കിൽ ഡ്രീംകാസ്റ്റ് .vms ഐക്കൺ. ചിത്രങ്ങൾ 48×32 കറുപ്പും വെളുപ്പും പിക്സലുകളായി മുറിക്കും.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ചിത്രം തിരഞ്ഞെടുക്കുക…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0}-നുള്ള ചിത്രം തിരഞ്ഞെടുക്കുക…</value></data>
@@ -1010,6 +1011,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox മോഡിലെ കൺട്രോളർ Apex 4 ആയി പ്രതികരിച്ചില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല, Windows-ന് അത് തിരികെ ലഭിച്ചു. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് മാറ്റുക.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows കൺട്രോളറിനെ WinUSB-യിലേക്ക് മാറ്റിയില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് മാറ്റുക.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>നിർത്തി. വീണ്ടും അയയ്ക്കുന്നതിനു മുമ്പ് കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>സ്ക്രീനിന്റെ പോർട്ട് തുറന്നില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കി വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>ഈ കൺട്രോളറിന്റെ സ്ക്രീനിന് ഉൾക്കൊള്ളാവുന്നതിലും കൂടുതൽ ഫ്രെയിമുകൾ ചിത്രത്തിനുണ്ട്.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ഒരു ചിത്രം ഇതിനകം ഈ കൺട്രോളറിലേക്ക് പോകുന്നുണ്ട്. അത് തീരുന്നതുവരെ കാത്തിരിക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>PadForge എഴുതാത്ത ഒരു വിലാസത്തിൽ ചിത്രം വേണമെന്ന് സ്ക്രീൻ ആവശ്യപ്പെട്ടു, അതിനാൽ ഒന്നും അയച്ചില്ല. കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കി വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>ചിത്രം അയച്ചു, പക്ഷേ കൺട്രോളർ DInput മോഡിലേക്ക് തിരികെ മാറിയില്ല. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് തിരികെ മാറ്റുക.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>കൺട്രോളറിനെ തയ്യാറാക്കുന്ന കമാൻഡ് അത് സ്വീകരിച്ചില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. അത് കണക്റ്റ് ചെയ്തിട്ടുണ്ടോ എന്ന് പരിശോധിച്ച് വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge ലെ ഒരു പിശക് കാരണം അയയ്ക്കൽ നിലച്ചു. വിശദാംശങ്ങൾ ലോഗ് ഫയലിലുണ്ട്.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ഒരു ചിത്രം ഇപ്പോഴും കൺട്രോളറിലേക്ക് പോകുന്നു. അയയ്ക്കൽ നിർത്തട്ടേ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>കൺട്രോളർ പാക് ഫയലുകൾ (*.mpk)|*.mpk|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>കൺട്രോളർ പാക് പോർട്ട് {0}.mpk</value></data>
@@ -1504,7 +1512,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>മെനു ജ്യാമിതി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>സെൽ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>ആക്സിലറേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കൽ സമയം പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>അമർത്തൽ ജാലകം പുനഃസജ്ജമാക്കുക</value></data>
@@ -1785,7 +1792,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ഏത് ലെയറും</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ഈ വെർച്വൽ കൺട്രോളർ സജീവമായിരിക്കുന്നിടത്തോളം തുടർച്ചയായി പ്രവർത്തിക്കുന്നു. ട്രിഗർ ബട്ടൺ ആവശ്യമില്ല.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>ചെയ്യുക</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>ലെയർ, ഉറവിടം, ത്രെഷോൾഡ്, ദിശ, ട്രിഗർ ബട്ടണുകൾ ഉപയോഗിച്ചുതീർക്കുക, ആവർത്തിക്കുക</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>പ്രവർത്തനം ചേർക്കുക</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>തരം</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>വെർച്വൽ ബട്ടണുകൾ</value></data>
@@ -1811,7 +1817,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>മൗസ് ബട്ടൺ അമർത്തൽ</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>മൗസ് ബട്ടൺ വിടൽ</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>മൗസ് സ്ക്രോൾ</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>ടച്ച്പാഡ് ഓവർലേ ടോഗിൾ ചെയ്യുക</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ബട്ടണുകൾ</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>കീ കോമ്പോ</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} രൂപത്തിലുള്ള കീ കോമ്പോ. എഡിറ്റ് ചെയ്യാവുന്നത്.</value></data>
@@ -1942,6 +1947,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>ഓരോ {1} ms-ലും {0} ആവർത്തിക്കുക</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>മൗസ് X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>മൗസ് Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>തിരശ്ചീന ഓഫ്സെറ്റ്</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ലംബ ഓഫ്സെറ്റ്</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ഇടവേള</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>സ്ക്രീനിൽ തിരഞ്ഞെടുക്കുക</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} സെക്കൻഡിൽ പിടിച്ചെടുക്കും…</value></data>
@@ -1976,6 +1983,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>വിപരീത പകുതി</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>ഉപകരണം മാപ്പ് ചെയ്തിട്ടില്ല</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>അജ്ഞാത ഉപകരണം</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ടച്ച്പാഡ് ക്ലിക്ക്</value></data>
@@ -2418,7 +2426,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>താഴെ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>മുകളിൽ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>എൻഗേജ്</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>എൻഗേജ് സ്റ്റിക്ക്, എൻഗേജ് ദിശ, ഈസി എയിം ത്രെഷോൾഡ്</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>എൻഗേജ് സ്റ്റിക്ക്, എൻഗേജ് ദിശ, ഗൈറോ ഓൺ, വീണ്ടും സെന്റർ, ഈസി എയിം ത്രെഷോൾഡ്</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ഗൈറോ എപ്പോൾ സജീവമാകണമെന്ന് പരിമിതപ്പെടുത്തുന്ന ഓപ്ഷണൽ ഗേറ്റുകൾ. വലത് സ്റ്റിക്ക് വ്യതിയാനവും ലക്ഷ്യം സജീവമാക്കൽ ബട്ടണും ഓരോന്നും ക്രമീകരിക്കാം. ക്രമീകരിച്ച എല്ലാ ഗേറ്റുകളും സജീവമായിരിക്കുമ്പോൾ മാത്രം ഗൈറോ പ്രവർത്തിക്കുന്നു.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ലോക്കൽ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>പ്ലെയർ</value></data>
@@ -2455,6 +2463,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>ഈസി എയിം ത്രെഷോൾഡ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>ലക്ഷ്യം സജീവമാക്കൽ ബട്ടൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>എൻഗേജ് മോഡ് പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>ലെയർ</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>താഴെയുള്ള വരികൾ ഏത് ലെയറിന്റെ ഗൈറോ ഓൺ ക്രമീകരണമാണ് കാണിക്കുകയും മാറ്റുകയും ചെയ്യുന്നത് എന്ന് ഇവിടെ തിരഞ്ഞെടുക്കുക.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ഗൈറോ ഓൺ</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>എൻഗേജ് ബട്ടണിന് പുറമേ, ഈ ലെയറിൽ ഗൈറോ എപ്പോൾ പ്രവർത്തിക്കണമെന്ന് നിശ്ചയിക്കുന്നു. അടിസ്ഥാനത്തിന് സമാനം എന്ന് സജ്ജീകരിച്ച ഷിഫ്റ്റ് ലെയർ അടിസ്ഥാന ലെയറിനെ പിന്തുടരുന്നു.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>എപ്പോഴും ഓൺ</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>അടിസ്ഥാനത്തിന് സമാനം</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കാത്തപ്പോൾ</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>ഓരോ അമർത്തലിലും മാറ്റുക</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ഗൈറോ ഓൺ ബട്ടണുകൾ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>ഈ സ്ലോട്ടിലെ ഏത് കൺട്രോളറിലും ഗൈറോ ഓൺ വായിക്കുന്ന ബട്ടണുകൾ.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>ആവശ്യം</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഒരു ബട്ടൺ മതിയോ, അതോ തിരഞ്ഞെടുത്ത എല്ലാ ബട്ടണുകളും അമർത്തിപ്പിടിക്കണമോ എന്ന് നിശ്ചയിക്കുന്നു.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ഏതെങ്കിലും ബട്ടൺ</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>എല്ലാ ബട്ടണും</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ഗൈറോ ഓണാകുമ്പോൾ വീണ്ടും സെന്റർ ചെയ്യുക</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ഗൈറോ ഓണാകുമ്പോഴെല്ലാം കൺട്രോളറിന്റെ അപ്പോഴത്തെ നില വിശ്രമ ബിന്ദുവായി എടുക്കുന്നു.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ഗൈറോ ഓൺ പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>ഗൈറോ ഓൺ ബട്ടണുകൾ പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>ആവശ്യം പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>ഗൈറോ ഓണാകുമ്പോൾ വീണ്ടും സെന്റർ ചെയ്യുക പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>എൻഗേജ് സ്റ്റിക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>എൻഗേജ് ദിശ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>മോഷൻ പാസ്ത്രൂ</value></data>
@@ -2465,6 +2494,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ഗെയിം ഇവിടെ സജ്ജമാക്കിയ സെൻസിറ്റിവിറ്റി, സ്മൂത്തിംഗ്, കർവ് എന്നിവയോടെ മോഷൻ വായിക്കുന്നു.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>പാസ്ത്രൂ ട്യൂണിംഗ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>ഇതുള്ളപ്പോൾ മാത്രം</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ഇതേ കൺട്രോളറിൽ ഈ ഇൻപുട്ടും അമർത്തിയതായി വായിക്കുമ്പോൾ മാത്രമേ ഈ ഉറവിടം പരിഗണിക്കൂ. ഇംപോർട്ടിലെ സോൺ പരിശോധന, അത് പരിശോധിക്കുന്ന സ്റ്റിക്കിന്റെയോ ട്രിഗറിന്റെയോ പരിധിയായി വായിക്കപ്പെടുന്നു.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>ഇതും ഉള്ളപ്പോൾ</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ഈ ഉറവിടം കാത്തിരിക്കുന്ന രണ്ടാമത്തെ ഇൻപുട്ട്.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ഇൻപുട്ട് മാറ്റുക</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>കാത്തിരിക്കേണ്ട മറ്റൊരു ഇൻപുട്ട് തിരഞ്ഞെടുക്കുന്നു.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>കർവ്</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>ഔട്ട്പുട്ടിനെ നയിക്കുന്നതിന് മുമ്പ് ഈ ഇൻപുട്ടിന്റെ റീഡിംഗിനെ ഈ ശക്തിയിലേക്ക് ഉയർത്തുന്നു. 0, 1 എന്നിവ അതിനെ നേരെയാക്കി നിർത്തുന്നു. 1 ന് മുകളിൽ മധ്യത്തിനടുത്ത് വേഗം കുറവായിരിക്കും.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>പുറം പരിധി</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>സഞ്ചാരത്തിന്റെ ഇത്രയും ഭാഗത്ത് ഔട്ട്പുട്ട് പൂർണ്ണമാകുന്നു. 100% എന്നാൽ ഓഫ്.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>ആന്റി-ഡെഡ് സോൺ</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ഇൻപുട്ട് നീങ്ങുന്ന ഉടനെ ഔട്ട്പുട്ട് ഇത്രയും മൂല്യത്തിൽ തുടങ്ങുന്നു. 0 എന്നാൽ ഓഫ്.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>ഡെഡ് സോൺ ആകൃതി</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>ഓഫ് റീഡിംഗിനെ തൊടുന്നില്ല. ആക്സിയൽ ഈ അക്ഷത്തെ മാത്രം അളക്കുന്നു. റേഡിയൽ സ്റ്റിക്ക് ജോടിയെ ഒരുമിച്ച് അളക്കുന്നു.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ഓഫ്</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>ആക്സിയൽ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>റേഡിയൽ</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>ആന്തരിക ഡെഡ് സോൺ</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>സഞ്ചാരത്തിന്റെ ഇത്രയും ഭാഗത്തിന് താഴെ ഇൻപുട്ട് മധ്യത്തിലാണെന്ന് വായിക്കപ്പെടുന്നു.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ഉറവിടം തോറുമുള്ള ഗൈറോ സെൻസിറ്റിവിറ്റി ഗുണകം. 1.0 = എൻജിന്റെ സ്ഥിരസ്ഥിതി (500°/s → പൂർണ്ണ വ്യതിയാനം). 1.0-ന് മുകളിലുള്ള മൂല്യങ്ങൾ കൂടുതൽ സെൻസിറ്റീവ് ആണ്. 1.0-ന് താഴെയുള്ളവ കുറവ് സെൻസിറ്റീവ് ആണ്.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ഉറവിടം തോറുമുള്ള ചരിവ് സെൻസിറ്റിവിറ്റി ഗുണകം. 1.0 = പൂർണ്ണ വ്യതിയാനത്തിന് 90° ചരിവ്. 1.0-ന് മുകളിലുള്ള മൂല്യങ്ങൾ കുറഞ്ഞ ചരിവിൽ പൂർണ്ണ വ്യതിയാനത്തിലെത്തുന്നു.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ഗൈറോ ചരിവ് X</value></data>
@@ -3009,6 +3057,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>നില</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>നിഷ്ക്രിയത്വ സമയപരിധി</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ഒരു വെർച്വൽ കൺട്രോളറിൽ മാപ്പ് ചെയ്ത എല്ലാ ഉപകരണങ്ങളും ഓഫ്‌ലൈൻ ആയാൽ അത് നശിപ്പിക്കുന്നതിന് മുമ്പുള്ള സെക്കൻഡുകൾ. 0 ഇത് പ്രവർത്തനരഹിതമാക്കുന്നു. അതേ തരത്തിലുള്ള ശേഷിക്കുന്ന കൺട്രോളറുകൾ വിടവ് നികത്താൻ മുകളിലേക്ക് മാറുകയും താഴ്ന്ന സ്ലോട്ടുകളുമായി വീണ്ടും ബന്ധിപ്പിക്കുകയും ചെയ്യും.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>സെക്കൻഡ് (0 = ഒരിക്കലും വേണ്ട)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ലെയർ ചേർക്കുക</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ചേർക്കുക. ഒരു ബട്ടൺ അമർത്തിപ്പിടിക്കുമ്പോഴോ ടോഗിൾ ചെയ്യുമ്പോഴോ സജീവമാകുന്ന രണ്ടാമത്തെ മാപ്പിംഗ് പട്ടിക.</value></data>
@@ -3120,6 +3169,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>അൺവൈൻഡ് നിരക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>ആംഗിൾ ഇന്നർ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>ആംഗിൾ ഔട്ടർ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>സ്റ്റിക്ക് ഡെഡ് സോൺ</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ഈ വ്യതിയാനത്തിന് താഴെ സ്റ്റിക്ക് മധ്യത്തിലാണെന്ന് വായിക്കപ്പെടുന്നു, അതിനാൽ സ്റ്റിയറിംഗ് കൂടിവരില്ല.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>സ്റ്റിക്ക് ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>ചരിവ് ഇന്നർ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ചരിവ് ഔട്ടർ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>കൺട്രോളർ ഓറിയന്റേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
@@ -3225,6 +3277,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m ൽ</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ഈ കാർ വീലിനുള്ളതിലും കൂടുതൽ ടോർക്ക് ആവശ്യപ്പെടുന്നതിനാൽ വക്രത്തിന്റെ മുകൾഭാഗം മുറിഞ്ഞുപോകുന്നു.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>സെന്റർ ഫീൽ, പവർ അസിസ്റ്റ്, ഡാംപിംഗ്, ഘർഷണം, ഗ്രിപ്പ്, സ്ഥിര വേഗത, വീൽ ടോർക്ക്</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>സെന്റർ ഫീൽ, പവർ അസിസ്റ്റ്, ഡാംപിംഗ്, ഗ്രിപ്പ്, സ്ഥിര വേഗത, വീൽ ടോർക്ക്</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>കുറഞ്ഞ വേഗതയിൽ സ്റ്റിയറിംഗ് മധ്യത്തെ എത്ര ശക്തമായി പിടിക്കുന്നു. 100% എന്നത് കാറിന്റേതുതന്നെയാണ്.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>പവർ അസിസ്റ്റ്</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>കോർണറിംഗ് കൂടുമ്പോൾ പവർ സ്റ്റിയറിംഗ് എത്ര ഭാരം കുറയ്ക്കുന്നു. കൂടുതലായാൽ മധ്യത്തിൽ നിന്ന് അകലെ സ്റ്റിയറിംഗ് ലഘുവാകും.</value></data>
@@ -3366,7 +3419,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>ഉയർന്ന ടോണുകൾ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ടോൺ പരിധി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>സിസ്റ്റം ഡിഫോൾട്ട് ഔട്ട്പുട്ട് പ്ലേ ചെയ്യുന്നതെല്ലാം ഈ കൺട്രോളറിന്റെ ഇൻബിൽറ്റ് സ്പീക്കറിലേക്ക് സമാന്തരമായി പകർത്തുന്നു. USB വഴിയും ബ്ലൂടൂത്ത് വഴിയും പ്രവർത്തിക്കും.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഉപകരണത്തിന് ഇൻബിൽറ്റ് സ്പീക്കർ ഇല്ല. ഈ പാഡിനുള്ള മാക്രോ ശബ്ദങ്ങൾ സിസ്റ്റം ഡിഫോൾട്ട് ഔട്ട്പുട്ടിൽ പ്ലേ ചെയ്യും.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഉപകരണത്തിലെ സ്പീക്കറിലേക്ക് ഈ കണക്ഷനിലൂടെ PadForge ന് വഴിയില്ല. ഈ പാഡിനുള്ള മാക്രോ ശബ്ദങ്ങൾ സിസ്റ്റം ഡിഫോൾട്ട് ഔട്ട്പുട്ടിൽ പ്ലേ ചെയ്യും.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ബ്രൗസർ അടിസ്ഥാനമാക്കിയ DualSense ടെസ്റ്റ് സ്യൂട്ട്, Xuezhou Dai (daidr) നിർമ്മിച്ചത്: Sony ഫീച്ചർ-റിപ്പോർട്ട് CRC ഫ്രെയിമിംഗിനും PadForge വെർച്വൽ പാഡുകളിൽ നിന്ന് ഭൗതിക പാഡുകളിലേക്ക് കൈമാറുന്ന ഫേംവെയർ ടെസ്റ്റ് കമാൻഡുകൾക്കുമുള്ള റഫറൻസ്.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3780,7 +3833,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast സ്ക്രീൻ കാണിക്കുക</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ഈ സ്ലോട്ടിലേക്ക് നൽകുന്ന Bliss-Box പോർട്ടിലെ ഓരോ Dreamcast പാഡിന്റെയും VMU-വിൽ ചിത്രങ്ങൾ പ്ലേ ചെയ്യുന്നു, പിന്നീട് ഓരോ പോർട്ടിനെയും അതിന്റെ സ്വന്തം സ്ക്രീൻ ക്രമീകരണത്തിലേക്ക് തിരികെ കൊണ്ടുവരുന്നു.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast ചിത്രങ്ങൾ കാണിക്കുക: {0} × {1} ms, ആവർത്തനം {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ഓരോ ചിത്രവും കുറഞ്ഞത് ഒരു സെക്കൻഡ് കാണിക്കും, കാരണം അയയ്ക്കുന്ന ഓരോ ചിത്രവും അഡാപ്റ്റർ 100,000 റൈറ്റുകൾക്ക് റേറ്റ് ചെയ്ത മെമ്മറിയിൽ സൂക്ഷിക്കുന്നു, ഓരോ സെക്കൻഡിലും പുതിയ ചിത്രം വന്നാൽ ഒരു ദിവസത്തിനകം അത് എത്തും. ചിത്രങ്ങൾ BMP അല്ലെങ്കിൽ PNG, VMU Animator .lcd ഫയൽ, അല്ലെങ്കിൽ Dreamcast .vms ഐക്കൺ എന്നിവയിൽ നിന്നുള്ള 48 × 32 ബ്ലാക്ക് ആൻഡ് വൈറ്റ് പിക്സലുകളാണ്.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ഓരോ ചിത്രവും കുറഞ്ഞത് ഒരു സെക്കൻഡ് കാണിക്കും. അഡാപ്റ്റർ അയയ്ക്കുന്ന ഓരോ ചിത്രവും സ്വന്തം മെമ്മറിയിൽ സൂക്ഷിക്കുന്നതിനാൽ PadForge സെക്കൻഡിൽ ഒരു ചിത്രത്തിൽ കൂടുതൽ അഡാപ്റ്ററിന് അയയ്ക്കുന്നില്ല. ചിത്രങ്ങൾ BMP അല്ലെങ്കിൽ PNG, VMU Animator .lcd ഫയൽ, അല്ലെങ്കിൽ Dreamcast .vms ഐക്കൺ എന്നിവയിൽ നിന്നുള്ള 48 × 32 ബ്ലാക്ക് ആൻഡ് വൈറ്റ് പിക്സലുകളാണ്.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>ചിത്രങ്ങൾ</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>ചിത്രം ചേർക്കുക…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>ചിത്രം നീക്കം ചെയ്യുക</value></data>
@@ -3857,15 +3910,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ലെയർ ടോഗിൾ ഓൺ ആയിരിക്കുമ്പോൾ, ലെയറിന്റെ സ്വന്തം മാപ്പ് ചെയ്ത ഇൻപുട്ടുകളൊന്നും സജീവമല്ലാതെ ഇത്രയും മില്ലിസെക്കൻഡ് കഴിഞ്ഞാൽ അത് സ്വയം ഓഫാകുന്നു. ലെയർ ഇടപഴകുമ്പോൾ ടൈമർ തുടങ്ങുകയും ഓരോ ലെയർ ഇൻപുട്ടിലും വീണ്ടും തുടങ്ങുകയും ചെയ്യുന്നു. 0 നിങ്ങൾ സ്വയം ടോഗിൾ ഓഫാക്കുന്നതുവരെ ലെയർ ഓണാക്കി നിർത്തുന്നു.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ട്രിം ഡെഡ് സോൺ 25%-ലേക്ക് പുനഃസജ്ജമാക്കുക.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ട്രിം വേഗത സെക്കൻഡിൽ 100%-ലേക്ക് പുനഃസജ്ജമാക്കുക.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>വിടുമ്പോൾ നില 100%-ലേക്ക് മടക്കുന്ന സ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>സ്വയം റദ്ദാക്കൽ 0-ലേക്ക് പുനഃസജ്ജമാക്കുക (ടോഗിൾ ഓഫാക്കുന്നതുവരെ ലെയർ ഓണായിരിക്കും).</value>
   </data>
@@ -3933,6 +3977,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop പ്രൊഫൈൽ</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop മാക്രോ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>കഴ്സർ റീജിയൻ</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (അമർത്തിപ്പിടിക്കൽ)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (വിടുമ്പോൾ)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (എൻഗേജ്)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു എന്ന് കാണാൻ ഒരു കോൺഫിഗ് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ആകുന്നത്</value></data>
@@ -4562,7 +4609,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>ദിശാ അമർത്തലുകൾ സെല്ലുകളിലൂടെ നീങ്ങുകയും പുതുതായി തിരഞ്ഞെടുത്ത ഓരോ സെല്ലും പ്രവർത്തിപ്പിക്കുകയും ചെയ്യുന്നു. ഈ ഹോട്ട്ബാർ സ്വഭാവം ഫയർ മോഡോ ക്ലിക്ക് ഇൻപുട്ടോ ഉപയോഗിക്കുന്നില്ല.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi എൻഹാൻസ്ഡ് പ്രോട്ടോക്കോൾ</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>പിന്തുണയ്ക്കുന്ന Flydigi കൺട്രോളറുകളിൽ അധിക ബട്ടണുകളും മോഷൻ സെൻസറുകളും പ്രവർത്തനക്ഷമമാക്കുന്നു.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi സോഫ്റ്റ്വെയർ പ്രവർത്തിക്കുന്നു: {0}. ഇതിന് PadForge ഉപയോഗിക്കുന്ന അതേ കൺട്രോളർ ഇന്റർഫേസ് ഉപയോഗിക്കാം, രണ്ടിനും ആക്സസ് ഉണ്ടായിരുന്നപ്പോൾ Vader 5 Pro ആവർത്തിച്ച് വിച്ഛേദിക്കപ്പെട്ടതായി റിപ്പോർട്ട് ചെയ്തിട്ടുണ്ട്. ഈ കൺട്രോളർ വിച്ഛേദിച്ച് വീണ്ടും കണക്റ്റ് ചെയ്യുന്നെങ്കിൽ, PadForge ഉപയോഗിക്കുമ്പോൾ സേവനം നിർത്തുക, കൺട്രോളർ മറച്ചുവയ്ക്കുകയും സേവനം HidHide വൈറ്റ്ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യുകയും ചെയ്യുക, അല്ലെങ്കിൽ ക്രമീകരണങ്ങളിൽ “Flydigi എൻഹാൻസ്ഡ് പ്രോട്ടോക്കോൾ” ഓഫാക്കി നോക്കുക, ഇത് സഹായിക്കുമെന്ന് സ്ഥിരീകരിച്ചിട്ടില്ല.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi സോഫ്റ്റ്വെയർ പ്രവർത്തിക്കുന്നു: {0}. PadForge ഉപയോഗിക്കുന്ന ഇന്റർഫേസിലൂടെ അത് കൺട്രോളറുമായി സംസാരിക്കുന്നു. ഈ കൺട്രോളർ വിച്ഛേദിച്ച് വീണ്ടും കണക്റ്റ് ചെയ്യുന്നെങ്കിൽ, PadForge ഉപയോഗിക്കുമ്പോൾ ആ സോഫ്റ്റ്വെയർ നിർത്തുക.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>റിമോട്ട് അസൈൻമെന്റ് മാറ്റങ്ങൾ അനുവദിക്കുക</value>
   </data>

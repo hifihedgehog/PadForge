@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Dim</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>eiliad</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>munud (0 = byth)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Heb ei neilltuo</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← chwith)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ i fyny)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Heb ganfod SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Heb ganfod SDL3.dll. Rhowch SDL3.dll wrth ymyl PadForge.exe. Lawrlwythwch ef o https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Heb ganfod SDL3.dll. Lawrlwythwch PadForge eto.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Methodd gweithred y gyrrwr: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Copïwyd y gosodiadau i'r clipfwrdd.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Copïwyd gwybodaeth y ddyfais i'r clipfwrdd.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Isel</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Llun</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Rhestr</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} allbwn</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} allbwn</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Symudiad</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Cliciwch reolydd, yna gwasgwch y mewnbwn a ddylai ei yrru.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Gemau Nad yw PadForge yn eu Hadnabod</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Ar gyfer modiau sy'n chwilio am DSX yn rhedeg cyn iddynt anfon.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yr Hyn a Ddangosir</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cylch, grid neu far dewislen tra bydd ar agor</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Enw'r haen pan fydd haen shift yn troi ymlaen, am yr amser y mae'r haen honno'n ei osod</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Enw'r proffil pan fydd y proffil yn newid</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cylch, grid neu far dewislen tra bydd ar agor.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Enw'r haen pan fydd haen shift yn troi ymlaen, am yr amser y mae'r haen honno'n ei osod.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Enw'r proffil pan fydd y proffil yn newid.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copïo'r Cyfeiriad</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Gosod ar y Sgrin</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Cysylltu Ffôn</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Cychwyn yr Injan yn Awtomatig wrth Lansio</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Parhau i Holi Pan Fydd y Ffenestr yn Colli Ffocws</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Cyfradd Holi (Oni Bai Fod Proffil yn ei Ddiystyru)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mae'r injan yn darllen pob dyfais ac yn diweddaru'r rheolyddion rhithwir gymaint â hyn o weithiau bob eiliad, o 60 i 10000. Mae cyfradd uwch yn defnyddio mwy o amser prosesydd. Mae Windows yn deffro'r injan tua 2000 o weithiau bob eiliad ar y mwyaf, felly mae cyfradd uwch yn rhedeg sawl pàs ar bob deffroad. Tra bydd proffil â'i gyfradd holi ei hun yn weithredol, mae'r gyfradd honno'n berthnasol yn lle hynny. Daw'r gwerth hwn yn ôl pan fydd y proffil yn dadactifadu.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Mae'r injan yn darllen pob dyfais ac yn diweddaru'r rheolyddion rhithwir gymaint â hyn o weithiau bob eiliad, o 60 i 10000. Mae cyfradd uwch yn defnyddio mwy o amser prosesydd. Ar y cyfrifiadur hwn, mae Windows yn deffro'r injan {0} o weithiau bob eiliad ar y mwyaf, felly mae cyfradd uwch yn rhedeg sawl pàs ar bob deffroad. Tra bydd proffil â'i gyfradd holi ei hun yn weithredol, mae'r gyfradd honno'n berthnasol yn lle hynny. Daw'r gwerth hwn yn ôl pan fydd y proffil yn dadactifadu.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Cuddio Dyfeisiau rhag Gemau</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Prif switsh ar gyfer cuddio dyfeisiau HidHide a bachau mewnbwn lefel isel. Pan fydd i ffwrdd, nid oes unrhyw ddyfeisiau'n cael eu cuddio waeth beth fo'r gosodiadau fesul dyfais.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Cadw Dyfeisiau wedi'u Cuddliwio Rhwng Lansiadau</value></data>
@@ -922,7 +924,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milieiliadau rhwng nodau wedi'u teipio, hyd at 1000. Mae 0 yn teipio'r testun cyfan ar unwaith.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Datgysylltu Segur</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Manylion</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>munud</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Datgysylltu Bluetooth Pan Fydd wedi'i Blygio i Mewn dros USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Gwefru Cyflym. Pan fydd y rheolydd hwn yn adrodd ei fod yn gwefru wrth fod wedi'i gysylltu dros Bluetooth, caiff y cyswllt Bluetooth ei ollwng fel ei fod yn gwefru heb bweru'r radio. Mae unrhyw ffynhonnell bŵer USB yn cyfrif, gan gynnwys gwefrwyr wal. Os byddwch yn troi Bluetooth yn ôl ymlaen tra bo'r cebl yn dal i fod i mewn, caiff ei adael yn llonydd tan y tro nesaf y caiff ei ddad-blygio.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Darllen fel Rheolydd iCade</value></data>
@@ -964,8 +965,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>Mae'r VMU yn dangos enw'r proffil gweithredol ac yn dilyn pob newid proffil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>Mae'r VMU yn dangos lle'r proffil gweithredol yn y rhestr proffiliau. Y proffil rhagosodedig yw 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>Mae'r VMU yn dangos llun y proffil gweithredol ei hun, neu ei enw os nad oes ganddo un. Mae pob proffil yn cadw ei lun ei hun.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Mae'r VMU yn dangos amser y dydd, wedi'i ailysgrifennu unwaith y funud. Mae'r addasydd yn cadw pob llun mewn cof sydd wedi'i raddio ar gyfer 100,000 o ysgrifennu, a chyrhaeddir hynny ar ôl tua deg wythnos o arddangos rownd y cloc.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Mae'r VMU yn dangos yr oriau a'r munudau ers i PadForge ganfod y pad, wedi'u hailysgrifennu unwaith y funud. Mae pad sydd allan o'i borth am fwy na deg eiliad yn dechrau eto o sero. Mae'r addasydd yn cadw pob llun mewn cof sydd wedi'i raddio ar gyfer 100,000 o ysgrifennu, a chyrhaeddir hynny ar ôl tua deg wythnos o arddangos rownd y cloc.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>Mae'r VMU yn dangos amser y dydd, wedi'i ailysgrifennu unwaith y funud. Mae'r addasydd yn storio pob llun yn ei gof ei hun, felly nid yw PadForge yn ei ailysgrifennu'n amlach na hynny.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>Mae'r VMU yn dangos yr oriau a'r munudau ers i PadForge ganfod y pad, wedi'u hailysgrifennu unwaith y funud. Mae pad sydd allan o'i borth am fwy na deg eiliad yn dechrau eto o sero. Mae'r addasydd yn storio pob llun yn ei gof ei hun, felly nid yw PadForge yn ei ailysgrifennu'n amlach nag unwaith y funud.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>Mae'r VMU yn dangos llun o'ch dewis: BMP neu PNG, ffeil .lcd VMU Animator neu eicon .vms Dreamcast. Caiff lluniau eu torri i 48 wrth 32 picsel du a gwyn.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Dewis Llun…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Dewis Llun ar gyfer {0}…</value></data>
@@ -1010,6 +1011,13 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Nid atebodd y rheolydd yn y modd Xbox fel Apex 4, felly ni anfonwyd dim ac mae Windows wedi ei gael yn ôl. Newidiwch ef yn ôl i fodd DInput gyda'i switsh ei hun.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Ni symudodd Windows y rheolydd i WinUSB, felly ni anfonwyd dim. Newidiwch ef yn ôl i fodd DInput gyda'i switsh ei hun.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Wedi stopio. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun cyn i chi anfon eto.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Ni agorodd porth y sgrin, felly ni anfonwyd dim. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Mae gan y llun fwy o fframiau nag y gall sgrin y rheolydd hwn eu dal.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Mae llun eisoes yn mynd i'r rheolydd hwn. Arhoswch iddo orffen.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Gofynnodd y sgrin am y llun ar gyfeiriad nad yw PadForge yn ysgrifennu iddo, felly ni anfonwyd dim. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Anfonwyd y llun, ond ni newidiodd y rheolydd yn ôl i fodd DInput. Newidiwch ef yn ôl gyda'i switsh ei hun.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Ni dderbyniodd y rheolydd y gorchymyn sy'n ei baratoi, felly ni anfonwyd dim. Gwiriwch ei fod wedi'i gysylltu ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Stopiodd yr anfon oherwydd gwall yn PadForge. Mae'r manylion yn y ffeil log.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mae llun yn dal i fynd i'r rheolydd. Stopio'r anfon?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Ffeiliau Controller Pak (*.mpk)|*.mpk|Pob Ffeil (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porth {0}.mpk</value></data>
@@ -1504,7 +1512,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Ailosod Geometreg y Ddewislen</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Ailosod Cell</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Ailosod Sensitifrwydd</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Ailosod Cyflymiad</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Ailosod Parth Marw</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Ailosod Amser Dal</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Ailosod Ffenestr Wasgu</value></data>
@@ -1785,7 +1792,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Unrhyw Haen</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Yn rhedeg yn barhaus tra bo'r rheolydd rhithwir hwn yn weithredol. Nid oes angen botwm sbardun.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Gwneud</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Haen, Ffynhonnell, Trothwy, Cyfeiriad, Bwyta Botymau'r Sbardun, Ailadrodd</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ychwanegu Gweithred</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Math</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botymau Rhithwir</value></data>
@@ -1811,7 +1817,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Gwasgu Botwm Llygoden</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Rhyddhau Botwm Llygoden</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Sgrolio Llygoden</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Toglo Troshaen y Pad Cyffwrdd</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Botymau</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Cyfuniad Bysellau</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Cyfuniad bysellau yn y fformat {Key1}{Key2}. Golygadwy.</value></data>
@@ -1942,6 +1947,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ailadrodd {0} bob {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Llygoden X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Llygoden Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Gwrthbwyso Llorweddol</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Gwrthbwyso Fertigol</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Cyfwng</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Dewis ar y Sgrin</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Yn dal ymhen {0}…</value></data>
@@ -1976,6 +1983,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Hanner gwrthdro</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Dim dyfais wedi'i mapio</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Dyfais anhysbys</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic pad cyffwrdd</value></data>
@@ -2418,7 +2426,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>I lawr (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>I fyny (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ymgysylltu</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botwm ymgysylltu anelu, modd ymgysylltu, trothwy anelu hawdd</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botwm ymgysylltu anelu, modd ymgysylltu, gyrosgop ymlaen, ailganoli, trothwy anelu hawdd</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Gatiau dewisol sy'n cyfyngu pryd mae'r gyrosgop yn weithredol. Gellir ffurfweddu gwyriad y ffon dde a'r botwm ymgysylltu anelu bob un. Mae'r gyrosgop yn tanio dim ond tra bo pob gât wedi'i ffurfweddu yn weithredol.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lleol</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Chwaraewr</value></data>
@@ -2455,6 +2463,27 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Ailosod trothwy anelu hawdd</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Ailosod botwm ymgysylltu anelu</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Ailosod modd ymgysylltu</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Haen</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Yr haen y mae'r rhesi isod yn dangos ac yn newid ei gosodiad Gyrosgop Ymlaen.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyrosgop Ymlaen</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Pryd mae'r gyrosgop yn gweithio ar yr haen hon, ar ben y botwm ymgysylltu. Mae haen shift sydd wedi'i gosod i Yr un fath â'r Sylfaen yn dilyn y Sylfaen.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Bob Amser Ymlaen</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Yr un fath â'r Sylfaen</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Tra Bydd yn cael ei Ddal</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Tra Na Fydd yn cael ei Ddal</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Newid ar Bob Gwasg</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Botymau Gyrosgop Ymlaen</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Y botymau y mae Gyrosgop Ymlaen yn eu darllen, ar unrhyw reolydd o'r slot hwn.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Angen</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Ai digon yw un botwm wedi'i dicio, neu a oes rhaid dal pob botwm wedi'i dicio.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Unrhyw Fotwm</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Pob Botwm</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Ailganoli Pan Fydd y Gyrosgop yn Troi Ymlaen</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Cymryd ystum y rheolydd fel y man gorffwys bob tro y bydd y gyrosgop yn troi ymlaen.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Ailosod Gyrosgop Ymlaen</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Ailosod Botymau Gyrosgop Ymlaen</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Ailosod Angen</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Ailosod Ailganoli Pan Fydd y Gyrosgop yn Troi Ymlaen</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ailosod ffon ymgysylltu</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ailosod cyfeiriad ymgysylltu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Tramwy symudiad</value></data>
@@ -2465,6 +2494,25 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Mae'r gêm yn darllen y symudiad gyda'r sensitifrwydd, y llyfnu a'r gromlin a osodir yma.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ailosod tiwnio tramwy</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitifrwydd</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Dim ond Tra</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Mae'r ffynhonnell hon yn cyfrif dim ond tra bydd y mewnbwn hwn hefyd yn darllen fel wedi'i wasgu ar yr un rheolydd. Mae prawf parth o fewnforio yn darllen fel ystod y ffon neu'r sbardun y mae'n ei wirio.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ac Tra</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ail fewnbwn y mae'r ffynhonnell hon hefyd yn aros amdano.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Newid Mewnbwn</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Dewis mewnbwn arall i aros amdano.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Cromlin</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Codi darlleniad y mewnbwn hwn i'r pŵer hwn cyn iddo yrru'r allbwn. Mae 0 ac 1 yn ei adael yn syth. Mae uwchlaw 1 yn arafach ger y canol.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ystod Allanol</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Mae'r allbwn yn cyrraedd llawn ar gymaint â hyn o'r daith. Mae 100% wedi'i ddiffodd.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Gwrth-barth marw</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Mae'r allbwn yn dechrau ar gymaint â hyn cyn gynted ag y bydd y mewnbwn yn symud. Mae 0 wedi'i ddiffodd.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Siâp y Parth Marw</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Mae I ffwrdd yn gadael y darlleniad heb ei newid. Mae Echelinol yn mesur yr echelin hon yn unig. Mae Rheiddiol yn mesur pâr y ffyn gyda'i gilydd.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>I ffwrdd</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Echelinol</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Rheiddiol</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Parth marw mewnol</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>O dan gymaint â hyn o'r daith mae'r mewnbwn yn darllen fel wedi'i ganoli.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Lluosydd sensitifrwydd gyrosgop fesul ffynhonnell. 1.0 = rhagosodiad yr injan (500°/s → gwyriad llawn). Mae gwerthoedd uwchlaw 1.0 yn fwy sensitif. Mae gwerthoedd islaw 1.0 yn llai sensitif.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Lluosydd sensitifrwydd gogwydd fesul ffynhonnell. 1.0 = 90° o ogwydd am wyriad llawn. Mae gwerthoedd uwchlaw 1.0 yn cyrraedd gwyriad llawn gyda llai o ogwydd.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gogwydd gyrosgop X</value></data>
@@ -3040,6 +3088,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Lefel</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Terfyn Amser Anweithgarwch</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Eiliadau cyn dinistrio rheolydd rhithwir pan fydd ei holl ddyfeisiau mapio all-lein. Mae 0 yn analluogi. Mae rheolyddion o'r un math sy'n goroesi yn symud i fyny i lenwi'r bwlch ac yn ailglymu i slotiau is.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>eiliad (0 = byth)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ychwanegu Haen</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ychwanegu haen shift. Ail dabl mapio sy'n actifadu tra bod botwm yn cael ei ddal neu ei doglo.</value></data>
@@ -3151,6 +3200,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ailosod cyfradd dad-ddirwyn</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Ailosod parth marw mewnol yr ongl</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Ailosod parth marw allanol yr ongl</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Parth marw y ffon</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>O dan y gwyriad hwn mae'r ffon yn darllen fel wedi'i chanoli, felly ni cheir llywio cronedig.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Ailosod parth marw y ffon</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Ailosod parth marw mewnol gogwyddo</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Ailosod parth marw allanol gogwyddo</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Ailosod cyfeiriadedd y rheolydd</value></data>
@@ -3256,6 +3308,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>o {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Mae'r car hwn yn gofyn am fwy o drorym nag sydd gan yr olwyn, felly torrir pen uchaf y gromlin.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Teimlad canol, cymorth pŵer, dampio, ffrithiant, gafael, cyflymder sefydlog, trorym yr olwyn</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Teimlad canol, cymorth pŵer, dampio, gafael, cyflymder sefydlog, trorym yr olwyn</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Pa mor gryf y mae'r llywio'n dal ei ganol ar gyflymder isel. 100% yw pwysau'r car ei hun.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Cymorth Pŵer</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Faint y mae'r llywio pŵer yn ei dynnu i ffwrdd wrth i gornelu gynyddu. Mae mwy yn golygu llywio ysgafnach i ffwrdd o'r canol.</value></data>
@@ -3397,7 +3450,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Ailosod tonau uchel</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ailosod terfyn tôn</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Yn copïo beth bynnag y mae allbwn rhagosodedig y system yn ei chwarae i uchelseinydd adeiledig y rheolydd hwn, ochr yn ochr. Yn gweithio dros USB a Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Nid oes gan y ddyfais a ddewiswyd uchelseinydd adeiledig. Mae synau macro ar gyfer y pad hwn yn chwarae ar allbwn rhagosodedig y system.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Nid oes gan PadForge lwybr at uchelseinydd ar y ddyfais a ddewiswyd dros y cysylltiad hwn. Mae synau macro ar gyfer y pad hwn yn chwarae ar allbwn rhagosodedig y system.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Pecyn prawf DualSense yn y porwr gan Xuezhou Dai (daidr): cyfeirnod ar gyfer fframio CRC adroddiadau nodwedd Sony a gorchmynion prawf cadarnwedd y mae PadForge yn eu hanfon ymlaen o badiau rhithwir i badiau ffisegol.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3811,7 +3864,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dangos sgrin Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Yn chwarae lluniau ar y VMU ar bob pad Dreamcast mewn porth Bliss-Box sy'n bwydo'r slot hwn, yna'n dychwelyd pob porth i'w osodiad sgrin ei hun.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dangos lluniau Dreamcast: {0} × {1} ms, cyfrif ailadrodd {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Mae pob llun yn dangos am eiliad o leiaf, gan fod yr addasydd yn cadw pob llun a anfonir ato mewn cof sy'n cael ei raddio ar gyfer 100,000 o ysgrifennu, ac mae llun newydd bob eiliad yn cyrraedd hynny ymhen tua diwrnod. Mae lluniau'n 48 wrth 32 picsel du a gwyn o ffeil BMP neu PNG, ffeil .lcd VMU Animator neu eicon .vms Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Mae pob llun yn dangos am eiliad o leiaf. Mae PadForge yn anfon un llun yr eiliad ar y mwyaf at yr addasydd, gan fod yr addasydd yn storio pob llun a anfonir ato yn ei gof ei hun. Mae lluniau'n 48 wrth 32 picsel du a gwyn o ffeil BMP neu PNG, ffeil .lcd VMU Animator neu eicon .vms Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Lluniau</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Ychwanegu llun…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Tynnu llun</value></data>
@@ -3888,15 +3941,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Tra bo'r haen wedi'i toglo ymlaen, mae'n diffodd ei hun ar ôl y nifer hwn o filieiliadau heb unrhyw un o fewnbynnau mapio'r haen ei hun yn weithredol. Mae'r amserydd yn cychwyn pan fydd yr haen yn ymgysylltu ac yn ailgychwyn ar bob mewnbwn haen. Mae 0 yn cadw'r haen ymlaen nes i chi ei diffodd eich hun.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Ailosod y parth marw trimio i 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Ailosod y cyflymder trimio i 100% yr eiliad.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Ailosod i snapio'r lefel yn ôl i 100% wrth ryddhau.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Ailosod canslo awtomatig i 0 (mae'r haen yn aros ymlaen nes ei diffodd).</value>
   </data>
@@ -3964,6 +4008,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Proffil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Rhanbarth cyrchwr</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (dal)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (rhyddhau)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ymgysylltu)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Dewiswch ffurfweddiad i weld yr hyn sy'n dod drosodd.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Yr Hyn sy'n Dod Drosodd</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Yn Dod yn</value></data>

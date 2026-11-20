@@ -209,11 +209,11 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding GameLead}", "{Binding GameNames}", "{Binding GameExtra}", "{Binding GameTail}" },
                 rows[2].Elements().Where(e => e.Name.LocalName == "TextBlock").Select(e => (string)e.Attribute("Text")));
             // A profile with no controllers says so in a pill, the board's 26 tall.
-            Assert.Equal("{StaticResource TypeChip}", (string)rows[3].Attribute("Style"));
+            Assert.Equal("{StaticResource NoSlotsChip}", (string)rows[3].Attribute("Style"));
             Assert.Equal("{Binding HasNoSlots, Converter={StaticResource BoolToVisibilityConverter}}", (string)rows[3].Attribute("Visibility"));
             Assert.Contains(rows[3].Descendants(), e => (string)e.Attribute("Text") == "{Binding Profiles_NoSlots" + S);
             var chipStyle = Assert.Single(page.Root.Elements().Single(e => e.Name.LocalName == "UserControl.Resources").Elements(),
-                e => (string)e.Attribute(X + "Key") == "TypeChip");
+                e => (string)e.Attribute(X + "Key") == "NoSlotsChip");
             Assert.Contains(chipStyle.Elements(), s => (string)s.Attribute("Property") == "Height" && (string)s.Attribute("Value") == "26");
             Assert.DoesNotContain(card.Descendants(), e => (string)e.Attribute("ItemsSource") == "{Binding TypeChips}");
 

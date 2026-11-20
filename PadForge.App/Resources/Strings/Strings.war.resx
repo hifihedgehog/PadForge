@@ -505,6 +505,8 @@
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Pahigda nga offset</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Patindog nga offset</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Wala nga motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Tuo nga motor</value></data>
@@ -647,6 +649,21 @@
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>I-reset an deadzone</value></data>
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>I-reset an akselerasyon</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Samtang la</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Iginkakaihap la ini nga source samtang ini nga input pinipindot liwat ha pareho nga controller. An zone test tikang ha import nababasa sugad han range han stick o trigger nga iginsusuri hini.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ngan samtang</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ikaduha nga input nga ginhuhulat liwat hini nga source.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Bayloi an input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Napili hin iba nga input nga huhulaton.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurba</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ginpapataas an basa hini nga input ngadto hini nga power antes ini magpalihok han output. An 0 ngan 1 nagbibilin hini nga tadong. Labaw ha 1 mas mahinay hirani ha butnga.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Gawas nga range</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Nakakaabot ha puno an output hini nga kadamo han travel. An 100% sarado.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Nagtitikang an output hini nga kadamo dayon nga gumalihok an input. An 0 sarado.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Porma han deadzone</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>An Sarado nagbibilin han basa sugad hini. An Axial nagsusukol hini nga axis la. An Radial nagsusukol han pares han stick nga dungan.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Sarado</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scroll han mouse</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posisyon han mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posisyon han mouse Y</value></data>
@@ -1340,6 +1357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ubos</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} nga output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} nga output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Lihok</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pidlita an usa nga control, dayon pindota an input nga magkokontrol hini.</value></data>
@@ -1371,7 +1389,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble han trigger tikang ha bass han audio han sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone han pagkiling, oryentasyon han controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, pagpahapsay, Akselerasyon, kurba han output</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button han pag-engage han aim, mode han pag-engage, threshold han Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button han pag-engage han aim, mode han pag-engage, pagbukas han gyro, pag-recenter, threshold han Easy Aim</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>An bahin han screen nga naaabot han pad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Nagpapaandar han mga gesture hini nga touchpad</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Mga swipe, tap, pinch, porma</value></data>
@@ -1383,7 +1401,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain kada trigger, bayloay han motor, adaptive nga vibration, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Pagbaliskad, momentum, tubag, Akselerasyon, fling</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Buhata</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direksyon, Consume Trigger Buttons, Repeat</value></data>
   <data name="Menu_Opens_Header" xml:space="preserve"><value>Pagbukas</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Bag-o nga menu</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kuhaa an kataposan nga cell</value></data>
@@ -1401,7 +1418,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga value amo an Game Telemetry nga row ha [Mga device]. I-map hira ha Mga mapping nga seksyon han controller o gamita hira para magpatikang hin mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>An kalugaringon nga lugar, kadako ngan opacity han menu ginbubutang ha menu mismo, ha [Mga macro ngan menu] nga seksyon han controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano an Nakikita</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar han menu samtang bukas ini</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar han menu samtang bukas ini.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha an address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>An telepono nga nakakonek makikita dinhi ngan ha Mga device nga pahina, diin imo ini ig-assign ha usa nga controller.</value></data>
   <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Waray naka-pair nga PC.</value></data>
@@ -1555,4 +1572,5 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Gamita</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Diri kilala nga device</value></data>
 </root>

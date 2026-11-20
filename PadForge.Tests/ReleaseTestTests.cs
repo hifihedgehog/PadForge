@@ -20,9 +20,14 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     /// <summary>The axis as SDL gives it: sixteen bits.</summary>
     static double Axis(WheelPlant plant) => Math.Round(plant.Axis * 32767.0) / 32767.0;
 
+    /// <summary>A test whose search for the return ratio runs in place,
+    /// so the simulated wheel's millisecond clock does not run on while
+    /// a worker would compute it.</summary>
+    static ReleaseTest New(in CenteringSettings s, WheelCalibration previous = null) => new(s, previous, work => work());
+
     static ReleaseTest Run(WheelPlant plant, CenteringSettings s, int limitMs = 40000, Action<int> each = null)
     {
-        var test = new ReleaseTest(s);
+        var test = New(s);
         for (int ms = 0; ms < limitMs && test.Outcome == ReleaseTestOutcome.Running; ms++)
         {
             each?.Invoke(ms);
@@ -131,7 +136,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
                 Inertia = inertia, Friction = friction, Delay = delay, WheelTorque = torque, DamperFull = damper, SpringFull = spring,
                 Angle = (random.NextDouble() * 40 - 20) * Deg,
             };
-            var test = new ReleaseTest(Settings(torque));
+            var test = New(Settings(torque));
             for (int ms = 0; ms < 60000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
             {
                 plant.Command(test.Step(Math.Round(plant.Axis * 511.0) / 511.0, ms));
@@ -173,7 +178,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
                     Inertia = inertia, Friction = friction, Delay = delay, WheelTorque = torque, DamperFull = damper, SpringFull = spring,
                     Angle = (random.NextDouble() * 40 - 20) * Deg,
                 };
-                var test = new ReleaseTest(Settings(torque));
+                var test = New(Settings(torque));
                 for (int ms = 0; ms < 60000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
                 {
                     plant.Command(test.Step(Math.Round(plant.Axis * counts + random.Next(-1, 2) * 0.5) / counts, ms));
@@ -251,7 +256,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     public void ProgressOnlyGoesForward()
     {
         var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
-        var test = new ReleaseTest(Settings(2.2));
+        var test = New(Settings(2.2));
         double before = 0;
         for (int ms = 0; ms < 40000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
         {
@@ -272,7 +277,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     public void TheTestReadsTheWheelAtOtherPollingRates(double pollMs)
     {
         var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
-        var test = new ReleaseTest(Settings(2.2));
+        var test = New(Settings(2.2));
         for (double at = 0; at < 40000 && test.Outcome == ReleaseTestOutcome.Running; at += pollMs)
         {
             plant.Command(test.Step(Axis(plant), (long)at));
@@ -297,7 +302,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
         var first = Run(Wheel(), Settings(8.0));
         Assert.Equal(ReleaseTestOutcome.Done, first.Outcome);
         var plant = Wheel();
-        var second = new ReleaseTest(Settings(8.0), first.Result);
+        var second = New(Settings(8.0), first.Result);
         for (int ms = 0; ms < 40000 && second.Outcome == ReleaseTestOutcome.Running; ms++)
         {
             plant.Command(second.Step(Axis(plant), ms));
@@ -322,7 +327,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     {
         var plant = new WheelPlant { Inertia = 0.015, Friction = 5.0, Delay = 0.008, WheelTorque = 2.2 };
         short most = 0;
-        var test = new ReleaseTest(Settings(2.2));
+        var test = New(Settings(2.2));
         for (int ms = 0; ms < 20000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
         {
             var frame = test.Step(Axis(plant), ms);
@@ -356,7 +361,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     public void CancelingEndsTheTest()
     {
         var plant = new WheelPlant { WheelTorque = 2.2 };
-        var test = new ReleaseTest(Settings(2.2));
+        var test = New(Settings(2.2));
         for (int ms = 0; ms < 1500; ms++)
         {
             plant.Command(test.Step(Axis(plant), ms));
@@ -378,7 +383,7 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
     public void TheTestStaysInsideItsTorqueShare_AndIsQuick()
     {
         var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
-        var test = new ReleaseTest(Settings(2.2));
+        var test = New(Settings(2.2));
         short most = 0;
         int ms = 0, pushing = 0;
         for (; ms < 40000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
@@ -398,5 +403,184 @@ public sealed class ReleaseTestTests(ITestOutputHelper output)
         Assert.True(most <= ReleaseTest.MostShare * 32767 + 1, $"commanded {most}");
         Assert.True(ms < 30000);
         Assert.True(pushing > 0);
+    }
+
+    /// <summary>The search for the return ratio runs a simulated release
+    /// of two and a half seconds for each ratio it tries, so it runs off
+    /// the polling thread: the poll that reaches it hands it to a worker
+    /// and returns, the polls after it send nothing and wait, and the
+    /// first poll after the answer goes on to the releases, with the
+    /// ratio a search in place would choose (audit C6-2).</summary>
+    [Fact]
+    public async Task TheSearchRunsOnAWorker_AndThePollsWaitForIt()
+    {
+        WheelPlant Wheel() => new() { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
+        var plant = Wheel();
+        Action posted = null;
+        int posts = 0;
+        var test = new ReleaseTest(Settings(2.2), null, work => { posts++; posted = work; });
+        int ms = 0;
+        for (; ms < 40000 && posted == null && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.True(posted != null, $"the search was not handed to a worker: the test ended {test.Outcome}");
+        Assert.Equal(1, posts);
+
+        // The answer has not come: every poll returns with nothing sent, and no release starts.
+        for (int i = 0; i < 500; i++, ms++)
+        {
+            var frame = test.Step(Axis(plant), ms);
+            Assert.Equal(0, frame.Level);
+            Assert.Equal(ReleaseTestOutcome.Running, test.Outcome);
+            Assert.Empty(test.Before);
+            plant.Command(frame);
+            plant.Advance(0.001);
+        }
+        Assert.Equal(1, posts);
+
+        await Task.Run(posted).WaitAsync(TimeSpan.FromSeconds(60));
+        for (; ms < 80000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.Equal(ReleaseTestOutcome.Done, test.Outcome);
+        Assert.Equal(1, posts);
+        var inPlace = Run(Wheel(), Settings(2.2));
+        Assert.Equal(inPlace.Result.ReturnRatio, test.Result.ReturnRatio);
+        Assert.Equal(inPlace.Result.Inertia, test.Result.Inertia);
+    }
+
+    /// <summary>With no schedule given, the search runs on the thread
+    /// pool: the polls go on with the clock held still until its answer
+    /// moves the test to the releases.</summary>
+    [Fact]
+    public void TheSearchRunsOnTheThreadPoolByDefault()
+    {
+        var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
+        var test = new ReleaseTest(Settings(2.2));
+        int ms = 0;
+        for (; ms < 40000 && !test.Searching && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.True(test.Searching, $"the test never searched: it ended {test.Outcome}");
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        while (test.Searching && clock.ElapsedMilliseconds < 60000)
+        {
+            Assert.Equal(0, test.Step(Axis(plant), ms).Level);
+            Thread.Sleep(1);
+        }
+        Assert.False(test.Searching, "the search did not finish in a minute");
+        for (; ms < 80000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.Equal(ReleaseTestOutcome.Done, test.Outcome);
+    }
+
+    /// <summary>A test canceled while its search runs ends at once, and
+    /// the answer that comes after is let go.</summary>
+    [Fact]
+    public void ATestCanceledDuringItsSearchEnds_AndTheLateAnswerIsDropped()
+    {
+        var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
+        Action posted = null;
+        var test = new ReleaseTest(Settings(2.2), null, work => posted = work);
+        for (int ms = 0; ms < 40000 && posted == null && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.NotNull(posted);
+        test.Cancel();
+        posted();
+        var frame = test.Step(Axis(plant), 50000);
+        Assert.Equal(ReleaseTestOutcome.Canceled, test.Outcome);
+        Assert.Equal(0, frame.Level);
+        Assert.Null(test.Result);
+        Assert.Empty(test.Before);
+    }
+
+    /// <summary>The first release of a wheel that answers the other way,
+    /// with no earlier measurement, centers with the sign alone: one
+    /// measurement made once, so the poll makes nothing and the
+    /// composer's caches, which hold a measurement by reference, keep
+    /// their work (audit C6-3).</summary>
+    [Fact]
+    public void TheFirstReleaseOfAReversedWheelMakesItsMeasurementOnce()
+    {
+        var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0, ForceSign = -1 };
+        plant.Angle = -8 * Deg;
+        var test = New(Settings(2.2));
+        int ms = 0;
+        for (; ms < 40000 && test.Before.Count < 100 && test.Outcome == ReleaseTestOutcome.Running; ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.Equal(ReleaseTestOutcome.Running, test.Outcome);
+        var first = test.BeforeMeasurement();
+        Assert.NotNull(first);
+        Assert.Equal(-1, first.ForceSign);
+        Assert.Same(first, test.BeforeMeasurement());
+        for (int i = 0; i < 50; i++, ms++)
+        {
+            plant.Command(test.Step(Axis(plant), ms));
+            plant.Advance(0.001);
+        }
+        Assert.Same(first, test.BeforeMeasurement());
+    }
+
+    /// <summary>On an axis too coarse to read the step's delay, the
+    /// measurement keeps no delay under the one an unmeasured wheel gets,
+    /// for the stability rule. The damper is still read against the
+    /// wheel's own lag: a wheel with a 3 ms loop on a twelve-bit axis
+    /// reads its damper within a quarter at full, and runs within a
+    /// quarter of its damping at the middle coefficient, a weak damper
+    /// that takes little off the step among them. The middle reading of
+    /// the weakest may come back 0 (within a twentieth of the free
+    /// distance on 68 counts), and the wheel then runs on the line
+    /// through its full reading (WheelCalibration.DampingAt), so the
+    /// damping it runs on is what is held (audit C6-8).</summary>
+    [Theory]
+    [InlineData(0.015, 0.15, 2.2, 0.30)]
+    [InlineData(0.015, 0.15, 2.2, 0.06)]
+    [InlineData(0.015, 0.15, 2.2, 0.03)]
+    [InlineData(0.020, 0.03, 8.0, 0.15)]
+    [InlineData(0.020, 0.03, 8.0, 0.08)]
+    [InlineData(0.006, 0.05, 5.0, 0.04)]
+    [InlineData(0.006, 0.05, 5.0, 0.02)]
+    public void ACoarseAxisReadsTheDamperAgainstTheWheelsOwnLag(double inertia, double friction, double torque, double damperFull)
+    {
+        var random = new Random(3);
+        double damperMid = damperFull * WheelCalibration.DamperCoefficients[0] / 10000.0;
+        var misses = new List<string>();
+        for (int run = 0; run < 8; run++)
+        {
+            var plant = new WheelPlant
+            {
+                Inertia = inertia, Friction = friction, Delay = 0.003, WheelTorque = torque, DamperFull = damperFull, SpringFull = 12.0,
+                Angle = (random.NextDouble() * 40 - 20) * Deg,
+            };
+            var test = New(Settings(torque));
+            for (int ms = 0; ms < 60000 && test.Outcome == ReleaseTestOutcome.Running; ms++)
+            {
+                plant.Command(test.Step(Math.Round(plant.Axis * 2047.0) / 2047.0, ms));
+                plant.Advance(0.001);
+            }
+            Assert.Equal(ReleaseTestOutcome.Done, test.Outcome);
+            var m = test.Result;
+            output.WriteLine($"run {run}: delay {m.Delay * 1000:F1} ms, damper {m.DamperMid:F4} {m.DamperFull:F4} ({damperMid:F4} {damperFull}), spring {m.SpringThird:F2} {m.SpringTwoThirds:F2} {m.SpringFull:F2}, inertia {m.Inertia:F4}");
+            Assert.True(m.Delay >= WheelCentering.UnmeasuredDelay, $"read {m.Delay * 1000:F1} ms");
+            double runsMid = m.DampingAt(WheelCalibration.DamperCoefficients[0]);
+            if (Math.Abs(runsMid - damperMid) > 0.25 * damperMid) misses.Add($"run {run}: damping at the middle coefficient {runsMid:F4} against {damperMid:F4}");
+            if (Math.Abs(m.DamperFull - damperFull) > 0.25 * damperFull) misses.Add($"run {run}: damper at full {m.DamperFull:F4} against {damperFull}");
+        }
+        Assert.True(misses.Count == 0, string.Join("; ", misses));
     }
 }

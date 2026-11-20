@@ -107,9 +107,10 @@ namespace PadForge.Tests
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf(deep));
         }
 
-        /// <summary>A path is read off the tree once. A path the tree does
-        /// not hold is read again, and a Bluetooth path or one that names no
-        /// node is never walked.</summary>
+        /// <summary>A path is read off the tree once, a path the tree does
+        /// not hold included, and a Bluetooth path or one that names no node
+        /// is never walked. A row coming online forgets its path's answer
+        /// (DeviceTransport.ForgetLink), so the next read walks again.</summary>
         [Fact]
         public void EachPathIsWalkedOnce()
         {
@@ -132,7 +133,7 @@ namespace PadForge.Tests
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf("XInput#0", 0x045E, 0x0B12, Walk, known));
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf("midi://1", 0, 0, Walk, known));
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf(null, 0, 0, Walk, known));
-            Assert.Equal(new[] { Keyboard, Away, Away }, walked);
+            Assert.Equal(new[] { Keyboard, Away }, walked);
         }
 
         /// <summary>Both walks that find the node Windows keeps for a

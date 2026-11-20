@@ -644,6 +644,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsGyroLeanSource));
                     OnPropertyChanged(nameof(IsParamAccelApplicable));
+                    OnPropertyChanged(nameof(IsShapingShown));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -2193,6 +2194,10 @@ namespace PadForge.ViewModels
             public string Value { get; set; } = "";
             public string Name { get; set; } = "";
             public string Description { get; set; } = "";
+            // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+            // by Equals, and an item equal only to itself made the box write null and drop the pick.
+            public override bool Equals(object obj) => obj is CombineModeOption o && string.Equals(o.Value, Value, System.StringComparison.Ordinal);
+            public override int GetHashCode() => Value?.GetHashCode(System.StringComparison.Ordinal) ?? 0;
         }
 
         /// <summary>The current combine mode's layman label ("Strongest" /

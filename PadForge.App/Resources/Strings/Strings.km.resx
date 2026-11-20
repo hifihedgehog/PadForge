@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>គ្មាន</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>វិនាទី</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>នាទី (0 = មិនដែល)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>មិនទាន់ចាត់តាំង</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ឆ្វេង)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ឡើងលើ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>រកមិនឃើញ SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>រកមិនឃើញ SDL3.dll។ សូមដាក់ SDL3.dll នៅជាប់ PadForge.exe។ ទាញយកវាពី https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>រកមិនឃើញ SDL3.dll។ សូមទាញយក PadForge ម្ដងទៀត។</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ប្រតិបត្តិការដ្រាយវ័របរាជ័យ៖ {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ការកំណត់ត្រូវបានចម្លងទៅក្ដារតម្បៀតខ្ទាស់។</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ព័ត៌មានឧបករណ៍ត្រូវបានចម្លងទៅក្ដារតម្បៀតខ្ទាស់។</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ខ្សោយ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>រូបភាព</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>បញ្ជី</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>លទ្ធផល {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>លទ្ធផល {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>ចលនា</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ចុចផ្នែកបញ្ជាមួយ រួចចុចការបញ្ចូលលើឧបករណ៍របស់អ្នកដែលត្រូវបញ្ជាវា។</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ហ្គេមដែល PadForge មិនស្គាល់</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>សម្រាប់ម៉ូដដែលស្វែងរក DSX ដែលកំពុងដំណើរការ មុនពេលវាផ្ញើ។</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>អ្វីដែលបង្ហាញ</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>រង្វង់ ក្រឡា ឬរបាររបស់ម៉ឺនុយ ខណៈវាកំពុងបើក</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ នៅពេលស្រទាប់ប្ដូរបើក សម្រាប់រយៈពេលដែលស្រទាប់នោះកំណត់</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់ នៅពេលប្រូហ្វាល់ផ្លាស់ប្ដូរ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>រង្វង់ ក្រឡា ឬរបាររបស់ម៉ឺនុយ ខណៈវាកំពុងបើក។</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ នៅពេលស្រទាប់ប្ដូរបើក សម្រាប់រយៈពេលដែលស្រទាប់នោះកំណត់។</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់ នៅពេលប្រូហ្វាល់ផ្លាស់ប្ដូរ។</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ចម្លងអាសយដ្ឋាន</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ទីតាំងលើអេក្រង់</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ភ្ជាប់ទូរសព្ទ</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ចាប់ផ្ដើមម៉ាស៊ីនដោយស្វ័យប្រវត្តិពេលបើកកម្មវិធី</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>បន្តស្ទង់ពេលបង្អួចបាត់ការផ្ដោត</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>អត្រាអានទិន្នន័យ (លើកលែងតែប្រូហ្វាល់កំណត់ផ្សេង)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ម៉ាស៊ីនអានឧបករណ៍នីមួយៗ ហើយធ្វើបច្ចុប្បន្នភាពឧបករណ៍បញ្ជានិម្មិតតាមចំនួនដងនេះក្នុងមួយវិនាទី ពី 60 ដល់ 10000។ អត្រាកាន់តែខ្ពស់ ប្រើពេលវេលាប្រូសេស្ស័រកាន់តែច្រើន។ Windows ដាស់ម៉ាស៊ីនប្រហែល 2000 ដងក្នុងមួយវិនាទីយ៉ាងច្រើនបំផុត ដូច្នេះអត្រាខ្ពស់ជាងនេះដំណើរការជុំច្រើនដងរាល់ពេលដាស់ម្ដង។ ពេលប្រូហ្វាល់ដែលមានអត្រាស្ទង់ផ្ទាល់ខ្លួនកំពុងសកម្ម អត្រានោះត្រូវបានប្រើជំនួសវិញ។ តម្លៃនេះត្រឡប់មកវិញ ពេលប្រូហ្វាល់ឈប់សកម្ម។</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>ម៉ាស៊ីនអានឧបករណ៍នីមួយៗ ហើយធ្វើបច្ចុប្បន្នភាពឧបករណ៍បញ្ជានិម្មិតតាមចំនួនដងនេះក្នុងមួយវិនាទី ពី 60 ដល់ 10000។ អត្រាកាន់តែខ្ពស់ ប្រើពេលវេលាប្រូសេស្ស័រកាន់តែច្រើន។ នៅលើកុំព្យូទ័រនេះ Windows ដាស់ម៉ាស៊ីនយ៉ាងច្រើនបំផុត {0} ដងក្នុងមួយវិនាទី ដូច្នេះអត្រាខ្ពស់ជាងនេះដំណើរការជុំច្រើនដងរាល់ពេលដាស់ម្ដង។ ពេលប្រូហ្វាល់ដែលមានអត្រាស្ទង់ផ្ទាល់ខ្លួនកំពុងសកម្ម អត្រានោះត្រូវបានប្រើជំនួសវិញ។ តម្លៃនេះត្រឡប់មកវិញ ពេលប្រូហ្វាល់ឈប់សកម្ម។</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>លាក់ឧបករណ៍ពីហ្គេម</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>កុងតាក់មេសម្រាប់ការលាក់ឧបករណ៍ HidHide និងការចាប់ការបញ្ចូលកម្រិតទាប។ ពេលបិទ គ្មានឧបករណ៍ណាត្រូវបានលាក់ទេ ទោះបីការកំណត់តាមឧបករណ៍យ៉ាងណាក៏ដោយ។</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>រក្សាឧបករណ៍ឲ្យលាក់រវាងការបើកកម្មវិធី</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>មីលីវិនាទីរវាងតួអក្សរដែលបានវាយ រហូតដល់ 1000។ 0 វាយអត្ថបទទាំងមូលក្នុងពេលតែមួយ។</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ផ្ដាច់ពេលទំនេរ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ព័ត៌មានលម្អិត</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>នាទី</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ផ្ដាច់ Bluetooth ពេលដោតតាម USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>សាកថ្មរហ័ស។ នៅពេលឧបករណ៍បញ្ជានេះរាយការណ៍ថាកំពុងសាកថ្ម ខណៈភ្ជាប់តាម Bluetooth តំណ Bluetooth ត្រូវបានផ្ដាច់ ដើម្បីឱ្យវាសាកថ្មដោយមិនផ្គត់ផ្គង់ថាមពលដល់វិទ្យុ។ ប្រភពថាមពល USB ណាមួយក៏រាប់ដែរ រួមទាំងឆ្នាំងសាកដោតជញ្ជាំង។ បើអ្នកបើក Bluetooth វិញខណៈខ្សែនៅដោត វានឹងមិនត្រូវប៉ះពាល់ទេ រហូតដល់ការដកខ្សែលើកក្រោយ។</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>អានជាឧបករណ៍បញ្ជា iCade</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU បង្ហាញឈ្មោះប្រូហ្វាល់សកម្ម ហើយប្ដូរតាមរាល់ការប្ដូរប្រូហ្វាល់។</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU បង្ហាញទីតាំងរបស់ប្រូហ្វាល់សកម្មក្នុងបញ្ជីប្រូហ្វាល់។ ប្រូហ្វាល់លំនាំដើមគឺ 0។</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU បង្ហាញរូបភាពផ្ទាល់របស់ប្រូហ្វាល់សកម្ម ឬឈ្មោះរបស់វា នៅពេលវាគ្មានរូបភាព។ ប្រូហ្វាល់នីមួយៗរក្សារូបភាពផ្ទាល់ខ្លួន។</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU បង្ហាញម៉ោង ដោយសរសេរឡើងវិញម្ដងក្នុងមួយនាទី។ អាដាប់ទ័ររក្សារូបភាពនីមួយៗក្នុងអង្គចងចាំដែលធន់សម្រាប់ការសរសេរ 100,000 ដង ដែលការបង្ហាញនេះនឹងឈានដល់ ក្រោយពីបង្ហាញជាប់ទាំងយប់ទាំងថ្ងៃប្រហែលដប់សប្ដាហ៍។</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU បង្ហាញម៉ោង និងនាទីចាប់តាំងពី PadForge រកឃើញឧបករណ៍បញ្ជា ដោយសរសេរឡើងវិញម្ដងក្នុងមួយនាទី។ ឧបករណ៍បញ្ជាដែលដកចេញពីច្រករបស់វាលើសពីដប់វិនាទី ចាប់ផ្ដើមពីសូន្យម្ដងទៀត។ អាដាប់ទ័ររក្សារូបភាពនីមួយៗក្នុងអង្គចងចាំដែលធន់សម្រាប់ការសរសេរ 100,000 ដង ដែលការបង្ហាញនេះនឹងឈានដល់ ក្រោយពីបង្ហាញជាប់ទាំងយប់ទាំងថ្ងៃប្រហែលដប់សប្ដាហ៍។</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU បង្ហាញម៉ោង ដោយសរសេរឡើងវិញម្ដងក្នុងមួយនាទី។ អាដាប់ទ័ររក្សាទុករូបភាពនីមួយៗក្នុងអង្គចងចាំផ្ទាល់របស់វា ដូច្នេះ PadForge មិនសរសេរវាឡើងវិញញឹកញាប់ជាងនោះទេ។</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU បង្ហាញម៉ោង និងនាទីចាប់តាំងពី PadForge រកឃើញឧបករណ៍បញ្ជា ដោយសរសេរឡើងវិញម្ដងក្នុងមួយនាទី។ ឧបករណ៍បញ្ជាដែលដកចេញពីច្រករបស់វាលើសពីដប់វិនាទី ចាប់ផ្ដើមពីសូន្យម្ដងទៀត។ អាដាប់ទ័ររក្សាទុករូបភាពនីមួយៗក្នុងអង្គចងចាំផ្ទាល់របស់វា ដូច្នេះ PadForge មិនសរសេរវាឡើងវិញញឹកញាប់ជាងម្ដងក្នុងមួយនាទីទេ។</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU បង្ហាញរូបភាពដែលអ្នកជ្រើស៖ BMP ឬ PNG ឯកសារ .lcd របស់ VMU Animator ឬរូបតំណាង .vms របស់ Dreamcast។ រូបភាពត្រូវបានកាត់ឱ្យនៅ 48 គុណ 32 ភីកសែលខ្មៅស។</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ជ្រើសរូបភាព…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>ជ្រើសរូបភាពសម្រាប់ {0}…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>ឧបករណ៍បញ្ជាក្នុងរបៀប Xbox មិនបានឆ្លើយតបជា Apex 4 ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ ហើយ Windows បានទទួលវាវិញហើយ។ ប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows មិនបានផ្លាស់ឧបករណ៍បញ្ជាទៅ WinUSB ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ ប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>បានបញ្ឈប់។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា មុនពេលអ្នកផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>ច្រករបស់អេក្រង់មិនបានបើកទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>រូបភាពមានស៊ុមច្រើនជាងអេក្រង់របស់ឧបករណ៍បញ្ជានេះអាចផ្ទុកបាន។</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>រូបភាពមួយកំពុងផ្ញើទៅឧបករណ៍បញ្ជានេះរួចហើយ។ សូមរង់ចាំឱ្យវាបញ្ចប់។</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>អេក្រង់បានស្នើរូបភាពនៅអាសយដ្ឋានដែល PadForge មិនសរសេរទៅ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>រូបភាពត្រូវបានផ្ញើហើយ ប៉ុន្តែឧបករណ៍បញ្ជាមិនបានប្ដូរត្រឡប់ទៅរបៀប DInput វិញទេ។ ប្ដូរវាត្រឡប់វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>ឧបករណ៍បញ្ជាមិនបានទទួលពាក្យបញ្ជាដែលរៀបចំវាឱ្យរួចរាល់ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ ពិនិត្យថាវាបានភ្ជាប់ ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>ការផ្ញើបានឈប់ដោយសារកំហុសក្នុង PadForge។ ឯកសារកំណត់ហេតុមានព័ត៌មានលម្អិត។</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>រូបភាពមួយនៅតែកំពុងទៅឧបករណ៍បញ្ជា។ បញ្ឈប់ការផ្ញើ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ឯកសារ Controller Pak (*.mpk)|*.mpk|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ច្រក {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>កំណត់ទំហំ និងទីតាំងម៉ឺនុយឡើងវិញ</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>កំណត់ក្រឡាឡើងវិញ</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>កំណត់ភាពរសើបឡើងវិញ</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>កំណត់សំទុះឡើងវិញ</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>កំណត់តំបន់ងាប់ឡើងវិញ</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>កំណត់រយៈពេលសង្កត់ជាប់ឡើងវិញ</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>កំណត់រយៈពេលចុចឡើងវិញ</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ស្រទាប់ណាមួយ</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ដំណើរការជាបន្តបន្ទាប់ខណៈឧបករណ៍បញ្ជានិម្មិតនេះសកម្ម។ មិនត្រូវការប៊ូតុងបើកទេ។</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>ធ្វើ</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>ស្រទាប់, ប្រភព, កម្រិតចាប់ផ្ដើម, ទិសដៅ, ស្រូបយកប៊ូតុងបើក, ធ្វើម្ដងទៀត</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>បន្ថែមសកម្មភាព</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ប្រភេទ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ប៊ូតុងនិម្មិត</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>ចុចប៊ូតុងកណ្ដុរ</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>លែងប៊ូតុងកណ្ដុរ</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>រំកិលកណ្ដុរ</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>បិទ/បើកផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ប៊ូតុង</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>បន្សំគ្រាប់ចុច</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>បន្សំគ្រាប់ចុចក្នុងទម្រង់ {Key1}{Key2}។ អាចកែបាន។</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>ចុច {0} ដដែលៗរៀងរាល់ {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>កណ្ដុរ X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>កណ្ដុរ Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>គម្លាតផ្ដេក</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>គម្លាតបញ្ឈរ</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ចន្លោះពេល</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>ជ្រើសលើអេក្រង់</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>នឹងចាប់យកក្នុងរយៈពេល {0}…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>បញ្ច្រាសពាក់កណ្ដាល</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>គ្មានឧបករណ៍បានម៉ាប</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>ឧបករណ៍មិនស្គាល់</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ចុចផ្ទាំងប៉ះ</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>ចុះក្រោម (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ឡើងលើ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ការបើក</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ប៊ូតុងបើកការតម្រង់, របៀបបើក, កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួល</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ប៊ូតុងបើកការតម្រង់, របៀបបើក, បើកហ្ស៊ីរ៉ូ, តម្រង់កណ្ដាលវិញ, កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួល</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>លក្ខខណ្ឌជាជម្រើស ដែលកំណត់ពេលហ្ស៊ីរ៉ូសកម្ម។ កម្រិតរុញដងបញ្ជាស្ដាំ និងប៊ូតុងបើកការតម្រង់ អាចកំណត់បានម្នាក់ៗ។ ហ្ស៊ីរ៉ូដំណើរការតែពេលលក្ខខណ្ឌដែលបានកំណត់ទាំងអស់សកម្ម។</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>មូលដ្ឋាន</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>អ្នកលេង</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>កំណត់កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួលឡើងវិញ</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>កំណត់ប៊ូតុងបើកការតម្រង់ឡើងវិញ</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>កំណត់របៀបបើកឡើងវិញ</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>ស្រទាប់</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>ស្រទាប់ដែលជួរខាងក្រោមបង្ហាញ និងផ្លាស់ប្ដូរការកំណត់ «បើកហ្ស៊ីរ៉ូ» របស់វា។</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>បើកហ្ស៊ីរ៉ូ</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>ពេលដែលហ្ស៊ីរ៉ូដំណើរការលើស្រទាប់នេះ បន្ថែមលើប៊ូតុងបើក។ ស្រទាប់ប្ដូរដែលកំណត់ជា «ដូចមូលដ្ឋាន» ធ្វើតាមមូលដ្ឋាន។</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>បើកជានិច្ច</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>ដូចមូលដ្ឋាន</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>ពេលសង្កត់</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>ពេលមិនសង្កត់</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>បិទបើករាល់ពេលចុច</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ប៊ូតុងបើកហ្ស៊ីរ៉ូ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>ប៊ូតុងដែល «បើកហ្ស៊ីរ៉ូ» អាន នៅលើឧបករណ៍បញ្ជាណាមួយនៃរន្ធនេះ។</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>ត្រូវការ</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>ថាតើប៊ូតុងដែលបានធីកមួយគ្រប់គ្រាន់ ឬត្រូវសង្កត់ប៊ូតុងដែលបានធីកទាំងអស់។</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>ប៊ូតុងណាមួយ</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>ប៊ូតុងទាំងអស់</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>តម្រង់កណ្ដាលវិញពេលហ្ស៊ីរ៉ូបើក</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>យកឥរិយាបថរបស់ឧបករណ៍បញ្ជាជាចំណុចសម្រាក រាល់ពេលហ្ស៊ីរ៉ូបើក។</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>កំណត់បើកហ្ស៊ីរ៉ូឡើងវិញ</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>កំណត់ប៊ូតុងបើកហ្ស៊ីរ៉ូឡើងវិញ</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>កំណត់ «ត្រូវការ» ឡើងវិញ</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>កំណត់ការតម្រង់កណ្ដាលវិញពេលហ្ស៊ីរ៉ូបើកឡើងវិញ</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>កំណត់ដងបញ្ជាបើកឡើងវិញ</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>កំណត់ទិសបើកឡើងវិញ</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>ការបញ្ជូនផ្ទាល់ចលនា</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ហ្គេមអានចលនាជាមួយភាពរសើប ការធ្វើឱ្យរលូន និងខ្សែកោងដែលបានកំណត់នៅទីនេះ។</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>កំណត់ការកែការបញ្ជូនផ្ទាល់ឡើងវិញ</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>តែពេល</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ប្រភពនេះរាប់តែពេលការបញ្ចូលនេះក៏ត្រូវបានអានថាកំពុងចុចនៅលើឧបករណ៍បញ្ជាដដែល។ ការសាកល្បងតំបន់ពីការនាំចូល ត្រូវបានអានជាជួរដងបញ្ជា ឬទ្រីហ្គ័រដែលវាពិនិត្យ។</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>និងពេល</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ការបញ្ចូលទីពីរដែលប្រភពនេះក៏រង់ចាំដែរ។</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ប្ដូរការបញ្ចូល</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>ជ្រើសការបញ្ចូលផ្សេងទៀតដើម្បីរង់ចាំ។</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>ខ្សែកោង</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>លើកការអានរបស់ការបញ្ចូលនេះជាស្វ័យគុណនេះ មុនពេលវាបញ្ជាលទ្ធផល។ 0 និង 1 ទុកវាឱ្យត្រង់។ លើសពី 1 គឺយឺតជាងនៅជិតកណ្ដាល។</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>ជួរខាងក្រៅ</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>លទ្ធផលឈានដល់ពេញនៅកម្រិតនេះនៃចម្ងាយរុញ។ 100% គឺបិទ។</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>តំបន់ប្រឆាំងតំបន់ងាប់</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>លទ្ធផលចាប់ផ្ដើមពីកម្រិតនេះភ្លាមៗ ពេលការបញ្ចូលផ្លាស់ទី។ 0 គឺបិទ។</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>រាងតំបន់ងាប់</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>«បិទ» ទុកការអានដដែល។ «តាមអ័ក្ស» វាស់អ័ក្សនេះតែមួយ។ «រាងរង្វង់» វាស់អ័ក្សទាំងគូនៃដងបញ្ជាជាមួយគ្នា។</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>បិទ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>តាមអ័ក្ស</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>រាងរង្វង់</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>តំបន់ងាប់ខាងក្នុង</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>ក្រោមកម្រិតនេះនៃចម្ងាយរុញ ការបញ្ចូលត្រូវបានអានថានៅកណ្ដាល។</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>មេគុណភាពរសើបហ្ស៊ីរ៉ូតាមប្រភព។ 1.0 = លំនាំដើមរបស់ម៉ាស៊ីន (500°/s → កម្រិតរុញពេញ)។ តម្លៃលើស 1.0 រសើបជាង។ តម្លៃក្រោម 1.0 រសើបតិចជាង។</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>មេគុណភាពរសើបការទ្រេតតាមប្រភព។ 1.0 = ការទ្រេត 90° សម្រាប់កម្រិតរុញពេញ។ តម្លៃលើស 1.0 ដល់កម្រិតរុញពេញដោយទ្រេតតិចជាង។</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ ទ្រេត X</value></data>
@@ -3041,6 +3089,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>កម្រិត</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>រយៈពេលអសកម្ម</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ចំនួនវិនាទីមុនពេលឧបករណ៍បញ្ជានិម្មិតត្រូវបានលុបចោល នៅពេលឧបករណ៍ដែលបានម៉ាបទាំងអស់របស់វាផ្ដាច់។ 0 បិទមុខងារនេះ។ ឧបករណ៍បញ្ជាដែលនៅសល់នៃប្រភេទដូចគ្នា នឹងរំកិលឡើងដើម្បីបំពេញចន្លោះ ហើយភ្ជាប់ទៅរន្ធទាបជាងវិញ។</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>វិនាទី (0 = មិនដែល)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>បន្ថែមស្រទាប់</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>បន្ថែមស្រទាប់ប្ដូរ។ តារាងការម៉ាបទីពីរ ដែលសកម្មខណៈពេលប៊ូតុងមួយត្រូវបានសង្កត់ជាប់ ឬបិទ/បើក។</value></data>
@@ -3152,6 +3201,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>កំណត់ល្បឿនស្រាយឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>កំណត់តំបន់ងាប់ខាងក្នុងនៃមុំឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>កំណត់តំបន់ងាប់ខាងក្រៅនៃមុំឡើងវិញ</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>តំបន់ងាប់ដងបញ្ជា</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ក្រោមកម្រិតរុញនេះ ដងបញ្ជាត្រូវបានអានថានៅកណ្ដាល ដូច្នេះគ្មានការបត់ចង្កូតកើនឡើងទេ។</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>កំណត់តំបន់ងាប់ដងបញ្ជាឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>កំណត់តំបន់ងាប់ខាងក្នុងនៃការផ្អៀងឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>កំណត់តំបន់ងាប់ខាងក្រៅនៃការផ្អៀងឡើងវិញ</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>កំណត់ទិសរបស់ឧបករណ៍បញ្ជាឡើងវិញ</value></data>
@@ -3257,6 +3309,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ក្នុងចំណោម {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>រថយន្តនេះទាមទារកម្លាំងបង្វិលច្រើនជាងចង្កូតមាន ដូច្នេះផ្នែកខាងលើនៃខ្សែកោងត្រូវកាត់ចោល។</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>អារម្មណ៍នៅកណ្ដាល, ជំនួយថាមពល, ការបន្ថយលំយោល, កកិត, ការជាប់ផ្លូវ, ល្បឿនថេរ, កម្លាំងបង្វិលចង្កូត</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>អារម្មណ៍នៅកណ្ដាល, ជំនួយថាមពល, ការបន្ថយលំយោល, ការជាប់ផ្លូវ, ល្បឿនថេរ, កម្លាំងបង្វិលចង្កូត</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>ចង្កូតរក្សាកណ្ដាលរបស់វាខ្លាំងប៉ុណ្ណានៅល្បឿនទាប។ 100% គឺកម្រិតពិតរបស់រថយន្ត។</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>ជំនួយថាមពល</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ចង្កូតថាមពលដកកម្លាំងចេញប៉ុណ្ណា ពេលការបត់កើនឡើង។ ច្រើនជាង មានន័យថាចង្កូតស្រាលជាងពេលចេញពីកណ្ដាល។</value></data>
@@ -3398,7 +3451,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>កំណត់សំឡេងខ្ពស់ឡើងវិញ</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>កំណត់ដែនកំណត់សំឡេងឡើងវិញ</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ចម្លងអ្វីក៏ដោយដែលលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធចាក់ ទៅឧបករណ៍បំពងសំឡេងដែលភ្ជាប់មកជាមួយឧបករណ៍បញ្ជានេះ ក្នុងពេលដំណាលគ្នា។ ដំណើរការតាម USB និង Bluetooth។</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ឧបករណ៍ដែលបានជ្រើសគ្មានឧបករណ៍បំពងសំឡេងភ្ជាប់មកជាមួយទេ។ សំឡេងម៉ាក្រូសម្រាប់ឧបករណ៍បញ្ជានេះចាក់នៅលើលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធ។</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge គ្មានផ្លូវទៅកាន់ឧបករណ៍បំពងសំឡេងនៅលើឧបករណ៍ដែលបានជ្រើស តាមការតភ្ជាប់នេះទេ។ សំឡេងម៉ាក្រូសម្រាប់ឧបករណ៍បញ្ជានេះចាក់នៅលើលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធ។</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ឈុតសាកល្បង DualSense លើកម្មវិធីរុករក ដោយ Xuezhou Dai (daidr)៖ ឯកសារយោងសម្រាប់ការរៀបស៊ុម CRC នៃរបាយការណ៍មុខងាររបស់ Sony និងពាក្យបញ្ជាសាកល្បងហ្វឺមវែរ ដែល PadForge បញ្ជូនបន្តពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជារូបវន្ត។</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3811,7 +3864,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>បង្ហាញអេក្រង់ Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ចាក់រូបភាពលើ VMU នៃផេដ Dreamcast នីមួយៗនៅក្នុងច្រក Bliss-Box ដែលផ្ដល់ទិន្នន័យដល់រន្ធនេះ រួចប្រគល់ច្រកនីមួយៗទៅការកំណត់អេក្រង់ផ្ទាល់របស់វាវិញ។</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>បង្ហាញរូបភាព Dreamcast៖ {0} × {1} ms ចំនួនដងធ្វើម្ដងទៀត {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>រូបភាពនីមួយៗបង្ហាញយ៉ាងហោចណាស់មួយវិនាទី ព្រោះអាដាប់ទ័ររក្សាទុករូបភាពនីមួយៗដែលវាទទួលបាន ក្នុងអង្គចងចាំដែលអាចសរសេរបាន 100,000 ដង ហើយរូបភាពថ្មីរៀងរាល់វិនាទីនឹងឈានដល់ចំនួននោះក្នុងរយៈពេលប្រហែលមួយថ្ងៃ។ រូបភាពមានទំហំ 48 គុណ 32 ភីកសែលខ្មៅស ពីឯកសារ BMP ឬ PNG ឯកសារ .lcd របស់ VMU Animator ឬរូបតំណាង .vms របស់ Dreamcast។</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>រូបភាពនីមួយៗបង្ហាញយ៉ាងហោចណាស់មួយវិនាទី។ PadForge ផ្ញើរូបភាពទៅអាដាប់ទ័រយ៉ាងច្រើនមួយក្នុងមួយវិនាទី ព្រោះអាដាប់ទ័ររក្សាទុករូបភាពនីមួយៗដែលវាទទួលបាន ក្នុងអង្គចងចាំផ្ទាល់របស់វា។ រូបភាពមានទំហំ 48 គុណ 32 ភីកសែលខ្មៅស ពីឯកសារ BMP ឬ PNG ឯកសារ .lcd របស់ VMU Animator ឬរូបតំណាង .vms របស់ Dreamcast។</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>រូបភាព</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>បន្ថែមរូបភាព…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>លុបរូបភាព</value></data>
@@ -3888,15 +3941,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ខណៈស្រទាប់ត្រូវបានបើក វាបិទខ្លួនឯងវិញក្រោយចំនួនមីលីវិនាទីនេះ ដោយគ្មានការបញ្ចូលដែលបានម៉ាបរបស់ស្រទាប់ផ្ទាល់សកម្ម។ កម្មវិធីកំណត់ពេលចាប់ផ្ដើមនៅពេលស្រទាប់សកម្ម ហើយចាប់ផ្ដើមឡើងវិញរាល់ការបញ្ចូលស្រទាប់។ 0 រក្សាស្រទាប់ឱ្យបើករហូតដល់អ្នកបិទវាដោយខ្លួនឯង។</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>កំណត់តំបន់ងាប់លៃតម្រូវឡើងវិញទៅ 25%។</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>កំណត់ល្បឿនលៃតម្រូវឡើងវិញទៅ 100% ក្នុងមួយវិនាទី។</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>កំណត់ឡើងវិញទៅការធ្វើឱ្យកម្រិតត្រឡប់ទៅ 100% ពេលលែង។</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>កំណត់ការបិទស្វ័យប្រវត្តិឡើងវិញទៅ 0 (ស្រទាប់នៅតែបើករហូតដល់ត្រូវបានបិទ)។</value>
   </data>
@@ -3964,6 +4008,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>ប្រូហ្វាល់វើកស៊ប</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ម៉ាក្រូវើកស៊ប</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>តំបន់ទ្រនិច</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (សង្កត់)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (លែង)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (បើក)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ជ្រើសការកំណត់រចនាសម្ព័ន្ធមួយ ដើម្បីមើលអ្វីដែលនាំចូលមក។</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>អ្វីដែលនាំចូលមក</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ក្លាយជា</value></data>
@@ -4592,7 +4639,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>ការចុចទិសដៅផ្លាស់ទីតាមក្រឡា ហើយដំណើរការក្រឡាដែលទើបជ្រើសរើសនីមួយៗ។ ឥរិយាបថរបារជំនាញនេះមិនប្រើ «របៀបដំណើរការ» ឬ «ការបញ្ចូលចុច» ទេ។</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>ពិធីការកម្រិតខ្ពស់ Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>បើកប៊ូតុងបន្ថែម និងឧបករណ៍ចាប់ចលនា លើឧបករណ៍បញ្ជា Flydigi ដែលគាំទ្រ។</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>កម្មវិធី Flydigi កំពុងដំណើរការ៖ {0}។ វាអាចប្រើចំណុចប្រទាក់ឧបករណ៍បញ្ជាដូចគ្នានឹង PadForge ហើយមានរបាយការណ៍ថា Vader 5 Pro ផ្ដាច់ម្ដងហើយម្ដងទៀត ខណៈកម្មវិធីទាំងពីរមានសិទ្ធិចូលប្រើ។ បើឧបករណ៍បញ្ជានេះផ្ដាច់ ហើយភ្ជាប់ឡើងវិញ សូមបញ្ឈប់សេវានេះខណៈប្រើ PadForge រក្សាឧបករណ៍បញ្ជាឱ្យលាក់ ហើយដកសេវាចេញពីបញ្ជីអនុញ្ញាតរបស់ HidHide ឬសាកល្បងបិទ «ពិធីការកម្រិតខ្ពស់ Flydigi» ក្នុងការកំណត់ ដែលមិនទាន់បញ្ជាក់ថាជួយបានទេ។</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>កម្មវិធី Flydigi កំពុងដំណើរការ៖ {0}។ វាទាក់ទងជាមួយឧបករណ៍បញ្ជាតាមចំណុចប្រទាក់ដែល PadForge ប្រើ។ បើឧបករណ៍បញ្ជានេះផ្ដាច់ ហើយភ្ជាប់ឡើងវិញ សូមបញ្ឈប់កម្មវិធីនោះខណៈអ្នកប្រើ PadForge។</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>អនុញ្ញាតការផ្លាស់ប្ដូរការចាត់តាំងពីចម្ងាយ</value>
   </data>

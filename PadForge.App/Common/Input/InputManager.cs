@@ -680,25 +680,14 @@ namespace PadForge.Common.Input
         /// <see cref="GyroEngagedFromButton"/> by the gyro evaluators.</summary>
         public volatile bool[] GyroEngagedFromMacro = new bool[MaxPads];
 
-        /// <summary>Per-slot gyro ratchet clutch (translator v22, Steam's
-        /// gyro_ratchet_button_mask): true while any of the authoritative
-        /// set's stamped ratchet descriptors is held on any slot device.
-        /// Settled once per tick by <see cref="UpdateGyroEngageStates"/>
-        /// and ANDed-NOT into <see cref="SourceCoercion.AimEngageStateProvider"/>,
-        /// a separate lane the engage sources cannot fight: the OR of
-        /// button + macro engage decides "engaged", the ratchet alone
-        /// decides "clutched", so holding the ratchet always pauses gyro
-        /// and releasing it always restores whatever the engage sources
-        /// say.</summary>
-        public volatile bool[] GyroRatchetHeld = new bool[MaxPads];
-
-        /// <summary>Per-slot Steam gyro activation lane: false while the
-        /// authoritative set's <c>WorkshopGyroActivation</c> entry says the
-        /// gyro is off for the engaged layer (or Base), true
-        /// otherwise and when the set has no lane. ANDed into
+        /// <summary>Per-slot gyro activation lane: false while the slot's
+        /// Gyro card activation (<c>PadSetting.GyroActivation</c>) says the
+        /// gyro is off for the engaged layer (or Base), true otherwise and
+        /// when no device on the slot sets one. ANDed into
         /// <see cref="SourceCoercion.AimEngageStateProvider"/> beside the
-        /// ratchet. Settled once per tick by
-        /// <see cref="UpdateGyroEngageStates"/>.</summary>
+        /// engage sources. Settled once per tick by
+        /// <see cref="UpdateGyroEngageStates"/>. Steam's ratchet is this
+        /// lane's "on while not held" entry.</summary>
         public volatile bool[] GyroActivationOn = CreateAllTrue();
 
         private static bool[] CreateAllTrue()
@@ -710,12 +699,12 @@ namespace PadForge.Common.Input
 
         /// <summary>The slot's resolved gyro engage state, what
         /// <see cref="SourceCoercion.AimEngageStateProvider"/> answers: the
-        /// engage button or the macro on, no ratchet held, and the activation
-        /// lane on. A slot out of range reads as engaged.</summary>
+        /// engage button or the macro on, and the activation lane on. A slot
+        /// out of range reads as engaged.</summary>
         public bool IsGyroEngaged(int slot)
             => (uint)slot >= MaxPads
                 || ((GyroEngagedFromButton[slot] || GyroEngagedFromMacro[slot])
-                    && !GyroRatchetHeld[slot] && GyroActivationOn[slot]);
+                    && GyroActivationOn[slot]);
 
         /// <summary>Previous-tick button state for each slot's engage
         /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
@@ -726,8 +715,8 @@ namespace PadForge.Common.Input
         /// previous tick's held state and the sticky Toggle bit), and the
         /// slot's previous resolved engage state for the re-center on each
         /// activation. Polling thread only.</summary>
-        private readonly Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>[] _activationToggled
-            = new Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>[MaxPads];
+        private readonly Dictionary<GyroActivationEntry, (bool Prev, bool On)>[] _activationToggled
+            = new Dictionary<GyroActivationEntry, (bool Prev, bool On)>[MaxPads];
         private readonly bool[] _prevGyroEngagedResolved = new bool[MaxPads];
 
         /// <summary>Reused scratch for the device-free gyro-engage walk
@@ -2218,8 +2207,9 @@ namespace PadForge.Common.Input
                 sleepGuardTimer.Start();
 
                 // When each pass is due. The idle and focus-suspended
-                // branches pace themselves and leave it far behind, which it
-                // takes as a stall: it starts again at the next active pass.
+                // branches pace themselves and start it again on each of
+                // their turns, so the first active pass after them runs at
+                // once and no burst follows it.
                 var schedule = new PollSchedule(Stopwatch.Frequency, TimerGrid(),
                     PollingRateHz, Stopwatch.GetTimestamp());
                 _pollLoad.Begin(Stopwatch.GetTimestamp());
@@ -2314,6 +2304,9 @@ namespace PadForge.Common.Input
                             RaiseError("Idle polling error", ex);
                         }
 
+                        // Twenty passes a second need no fine clock, and an
+                        // engine left idle held it for hours.
+                        HoldFineClock(ref fineClock, false);
                         CurrentFrequency = 0;
                         _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
@@ -2331,6 +2324,7 @@ namespace PadForge.Common.Input
                     {
                         try { PublishLayerGatedHookKeys(evaluating: false); }
                         catch (Exception ex) { RaiseError("Focus-suspend hook release", ex); }
+                        HoldFineClock(ref fineClock, false);
                         CurrentFrequency = 0;
                         _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
@@ -2346,11 +2340,7 @@ namespace PadForge.Common.Input
                     // the Settings page or a profile takes effect at once.
                     int rateHz = PollingRateHz;
                     schedule.SetRate(rateHz);
-                    if (fineClock != rateHz > FineClockAboveHz)
-                    {
-                        fineClock = !fineClock;
-                        SetFineClock(fineClock);
-                    }
+                    HoldFineClock(ref fineClock, rateHz > FineClockAboveHz);
                     bool spaceFrames = rateHz > EveryPassFrameGate.EveryPassUpToHz;
                     if (EveryPassFrameGate.Engaged != spaceFrames)
                         EveryPassFrameGate.Engaged = spaceFrames;
@@ -2512,7 +2502,7 @@ namespace PadForge.Common.Input
 
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);
-                if (fineClock) SetFineClock(false);
+                HoldFineClock(ref fineClock, false);
                 timeEndPeriod(1);
             }
         }
@@ -2537,6 +2527,12 @@ namespace PadForge.Common.Input
             return Stopwatch.Frequency / 1000;
         }
 
+        /// <summary>The wakes a second a timer grid of <paramref name="grid"/>
+        /// <see cref="Stopwatch"/> ticks gives: 2000 on a 0.5 ms grid, 1000 on
+        /// a 1 ms grid. The Settings polling tooltip states it for this PC.</summary>
+        internal static int WakesPerSecond(long grid) =>
+            grid <= 0 ? 1000 : (int)Math.Round((double)Stopwatch.Frequency / grid);
+
         /// <summary>Asks Windows for its finest clock, or gives it back. The
         /// clock is one for the whole PC and a finer one costs every program
         /// a little power, so the loop holds it only while it runs faster
@@ -2552,6 +2548,18 @@ namespace PadForge.Common.Input
                     NtSetTimerResolution(finest, on, out _);
             }
             catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException) { }
+        }
+
+        /// <summary>Asks for the finest clock or gives it back when
+        /// <paramref name="want"/> differs from what the loop holds
+        /// (<paramref name="held"/>). The active branch wants it above
+        /// <see cref="FineClockAboveHz"/>. The idle and focus-suspended
+        /// branches, at 20 and 10 passes a second, give it back.</summary>
+        private static void HoldFineClock(ref bool held, bool want)
+        {
+            if (held == want) return;
+            held = want;
+            SetFineClock(want);
         }
 
         /// <summary>Sleeps the poll thread for <paramref name="ticks"/> of
@@ -2741,8 +2749,7 @@ namespace PadForge.Common.Input
             public string Descriptor = "";
             public string DeviceGuid = "";
             public string Mode = "Hold";
-            public string[] Ratchets;
-            public Dictionary<string, MappingSet.GyroActivationEntry> Activation;
+            public Dictionary<string, GyroActivationEntry> Activation;
             public MappingSet ActivationSet;
             public bool RecenterOnEngage;
             public string[] SlotGuids = System.Array.Empty<string>();
@@ -2750,21 +2757,27 @@ namespace PadForge.Common.Input
         private readonly GyroEngageCfg[] _gyroEngageCfg = new GyroEngageCfg[MaxPads];
         private long _gyroEngageCfgRefreshTick;
 
+        /// <summary>Each slot's parsed activation and the text it came from,
+        /// so a refresh hands back the same entries while the text is
+        /// unchanged: the Toggle states key on them.</summary>
+        private readonly (string Text, Dictionary<string, GyroActivationEntry> Parsed)[] _gyroActivationParsed
+            = new (string, Dictionary<string, GyroActivationEntry>)[MaxPads];
+
         private void RefreshGyroEngageCfg(SettingsCollection settings)
         {
-            var wsSets = SettingsManager.SlotMappingSets;
+            var sets = SettingsManager.SlotMappingSets;
             for (int slot = 0; slot < MaxPads; slot++)
             {
                 if (!SettingsManager.SlotCreated[slot]) { _gyroEngageCfg[slot] = null; continue; }
 
-                var wsSet = wsSets != null && slot < wsSets.Length ? wsSets[slot] : null;
-                if (wsSet != null && !wsSet.Authoritative) wsSet = null;
-
                 var cfg = new GyroEngageCfg();
+                string activation = "";
                 // First device on the slot with a configured engage button
                 // wins (per-slot ergonomic, storage order, see the method
-                // doc above). Slot guids are captured for the device-free
-                // descriptor and ratchet walks.
+                // doc above), and the first with an activation, the same
+                // way. Any device asking for the re-center turns it on.
+                // Slot guids are captured for the device-free descriptor
+                // walks.
                 _gyroEngageGuidScratch.Clear();
                 lock (settings.SyncRoot)
                 {
@@ -2773,9 +2786,12 @@ namespace PadForge.Common.Input
                         var us = settings.Items[i];
                         if (us == null || us.MapTo != slot) continue;
                         _gyroEngageGuidScratch.Add(us.InstanceGuidString);
-                        if (cfg.Descriptor.Length > 0) continue;
                         var ps = us.GetPadSetting();
                         if (ps == null) continue;
+                        if (activation.Length == 0 && !string.IsNullOrEmpty(ps.GyroActivation))
+                            activation = ps.GyroActivation;
+                        if (ps.GyroRecenterOnEngage == "1") cfg.RecenterOnEngage = true;
+                        if (cfg.Descriptor.Length > 0) continue;
                         if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
                         cfg.Descriptor = ps.GyroAimEngageButton;
                         cfg.DeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
@@ -2784,25 +2800,20 @@ namespace PadForge.Common.Input
                 }
                 cfg.SlotGuids = _gyroEngageGuidScratch.ToArray();
 
-                // The Workshop gyro_button stamp is folded into the
-                // device's own GyroAimEngageButton when the device is
-                // assigned (WorkshopTuningApplier), so there is no
-                // runtime overlay left to consult and the Gyro card is
-                // the single source of truth.
+                // An import's gyro stamps are folded into the device's own
+                // Gyro card when the device is assigned
+                // (WorkshopTuningApplier), so the card is the single source
+                // of truth and no slot stamp is read here.
 
-                // Workshop ratchet clutch (v22) descriptors, resolved
-                // per tick against SlotGuids.
-                var ratchets = wsSet?.WorkshopGyroRatchetList;
-                cfg.Ratchets = ratchets != null && ratchets.Length > 0 ? ratchets : null;
-
-                // Workshop activation lane (Steam gyro activations the engage
-                // button and the ratchet cannot carry, by layer) and the
-                // re-center on each activation.
-                cfg.Activation = wsSet?.WorkshopGyroActivationByLayer;
-                cfg.ActivationSet = cfg.Activation != null ? wsSet : null;
-                cfg.RecenterOnEngage = wsSet?.WorkshopGyroRecenterOnEngage ?? false;
-                // Toggle states key on the entries of the stamp in force, so a
-                // replaced stamp drops them rather than keeping them forever.
+                // The activation, parsed once per text: an unchanged text
+                // keeps its entries, and with them its Toggle states.
+                var parsed = _gyroActivationParsed[slot];
+                if (!string.Equals(parsed.Text, activation, StringComparison.Ordinal))
+                    _gyroActivationParsed[slot] = parsed = (activation, GyroActivation.Parse(activation));
+                cfg.Activation = parsed.Parsed;
+                cfg.ActivationSet = cfg.Activation != null && sets != null && slot < sets.Length ? sets[slot] : null;
+                // Toggle states key on the entries in force, so a replaced
+                // activation drops them rather than keeping them forever.
                 if (!ReferenceEquals(_gyroEngageCfg[slot]?.Activation, cfg.Activation))
                     _activationToggled[slot] = null;
 
@@ -2847,7 +2858,6 @@ namespace PadForge.Common.Input
                 if (!SettingsManager.SlotCreated[slot] || cfg == null)
                 {
                     GyroEngagedFromButton[slot] = false;
-                    GyroRatchetHeld[slot] = false;
                     GyroActivationOn[slot] = true;
                     _prevAimEngageButtonDown[slot] = false;
                     _activationToggled[slot] = null;
@@ -2904,26 +2914,10 @@ namespace PadForge.Common.Input
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
 
-                // Workshop ratchet clutch (v22): any stamped descriptor
-                // held on any slot device pauses the slot's gyro. Guid
-                // list and descriptors come from the 250 ms snapshot; the
-                // provider runs outside any lock as before.
-                bool ratchetHeld = false;
-                var ratchets = cfg.Ratchets;
-                if (ratchets != null)
-                {
-                    var guids = cfg.SlotGuids;
-                    for (int g = 0; g < guids.Length && !ratchetHeld; g++)
-                        for (int r = 0; r < ratchets.Length && !ratchetHeld; r++)
-                            ratchetHeld = SourceCoercion.ButtonHeldProvider?.Invoke(
-                                guids[g], ratchets[r], slot) ?? false;
-                }
-                GyroRatchetHeld[slot] = ratchetHeld;
-
-                // Workshop activation lane: the engaged layer's entry, else
-                // Base's. Any (or all) of its buttons held on any slot
-                // device, under Hold, Release or Toggle, Steam's gyro
-                // activation for what the single engage button cannot carry.
+                // Activation lane: the engaged layer's entry, else Base's.
+                // Any (or all) of its buttons held on any slot device, under
+                // Hold, Release or Toggle, for what the single engage button
+                // cannot carry.
                 // A layer with no buttons is always on. Each layer keeps its
                 // own Toggle state, as each Steam preset's gyro group does.
                 bool activationOn = true;
@@ -2946,7 +2940,7 @@ namespace PadForge.Common.Input
                             if (entry.All && !one) { held = false; break; }
                             if (!entry.All && one) { held = true; break; }
                         }
-                        var toggles = _activationToggled[slot] ??= new Dictionary<MappingSet.GyroActivationEntry, (bool Prev, bool On)>();
+                        var toggles = _activationToggled[slot] ??= new Dictionary<GyroActivationEntry, (bool Prev, bool On)>();
                         toggles.TryGetValue(entry, out var state);
                         switch (entry.Mode)
                         {
@@ -3387,7 +3381,6 @@ namespace PadForge.Common.Input
             {
                 GyroEngagedFromButton[i] = false;
                 GyroEngagedFromMacro[i] = false;
-                GyroRatchetHeld[i] = false;
                 GyroActivationOn[i] = true;
                 _prevAimEngageButtonDown[i] = false;
                 _activationToggled[i] = null;

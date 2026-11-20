@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ekkert</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>s</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>mín (0 = aldrei)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Óúthlutað</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← vinstri)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ upp)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll fannst ekki</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll fannst ekki. Settu SDL3.dll við hliðina á PadForge.exe. Sæktu skrána af https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll fannst ekki. Sæktu PadForge aftur.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Aðgerð rekils mistókst: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Stillingar afritaðar á klippiborð.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Upplýsingar um tæki afritaðar á klippiborð.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Lág</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Mynd</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listi</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Úttak: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Úttök: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Hreyfing</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Smelltu á stýrihlut og ýttu á inntakið sem á að stjórna honum.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Leikir sem PadForge þekkir ekki</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fyrir breytingar sem leita að DSX í gangi áður en þær senda.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hvað birtist</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Hringur, rist eða stika valmyndar á meðan hún er opin</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Heiti lagsins þegar skiptilag verður virkt, í þann tíma sem lagið ákveður</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Heiti sniðsins þegar sniðið breytist</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Hringur, rist eða stika valmyndar á meðan hún er opin.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Heiti lagsins þegar skiptilag verður virkt, í þann tíma sem lagið ákveður.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Heiti sniðsins þegar sniðið breytist.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Afrita vistfang</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Staðsetning á skjá</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Tengdu síma</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Ræsa vélina sjálfkrafa við opnun</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Halda könnun áfram þegar glugginn missir fókus</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Könnunartíðni (nema snið hnekki því)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Vélin les öll tæki og uppfærir sýndarstýringarnar þetta oft á sekúndu, frá 60 upp í 10000. Hærri tíðni notar meiri örgjörvatíma. Windows vekur vélina um það bil 2000 sinnum á sekúndu í mesta lagi, þannig að hærri tíðni keyrir nokkrar umferðir í hvert sinn sem hún vaknar. Á meðan snið með eigin könnunartíðni er virkt gildir sú tíðni í staðinn. Þetta gildi tekur aftur gildi þegar sniðið verður óvirkt.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Vélin les öll tæki og uppfærir sýndarstýringarnar þetta oft á sekúndu, frá 60 upp í 10000. Hærri tíðni notar meiri örgjörvatíma. Á þessari tölvu vekur Windows vélina í mesta lagi {0} sinnum á sekúndu, þannig að hærri tíðni keyrir nokkrar umferðir í hvert sinn sem hún vaknar. Á meðan snið með eigin könnunartíðni er virkt gildir sú tíðni í staðinn. Þetta gildi tekur aftur gildi þegar sniðið verður óvirkt.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fela tæki fyrir leikjum</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Aðalrofi fyrir felingu tækja með HidHide og lágstigs inntakskróka. Þegar slökkt er á honum er ekkert tæki falið, óháð stillingum hvers tækis.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Halda tækjum földum milli ræsinga</value></data>
@@ -937,7 +939,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekúndur milli innsleginna stafa, allt að 1000. 0 slær allan textann inn í einu.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Aftenging við aðgerðaleysi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Upplýsingar</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>mín</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Aftengja Bluetooth þegar tengt er með USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hraðhleðsla. Þegar þessi leikjastýring tilkynnir að hún sé í hleðslu á meðan hún er tengd með Bluetooth er Bluetooth-tengingin rofin svo hún hlaðist án þess að halda þráðlausa sendinum gangandi. Allir USB-aflgjafar teljast með, þar á meðal hleðslutæki í vegginnstungu. Ef þú kveikir aftur á Bluetooth á meðan snúran er enn í sambandi er hún látin í friði þar til hún er næst tekin úr sambandi.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lesa sem iCade-leikjastýringu</value></data>
@@ -979,8 +980,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU sýnir heiti virka sniðsins og uppfærist við hver sniðaskipti.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU sýnir sæti virka sniðsins í sniðalistanum. Sniðið „Sjálfgefið“ er 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU sýnir eigin mynd virka sniðsins, eða heiti þess ef það hefur enga. Hvert snið geymir sína eigin mynd.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU sýnir klukkuna, endurskrifaða einu sinni á mínútu. Millistykkið geymir hverja mynd í minni sem þolir 100.000 skrif, sem þetta nær eftir um tíu vikna samfellda birtingu allan sólarhringinn.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU sýnir klukkustundir og mínútur síðan PadForge fann leikjastýringuna, endurskrifað einu sinni á mínútu. Leikjastýring sem er úr tenginu sínu lengur en tíu sekúndur byrjar aftur frá núlli. Millistykkið geymir hverja mynd í minni sem þolir 100.000 skrif, sem þetta nær eftir um tíu vikna samfellda birtingu allan sólarhringinn.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU sýnir klukkuna, endurskrifaða einu sinni á mínútu. Millistykkið geymir hverja mynd í sínu eigin minni, þannig að PadForge endurskrifar hana ekki oftar en það.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU sýnir klukkustundir og mínútur síðan PadForge fann leikjastýringuna, endurskrifað einu sinni á mínútu. Leikjastýring sem er úr tenginu sínu lengur en tíu sekúndur byrjar aftur frá núlli. Millistykkið geymir hverja mynd í sínu eigin minni, þannig að PadForge endurskrifar hana ekki oftar en einu sinni á mínútu.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU sýnir mynd sem þú velur: BMP eða PNG, .lcd-skrá úr VMU Animator eða .vms-tákn úr Dreamcast. Myndir eru skornar niður í 48 sinnum 32 svarta og hvíta díla.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Velja mynd…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Velja mynd fyrir {0}…</value></data>
@@ -1025,6 +1026,13 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Leikjastýringin í Xbox-ham svaraði ekki sem Apex 4, svo ekkert var sent og Windows hefur hana aftur. Skiptu henni aftur í DInput-ham með eigin rofa hennar.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows flutti leikjastýringuna ekki yfir í WinUSB, svo ekkert var sent. Skiptu henni aftur í DInput-ham með eigin rofa hennar.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stöðvað. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar áður en þú sendir aftur.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Tengi skjásins opnaðist ekki, svo ekkert var sent. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Myndin hefur fleiri ramma en skjár þessarar leikjastýringar rúmar.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Mynd er þegar á leið til þessarar leikjastýringar. Bíddu þar til henni lýkur.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Skjárinn bað um myndina á heimilisfangi sem PadForge skrifar ekki á, svo ekkert var sent. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Myndin var send, en leikjastýringin skipti ekki aftur yfir í DInput-ham. Skiptu henni aftur með eigin rofa hennar.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Leikjastýringin tók ekki við skipuninni sem undirbýr hana, svo ekkert var sent. Athugaðu að hún sé tengd og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Sendingin stöðvaðist vegna villu í PadForge. Annálsskráin geymir nánari upplýsingar.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mynd er enn á leið til leikjastýringarinnar. Stöðva sendinguna?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-skrár (*.mpk)|*.mpk|Allar skrár (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak tengi {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Endurstilla lögun valmyndar</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Endurstilla reit</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Endurstilla næmi</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Endurstilla hröðun</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Endurstilla dautt svæði</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Endurstilla haldtíma</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Endurstilla tímaglugga ýtingar</value></data>
@@ -1976,7 +1983,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Hvaða lag sem er</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Keyrir stöðugt á meðan þessi sýndarstýring er virk. Enginn ræsihnappur nauðsynlegur.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Gera</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Lag, Uppspretta, Þröskuldur, Stefna, Gleypa ræsihnappa, Endurtaka</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Bæta við aðgerð</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Gerð</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Sýndarhnappar</value></data>
@@ -2002,7 +2008,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Ýta á músarhnapp</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Sleppa músarhnappi</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Skruna með mús</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Víxla yfirlagi snertiflatar</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Hnappar</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Lyklasamsetning</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Lyklasamsetning á forminu {Key1}{Key2}. Hægt að breyta.</value></data>
@@ -2133,6 +2138,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Endurtaka {0} á {1} ms fresti</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mús X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mús Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Lárétt færsla</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Lóðrétt færsla</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Bil</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Velja á skjá</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Grípur eftir {0}…</value></data>
@@ -2167,6 +2174,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Umsnúið hálft</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Engu tæki varpað</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Óþekkt tæki</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Smellur á snertiflöt</value></data>
@@ -2609,7 +2617,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Niður (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Upp (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Virkjun</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Virkjunarhnappur miðunar, Virkjunarhamur, Þröskuldur auðveldrar miðunar</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Virkjunarhnappur miðunar, Virkjunarhamur, Snúningsskynjari virkur, Miðjusetning, Þröskuldur auðveldrar miðunar</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valfrjáls skilyrði sem takmarka hvenær snúningsskynjarinn er virkur. Hægt er að stilla útslag hægri pinna og virkjunarhnapp miðunar hvort fyrir sig. Snúningsskynjarinn virkar aðeins á meðan öll stillt skilyrði eru uppfyllt.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Staðbundið</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spilari</value></data>
@@ -2646,6 +2654,27 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Endurstilla þröskuld auðveldrar miðunar</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Endurstilla virkjunarhnapp miðunar</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Endurstilla virkjunarham</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Lag</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Lagið sem raðirnar fyrir neðan sýna og breyta stillingunni Snúningsskynjari virkur fyrir.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Snúningsskynjari virkur</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Hvenær snúningsskynjarinn virkar á þessu lagi, til viðbótar við virkjunarhnappinn. Skiptilag sem er stillt á Sama og grunnlag fylgir grunnlaginu.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Alltaf virkur</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Sama og grunnlag</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Á meðan haldið er</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Á meðan ekki er haldið</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Víxla við hverja ýtingu</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Hnappar fyrir virkan snúningsskynjara</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Hnapparnir sem Snúningsskynjari virkur les, á hvaða leikjastýringu sem er í þessu hólfi.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Krefst</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Hvort einn valinn hnappur nægir eða halda þarf öllum völdum hnöppum.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Einhver hnappur</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Allir hnappar</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Miðjusetja þegar snúningsskynjari kviknar</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Tekur stöðu leikjastýringarinnar sem hvíldarpunkt í hvert sinn sem snúningsskynjarinn kviknar.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Endurstilla snúningsskynjara virkan</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Endurstilla hnappa fyrir virkan snúningsskynjara</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Endurstilla kröfu</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Endurstilla miðjusetningu þegar snúningsskynjari kviknar</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Endurstilla virkjunarpinna</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Endurstilla virkjunarstefnu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Gegnumstreymi hreyfingar</value></data>
@@ -2656,6 +2685,25 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Leikurinn les hreyfinguna með næminu, sléttuninni og ferlinum sem eru stillt hér.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Endurstilla stillingar gegnumstreymis</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Næmi</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Aðeins á meðan</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Þessi uppspretta telst aðeins með á meðan þetta inntak les einnig sem ýtt á sömu leikjastýringu. Svæðispróf úr innflutningi les sem sá hluti útslags pinna eða gikks sem það athugar.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Og á meðan</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Annað inntak sem þessi uppspretta bíður einnig eftir.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Breyta inntaki</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Velur annað inntak til að bíða eftir.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Ferill</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Hefur lestur þessa inntaks í þetta veldi áður en hann stýrir úttakinu. 0 og 1 skilja það eftir beint. Yfir 1 er hægara nálægt miðju.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ytra svið</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Úttakið nær fullu gildi við þetta mikið af færslunni. 100% er slökkt.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Mótvægi við dautt svæði</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Úttakið byrjar á þessu gildi um leið og inntakið hreyfist. 0 er slökkt.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Lögun dauðs svæðis</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Slökkt lætur lesturinn í friði. Eftir ásum mælir þennan ás einan. Geislalaga mælir pinnaparið saman.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Slökkt</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Eftir ásum</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Geislalaga</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Innra dautt svæði</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Undir þessu mikla af færslunni les inntakið sem miðjað.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Margfaldari á næmi snúningsskynjara fyrir hverja uppsprettu. 1.0 = sjálfgefið gildi vélarinnar (500°/s → fullt útslag). Gildi yfir 1.0 eru næmari. Gildi undir 1.0 eru ónæmari.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Margfaldari á hallanæmi fyrir hverja uppsprettu. 1.0 = 90° halli fyrir fullt útslag. Gildi yfir 1.0 ná fullu útslagi með minni halla.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Halli snúningsskynjara X</value></data>
@@ -3236,6 +3284,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Styrkur</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tímamörk aðgerðaleysis</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekúndur þar til sýndarstýringu er eytt þegar öll tæki sem varpað er á hana eru ótengd. 0 gerir óvirkt. Eftirstandandi leikjastýringar af sömu gerð færast upp til að fylla bilið og tengjast aftur við lægri raufar.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>s (0 = aldrei)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Bæta við lagi</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Bæta við lagi. Önnur vörpunartafla sem virkjast á meðan hnappi er haldið inni eða kveikt er á henni með víxli.</value></data>
@@ -3347,6 +3396,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Endurstilla afvindingarhraða</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Endurstilla innra dautt svæði horns</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Endurstilla ytra dautt svæði horns</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Dautt svæði pinna</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Undir þessu útslagi les pinninn sem miðjaður, þannig að engin stýring safnast upp.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Endurstilla dautt svæði pinna</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Endurstilla innra dautt svæði hneigingar</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Endurstilla ytra dautt svæði hneigingar</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Endurstilla stefnu leikjastýringar</value></data>
@@ -3452,6 +3504,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>af {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Þessi bíll krefst meira togs en stýrið hefur, svo toppur ferilsins er skorinn af.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Miðjutilfinning, aflstýri, dempun, núningur, grip, fastur hraði, tog stýris</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Miðjutilfinning, aflstýri, dempun, grip, fastur hraði, tog stýris</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Hversu fast stýrið heldur miðju á litlum hraða. 100% er eigið gildi bílsins.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Aflstýri</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Hversu mikið aflstýrið tekur af þegar beygjuálag eykst. Meira þýðir léttara stýri fjarri miðju.</value></data>
@@ -3593,7 +3646,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Endurstilla háa tóna</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Endurstilla tónmörk</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Afritar samhliða allt sem sjálfgefið úttak kerfisins spilar í innbyggðan hátalara þessarar leikjastýringar. Virkar um USB og Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valda tækið hefur engan innbyggðan hátalara. Fjölvahljóð þessarar leikjastýringar spilast á sjálfgefnu úttaki kerfisins.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge hefur enga leið að hátalara á völdu tæki yfir þessa tengingu. Fjölvahljóð þessarar leikjastýringar spilast á sjálfgefnu úttaki kerfisins.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Prófunarsafn fyrir DualSense í vafra eftir Xuezhou Dai (daidr): viðmiðun fyrir CRC-römmun feature-skýrslna frá Sony og prófunarskipanir fastbúnaðar sem PadForge framsendir frá sýndarleikjastýringum til raunverulegra.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Sýna Dreamcast-skjá</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Spilar myndir á VMU hverrar Dreamcast-leikjastýringar í Bliss-Box-tengi sem tengist þessari rauf og skilar svo hverju tengi aftur í eigin skjástillingu.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Sýna Dreamcast-myndir: {0} × {1} ms, fjöldi endurtekninga {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Hver mynd er sýnd í að minnsta kosti sekúndu, því millistykkið geymir hverja mynd sem það fær í minni sem þolir 100.000 skrif, sem ný mynd á hverri sekúndu nær á um einum degi. Myndir eru 48 sinnum 32 svartir og hvítir dílar úr BMP eða PNG, .lcd-skrá úr VMU Animator eða .vms-tákni úr Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Hver mynd er sýnd í að minnsta kosti sekúndu. PadForge sendir millistykkinu í mesta lagi eina mynd á sekúndu, því millistykkið geymir hverja mynd sem það fær í sínu eigin minni. Myndir eru 48 sinnum 32 svartir og hvítir dílar úr BMP eða PNG, .lcd-skrá úr VMU Animator eða .vms-tákni úr Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Myndir</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Bæta við mynd…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Fjarlægja mynd</value></data>
@@ -4113,15 +4166,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Á meðan kveikt er á laginu slekkur það á sér sjálft eftir þennan fjölda millisekúndna þegar ekkert af vörpuðum inntökum lagsins er virkt. Tímamælirinn byrjar þegar lagið virkjast og byrjar upp á nýtt við hvert inntak lagsins. 0 heldur laginu virku þar til slökkt er á því handvirkt.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Endurstilla dautt svæði fínstillingar á 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Endurstilla hraða fínstillingar á 100% á sekúndu.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Endurstilla þannig að gildið fari aftur í 100% þegar sleppt er.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Endurstilla sjálfvirka afturköllun á 0 (lagið helst virkt þar til slökkt er á því).</value>
   </data>
@@ -4189,6 +4233,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-snið</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-fjölvi</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Bendilsvæði</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (haldið)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (sleppt)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (virkjað)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Veldu stillingu til að sjá hvað skilar sér.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Það sem skilar sér</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Verður</value></data>
@@ -4825,7 +4872,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Stefnuýtingar fara í gegnum reitina og ræsa hvern nývalinn reit, án „Ræsihamur“ eða „Smellinntak“. Stíllinn „Flýtistika“ fer eftir reitum án þess að ræsa og ræsir með sinni eigin stýringu „Ræsa“.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Útvíkkaðar samskiptareglur Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Virkjar aukahnappa og hreyfiskynjara á studdum Flydigi-leikjastýringum.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Hugbúnaður frá Flydigi er í gangi: {0}. Hann getur notað sama viðmót leikjastýringar og PadForge, og tilkynnt hefur verið að Vader 5 Pro hafi ítrekað aftengst á meðan bæði höfðu aðgang. Ef þessi leikjastýring dettur út og tengist aftur skaltu stöðva þjónustuna á meðan þú notar PadForge, halda leikjastýringunni falinni og fjarlægja þjónustuna af lista HidHide yfir leyfð forrit, eða prófa að slökkva á „Útvíkkaðar samskiptareglur Flydigi“ í stillingum, en ekki er staðfest að það hjálpi.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Hugbúnaður frá Flydigi er í gangi: {0}. Hann talar við leikjastýringuna yfir sama viðmót og PadForge notar. Ef þessi leikjastýring dettur út og tengist aftur skaltu stöðva þann hugbúnað á meðan þú notar PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Leyfa breytingar á úthlutun úr fjarlægð</value>
   </data>
@@ -5485,9 +5532,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Velja hvað það sýnir…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-yfirlag skjás</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ekkert að sýna enn. Veldu hvað það sýnir á síðunni Yfirlag skjás, undir Aukaeiginleikar.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Víxla miðunarkrossi</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Víxla skjástækkara</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Allir miðunarkrossar</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Miðunarkross</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>

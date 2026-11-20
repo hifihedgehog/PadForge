@@ -48,21 +48,23 @@ public sealed class WindowsTabletReader : IDisposable
 
     /// <summary>How often the timer alone walks the HID collections, for a
     /// change no message told the window about. A device change, a raw input
-    /// change, a request that came during a walk and a collection that could
-    /// not be read each owe a walk, which the next tick of the two-second
-    /// timer makes. The timer walked every two seconds with nothing owed,
-    /// and each walk opened every collection that is not a tablet to read
-    /// its descriptor again (measured 2026-11-16).</summary>
+    /// change and a request that came during a walk each owe a walk, which
+    /// the next tick of the two-second timer makes. The timer walked every
+    /// two seconds with nothing owed, and each walk opened every collection
+    /// that is not a tablet to read its descriptor again (measured
+    /// 2026-11-16). A collection that could not be read owes none: a change
+    /// or this walk tries it again (<see cref="TabletWalkSkips"/>).</summary>
     internal const int FallbackWalkMs = 30000;
 
     /// <summary>1 while a walk is owed.</summary>
     private int owed = 1;
     private long lastWalk;
 
-    /// <summary>The collections whose own descriptor is no tablet, which a
-    /// walk does not open again while they stay present. Read and written
-    /// by one walk at a time.</summary>
-    private readonly HashSet<string> notTablets = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>1 after a device or raw input change, until a walk tries the
+    /// collections that could not be read again.</summary>
+    private int retryUnreadable = 1;
+
+    private readonly TabletWalkSkips skips = new();
 
     /// <summary>Walks the HID collections now, unless a walk is running:
     /// <paramref name="owe"/> then leaves it owed for the timer's next tick.
@@ -71,21 +73,29 @@ public sealed class WindowsTabletReader : IDisposable
     private void ScheduleEnumeration(bool owe = true)
     {
         if (!running) return;
-        if (owe) Volatile.Write(ref owed, 1);
+        if (owe)
+        {
+            Volatile.Write(ref retryUnreadable, 1);
+            Volatile.Write(ref owed, 1);
+        }
         else if (Volatile.Read(ref owed) == 0 && Environment.TickCount64 - Volatile.Read(ref lastWalk) < FallbackWalkMs) return;
         if (Interlocked.CompareExchange(ref enumerating, 1, 0) != 0) return;
+        // The thirty-second walk, which nothing owed, tries the unreadable
+        // collections again too.
+        bool retry = Interlocked.Exchange(ref retryUnreadable, 0) != 0 || (!owe && Volatile.Read(ref owed) == 0);
         Volatile.Write(ref owed, 0);
         Volatile.Write(ref lastWalk, Environment.TickCount64);
         enumeration = Task.Run(() =>
         {
             try
             {
+                skips.BeginWalk(retry);
                 var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var item in TabletNative.EnumerateInterfaces())
                 {
                     if (!running) return;
                     present.Add(item.Path);
-                    if (notTablets.Contains(item.Path)) continue;
+                    if (skips.Skip(item.Path)) continue;
                     lock (gate) { if (devices.ContainsKey(item.Path)) continue; }
                     TabletReportDescriptor descriptor = null;
                     try
@@ -93,8 +103,12 @@ public sealed class WindowsTabletReader : IDisposable
                         descriptor = TabletReportDescriptor.TryOpen(item.Path, item.Instance, out bool notATablet);
                         if (descriptor == null)
                         {
-                            if (notATablet) notTablets.Add(item.Path);
-                            else Volatile.Write(ref owed, 1);
+                            if (notATablet) skips.NoteNotATablet(item.Path);
+                            else
+                            {
+                                skips.NoteUnreadable(item.Path);
+                                SdlDiagLog.WriteLine($"TABLET metadata unreadable: {item.Path}");
+                            }
                             continue;
                         }
                         if (excludeInstance?.Invoke(item.Instance) == true) continue;
@@ -110,13 +124,13 @@ public sealed class WindowsTabletReader : IDisposable
                     }
                     catch (Exception error)
                     {
-                        Volatile.Write(ref owed, 1);
+                        skips.NoteUnreadable(item.Path);
                         SdlDiagLog.WriteLine($"TABLET metadata failed: {item.Path}: {error.Message}");
                     }
                     finally { descriptor?.Dispose(); }
                 }
                 // A path that left is read again if it comes back.
-                notTablets.IntersectWith(present);
+                skips.KeepPresent(present);
                 List<WindowsTabletDevice> removed = new();
                 WindowsTabletDevice[] candidates;
                 lock (gate) candidates = devices.Values.Where(d => !present.Contains(d.DevicePath)).ToArray();

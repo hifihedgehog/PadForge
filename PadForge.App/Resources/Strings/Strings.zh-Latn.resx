@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Wú</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>miǎo</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>fēnzhōng (0 = cóngbù)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Wèi fēnpèi</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← zuǒ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ shàng)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>Wèi zhǎodào SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Wèi zhǎodào SDL3.dll. Qǐng jiāng SDL3.dll fàngzhì zài PadForge.exe pángbiān. Xiàzài dìzhǐ: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Wèi zhǎodào SDL3.dll. Qǐng chóngxīn xiàzài PadForge.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Qūdòng chéngxù cāozuò shībài: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Shèzhì yǐ fùzhì dào jiǎntiēbǎn.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Shèbèi xìnxī yǐ fùzhì dào jiǎntiēbǎn.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Dī</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Túpiàn</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lièbiǎo</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} gè shūchū</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} gè shūchū</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Tǐgǎn</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Diǎnjī yī gè kòngjiàn, ránhòu ànxià yào qūdòng tā de shūrù.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge bù rènshí de yóuxì</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Shìyòng yú fāsòng qián huì jiǎnchá DSX shìfǒu zài yùnxíng de mózǔ.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Xiǎnshì nèiróng</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Càidān dǎkāi shí de huánxíng, wǎnggé huò tiáo</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Qiēhuàn céng jīhuó shí xiǎnshì gāi céng de míngchēng, chíxù shíjiān yóu gāi céng shèdìng</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Pèizhì wénjiàn gēnghuàn shí xiǎnshì qí míngchēng</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Càidān dǎkāi shí de huánxíng, wǎnggé huò tiáo.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Qiēhuàn céng jīhuó shí xiǎnshì gāi céng de míngchēng, chíxù shíjiān yóu gāi céng shèdìng.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Pèizhì wénjiàn gēnghuàn shí xiǎnshì qí míngchēng.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Fùzhì dìzhǐ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Píngmù wèizhì</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Liánjiē shǒujī</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Qǐdòng shí zìdòng yùnxíng yǐnqíng</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Chuāngkǒu shīqù jiāodiǎn shí jìxù lúnxún</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Lúnxún lǜ (chúfēi pèizhì wénjiàn fùgài)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Yǐnqíng měi miǎo dúqǔ suǒyǒu shèbèi bìng gēngxīn xūnǐ kòngzhìqì, cìshù wéi cǐ zhí, fànwéi wéi 60 zhì 10000. Lúnxún lǜ yuè gāo, zhànyòng de chǔlǐqì shíjiān yuè duō. Windows měi miǎo zuìduō huànxǐng yǐnqíng yuē 2000 cì, yīncǐ lúnxún lǜ gèng gāo shí, yǐnqíng huì zài měi cì huànxǐng shí yùnxíng duō lún. Dàiyǒu zìjǐ lúnxún sùlǜ de pèizhì wénjiàn chùyú huódòng zhuàngtài shí, àn gāi lúnxún sùlǜ yùnxíng. Pèizhì wénjiàn tíngyòng hòu huīfù wéi cǐ zhí.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Yǐnqíng měi miǎo dúqǔ suǒyǒu shèbèi bìng gēngxīn xūnǐ kòngzhìqì, cìshù wéi cǐ zhí, fànwéi wéi 60 zhì 10000. Lúnxún lǜ yuè gāo, zhànyòng de chǔlǐqì shíjiān yuè duō. Zài cǐ diànnǎo shàng, Windows měi miǎo zuìduō huànxǐng yǐnqíng {0} cì, yīncǐ lúnxún lǜ gèng gāo shí, yǐnqíng huì zài měi cì huànxǐng shí yùnxíng duō lún. Dàiyǒu zìjǐ lúnxún sùlǜ de pèizhì wénjiàn chùyú huódòng zhuàngtài shí, àn gāi lúnxún sùlǜ yùnxíng. Pèizhì wénjiàn tíngyòng hòu huīfù wéi cǐ zhí.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Duì yóuxì yǐncáng shèbèi</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide shèbèi yǐncáng hé dǐcéng shūrù gōuzi de zǒng kāiguān. Guānbì hòu, wúlùn dāngè shèbèi shèzhì rúhé, suǒyǒu shèbèi dōu bù huì bèi yǐncáng.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Liǎng cì qǐdòng zhī jiān bǎochí shèbèi yǐncáng</value></data>
@@ -923,7 +925,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Dǎchū zìfú zhī jiān de háomiǎo shù, zuì dà 1000. 0 biǎoshì yícìxìng shūrù quánbù wénběn.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Kōngxián duànkāi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Xiángqíng</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>fēnzhōng</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Tōngguò USB chāshàng shí duànkāi Lányá</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Kuàisù chōngdiàn. Cǐ kòngzhìqì tōngguò Lányá liánjiē bìng bàogào zhèngzài chōngdiàn shí, huì duànkāi Lányá liánjiē, shǐ tā chōngdiàn shí bú zài wèi wúxiàn mókuài gōngdiàn. Rènhé USB diànyuán dōu suàn, bāokuò chōngdiàn tóu. Rúguǒ xiàn réng chā zhe shí chóngxīn dǎkāi Lányá, zài xià cì báxià zhīqián bú huì zài chùdòng tā.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Zuòwéi iCade kòngzhìqì dúqǔ</value></data>
@@ -965,8 +966,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU xiǎnshì dāngqián pèizhì wénjiàn de míngchēng, bìng suí měi cì pèizhì wénjiàn qiēhuàn gēngxīn.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU xiǎnshì dāngqián pèizhì wénjiàn zài pèizhì wénjiàn lièbiǎo zhōng de wèizhì. Mòrèn pèizhì wénjiàn shì 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU xiǎnshì dāngqián pèizhì wénjiàn zìjǐ de túpiàn, méiyǒu túpiàn shí xiǎnshì qí míngchēng. Měi gè pèizhì wénjiàn bǎocún gèzì de túpiàn.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU xiǎnshì dāngqián shíjiān, měi fēnzhōng chóngxiě yí cì. Shìpèiqì bǎ měi fú túpiàn cúnrù é'dìng xiěrù 100,000 cì de cúnchǔqì, quántiānhòu xiǎnshì dàyuē shí zhōu jiù huì dádào zhège cìshù.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU xiǎnshì zì PadForge zhǎodào shǒubǐng yǐlái de xiǎoshí hé fēnzhōng, měi fēnzhōng chóngxiě yí cì. Shǒubǐng líkāi duānkǒu chāoguò shí miǎo hòu, jìshí cóng líng chóngxīn kāishǐ. Shìpèiqì bǎ měi fú túpiàn cúnrù é'dìng xiěrù 100,000 cì de cúnchǔqì, quántiānhòu xiǎnshì dàyuē shí zhōu jiù huì dádào zhège cìshù.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU xiǎnshì dāngqián shíjiān, měi fēnzhōng chóngxiě yí cì. Shìpèiqì bǎ měi fú túpiàn cúnrù qí zìshēn de cúnchǔqì, yīncǐ PadForge chóngxiě de pínlǜ bù huì gāo yú cǐ.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU xiǎnshì zì PadForge zhǎodào shǒubǐng yǐlái de xiǎoshí hé fēnzhōng, měi fēnzhōng chóngxiě yí cì. Shǒubǐng líkāi duānkǒu chāoguò shí miǎo hòu, jìshí cóng líng chóngxīn kāishǐ. Shìpèiqì bǎ měi fú túpiàn cúnrù qí zìshēn de cúnchǔqì, yīncǐ PadForge zuìduō měi fēnzhōng chóngxiě yí cì.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU xiǎnshì nǐ xuǎnzé de túpiàn: BMP huò PNG, VMU Animator de .lcd wénjiàn huò Dreamcast de .vms túbiāo. Túpiàn huì bèi cái wéi 48 × 32 de hēibái xiàngsù.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Xuǎnzé túpiàn…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Wèi {0} xuǎnzé túpiàn…</value></data>
@@ -1011,6 +1012,13 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Chǔyú Xbox móshì de kòngzhìqì wèi yǐ Apex 4 de shēnfèn yìngdá, yīncǐ wèi fāsòng rènhé nèiróng, Windows yǐ chóngxīn jiēguǎn gāi kòngzhìqì. Qǐng yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows wèi néng jiāng kòngzhìqì gǎi wéi WinUSB, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Yǐ tíngzhǐ. Chóngxīn fāsòng zhīqián, qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Wúfǎ dǎkāi píngmù de duānkǒu, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Gāi túpiàn de zhēn shù chāochū le cǐ kòngzhìqì píngmù suǒ néng róngnà de shùliàng.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Zhèngzài xiàng cǐ kòngzhìqì fāsòng yì zhāng túpiàn. Qǐng děngdài qí wánchéng.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Píngmù yāoqiú zài PadForge bù xiěrù de dìzhǐ jiēshōu túpiàn, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Túpiàn yǐ fāsòng, dàn kòngzhìqì wèi qiēhuàn huí DInput móshì. Qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí qiēhuàn huíqù.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kòngzhìqì wèi jiēshòu shǐ qí zuòhǎo zhǔnbèi de mìnglìng, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng jiǎnchá qí shìfǒu yǐ liánjiē, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Fāsòng yīn PadForge nèibù cuòwù ér tíngzhǐ. Xiángxì xìnxī jiàn rìzhì wénjiàn.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Túpiàn réng zài fāsòng dào kòngzhìqì. Yào tíngzhǐ fāsòng ma?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Kòngzhìqì jìyìkǎ wénjiàn (*.mpk)|*.mpk|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Kòngzhìqì jìyìkǎ duānkǒu {0}.mpk</value></data>
@@ -1505,7 +1513,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Chóngzhì càidān bùjú</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Chóngzhì dānyuángé</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Chóngzhì língmǐndù</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Chóngzhì jiāsùdù</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Chóngzhì sǐqū</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Chóngzhì ànzhù shícháng</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Chóngzhì ànxià pàndìng chuāngkǒu</value></data>
@@ -1786,7 +1793,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Rènyì céng</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Cǐ xūnǐ kòngzhìqì jīhuó qījiān chíxù yùnxíng. Wúxū chùfā ànniǔ.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Zhíxíng</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Céng, Láiyuán, Yùzhí, Fāngxiàng, Lánjié chùfā ànniǔ, Chóngfù</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tiānjiā dòngzuò</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Lèixíng</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Xūnǐ ànniǔ</value></data>
@@ -1812,7 +1818,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Ànxià shǔbiāo ànniǔ</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Sōngkāi shǔbiāo ànniǔ</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Shǔbiāo gǔndòng</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Qiēhuàn chùkòngbǎn diéjiācéng</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Ànniǔ</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Zǔhéjiàn</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Jiàn zǔhé, géshì wéi {Key1}{Key2}. Kě biānjí.</value></data>
@@ -1943,6 +1948,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Měi {1} ms chóngfù {0}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Shǔbiāo X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Shǔbiāo Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Shuǐpíng piānyí</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Chuízhí piānyí</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Jiàngé</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Zài píngmù shàng shíqǔ</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} miǎo hòu bǔhuò…</value></data>
@@ -1977,6 +1984,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Fǎnxiàng bànchéng</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Wèi yìngshè shèbèi</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Wèizhī shèbèi</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Chùkòngbǎn diǎnjī</value></data>
@@ -2419,7 +2427,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Xià (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Shàng (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Jīhuó</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Miáozhǔn jīhuó jiàn, jīhuó móshì, Easy Aim yùzhí</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Miáozhǔn jīhuó jiàn, jīhuó móshì, tuóluóyí kāiqǐ, chóngxīn jūzhōng, Easy Aim yùzhí</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Kěxuǎn de tiáojiàn, yòng yǐ xiànzhì tuóluóyí héshí shēngxiào. Yòu yáogǎn piānzhuǎn fúdù hé miáozhǔn jīhuó jiàn kě gèzì pèizhì. Zhǐyǒu suǒyǒu yǐ pèizhì de tiáojiàn dōu jīhuó shí, tuóluóyí cái huì shēngxiào.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Běndì</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Wánjiā</value></data>
@@ -2456,6 +2464,27 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Chóngzhì Easy Aim yùzhí</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Chóngzhì miáozhǔn jīhuó jiàn</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Chóngzhì jīhuó móshì</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Céng</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Xiàfāng gè xíng suǒ xiǎnshì hé gēngǎi de “Tuóluóyí kāiqǐ” shèzhì suǒ shǔ de céng.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Tuóluóyí kāiqǐ</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Tuóluóyí zài cǐ céng shàng héshí gōngzuò, zài jīhuó jiàn zhī shàng diéjiā. Shèwéi “Yǔ jīchǔ céng xiāngtóng” de qiēhuàn céng zūnxún jīchǔ céng.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Shǐzhōng kāiqǐ</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Yǔ jīchǔ céng xiāngtóng</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Ànzhù shí</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Wèi ànzhù shí</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Měi cì ànxià qiēhuàn</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Tuóluóyí kāiqǐ ànjiàn</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>“Tuóluóyí kāiqǐ” suǒ dúqǔ de ànjiàn, shìyòng yú cǐ cáowèi de rènhé kòngzhìqì.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Yāoqiú</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Ànzhù rènyì yí gè yǐ gōuxuǎn de ànjiàn jíkě, háishì bìxū ànzhù suǒyǒu yǐ gōuxuǎn de ànjiàn.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Rènyì ànjiàn</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Suǒyǒu ànjiàn</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Tuóluóyí kāiqǐ shí chóngxīn jūzhōng</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Měi cì tuóluóyí kāiqǐ shí, jiāng kòngzhìqì de dāngqián zīshì zuòwéi jìngzhǐ diǎn.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Chóngzhì tuóluóyí kāiqǐ</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Chóngzhì tuóluóyí kāiqǐ ànjiàn</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Chóngzhì yāoqiú</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Chóngzhì tuóluóyí kāiqǐ shí chóngxīn jūzhōng</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Chóngzhì jīhuó yáogǎn</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Chóngzhì jīhuó fāngxiàng</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Tǐgǎn zhítōng</value></data>
@@ -2466,6 +2495,25 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Yóuxì dúqǔ yìngyòng le běn kǎpiàn suǒ shè língmǐndù, pínghuá yǔ qūxiàn de tǐgǎn shùjù.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Chóngzhì zhítōng tiáojiào</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Língmǐndù</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Jǐn dāng</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Jǐn dāng cǐ shūrù zài tóng yí kòngzhìqì shàng yě dúqǔ wéi ànxià shí, cǐ yuán cái huì shēngxiào. Dǎorù de qūyù cèshì dúqǔ wéi qí suǒ jiǎnchá de yáogǎn huò bānjī fànwéi.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Qiě dāng</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Cǐ yuán hái yào děngdài de dì èr gè shūrù.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Gēnghuàn shūrù</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Xuǎnzé lìng yí gè yào děngdài de shūrù.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Qūxiàn</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Zài qūdòng shūchū zhīqián, jiāng cǐ shūrù de dúshù qǔ cǐ cìfāng. 0 hé 1 bǎochí xiànxìng. Dàyú 1 shí zhōngxīn fùjìn gèng màn.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Wàibù fànwéi</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Xíngchéng dádào cǐ bǐlì shí, shūchū dádào zuìdà. 100% wéi guānbì.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Fǎn sǐqū</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Shūrù yì yídòng, shūchū jiù cóng cǐ zhí kāishǐ. 0 wéi guānbì.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Sǐqū xíngzhuàng</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>“Guān” bù gǎibiàn dúshù. “Zhóuxiàng” dāndú cèliáng cǐ zhóu. “Jìngxiàng” jiāng yáogǎn de liǎng gè zhóu yìqǐ cèliáng.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Guān</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Zhóuxiàng</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Jìngxiàng</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Nèibù sǐqū</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Dī yú cǐ xíngchéng bǐlì shí, shūrù dúshù shì wéi jūzhōng.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Měi gè láiyuán de tuóluóyí língmǐndù bèilǜ. 1.0 = yǐnqíng mòrèn zhí (500°/s → zuìdà piānzhuǎn). Dàyú 1.0 de zhí gèng língmǐn. Xiǎoyú 1.0 de zhí jiào bù língmǐn.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Měi gè shūrù láiyuán de qīngxié língmǐndù bèilǜ. 1.0 = qīngxié 90° dá dào mǎn piānzhuǎn. Dàyú 1.0 de zhí zhǐ xū gèng xiǎo de qīngxié jí kě dá dào mǎn piānzhuǎn.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Tuóluóyí qīngjiǎo X</value></data>
@@ -3019,6 +3067,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Diànpíng</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Wú cāozuò chāoshí</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Dāng suǒyǒu yìngshè shèbèi dōu líxiàn shí, xūnǐ kòngzhìqì bèi xiāohuǐ qián de miǎoshù. 0 biǎoshì jìnyòng. Shèngyú de tóng lèixíng kòngzhìqì huì shàngyí yǐ tiánbǔ kòngquē, bìng chóngxīn bǎngdìng dào jiào dī de cáowèi.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>miǎo (0 = cóngbù)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tiānjiā céng</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tiānjiā yí gè Shift céng, ànzhù huò qiēhuàn ànniǔ shí jīhuó de dì-èr zhāng yìngshè biǎo.</value></data>
@@ -3130,6 +3179,9 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Chóngzhì huíráo sùlǜ</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Chóngzhì jiǎodù nèi sǐqū</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Chóngzhì jiǎodù wài sǐqū</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Yáogǎn sǐqū</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Piānzhuǎn dī yú cǐ zhí shí, yáogǎn shì wéi jūzhōng, yīncǐ bù huì lěijī zhuǎnxiàng.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Chóngzhì yáogǎn sǐqū</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Chóngzhì qīngxié nèi sǐqū</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Chóngzhì qīngxié wài sǐqū</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Chóngzhì kòngzhìqì cháoxiàng</value></data>
@@ -3235,6 +3287,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Cǐ chē yāoqiú de niǔjǔ chāoguò fāngxiàngpán suǒ néng tígōng de, yīncǐ qūxiàn dǐngbù bèi jiéduàn.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Zhōngwèi shǒugǎn, zhùlì, zǔní, mócā, zhuādìlì, gùdìng sùdù, fāngxiàngpán niǔjǔ</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Zhōngwèi shǒugǎn, zhùlì, zǔní, zhuādìlì, gùdìng sùdù, fāngxiàngpán niǔjǔ</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Dīsù shí zhuǎnxiàng bǎochí zhōngwèi de lìdù. 100% jí gāi chē zìshēn de shuǐpíng.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Zhùlì</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Suízhe zhuǎnwān jiāsùdù zēngdà, zhùlì zhuǎnxiàng jiǎnqù duōshǎo lìdù. Shùzhí yuè dà, líkāi zhōngwèi hòu zhuǎnxiàng yuè qīng.</value></data>
@@ -3376,7 +3429,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Chóngzhì gāoyīn</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Chóngzhì yīndiào shàngxiàn</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Jiāng xìtǒng mòrèn shūchū bōfàng de nèiróng bìngxíng fùzhì dào cǐ kòngzhìqì de nèizhì yángshēngqì. USB hé lányá jūn kěyòng.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Suǒ xuǎn shèbèi méiyǒu nèizhì yángshēngqì. Cǐ kòngzhìqì de hóng shēngyīn jiāng zài xìtǒng mòrèn shūchū shàng bōfàng.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge wúfǎ tōngguò dāngqián liánjiē fǎngwèn suǒ xuǎn shèbèi shàng de yángshēngqì. Cǐ kòngzhìqì de hóng shēngyīn jiāng zài xìtǒng mòrèn shūchū shàng bōfàng.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) kāifā de liúlǎnqì bǎn DualSense cèshì tàojiàn: PadForge cóng xūnǐ kòngzhìqì zhuǎnfā dào shítǐ kòngzhìqì de Sony gōngnéng bàogào CRC zhēn géshì hé gùjiàn cèshì mìnglìng de cānkǎo.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3790,7 +3843,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Xiǎnshì Dreamcast píngmù</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Zài wèi cǐ cáowèi tígōng shūrù de Bliss-Box duānkǒu zhōng, zài měi gè Dreamcast kòngzhìqì de VMU shàng bòfàng túpiàn, ránhòu bǎ gè duānkǒu huīfù wéi qí zìjǐ de píngmù shèzhì.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Xiǎnshì Dreamcast túpiàn: {0} × {1} ms, chóngfù cìshù {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Měi zhāng túpiàn zhìshǎo xiǎnshì yì miǎo, yīnwèi shìpèiqì huì bǎ shōudào de měi zhāng túpiàn bǎocún dào éding kě xiě rù 100,000 cì de cúnchǔqì zhōng, ér měi miǎo huàn yì zhāng túpiàn, dàyuē yì tiān jiù huì dádào gāi cìshù. Túpiàn wéi 48 × 32 de hēibái xiàngsù, kě láizì BMP huò PNG, VMU Animator de .lcd wénjiàn huò Dreamcast de .vms túbiāo.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Měi zhāng túpiàn zhìshǎo xiǎnshì yì miǎo. PadForge měi miǎo zuìduō xiàng shìpèiqì fāsòng yì zhāng túpiàn, yīnwèi shìpèiqì huì bǎ shōudào de měi zhāng túpiàn cúnrù qí zìshēn de cúnchǔqì. Túpiàn wéi 48 × 32 de hēibái xiàngsù, kě láizì BMP huò PNG, VMU Animator de .lcd wénjiàn huò Dreamcast de .vms túbiāo.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Túpiàn</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Tiānjiā túpiàn…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Yìchú túpiàn</value></data>
@@ -3867,15 +3920,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Dāng céng chǔyú qiēhuàn kāiqǐ zhuàngtài shí, rúguǒ céng zìshēn yìngshè de shūrù zài zhè duàn háomiǎo shù nèi jūn wèi jīhuó, céng huì zìdòng guānbì. Jìshíqì zài céng jīhuó shí qǐdòng, bìng zài měi cì céng shūrù shí chóngxīn jìshí. 0 biǎoshì céng bǎochí kāiqǐ, zhídào nín shǒudòng guānbì.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Jiāng wēitiáo sǐqū chóngzhì wéi 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Jiāng wēitiáo sùdù chóngzhì wéi měi miǎo 100%.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Chóngzhì wéi sōngkāi shí bǎochízhí huídào 100%.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Jiāng zìdòng qǔxiāo chóngzhì wéi 0 (céng bǎochí kāiqǐ, zhídào shǒudòng qiēhuàn guānbì).</value>
   </data>
@@ -3943,6 +3987,9 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Chuàngyì Gōngfáng pèizhì wénjiàn</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Chuàngyì Gōngfáng hóng</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Guāngbiāo qūyù</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ànzhù)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (sōngkāi)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (jīhuó)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Xuǎnzé yí gè pèizhì yǐ chákàn zhuǎnhuàn jiéguǒ.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Zhuǎnhuàn jiéguǒ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Zhuǎnwéi</value></data>
@@ -4533,7 +4580,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Fāngxiàng ànxià zhúgé yídòng, bìng chùfā měi gè xīn xuǎnzhòng de dānyuángé. Cǐ kuàijiélán xíngwéi bù shǐyòng chùfā móshì huò diǎnjī shūrù.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi zēngqiáng xiéyì</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Zài shòu zhīchí de Flydigi kòngzhìqì shang qǐyòng éwài ànjiàn hé tǐgǎn chuángǎnqì.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi ruǎnjiàn zhèngzài yùnxíng: {0}. Tā kěyǐ shǐyòng yǔ PadForge xiāngtóng de kòngzhìqì jiēkǒu, érqiě yǒu bàogào chēng yī tái Vader 5 Pro zài liǎng zhě dōu néng fǎngwèn shí fǎnfù duànkāi. Rúguǒ cǐ kòngzhìqì chūxiàn duànkāi chónglián, qǐng zài shǐyòng PadForge shí tíngzhǐ gāi fúwù, huò bǎochí kòngzhìqì yǐncáng bìng bǎ gāi fúwù cóng HidHide báimíngdān zhōng yíchú, huò chángshì zài “Shèzhì” zhōng guānbì “Flydigi zēngqiáng xiéyì”, dàn qí xiàoguǒ shàngwèi quèrèn.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi ruǎnjiàn zhèngzài yùnxíng: {0}. Tā tōngguò PadForge suǒ yòng de jiēkǒu yǔ kòngzhìqì tōngxìn. Rúguǒ cǐ kòngzhìqì chūxiàn duànkāi chónglián, qǐng zài shǐyòng PadForge shí tíngzhǐ gāi ruǎnjiàn.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Yǔnxǔ yuǎnchéng gēnggǎi fēnpèi</value>
   </data>

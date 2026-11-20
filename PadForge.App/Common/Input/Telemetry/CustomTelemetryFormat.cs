@@ -258,7 +258,10 @@ namespace PadForge.Common.Input.Telemetry
             if (!double.IsFinite(v)) return;
             switch (field.Target)
             {
-                case CustomTelemetryTarget.Speed: f.SpeedMs = (float)(v / 3.6); break;
+                case CustomTelemetryTarget.Speed:
+                    f.SpeedMs = (float)(v / 3.6);
+                    f.SpeedReported = true;
+                    break;
                 case CustomTelemetryTarget.Rpm: f.Rpm = (float)v; break;
                 case CustomTelemetryTarget.MaxRpm: f.MaxRpm = (float)v; break;
                 case CustomTelemetryTarget.Gear: f.Gear = Gear(v); break;

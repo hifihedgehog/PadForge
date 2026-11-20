@@ -43,6 +43,10 @@ namespace PadForge.ViewModels
         public string Display => _displayLookup?.Invoke() ?? Value;
         public string Value { get; }
         public override string ToString() => Display;
+        // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is GyroLabeledOption o && string.Equals(o.Value, Value, System.StringComparison.Ordinal);
+        public override int GetHashCode() => Value?.GetHashCode(System.StringComparison.Ordinal) ?? 0;
     }
 
     /// <summary>
@@ -156,6 +160,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(FirstSectionName));
             OnPropertyChanged(nameof(PictureHintText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
+            // The Engage card's Gyro On pickers and button names are read
+            // off Strings.Instance as they are built.
+            ShowGyroActivationLayer();
+            OnPropertyChanged(nameof(GyroActivationNeedsChoices));
             // The line under the picture and the folded SOCD line's value
             // are worded from the string table the same way (#574).
             OnPropertyChanged(nameof(PictureLineText));
@@ -165,13 +173,11 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PresetDisplayName));
             // Words read from the string table that nothing else raises:
             // the roster's spoken battery and the Bass Shakers tones. An
-            // option of the motion lists raises its own text, and a fold's
-            // summary reads its list again when the list's name is raised.
+            // option of the motion lists raises its own text, so a box of
+            // one needs no raise. The Grip fold's summary is made from its
+            // list, and reads it again when the list's name is raised.
             foreach (var dev in MappedDevices) dev.RaiseWords();
             foreach (var voice in RumbleAudioVoices) voice.RaiseWords();
-            OnPropertyChanged(nameof(GyroOutputCurveOptions));
-            OnPropertyChanged(nameof(GyroSensitivityUnitsOptions));
-            OnPropertyChanged(nameof(GyroSpaceOptions));
             OnPropertyChanged(nameof(MotionGripOptions));
             RaiseCenteringWords();
 
@@ -1804,6 +1810,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
+                    OnPropertyChanged(nameof(SelectedDeviceIsDualSenseFamily));
                     OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
@@ -1884,6 +1891,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
             OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
             OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
+            OnPropertyChanged(nameof(SelectedDeviceIsDualSenseFamily));
             OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
             OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
             OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
@@ -2970,6 +2978,10 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RebuildMappings()
         {
+            // A Clear names no row it drops, so the rows let go of the slot
+            // here, as a row taken out alone does (OnMappingsChangedForList).
+            foreach (var row in Mappings)
+                if (ReferenceEquals(row.Owner, this)) row.Owner = null;
             Mappings.Clear();
 
             // Extended uses the dynamic Extended-style layout in v3: the
@@ -4413,6 +4425,8 @@ namespace PadForge.ViewModels
                 GyroAimEngageButton = "";
                 GyroAimEngageDeviceGuid = "";
                 GyroAimEngageMode = "Hold";
+                GyroActivation = "";
+                GyroRecenterOnEngage = false;
             });
 
         // ─────────────────────────────────────────────────────────────
@@ -6004,6 +6018,7 @@ namespace PadForge.ViewModels
                     stick.WindUnwindRate = ParseSteerDouble(get($"Stick{g}SteerWindUnwind"), 1800);
                     stick.AngleInnerDz = ParseSteerDouble(get($"Stick{g}SteerAngleInner"), 0);
                     stick.AngleOuterDz = ParseSteerDouble(get($"Stick{g}SteerAngleOuter"), 10);
+                    stick.SteerStickDeadZone = ParseSteerDouble(get($"Stick{g}SteerDeadZone"), 15);
                     // Motion-lean tuning moved to Motion Steering (loaded separately).
                 }
             }
@@ -6043,6 +6058,7 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.SteeringModeIndex),
             nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
             nameof(StickConfigItem.AngleInnerDz), nameof(StickConfigItem.AngleOuterDz),
+            nameof(StickConfigItem.SteerStickDeadZone),
             // Stick trackball (#291): without these the Momentum edits
             // mirror into the VM and never flag the document dirty.
             nameof(StickConfigItem.MomentumEnabled), nameof(StickConfigItem.MomentumGlide),
@@ -6460,6 +6476,21 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The selected device is a DualSense or a DualSense Edge.
+        /// The Output Path tooltip states their firmware's limits, which a
+        /// DualShock 4 on the same row does not share: it takes the row
+        /// through its own routes (#528, #546).</summary>
+        public bool SelectedDeviceIsDualSenseFamily
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && PadForge.Engine.DualSenseStatusBytes.IsDualSense((ushort)ud.VendorId, (ushort)ud.ProdId);
+            }
+        }
+
         /// <summary>The selected device has a route that plays the headphones
         /// and the speaker together, Output Path's "Headphones + Speaker".
         /// The DualSense family does, and so does a DualShock 4 on USB, through
@@ -6524,10 +6555,14 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True when the SELECTED assigned device has a built-in
-        /// speaker (DualSense / Edge / DualShock 4). The Audio tab is per
-        /// assigned device by convention — this gates the mirror toggle and
-        /// the routing notes.</summary>
+        /// <summary>True when PadForge has a path to a speaker on the SELECTED
+        /// assigned device over its link (DualSense / Edge, a DualShock 4 on a
+        /// link that carries audio, and the Wii and haptic-tone devices). It
+        /// does not say whether the device has a speaker: a first-model
+        /// DualShock 4 on USB has one and no path from PadForge. The Audio tab
+        /// is per assigned device by convention. This gates the mirror toggle
+        /// and the routing notes, and the line that says there is no path
+        /// (Pad_Audio_NoSpeakerRoute).</summary>
         public bool SelectedDeviceHasSpeaker
         {
             get
@@ -8473,6 +8508,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
             OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
             OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
+            OnPropertyChanged(nameof(SelectedDeviceIsDualSenseFamily));
             OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
             OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
             OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
@@ -8545,6 +8581,13 @@ namespace PadForge.ViewModels
                 () => TestRightImpulseTriggerRequested?.Invoke(this, EventArgs.Empty),
                 () => IsDeviceOnline);
 
+        /// <summary>Whether the row is what a recording of
+        /// <paramref name="target"/> waits for, under either of its names.</summary>
+        private static bool IsRecordTargetOf(MappingItem row, string target)
+            => !string.IsNullOrEmpty(target)
+                && (string.Equals(row.TargetSettingName, target, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(row.NegSettingName, target, StringComparison.OrdinalIgnoreCase));
+
         /// <summary>
         /// The TargetSettingName of the mapping currently being recorded
         /// (single-click or Map All). Null when idle. Used to drive
@@ -8560,9 +8603,7 @@ namespace PadForge.ViewModels
                 // The row that records flashes in the list, whichever of its
                 // sources the input will land on.
                 foreach (var row in Mappings)
-                    row.IsRecordTarget = !string.IsNullOrEmpty(value)
-                        && (string.Equals(row.TargetSettingName, value, StringComparison.OrdinalIgnoreCase)
-                            || string.Equals(row.NegSettingName, value, StringComparison.OrdinalIgnoreCase));
+                    row.IsRecordTarget = IsRecordTargetOf(row, value);
                 // The bar under the picture follows what is being recorded,
                 // and the line there says so (#574). A recording that starts
                 // ends any word on why the last one could not.
@@ -8609,6 +8650,7 @@ namespace PadForge.ViewModels
                 m.IsBidirectional = false;
                 m.InvertOutput = false;
                 m.ParamAccel = 0;
+                m.LoadShapingAndGates(null);
                 m.GyroSensitivity = 1.0;
                 m.MouseCursorSensitivity = 1.0;
                 m.IrPointerSensitivity = 1.0;

@@ -213,6 +213,7 @@ namespace PadForge.Tests
             var f = Decode(x => TelemetryDecoders.TryForza(Forza(length), x));
             Assert.Equal(source, f.Source);
             Assert.Equal(30f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(6000f, f.Rpm);
             Assert.Equal(8000f, f.MaxRpm);
             Assert.Equal(1f, f.Throttle);
@@ -234,6 +235,7 @@ namespace PadForge.Tests
             var f = Decode(x => TelemetryDecoders.TryForza(p, x));
             Assert.Equal(TelemetrySource.ForzaSled, f.Source);
             Assert.Equal(5f, f.SpeedMs, 4);
+            Assert.True(f.SpeedReported);
         }
 
         [Theory]
@@ -271,6 +273,7 @@ namespace PadForge.Tests
             Assert.Equal(TelemetrySource.F1, f.Source);
             Assert.Equal(year, f.F1Year);
             Assert.Equal(50f, f.SpeedMs, 3);
+            Assert.True(f.SpeedReported);
             Assert.Equal(0.75f, f.Throttle);
             Assert.Equal(-0.5f, f.Steering);
             Assert.Equal(0.25f, f.Brake);
@@ -413,6 +416,7 @@ namespace PadForge.Tests
             var f = Decode(x => TelemetryDecoders.TryCodemasters(Codemasters(gear), x));
             Assert.Equal(TelemetrySource.Codemasters, f.Source);
             Assert.Equal(20f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(0.5f, f.Throttle);
             Assert.Equal(0.25f, f.Steering);
             Assert.Equal(0.1f, f.Brake);
@@ -434,6 +438,7 @@ namespace PadForge.Tests
             Assert.Equal(TelemetrySource.EaSportsWrc, f.Source);
             Assert.Equal(3, f.Gear);
             Assert.Equal(30f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(8000f, f.MaxRpm);
             Assert.Equal(6000f, f.Rpm);
             Assert.Equal(0.9f, f.Throttle);
@@ -459,6 +464,7 @@ namespace PadForge.Tests
             Assert.Equal(TelemetrySource.BeamNg, f.Source);
             Assert.Equal(2, f.Gear);
             Assert.Equal(25f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(4000f, f.Rpm);
             Assert.Equal(1f, f.Handbrake);
             Assert.Equal(0.6f, f.Throttle);
@@ -491,6 +497,7 @@ namespace PadForge.Tests
             Assert.Equal(0.2f, f.Brake, 3);
             Assert.Equal(1f, f.Throttle);
             Assert.Equal(40f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(7000f, f.Rpm);
             Assert.Equal(8000f, f.MaxRpm);
             Assert.Equal(-1f, f.Steering);
@@ -521,6 +528,7 @@ namespace PadForge.Tests
             Assert.Equal(7200f, f.Rpm);
             Assert.Equal(0.1f, f.Steering);
             Assert.Equal(40f, f.SpeedMs, 4);
+            Assert.True(f.SpeedReported);
             // The page reads 1 with the pedal up (vAzhure GameListener.cs 221).
             Assert.Equal(0f, f.Clutch);
             Assert.Equal(8500f, f.MaxRpm);
@@ -547,6 +555,7 @@ namespace PadForge.Tests
             var f = Decode(x => TelemetryDecoders.TryTruckSimulator(Encoding.UTF8.GetBytes(TruckJson), x));
             Assert.Equal(TelemetrySource.TruckSimulator, f.Source);
             Assert.Equal(5f, f.SpeedMs);
+            Assert.True(f.SpeedReported);
             Assert.Equal(900f, f.Rpm);
             Assert.Equal(-1, f.Gear);
             Assert.Equal(-0.25f, f.Steering);
@@ -713,6 +722,7 @@ namespace PadForge.Tests
             Assert.Equal(TelemetrySource.Custom, f.Source);
             Assert.Equal("Rig", f.CustomName);
             Assert.Equal(25f, f.SpeedMs, 3);   // 25 * 3.6 km/h back to m/s
+            Assert.True(f.SpeedReported);
             Assert.Equal(5000f, f.Rpm);
             Assert.Equal(3, f.Gear);
             Assert.Equal(1f, f.Brake, 4);
@@ -786,6 +796,7 @@ namespace PadForge.Tests
             f.Reset(variables.Length);
             Assert.True(compiled.TryRead(Encoding.UTF8.GetBytes("{\"car\":{\"speed\":72,\"gear\":\"2\"},\"live\":true,\"fuel\":0.25}"), f, pinned: false));
             Assert.Equal(20f, f.SpeedMs, 3);
+            Assert.True(f.SpeedReported);
             Assert.Equal(2, f.Gear);
             Assert.True(f.Driving);
             Assert.Equal(25f, f.Variables[0]);

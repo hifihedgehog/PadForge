@@ -500,12 +500,9 @@ namespace PadForge.Common.Input
             return (short)v;
         }
 
-        /// <summary>Effective per-thumb deadzone shape (v18): the Workshop
-        /// slot-level stamp wins on an Authoritative slot (Steam's
-        /// deadzone_shape, carried on the imported MappingSet because an
-        /// imported profile has no device PadSetting to stamp), else the
-        /// device PadSetting's own shape. Same overlay contract as the
-        /// touchpad gesture auto-arm.</summary>
+        /// <summary>Effective per-thumb deadzone shape: the device
+        /// PadSetting's own shape, which the Dead Zone Shape control
+        /// edits.</summary>
         private static DeadZoneShape ResolveThumbDeadZoneShape(int slotIndex, bool left, PadSetting ps)
         {
             // No Workshop overlay here any more. An import's deadzone
@@ -701,27 +698,6 @@ namespace PadForge.Common.Input
         // delta-accel and region-easing stacks are deliberate v2 tuning.
         private const float FpsAimDeadzone = 0.042f;
 
-        // Per-(device, slot) last-update timestamps for FPS Mouse, whose
-        // deflection is scaled by the length of the pass
-        // (FpsPassSeconds). Stopwatch-based for sub-millisecond resolution.
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
-            (string Dev, int Slot), long> _fpsLastTick = new();
-
-        /// <summary>The pass length FPS Mouse scales its deflection by: the
-        /// time since the row's last pass, no less than the reference pass
-        /// (<see cref="PadForge.Engine.Common.Mapping.SourceCoercion.ReferencePassSeconds"/>)
-        /// and no more than 50 ms, or the reference pass on the row's first.
-        /// The controller spends the deflection over its own pass length, so
-        /// the cursor's speed goes with this one: without the floor it was a
-        /// tenth as fast at 10000 passes a second as at 1000.</summary>
-        internal static float FpsPassSeconds(long prevTicks, long nowTicks, long ticksPerSecond)
-        {
-            float reference = (float)PadForge.Engine.Common.Mapping.SourceCoercion.ReferencePassSeconds;
-            return prevTicks > 0
-                ? Math.Clamp((float)(nowTicks - prevTicks) / ticksPerSecond, reference, 0.05f)
-                : reference;
-        }
-
         /// <summary>The lineage's three-segment fpsmouse response curve on a
         /// deadzone-normalized magnitude in [0..1]. Shared with the unit
         /// tests.</summary>
@@ -804,7 +780,6 @@ namespace PadForge.Common.Input
 
             if (mode == 1)
             {
-                var key = (thisDeviceGuid ?? "", slotIndex);
                 // FPS Mouse: aim offset from center becomes velocity on the
                 // relative lane. The evaluated aim already carries the
                 // Pointer-tab smoothing and per-source sensitivity (the
@@ -831,21 +806,18 @@ namespace PadForge.Common.Input
                 float norm = Math.Min(1f, (mag - FpsAimDeadzone) / (1f - FpsAimDeadzone));
                 float outMag = FpsResponseCurve(norm);
                 float speed = Math.Clamp(pm?.fpsSpeed ?? 35f, 1f, 200f);
-                // The deflection is full scale times (speed * 100 / 15) times
-                // the pass's length, which was written for a controller
-                // that moved 15 px a submit. The controller now spends a
-                // deflection as a rate, 1200 px/s at full scale over its
-                // own pass length, so the two lengths multiply: full aim
-                // asks it for 8 px/s for each unit of the speed knob at
-                // 1000 passes a second, and for less on shorter passes in
-                // proportion. The floor holds a pass under a millisecond to
-                // the millisecond's deflection, so the cursor moves at 4000
-                // or 10000 passes a second as it does at 1000.
-                long nowTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-                long prevTicks = _fpsLastTick.TryGetValue(key, out var pt) ? pt : 0;
-                _fpsLastTick[key] = nowTicks;
-                float dtSec = FpsPassSeconds(prevTicks, nowTicks, System.Diagnostics.Stopwatch.Frequency);
-                float scale = outMag * 32767f * (speed * 100f / 15f) * dtSec / mag;
+                // The deflection is a speed. The controller spends it over
+                // its own pass length, 1200 px/s at full scale
+                // (KeyboardMouseVirtualController.MouseStickPixels), so it
+                // takes no pass length here: full scale times
+                // (speed * 100 / 15) times the 1 ms reference pass, a form
+                // written for a controller that moved 15 px a submit. Full
+                // aim asks for 8 px/s for each unit of the speed knob at
+                // every rate. Scaled by this pass's length as well, the
+                // cursor's speed followed the rate: twice as fast at 500
+                // passes a second as at 1000.
+                float scale = outMag * 32767f * (speed * 100f / 15f)
+                    * (float)PadForge.Engine.Common.Mapping.SourceCoercion.ReferencePassSeconds / mag;
                 if (irDroveMouseX)
                     raw.MouseDeltaX = (short)Math.Clamp((int)(ax * scale), short.MinValue, short.MaxValue);
                 // The VC negates MouseDeltaY into screen-Y (positive = up

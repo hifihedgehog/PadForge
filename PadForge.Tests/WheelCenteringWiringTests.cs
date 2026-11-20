@@ -103,12 +103,78 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         LogitechRawHidWriter.ResetDevice(path);
     }
 
-    /// <summary>A wheel that never held centering is sent nothing by an
-    /// empty frame, and a write the wheel refuses is tried again.</summary>
+    /// <summary>The first frame a wheel gets in a run stops every slot or
+    /// id centering uses, an empty frame too. A run killed while Vehicle
+    /// mode or a Release Test held them left them playing, and the next
+    /// run may start in Spring mode, whose frames are empty. A
+    /// Thrustmaster's effects play until they are stopped (a play count of
+    /// 0, hid-tmt300rs.c t300rs_play_effect). The Linux drivers clear the
+    /// slots when they take a wheel (new-lg4ff lg4ff_init_slots,
+    /// hid-fanatecff ftecff_init_slots). A Thrustmaster was left out, and
+    /// an empty first frame sent nothing to any wheel.</summary>
     [Fact]
-    public void AnEmptyFrameWritesNothingToAFreshWheel_AndARefusedWriteIsTriedAgain()
+    public void TheFirstFrameStopsWhatAnEarlierRunLeft_OnEveryWheel()
+    {
+        string thrustmaster = Path();
+        Assert.Equal(new[] { "6000028900", "6000038900", "6000048900", "6000058900" },
+            Sent(() => WheelCenteringWriter.Apply(thrustmaster, Thrustmaster, T300, default, 0)).Select(Hex));
+        Assert.Empty(Sent(() => WheelCenteringWriter.Apply(thrustmaster, Thrustmaster, T300, default, 0)));
+        WheelCenteringWriter.ResetDevice(thrustmaster);
+        ThrustmasterRawHidWriter.ResetDevice(thrustmaster);
+
+        // Vehicle mode with no damper: the damper's id is stopped all the same.
+        string vehicle = Path();
+        Assert.Contains("6000038900", Sent(() => WheelCenteringWriter.Apply(vehicle, Thrustmaster, T300, Frame(damper: 0), 0)).Select(Hex));
+        WheelCenteringWriter.ResetDevice(vehicle);
+        ThrustmasterRawHidWriter.ResetDevice(vehicle);
+
+        // A Logitech wheel's three slots, and a Fanatec base's four.
+        string logitech = Path();
+        Assert.Equal(3, Sent(() => WheelCenteringWriter.Apply(logitech, Logitech, G29, default, 0)).Count);
+        Assert.Empty(Sent(() => WheelCenteringWriter.Apply(logitech, Logitech, G29, default, 0)));
+        WheelCenteringWriter.ResetDevice(logitech);
+        LogitechRawHidWriter.ResetDevice(logitech);
+        string fanatec = Path();
+        Assert.Equal(4, Sent(() => WheelCenteringWriter.Apply(fanatec, Fanatec, ClubSportV25, default, 0)).Count);
+        Assert.Empty(Sent(() => WheelCenteringWriter.Apply(fanatec, Fanatec, ClubSportV25, default, 0)));
+        WheelCenteringWriter.ResetDevice(fanatec);
+    }
+
+    /// <summary>A Logitech slot that holds an effect of one type is
+    /// stopped before an effect of another type is downloaded into it:
+    /// new-lg4ff never refreshes a slot into another type, and downloads
+    /// a slot's effect afresh after a stop (lg4ff_update_slot, op 3 and
+    /// then 1). The first slot switched between a game's constant force
+    /// and a game's spring with a refresh (op 0xc). An effect of the same
+    /// type is refreshed in place.</summary>
+    [Fact]
+    public void ALogitechSlotIsStoppedBeforeItTakesAnotherTypeOfEffect()
     {
         string path = Path();
+        string[] Ops(Action write) => Sent(write).Select(r => Hex(r)[..4]).ToArray();
+        void Spring(int coefficient) => LogitechRawHidWriter.WriteCondition(path, 0, FfbEffectTypes.Spring,
+            coefficient, coefficient, 0, 0, 10000, 10000, 100, false);
+
+        Assert.Equal(new[] { "0011" }, Ops(() => LogitechRawHidWriter.WriteConstantForce(path, 0, 8000)));
+        Assert.Equal(new[] { "001C" }, Ops(() => LogitechRawHidWriter.WriteConstantForce(path, 0, 9000)));
+        Assert.Equal(new[] { "0013", "0011" }, Ops(() => Spring(5000)));
+        Assert.Equal(new[] { "001C" }, Ops(() => Spring(6000)));
+        Assert.Equal(new[] { "0013", "0011" }, Ops(() => LogitechRawHidWriter.WriteCondition(path, 0, FfbEffectTypes.Damper,
+            5000, 5000, 0, 0, 10000, 10000, 100, false)));
+        Assert.Equal(new[] { "0013", "0011" }, Ops(() => LogitechRawHidWriter.WriteConstantForce(path, 0, 8000)));
+        // A stopped slot takes a download, with no second stop.
+        Ops(() => LogitechRawHidWriter.WriteStopEffect(path, 0));
+        Assert.Equal(new[] { "0011" }, Ops(() => Spring(5000)));
+        LogitechRawHidWriter.ResetDevice(path);
+    }
+
+    /// <summary>An empty frame after the first sends nothing, and a write
+    /// the wheel refuses is tried again.</summary>
+    [Fact]
+    public void AnEmptyFrameAfterTheFirstWritesNothing_AndARefusedWriteIsTriedAgain()
+    {
+        string path = Path();
+        Assert.Equal(3, Sent(() => WheelCenteringWriter.Apply(path, Logitech, G29, default, 0)).Count);
         Assert.Empty(Sent(() => WheelCenteringWriter.Apply(path, Logitech, G29, default, 0)));
 
         int refused = 0;
@@ -250,6 +316,57 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         LogitechRawHidWriter.ResetDevice(logitech);
     }
 
+    /// <summary>A Fanatec base plays every slot at once: hid-fanatecff
+    /// sums each slot's effects on every tick, constants into the first
+    /// and springs into the second (hid-ftecff.c ftecff_timer). So while a
+    /// game's spring plays, the first slot still takes the constant force,
+    /// which carries Vehicle mode's centering force (MergedForce). The pass
+    /// left the first slot at its last level then, and the centering force
+    /// stood still. Each part is written when it changed, so a centering
+    /// force that moves does not send the game's spring again.</summary>
+    [Fact]
+    public void AFanatecBasePlaysTheConstantForceBesideAGamesCondition()
+    {
+        string path = Path();
+        void Write(bool condition, short force, bool forceChanged, int coefficient = 5000)
+            => WheelCenteringWriter.WriteFanatecGameForce(path, ClubSportV25, condition, FfbEffectTypes.Spring,
+                coefficient, coefficient, 0, 0, 10000, 10000, 100, force, 0, forceChanged);
+
+        var first = Sent(() => Write(true, 8000, true));
+        Assert.Equal(new[] { "01110B", "010108" }, first.Select(r => Hex(r)[..6]));
+        var moved = Sent(() => Write(true, 9000, true));
+        Assert.Equal(new[] { "010108" }, moved.Select(r => Hex(r)[..6]));
+        var springChanged = Sent(() => Write(true, 9000, false, coefficient: 6000));
+        Assert.Equal(new[] { "01110B" }, springChanged.Select(r => Hex(r)[..6]));
+        // The pass wrote the spring slot itself: the game's spring goes back in.
+        WheelCenteringWriter.SpringSlotWritten(path);
+        Assert.Equal(new[] { "01110B" }, Sent(() => Write(true, 9000, false, coefficient: 6000)).Select(r => Hex(r)[..6]));
+        // With no game condition the force goes out alone, as before.
+        Assert.Equal(new[] { "010108" }, Sent(() => Write(false, 9000, true)).Select(r => Hex(r)[..6]));
+        // The game's spring that ended is written again when it comes back.
+        Assert.Equal("01110B", Hex(Sent(() => Write(true, 9000, false, coefficient: 6000))[0])[..6]);
+        WheelCenteringWriter.ResetDevice(path);
+    }
+
+    /// <summary>The wheel's settings write Spring mode's spring into a
+    /// Fanatec base's spring slot when Auto Centering Strength changes,
+    /// a game's spring there or not. Both passes put the game's spring
+    /// back after it: the pass skips a frame that did not change, so the
+    /// game's spring stayed out until its own settings changed.</summary>
+    [Fact]
+    public void AGamesSpringGoesBackAfterTheSettingsWriteTheSpringSlot_InBothPasses()
+    {
+        string pass = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
+        int settings = pass.IndexOf("applied &= FanatecRawHidWriter.WriteAutocenter(ud.DevicePath, acMag);", StringComparison.Ordinal);
+        int back = pass.IndexOf("wheelForce, acMag, forceChanged: false);", StringComparison.Ordinal);
+        Assert.True(settings > 0 && back > settings, "the pass leaves a game's spring out after the settings");
+
+        string owner = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+        int ownerSettings = owner.IndexOf("FanatecRawHidWriter.WriteAutocenter(path, acMag); WheelCenteringWriter.SpringSlotWritten(path);", StringComparison.Ordinal);
+        int ownerBack = owner.IndexOf("w.CondGain, force, w.Ac, forceChanged: false);", StringComparison.Ordinal);
+        Assert.True(ownerSettings > 0 && ownerBack > ownerSettings, "the owner leaves a game's spring out after the settings");
+    }
+
     /// <summary>Spring mode's Auto Centering Strength is a spring in a
     /// Fanatec base's spring slot, the slot Vehicle mode's spring uses.
     /// While it is on, centering writes nothing there: a frame with no
@@ -279,11 +396,15 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         Assert.Equal(new[] { "01110B8080AA003F" }, Sent(() => WheelCenteringWriter.Apply(path, Fanatec, CslDd, Frame(), 0)).Select(Hex));
         WheelCenteringWriter.ResetDevice(path);
 
-        // A base that only ever had the slider's spring: nothing is written, and a stop writes nothing.
+        // A base that only ever had the slider's spring: the first frame stops the other three slots and
+        // leaves the spring's alone, and the frames after it write nothing while the slider has it. With
+        // the slider off, the slot is centering's again, which has no spring there.
         string plain = Path();
-        Assert.Empty(Sent(() => WheelCenteringWriter.Apply(plain, Fanatec, ClubSportV25, default, 0, autoCenterSpring: true)));
+        Assert.Equal(new[] { "01230C00000000FF", "01430C00000000FF", "01330C00000000FF" },
+            Sent(() => WheelCenteringWriter.Apply(plain, Fanatec, ClubSportV25, default, 0, autoCenterSpring: true)).Select(Hex));
         WheelCenteringWriter.SpringSlotWritten(plain);
         Assert.Empty(Sent(() => WheelCenteringWriter.Apply(plain, Fanatec, ClubSportV25, default, 0, autoCenterSpring: true)));
+        Assert.Equal(new[] { "01130B0000000000" }, Sent(() => WheelCenteringWriter.Apply(plain, Fanatec, ClubSportV25, default, 0)).Select(Hex));
         Assert.Empty(Sent(() => WheelCenteringWriter.Apply(plain, Fanatec, ClubSportV25, default, 0)));
 
         string logitech = Path();
@@ -308,7 +429,8 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         int centering = pass.IndexOf("WheelCenteringWriter.Apply(ud.DevicePath, ud.VendorId, ud.ProdId, centeringFrame,", StringComparison.Ordinal);
         Assert.True(settings > 0 && centering > settings, "the pass writes centering before the wheel's settings");
         Assert.Contains("hasCond ? cv.EffectType : 0, autoCenterSpring: isFanatecWheel && acMag > 0);", pass);
-        Assert.Equal(2, CountOf(pass, "WheelCenteringWriter.SpringSlotWritten(ud.DevicePath);"));
+        Assert.Equal(1, CountOf(pass, "WheelCenteringWriter.SpringSlotWritten(ud.DevicePath);"));
+        Assert.Contains("WheelCenteringWriter.WriteFanatecGameForce(ud.DevicePath, ud.ProdId, hasCond, cv.EffectType,", pass);
         Assert.Contains("bool autoCenter = fanatec && _appliedWheelSettings.TryGetValue(path, out var held) && held.ac > 0;", pass);
         Assert.Contains("WheelCenteringWriter.Apply(path, ud.VendorId, ud.ProdId, default, 0, autoCenter);", pass);
 
@@ -316,7 +438,8 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         int ownerSettings = owner.IndexOf("FanatecRawHidWriter.WriteAutocenter(path, acMag); WheelCenteringWriter.SpringSlotWritten(path);", StringComparison.Ordinal);
         int ownerCentering = owner.IndexOf("WheelCenteringWriter.Apply(path, vid, pid, centering, w.HasCond ? w.Effect : 0, autoCenterSpring: isFan && w.Ac > 0);", StringComparison.Ordinal);
         Assert.True(ownerSettings > 0 && ownerCentering > ownerSettings, "the owner writes centering before the wheel's settings");
-        Assert.Equal(2, CountOf(owner, "WheelCenteringWriter.SpringSlotWritten(path);"));
+        Assert.Equal(1, CountOf(owner, "WheelCenteringWriter.SpringSlotWritten(path);"));
+        Assert.Contains("WheelCenteringWriter.WriteFanatecGameForce(path, pid, w.HasCond, w.Effect,", owner);
         Assert.Equal(1, CountOf(owner, "WheelCenteringWriter.Apply("));
 
         static int CountOf(string text, string part)
@@ -326,6 +449,73 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
                 count++;
             return count;
         }
+    }
+
+    /// <summary>A wheel on another PC holds the last frame shipped to it,
+    /// Vehicle mode's centering with it, until it is sent a stop frame
+    /// (StopNativeWheel). The pass never recorded a shipped peer wheel, so
+    /// neither a slot that let it go nor an engine that stopped sent one,
+    /// and the vibration lane's stop ships nothing for a wheel.</summary>
+    [Fact]
+    public void APeerWheelGetsItsStop_WhenItsSlotLetsGoAndWhenTheEngineStops()
+    {
+        string pass = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
+        int ship = pass.IndexOf("centering: PadForge.Engine.RemoteLink.OutputEffectCodec.CenteringTail.From(centeringFrame));", StringComparison.Ordinal);
+        int recorded = pass.IndexOf("_appliedWheelFfb[ud.DevicePath] = ffbSig;", ship, StringComparison.Ordinal);
+        int peerReturn = pass.IndexOf("return;", ship, StringComparison.Ordinal);
+        Assert.True(ship > 0 && recorded > ship && recorded < peerReturn, "the pass does not record a shipped peer wheel");
+        Assert.Contains("if (isVendorFfb && !isFanatecPedal && _appliedWheelFfb.ContainsKey(ud.DevicePath)) StopNativeWheel(ud);", pass);
+    }
+
+    /// <summary>Vehicle mode's centering runs for a wheel on a slot that is
+    /// created and turned on, in the engine's active pass. A wheel left on a
+    /// disabled slot was centered every pass, and from the idle pass every
+    /// 50 ms, past the 2 to 30 ms delay the centering model is built for
+    /// (WheelCentering.Step). Off such a slot the frame is empty, which lets
+    /// the wheel go.</summary>
+    [Fact]
+    public void CenteringRunsOnlyForAWheelOnAnActiveSlot()
+    {
+        string pass = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
+        Assert.Contains("if (centersItself && SettingsManager.SlotCreated[padIndex] && SettingsManager.SlotEnabled[padIndex])", pass);
+        Assert.Contains("bool centeringSlot = false;", pass);
+        Assert.Equal(2, CountOf(pass, "centeringSlot && !IsIdle,"));
+        Assert.Contains("if (!active)", pass);
+    }
+
+    /// <summary>A peer's wheel frame sets the wheel's range, auto-center and
+    /// LEDs, and so does the local pass. Each puts its own back after the
+    /// other wrote them: the local pass forgets what it sent when a peer
+    /// writes the wheel, and the owner's record of a peer's settings holds
+    /// the count of the local pass's writes it saw. Each skipped a write the
+    /// wheel needed, by a record of what it had sent itself.</summary>
+    [Fact]
+    public void APeerAndTheLocalPassEachPutTheirWheelSettingsBack()
+    {
+        string pass = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
+        int note = pass.IndexOf("public void NoteRemoteWheelWrite(string devicePath)", StringComparison.Ordinal);
+        string body = pass.Substring(note, 600);
+        Assert.Contains("_appliedWheelSettings.TryRemove(devicePath, out _);", body);
+        Assert.Contains("_appliedLeds.TryRemove(devicePath, out _);", body);
+        Assert.Equal(2, CountOf(pass, "RemoteLinkOutputRouter.NoteLocalWheelSettings(ud.DevicePath);"));
+
+        string owner = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+        Assert.Contains("int local = RemoteLinkOutputRouter.LocalWheelSettings(path);", owner);
+        Assert.Contains("prev.Item1 != range || prev.Item2 != w.Ac || prev.Item5 != local", owner);
+        Assert.Contains("prev.Item3 != w.LedMask || prev.Item4 != w.LedValid || prev.Item5 != local", owner);
+
+        string path = "test://wheel/" + Guid.NewGuid().ToString("N");
+        int before = RemoteLinkOutputRouter.LocalWheelSettings(path);
+        RemoteLinkOutputRouter.NoteLocalWheelSettings(path);
+        Assert.Equal(before + 1, RemoteLinkOutputRouter.LocalWheelSettings(path));
+    }
+
+    static int CountOf(string text, string part)
+    {
+        int count = 0;
+        for (int at = text.IndexOf(part, StringComparison.Ordinal); at >= 0; at = text.IndexOf(part, at + part.Length, StringComparison.Ordinal))
+            count++;
+        return count;
     }
 
     // ── Thrustmaster ──
@@ -391,7 +581,8 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         int refused = 0;
         using (RawHidOutput.CaptureForTest((_, _) => { refused++; return false; }))
             WheelCenteringWriter.Apply(path, Thrustmaster, T300, force, 0);
-        Assert.Equal(1, refused);
+        // The force, and the first frame's stops of the other three ids.
+        Assert.Equal(4, refused);
         Assert.NotEmpty(Sent(() => WheelCenteringWriter.Apply(path, Thrustmaster, T300, force, 0)));
         Assert.Empty(Sent(() => WheelCenteringWriter.Apply(path, Thrustmaster, T300, force, 0)));
         WheelCenteringWriter.ResetDevice(path);
@@ -586,6 +777,85 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
         game.CenteringActive = true;
         game.Centering = frame;
         return game;
+    }
+
+    static CenteringFrame ForceOnly(short level) => Frame(level: level, spring: 0, damper: 0, friction: 0);
+
+    static int Creates(HapticEffectFixture h) => h.Calls.Count(c => c == "create");
+
+    /// <summary>A centering force the driver refuses is not asked for
+    /// again until centering lets go, as a refused spring, damper or
+    /// friction effect is not. Each poll of Vehicle mode was a CreateEffect
+    /// call the driver refused.</summary>
+    [Fact]
+    public void ARefusedCenteringForceIsNotAskedForAgain()
+    {
+        using var h = SdlWheel();
+        h.FailCreateOfType = (ushort)SDL_HAPTIC_CONSTANT;
+        h.Apply(Centered(ForceOnly(5000)));
+        int asked = Creates(h);
+        Assert.Equal(1, asked);
+        h.Apply(Centered(ForceOnly(6000)));
+        h.Apply(Centered(ForceOnly(7000)));
+        Assert.Equal(asked, Creates(h));
+
+        // Centering lets go and comes back: the force is asked for again.
+        h.Apply(new Vibration());
+        h.FailCreateOfType = null;
+        h.Apply(Centered(ForceOnly(5000)));
+        Assert.Contains(h.Writes, w => w.type == SDL_HAPTIC_CONSTANT && w.constant.level == 5000);
+    }
+
+    /// <summary>A wheel routed through SDL that holds one effect gives it
+    /// to Vehicle mode's centering, and the game's force and rumble wait
+    /// until centering lets go, the rule the auto-center spring keeps with
+    /// rumble. The game's effect was asked for on every poll, each refused.
+    /// A refusal beside centering is tried alone once, to learn which kind
+    /// of device it is.</summary>
+    [Fact]
+    public void AOneEffectWheelGivesItToCentering_AndTheGameWaits()
+    {
+        using var h = SdlWheel();
+        h.Room = 1;
+        // The first poll learns the device holds one effect: the game's is tried
+        // alone, and let go. The second gives the effect back to centering.
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        int asked = Creates(h);
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        Assert.Equal(asked, Creates(h));
+        Assert.True(h.PlayingType(SDL_HAPTIC_CONSTANT));
+        Assert.Single(h.Allocated);
+
+        // Rumble waits the same way.
+        var rumble = new Vibration { LeftMotorSpeed = 30000, RightMotorSpeed = 30000 };
+        h.Apply(Centered(ForceOnly(5000), rumble));
+        int beforeRumble = Creates(h);
+        h.Apply(Centered(ForceOnly(5000), new Vibration { LeftMotorSpeed = 30000, RightMotorSpeed = 30000 }));
+        Assert.Equal(beforeRumble, Creates(h));
+
+        // Centering lets go: the game's force has the effect.
+        h.Apply(h.Directional());
+        Assert.Contains(h.Writes, w => w.type == SDL_HAPTIC_CONSTANT && w.constant.level != 5000);
+        Assert.Single(h.Allocated);
+    }
+
+    /// <summary>A game's effect that holds a one-effect wheel when Vehicle
+    /// mode starts gives the effect up to centering.</summary>
+    [Fact]
+    public void CenteringTakesAOneEffectWheelFromTheGame()
+    {
+        using var h = SdlWheel();
+        h.Room = 1;
+        h.Apply(h.Directional());
+        Assert.Single(h.Allocated);
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        Assert.Single(h.Allocated);
+        Assert.Contains(h.Writes, w => w.type == SDL_HAPTIC_CONSTANT && w.constant.level == 5000);
+        int asked = Creates(h);
+        h.Apply(Centered(ForceOnly(5000), h.Directional()));
+        Assert.Equal(asked, Creates(h));
     }
 
     /// <summary>A wheel routed through SDL holds centering in four
@@ -1067,7 +1337,8 @@ public sealed class WheelCenteringWiringTests(ITestOutputHelper output)
     public void TheRuntimeRunsAReleaseTest()
     {
         var plant = new WheelPlant { Inertia = 0.015, Friction = 0.15, Delay = 0.008, WheelTorque = 2.2, DamperFull = 0.30, SpringFull = 12.0 };
-        var runtime = new WheelCenteringRuntime();
+        // The search for the return ratio runs in place, so the simulated clock waits for it.
+        var runtime = new WheelCenteringRuntime { TestSchedule = work => work() };
         var settings = Vehicle();
         long tick = 10_000;
         Assert.True(runtime.StartTest(settings, "", tick));
@@ -1146,21 +1417,23 @@ public sealed class WheelCenteringTelemetryRowTests : IDisposable
     [Fact]
     public void TheRowGivesItsSpeedAndRoad_WithOrWithoutAMaxRpm()
     {
-        Assert.False(GameTelemetryRuntime.TryGetMotion(1000, out _, out _));
+        Assert.False(GameTelemetryRuntime.TryGetMotion(1000, out _, out _, out _));
 
         var frame = new TelemetryFrame();
         frame.Reset(0);
         frame.SpeedMs = 42f;
+        frame.SpeedReported = true;
         frame.Grip = 0.7f;
         frame.Rpm = 3000f;
         GameTelemetryRuntime.Publish(frame, Array.Empty<TelemetryVariable>(), true, 1000);
         // No max RPM: nothing for the lights, and the speed and the road all the same.
         Assert.False(GameTelemetryRuntime.TryGetEngine(1000, out _, out _, out _));
-        Assert.True(GameTelemetryRuntime.TryGetMotion(1000, out float speed, out float grip));
+        Assert.True(GameTelemetryRuntime.TryGetMotion(1000, out float speed, out bool hasSpeed, out float grip));
+        Assert.True(hasSpeed);
         Assert.Equal(42f, speed);
         Assert.Equal(0.7f, grip);
         // Stale after a second.
-        Assert.False(GameTelemetryRuntime.TryGetMotion(1000 + GameTelemetryRuntime.EngineStaleMs + 1, out _, out _));
+        Assert.False(GameTelemetryRuntime.TryGetMotion(1000 + GameTelemetryRuntime.EngineStaleMs + 1, out _, out _, out _));
 
         // The lights' source carries both when it answers.
         frame.MaxRpm = 8000f;
@@ -1175,8 +1448,45 @@ public sealed class WheelCenteringTelemetryRowTests : IDisposable
         frame.DrivingReported = true;
         frame.Driving = false;
         GameTelemetryRuntime.Publish(frame, Array.Empty<TelemetryVariable>(), true, 5000);
-        Assert.False(GameTelemetryRuntime.TryGetMotion(5000, out _, out _));
+        Assert.False(GameTelemetryRuntime.TryGetMotion(5000, out _, out _, out _));
         GameTelemetryRuntime.ClearValues();
-        Assert.False(GameTelemetryRuntime.TryGetMotion(5000, out _, out _));
+        Assert.False(GameTelemetryRuntime.TryGetMotion(5000, out _, out _, out _));
+    }
+
+    /// <summary>A custom format with no Speed field sends no speed. Its
+    /// frames' speed rests at 0, which is no reading, so the row gives a
+    /// wheel's centering no speed and the wheel keeps its fixed one.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ACustomFormatWithNoSpeedField_GivesNoSpeed(bool withSpeed)
+    {
+        var format = new CustomTelemetryFormat
+        {
+            Name = "Rpm only",
+            Kind = CustomTelemetryKind.Json,
+            Key = "rpm",
+            Fields =
+            {
+                new CustomTelemetryField { Target = CustomTelemetryTarget.Rpm, Key = "rpm" },
+                new CustomTelemetryField { Target = CustomTelemetryTarget.MaxRpm, Key = "max" },
+            },
+        };
+        if (withSpeed)
+            format.Fields.Add(new CustomTelemetryField { Target = CustomTelemetryTarget.Speed, Key = "kmh" });
+        var compiled = new CompiledTelemetryFormat(format, GameTelemetryRuntime.BuildVariables(new[] { format }));
+        var frame = new TelemetryFrame();
+        frame.Reset(0);
+        Assert.True(compiled.TryRead(System.Text.Encoding.UTF8.GetBytes("{\"rpm\":3000,\"max\":8000,\"kmh\":72}"), frame, pinned: true));
+        long now = Environment.TickCount64;
+        GameTelemetryRuntime.Publish(frame, Array.Empty<TelemetryVariable>(), true, now);
+        // The hub's fallback, for a row with no max RPM yet, reads this.
+        Assert.True(GameTelemetryRuntime.TryGetMotion(now, out _, out bool hasSpeed, out _));
+        Assert.Equal(withSpeed, hasSpeed);
+
+        var source = new GameTelemetryRowSource(learnedMax: false);
+        Assert.True(source.TryGetSnapshot(out var snap));
+        Assert.Equal(withSpeed, snap.HasSpeed);
+        if (withSpeed) Assert.Equal(20f, snap.Speed, 3);
     }
 }

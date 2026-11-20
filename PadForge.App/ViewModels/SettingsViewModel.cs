@@ -107,6 +107,8 @@ namespace PadForge.ViewModels
             // Built from Strings.Instance on every read (#457).
             OnPropertyChanged(nameof(UpdateStatusText));
             OnPropertyChanged(nameof(AboutSubLine));
+            // A failed SDL read is worded from the string table on every read.
+            OnPropertyChanged(nameof(SdlVersion));
 
             // Refresh the default profile's display name in the list.
             var defaultItem = ProfileItems.FirstOrDefault(p => p.IsDefault);
@@ -1405,6 +1407,13 @@ namespace PadForge.ViewModels
                 PadForge.Common.Input.InputManager.MaxPollingRateHz));
         }
 
+        /// <summary>The wakes a second this PC's timer grid gives the engine
+        /// (the Polling Rate tooltip's figure), read once: the grid is the
+        /// finest period Windows reports and does not change while PadForge
+        /// runs.</summary>
+        public int PollingWakesPerSecond { get; } =
+            PadForge.Common.Input.InputManager.WakesPerSecond(PadForge.Common.Input.InputManager.TimerGrid());
+
         private int _hmInactivityDestroyTimeoutSeconds = 60;
 
         /// <summary>
@@ -1867,13 +1876,43 @@ namespace PadForge.ViewModels
         /// <summary>Raised when the user wants to open the settings folder.</summary>
         public event EventHandler OpenSettingsFolderRequested;
 
-        private string _sdlVersion = string.Empty;
+        /// <summary>What the SDL row shows: the version read, or a failure.
+        /// A failure is kept as its state and worded when the row is read, so
+        /// a language change reaches it.</summary>
+        public enum SdlVersionKind { Number, NotFound, Unknown }
 
-        /// <summary>SDL3 library version string.</summary>
+        private string _sdlVersionNumber = string.Empty;
+        private SdlVersionKind _sdlVersionState = SdlVersionKind.Number;
+
+        /// <summary>What the SDL row shows.</summary>
+        public SdlVersionKind SdlVersionState
+        {
+            get => _sdlVersionState;
+            set
+            {
+                if (SetProperty(ref _sdlVersionState, value))
+                    OnPropertyChanged(nameof(SdlVersion));
+            }
+        }
+
+        /// <summary>SDL3 library version string, or the failure's words while
+        /// <see cref="SdlVersionState"/> is not <see cref="SdlVersionKind.Number"/>.
+        /// Setting it names a version.</summary>
         public string SdlVersion
         {
-            get => _sdlVersion;
-            set => SetProperty(ref _sdlVersion, value ?? string.Empty);
+            get => _sdlVersionState switch
+            {
+                SdlVersionKind.NotFound => Strings.Instance.Status_SDL3NotFound,
+                SdlVersionKind.Unknown => Strings.Instance.Common_Unknown,
+                _ => _sdlVersionNumber,
+            };
+            set
+            {
+                _sdlVersionNumber = value ?? string.Empty;
+                _sdlVersionState = SdlVersionKind.Number;
+                OnPropertyChanged(nameof(SdlVersionState));
+                OnPropertyChanged(nameof(SdlVersion));
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -2402,9 +2441,9 @@ namespace PadForge.ViewModels
         internal void SetTopology(bool[] slotCreated, int[] slotControllerTypes,
             string[] slotProfileIds = null, string[] slotModel3DAppearances = null)
         {
-            // The same slots again leave the card as it is: its pictures
-            // stay, and a screen reader hears of no change.
-            if (_slotCreated != null && Same(_slotCreated, slotCreated) && Same(_slotTypes, slotControllerTypes)
+            // The same slots again, none among them, leave the card as it
+            // is: its pictures stay, and a screen reader hears of no change.
+            if (Same(_slotCreated, slotCreated) && Same(_slotTypes, slotControllerTypes)
                 && Same(_slotPresets, slotProfileIds) && Same(_slotFinishes, slotModel3DAppearances))
                 return;
             _slotCreated = (bool[])slotCreated?.Clone();

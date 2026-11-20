@@ -60,6 +60,19 @@ namespace PadForge.Common.Input.Flydigi
         NotApex4,
         BindFailed,
         Canceled,
+        /// <summary>A picture is already going to this pad.</summary>
+        Busy,
+        /// <summary>The screen gave a picture address PadForge does not
+        /// write to.</summary>
+        BadAddress,
+        /// <summary>The picture went to an Apex 4, and its switch back to
+        /// DInput mode was refused.</summary>
+        NotSwitchedBack,
+        /// <summary>The pad did not take the command that readies it: its
+        /// session closed, or the write was refused.</summary>
+        SwitchNotSent,
+        /// <summary>An error in PadForge stopped the send.</summary>
+        Fault,
     }
 
     internal sealed class FlydigiScreenException : Exception
@@ -139,11 +152,6 @@ namespace PadForge.Common.Input.Flydigi
         /// <summary>The sends running, one per pad.</summary>
         private static readonly HashSet<string> s_running = new(StringComparer.OrdinalIgnoreCase);
 
-        internal static bool IsSending(FlydigiApexSession pad)
-        {
-            lock (s_running) return pad != null && s_running.Contains(pad.Path);
-        }
-
         /// <summary>Sends <paramref name="picture"/> to the pad's screen, on a
         /// thread of its own. Throws <see cref="FlydigiScreenException"/>
         /// with the reason when it does not finish.</summary>
@@ -155,16 +163,16 @@ namespace PadForge.Common.Input.Flydigi
             IProgress<FlydigiScreenProgress> progress, CancellationToken ct)
         {
             if (pad == null || picture?.Frames == null || picture.Frames.Count == 0)
-                throw new FlydigiScreenException(FlydigiScreenFailure.Refused, "nothing to send");
+                throw new FlydigiScreenException(FlydigiScreenFailure.Fault, "nothing to send");
             var model = pad.Identity.Model;
             if (!pad.Identity.Wired) throw new FlydigiScreenException(FlydigiScreenFailure.NotWired);
             if (picture.Frames.Count > MaximumFrames(model)) throw new FlydigiScreenException(FlydigiScreenFailure.TooManyFrames);
             foreach (var frame in picture.Frames)
                 if (!FlydigiScreenFormat.IsFrame(frame))
-                    throw new FlydigiScreenException(FlydigiScreenFailure.Refused, "not a screen frame");
+                    throw new FlydigiScreenException(FlydigiScreenFailure.Fault, "not a screen frame");
             lock (s_running)
             {
-                if (!s_running.Add(pad.Path)) throw new FlydigiScreenException(FlydigiScreenFailure.Refused, "a send is running");
+                if (!s_running.Add(pad.Path)) throw new FlydigiScreenException(FlydigiScreenFailure.Busy, "a send is running");
             }
             try
             {
@@ -211,7 +219,9 @@ namespace PadForge.Common.Input.Flydigi
                 // The pad's answer says nothing either way: an Apex 5 can add
                 // the port with none. The port is what counts
                 // (enter_upgrade_mode).
-                pad.Exclusive(p => p.Write(upgrade));
+                // A pad that did not take the command never shows the port.
+                if (!pad.Exclusive(p => p.Write(upgrade)))
+                    throw new FlydigiScreenException(FlydigiScreenFailure.SwitchNotSent, "upgrade command");
                 Sleep(Ota.SwitchSettleMs, ct);
                 ct.ThrowIfCancellationRequested();
                 progress?.Report(new FlydigiScreenProgress(FlydigiScreenStep.WaitingForPort, 0, 1));
@@ -265,7 +275,7 @@ namespace PadForge.Common.Input.Flydigi
             {
                 long eraseSize = (long)erases * Ota.EraseBlock;
                 if (baseAddress % Ota.EraseBlock != 0 || baseAddress + eraseSize > 0x1_0000_0000L)
-                    throw new FlydigiScreenException(FlydigiScreenFailure.Refused, "unaligned picture address");
+                    throw new FlydigiScreenException(FlydigiScreenFailure.BadAddress, $"picture address {baseAddress:X8}");
                 // The engine pauses after the base address's reply.
                 Sleep(200, ct);
             }
@@ -385,7 +395,9 @@ namespace PadForge.Common.Input.Flydigi
             if (XboxPads(UsbNodes()).Any()) throw new FlydigiScreenException(FlydigiScreenFailure.OtherXboxPads);
 
             progress?.Report(new FlydigiScreenProgress(FlydigiScreenStep.Switching, 0, 1));
-            pad.Exclusive(p => p.Write(Proto.Apex4Command(X.DInputSwitchToXInput)));
+            // A pad that did not take the switch never comes back in Xbox mode.
+            if (!pad.Exclusive(p => p.Write(Proto.Apex4Command(X.DInputSwitchToXInput))))
+                throw new FlydigiScreenException(FlydigiScreenFailure.SwitchNotSent, "switch to Xbox mode");
 
             VendorUsbDriverInstaller.UsbNode node = default;
             bool found = false;
@@ -423,11 +435,19 @@ namespace PadForge.Common.Input.Flydigi
                 Log($"device info: type {type}, connection {connection}");
                 if (type < 0 || !Proto.IsApex4DeviceType((byte)type))
                     throw new FlydigiScreenException(FlydigiScreenFailure.NotApex4, $"device type {type}");
-                UploadApex4(pipe, picture, progress, ct);
-                // Back to DInput, where PadForge drives the pad's triggers
-                // and lights (DeviceSession.switchMode).
-                pipe.Write(X.SwitchToDInput());
-                switchedBack = true;
+                // The pad answered as an Apex 4 in Xbox mode. It goes back to
+                // DInput, where PadForge drives its triggers and lights
+                // (DeviceSession.switchMode), whether the upload finishes, is
+                // canceled or gets no answer, while the pipe is still open.
+                try
+                {
+                    UploadApex4(pipe, picture, progress, ct);
+                }
+                finally
+                {
+                    switchedBack = pipe.Write(X.SwitchToDInput());
+                }
+                if (!switchedBack) throw new FlydigiScreenException(FlydigiScreenFailure.NotSwitchedBack);
             }
             finally
             {

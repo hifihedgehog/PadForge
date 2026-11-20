@@ -119,9 +119,10 @@ namespace PadForge.Tests
         [Fact]
         public void AStop_ClearsEveryLiveReading()
         {
-            string stop = Service();
-            int from = stop.IndexOf("public void Stop()", StringComparison.Ordinal);
-            stop = stop.Substring(from, 6000);
+            string service = Service();
+            int from = service.IndexOf("public void Stop()", StringComparison.Ordinal);
+            Assert.Contains("foreach (var padVm in _mainVm.Pads)\n                    ClearLiveReadings(padVm);", service.Substring(from, 6000));
+            string stop = Body(service, "internal static void ClearLiveReadings(PadViewModel padVm)");
             foreach (string line in new[]
             {
                 "m.IsInputActive = false;", "m.LiveLevel = 0;", "m.CurrentValueText = string.Empty;",
@@ -447,8 +448,7 @@ namespace PadForge.Tests
             foreach (string line in new[]
             {
                 "foreach (var dev in MappedDevices) dev.RaiseWords();", "foreach (var voice in RumbleAudioVoices) voice.RaiseWords();",
-                "OnPropertyChanged(nameof(GyroOutputCurveOptions));", "OnPropertyChanged(nameof(GyroSensitivityUnitsOptions));",
-                "OnPropertyChanged(nameof(GyroSpaceOptions));", "OnPropertyChanged(nameof(MotionGripOptions));",
+                "OnPropertyChanged(nameof(MotionGripOptions));",
             })
                 Assert.Contains(line, onCulture);
             Assert.Single(System.Text.RegularExpressions.Regex.Matches(onCulture, @"OnPropertyChanged\(nameof\(PictureLineText\)\);"));

@@ -2193,7 +2193,7 @@ function Find-AllSlots {
 
 # The pad page's tabs are six sections (PadForge 6, #574). A recipe still
 # names what it wants by the tab's name, and this table says where that is
-# now: the section's button in the header, then either a part button (Buttons
+# now: the section's button in the header, then either a part button (Mappings
 # has Picture and List, Macros & Menus has its two parts) or a group in the
 # section's scrolling column. Output is the cards under the picture: its row
 # goes to the picture and then opens the cards of the group it names. Every
@@ -5047,8 +5047,8 @@ $btn36 = New-Object System.Windows.Automation.PropertyCondition(
 
 function Select-DeviceByName36 {
     param([string]$NamePart)
-    # All, an empty search and both folds open, so every row has its place
-    # on screen (#574). The recipe closes the folds after its shots.
+    # All, an empty search and the fold open, so every row has its place
+    # on screen (#574). The recipe closes the fold after its shots.
     Reset-DeviceFilters | Out-Null
     Open-DeviceFolds
     $wr = New-Object Win32+RECT

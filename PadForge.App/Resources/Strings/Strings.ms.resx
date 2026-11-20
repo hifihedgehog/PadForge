@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Tiada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>saat</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minit (0 = tidak pernah)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Belum ditetapkan</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kiri)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ atas)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll tidak ditemui</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll tidak ditemui. Letakkan SDL3.dll di sebelah PadForge.exe. Muat turunnya daripada https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll tidak ditemui. Muat turun PadForge semula.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operasi pemacu gagal: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Tetapan disalin ke papan keratan.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Maklumat peranti disalin ke papan keratan.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Rendah</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Senarai</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Gerakan</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik satu kawalan, kemudian tekan input pada peranti anda yang patut menggerakkannya.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Permainan yang Tidak Dikenali PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang sedang berjalan sebelum menghantar.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Apa yang Dipaparkan</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, grid atau bar sesuatu menu semasa ia terbuka</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan apabila lapisan shift dihidupkan, selama masa yang ditetapkan oleh lapisan itu</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil apabila profil bertukar</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, grid atau bar sesuatu menu semasa ia terbuka.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan apabila lapisan shift dihidupkan, selama masa yang ditetapkan oleh lapisan itu.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil apabila profil bertukar.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin Alamat</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Letak pada Skrin</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Sambungkan Telefon</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Mulakan Enjin Secara Automatik semasa Pelancaran</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Teruskan Pengundian Apabila Tetingkap Hilang Fokus</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Kadar Pengundian (Melainkan Profil Mengatasinya)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Enjin membaca setiap peranti dan mengemas kini pengawal maya sebanyak ini kali sesaat, dari 60 hingga 10000. Kadar yang lebih tinggi menggunakan lebih banyak masa pemproses. Windows membangunkan enjin kira-kira 2000 kali sesaat paling banyak, jadi kadar yang lebih tinggi menjalankan beberapa laluan pada setiap kali enjin dibangunkan. Semasa profil dengan kadar pengundiannya sendiri aktif, kadar itu digunakan sebaliknya. Nilai ini kembali apabila profil dinyahaktifkan.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Enjin membaca setiap peranti dan mengemas kini pengawal maya sebanyak ini kali sesaat, dari 60 hingga 10000. Kadar yang lebih tinggi menggunakan lebih banyak masa pemproses. Pada PC ini, Windows membangunkan enjin paling banyak {0} kali sesaat, jadi kadar yang lebih tinggi menjalankan beberapa laluan pada setiap kali enjin dibangunkan. Semasa profil dengan kadar pengundiannya sendiri aktif, kadar itu digunakan sebaliknya. Nilai ini kembali apabila profil dinyahaktifkan.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Sembunyikan Peranti daripada Permainan</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Suis induk untuk penyembunyian peranti HidHide dan cangkuk input aras rendah. Apabila dimatikan, tiada peranti disembunyikan tanpa mengira tetapan setiap peranti.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Kekalkan Peranti Tersamar Antara Pelancaran</value></data>
@@ -924,7 +926,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisaat antara aksara yang ditaip, sehingga 1000. 0 menaip keseluruhan teks sekali gus.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Putus Sambungan Semasa Tidak Aktif</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Butiran</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minit</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Putuskan Bluetooth Apabila Dipalamkan melalui USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Cas Pantas. Apabila pengawal ini melaporkan ia sedang dicas semasa disambungkan melalui Bluetooth, pautan Bluetooth diputuskan supaya ia dicas tanpa menghidupkan radio. Mana-mana sumber kuasa USB dikira, termasuk pengecas dinding. Jika anda menghidupkan Bluetooth semula sementara kabel masih terpasang, ia dibiarkan sehingga kabel dicabut seterusnya.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Baca sebagai Pengawal iCade</value></data>
@@ -966,8 +967,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU memaparkan nama profil aktif dan mengikut setiap pertukaran profil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU memaparkan kedudukan profil aktif dalam senarai profil. Profil Lalai ialah 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU memaparkan gambar sendiri profil aktif, atau namanya jika tiada gambar. Setiap profil menyimpan gambarnya sendiri.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU memaparkan waktu semasa, ditulis semula sekali seminit. Penyesuai menyimpan setiap gambar dalam memori yang dinilai untuk 100,000 penulisan, yang dicapai selepas kira-kira sepuluh minggu paparan sepanjang masa.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU memaparkan jam dan minit sejak PadForge menemui pad, ditulis semula sekali seminit. Pad yang keluar dari portnya lebih daripada sepuluh saat bermula semula dari sifar. Penyesuai menyimpan setiap gambar dalam memori yang dinilai untuk 100,000 penulisan, yang dicapai selepas kira-kira sepuluh minggu paparan sepanjang masa.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU memaparkan waktu semasa, ditulis semula sekali seminit. Penyesuai menyimpan setiap gambar dalam memorinya sendiri, jadi PadForge menulisnya semula tidak lebih kerap daripada itu.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU memaparkan jam dan minit sejak PadForge menemui pad, ditulis semula sekali seminit. Pad yang keluar dari portnya lebih daripada sepuluh saat bermula semula dari sifar. Penyesuai menyimpan setiap gambar dalam memorinya sendiri, jadi PadForge menulisnya semula tidak lebih kerap daripada sekali seminit.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU memaparkan gambar yang anda pilih: fail BMP atau PNG, fail .lcd VMU Animator atau ikon .vms Dreamcast. Gambar dipotong kepada 48 kali 32 piksel hitam putih.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Pilih Gambar…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Pilih Gambar untuk {0}…</value></data>
@@ -1012,6 +1013,13 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Pengawal dalam mod Xbox tidak menjawab sebagai Apex 4, jadi tiada apa-apa dihantar dan Windows telah mendapatnya semula. Tukar semula ke mod DInput dengan suisnya sendiri.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows tidak memindahkan pengawal ke WinUSB, jadi tiada apa-apa dihantar. Tukar semula ke mod DInput dengan suisnya sendiri.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Dihentikan. Matikan dan hidupkan pengawal dengan suisnya sendiri sebelum anda menghantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Port skrin tidak dapat dibuka, jadi tiada apa yang dihantar. Matikan dan hidupkan pengawal dengan suisnya sendiri dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Gambar itu mempunyai lebih banyak bingkai daripada yang dimuatkan oleh skrin pengawal ini.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Sebuah gambar sedang dihantar ke pengawal ini. Tunggu sehingga selesai.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Skrin meminta gambar pada alamat yang tidak ditulis oleh PadForge, jadi tiada apa yang dihantar. Matikan dan hidupkan pengawal dengan suisnya sendiri dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Gambar telah dihantar, tetapi pengawal tidak bertukar kembali ke mod DInput. Tukarkannya kembali dengan suisnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Pengawal tidak menerima arahan yang menyediakannya, jadi tiada apa yang dihantar. Semak bahawa ia disambungkan dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Penghantaran terhenti kerana ralat dalam PadForge. Fail log mempunyai butirannya.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gambar masih sedang dihantar ke pengawal. Hentikan penghantaran?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fail Controller Pak (*.mpk)|*.mpk|Semua Fail (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Tetap Semula Geometri Menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Tetap Semula Sel</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Tetap Semula Kepekaan</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Tetap Semula Pecutan</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Tetap Semula Zon Mati</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Tetap Semula Masa Tahan</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Tetap Semula Tetingkap Tekan</value></data>
@@ -1787,7 +1794,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Mana-mana Lapisan</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Berjalan secara berterusan semasa pengawal maya ini aktif. Tiada butang pencetus diperlukan.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Laksanakan</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Lapisan, Sumber, Ambang, Arah, Gunakan Butang Pencetus, Ulang</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tambah Tindakan</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Jenis</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Butang Maya</value></data>
@@ -1813,7 +1819,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Tekan Butang Tetikus</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Lepas Butang Tetikus</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Tatal Tetikus</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Togol Tindihan Pad Sentuh</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Butang</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Kombo Kekunci</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Kombo kekunci dalam format {Key1}{Key2}. Boleh disunting.</value></data>
@@ -1944,6 +1949,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Ulang {0} setiap {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Tetikus X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Tetikus Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Ofset Mendatar</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Ofset Menegak</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Sela</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pilih pada Skrin</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Menangkap dalam {0}…</value></data>
@@ -1978,6 +1985,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Separuh terbalik</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Tiada peranti dipetakan</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Peranti tidak diketahui</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Klik pad sentuh</value></data>
@@ -2420,7 +2428,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Bawah (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Atas (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Pelibatan</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butang pelibatan bidikan, Mod pelibatan, Ambang bidikan mudah</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butang pelibatan bidikan, Mod pelibatan, Giro Hidup, Tengahkan Semula, Ambang bidikan mudah</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pintu pilihan yang mengehadkan bila giro aktif. Pesongan kayu bedik kanan dan butang pelibatan bidikan masing-masing boleh dikonfigurasikan. Giro berfungsi hanya apabila setiap pintu yang dikonfigurasikan aktif.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Tempatan</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Pemain</value></data>
@@ -2457,6 +2465,27 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Tetap semula ambang bidikan mudah</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Tetap semula butang pelibatan bidikan</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Tetap semula mod pelibatan</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Lapisan</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Lapisan yang tetapan Giro Hidupnya dipaparkan dan diubah oleh baris di bawah.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giro Hidup</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Bila giro berfungsi pada lapisan ini, selain butang pelibatan. Lapisan shift yang ditetapkan kepada Sama seperti Asas mengikut Asas.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Sentiasa Hidup</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Sama seperti Asas</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Semasa Ditekan</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Semasa Tidak Ditekan</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Togol Setiap Kali Tekan</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Butang Giro Hidup</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Butang yang dibaca oleh Giro Hidup, pada mana-mana pengawal slot ini.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Memerlukan</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Sama ada satu butang yang ditanda mencukupi atau setiap butang yang ditanda mesti ditekan.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Mana-mana Butang</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Setiap Butang</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Tengahkan Semula Apabila Giro Hidup</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Menjadikan kedudukan pengawal sebagai titik rehat setiap kali giro dihidupkan.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Tetap Semula Giro Hidup</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Tetap Semula Butang Giro Hidup</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Tetap Semula Memerlukan</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Tetap Semula Tengahkan Semula Apabila Giro Hidup</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Tetap semula kayu bedik pelibatan</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Tetap semula arah pelibatan</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Laluan terus gerakan</value></data>
@@ -2467,6 +2496,25 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Permainan membaca gerakan dengan kepekaan, pelicinan dan lengkung yang ditetapkan di sini.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Tetap semula penalaan laluan terus</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Hanya Semasa</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Sumber ini dikira hanya semasa input ini juga dibaca sebagai ditekan pada pengawal yang sama. Ujian zon daripada import dibaca sebagai julat kayu bedik atau picu yang diperiksanya.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Dan Semasa</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Input kedua yang turut ditunggu oleh sumber ini.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Tukar Input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Memilih input lain untuk ditunggu.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Lengkung</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Menaikkan bacaan input ini kepada kuasa ini sebelum ia memacu output. 0 dan 1 membiarkannya lurus. Melebihi 1 lebih perlahan berhampiran tengah.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Julat Luar</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Output mencapai penuh pada sebanyak ini daripada pergerakan. 100% ialah mati.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-Zon Mati</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Output bermula pada sebanyak ini sebaik sahaja input bergerak. 0 ialah mati.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Bentuk Zon Mati</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Mati membiarkan bacaan tanpa diubah. Paksian mengukur paksi ini sahaja. Jejarian mengukur pasangan kayu bedik bersama.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Mati</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Paksian</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Jejarian</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zon mati dalam</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Di bawah sebanyak ini daripada pergerakan, input dibaca sebagai berada di tengah.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Pengganda kepekaan giro bagi setiap sumber. 1.0 = lalai enjin (500°/s → pesongan penuh). Nilai di atas 1.0 lebih peka. Nilai di bawah 1.0 kurang peka.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Pengganda kepekaan condongan bagi setiap sumber. 1.0 = condongan 90° untuk pesongan penuh. Nilai di atas 1.0 mencapai pesongan penuh dengan condongan yang kurang.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Condongan giro X</value></data>
@@ -3040,6 +3088,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Tahap</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tamat Masa Ketidakaktifan</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Saat sebelum pengawal maya dimusnahkan apabila semua peranti yang dipetakan luar talian. 0 melumpuhkan. Pengawal yang masih ada berjenis sama beralih ke atas untuk mengisi ruang kosong dan mengikat semula ke slot yang lebih rendah.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>saat (0 = tidak pernah)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tambah Lapisan</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tambah lapisan shift. Jadual pemetaan kedua yang aktif semasa butang ditahan atau ditogol.</value></data>
@@ -3151,6 +3200,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Tetap Semula Kadar Nyahgulung</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Tetap Semula Zon Mati Dalam Sudut</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Tetap Semula Zon Mati Luar Sudut</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Zon Mati Kayu Bedik</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Di bawah pesongan ini, kayu bedik dibaca sebagai berada di tengah, jadi tiada kemudi terkumpul.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Tetap Semula Zon Mati Kayu Bedik</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Tetap Semula Zon Mati Dalam Condong</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Tetap Semula Zon Mati Luar Condong</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Tetap Semula Orientasi Pengawal</value></data>
@@ -3256,6 +3308,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>daripada {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Kereta ini meminta tork lebih daripada yang dimiliki roda stereng, jadi bahagian atas lengkung dipotong.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Rasa di tengah, bantuan kuasa, redaman, geseran, cengkaman, kelajuan tetap, tork roda stereng</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Rasa di tengah, bantuan kuasa, redaman, cengkaman, kelajuan tetap, tork roda stereng</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Seberapa kuat stereng mengekalkan tengahnya pada kelajuan rendah. 100% ialah nilai asal kereta.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Bantuan Kuasa</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Seberapa banyak stereng kuasa mengurangkan daya apabila pembelokan meningkat. Lebih tinggi bermakna stereng lebih ringan jauh dari tengah.</value></data>
@@ -3397,7 +3450,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Tetap Semula Nada Tinggi</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tetap Semula Had Nada</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Menyalin apa sahaja yang dimainkan output lalai sistem ke pembesar suara terbina dalam pengawal ini, secara selari. Berfungsi melalui USB dan Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Peranti yang dipilih tiada pembesar suara terbina dalam. Bunyi makro untuk pad ini dimainkan pada output lalai sistem.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge tiada laluan ke pembesar suara pada peranti yang dipilih melalui sambungan ini. Bunyi makro untuk pad ini dimainkan pada output lalai sistem.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite ujian DualSense pelayar oleh Xuezhou Dai (daidr): rujukan untuk pembingkaian CRC laporan ciri Sony dan arahan ujian perisian tegar yang PadForge majukan daripada pad maya ke pad fizikal.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3811,7 +3864,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Tunjukkan Skrin Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Memainkan gambar pada VMU setiap pad Dreamcast dalam port Bliss-Box yang membekalkan slot ini, kemudian memulangkan setiap port kepada tetapan skrinnya sendiri.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Tunjukkan gambar Dreamcast: {0} × {1} ms, bilangan ulangan {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Setiap gambar dipaparkan sekurang-kurangnya satu saat, kerana penyesuai menyimpan setiap gambar yang dihantar dalam memori yang dinilai untuk 100,000 penulisan, dan gambar baharu setiap saat mencapainya dalam kira-kira sehari. Gambar berukuran 48 kali 32 piksel hitam putih daripada BMP atau PNG, fail .lcd VMU Animator atau ikon .vms Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Setiap gambar dipaparkan sekurang-kurangnya satu saat. PadForge menghantar kepada penyesuai paling banyak satu gambar sesaat, kerana penyesuai menyimpan setiap gambar yang dihantar dalam memorinya sendiri. Gambar berukuran 48 kali 32 piksel hitam putih daripada BMP atau PNG, fail .lcd VMU Animator atau ikon .vms Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Gambar</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Tambah Gambar…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Alih Keluar Gambar</value></data>
@@ -3888,15 +3941,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Semasa lapisan ditogol hidup, ia mematikan dirinya semula selepas sekian milisaat tanpa sebarang input terpeta lapisan itu sendiri yang aktif. Pemasa bermula apabila lapisan diaktifkan dan bermula semula pada setiap input lapisan. 0 mengekalkan lapisan hidup sehingga anda mentogolnya mati sendiri.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Tetap semula zon mati trim kepada 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Tetap semula kelajuan trim kepada 100% sesaat.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Tetap semula kepada mengembalikan tahap kepada 100% apabila dilepaskan.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Tetap semula batal automatik kepada 0 (lapisan kekal hidup sehingga ditogol mati).</value>
   </data>
@@ -3964,6 +4008,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kawasan Kursor</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tahan)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (lepas)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (pelibatan)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang dibawa.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Apa yang Dibawa</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Menjadi</value></data>
@@ -4593,7 +4640,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Tekanan arah melangkah melalui sel dan mencetus setiap sel yang baru dipilih. Kelakuan hotbar ini tidak menggunakan Mod Cetus atau Input Klik.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protokol Dipertingkat Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Mendayakan butang tambahan dan penderia gerakan pada pengawal Flydigi yang disokong.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Perisian Flydigi sedang berjalan: {0}. Ia boleh menggunakan antara muka pengawal yang sama seperti PadForge, dan Vader 5 Pro dilaporkan terputus sambungan berulang kali semasa kedua-duanya mempunyai akses. Jika pengawal ini terputus dan bersambung semula, hentikan perkhidmatan semasa menggunakan PadForge, kekalkan pengawal tersembunyi dan alih keluar perkhidmatan daripada senarai putih HidHide, atau cuba matikan "Protokol Dipertingkat Flydigi" dalam Tetapan, yang tidak disahkan membantu.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Perisian Flydigi sedang berjalan: {0}. Ia berhubung dengan pengawal melalui antara muka yang digunakan oleh PadForge. Jika pengawal ini terputus dan bersambung semula, hentikan perisian itu semasa anda menggunakan PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Benarkan Perubahan Umpukan Jauh</value>
   </data>

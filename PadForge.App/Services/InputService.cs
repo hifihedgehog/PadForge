@@ -977,6 +977,7 @@ namespace PadForge.Services
             // controller refreshes its row.
             PadForge.Engine.Common.BlissBox.BlissBoxApi.DeviceObjectsProvider = PadForge.Common.Input.BlissBoxRuntime.ProvideObjects;
             PadForge.Common.Input.BlissBoxRuntime.PortChanged += OnBlissBoxPortChanged;
+            PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen += OnRumbleFoundAfterOpen;
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
@@ -2597,24 +2598,7 @@ namespace PadForge.Services
                 // and every pad's Live flags (including the SHIFT flame)
                 // so no chip stays lit on a dead engine.
                 foreach (var padVm in _mainVm.Pads)
-                {
-                    if (padVm == null) continue;
-                    foreach (var m in padVm.Mappings)
-                    {
-                        if (m == null) continue;
-                        m.IsInputActive = false;
-                        m.LiveLevel = 0;
-                        // The two readings beside the meter go with it: the
-                        // refresh that writes them stopped with the timer.
-                        m.CurrentValueText = string.Empty;
-                        m.CurrentPercentText = string.Empty;
-                    }
-                    // The light beside a device's name on its Home card and
-                    // in the page's header says the device sends input, and
-                    // a stopped engine reads no device.
-                    foreach (var dev in padVm.MappedDevices) dev.IsSending = false;
-                    padVm.ClearPipelineLiveness();
-                }
+                    ClearLiveReadings(padVm);
 
                 // Unsubscribe from ViewModel property changes (event
                 // subscriptions are thread-safe but the surrounding state
@@ -2710,6 +2694,7 @@ namespace PadForge.Services
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
             try { PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged -= OnAnalogKeyOrdersChanged; } catch { }
             try { PadForge.Common.Input.BlissBoxRuntime.PortChanged -= OnBlissBoxPortChanged; } catch { }
+            try { PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen; } catch { }
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -2942,6 +2927,39 @@ namespace PadForge.Services
             return _fgCached;
         }
 
+        /// <summary>Clears every reading the UI timer wrote on a controller,
+        /// for a stop: the timer that would write them again is gone.</summary>
+        internal static void ClearLiveReadings(PadViewModel padVm)
+        {
+            if (padVm == null) return;
+            foreach (var m in padVm.Mappings)
+            {
+                if (m == null) continue;
+                m.IsInputActive = false;
+                m.LiveLevel = 0;
+                // The two readings beside the meter go with it: the
+                // refresh that writes them stopped with the timer.
+                m.CurrentValueText = string.Empty;
+                m.CurrentPercentText = string.Empty;
+                // The list's levels stand at rest with no percent, as a
+                // device's that is not connected do.
+                var tags = m.LiveTags;
+                for (int i = 0; i < tags.Count; i++)
+                {
+                    tags[i].Level = tags[i].IsCentered ? 0.5 : 0;
+                    tags[i].LevelText = string.Empty;
+                }
+            }
+            // No finger stays on the Touchpad card.
+            padVm.DeviceTouchDown0 = false;
+            padVm.DeviceTouchDown1 = false;
+            // The light beside a device's name on its Home card and
+            // in the page's header says the device sends input, and
+            // a stopped engine reads no device.
+            foreach (var dev in padVm.MappedDevices) dev.IsSending = false;
+            padVm.ClearPipelineLiveness();
+        }
+
         /// <summary>The consumer for "Continue polling when window loses
         /// focus" (EnablePollingOnFocusLoss).
         ///
@@ -2961,6 +2979,24 @@ namespace PadForge.Services
             => _mainVm?.Settings != null
                && !_mainVm.Settings.EnablePollingOnFocusLoss
                && !IsPadForgeForeground();
+
+        /// <summary>The controllers' display mirrors stop: the window is
+        /// minimized, or "Continue polling when window loses focus" is off
+        /// and another program is in front (<see cref="BackgroundUiSuspended"/>),
+        /// as every other UI lane stops.</summary>
+        private bool DisplayMirrorsSuspended()
+            => PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized
+               || BackgroundUiSuspended();
+
+        /// <summary>Home's cards: what is held on each controller now, for
+        /// the card's picture. Only while Home shows and the mirrors run.</summary>
+        private void UpdateHomeHeld()
+        {
+            if (!IsHomePageVisible || DisplayMirrorsSuspended()) return;
+            foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+                if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
+                    slot.ReadHeld(_mainVm.Pads[slot.PadIndex]);
+        }
 
         private void UiTimer_Tick(object sender, EventArgs e)
         {
@@ -3077,17 +3113,19 @@ namespace PadForge.Services
 
             // ── Update Pad ViewModels ──
             // Display-mirror lane: every write below feeds bindings and the
-            // per-frame preview views, none of which can render while the
-            // window is minimized (the gameplay overlays ride their own
-            // lanes further down). Shadow-array change detection inside the
-            // UpdateFrom* mirrors guarantees a full refresh on the first
-            // tick after restore.
-            bool skipPadVmMirrors = PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized;
+            // per-frame preview views. It stops while the window is
+            // minimized, and behind a game while the focus-loss setting is
+            // off (the gameplay overlays ride their own lanes further down).
+            // Shadow-array change detection inside the UpdateFrom* mirrors
+            // gives a full refresh on the first tick after either ends.
+            bool skipPadVmMirrors = DisplayMirrorsSuspended();
             for (int i = 0; !skipPadVmMirrors && i < InputManager.MaxPads && i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
                 // Telemetry-mirror scope: every write below is live display
-                // state, not a setting; see SuppressSettingsDirty.
+                // state, not a setting; see SuppressSettingsDirty. The scope
+                // gives back the value it found, as every other one does.
+                bool suppress = padVm.SuppressSettingsDirty;
                 padVm.SuppressSettingsDirty = true;
                 try
                 {
@@ -3305,17 +3343,10 @@ namespace PadForge.Services
                 }
                 }
                 }
-                finally { padVm.SuppressSettingsDirty = false; }
+                finally { padVm.SuppressSettingsDirty = suppress; }
             }
 
-            // Home's cards: what is held on each controller now, for the
-            // card's picture. Only while Home shows.
-            if (IsHomePageVisible && !skipPadVmMirrors)
-            {
-                foreach (var slot in _mainVm.Dashboard.SlotSummaries)
-                    if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
-                        slot.ReadHeld(_mainVm.Pads[slot.PadIndex]);
-            }
+            UpdateHomeHeld();
 
             // ── gravity low-pass for Player/World Space gyro ──
             UpdateGravityEstimates();
@@ -6731,7 +6762,7 @@ namespace PadForge.Services
                 mapping.CurrentPercentText = LivePercentString(mapping.IsInputActive ? 100 : 0);
             }
 
-            UpdateListTagLevels(padVm, padIndex);
+            UpdateListTagLevels(padVm);
 
             // ── Pipeline heat chips (#175 item 10): recompute from this
             //    tick's rowfire flags on the same lane. The engaged shift
@@ -6753,16 +6784,38 @@ namespace PadForge.Services
         /// its range (<see cref="InputManager.AxisRestsAtZero"/> says which
         /// do not) stands at one half at rest and reads from -100 to 100. Any
         /// other reads from 0 to 100.</summary>
-        private void UpdateListTagLevels(PadViewModel padVm, int padIndex)
+        internal static void UpdateListTagLevels(PadViewModel padVm)
         {
             padVm.FlushList();
-            foreach (var mapping in padVm.Mappings)
+            // A tag's device is found again only once the device list has
+            // changed: its lock is the one the poll thread takes. The count
+            // is read before any lookup, so a change made during one counts
+            // as a change at the next tick.
+            var devices = SettingsManager.UserDevices?.Items;
+            int devicesVersion = devices?.Version ?? 0;
+            var rows = padVm.Mappings;
+            for (int r = 0; r < rows.Count; r++)
             {
-                var tags = mapping.LiveTags;
+                var tags = rows[r].LiveTags;
                 for (int i = 0; i < tags.Count; i++)
                 {
                     var tag = tags[i];
-                    UserDevice device = Guid.TryParse(tag.DeviceGuid, out Guid id) ? FindUserDevice(id) : null;
+                    // Where the input is in the state is found once: its name
+                    // is read by splitting it, and a change of input builds
+                    // the tags again.
+                    if (!tag.InputFound)
+                    {
+                        tag.InputIndex = LevelInputIndex(tag.Descriptor, out bool slider);
+                        tag.InputIsSlider = slider;
+                        tag.InputFound = true;
+                    }
+                    if (!ReferenceEquals(tag.DevicesSeen, devices) || tag.DevicesVersion != devicesVersion)
+                    {
+                        tag.Device = Guid.TryParse(tag.DeviceGuid, out Guid id) ? FindUserDevice(id) : null;
+                        tag.DevicesSeen = devices;
+                        tag.DevicesVersion = devicesVersion;
+                    }
+                    UserDevice device = tag.Device;
                     var state = device != null && device.IsOnline ? device.InputState : null;
                     if (!tag.CenterKnown && device != null)
                     {
@@ -6776,8 +6829,9 @@ namespace PadForge.Services
                         tag.LevelText = string.Empty;
                         continue;
                     }
-                    string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(tag.Descriptor) ?? tag.Descriptor;
-                    double share = Math.Clamp(ReadMappedValue(state, canonical, tag.DeviceGuid, padIndex) / 65535.0, 0, 1);
+                    int index = tag.InputIndex;
+                    int raw = index < 0 ? 0 : tag.InputIsSlider ? state.Sliders[index] : state.Axis[index];
+                    double share = Math.Clamp(raw / 65535.0, 0, 1);
                     tag.Level = share;
                     tag.LevelText = LivePercentString(ListTagPercent(share, centered));
                 }
@@ -7073,6 +7127,39 @@ namespace PadForge.Services
         private static bool PovInDirection(int centidegrees, string dir)
             => PadForge.Engine.Common.Mapping.SourceCoercion.PovMatches(centidegrees, dir);
 
+        /// <summary>A descriptor without the legacy flag before it: "IH",
+        /// "I" (inverted) or "H" (half).</summary>
+        private static string StripInputFlags(string s)
+        {
+            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                return s.Substring(2);
+            if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
+                && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
+                return s.Substring(1);
+            if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
+                return s.Substring(1);
+            return s;
+        }
+
+        /// <summary>Where an axis or a slider is in a device's state, as
+        /// <see cref="ReadMappedValue"/> reads it: its index among the axes,
+        /// or among the sliders when <paramref name="slider"/> is set. A
+        /// "Gamepad ..." alias is read through the input it names. -1 for
+        /// any other input and for one past the state's arrays.</summary>
+        internal static int LevelInputIndex(string descriptor, out bool slider)
+        {
+            slider = false;
+            if (string.IsNullOrEmpty(descriptor)) return -1;
+            string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(descriptor) ?? descriptor;
+            string[] parts = StripInputFlags(canonical.Trim()).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 0) return -1;
+            if (parts[0].Equals("axis", StringComparison.OrdinalIgnoreCase))
+                return index < CustomInputState.MaxAxis ? index : -1;
+            if (!parts[0].Equals("slider", StringComparison.OrdinalIgnoreCase)) return -1;
+            slider = true;
+            return index < CustomInputState.MaxSliders ? index : -1;
+        }
+
         /// <summary>
         /// Reads a value from a CustomInputState using a mapping descriptor string.
         /// Simplified version of the Step 3 parser for display purposes.
@@ -7085,16 +7172,7 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(descriptor))
                 return 0;
 
-            string s = descriptor.Trim();
-
-            // Strip prefixes.
-            if (s.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
-                s = s.Substring(2);
-            else if (s.StartsWith("I", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1])
-                     && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(s))
-                s = s.Substring(1);
-            else if (s.StartsWith("H", StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
-                s = s.Substring(1);
+            string s = StripInputFlags(descriptor.Trim());
 
             // Touchpad descriptors: "Touchpad N Finger M X/Y/Down" or "Touchpad N Click".
             if (s.StartsWith("Touchpad", StringComparison.Ordinal))
@@ -7563,6 +7641,8 @@ namespace PadForge.Services
             ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
             ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
             ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
+            ps.GyroActivation = padVm.GyroActivation ?? "";
+            ps.GyroRecenterOnEngage = padVm.GyroRecenterOnEngage ? "1" : "0";
 
             // Trigger rumble routing (#102), per trigger.
             ps.LeftTriggerRouteSource = string.IsNullOrEmpty(padVm.LeftTriggerRouteSource) ? "None" : padVm.LeftTriggerRouteSource;
@@ -7653,6 +7733,7 @@ namespace PadForge.Services
                     ps.SetRawMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
                     ps.SetRawMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
                     ps.SetRawMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                    ps.SetRawMapping($"Stick{g}SteerDeadZone", stick.SteerStickDeadZone.ToString(ic));
                 }
 
                 // Extended custom stick/trigger tuning for indices 2+, mirroring
@@ -7970,6 +8051,8 @@ namespace PadForge.Services
             padVm.GyroAimEngageButton = ps.GyroAimEngageButton ?? "";
             padVm.GyroAimEngageDeviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
             padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+            padVm.GyroActivation = ps.GyroActivation ?? "";
+            padVm.GyroRecenterOnEngage = ps.GyroRecenterOnEngage == "1";
 
             // Trigger rumble routing (#102), per trigger.
             padVm.LeftTriggerRouteSource = string.IsNullOrEmpty(ps.LeftTriggerRouteSource) ? "None" : ps.LeftTriggerRouteSource;
@@ -10978,6 +11061,14 @@ namespace PadForge.Services
 
         private int _blissBoxRefreshQueued;
 
+        /// <summary>SDL reported a rumble capability a pad lacked at the open,
+        /// raised on the poll thread. The Devices row reads its Rumble chip
+        /// from the device, so the rows are populated again.</summary>
+        private void OnRumbleFoundAfterOpen(PadForge.Engine.SdlDeviceWrapper wrapper)
+        {
+            _dispatcher.BeginInvoke(new Action(SyncDevicesList));
+        }
+
         /// <summary>A Bliss-Box port opened, closed or identified another
         /// controller (#469): its row's objects take the new names, a port
         /// assigned before a controller was in it gets what it owes its slots,
@@ -11922,7 +12013,7 @@ namespace PadForge.Services
             // announces (#586), so its session asks for the walk. The
             // model it answered with goes on its record and is saved
             // with it, as a row's outputs are.
-            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed += RequestPeripheralRescan;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed += OnFlydigiSessionsChanged;
             PadForge.Common.Input.Flydigi.FlydigiApexService.ModelRecorded += OnPeripheralCapabilitiesChanged;
             host.Start();
         }
@@ -11932,7 +12023,7 @@ namespace PadForge.Services
             var host = _peripheralHost;
             _peripheralHost = null;
             if (host == null) return;
-            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= RequestPeripheralRescan;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= OnFlydigiSessionsChanged;
             PadForge.Common.Input.Flydigi.FlydigiApexService.ModelRecorded -= OnPeripheralCapabilitiesChanged;
             host.CapabilitiesChanged -= OnPeripheralCapabilitiesChanged;
             host.Dispose();
@@ -11945,6 +12036,18 @@ namespace PadForge.Services
         /// host is asked to walk the present collections again. Nothing to
         /// ask while the engine is stopped.</summary>
         public void RequestPeripheralRescan() => _peripheralHost?.RequestRescan();
+
+        /// <summary>A Flydigi Apex pad's session came or went, or its model
+        /// became known (#586). Its lights are walked again, and each slot
+        /// runs a full pass: the session opens seconds after the pad arrives,
+        /// after the arrival's own pass found none, and only a full pass hands
+        /// it the Adaptive Triggers setting and marks its slot for a game's
+        /// trigger writes.</summary>
+        private void OnFlydigiSessionsChanged()
+        {
+            RequestPeripheralRescan();
+            UserEffectsDispatcher.ApplyOnceAll();
+        }
 
         /// <summary>A row found or lost an output, or a Flydigi Apex pad's
         /// record took the model the pad answered with. The record is
@@ -13706,7 +13809,7 @@ namespace PadForge.Services
         private static readonly PadSetting _remoteApplyPs = new PadSetting { ForceOverall = "100" };
         // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
         // change rarely; re-writing them per frame would halve the wheel poll rate).
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid, int localWrites)> _remoteWheelOneShot = new();
         /// <summary>Resolve the authenticated source ID to its current physical device.</summary>
         private bool ResolveExposed(string deviceId, out ISdlInputDevice source, out UserDevice ud)
         {
@@ -14101,17 +14204,11 @@ namespace PadForge.Services
             }
             else if (isFan)
             {
-                if (w.HasCond)
-                    FanatecRawHidWriter.WriteWheelCondition(path, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns, w.CondGain);
-                else
-                {
-                    FanatecRawHidWriter.WriteWheelConstantForce(path, force, pid);
-                    if (w.Ac > 0)
-                    {
-                        FanatecRawHidWriter.WriteAutocenter(path, w.Ac);
-                        WheelCenteringWriter.SpringSlotWritten(path);
-                    }
-                }
+                // A peer's frame comes when something in it changed, so the force
+                // goes out with each one. The game's condition goes out when it
+                // is not the one the base holds (WriteFanatecGameForce).
+                WheelCenteringWriter.WriteFanatecGameForce(path, pid, w.HasCond, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns,
+                    w.CondGain, force, w.Ac, forceChanged: true);
             }
             else // Thrustmaster
             {
@@ -14128,27 +14225,38 @@ namespace PadForge.Services
             // Range, auto-center and RPM LEDs. Each is re-sent only when it changes. A
             // range the consumer leaves to the wheel (#512) is never sent, and
             // 0 stands for it so turning the range back on sends it again.
-            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, -1, false);
+            var prev = _remoteWheelOneShot.TryGetValue(source.InstanceGuid, out var p) ? p : (-1, -1, -1, false, -1);
             int range = RemoteWheelRange(w);
-            if (prev.Item1 != range || prev.Item2 != w.Ac)
+            // The local pass may have written its own in between: the count of
+            // its writes differs, and the peer's go back on.
+            int local = RemoteLinkOutputRouter.LocalWheelSettings(path);
+            if (prev.Item1 != range || prev.Item2 != w.Ac || prev.Item5 != local)
             {
                 int acMag = w.Ac;
                 if (isLogi) { if (range != 0) LogitechRawHidWriter.WriteRange(path, range, pid); LogitechRawHidWriter.WriteAutocenter(path, acMag, LogitechRawHidWriter.IsMomo(pid)); }
-                else if (isFan) { if (range != 0) FanatecRawHidWriter.WriteRange(path, range, pid); FanatecRawHidWriter.WriteAutocenter(path, acMag); WheelCenteringWriter.SpringSlotWritten(path); }
+                else if (isFan)
+                {
+                    if (range != 0) FanatecRawHidWriter.WriteRange(path, range, pid);
+                    FanatecRawHidWriter.WriteAutocenter(path, acMag); WheelCenteringWriter.SpringSlotWritten(path);
+                    // A game's spring had the slot: it goes back in.
+                    if (w.HasCond)
+                        WheelCenteringWriter.WriteFanatecGameForce(path, pid, true, w.Effect, w.Pc, w.Nc, w.Off, w.Db, w.Ps, w.Ns,
+                            w.CondGain, force, w.Ac, forceChanged: false);
+                }
                 else { if (range != 0) ThrustmasterRawHidWriter.WriteRange(path, range, pid); ThrustmasterRawHidWriter.WriteAutocenter(path, acMag); }
             }
             // Centering's effects go after the auto-center above, which on a
             // Fanatec base is a spring in the slot Vehicle mode's spring uses
             // (WheelCenteringWriter.Apply).
             WheelCenteringWriter.Apply(path, vid, pid, centering, w.HasCond ? w.Effect : 0, autoCenterSpring: isFan && w.Ac > 0);
-            if (prev.Item3 != w.LedMask || prev.Item4 != w.LedValid)
+            if (prev.Item3 != w.LedMask || prev.Item4 != w.LedValid || prev.Item5 != local)
             {
                 int mask = w.LedValid ? w.LedMask : 0;
                 if (isLogi) LogitechRawHidWriter.WriteRpmLeds(path, (byte)mask);
                 else if (isFan) FanatecRawHidWriter.WriteRpmLeds(path, mask);
                 else ThrustmasterRawHidWriter.WriteRpmLeds(path, mask);
             }
-            _remoteWheelOneShot[source.InstanceGuid] = (range, w.Ac, w.LedMask, w.LedValid);
+            _remoteWheelOneShot[source.InstanceGuid] = (range, w.Ac, w.LedMask, w.LedValid, local);
         }
 
         /// <summary>The range a relayed wheel frame asks the owner to send, or
@@ -18188,7 +18296,7 @@ namespace PadForge.Services
                     foreach (var us in slotSettings)
                     {
                         var ud = FindUserDevice(us.InstanceGuid);
-                        string name = LocalizedDeviceName(ud) ?? "Unknown device";
+                        string name = LocalizedDeviceName(ud) ?? Strings.Instance.Mapping_UnknownDevice;
                         bool online = ud?.IsOnline ?? false;
                         if (online) anyOnline = true;
 

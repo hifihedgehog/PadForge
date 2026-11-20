@@ -119,6 +119,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← asu)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ yvate)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ndojejuhúi</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll ndojejuhúi. Emboguejy jey PadForge.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Ndaikatúi oñemonguatia: {0}</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" oñemoheñói.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Perfil "{0}" oñemboguete.</value></data>
@@ -138,6 +139,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Michĩ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ta'anga</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Tysỹi</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} ñesẽ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ñesẽ</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Ñemongu'e</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Eikutu peteĩ votõ ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
@@ -226,7 +228,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ehai «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ndaipóri moñe'ẽrã)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Moñe'ẽrã</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>aravo'i</value></data>
   <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Bliss-Box puerto {0} · {1} · firmware {2}</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Hechauka</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Perfil réra</value></data>
@@ -547,6 +548,18 @@
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Restablecer invertir pitch</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Restablecer zona muerta</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Añoite oñeñapytĩ aja</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ko ñepyrũha oipapa añoite ko ñeikeha oñeñapytĩ avei aja peteĩ control-pe. Peteĩ zona ñeha'ã oúva importación-gui ojelee palanca térã gatillo rango ohecháva ramo.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ha avei aja</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Mokõiha ñeikeha ko ñepyrũha oha'arõ avei.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Emoambue ñeikeha</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Oiporavo ambue ñeikeha oha'arõ hag̃ua.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curva</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ohupi ko ñeikeha ñemoñe'ẽ ko potencia-pe omomýi mboyve ñesẽ. 0 ha 1 ndomoambuéi. 1 ári imbeguevéve mbytépe.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Rango okápegua</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ñesẽ oñemyenyhẽ ko ñeguata vore peve. 100% oñembogue.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti zona muerta</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ñesẽ oñepyrũ ko'ýva ñeikeha oñemomýi vove. 0 oñembogue.</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
 
@@ -1147,7 +1160,7 @@
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, suavizado, Aceleración, Curva ñesẽ</value></data>
   <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Marco de referencia</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player térã Arapy</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Votõ apuntar ñepyrũ, Modo ñepyrũ, Umbral apuntar hasy'ỹ</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Votõ apuntar ñepyrũ, Modo ñepyrũ, Gyro myendy, Mombyte jey, Umbral apuntar hasy'ỹ</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Omyandy ko touchpad gestokuéra</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Deslizar, toque, pellizco, forma</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Egrava nde mba'éva</value></data>
@@ -1299,4 +1312,8 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Moĩ</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mba'e'oka ojekuaa'ỹva</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ñeñapytĩ)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ñemosãso)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ñepyrũ)</value></data>
 </root>

@@ -10,8 +10,8 @@
 // tables give every control a fixed rectangle in ModelCanvas coordinates,
 // so anchors translate through the Viewbox transform instead of a camera,
 // there is no drag-hide, and re-layout is event-driven (size change,
-// rebuild, label refresh) rather than timer-driven. The 150 ms timer
-// remains only for flash expiry and ember-dot evaluation.
+// rebuild, label refresh) rather than timer-driven. There is no timer: the
+// chips light in the render pass that paints the picture (OnRendering).
 //
 // Rules baked in: no storyboards, no Effects, all live state is plain
 // brush/property swaps.
@@ -672,7 +672,7 @@ namespace PadForge.Views
                 Height = AnnotationChipHeight,
                 CornerRadius = new CornerRadius(6),
                 BorderThickness = new Thickness(1),
-                Padding = new Thickness(6, 2, 6, 2),
+                Padding = new Thickness(6, 1, 6, 1),
                 Cursor = Cursors.Hand,
                 Child = text,
                 Tag = row.TargetSettingName,
@@ -869,8 +869,8 @@ namespace PadForge.Views
             // Nintendo rows arrive as raw grid names (RawBtn0, RawPov0Up),
             // the same as they do for the anchor lookup a few methods up.
             // Without the same translation every one of them fell to the
-            // default arm, so the ember output dot was permanently collapsed
-            // on the ONLY slot type that feeds raw names to this canvas.
+            // default arm, so no chip ever lit on a slot whose rows carry
+            // raw names.
             if (prop != null && prop.StartsWith("Raw", System.StringComparison.Ordinal))
             {
                 prop = Models2D.NintendoPreviewMap.ToPreview(prop, _vm?.ProfileId);

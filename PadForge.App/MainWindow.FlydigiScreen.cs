@@ -47,7 +47,7 @@ namespace PadForge
                 HoldSdl = off => InputManager.HoldXbox360HidapiDriver(off),
             };
 
-            var result = FlydigiScreenDialog.Show(this, pad, binding, DreamcastScreenService.ActiveProfileName(),
+            var result = FlydigiScreenDialog.Show(this, device, pad.Identity.Model, binding, DreamcastScreenService.ActiveProfileName(),
                 DreamcastScreenService.ActiveProfileNumber(), profilePicture);
             if (result.ProfilePictureChanged)
             {

@@ -33,7 +33,11 @@ namespace PadForge.Common.Input
                || ThrustmasterRawHidWriter.IsThrustmasterWheel(vendorId, productId);
 
         /// <summary>The facts of a device's wheel, or none for a device that
-        /// is no wheel or is not connected.</summary>
+        /// is no wheel. A Logitech, a Fanatec or a Thrustmaster wheel has
+        /// them by its saved ids, connected or not, so its card shows while
+        /// the wheel is unplugged. A wheel routed through SDL has them only
+        /// while it is connected, since they are read from its open
+        /// device.</summary>
         public static WheelCenteringFacts Of(UserDevice ud)
         {
             if (ud == null) return default;

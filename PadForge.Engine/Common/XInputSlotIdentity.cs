@@ -118,13 +118,14 @@ namespace PadForge.Engine
         /// a millisecond apart.</summary>
         public static Answer Get(int slot, int busyRetries = 0)
         {
-            var seam = AnswerForTest;
-            if (seam != null) return seam(slot);
-            if (OffLimitsForTest) return new Answer(Kind.Unsupported);
-            if (slot < 0 || slot >= SlotCount) return new Answer(Kind.None);
             for (int attempt = 0; ; attempt++)
             {
-                Answer answer = Ask((uint)slot);
+                Answer answer;
+                var seam = AnswerForTest;
+                if (seam != null) answer = seam(slot);
+                else if (OffLimitsForTest) return new Answer(Kind.Unsupported);
+                else if (slot < 0 || slot >= SlotCount) return new Answer(Kind.None);
+                else answer = Ask((uint)slot);
                 if (answer.Kind != Kind.Busy || attempt >= busyRetries) return answer;
                 Thread.Sleep(1);
             }
@@ -149,30 +150,59 @@ namespace PadForge.Engine
             return id.Length > 0 ? id : null;
         }
 
+        /// <summary>Per thread: the buffer the identity call writes a path
+        /// into, and the last answer found on each number. A number whose
+        /// generation and path have not moved answers with the string it
+        /// had, so an unchanged answer makes no garbage. OpenXInput gives a
+        /// device its generation from one counter for every number when the
+        /// device takes a number, and the device keeps its path while it
+        /// holds it (OpenXinput.cpp, SetDeviceOnPort and
+        /// DeviceInfo::Create).</summary>
+        [ThreadStatic] private static char[] t_path;
+        [ThreadStatic] private static Answer[] t_found;
+
         private static Answer Ask(uint slot)
         {
             try
             {
                 var identity = new OpenXInputIdentity { cbSize = (uint)Marshal.SizeOf<OpenXInputIdentity>() };
-                var buffer = new char[512];
+                var buffer = t_path ??= new char[512];
                 uint rc = OpenXInputGetDeviceIdentityV1(slot, ref identity, buffer, (uint)buffer.Length);
                 if (rc == ERROR_INSUFFICIENT_BUFFER && identity.requiredCch > buffer.Length && identity.requiredCch <= 32768)
                 {
-                    buffer = new char[identity.requiredCch];
+                    buffer = t_path = new char[identity.requiredCch];
                     rc = OpenXInputGetDeviceIdentityV1(slot, ref identity, buffer, (uint)buffer.Length);
                 }
-                if (rc == ERROR_SUCCESS && identity.requiredCch > 1 && identity.requiredCch <= buffer.Length)
-                    return new Answer(Kind.Found, new string(buffer, 0, (int)identity.requiredCch - 1),
-                        identity.generation, identity.interfaceCount);
-                return rc switch
-                {
-                    ERROR_BUSY => new Answer(Kind.Busy),
-                    ERROR_NOT_SUPPORTED => new Answer(Kind.Unsupported),
-                    _ => new Answer(Kind.None),
-                };
+                return AnswerOf(slot, rc, identity, buffer);
             }
             catch (EntryPointNotFoundException) { return new Answer(Kind.Unsupported); }
             catch (DllNotFoundException) { return new Answer(Kind.Unsupported); }
+        }
+
+        /// <summary>The answer the identity call's return code, record and
+        /// path buffer make for a number. A found answer equal to the one this
+        /// thread last kept for the number is that one, string and all.</summary>
+        internal static Answer AnswerOf(uint slot, uint rc, in OpenXInputIdentity identity, char[] buffer)
+        {
+            if (rc == ERROR_SUCCESS && identity.requiredCch > 1 && identity.requiredCch <= buffer.Length)
+            {
+                int length = (int)identity.requiredCch - 1;
+                if (slot >= SlotCount)
+                    return new Answer(Kind.Found, new string(buffer, 0, length), identity.generation, identity.interfaceCount);
+                ref Answer kept = ref (t_found ??= new Answer[SlotCount])[slot];
+                if (kept.InterfacePath != null && kept.Generation == identity.generation
+                    && kept.InterfaceCount == identity.interfaceCount
+                    && kept.InterfacePath.AsSpan().SequenceEqual(buffer.AsSpan(0, length)))
+                    return kept;
+                return kept = new Answer(Kind.Found, new string(buffer, 0, length),
+                    identity.generation, identity.interfaceCount);
+            }
+            return rc switch
+            {
+                ERROR_BUSY => new Answer(Kind.Busy),
+                ERROR_NOT_SUPPORTED => new Answer(Kind.Unsupported),
+                _ => new Answer(Kind.None),
+            };
         }
 
         // ── Native ──

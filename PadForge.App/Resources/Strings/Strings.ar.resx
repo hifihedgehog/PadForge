@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>لا شيء</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>مللي ثانية</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ثانية</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>دقيقة (0 = أبدا)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>هرتز</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>غير معين</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← يسار)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ أعلى)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll غير موجود</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>لم يتم العثور على SDL3.dll. ضع SDL3.dll بجوار PadForge.exe. يمكن تنزيله من https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll غير موجود. نزّل PadForge مرة أخرى.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>فشلت عملية برنامج التشغيل: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>تم نسخ الإعدادات إلى الحافظة.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>تم نسخ معلومات الجهاز إلى الحافظة.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>منخفضة</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>صورة</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>قائمة</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>المخرج: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>المخرجات: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>الحركة</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>انقر على عنصر تحكم ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ألعاب لا يعرفها PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>للتعديلات التي تبحث عن DSX قيد التشغيل قبل أن ترسل.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ما الذي يظهر</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة عند تفعيل طبقة تحويل، للمدة التي تحددها تلك الطبقة</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة عند تفعيل طبقة تحويل، للمدة التي تحددها تلك الطبقة.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>نسخ العنوان</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>الموضع على الشاشة</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ربط هاتف</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>تشغيل المحرك تلقائيا عند بدء البرنامج</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>متابعة الاستقصاء عندما تفقد النافذة التركيز</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>معدل الاستقصاء (ما لم يتجاوزه ملف تعريف)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>يقرأ المحرك كل جهاز ويحدّث وحدات التحكم الظاهرية بهذا العدد من المرات في الثانية، من 60 إلى 10000. يستهلك المعدل الأعلى وقتا أطول من المعالج. يوقظ Windows المحرك نحو 2000 مرة في الثانية كحد أقصى، لذا يجري المعدل الأعلى عدة دورات عند كل إيقاظ. ما دام ملف تعريف له معدل استقصاء خاص نشطا، يسري ذلك المعدل بدلا منه. تعود هذه القيمة عند إلغاء تفعيل ملف التعريف.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>يقرأ المحرك كل جهاز ويحدّث وحدات التحكم الظاهرية بهذا العدد من المرات في الثانية، من 60 إلى 10000. يستهلك المعدل الأعلى وقتا أطول من المعالج. على هذا الكمبيوتر يوقظ Windows المحرك {0} مرة في الثانية كحد أقصى، لذا يجري المعدل الأعلى عدة دورات عند كل إيقاظ. ما دام ملف تعريف له معدل استقصاء خاص نشطا، يسري ذلك المعدل بدلا منه. تعود هذه القيمة عند إلغاء تفعيل ملف التعريف.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>إخفاء الأجهزة عن الألعاب</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>المفتاح الرئيسي لإخفاء الأجهزة عبر HidHide ولخطافات الإدخال منخفضة المستوى. عند إيقافه لا يتم إخفاء أي جهاز مهما كانت إعدادات كل جهاز.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>إبقاء الأجهزة محجوبة بين مرات التشغيل</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>عدد المللي ثانية بين الأحرف المكتوبة، حتى 1000. القيمة 0 تكتب النص كله دفعة واحدة.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>قطع الاتصال عند الخمول</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>التفاصيل</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>دقيقة</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>قطع Bluetooth عند التوصيل عبر USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>شحن سريع. عندما تبلغ وحدة التحكم هذه بأنها تشحن وهي متصلة عبر Bluetooth، يتم قطع اتصال Bluetooth لتشحن دون تغذية الراديو. يشمل ذلك أي مصدر طاقة USB، ومنه شواحن الحائط. إذا أعدت تشغيل Bluetooth والكبل ما زال موصولا، فسيبقى الاتصال كما هو حتى فصل الكبل في المرة التالية.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>القراءة كوحدة تحكم iCade</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>تعرض وحدة VMU اسم ملف التعريف النشط وتتبع كل تبديل لملف التعريف.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>تعرض وحدة VMU ترتيب ملف التعريف النشط في قائمة ملفات التعريف. ملف التعريف الافتراضي رقمه 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>تعرض وحدة VMU صورة ملف التعريف النشط، أو اسمه إن لم تكن له صورة. يحتفظ كل ملف تعريف بصورته الخاصة.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>تعرض وحدة VMU الوقت الحالي، وتعاد كتابته مرة كل دقيقة. يحتفظ المحول بكل صورة في ذاكرة تتحمل 100,000 عملية كتابة، وهو عدد يبلغه هذا الوضع بعد نحو عشرة أسابيع من العرض على مدار الساعة.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>تعرض وحدة VMU الساعات والدقائق منذ أن وجد PadForge ذراع التحكم، وتعاد كتابتها مرة كل دقيقة. إذا بقي ذراع التحكم خارج منفذه أكثر من عشر ثوان يبدأ العد من الصفر. يحتفظ المحول بكل صورة في ذاكرة تتحمل 100,000 عملية كتابة، وهو عدد يبلغه هذا الوضع بعد نحو عشرة أسابيع من العرض على مدار الساعة.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>تعرض وحدة VMU الوقت الحالي، وتعاد كتابته مرة كل دقيقة. يخزّن المحول كل صورة في ذاكرته الخاصة، لذا لا يعيد PadForge كتابتها بوتيرة أكبر من ذلك.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>تعرض وحدة VMU الساعات والدقائق منذ أن وجد PadForge ذراع التحكم، وتعاد كتابتها مرة كل دقيقة. إذا بقي ذراع التحكم خارج منفذه أكثر من عشر ثوان يبدأ العد من الصفر. يخزّن المحول كل صورة في ذاكرته الخاصة، لذا لا يعيد PadForge كتابتها بوتيرة أكبر من مرة كل دقيقة.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>تعرض وحدة VMU صورة تختارها: ملف BMP أو PNG، أو ملف lcd من VMU Animator، أو أيقونة vms من Dreamcast. يتم قص الصور إلى 48 في 32 بكسل بالأبيض والأسود.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>اختيار صورة…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>اختيار صورة لملف التعريف {0}…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>لم ترد وحدة التحكم في وضع Xbox بوصفها Apex 4، لذلك لم يُرسل شيء وقد استعادها Windows. أعدها إلى وضع DInput بمفتاحها الخاص.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>لم ينقل Windows وحدة التحكم إلى WinUSB، لذلك لم يُرسل شيء. أعدها إلى وضع DInput بمفتاحها الخاص.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>تم الإيقاف. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص قبل أن ترسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>لم يُفتح منفذ الشاشة، لذا لم يُرسل شيء. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>عدد إطارات الصورة أكبر مما تتسع له شاشة وحدة التحكم هذه.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>هناك صورة قيد الإرسال إلى وحدة التحكم هذه. انتظر حتى تنتهي.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>طلبت الشاشة الصورة في عنوان لا يكتب PadForge إليه، لذا لم يُرسل شيء. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>أُرسلت الصورة، لكن وحدة التحكم لم تعد إلى وضع DInput. أعدها إليه بمفتاحها الخاص.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>لم تقبل وحدة التحكم الأمر الذي يجهزها، لذا لم يُرسل شيء. تأكد من اتصالها ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>توقف الإرسال بسبب خطأ في PadForge. تجد التفاصيل في ملف السجل.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>لا تزال صورة في طريقها إلى وحدة التحكم. هل توقف الإرسال؟</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ملفات Controller Pak (*.mpk)|*.mpk|كل الملفات (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak المنفذ {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>إعادة ضبط هندسة القائمة</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>إعادة ضبط الخلية</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>إعادة ضبط الحساسية</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>إعادة ضبط التسارع</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>إعادة ضبط مدة الضغط المستمر</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>إعادة ضبط نافذة الضغط</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>أي طبقة</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>يعمل باستمرار ما دامت وحدة التحكم الظاهرية هذه نشطة. لا يتطلب زر تشغيل.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>نفّذ</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>الطبقة، المصدر، العتبة، الاتجاه، استهلاك أزرار التشغيل، التكرار</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>إضافة إجراء</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>النوع</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>الأزرار الظاهرية</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>ضغط زر الماوس</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>تحرير زر الماوس</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>تمرير الماوس</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>تبديل تراكب لوحة اللمس</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>الأزرار</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>تركيبة مفاتيح</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>تركيبة مفاتيح بتنسيق {Key1}{Key2}. قابلة للتعديل.</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>تكرار {0} كل {1} مللي ثانية</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>الماوس X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>الماوس Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>الإزاحة الأفقية</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>الإزاحة العمودية</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>الفاصل الزمني</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>الاختيار من الشاشة</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>الالتقاط بعد {0}…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>نصف معكوس</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>لا يوجد جهاز معين</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>جهاز غير معروف</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>ضغطة لوحة اللمس</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>أسفل (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>أعلى (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>التفعيل</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>زر تفعيل التصويب، وضع التفعيل، عتبة التصويب السهل</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>زر تفعيل التصويب، وضع التفعيل، تشغيل الجيروسكوب، إعادة التمركز، عتبة التصويب السهل</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شروط اختيارية تحدد متى يكون الجيروسكوب نشطا. يمكن إعداد كل من انحراف العصا اليمنى وزر تفعيل التصويب. لا يعمل الجيروسكوب إلا ما دام كل شرط معد محققا.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>محلي</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>اللاعب</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>إعادة ضبط عتبة التصويب السهل</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>إعادة ضبط زر تفعيل التصويب</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>إعادة ضبط وضع التفعيل</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>الطبقة</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>الطبقة التي تعرض الصفوف أدناه إعداد تشغيل الجيروسكوب فيها وتغيّره.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>تشغيل الجيروسكوب</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>متى يعمل الجيروسكوب في هذه الطبقة، إضافة إلى زر التفعيل. تتبع طبقة التحويل المضبوطة على «مثل الأساسية» الطبقة الأساسية.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>دائما</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>مثل الأساسية</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>ما دام مضغوطا</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>ما دام غير مضغوط</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>تبديل عند كل ضغطة</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>أزرار تشغيل الجيروسكوب</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>الأزرار التي يقرؤها تشغيل الجيروسكوب، على أي وحدة تحكم في هذه الخانة.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>المطلوب</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>هل يكفي زر واحد من الأزرار المحددة أم يجب ضغط كل الأزرار المحددة.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>أي زر</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>كل زر</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>إعادة التمركز عند تشغيل الجيروسكوب</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>يعتمد وضع وحدة التحكم نقطة سكون في كل مرة يعمل فيها الجيروسكوب.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>إعادة ضبط تشغيل الجيروسكوب</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>إعادة ضبط أزرار تشغيل الجيروسكوب</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>إعادة ضبط المطلوب</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>إعادة ضبط إعادة التمركز عند تشغيل الجيروسكوب</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>إعادة ضبط عصا التفعيل</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>إعادة ضبط اتجاه التفعيل</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>التمرير المباشر للحركة</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>تقرأ اللعبة الحركة وفق الحساسية والتنعيم والمنحنى المضبوطة هنا.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>إعادة ضبط توليف التمرير المباشر</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>الحساسية</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>فقط عندما</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>يُحتسب هذا المصدر فقط عندما يُقرأ هذا الإدخال مضغوطا أيضا على وحدة التحكم نفسها. يُقرأ اختبار المنطقة المستورد على أنه مدى العصا أو الزناد الذي يفحصه.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>وأيضا عندما</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>إدخال ثان ينتظره هذا المصدر أيضا.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>تغيير الإدخال</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>يختار إدخالا آخر لينتظره.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>المنحنى</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>يرفع قراءة هذا الإدخال إلى هذه القوة قبل أن يقود المخرج. القيمتان 0 و1 تتركانه مستقيما. ما فوق 1 أبطأ قرب المركز.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>المدى الخارجي</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>يبلغ المخرج أقصاه عند هذا القدر من الحركة. القيمة 100% تعني الإيقاف.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>مضاد المنطقة الميتة</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>يبدأ المخرج من هذا القدر فور تحرك الإدخال. القيمة 0 تعني الإيقاف.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>شكل المنطقة الميتة</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>«إيقاف» يترك القراءة كما هي. «محوري» يقيس هذا المحور وحده. «شعاعي» يقيس زوج العصا معا.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>إيقاف</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>محوري</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>شعاعي</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>المنطقة الميتة الداخلية</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>دون هذا القدر من الحركة يُقرأ الإدخال في المركز.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>معامل حساسية الجيروسكوب لكل مصدر. 1.0 = القيمة الافتراضية للمحرك (500°/ث ← انحراف كامل). القيم فوق 1.0 أكثر حساسية. القيم دون 1.0 أقل حساسية.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>معامل حساسية الإمالة لكل مصدر. 1.0 = إمالة 90° للانحراف الكامل. القيم فوق 1.0 تبلغ الانحراف الكامل بإمالة أقل.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>إمالة الجيروسكوب X</value></data>
@@ -3045,6 +3093,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>المستوى</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>مهلة عدم النشاط</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>عدد الثواني قبل إزالة وحدة تحكم ظاهرية عندما تكون كل أجهزتها المعينة غير متصلة. 0 للتعطيل. وحدات التحكم الباقية من النوع نفسه تتقدم لسد الفراغ وترتبط من جديد بخانات أدنى.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ثانية (0 = أبدا)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>إضافة طبقة</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>إضافة طبقة Shift. جدول تعيين ثان يتفعل ما دام زر مضغوطا أو مبدلا.</value></data>
@@ -3156,6 +3205,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>إعادة ضبط معدل فك اللف</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة الداخلية للزاوية</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة الخارجية للزاوية</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>المنطقة الميتة للعصا</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>دون هذا الانحراف تُقرأ العصا في المركز، فلا يتراكم أي توجيه.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة للعصا</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة الداخلية للميل</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة الخارجية للميل</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>إعادة ضبط اتجاه وحدة التحكم</value></data>
@@ -3261,6 +3313,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>من {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>تطلب هذه السيارة عزمًا أكبر مما تملكه العجلة، لذا يُقطع أعلى المنحنى.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>الإحساس عند المركز، مساعدة التوجيه، التخميد، الاحتكاك، التماسك، السرعة الثابتة، عزم العجلة</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>الإحساس عند المركز، مساعدة التوجيه، التخميد، التماسك، السرعة الثابتة، عزم العجلة</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>مدى قوة تمسك التوجيه بمركزه عند السرعة المنخفضة. 100% هو ما في السيارة نفسها.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>مساعدة التوجيه</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>مقدار ما يخففه التوجيه المعزز مع تزايد الانعطاف. القيمة الأكبر تعني توجيهًا أخف بعيدًا عن المركز.</value></data>
@@ -3402,7 +3455,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>إعادة ضبط النغمات العالية</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>إعادة ضبط حد النغمة</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ينسخ كل ما يشغّله جهاز الإخراج الافتراضي للنظام إلى مكبر الصوت المدمج في وحدة التحكم هذه، بالتوازي. يعمل عبر USB وBluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>الجهاز المحدد بلا مكبر صوت مدمج. أصوات الماكرو لذراع التحكم هذا تعمل على جهاز الإخراج الافتراضي للنظام.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>لا يملك PadForge مسارا إلى مكبر صوت في الجهاز المحدد عبر هذا الاتصال. أصوات الماكرو لذراع التحكم هذا تعمل على جهاز الإخراج الافتراضي للنظام.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعة اختبارات DualSense تعمل في المتصفح من إعداد Xuezhou Dai (daidr): مرجع لتأطير CRC في تقارير الميزات من Sony ولأوامر اختبار البرنامج الثابت التي يمررها PadForge من أذرع التحكم الظاهرية إلى الفعلية.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3816,7 +3869,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>عرض شاشة Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>يعرض صورا على وحدة VMU لكل ذراع تحكم Dreamcast في منفذ Bliss-Box يغذي هذه الخانة، ثم يعيد كل منفذ إلى إعداد شاشته الخاص.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>عرض صور Dreamcast: {0} × {1} مللي ثانية، عدد التكرار {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>تظهر كل صورة ثانية واحدة على الأقل، لأن المحول يحتفظ بكل صورة ترسل إليه في ذاكرة تتحمل 100,000 عملية كتابة، وهو عدد تبلغه صورة جديدة كل ثانية في نحو يوم. الصور 48 في 32 بكسل بالأبيض والأسود من ملف BMP أو PNG، أو ملف lcd من VMU Animator، أو أيقونة vms من Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>تظهر كل صورة ثانية واحدة على الأقل. يرسل PadForge إلى المحول صورة واحدة في الثانية كحد أقصى، لأن المحول يخزّن كل صورة ترسل إليه في ذاكرته الخاصة. الصور 48 في 32 بكسل بالأبيض والأسود من ملف BMP أو PNG، أو ملف lcd من VMU Animator، أو أيقونة vms من Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>الصور</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>إضافة صورة…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>إزالة الصورة</value></data>
@@ -3893,15 +3946,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>ما دامت الطبقة مفعلة بالتبديل، توقف نفسها بعد هذا العدد من المللي ثانية دون نشاط أي من مدخلاتها المعينة. يبدأ المؤقت عند تفعيل الطبقة ويعاد عند كل إدخال في الطبقة. القيمة 0 تبقي الطبقة مفعلة إلى أن توقفها بنفسك.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>إعادة ضبط المنطقة الميتة للضبط الدقيق إلى 25%.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>إعادة ضبط سرعة الضبط الدقيق إلى 100% في الثانية.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>إعادة الضبط إلى إرجاع المستوى فورا إلى 100% عند التحرير.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>إعادة ضبط الإلغاء التلقائي إلى 0 (تبقى الطبقة مفعلة حتى إيقافها بالتبديل).</value>
   </data>
@@ -3969,6 +4013,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>ملف تعريف Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماكرو Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>منطقة المؤشر</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ضغط)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (تحرير)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (تفعيل)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>اختر تكوينا لترى ما ينتقل.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ما الذي ينتقل</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>يصبح</value></data>
@@ -4598,7 +4645,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>ضغطات الاتجاه تتنقل بين الخلايا وتطلق كل خلية يتم تحديدها. سلوك شريط المهارات هذا لا يستخدم «وضع الإطلاق» ولا «مدخل الضغطة».</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>بروتوكول Flydigi المحسن</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>يفعّل الأزرار الإضافية ومستشعرات الحركة في وحدات تحكم Flydigi المدعومة.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>برنامج Flydigi قيد التشغيل: {0}. قد يستخدم واجهة وحدة التحكم نفسها التي يستخدمها PadForge، وقد وردت بلاغات عن انقطاع اتصال Vader 5 Pro مرارا والبرنامجان يصلان إليها. إذا انقطع اتصال وحدة التحكم هذه وعاد، أوقف الخدمة أثناء استخدام PadForge، أو أبق وحدة التحكم مخفية وأزل الخدمة من قائمة السماح في HidHide، أو جرّب إيقاف «بروتوكول Flydigi المحسن» في الإعدادات، وهو حل غير مؤكد الفائدة.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>برنامج Flydigi قيد التشغيل: {0}. يتواصل مع وحدة التحكم عبر الواجهة التي يستخدمها PadForge. إذا انقطع اتصال وحدة التحكم هذه وعاد، أوقف ذلك البرنامج أثناء استخدام PadForge.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>السماح بتغيير التعيينات عن بعد</value>
   </data>

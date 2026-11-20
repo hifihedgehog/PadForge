@@ -191,26 +191,18 @@ namespace PadForge.Engine.Data
 
         // ── Workshop slot-level stamps (v18). Imported profiles carry no
         // devices, so per-device PadSetting channels (thumb deadzone
-        // shape, gyro aim engage) cannot be stamped at import. These
-        // attributes carry the authored values on the authoritative set
-        // instead. Two overlay contracts, both only while
-        // Authoritative:
-        //   1. Deadzone-shape stamps OVERLAY the resolved per-(slot,
-        //      device) PadSetting: a non-empty stamp wins over the
-        //      device value, the touchpad-gesture auto-arm shape
-        //      (Step3.ResolveThumbDeadZoneShape).
-        //   2. The gyro-engage stamp is a USER-FIRST FALLBACK: it is
-        //      consulted only when no device PadSetting on the slot
-        //      configures an engage button, so a user-authored engage
-        //      always wins (InputManager.UpdateGyroEngageStates).
-        // Empty strings (the deserialized default for old XML) mean
+        // shape, gyro engage, curves, rumble) cannot be written at import.
+        // These attributes carry the authored values on the set until a
+        // device is assigned, when WorkshopTuningApplier moves each onto
+        // that device's own card and clears it. The engine reads none of
+        // them. Empty strings (the deserialized default for old XML) mean
         // "no stamp". Every container-copy helper must carry the whole
         // stamp family via CopyWorkshopStampsTo. ──
 
         /// <summary>Steam deadzone_shape for the left thumb pair, as a
         /// <see cref="DeadZoneShape"/> ordinal string ("0" = Axial for
-        /// Steam's Cross / Square, "2" = ScaledRadial for Circle). Only
-        /// read when <see cref="Authoritative"/>.</summary>
+        /// Steam's Cross / Square, "2" = ScaledRadial for Circle). Moved
+        /// onto the assigned device's Dead Zone Shape and cleared.</summary>
         [XmlAttribute] public string WorkshopLeftStickDeadZoneShape { get; set; } = "";
 
         /// <summary>Right-thumb twin of
@@ -252,7 +244,8 @@ namespace PadForge.Engine.Data
 
         /// <summary>Steam gyro_button as a device-free engage descriptor
         /// (empty DeviceGuid contract): gyro rows fire only while it is
-        /// held. Only read when <see cref="Authoritative"/>.</summary>
+        /// held. Moved onto the assigned device's Engage Button and
+        /// cleared.</summary>
         [XmlAttribute] public string WorkshopGyroEngageDescriptor { get; set; } = "";
 
         /// <summary>Steam gyro_button_invert: engage while the button is
@@ -268,89 +261,28 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public bool WorkshopGyroEngageToggle { get; set; } = false;
 
         /// <summary>Steam gyro_ratchet_button_mask (translator v22) as
-        /// pipe-joined device-free descriptors: while ANY of them is held
-        /// on any slot device, the slot's gyro reads are clutched
-        /// (disengaged), Steam's ratchet ("lift the mouse" re-centering).
-        /// A separate AND-NOT lane beside the engage stamp, never a
-        /// replacement for it, so it composes with an authored engage
-        /// button, the user's own engage PadSetting, and the
-        /// SetGyroEngaged macro bit alike. Only read while
-        /// <see cref="Authoritative"/>. Empty = no ratchet.</summary>
-        [XmlAttribute]
-        public string WorkshopGyroRatchetDescriptors
-        {
-            get => _workshopGyroRatchetDescriptors;
-            set { _workshopGyroRatchetDescriptors = value ?? ""; _workshopGyroRatchetList = null; }
-        }
-        private string _workshopGyroRatchetDescriptors = "";
-        private string[] _workshopGyroRatchetList;
+        /// pipe-joined device-free descriptors: while any of them is held,
+        /// the gyro is off, Steam's ratchet ("lift the mouse" re-centering).
+        /// A carrier only: <c>WorkshopTuningApplier</c> moves it onto the
+        /// assigned device's Gyro card as the Base layer's "on while not
+        /// held" activation (<see cref="PadSetting.GyroActivation"/>) and
+        /// clears it. Empty = no ratchet.</summary>
+        [XmlAttribute] public string WorkshopGyroRatchetDescriptors { get; set; } = "";
 
-        /// <summary>Split, cached view of
-        /// <see cref="WorkshopGyroRatchetDescriptors"/> for the per-tick
-        /// engage settle (no per-poll string split).</summary>
-        [XmlIgnore]
-        public string[] WorkshopGyroRatchetList
-            => _workshopGyroRatchetList ??= _workshopGyroRatchetDescriptors.Length == 0
-                ? System.Array.Empty<string>()
-                : _workshopGyroRatchetDescriptors.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
+        /// <summary>Steam gyro activations the engage button cannot carry, by
+        /// layer, in the <see cref="PadForge.Engine.Data.GyroActivation"/> text form: several
+        /// device-free buttons that turn the gyro on, a set that needs all of
+        /// them, or layers whose gyro groups turn the gyro on differently. A
+        /// carrier only: <c>WorkshopTuningApplier</c> moves it onto the
+        /// assigned device's Gyro card (<see cref="PadSetting.GyroActivation"/>)
+        /// and clears it. Empty = none.</summary>
+        [XmlAttribute] public string WorkshopGyroActivation { get; set; } = "";
 
-        /// <summary>Steam gyro activations the engage button and the ratchet
-        /// cannot carry, by layer, as "layer=Mode,Any|All,button|button"
-        /// entries joined by ";": several device-free buttons that turn the
-        /// gyro on, a set that needs all of them, or layers whose gyro
-        /// groups turn the gyro on differently. Mode is "Hold" (on while
-        /// held), "Release" (on while not held) or "Toggle" (flips on each
-        /// press), and a layer with no buttons is always on. The engaged
-        /// layer's entry applies, else Base's, else none: an AND lane beside
-        /// the engage button and the ratchet like the ratchet itself. Only
-        /// read while <see cref="Authoritative"/>. Empty = no lane.</summary>
-        [XmlAttribute]
-        public string WorkshopGyroActivation
-        {
-            get => _workshopGyroActivation;
-            set { _workshopGyroActivation = value ?? ""; _workshopGyroActivationByLayer = null; }
-        }
-        private string _workshopGyroActivation = "";
-        private System.Collections.Generic.Dictionary<string, GyroActivationEntry> _workshopGyroActivationByLayer;
-
-        /// <summary>One layer's entry of <see cref="WorkshopGyroActivation"/>.</summary>
-        public sealed class GyroActivationEntry
-        {
-            public string Mode = "Hold";
-            public bool All;
-            public string[] Buttons = System.Array.Empty<string>();
-        }
-
-        /// <summary>Parsed, cached view of <see cref="WorkshopGyroActivation"/>
-        /// for the per-tick engage settle. Null when the stamp is empty.</summary>
-        [XmlIgnore]
-        public System.Collections.Generic.Dictionary<string, GyroActivationEntry> WorkshopGyroActivationByLayer
-        {
-            get
-            {
-                if (_workshopGyroActivation.Length == 0) return null;
-                if (_workshopGyroActivationByLayer != null) return _workshopGyroActivationByLayer;
-                var map = new System.Collections.Generic.Dictionary<string, GyroActivationEntry>(System.StringComparer.Ordinal);
-                foreach (string entry in _workshopGyroActivation.Split(';', System.StringSplitOptions.RemoveEmptyEntries))
-                {
-                    int eq = entry.IndexOf('=');
-                    if (eq <= 0) continue;
-                    string[] parts = entry.Substring(eq + 1).Split(',');
-                    if (parts.Length < 3) continue;
-                    map[entry.Substring(0, eq)] = new GyroActivationEntry
-                    {
-                        Mode = parts[0] is "Release" or "Toggle" ? parts[0] : "Hold",
-                        All = parts[1] == "All",
-                        Buttons = parts[2].Split('|', System.StringSplitOptions.RemoveEmptyEntries),
-                    };
-                }
-                return _workshopGyroActivationByLayer = map;
-            }
-        }
-
-        /// <summary>Re-center the slot's gyro each time it turns on: Steam's
+        /// <summary>Re-center the gyro each time it turns on: Steam's
         /// deflection mode with a gyro button and Use Relative on takes the
-        /// controller's pose at each activation as its resting point.</summary>
+        /// controller's pose at each activation as its resting point. A
+        /// carrier only, moved onto the assigned device's Gyro card
+        /// (<see cref="PadSetting.GyroRecenterOnEngage"/>) and cleared.</summary>
         [XmlAttribute] public bool WorkshopGyroRecenterOnEngage { get; set; } = false;
 
         /// <summary>Copies the Workshop slot-level stamps (v18) onto
@@ -358,9 +290,8 @@ namespace PadForge.Engine.Data
         /// helper (profile snapshot deep clone, Copy From Slot, the legacy
         /// merge), so a new stamp cannot silently drop from one of them
         /// the way the hand-lists dropped all four. <see cref="Authoritative"/>
-        /// itself stays a per-caller decision (the clipboard paste
-        /// deliberately does not carry ownership, and stamps are only read
-        /// while Authoritative, so uncarried stamps there are inert).</summary>
+        /// itself stays a per-caller decision: the clipboard paste
+        /// deliberately carries neither ownership nor the stamps.</summary>
         public void CopyWorkshopStampsTo(MappingSet dst)
         {
             if (dst == null) return;

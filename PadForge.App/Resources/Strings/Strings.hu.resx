@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>másodperc</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>perc (0 = soha)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nincs hozzárendelve</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← balra)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ fel)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nem található</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Az SDL3.dll nem található. Helyezze az SDL3.dll fájlt a PadForge.exe mellé. Letöltés: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>Az SDL3.dll nem található. Töltse le újra a PadForge programot.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Az illesztőprogram-művelet nem sikerült: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>A beállítások a vágólapra másolva.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Az eszközadatok a vágólapra másolva.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Alacsony</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Kép</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} kimenet</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} kimenet</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Mozgás</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kattintson egy vezérlőelemre, majd nyomja meg azt a bemenetet, amelynek vezérelnie kell.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>A PadForge által nem ismert játékok</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Olyan modokhoz, amelyek küldés előtt futó DSX-et keresnek.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mi jelenjen meg</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>A profil neve, amikor a profil megváltozik</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>A profil neve, amikor a profil megváltozik.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Cím másolása</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Elhelyezés a képernyőn</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Telefon csatlakoztatása</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>A bemeneti motor automatikus indítása a program indulásakor</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Lekérdezés folytatása, ha az ablak elveszíti a fókuszt</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Lekérdezési gyakoriság (ha egy profil nem bírálja felül)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>A bemeneti motor másodpercenként ennyiszer olvassa be az összes eszközt és frissíti a virtuális kontrollereket, 60 és 10000 között. A magasabb gyakoriság több processzoridőt használ. A Windows legfeljebb másodpercenként körülbelül 2000-szer ébreszti fel a bemeneti motort, ezért ennél magasabb gyakoriságnál minden ébresztéskor több feldolgozási kör fut le. Amíg saját lekérdezési gyakoriságú profil aktív, helyette az érvényes. Ez az érték a profil inaktiválásakor visszatér.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>A bemeneti motor másodpercenként ennyiszer olvassa be az összes eszközt és frissíti a virtuális kontrollereket, 60 és 10000 között. A magasabb gyakoriság több processzoridőt használ. Ezen a számítógépen a Windows legfeljebb másodpercenként {0}-szer ébreszti fel a bemeneti motort, ezért ennél magasabb gyakoriságnál minden ébresztéskor több feldolgozási kör fut le. Amíg saját lekérdezési gyakoriságú profil aktív, helyette az érvényes. Ez az érték a profil inaktiválásakor visszatér.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Eszközök elrejtése a játékok elől</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>A HidHide eszközelrejtés és az alacsony szintű bemeneti hookok főkapcsolója. Kikapcsolva egyetlen eszköz sincs elrejtve, az eszközönkénti beállításoktól függetlenül.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Eszközök rejtve tartása az indítások között</value></data>
@@ -937,7 +939,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>A begépelt karakterek közötti idő ezredmásodpercben, legfeljebb 1000. 0 esetén a teljes szöveg egyszerre kerül begépelésre.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Leválasztás tétlenség esetén</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Részletek</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>perc</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth leválasztása USB-csatlakoztatáskor</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Gyorstöltés. Ha a kontroller Bluetooth-kapcsolat közben töltést jelez, a Bluetooth-kapcsolat megszakad, így a rádió táplálása nélkül töltődik. Bármilyen USB-áramforrás számít, a fali töltőket is beleértve. Ha a kábel bedugva marad, és Ön visszakapcsolja a Bluetooth-kapcsolatot, a program a következő kihúzásig békén hagyja.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Olvasás iCade kontrollerként</value></data>
@@ -979,8 +980,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>A VMU az aktív profil nevét mutatja, és követ minden profilváltást.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>A VMU az aktív profil helyét mutatja a profillistában. Az Alapértelmezett profil a 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>A VMU az aktív profil saját képét mutatja, vagy a nevét, ha nincs képe. Minden profilnak saját képe van.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>A VMU a pontos időt mutatja, percenként egyszer frissítve. Az adapter minden képet 100 000 írásra méretezett memóriában tárol, amit ez éjjel-nappali megjelenítés mellett körülbelül tíz hét alatt ér el.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>A VMU azt mutatja, hány óra és perc telt el azóta, hogy a PadForge megtalálta a kontrollert, percenként egyszer frissítve. Ha a kontroller tíz másodpercnél tovább nincs a portjában, a számlálás nulláról indul újra. Az adapter minden képet 100 000 írásra méretezett memóriában tárol, amit ez éjjel-nappali megjelenítés mellett körülbelül tíz hét alatt ér el.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>A VMU a pontos időt mutatja, percenként egyszer frissítve. Az adapter minden képet a saját memóriájában tárol, ezért a PadForge ennél gyakrabban nem írja újra.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>A VMU azt mutatja, hány óra és perc telt el azóta, hogy a PadForge megtalálta a kontrollert, percenként egyszer frissítve. Ha a kontroller tíz másodpercnél tovább nincs a portjában, a számlálás nulláról indul újra. Az adapter minden képet a saját memóriájában tárol, ezért a PadForge percenként egynél gyakrabban nem írja újra.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>A VMU az Ön által választott képet mutatja: BMP vagy PNG képet, VMU Animator .lcd fájlt vagy Dreamcast .vms ikont. A képek 48 × 32 fekete-fehér képpontra lesznek vágva.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Kép kiválasztása…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Kép kiválasztása ehhez: {0}…</value></data>
@@ -1025,6 +1026,13 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Az Xbox módban lévő kontroller nem Apex 4 kontrollerként válaszolt, ezért nem ment el semmi, és a Windows visszakapta. Kapcsolja vissza DInput módba a saját kapcsolójával.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>A Windows nem helyezte át a kontrollert WinUSB-re, ezért nem ment el semmi. Kapcsolja vissza DInput módba a saját kapcsolójával.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Leállítva. Kapcsolja ki és be a kontrollert a saját kapcsolójával, mielőtt újra küldene.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>A képernyő portja nem nyílt meg, ezért semmi sem lett elküldve. Kapcsolja ki és be a kontrollert a saját kapcsolójával, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>A képnek több képkockája van, mint amennyit a kontroller képernyője elfogad.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Már küldés alatt van egy kép ennek a kontrollernek. Várja meg, amíg befejeződik.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>A képernyő a képet olyan címre kérte, amelyre a PadForge nem ír, ezért semmi sem lett elküldve. Kapcsolja ki és be a kontrollert a saját kapcsolójával, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>A kép elküldve, de a kontroller nem váltott vissza DInput módba. Váltson vissza a saját kapcsolójával.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>A kontroller nem fogadta el az előkészítő parancsot, ezért semmi sem lett elküldve. Ellenőrizze, hogy csatlakoztatva van-e, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>A küldést a PadForge egyik hibája állította le. A naplófájl tartalmazza a részleteket.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Még folyamatban van egy kép küldése a kontrollerre. Leállítja a küldést?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fájlok (*.mpk)|*.mpk|Minden fájl (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak {0}. port.mpk</value></data>
@@ -1694,7 +1702,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menügeometria visszaállítása</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Cella visszaállítása</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Érzékenység visszaállítása</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Gyorsítás visszaállítása</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Holtzóna visszaállítása</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Tartási idő visszaállítása</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Lenyomási időablak visszaállítása</value></data>
@@ -1976,7 +1983,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bármely réteg</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Folyamatosan fut, amíg ez a virtuális kontroller aktív. Nincs szükség kiváltó gombra.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Teendő</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Réteg, Forrás, Küszöb, Irány, Kiváltó gombok elnyelése, Ismétlés</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Művelet hozzáadása</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Típus</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuális gombok</value></data>
@@ -2002,7 +2008,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Egérgomb lenyomása</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Egérgomb felengedése</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Egérgörgetés</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Érintőpad-átfedés be/ki</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Gombok</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Billentyűkombináció</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Billentyűkombináció {Key1}{Key2} formátumban. Szerkeszthető.</value></data>
@@ -2133,6 +2138,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} ismétlése {1} ms-onként</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Egér X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Egér Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Vízszintes eltolás</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Függőleges eltolás</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Időköz</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Kijelölés a képernyőn</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Rögzítésig: {0}…</value></data>
@@ -2167,6 +2174,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Fordított fél</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nincs hozzárendelt eszköz</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Ismeretlen eszköz</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Érintőpad-kattintás</value></data>
@@ -2609,7 +2617,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Le (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Fel (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktiválás</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Célzásaktiváló gomb, Aktiválási mód, Könnyű célzás küszöbe</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Célzásaktiváló gomb, Aktiválási mód, Giroszkóp be, Újraközpontosítás, Könnyű célzás küszöbe</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Nem kötelező feltételek, amelyek korlátozzák, mikor aktív a giroszkóp. A jobb kar kitérése és a célzásaktiváló gomb külön-külön beállítható. A giroszkóp csak akkor aktív, ha minden beállított feltétel teljesül.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Helyi</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Játékos</value></data>
@@ -2646,6 +2654,27 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Könnyű célzás küszöbének visszaállítása</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Célzásaktiváló gomb visszaállítása</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Aktiválási mód visszaállítása</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Réteg</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Az a réteg, amelynek Giroszkóp be beállítását az alatta lévő sorok mutatják és módosítják.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Giroszkóp be</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Mikor működik a giroszkóp ezen a rétegen, az aktiváló gombon felül. A Mint az alap értékre állított váltóréteg az alapréteget követi.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Mindig be</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Mint az alap</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Nyomva tartva</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Nem nyomva tartva</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Váltás minden lenyomásnál</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Giroszkóp be gombjai</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>A gombok, amelyeket a Giroszkóp be beállítás figyel, az adott hely bármelyik kontrollerén.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Feltétel</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Elég-e egy bejelölt gomb, vagy minden bejelölt gombot nyomva kell tartani.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Bármelyik gomb</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Minden gomb</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Újraközpontosítás a giroszkóp bekapcsolásakor</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>A kontroller helyzetét veszi nyugalmi pontnak minden alkalommal, amikor a giroszkóp bekapcsol.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Giroszkóp be visszaállítása</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Giroszkóp be gombjainak visszaállítása</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Feltétel visszaállítása</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Újraközpontosítás a giroszkóp bekapcsolásakor visszaállítása</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktiváló kar visszaállítása</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktiválási irány visszaállítása</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Mozgásátengedés</value></data>
@@ -2656,6 +2685,25 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>A játék a mozgást az itt megadott érzékenységgel, simítással és görbével olvassa.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Átengedés hangolásának visszaállítása</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Csak amíg</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ez a forrás csak akkor számít, ha ez a bemenet ugyanazon a kontrolleren is nyomva van. Az importból származó zónateszt a vizsgált kar- vagy ravasztartományként jelenik meg.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>És amíg</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Egy második bemenet, amelyre ez a forrás szintén vár.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Bemenet módosítása</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Másik bemenetet választ, amelyre várni kell.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Görbe</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>A bemenet értékét ennyiedik hatványra emeli, mielőtt a kimenetet vezérli. A 0 és az 1 egyenesen hagyja. 1 fölött a középpont közelében lassabb.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Külső tartomány</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>A kimenet a kitérés ekkora részénél éri el a teljes értéket. A 100% kikapcsolt állapot.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Antiholtzóna</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>A kimenet ennyiről indul, amint a bemenet megmozdul. A 0 kikapcsolt állapot.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Holtzóna alakja</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>A Ki érintetlenül hagyja az értéket. Az Axiális csak ezt a tengelyt méri. A Radiális a kar mindkét tengelyét együtt méri.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Ki</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axiális</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radiális</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Belső holtzóna</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>A kitérésnek ennél kisebb részénél a bemenet középhelyzetűnek számít.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti giroszkópérzékenység-szorzó. 1.0 = a bemeneti motor alapértelmezése (500°/s → teljes kitérés). Az 1.0 fölötti értékek érzékenyebbek, az 1.0 alattiak kevésbé érzékenyek.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti döntésérzékenység-szorzó. 1.0 = 90°-os döntés a teljes kitéréshez. Az 1.0 fölötti értékek kisebb döntéssel érik el a teljes kitérést.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Giroszkóp döntés X</value></data>
@@ -3236,6 +3284,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Szint</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktivitási időkorlát</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Ennyi másodperc után szűnik meg egy virtuális kontroller, ha az összes hozzárendelt eszköze offline. 0 esetén ki van kapcsolva. Az azonos típusú megmaradó kontrollerek feljebb lépnek, hogy kitöltsék a rést, és alacsonyabb foglalatokhoz kötődnek újra.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>másodperc (0 = soha)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Réteg hozzáadása</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Váltóréteg hozzáadása. Egy második hozzárendelési táblázat, amely egy gomb nyomva tartása vagy átkapcsolása idejére aktiválódik.</value></data>
@@ -3347,6 +3396,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Visszatekeredés sebességének visszaállítása</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Szög belső holtzónájának visszaállítása</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Szög külső holtzónájának visszaállítása</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Kar holtzónája</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Ennél kisebb kitérésnél a kar középhelyzetűnek számít, ezért nem épül fel kormányzás.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Kar holtzónájának visszaállítása</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Dőlés belső holtzónájának visszaállítása</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Dőlés külső holtzónájának visszaállítása</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Kontroller tájolásának visszaállítása</value></data>
@@ -3452,6 +3504,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>a maximális {0} N·m-ből</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Ez az autó több nyomatékot kér, mint amennyi a kormánynak van, ezért a görbe teteje le van vágva.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Középhelyzeti érzet, szervótámogatás, csillapítás, súrlódás, tapadás, rögzített sebesség, kormánynyomaték</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Középhelyzeti érzet, szervótámogatás, csillapítás, tapadás, rögzített sebesség, kormánynyomaték</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Mennyire erősen tartja a kormányzás a középhelyzetet alacsony sebességnél. A 100% az autó saját értéke.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Szervótámogatás</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Mennyit vesz le a szervokormány, ahogy a kanyarodás erősödik. A nagyobb érték könnyebb kormányzást jelent a középhelyzettől távol.</value></data>
@@ -3593,7 +3646,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Magas hangok visszaállítása</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Hanghatár visszaállítása</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Mindent, amit a rendszer alapértelmezett kimenete lejátszik, párhuzamosan a kontroller beépített hangszórójára is másol. USB-n és Bluetooth-on is működik.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>A kiválasztott eszköznek nincs beépített hangszórója. A kontroller makróhangjai a rendszer alapértelmezett kimenetén szólalnak meg.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>A PadForge nem talál útvonalat a kiválasztott eszköz hangszórójához ezen a kapcsolaton. A pad makróhangjai a rendszer alapértelmezett kimenetén szólalnak meg.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Böngészős DualSense-tesztcsomag, készítette: Xuezhou Dai (daidr). Referencia a Sony feature reportok CRC-keretezéséhez és azokhoz a firmware-tesztparancsokhoz, amelyeket a PadForge a virtuális kontrollerekről a fizikaiakra továbbít.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast-képernyő megjelenítése</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Képeket játszik le minden olyan Dreamcast-kontroller VMU-ján, amely a foglalatot tápláló Bliss-Box portban van, majd minden portot visszaállít a saját képernyő-beállítására.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast-képek megjelenítése: {0} × {1} ms, ismétlések száma: {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Minden kép legalább egy másodpercig látszik, mert az adapter minden neki küldött képet 100 000 írásra méretezett memóriában tárol, amit másodpercenként egy új kép körülbelül egy nap alatt ér el. A képek 48 × 32 fekete-fehér képpontból állnak, és BMP vagy PNG képből, VMU Animator .lcd fájlból vagy Dreamcast .vms ikonból származnak.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Minden kép legalább egy másodpercig látszik. A PadForge másodpercenként legfeljebb egy képet küld az adapternek, mert az adapter minden neki küldött képet a saját memóriájában tárol. A képek 48 × 32 fekete-fehér képpontból állnak, és BMP vagy PNG képből, VMU Animator .lcd fájlból vagy Dreamcast .vms ikonból származnak.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Képek</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Kép hozzáadása…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Kép eltávolítása</value></data>
@@ -4113,15 +4166,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Amíg a réteg be van kapcsolva, ennyi ezredmásodperc után magától kikapcsol, ha a réteg egyetlen saját hozzárendelt bemenete sem aktív. Az időzítő a réteg aktiválásakor indul, és minden rétegbemenetnél újraindul. 0 esetén a réteg bekapcsolva marad, amíg Ön ki nem kapcsolja.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>A trimm holtzónájának visszaállítása 25%-ra.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>A trimm sebességének visszaállítása 100%/másodpercre.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Visszaállítás arra, hogy a szint felengedéskor 100%-ra ugorjon vissza.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Az automatikus megszakítás visszaállítása 0-ra (a réteg kikapcsolásig bekapcsolva marad).</value>
   </data>
@@ -4189,6 +4233,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makró</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurzorrégió</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (tartás)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (elengedés)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktiválás)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Válasszon ki egy konfigurációt, hogy lássa, mi kerül át.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ami átkerül</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Ilyen lesz</value></data>
@@ -4825,7 +4872,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Az iránygombok lenyomása végiglépked a cellákon, és minden újonnan kijelölt cellát aktivál, a Kiváltási mód és a Kattintási bemenet nélkül. A Gyorssáv stílus kiváltás nélkül lépked, és a saját Kiváltás vezérlőjével vált ki.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi bővített protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Engedélyezi a további gombokat és mozgásérzékelőket a támogatott Flydigi kontrollereken.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi szoftver fut: {0}. Ugyanazt a kontrollerinterfészt használhatja, mint a PadForge, és egy bejelentés szerint egy Vader 5 Pro ismételten megszakította a kapcsolatot, amíg mindkettő hozzáfért. Ha ez a kontroller lecsatlakozik, majd újracsatlakozik, állítsa le a szolgáltatást, amíg a PadForge programot használja, tartsa a kontrollert elrejtve, és távolítsa el a szolgáltatást a HidHide engedélyezőlistájáról, vagy próbálja meg kikapcsolni a Beállításokban a „Flydigi bővített protokoll” lehetőséget, bár nem igazolt, hogy ez segít.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi szoftver fut: {0}. Ugyanazon az interfészen kommunikál a kontrollerrel, amelyet a PadForge használ. Ha ez a kontroller lecsatlakozik, majd újracsatlakozik, állítsa le ezt a szoftvert, amíg a PadForge programot használja.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Távoli hozzárendelés-módosítások engedélyezése</value>
   </data>
@@ -5485,9 +5532,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>A megjelenített tartalom kiválasztása…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge képernyő-átfedés</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Még nincs mit megjeleníteni. Válassza ki a Képernyő-átfedés oldalon, az Extrák alatt, mit mutasson.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Célkereszt be/ki</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Nagyító be/ki</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Minden célkereszt</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Célkereszt</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>

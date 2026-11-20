@@ -16,12 +16,13 @@ namespace PadForge.Common.Input
     ///
     /// <para>Two bounds keep a slow moment from turning into a busy one.
     /// A loop further behind than <see cref="StallBound"/>, after a stall or
-    /// a resume from sleep, starts its schedule again from that moment and
-    /// runs no burst. And passes run back to back for no longer than one
-    /// tick's time (<see cref="BurstBudget"/>) after a wake: a loop still
-    /// behind by then is on a processor that cannot hold the rate, so it
-    /// starts again and sleeps, where it used to run on with no gap and
-    /// starve the interface thread (#331).</para>
+    /// a resume from sleep, drops the passes it missed and starts its
+    /// schedule again from that moment. And passes run back to back for no
+    /// longer than one tick's time (<see cref="BurstBudget"/>) after a wake.
+    /// Once that time has gone, in owed passes or in one long pass, the loop
+    /// starts again and sleeps a whole interval. It used to run on with no
+    /// gap and starve the interface thread (#331), and a loop whose every
+    /// pass outlasted the stall bound never slept.</para>
     ///
     /// <para>Arithmetic over <see cref="System.Diagnostics.Stopwatch"/> ticks
     /// only, so a test drives it with a clock of its own.</para>
@@ -97,11 +98,14 @@ namespace PadForge.Common.Input
             if (behind < 0) return _due;
             if (behind > StallBound)
             {
-                Restart(now);
-                return 0;
+                // A stall or a resume from sleep: the passes it missed are
+                // dropped, and the next one is due now.
+                _due = now;
+                _carry = 0;
             }
             if (now - _burstStart < BurstBudget) return 0;
-            // Still behind after a tick's time of passes back to back.
+            // A tick's time has gone since the wake, in passes back to back
+            // or in one long pass: the loop sleeps a whole interval first.
             Restart(now);
             _due = now + _whole;
             return _due;

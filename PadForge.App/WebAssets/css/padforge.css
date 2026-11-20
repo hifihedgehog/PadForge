@@ -33,7 +33,6 @@
     --focus: #7cc7ea;       /* ColdBrush */
     --veil: rgba(10, 14, 21, 0.82);  /* the ground, over a picture or a page */
     --font: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
-    --mono: 'Cascadia Mono', Consolas, 'Courier New', monospace;
 }
 
 /* The bar at the top of a page that has one: the way back, the page's

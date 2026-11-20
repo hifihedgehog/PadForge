@@ -286,7 +286,7 @@ namespace PadForge.Tests
                 new MacroAction { Type = MacroActionType.ToggleScreenOverlay }.DisplayText);
             Assert.Equal(string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, 3),
                 new MacroAction { Type = MacroActionType.ToggleScreenOverlay, ScreenOverlayNumber = 3 }.DisplayText);
-            Assert.Contains("ToggleScreenOverlay, S.Macro_ToggleScreenOverlay", RepoText("PadForge.App", "ViewModels", "MacroTypeCatalog.cs"));
+            Assert.Contains("ToggleScreenOverlay, S.MacroAction_ToggleScreenOverlay", RepoText("PadForge.App", "ViewModels", "MacroTypeCatalog.cs"));
         }
 
         [Fact]

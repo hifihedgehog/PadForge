@@ -117,10 +117,22 @@ namespace PadForge.Views
             return Math.Ceiling(text.WidthIncludingTrailingWhitespace);
         }
 
+        /// <summary>The link as Copy Details writes it, the same in every
+        /// language, or null where the row has none.</summary>
+        internal static string DossierLink(PadForge.Common.DeviceLink link)
+            => link switch
+            {
+                PadForge.Common.DeviceLink.Bluetooth => "BT",
+                PadForge.Common.DeviceLink.Usb => "USB",
+                PadForge.Common.DeviceLink.Ps2 => "PS/2",
+                PadForge.Common.DeviceLink.I2c => "I2C",
+                _ => null,
+            };
+
         /// <summary>The least width of the list card that holds Link and
         /// Battery as columns of the table: the columns and the row's
-        /// insets take 446, which leaves a name 214.</summary>
-        internal const double TableMin = 660;
+        /// insets take 482, which leaves a name 214.</summary>
+        internal const double TableMin = 696;
 
         /// <summary>Whether a list card of this width shows Link and Battery
         /// as columns. Narrower, each row shows the two after its type.</summary>
@@ -961,8 +973,8 @@ namespace PadForge.Views
                 else if (!string.IsNullOrEmpty(dev.DossierConnectionPath))
                     sb.AppendLine($"PATH      {dev.DossierConnectionPath}");
                 sb.AppendLine($"VID:PID   {dev.VendorIdHex}:{dev.ProductIdHex}");
-                if (dev.IsBluetoothLink)
-                    sb.AppendLine("LINK      BT");
+                if (DossierLink(dev.Link) is string link)
+                    sb.AppendLine($"LINK      {link}");
                 if (!string.IsNullOrEmpty(dev.SerialNumber))
                     sb.AppendLine($"SERIAL    {dev.SerialNumber}");
                 if (!string.IsNullOrEmpty(dev.FirmwareVersion))

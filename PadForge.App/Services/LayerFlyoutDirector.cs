@@ -174,8 +174,10 @@ namespace PadForge.Services
             // Nothing new. A layer that stayed and is no longer one that
             // stays, or a layer its slot has left, goes at once. A brief one
             // that is still its slot's layer is left to the window's timer.
+            // The slot shown is one of this tick's: a changed slot count ran
+            // Forget above.
             if (_shownSlot >= 0
-                && (_shownStays || _shownSlot >= count
+                && (_shownStays
                     || !string.Equals(_masks[_shownSlot], _shownMask, StringComparison.Ordinal)))
             {
                 Forget();

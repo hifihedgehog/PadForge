@@ -112,7 +112,8 @@ namespace PadForge.Tests
             // Centering in Vehicle mode opens on the car, where its speed comes
             // from, the steering's weight, the wheel's range where PadForge
             // sets none, and the chart (#588).
-            ("Pad_More_Centering", "Pad.Rumble.Centering.More", "Pad_More_Centering",
+            // Its hint leaves Friction out on a wheel whose Friction row does not show.
+            ("Pad_More_Centering", "Pad.Rumble.Centering.More", "{Binding CenteringMoreHint}",
                 new[] { "{Binding CenteringVehicle, Mode=TwoWay}", "{Binding CenteringSpeedSource, Mode=TwoWay}",
                         "{Binding CenteringWeight, Mode=TwoWay}", "{Binding CenteringWheelRange, Mode=TwoWay}", "SteeringTorqueChart" },
                 new[] { "{Binding CenteringOnCenter, Mode=TwoWay}", "{Binding CenteringAssist, Mode=TwoWay}", "{Binding CenteringDamping, Mode=TwoWay}",
@@ -141,8 +142,11 @@ namespace PadForge.Tests
                 new[] { "SelectedMirrorSourceId", "DeviceConfig.AudioMirrorEngageMode", "DeviceConfig.AudioToneFilterMode", "DeviceConfig.HeadphoneVolume",
                         "DeviceConfig.Ds5AudioBufferLength", "DeviceConfig.AudioOutputPath", "SoundTestCommand" }),
             // A macro opens on what fires it and what it does, as its board
-            // draws it. Its hint is a string of its own, the board's words.
-            ("Pad_More_Macro", "Pad.Macros.More", "Pad_More_Macro",
+            // draws it. Its hint is put together from the names of the rows
+            // the fold shows, each after the rule that shows its row.
+            ("Pad_More_Macro", "Pad.Macros.More",
+                "DataContext.HasShiftLayers+Macro_Layer+ShowsLayerRow+Macro_Layer+ShowsTriggerComboEditor+Macro_Source+ShowsLegacyAxisRows+Macro_Threshold"
+                + "+ShowsLegacyAxisRows+Macro_AxisDirection+ShowsTriggerComboEditor+Macro_ConsumeTrigger+ShowsRepeatSection+Macro_Repeat",
                 new[] { "{Binding TriggerMode, Mode=TwoWay}", "RecordTriggerCommand", "TriggerInputItems", "SlotMacroTriggerChoicesView", "ActionsList", "AddActionCommand" },
                 new[] { "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "TriggerAxisThreshold", "TriggerAxisDirectionIndex",
                         "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}", "{Binding RepeatCount, Mode=TwoWay}" }),

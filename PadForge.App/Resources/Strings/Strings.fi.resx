@@ -121,6 +121,7 @@
   <data name="Common_None" xml:space="preserve"><value>Ei mitään</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekuntia</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuuttia (0 = ei koskaan)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ei määritetty</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -241,7 +242,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← vasemmalle)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ylös)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll puuttuu</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll-tiedostoa ei löydy. Sijoita SDL3.dll samaan kansioon kuin PadForge.exe. Lataa se osoitteesta https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll puuttuu. Lataa PadForge uudelleen.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Ajuritoiminto epäonnistui: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Asetukset kopioitu leikepöydälle.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Laitteen tiedot kopioitu leikepöydälle.</value></data>
@@ -369,6 +370,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Vähissä</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Kuva</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Luettelo</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Lähtö: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Lähtöjä: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Liike</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Napsauta ohjainta kuvassa ja paina sitten laitteesi painiketta tai liikuta akselia, jonka haluat määrittää sille.</value></data>
@@ -448,9 +450,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Pelit, joita PadForge ei tunne</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Moddeille, jotka etsivät käynnissä olevaa DSX-ohjelmaa ennen lähettämistä.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mitä näytetään</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Valikon rengas, ruudukko tai palkki sen ollessa auki</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kerroksen nimi, kun vaihtokerros kytkeytyy päälle, sen ajan, jonka kerros määrittää</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiilin nimi, kun profiili vaihtuu</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Valikon rengas, ruudukko tai palkki sen ollessa auki.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kerroksen nimi, kun vaihtokerros kytkeytyy päälle, sen ajan, jonka kerros määrittää.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiilin nimi, kun profiili vaihtuu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopioi osoite</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Aseta näytölle</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Yhdistä puhelin</value></data>
@@ -646,7 +648,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Käynnistä moottori ohjelman käynnistyessä</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jatka kyselyä, kun ikkuna menettää kohdistuksen</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Kyselytaajuus (ellei profiili ohita sitä)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Moottori lukee jokaisen laitteen ja päivittää virtuaaliohjaimet näin monta kertaa sekunnissa, vähintään 60 ja enintään 10000 kertaa. Suurempi taajuus käyttää enemmän suoritinaikaa. Windows herättää moottorin enintään noin 2000 kertaa sekunnissa, joten tätä suuremmalla taajuudella moottori suorittaa jokaisella herätyksellä useita kierroksia. Kun aktiivisena on profiili, jolla on oma kyselytaajuus, käytetään sitä. Tämä arvo palaa käyttöön, kun profiili poistuu käytöstä.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>Moottori lukee jokaisen laitteen ja päivittää virtuaaliohjaimet näin monta kertaa sekunnissa, vähintään 60 ja enintään 10000 kertaa. Suurempi taajuus käyttää enemmän suoritinaikaa. Tällä tietokoneella Windows herättää moottorin enintään {0} kertaa sekunnissa, joten tätä suuremmalla taajuudella moottori suorittaa jokaisella herätyksellä useita kierroksia. Kun aktiivisena on profiili, jolla on oma kyselytaajuus, käytetään sitä. Tämä arvo palaa käyttöön, kun profiili poistuu käytöstä.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Piilota laitteet peleiltä</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pääkytkin HidHide-laitepiilotukselle ja matalan tason syötekoukuille. Kun tämä on pois päältä, laitteita ei piiloteta laitekohtaisista asetuksista riippumatta.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Pidä laitteet piilotettuina käynnistysten välillä</value></data>
@@ -937,7 +939,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunteja kirjoitettujen merkkien välillä, enintään 1000. 0 kirjoittaa koko tekstin kerralla.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Katkaisu käyttämättömänä</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Tiedot</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuuttia</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Katkaise Bluetooth, kun ohjain kytketään USB:llä</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Pikalataus. Kun tämä ohjain ilmoittaa latautuvansa Bluetooth-yhteyden aikana, Bluetooth-yhteys katkaistaan, jotta ohjain latautuu ilman radion virrankulutusta. Mikä tahansa USB-virtalähde kelpaa, myös seinälaturit. Jos kytket Bluetoothin takaisin päälle kaapelin ollessa kiinni, yhteyteen ei kosketa ennen seuraavaa irrotusta.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lue iCade-ohjaimena</value></data>
@@ -979,8 +980,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU näyttää aktiivisen profiilin nimen ja päivittyy jokaisen profiilinvaihdon yhteydessä.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU näyttää aktiivisen profiilin sijainnin profiililuettelossa. Oletusprofiili on 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU näyttää aktiivisen profiilin oman kuvan tai sen nimen, jos kuvaa ei ole. Jokaisella profiililla on oma kuvansa.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU näyttää kellonajan, joka kirjoitetaan uudelleen kerran minuutissa. Sovitin säilyttää jokaisen kuvan muistissa, joka kestää 100 000 kirjoituskertaa. Tämä raja saavutetaan noin kymmenen viikon ympärivuorokautisella näytöllä.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU näyttää tunnit ja minuutit siitä, kun PadForge löysi ohjaimen, ja aika kirjoitetaan uudelleen kerran minuutissa. Jos ohjain on irti portistaan yli kymmenen sekuntia, laskenta alkaa alusta. Sovitin säilyttää jokaisen kuvan muistissa, joka kestää 100 000 kirjoituskertaa. Tämä raja saavutetaan noin kymmenen viikon ympärivuorokautisella näytöllä.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU näyttää kellonajan, joka kirjoitetaan uudelleen kerran minuutissa. Sovitin tallentaa jokaisen kuvan omaan muistiinsa, joten PadForge kirjoittaa sen uudelleen korkeintaan näin usein.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU näyttää tunnit ja minuutit siitä, kun PadForge löysi ohjaimen, ja aika kirjoitetaan uudelleen kerran minuutissa. Jos ohjain on irti portistaan yli kymmenen sekuntia, laskenta alkaa alusta. Sovitin tallentaa jokaisen kuvan omaan muistiinsa, joten PadForge kirjoittaa sen uudelleen korkeintaan kerran minuutissa.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU näyttää valitsemasi kuvan: BMP- tai PNG-kuvan, VMU Animatorin .lcd-tiedoston tai Dreamcastin .vms-kuvakkeen. Kuvat rajataan 48 × 32 mustavalkoiseen pikseliin.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Valitse kuva…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Valitse kuva profiilille {0}…</value></data>
@@ -1025,6 +1026,13 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox-tilassa ollut ohjain ei vastannut Apex 4 -ohjaimena, joten mitään ei lähetetty ja Windows sai sen takaisin. Vaihda se takaisin DInput-tilaan ohjaimen omalla kytkimellä.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ei siirtänyt ohjainta WinUSB:hen, joten mitään ei lähetetty. Vaihda se takaisin DInput-tilaan ohjaimen omalla kytkimellä.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Pysäytetty. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä ennen kuin lähetät uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Näytön portti ei avautunut, joten mitään ei lähetetty. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Kuvassa on enemmän ruutuja kuin tämän ohjaimen näyttöön mahtuu.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Tälle ohjaimelle lähetetään jo kuvaa. Odota, että se valmistuu.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Näyttö pyysi kuvaa osoitteeseen, johon PadForge ei kirjoita, joten mitään ei lähetetty. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Kuva lähetettiin, mutta ohjain ei palannut DInput-tilaan. Palauta se takaisin ohjaimen omalla kytkimellä.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Ohjain ei ottanut vastaan komentoa, joka valmistelee sen, joten mitään ei lähetetty. Tarkista, että se on yhdistetty, ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Lähetys pysähtyi PadForge-sovelluksen virheeseen. Lokitiedostossa on tarkemmat tiedot.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kuvaa lähetetään vielä ohjaimeen. Pysäytetäänkö lähetys?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak -tiedostot (*.mpk)|*.mpk|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak portti {0}.mpk</value></data>
@@ -1694,7 +1702,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Palauta valikon geometria</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Palauta solu</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Palauta herkkyys</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Palauta kiihdytys</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Palauta kuollut alue</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Palauta pitoaika</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Palauta painallusikkuna</value></data>
@@ -1976,7 +1983,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Mikä tahansa kerros</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Toimii jatkuvasti, kun tämä virtuaaliohjain on aktiivinen. Laukaisinpainiketta ei tarvita.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Tee</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Kerros, Lähde, Kynnys, Suunta, Estä laukaisinpainikkeet, Toisto</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Lisää toiminto</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tyyppi</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuaalipainikkeet</value></data>
@@ -2002,7 +2008,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Hiiren painikkeen painallus</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Hiiren painikkeen vapautus</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Hiiren vieritys</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Näytä/piilota kosketuslevyn peittokuva</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Painikkeet</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Näppäinyhdistelmä</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Näppäinyhdistelmä muodossa {Key1}{Key2}. Muokattavissa.</value></data>
@@ -2133,6 +2138,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Toista {0} {1} ms:n välein</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Hiiri X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Hiiri Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Vaakasiirtymä</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Pystysiirtymä</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Väli</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Valitse näytöltä</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Kaapataan: {0}…</value></data>
@@ -2167,6 +2174,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Käänteinen puolikas</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Laitetta ei määritetty</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Tuntematon laite</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Kosketuslevyn napsautus</value></data>
@@ -2609,7 +2617,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Alas (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Ylös (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Kytkentä</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Tähtäyksen kytkentäpainike, Kytkentätila, Helpon tähtäyksen kynnys</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Tähtäyksen kytkentäpainike, Kytkentätila, Gyro päällä, Keskitä uudelleen, Helpon tähtäyksen kynnys</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valinnaiset ehdot, jotka rajoittavat, milloin gyro on aktiivinen. Oikean sauvan poikkeaman ja tähtäyksen kytkentäpainikkeen voi määrittää kumpikin erikseen. Gyro toimii vain, kun jokainen määritetty ehto on aktiivinen.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Paikallinen</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Pelaaja</value></data>
@@ -2646,6 +2654,27 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Palauta helpon tähtäyksen kynnys</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Palauta tähtäyksen kytkentäpainike</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Palauta kytkentätila</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Kerros</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>Kerros, jonka Gyro päällä -asetuksen alla olevat rivit näyttävät ja muuttavat.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyro päällä</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Milloin gyro toimii tällä kerroksella, kytkentäpainikkeen lisäksi. Vaihtokerros, jonka asetus on Sama kuin perus, noudattaa perustaa.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Aina päällä</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Sama kuin perus</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Pidettäessä</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Kun ei pidetä</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Vaihda jokaisella painalluksella</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Gyro päällä -painikkeet</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>Painikkeet, joita Gyro päällä lukee, tämän paikan kaikissa ohjaimissa.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Vaaditaan</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Riittääkö yksi valittu painike vai pitääkö jokaista valittua painiketta pitää painettuna.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Mikä tahansa painike</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>Jokainen painike</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Keskitä uudelleen, kun gyro kytketään päälle</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Ottaa ohjaimen asennon lepopisteeksi aina, kun gyro kytketään päälle.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Palauta Gyro päällä</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Palauta Gyro päällä -painikkeet</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Palauta Vaaditaan</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Palauta Keskitä uudelleen, kun gyro kytketään päälle</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Palauta kytkentäsauva</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Palauta kytkentäsuunta</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Liikkeen läpivienti</value></data>
@@ -2656,6 +2685,25 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Peli lukee liikkeen tässä asetetulla herkkyydellä, tasoituksella ja käyrällä.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Palauta läpiviennin säädöt</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Herkkyys</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Vain kun</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Tämä lähde lasketaan vain, kun tämä tulo näkyy painettuna myös samassa ohjaimessa. Tuonnin vyöhyketesti näkyy sauvan tai liipaisimen alueena, jota se tarkistaa.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ja kun</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Toinen tulo, jota tämä lähde myös odottaa.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Vaihda tulo</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Valitsee toisen tulon, jota odotetaan.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Käyrä</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Korottaa tämän tulon lukeman tähän potenssiin, ennen kuin se ohjaa lähtöä. Arvot 0 ja 1 jättävät sen suoraksi. Yli 1 on hitaampi keskikohdan lähellä.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Ulompi alue</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Lähtö saavuttaa täyden arvon tällä osuudella liikeradasta. 100 % on pois käytöstä.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Kuolleen alueen kompensointi</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Lähtö alkaa tästä arvosta heti, kun tulo liikkuu. 0 on pois käytöstä.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Kuolleen alueen muoto</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Pois päältä jättää lukeman ennalleen. Akselikohtainen mittaa vain tämän akselin. Säteittäinen mittaa sauvaparin yhdessä.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Pois päältä</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Akselikohtainen</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Säteittäinen</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Sisempi kuollut alue</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Tämän osuuden alapuolella liikeradasta tulo näkyy keskellä olevana.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Lähdekohtainen gyron herkkyyskerroin. 1.0 = moottorin oletus (500°/s → täysi poikkeama). Arvot yli 1.0 ovat herkempiä. Arvot alle 1.0 ovat vähemmän herkkiä.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Lähdekohtainen kaltevuusherkkyyden kerroin. 1.0 = 90° kaltevuus täyteen poikkeamaan. Arvot yli 1.0 saavuttavat täyden poikkeaman pienemmällä kaltevuudella.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyron kaltevuus X</value></data>
@@ -3236,6 +3284,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Taso</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Käyttämättömyyden aikakatkaisu</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekunnit, joiden jälkeen virtuaaliohjain poistetaan, kun kaikki sen määritetyt laitteet ovat poissa yhteydestä. 0 poistaa käytöstä. Jäljelle jäävät samantyyppiset ohjaimet siirtyvät täyttämään aukon ja sitoutuvat uudelleen alempiin paikkoihin.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekuntia (0 = ei koskaan)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Lisää kerros</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Lisää vaihtokerros: toinen määritystaulukko, joka aktivoituu, kun painiketta pidetään painettuna tai se kytketään päälle.</value></data>
@@ -3347,6 +3396,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Palauta palautumisnopeus</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Palauta kulman sisempi kuollut alue</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Palauta kulman ulompi kuollut alue</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Sauvan kuollut alue</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Tämän poikkeaman alapuolella sauva näkyy keskellä olevana, joten ohjausta ei kerry.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Palauta sauvan kuollut alue</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Palauta nojauksen sisempi kuollut alue</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Palauta nojauksen ulompi kuollut alue</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Palauta ohjaimen suunta</value></data>
@@ -3452,6 +3504,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>ratin enimmäisarvosta {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Tämä auto vaatii enemmän momenttia kuin ratilla on, joten käyrän yläosa leikkautuu pois.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>keskitystuntuma, ohjaustehostus, vaimennus, kitka, pito, kiinteä nopeus, ratin momentti</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>keskitystuntuma, ohjaustehostus, vaimennus, pito, kiinteä nopeus, ratin momentti</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Kuinka voimakkaasti ohjaus pitää keskikohdan pienellä nopeudella. 100 % on auton oma.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Ohjaustehostus</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Kuinka paljon ohjaustehostin ottaa pois kaarrevoimien kasvaessa. Suurempi arvo tarkoittaa kevyempää ohjausta kauempana keskikohdasta.</value></data>
@@ -3593,7 +3646,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Palauta korkeat sävyt</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Palauta sävyraja</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopioi järjestelmän oletuslähdön toistaman äänen samanaikaisesti tämän ohjaimen sisäänrakennettuun kaiuttimeen. Toimii USB- ja Bluetooth-yhteydellä.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valitussa laitteessa ei ole sisäänrakennettua kaiutinta. Tämän ohjaimen makroäänet toistetaan järjestelmän oletuslähdössä.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge-sovelluksella ei ole reittiä valitun laitteen kaiuttimeen tämän yhteyden kautta. Tämän ohjaimen makroäänet toistetaan järjestelmän oletuslähdössä.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Selainpohjainen DualSense-testisarja, tekijä Xuezhou Dai (daidr): viitteenä Sonyn feature-raporttien CRC-kehystykselle ja laiteohjelmiston testikomennoille, jotka PadForge välittää virtuaalisilta ohjaimilta fyysisille.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -4036,7 +4089,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Näytä Dreamcast-näytöllä</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Toistaa kuvia jokaisen tähän paikkaan syöttävän Bliss-Box-portin Dreamcast-ohjaimen VMU:ssa ja palauttaa sitten kunkin portin sen omaan näyttöasetukseen.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Näytä Dreamcast-kuvat: {0} × {1} ms, toistokertoja {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Kukin kuva näkyy vähintään sekunnin, koska sovitin tallentaa jokaisen sille lähetetyn kuvan muistiin, joka kestää 100 000 kirjoituskertaa, ja uusi kuva joka sekunti saavuttaa tämän rajan noin vuorokaudessa. Kuvat ovat 48 × 32 mustavalkoista pikseliä BMP- tai PNG-kuvasta, VMU Animatorin .lcd-tiedostosta tai Dreamcastin .vms-kuvakkeesta.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Kukin kuva näkyy vähintään sekunnin. PadForge lähettää sovittimelle enintään yhden kuvan sekunnissa, koska sovitin tallentaa jokaisen sille lähetetyn kuvan omaan muistiinsa. Kuvat ovat 48 × 32 mustavalkoista pikseliä BMP- tai PNG-kuvasta, VMU Animatorin .lcd-tiedostosta tai Dreamcastin .vms-kuvakkeesta.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Kuvat</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Lisää kuva…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Poista kuva</value></data>
@@ -4113,15 +4166,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Kun kerros on kytketty päälle, se kytkeytyy itsestään pois, kun kerroksen omia määritettyjä syötteitä ei ole käytetty näin moneen millisekuntiin. Ajastin käynnistyy kerroksen aktivoituessa ja alkaa alusta jokaisesta kerroksen syötteestä. 0 pitää kerroksen päällä, kunnes kytket sen itse pois.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Palauta hienosäädön kuolleeksi alueeksi 25 %.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Palauta hienosäädön nopeudeksi 100 % sekunnissa.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Palauta asetukseksi tason palautus 100 %:iin vapautettaessa.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Palauta automaattisen peruutuksen arvoksi 0 (kerros pysyy päällä, kunnes se kytketään pois).</value>
   </data>
@@ -4189,6 +4233,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profiili</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kohdistinalue</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (pito)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (vapautus)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (kytkentä)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Valitse määritys nähdäksesi, mitä siirtyy mukana.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Mitä siirtyy mukana</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Muuttuu</value></data>
@@ -4825,7 +4872,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Suuntapainallukset siirtyvät solujen läpi ja laukaisevat jokaisen uuden valitun solun ilman ”Laukaisutila”- tai ”Napsautussyöte”-asetusta. Pikapalkki-tyyli siirtyy laukaisematta ja laukaisee oman ”Laukaise”-ohjauksensa kautta.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigin laajennettu protokolla</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Ottaa käyttöön lisäpainikkeet ja liikeanturit tuetuissa Flydigi-ohjaimissa.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ohjelmisto on käynnissä: {0}. Se voi käyttää samaa ohjainrajapintaa kuin PadForge, ja Vader 5 Pron on raportoitu katkeilevan toistuvasti, kun molemmilla on ollut pääsy siihen. Jos tämä ohjain katkeaa ja yhdistyy uudelleen, pysäytä palvelu PadForge-sovelluksen käytön ajaksi, pidä ohjain piilotettuna ja poista palvelu HidHide-ajurin sallittujen luettelosta tai kokeile poistaa Asetuksista käytöstä ”Flydigin laajennettu protokolla”, vaikka sen auttamisesta ei ole varmuutta.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-ohjelmisto on käynnissä: {0}. Se keskustelee ohjaimen kanssa rajapinnan kautta, jota PadForge käyttää. Jos tämä ohjain katkeaa ja yhdistyy uudelleen, pysäytä kyseinen ohjelmisto PadForge-sovelluksen käytön ajaksi.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Salli etämuutokset liitoksiin</value>
   </data>
@@ -5485,9 +5532,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>Valitse, mitä se näyttää…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-näytön peittokuva</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ei vielä mitään näytettävää. Valitse, mitä se näyttää, Näytön peittokuva -sivulla Lisäosat-kohdan alla.</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Näytä/piilota tähtäin</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Näytä/piilota suurennuslasi</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Kaikki tähtäimet</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>Tähtäin</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>

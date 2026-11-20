@@ -942,11 +942,16 @@ namespace PadForge.ViewModels
                 TouchpadEnableTaps = false;
                 TouchpadTapTimeWindowMs = 350;
                 TouchpadMultiTapGapMs = 300;
+                TouchpadTapMaxMotion = 0.04;
                 TouchpadEnableLongPress = false;
                 TouchpadLongPressTimeWindowMs = 500;
+                TouchpadLongPressMaxMotion = 0.05;
                 TouchpadEnableTwoFingerSwipes = false;
+                TouchpadTwoFingerSwipeAngularTolerance = 25;
                 TouchpadEnablePinchSpread = false;
+                TouchpadPinchThreshold = 0.25;
                 TouchpadEnableRotate = false;
+                TouchpadRotateThresholdDegrees = 20;
                 TouchpadEnableThreeFingerGestures = false;
                 TouchpadEnableFourFingerGestures = false;
                 TouchpadEnableFiveFingerGestures = false;

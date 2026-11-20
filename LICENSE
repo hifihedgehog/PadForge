@@ -202,8 +202,10 @@ Flydigi Apex references
   openflydigi (https://github.com/mkaliaha/openflydigi)
   Copyright (c) 2026 Mikalai Kaliaha. The lighting block transfer, the
   screen frame format and fitting, and the screen's serial upload follow
-  its flydigi/ sources.
-  Licensed under the MIT License (text below)
+  its flydigi/ sources and its PROTOCOL.md.
+  Licensed per file: flydigi/ under the MIT License (text below),
+  PROTOCOL.md under CC0-1.0, and gui/ under GPL-3.0-or-later. PadForge
+  uses nothing from gui/.
 
   flydigi-space-station-mac
   (https://github.com/uiltonlopes/flydigi-space-station-mac)

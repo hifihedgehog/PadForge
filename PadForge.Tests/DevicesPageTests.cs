@@ -250,7 +250,7 @@ namespace PadForge.Tests
             // two merged rows and the microphone, which are rows and no
             // devices.
             Assert.Equal(5, vm.ConnectedTotal);
-            Assert.Equal(8, vm.MainShown);
+            Assert.Equal(8, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Equal(2, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel, DualShock 3", vm.NotConnectedHint);
             Assert.True(vm.HasNotConnected);
@@ -258,20 +258,20 @@ namespace PadForge.Tests
 
             // A kind's segment shows its devices and its merged row.
             vm.Filter = DeviceFilter.Keyboard;
-            Assert.Equal(2, vm.MainShown);
+            Assert.Equal(2, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Equal(5, vm.ConnectedTotal);
             Assert.Equal(0, vm.NotConnectedCount);
             Assert.False(vm.HasNotConnected);
             // The wheel is remembered and not connected: its segment finds it.
             vm.Filter = DeviceFilter.Wheel;
-            Assert.Equal(0, vm.MainShown);
+            Assert.Equal(0, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Equal(1, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel", vm.NotConnectedHint);
 
             vm.Filter = DeviceFilter.All;
             vm.SearchText = "no device is called this";
             Assert.True(vm.ShowNoMatch);
-            Assert.Equal(0, vm.MainShown);
+            Assert.Equal(0, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Equal(5, vm.ConnectedTotal);
         }
 
@@ -349,7 +349,7 @@ namespace PadForge.Tests
             SortAsTheSyncDoes();
             Settle();
             Assert.Equal(new[] { gamepad, keyboard, mouse }, Rows(vm.MainView));
-            Assert.Equal(3, vm.MainShown);
+            Assert.Equal(3, vm.Devices.Count(d => vm.Shows(DevicePageList.Main, d)));
             Assert.Empty(Rows(vm.NotConnectedView));
 
             // One goes away and comes back: it stands where its name puts it.
@@ -569,11 +569,15 @@ namespace PadForge.Tests
             var details = Named(page, "DetailsFold").Descendants().ToList();
             XElement link = Assert.Single(details, e => (string)e.Attribute("Text") == S("Devices_Detail_Link"));
             XElement linkValue = link.ElementsAfterSelf().First();
-            Assert.Equal(S("Pad_Transport_Bluetooth"), (string)linkValue.Attribute("AutomationProperties.Name"));
+            Assert.StartsWith("{Binding SelectedDevice.LinkText,", (string)linkValue.Attribute("AutomationProperties.Name"));
             var linkRuns = linkValue.Elements().ToList();
-            Assert.Equal("", (string)linkRuns[0].Attribute("Text"));
+            Assert.StartsWith("{Binding SelectedDevice.LinkMarkText,", (string)linkRuns[0].Attribute("Text"));
             Assert.Equal(PadForge.Common.BatteryGlyphs.RunFontFamily, (string)linkRuns[0].Attribute("FontFamily"));
-            Assert.StartsWith("{Binding Pad_Transport_Bluetooth,", (string)linkRuns[^1].Attribute("Text"));
+            Assert.StartsWith("{Binding SelectedDevice.LinkText,", (string)linkRuns[^1].Attribute("Text"));
+            // The mark is Bluetooth's alone, and the word is the row's link.
+            var bluetooth = Row("Pad", "Gamepad", DualSenseBluetooth, true, 0x054C, 0x0CE6);
+            Assert.Equal(" ", bluetooth.LinkMarkText);
+            Assert.Equal(string.Empty, Row("Pad", "Gamepad", DualSenseUsb, true).LinkMarkText);
 
             XElement battery = Assert.Single(details, e => (string)e.Attribute("Text") == S("Devices_Detail_Battery"));
             Assert.Equal("{Binding SelectedDevice.HasBattery, Converter={StaticResource BoolToVisibilityConverter}}", (string)battery.Parent.Attribute("Visibility"));

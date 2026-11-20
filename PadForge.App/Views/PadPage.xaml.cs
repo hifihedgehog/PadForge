@@ -129,6 +129,9 @@ namespace PadForge.Views
             InitializeComponent();
             Loaded += PadPage_Loaded;
             Unloaded += PadPage_Unloaded;
+            // Pages are shown and hidden, never unloaded: the Screen Color
+            // status timer follows the page's visibility.
+            IsVisibleChanged += (_, _) => SyncScreenColorStatus();
             // Held weakly by Strings, so no unsubscribe is owed.
             Strings.CultureChanged += SizeFirstRows;
             Strings.CultureChanged += RewordComposedLines;
@@ -204,10 +207,10 @@ namespace PadForge.Views
             return StickWellEdges + StickRadarWidth + StickWellGap + captions + 2 * StickAxisColumn;
         }
 
-        /// <summary>Sizes that column to the language. The five labels are
-        /// measured in the section's own face and size, and the section's
-        /// two numbers (FirstRowLabelWidth and the one after it in
-        /// PadPage.xaml) are set from the widest. The section's third
+        /// <summary>Sizes that column to the language. The labels of the
+        /// section's first rows are measured in the section's own face and
+        /// size, and the section's two numbers (FirstRowLabelWidth and the one
+        /// after it in PadPage.xaml) are set from the widest. The section's third
         /// number, the least width of a stick's live view beside its
         /// settings, is set from the readings' two captions, measured in
         /// their own face and size. It runs when the page is shown and when
@@ -221,7 +224,7 @@ namespace PadForge.Views
             double size = System.Windows.Documents.TextElement.GetFontSize(SticksSectionScroll);
             double dip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
             var widths = new List<double>();
-            foreach (string label in new[] { s.Pad_Sticks_Section_DeadZone, s.Macro_Sensitivity, s.Pad_Stick_Center, s.Pad_Range, s.Pad_AntiDeadZone })
+            foreach (string label in new[] { s.Pad_Sticks_Section_DeadZone, s.Macro_Sensitivity, s.Pad_Stick_Speed, s.Pad_Stick_Center, s.Pad_Range, s.Pad_AntiDeadZone })
             {
                 if (string.IsNullOrEmpty(label)) continue;
                 var text = new FormattedText(label, CultureInfo.CurrentUICulture, FlowDirection, typeface, size, Brushes.Black, dip);
@@ -344,15 +347,22 @@ namespace PadForge.Views
 
         /// <summary>Escape lets go of the picked control, for a hand on the
         /// keyboard. Not while a control records: a key may be the input it
-        /// waits for.</summary>
+        /// waits for. Not from a box being typed into either: the box is in
+        /// the picked control's bar, which would close under the edit.</summary>
         private void PadPage_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Escape || e.Handled) return;
+            if (EscapeBelongsToTheBox(e.OriginalSource)) return;
             if (DataContext is not PadViewModel vm || !vm.IsButtonsPictureView || vm.PickedRow == null) return;
             if (vm.IsMapAllActive || !string.IsNullOrEmpty(vm.CurrentRecordingTarget)) return;
             vm.PickedTarget = null;
             e.Handled = true;
         }
+
+        /// <summary>A box the user types into, whose Escape is its own. A
+        /// combo box that takes typing is typed into through such a box.</summary>
+        internal static bool EscapeBelongsToTheBox(object source)
+            => source is TextBoxBase or PasswordBox;
 
         // ─────────────────────────────────────────────
         //  The ring on the picked control (#574)
@@ -497,6 +507,10 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged += OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged += OnPeripheralOutputsChanged;
+            // A pad whose rumble SDL finds after the open gains its Force
+            // Feedback tab.
+            PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen;
+            PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen += OnRumbleFoundAfterOpen;
             // A Flydigi Apex pad's tabs follow the model it answers with (#586).
             PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Flydigi.FlydigiApexService.Changed += OnPeripheralOutputsChanged;
@@ -518,6 +532,15 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= OnPeripheralOutputsChanged;
+            PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen;
+        }
+
+        /// <summary>Raised on the poll thread when SDL reports a rumble
+        /// capability a joystick lacked at the open. The tabs read the device's
+        /// capabilities again, once for a burst.</summary>
+        private void OnRumbleFoundAfterOpen(PadForge.Engine.SdlDeviceWrapper wrapper)
+        {
+            OnPeripheralOutputsChanged();
         }
 
         /// <summary>Raised on the peripheral host's thread. One refresh per
@@ -1639,7 +1662,7 @@ namespace PadForge.Views
 
         /// <summary>The picture's height in a viewport: what the viewport has
         /// left after what is always in view with it, the bar under it with
-        /// its blocks on one line, and the output cards at their folded
+        /// one plain source, and the output cards at their folded
         /// height. So the first look, a control picked and every card
         /// folded, fits the viewport and has nothing to scroll, as the
         /// Buttons board has it (#574). A pick whose bar is taller pushes
@@ -1726,14 +1749,14 @@ namespace PadForge.Views
         /// <summary>The bar's height with one plain source, last measured.</summary>
         private double _barMeasured = PictureBarBaseHeight;
 
-        /// <summary>The bar's height while its blocks stand on one line,
-        /// with its margins: the bar of a control with one row, as the
-        /// control picked when the picture first shows is. Not a number
-        /// while the bar holds another control's rows, or is hidden or not
-        /// laid out, and the last measurement stands then. It goes by the
-        /// bar's own Visibility, as the foot's height does, and not by
-        /// whether the bar is on a screen yet.</summary>
-        private double OneLineBarHeight()
+        /// <summary>The bar's height at its least, with its margins: the
+        /// bar of a control with one row whose one source is plain
+        /// (<see cref="IsPlainOneSource"/>). Not a number while the bar
+        /// shows a control with several rows or a row with more lines, or
+        /// is hidden or not laid out, and the last measurement stands
+        /// then. It goes by the bar's own Visibility, as the foot's height
+        /// does, and not by whether the bar is on a screen yet.</summary>
+        private double PlainBarHeight()
         {
             if (PictureBar == null || PictureBar.Visibility != Visibility.Visible || PictureBar.ActualHeight <= 0) return double.NaN;
             if (PickedBlocks == null || PickedBlocks.Items.Count != 1) return double.NaN;
@@ -1753,7 +1776,7 @@ namespace PadForge.Views
                && !row.IsParamAccelApplicable && !row.IsMouseCursorSource && !row.IsIrPointerSource
                && !row.IsMouseMotionSource && !row.ShouldShowEmptyDirectionHint;
 
-        /// <summary>The folded height, or the bar's one-line height, to
+        /// <summary>The folded height, or the bar's plain height, to
         /// size the picture from. The rules below hold for both, with the
         /// bar's showing in place of a type's having cards.
         ///
@@ -1912,19 +1935,19 @@ namespace PadForge.Views
             // and is not part of its viewport. The line a recording shows
             // is a row under the picture that the page grows by, as the
             // Buttons board draws it, so the picture keeps its size while it
-            // shows. Then the bar under the picture, with its blocks on one
-            // line, and the folded cards.
+            // shows. Then the bar under the picture, with one plain source,
+            // and the folded cards.
             double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();
-            double bar = SteadyFoldedHeight(vm.ShowPictureBar, OneLineBarHeight(), ref _barMeasured);
+            double bar = SteadyFoldedHeight(vm.ShowPictureBar, PlainBarHeight(), ref _barMeasured);
             double folded = SteadyFoldedHeight(vm.OutputTabVisible || vm.ShowMidiCard, FoldedOutputHeight(), ref _foldedOutputMeasured);
             double picture = PictureHeightFor(viewport, around, bar, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
             ButtonsPictureRow.Height = new GridLength(picture);
         }
 
         /// <summary>The bar under the picture changed height: it came with a
-        /// pick, or its blocks stand on another number of lines. While it
-        /// shows the picture is sized again, from the bar's one-line height,
-        /// which the first pick measures.</summary>
+        /// pick, or the chosen row has more or fewer lines. While it shows
+        /// the picture is sized again, from the bar's plain height, which
+        /// the first plain row measures.</summary>
         private void PictureBar_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.HeightChanged && DataContext is PadViewModel vm && vm.ShowPictureBar) SyncButtonsLayout();
@@ -4211,7 +4234,10 @@ namespace PadForge.Views
             }
             else if (e.PropertyName == nameof(PadViewModel.SelectedSection))
             {
-                // Another section came on the page. The Audio and Bass
+                // Another section came on the page. The Screen Color status
+                // runs while the Lights section is the one shown.
+                SyncScreenColorStatus();
+                // The Audio and Bass
                 // Shakers groups read their device lists when they come on,
                 // as each did when its tab was selected. The view model
                 // does that for a jump to the group by its number, and the
@@ -5942,14 +5968,23 @@ namespace PadForge.Views
 
         private System.Windows.Threading.DispatcherTimer _screenColorStatusTimer;
 
+        /// <summary>Whether the Screen Color status line is on screen: the page
+        /// shows, its Lights section is the selected one, and the mode is
+        /// Screen Color.</summary>
+        internal static bool ScreenColorStatusRuns(bool pageShown, int section, ViewModels.LightbarMode? mode)
+            => pageShown && section == PadViewModel.LightsSection && mode == ViewModels.LightbarMode.ScreenColor;
+
         /// <summary>Keeps the Screen Color status line and the Display box current
         /// while the Lighting tab shows that mode (#559): what Windows is doing
         /// with the screen, a display plugged in or out, a change of language. A
-        /// second is soon enough for all three.</summary>
+        /// second is soon enough for all three. The timer stops when the page is
+        /// hidden or another section is selected, and starts again when the
+        /// Lights section shows (<see cref="ScreenColorStatusRuns"/>).</summary>
         private void SyncScreenColorStatus()
         {
-            var cfg = (DataContext as PadViewModel)?.DeviceConfig;
-            bool show = IsLoaded && cfg?.LightbarMode == ViewModels.LightbarMode.ScreenColor;
+            var vm = DataContext as PadViewModel;
+            var cfg = vm?.DeviceConfig;
+            bool show = ScreenColorStatusRuns(IsVisible, vm?.SelectedSection ?? -1, cfg?.LightbarMode);
             if (!show)
             {
                 _screenColorStatusTimer?.Stop();

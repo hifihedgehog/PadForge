@@ -104,6 +104,7 @@ namespace PadForge.Models3D
             Take(_rightTrigger);
             _riders = model.RiderDecals;
             _covering = model.CoveringRiderDecals;
+            _files = new List<Model3DGroup>(model.Files).ToArray();
         }
 
         private static int IndexOf(IReadOnlyList<string> roles, string role)
@@ -144,6 +145,15 @@ namespace PadForge.Models3D
         private readonly Dictionary<Model3DGroup, Lit> _lit = new();
         private readonly HashSet<GeometryModel3D> _riders, _covering;
         private readonly ulong _buttonsRead, _extraButtons;
+
+        /// <summary>The files the model was built from. The model is let go
+        /// once the still is drawn, and a rider decal's file had no other
+        /// holder (ControllerModelBase.Files): the next collection let it go
+        /// while a card still drew its meshes, and the next model of the
+        /// family read it again. Read by nothing, held only.</summary>
+#pragma warning disable IDE0052
+        private readonly Model3DGroup[] _files;
+#pragma warning restore IDE0052
 
         /// <summary>How one group takes the light.</summary>
         private readonly record struct Lit(Material Accent, bool Grades, bool Whole);

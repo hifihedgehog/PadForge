@@ -110,7 +110,8 @@ namespace PadForge.Common.Input
         // The walk for one starts from the XUSB interface OpenXInput says
         // serves the number (AncestryPathOf, XInputSlotIdentity), and a
         // persona's serial above it settles it as for any other device. A
-        // number OpenXInput does not answer for is let through. A device
+        // number OpenXInput has no interface for is let through, and one it
+        // is busy with waits for the next sweep. A device
         // GameInput lists is let through as well: the path SDL gives for
         // one is GameInput's device id, which the walk finds no node for,
         // and its ids are no persona's. An XInput pad's identity is the
@@ -350,7 +351,18 @@ namespace PadForge.Common.Input
                 // The path the walk starts from, and the one kept to ask
                 // later whether the device is still in the tree: an
                 // XInput#N joystick's is the interface behind its number.
-                string walkFrom = markedSelf ? devicePath : AncestryPathOf(devicePath);
+                bool busy = false;
+                string walkFrom = markedSelf ? devicePath : AncestryPathOf(devicePath, out busy);
+                // OpenXInput was in another thread's device I/O. The
+                // joystick is closed and not recorded, so the next sweep
+                // opens it and asks again: let through unasked, it could be
+                // a persona.
+                if (busy)
+                {
+                    Engine.SdlDiagLog.WriteLine(
+                        $"DEV identity busy SDL#{instanceId} {devicePath}: asked again at the next sweep");
+                    return true;
+                }
                 var ancestry = markedSelf ? UsbipAncestry.None : UsbipAncestryOf(walkFrom);
                 if (ancestry is UsbipAncestry.Persona or UsbipAncestry.HidMaestroNode) markedSelf = true;
                 bool ancestrySelf = !markedSelf
@@ -408,25 +420,23 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>How often the guard asks OpenXInput again for a number
-        /// it is busy with, a millisecond apart. Every XInput call holds
-        /// OpenXInput's lock through its device I/O, and the answer missed
-        /// here is not asked for again while the joystick stays
-        /// open.</summary>
-        internal const int XInputIdentityRetries = 20;
-
         /// <summary>The path the ancestry walk starts from for a device SDL
         /// lists under <paramref name="devicePath"/>. A joystick of SDL's
         /// XInput backend has no path of its own, only "XInput#N", so its
         /// walk starts at the XUSB interface OpenXInput says serves that
         /// number (<see cref="XInputSlotIdentity"/>). Null when OpenXInput
-        /// names none: the number is empty, the call stayed busy, or the
-        /// DLL is not PadForge's own. The walk then finds no node, and the
-        /// joystick is let through. Every other path is its own.</summary>
-        internal static string AncestryPathOf(string devicePath)
+        /// names none: the number is empty or the DLL is not PadForge's own.
+        /// The walk then finds no node, and the joystick is let through.
+        /// <paramref name="busy"/> is set when OpenXInput was in another
+        /// thread's device I/O. The number is asked once and never waited
+        /// for on the poll thread, and PassOver leaves that joystick for the
+        /// next sweep. Every other path is its own.</summary>
+        internal static string AncestryPathOf(string devicePath, out bool busy)
         {
+            busy = false;
             if (!XInputSlotIdentity.TryParseSlot(devicePath, out int slot)) return devicePath;
-            var served = XInputSlotIdentity.Get(slot, XInputIdentityRetries);
+            var served = XInputSlotIdentity.Get(slot);
+            busy = served.Kind == XInputSlotIdentity.Kind.Busy;
             return served.Kind == XInputSlotIdentity.Kind.Found ? served.InterfacePath : null;
         }
 

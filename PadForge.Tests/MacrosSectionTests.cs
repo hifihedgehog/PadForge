@@ -1095,9 +1095,12 @@ namespace PadForge.Tests
             // strip with the old 80 wide label.
             Assert.DoesNotContain(Named(host, "MacroMore").Descendants(), e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("Width") == "80");
 
-            // Consume Trigger Buttons is a switch under its own long label.
+            // Consume Trigger Buttons is a switch under its own label, in the
+            // 190 column every row of the card shares: a label 320 wide stood
+            // its switch 130 to the right of the other rows' controls.
             var consume = rows.Single(r => r.Elements().Any(c => (string)c.Attribute("IsChecked") == "{Binding ConsumeTriggerButtons, Mode=TwoWay}"));
-            Assert.Equal("320", (string)consume.Elements().First().Attribute("Width"));
+            Assert.Null(consume.Elements().First().Attribute("Width"));
+            Assert.Equal("{DynamicResource RowOptionLabel}", (string)consume.Elements().First().Attribute("Style"));
             Assert.Equal("{StaticResource SwitchCheckBox}", (string)consume.Elements().Single(c => c.Name.LocalName == "CheckBox").Attribute("Style"));
             // Count and Delay are a row each, and Delay has the interval's
             // reset.

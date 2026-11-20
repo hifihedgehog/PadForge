@@ -29,6 +29,10 @@ namespace PadForge.ViewModels
             _ => string.Empty,
         };
 
+        /// <summary>The Bluetooth mark and a space for the Details row's Link
+        /// line, which draws it before the word. Empty for any other link.</summary>
+        public string LinkMarkText => Link == Common.DeviceLink.Bluetooth ? " " : string.Empty;
+
         /// <summary>Whether the row has a link to name.</summary>
         public bool HasLink => Link != Common.DeviceLink.None;
 
@@ -92,9 +96,15 @@ namespace PadForge.ViewModels
                     break;
                 case nameof(IsOnline):
                 case nameof(IsBluetoothLink):
+                    // A device that comes online is read from the tree again:
+                    // the answer kept for its path may be from while it was
+                    // away, or from a walk that ended before it settled.
+                    if (e.PropertyName == nameof(IsOnline) && IsOnline)
+                        Common.DeviceTransport.ForgetLink(DevicePath);
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Link)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasLink)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LinkText)));
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LinkMarkText)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasLinkOrBattery)));
                     break;
                 case nameof(BatteryPercent):

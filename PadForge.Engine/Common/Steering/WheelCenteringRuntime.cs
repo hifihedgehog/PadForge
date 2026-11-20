@@ -13,7 +13,10 @@ namespace PadForge.Engine.Steering
         /// at the rim in N·m, both signed as the axis.</summary>
         public readonly double AngleDegrees, TorqueNm;
 
-        /// <summary>The speed the model ran at in m/s, and the grip.</summary>
+        /// <summary>The speed in use in m/s, and the grip: what the game
+        /// or the settings gave, a stopped car's 0 among them. The model
+        /// runs no slower than SteeringCurve.LeastSpeed, and keeps that to
+        /// itself.</summary>
         public readonly double Speed, Grip;
 
         /// <summary>The speed came from a game, and so did the grip.</summary>
@@ -136,7 +139,7 @@ namespace PadForge.Engine.Steering
                     frame = _test.Step(axis, tickMs);
                     _lastTestTick = tickMs;
                     testing = true;
-                    // The test over, centering comes back in softly, as it does when the mode turns on.
+                    // The test over, the PC's force comes back in softly, as it does when the mode turns on.
                     if (_test.Outcome != ReleaseTestOutcome.Running) _centering.Reset();
                 }
                 else if (settings.Vehicle)
@@ -194,6 +197,11 @@ namespace PadForge.Engine.Steering
             lock (_sync) return _lastTick != long.MinValue && nowMs - _lastTick <= StaleMs;
         }
 
+        /// <summary>Where a Release Test runs its search for the return
+        /// ratio: null is the thread pool, and a test of the engine runs
+        /// it in place.</summary>
+        internal Action<Action> TestSchedule { get; set; }
+
         /// <summary>Starts a Release Test with the wheel's settings and
         /// its earlier measurement. False while one is already
         /// running.</summary>
@@ -203,16 +211,17 @@ namespace PadForge.Engine.Steering
             {
                 if (_test != null && _test.Outcome == ReleaseTestOutcome.Running && nowMs - _lastTestTick <= StaleMs)
                     return false;
-                _test = new ReleaseTest(settings, WheelCalibration.Parse(calibrationText));
+                _test = new ReleaseTest(settings, WheelCalibration.Parse(calibrationText), TestSchedule);
                 _lastTestTick = nowMs;
                 return true;
             }
         }
 
-        /// <summary>Stops a running test. The next poll sends the wheel
-        /// nothing, and centering comes back in softly from there, as it
-        /// does after a test that ran to its end: the test may have left
-        /// the wheel off center and turning.</summary>
+        /// <summary>Stops a running test. On the next poll in Vehicle mode
+        /// the wheel's own spring, damper and friction go back at once,
+        /// and the PC's force waits for the wheel to come to rest and then
+        /// comes in over a second, as after a test that ran to its end:
+        /// the test may have left the wheel off center and turning.</summary>
         public void CancelTest()
         {
             lock (_sync) StopTest();

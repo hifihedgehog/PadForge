@@ -1169,7 +1169,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>E auina atu le gatete o afi autū i trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatete o trigger mai le bass i le leo o le komepiuta</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone o le faʻasipa, Faʻasaga o le controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Faʻamau e faʻaola ai le taulaʻi, Faiga o le faʻaolaina, Tapulaʻa o le Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Faʻamau e faʻaola ai le taulaʻi, Faiga o le faʻaolaina, Gyro ola, Toe faʻatotonu, Tapulaʻa o le Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Faʻaaogā le touchpad o se stick poʻo se D-pad</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Faʻamaumau au lava gaioiga</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Susulu o le LED, Mamanu o le tagata taʻalo, Faiga o le LED Mute</value></data>
@@ -1184,7 +1184,6 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu fou</value></data>
   <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Aveʻese le sela mulimuli</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Igoa</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Puna, Tapulaʻa, Itu, Natia faʻamau e faʻaola ai le macro, Toe fai</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller atoa</value></data>
   <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Stick uma e lua</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Ua faʻapipiʻi le SteamVR</value></data>
@@ -1195,7 +1194,7 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>O tau o le laina Game Telemetry i [Masini]. Faʻafesoʻotaʻi i le vaega Faʻafesoʻotaʻiga a se controller pe faʻaaogā e faʻaosofia ai macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>O le nofoaga, le lapoʻa ma le manino o se menu e seti i luga o le menu, i le vaega [Macro ma Menu] a se controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mea e Faʻaali</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Le li, le grid po o le pa o se menu aʻo tatala</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Le li, le grid po o le pa o se menu aʻo tatala.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopi le tuatusi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>O se telefoni e fesoʻotaʻi e faʻaali iinei ma i le itulau Masini, lea e te tuʻuina atu ai i se controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Suʻe masini</value></data>
@@ -1297,4 +1296,13 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Faʻaaogā</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Masini e lē iloa</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Naʻo pe a</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>E faitaulia lenei puna naʻo le taimi e faitau ai foʻi lenei faʻaoga o loʻo oomi i le masini lava e tasi. O se suʻega o se vaega mai se faʻaulufale mai e faitau o le vaega o le laʻau poʻo le trigger o loʻo ia siakiina.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Ma pe a</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>O se faʻaoga lona lua o loʻo faʻatali foʻi i ai lenei puna.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Sui le faʻaoga</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Filifili se isi faʻaoga e faʻatali i ai.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Piʻo</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Siʻitia le faitauga a lenei faʻaoga i lenei malosi aʻo leʻi faʻagaioia le taunuʻuga. O le 0 ma le 1 e tuʻu saʻo ai. I luga aʻe o le 1 e telegese latalata i le ogatotonu.</value></data>
 </root>

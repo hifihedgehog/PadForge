@@ -930,7 +930,6 @@
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>I-reset sa default (Patay)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa default (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset sa 250 Hz</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Wala sang built-in speaker ang napili nga device. Ang mga macro sound sang sini nga pad magatunog sa default output sang sistema.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Na-export ang profile nga "{0}".</value></data>
@@ -1564,6 +1563,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Manubo</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} ka output</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ka output</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Motion</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click sang kontrol, dayon pinduta ang input nga magapadalagan sini.</value></data>
@@ -1594,7 +1594,7 @@
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ginapadala ang rumble sang main motor sa mga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble sang trigger halin sa bass sang audio sang sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone sang pagkiling, Orientasyon sang controller</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sang Aim Engage, Engage Mode, Threshold sang Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Button sang Aim Engage, Engage Mode, Gyro On, Re-Center, Threshold sang Easy Aim</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ginapasiga ang mga gesture sang sini nga touchpad</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, mga porma</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Magrekord sang imo kaugalingon</value></data>
@@ -1603,7 +1603,6 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain sang kada trigger, pagbaylo sang motor, adaptive trigger nga vibration, Constant Trigger Force</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output nga device, mga channel, gain, tono para sa kada motor</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Himua</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direksyon, Consume Trigger Buttons, Utrohon</value></data>
   <data name="Menu_Opens_Header" xml:space="preserve"><value>Pagbukas</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Ilisi ang ngalan</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Bag-o nga menu</value></data>
@@ -1628,7 +1627,7 @@
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang kaugalingon nga lugar, kadakuon kag opacity sang menu ginabutang sa menu mismo, sa [Mga macro kag menu] nga seksyon sang controller.</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Range kada axis. Ang zero nagasunod sa range sa ibabaw.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano ang Ginapakita</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid ukon bar sang menu samtang bukas ini</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid ukon bar sang menu samtang bukas ini.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ang telepono nga nag-connect makita diri kag sa Mga device nga pahina, diin imo ini i-assign sa controller.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Naka-connect</value></data>
@@ -1752,4 +1751,14 @@
   <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita ang bug-os nga litrato</value></data>
   <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Iunat sa screen</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>I-apply</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Wala makilala nga device</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Samtang lang</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ini nga source maisip lang samtang ini nga input napindot man sa amo man nga controller. Ang zone test halin sa import ginabasa subong ang range sang stick ukon trigger nga ginausisa sini.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Kag samtang</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ikaduha nga input nga ginahulat man sang sini nga source.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Ilisan ang input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Nagapili sang iban nga input nga hulaton.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ginapataas ang reading sang sini nga input sa sini nga power antes ini magpadalagan sang output. Ang 0 kag 1 nagabilin sini nga tadlong. Kon labaw sa 1, mas mahinay malapit sa tunga.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Wala sang dalanon ang PadForge pakadto sa speaker sang napili nga device sa sini nga koneksyon. Ang mga macro sound sang sini nga pad magatunog sa default output sang sistema.</value></data>
 </root>

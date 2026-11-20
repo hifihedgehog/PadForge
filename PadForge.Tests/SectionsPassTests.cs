@@ -289,6 +289,43 @@ namespace PadForge.Tests
             Assert.Empty(trail);
         }
 
+        /// <summary>The surface takes one point per update, once all six of its
+        /// values have changed: a diagonal move draws no corner the finger never
+        /// touched, and a finger that lands starts a new trail at its own
+        /// place, whatever order the values arrive in.</summary>
+        [Fact]
+        public void ATrail_TakesOnePointPerUpdate_AndALandingStartsANewOne()
+        {
+            Sta(() =>
+            {
+                var view = new TouchSurface();
+                var trail = (List<Point>)typeof(TouchSurface).GetField("_trail0", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(view);
+                void Settle() => Dispatcher.CurrentDispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
+
+                view.X0 = 0.1; view.Y0 = 0.1; view.Down0 = true;
+                Settle();
+                Assert.Equal(new[] { new Point(0.1, 0.1) }, trail);
+
+                // X, then Y, as InputService sets them.
+                view.X0 = 0.5; view.Y0 = 0.5;
+                Settle();
+                Assert.Equal(new[] { new Point(0.1, 0.1), new Point(0.5, 0.5) }, trail);
+
+                // Lifted and down again elsewhere within one update.
+                view.Down0 = false; view.X0 = 0.9; view.Y0 = 0.8; view.Down0 = true;
+                Settle();
+                Assert.Equal(new[] { new Point(0.9, 0.8) }, trail);
+
+                // A finger that lands with its place after it.
+                view.Down0 = false;
+                Settle();
+                Assert.Empty(trail);
+                view.Down0 = true; view.X0 = 0.3; view.Y0 = 0.2;
+                Settle();
+                Assert.Equal(new[] { new Point(0.3, 0.2) }, trail);
+            });
+        }
+
         /// <summary>A PlayStation pad is drawn as the Motion board draws it,
         /// its sides closing in toward its foot, and any other pad, or none,
         /// as a rectangle with rounded corners. The device picked under Driven
@@ -473,7 +510,9 @@ namespace PadForge.Tests
             Assert.Contains("if (down1) { padVm.DeviceTouchX1 = pad.FingerX[1]; padVm.DeviceTouchY1 = pad.FingerY[1]; }", service);
             Assert.True(service.IndexOf("padVm.DeviceTouchY0 = pad.FingerY[0]; }", StringComparison.Ordinal)
                 < service.IndexOf("padVm.DeviceTouchDown0 = down0;", StringComparison.Ordinal));
-            Assert.Equal(2, Regex.Matches(service, @"padVm\.DeviceTouchDown0 = (down0|false);").Count);
+            // The lane writes it, a pick of no device clears it, and so does
+            // a stop of the engine (ClearLiveReadings).
+            Assert.Equal(3, Regex.Matches(service, @"padVm\.DeviceTouchDown0 = (down0|false);").Count);
         }
 
         /// <summary>The Lock Feedback line lights while any of its cues is

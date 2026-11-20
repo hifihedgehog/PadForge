@@ -1028,6 +1028,8 @@ namespace PadForge.Tests
                     long start = PadForge.Engine.Steering.WheelCenteringRuntime.NowMs();
                     device.Centering.Step(settings, string.Empty, 0, -1, 0, start, out _);
                     if (stopAtMs < 0) return device;
+                    // The search for the return ratio runs in place, so the simulated clock waits for it.
+                    device.Centering.TestSchedule = work => work();
                     Assert.True(device.Centering.StartTest(settings, string.Empty, start));
                     for (int ms = 1; ms < stopAtMs; ms++)
                     {

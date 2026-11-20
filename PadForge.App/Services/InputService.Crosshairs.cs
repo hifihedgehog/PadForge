@@ -92,6 +92,9 @@ namespace PadForge.Services
                 if (window == null)
                 {
                     window = new Views.CrosshairOverlay(item.Title);
+                    // A display change that hides or shows it brings the
+                    // card's status back in line.
+                    window.ShownOrHiddenByDisplays += ScheduleCrosshairSync;
                     _crosshairs[item.Number] = window;
                 }
                 window.Title = item.Title;

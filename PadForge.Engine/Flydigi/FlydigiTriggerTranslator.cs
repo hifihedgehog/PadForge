@@ -420,27 +420,5 @@ namespace PadForge.Engine.Flydigi
                 bottom ? MachineBottomAmplitudeFloor : MachineAmplitudeFloor);
             return Make(side, FlydigiTriggerMode.Rattle, start, 1, (int)Math.Clamp(rounded, 1, 255), rhythm.Frequency);
         }
-
-        /// <summary>Scales an effect's force alone. Travel, zones and
-        /// frequency stay as they are. Zero, or a force scaled to nothing,
-        /// is no effect (EffectStrength.h scaleTriggerStrength).</summary>
-        public static FlydigiTriggerCommand ScaleStrength(FlydigiTriggerCommand command, int percent)
-        {
-            if (percent >= 100 || command.IsOff) return command;
-            if (percent <= 0) return FlydigiTriggerCommand.Off(command.Side);
-            byte Scale(byte value) => (byte)(value * percent / 100);
-            switch (command.Mode)
-            {
-                case FlydigiTriggerMode.Race:
-                    command = command with { P1 = Scale(command.P1) };
-                    return command.P1 == 0 ? FlydigiTriggerCommand.Off(command.Side) : command;
-                case FlydigiTriggerMode.Break:
-                case FlydigiTriggerMode.Rattle:
-                    command = command with { P2 = Scale(command.P2) };
-                    return command.P2 == 0 ? FlydigiTriggerCommand.Off(command.Side) : command;
-                default:
-                    return command;
-            }
-        }
     }
 }

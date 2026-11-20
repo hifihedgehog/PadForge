@@ -632,6 +632,47 @@ namespace PadForge.Tests
                 finally { window.Close(); }
             }));
 
+        /// <summary>Each show reads an Image crosshair's picture again through
+        /// the cache, so a file that could not be read at one show is drawn
+        /// at the next, the same look or not.</summary>
+        [Fact]
+        public void AShow_ReadsThePictureAgain_ThatCouldNotBeReadBefore()
+            => OnSta(() => OnDisplay(Away, () =>
+            {
+                string path = Path.Combine(Path.GetTempPath(), "PadForge.Tests.Crosshair." + Guid.NewGuid().ToString("N") + ".png");
+                var window = new CrosshairOverlay("Crosshair 1");
+                try
+                {
+                    var look = new CrosshairData { Style = CrosshairStyle.Image, ImagePath = path, ImageWidth = 20, ImageHeight = 20 };
+                    window.ShowLook(look);
+                    Assert.False(window.IsVisible);
+                    File.WriteAllBytes(path, Png(4, 4, (_, _) => (0, 0, 255, 255)));
+                    window.ShowLook(look);
+                    Assert.True(window.IsVisible);
+                }
+                finally
+                {
+                    window.Close();
+                    File.Delete(path);
+                }
+            }));
+
+        /// <summary>A display change queued while the window was up and run
+        /// after it closed, as the engine stopped or the crosshair was
+        /// removed, places nothing: a closed window cannot show again.</summary>
+        [Fact]
+        public void ADisplayChange_AfterTheWindowClosed_PlacesNothing()
+            => OnSta(() => OnDisplay(Away, () =>
+            {
+                var window = new CrosshairOverlay("Crosshair 1");
+                window.ShowLook(new CrosshairData { Style = CrosshairStyle.Dot, DotSize = 6 });
+                Assert.True(window.IsVisible);
+                SendMessage(Handle(window), 0x007E, IntPtr.Zero, IntPtr.Zero);
+                window.Close();
+                Pump(100);
+                Assert.False(window.IsVisible);
+            }));
+
         /// <summary>A click goes through the crosshair to the window beneath. The
         /// positive control is the same window without WS_EX_TRANSPARENT, which
         /// takes the click at the same point.</summary>
@@ -884,6 +925,51 @@ namespace PadForge.Tests
             foreach (string name in new[] { "Enabled", "ModeIndex", "FollowIndex", "Display", "ZoomPercent", "LensShapeIndex", "LensWidth",
                 "LensHeight", "Border", "BorderHex", "BorderThickness", "SpotlightSize", "SpotlightDimPercent" })
                 Assert.True(MagnifierItem.CanResetSetting(name), name);
+        }
+
+        /// <summary>A round lens has one size, its width, and the page hides
+        /// the height. A rectangle of 600 x 300 turned round is a circle of
+        /// 600, never an ellipse 600 wide and 300 high.</summary>
+        [Fact]
+        public void ARectangleTurnedRound_TakesItsWidthAsItsHeight()
+        {
+            var item = new DashboardViewModel().Magnifier;
+            item.LensShape = LensShape.Rectangle;
+            item.LensWidth = 600;
+            item.LensHeight = 300;
+            var raised = new List<string>();
+            item.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            item.LensShapeIndex = (int)LensShape.Circle;
+            Assert.Equal((600, 600), (item.LensWidth, item.LensHeight));
+            Assert.Equal(600, item.ToData().LensHeight);
+            Assert.Contains(nameof(MagnifierItem.LensHeight), raised);
+        }
+
+        /// <summary>A round lens's size row reads Size, and its slider, its
+        /// box and its reset say Size with it. A rectangle's says Width.</summary>
+        [Fact]
+        public void TheLensSizeRow_NamesItsControls_AsItsLabelReads()
+        {
+            var item = new DashboardViewModel().Magnifier;
+            var name = typeof(MagnifierItem).GetProperty("LensWidthName");
+            Assert.NotNull(name);
+            item.LensShape = LensShape.Circle;
+            Assert.Equal(Strings.Instance.Extras_Magnifier_Size, name.GetValue(item));
+            var raised = new List<string>();
+            item.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            item.LensShape = LensShape.Rectangle;
+            Assert.Equal(Strings.Instance.Extras_Magnifier_Width, name.GetValue(item));
+            Assert.Contains("LensWidthName", raised);
+
+            string page = RepoText("PadForge.App", "Views", "ExtrasPage.xaml");
+            int slider = page.IndexOf("AutomationProperties.AutomationId=\"Magnifier_LensWidth\"", StringComparison.Ordinal);
+            Assert.True(slider > 0);
+            int start = page.LastIndexOf("<controls:SettingRow", slider, StringComparison.Ordinal);
+            int end = page.IndexOf("</controls:SettingRow>", slider, StringComparison.Ordinal);
+            string row = page.Substring(start, end - start);
+            Assert.Equal(3, CountOf(row, "\"{Binding LensWidthName"));
+            // The width's own string names only the label a rectangle shows.
+            Assert.Equal(1, CountOf(row, "Extras_Magnifier_Width"));
         }
 
         /// <summary>The Display box lists the Lighting tab's displays. A new list
@@ -1175,8 +1261,8 @@ namespace PadForge.Tests
             Assert.Equal(2, CountOf(loops, "NoteMagnifierHeld();"));
             Assert.Contains("or MacroActionType.MagnifierWhileHeld;", loops);
             string catalog = RepoText("PadForge.App", "ViewModels", "MacroTypeCatalog.cs");
-            Assert.Contains("ToggleCrosshair, S.Macro_ToggleCrosshair", catalog);
-            Assert.Contains("ToggleMagnifier, S.Macro_ToggleMagnifier", catalog);
+            Assert.Contains("ToggleCrosshair, S.MacroAction_ToggleCrosshair", catalog);
+            Assert.Contains("ToggleMagnifier, S.MacroAction_ToggleMagnifier", catalog);
             Assert.Contains("MagnifierWhileHeld, S.MacroAction_Type_MagnifierWhileHeld", catalog);
 
             Assert.Equal(Strings.Instance.MacroAction_ToggleCrosshair, new MacroAction { Type = MacroActionType.ToggleCrosshair }.DisplayText);
@@ -1537,6 +1623,50 @@ namespace PadForge.Tests
                 }
                 finally { Invoke(input, "CloseCrosshairs"); }
             }));
+
+        /// <summary>A display change that hides or shows a crosshair's window
+        /// reaches its card: the status follows the window, with no setting
+        /// changed.</summary>
+        [Fact]
+        public void ADisplayChange_ThatHidesOrShowsTheWindow_ReachesTheStatus()
+            => OnSta(() =>
+            {
+                var display = Away;
+                DisplayBounds.Seam = _ => display;
+                using var statics = new SavedStatics();
+                var vm = new MainViewModel();
+                var input = new InputService(vm) { SettingsService = new SettingsService(vm) };
+                var windows = (Dictionary<int, CrosshairOverlay>)GetPrivate(input, "_crosshairs");
+                try
+                {
+                    var one = vm.Dashboard.Crosshairs[0];
+                    one.Enabled = true;
+                    Invoke(input, "SyncCrosshairs");
+                    var window = windows[1];
+                    Assert.True(window.IsVisible);
+                    Assert.Equal(Strings.Instance.Common_Running, one.Status);
+
+                    // The display goes away: WM_DISPLAYCHANGE, and the window hides.
+                    display = new Int32Rect(-3000, -3000, 0, 0);
+                    SendMessage(Handle(window), 0x007E, IntPtr.Zero, IntPtr.Zero);
+                    Pump(100);
+                    Assert.False(window.IsVisible);
+                    Assert.False(one.IsRunning);
+                    Assert.Equal(Strings.Instance.Extras_Crosshair_Status_OffDisplay, one.Status);
+
+                    // It comes back, and so does the crosshair.
+                    display = Away;
+                    SendMessage(Handle(window), 0x007E, IntPtr.Zero, IntPtr.Zero);
+                    Pump(100);
+                    Assert.True(window.IsVisible);
+                    Assert.Equal(Strings.Instance.Common_Running, one.Status);
+                }
+                finally
+                {
+                    Invoke(input, "CloseCrosshairs");
+                    DisplayBounds.Seam = null;
+                }
+            });
 
         [Fact]
         public void TheService_ShowsTheMagnifier_WhileOnOrHeld()

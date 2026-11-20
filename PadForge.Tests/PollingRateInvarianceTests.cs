@@ -319,14 +319,39 @@ namespace PadForge.Tests
 
         // ── The Wii pointer's FPS Mouse ──
 
+        /// <summary>FPS Mouse's deflection is a speed, the same at every
+        /// rate. The controller spends a deflection over its own pass length
+        /// (KeyboardMouseVirtualController.MouseStickPixels), so a
+        /// deflection scaled by the pass length as well made the cursor's
+        /// speed follow the rate: twice as fast at 500 passes a second as at
+        /// 1000, and up to 50 times as fast after a long pass.</summary>
         [Fact]
-        public void FpsMouseScalesAShortPassAsTheReferencePass()
+        public void FpsMouseGivesTheSameDeflectionWhateverThePassLength()
         {
-            Assert.Equal(0.001f, InputManager.FpsPassSeconds(0, 123, Second));
-            Assert.Equal(0.001f, InputManager.FpsPassSeconds(1000, 1000 + PassCost, Second));
-            Assert.Equal(0.001f, InputManager.FpsPassSeconds(1000, 1000 + 1_000, Second));
-            Assert.Equal(0.004f, InputManager.FpsPassSeconds(1000, 1000 + 40_000, Second), 6);
-            Assert.Equal(0.05f, InputManager.FpsPassSeconds(1000, 1000 + Second, Second));
+            var prev = SourceCoercion.IrPointerModeProvider;
+            try
+            {
+                SourceCoercion.IrPointerModeProvider = (dev, slot) => (1, 35f);
+                string device = "fps-rate-" + Guid.NewGuid().ToString("N");
+                short Aim()
+                {
+                    var raw = new KbmRawState { MouseAbsValid = true, MouseAbsX = 1f, MouseAbsY = 0f };
+                    InputManager.ApplyPointerMode(ref raw, device, 0, true, true, true);
+                    return raw.MouseDeltaX;
+                }
+                short first = Aim();
+                System.Threading.Thread.Sleep(8);
+                short later = Aim();
+                Assert.Equal(first, later);
+                // Full aim at the default speed of 35: 8 px/s for each unit,
+                // 280 px/s, what 1000 passes a second gave before.
+                Assert.InRange(first, 7640, 7650);
+                Assert.InRange(KeyboardMouseVirtualController.MouseStickPixels(first, 1f), 279f, 281f);
+            }
+            finally
+            {
+                SourceCoercion.IrPointerModeProvider = prev;
+            }
         }
 
         // ── Frames that go out on every pass ──
@@ -382,6 +407,20 @@ namespace PadForge.Tests
             Assert.Contains("bool spaceFrames = rateHz > EveryPassFrameGate.EveryPassUpToHz;",
                 Read("PadForge.App/Common/Input/InputManager.cs"));
             Assert.Equal(1000, EveryPassFrameGate.EveryPassUpToHz);
+        }
+
+        /// <summary>The loop holds Windows' finest clock only while it runs
+        /// faster than the one millisecond clock ticks. The idle and
+        /// focus-suspended branches give it back before they sleep: they
+        /// held it for as long as the engine stayed idle, against
+        /// SetFineClock's own rule.</summary>
+        [Fact]
+        public void TheIdleAndSuspendedBranchesGiveTheFineClockBack()
+        {
+            string loop = Read("PadForge.App/Common/Input/InputManager.cs");
+            Assert.Contains("HoldFineClock(ref fineClock, false);", Between(loop, "if (BeginIdlePoll())", "Thread.Sleep(50);"));
+            Assert.Contains("HoldFineClock(ref fineClock, false);", Between(loop, "if (ApplyFocusSuspension())", "Thread.Sleep(100);"));
+            Assert.Contains("HoldFineClock(ref fineClock, rateHz > FineClockAboveHz);", loop);
         }
 
         // ── The loop tells the evaluator about a short pass ──

@@ -2423,7 +2423,7 @@
                                             <TextBlock x:Name="IdleUnitText" Margin="10,0,10,0" TextWrapping="Wrap" FontSize="14" VerticalAlignment="Center"
                                                        LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                       Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}, NotifyOnTargetUpdated=True}"/>
+                                                       Text="{Binding Common_MinutesZeroNever, Source={x:Static strings:Strings.Instance}, NotifyOnTargetUpdated=True}"/>
                                             <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="IdleDisconnectMinutes" SettingLabel="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_IdleDisconnectMinutes_1094"/>
                                         </controls:SettingRow>
                                         <!-- Quick Charge (#372) on its own gate. Click,
@@ -2616,18 +2616,17 @@
                                                 Text=":"/><Run
                                                 Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/></TextBlock>
                                         </DockPanel>
-                                        <!-- A link is named only when it is Bluetooth:
-                                             a path that is not may be USB, a receiver
-                                             or a virtual source. -->
+                                        <!-- The link where PadForge knows it, as
+                                             the Link tile names it: Bluetooth, USB,
+                                             PS/2 or I2C. Bluetooth keeps its mark. -->
                                         <DockPanel Margin="0,5"
-                                                   Visibility="{Binding SelectedDevice.IsBluetoothLink, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                   Visibility="{Binding SelectedDevice.HasLink, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Link, Source={x:Static strings:Strings.Instance}}"/>
                                             <!-- The Bluetooth mark, then the word. -->
                                             <TextBlock Style="{StaticResource DetailValue}"
-                                                       AutomationProperties.Name="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}"><Run
-                                                Text="&#xE702;" FontFamily="Segoe UI Variable Text, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
-                                                Text=" "/><Run
-                                                Text="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/></TextBlock>
+                                                       AutomationProperties.Name="{Binding SelectedDevice.LinkText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run
+                                                Text="{Binding SelectedDevice.LinkMarkText, Mode=OneWay}" FontFamily="Segoe UI Variable Text, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
+                                                Text="{Binding SelectedDevice.LinkText, Mode=OneWay}"/></TextBlock>
                                         </DockPanel>
                                         <!-- The battery, for a device that reports
                                              one: a picture of its level, then the

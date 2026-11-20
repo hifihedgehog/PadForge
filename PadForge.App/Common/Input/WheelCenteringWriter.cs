@@ -71,6 +71,13 @@ namespace PadForge.Common.Input
 
         private static readonly ConcurrentDictionary<string, Applied> _applied = new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>The game condition effect a Fanatec base holds, as last
+        /// written by <see cref="WriteFanatecGameForce"/>.</summary>
+        private readonly record struct GameCondition(uint Effect, int PositiveCoefficient, int NegativeCoefficient,
+            int Offset, int DeadBand, int PositiveSaturation, int NegativeSaturation, int Gain);
+
+        private static readonly ConcurrentDictionary<string, GameCondition> _fanatecCondition = new(StringComparer.OrdinalIgnoreCase);
+
         private const int Unknown = -1;
 
         /// <summary>Unknown for the force, which runs below zero where the
@@ -114,7 +121,9 @@ namespace PadForge.Common.Input
         /// its slot assignment ends, so the next frame is written whole.</summary>
         public static void ResetDevice(string devicePath)
         {
-            if (!string.IsNullOrEmpty(devicePath)) _applied.TryRemove(devicePath, out _);
+            if (string.IsNullOrEmpty(devicePath)) return;
+            _applied.TryRemove(devicePath, out _);
+            _fanatecCondition.TryRemove(devicePath, out _);
         }
 
         /// <summary>The pass wrote a Fanatec base's spring slot itself, to
@@ -126,6 +135,9 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(devicePath)) return;
             if (_applied.TryGetValue(devicePath, out var prev) && prev.SpringCoefficient != Unknown)
                 _applied[devicePath] = prev with { SpringCoefficient = Unknown };
+            // A game's spring the slot held is gone with it, and is written again.
+            if (_fanatecCondition.TryGetValue(devicePath, out var game) && game.Effect == FfbEffectTypes.Spring)
+                _fanatecCondition.TryRemove(devicePath, out _);
         }
 
         /// <summary>The constant force a wheel is sent: the game's with the
@@ -139,6 +151,51 @@ namespace PadForge.Common.Input
             if (centeringLevel == 0 || ThrustmasterRawHidWriter.IsThrustmasterWheel(vendorId, productId)) return gameForce;
             if (gameCondition && LogitechRawHidWriter.IsLogitechWheel(vendorId, productId)) return gameForce;
             return (short)Math.Clamp(gameForce + centeringLevel, -32767, 32767);
+        }
+
+        /// <summary>A Fanatec base's game effect and constant force, from this
+        /// PC's pass or for a peer's wheel frame. The base plays every slot at
+        /// once: hid-fanatecff sums each slot's effects on every tick,
+        /// constants into the first and springs into the second
+        /// (hid-ftecff.c ftecff_timer). So while a game's condition effect
+        /// plays in its kind's slot, the first slot still takes the constant
+        /// force, which carries Vehicle mode's centering force
+        /// (<see cref="MergedForce"/>). The pass left the first slot at its
+        /// last level then, and the centering force stood still. The game's
+        /// condition is written when it is not the one the base holds, and
+        /// the force when <paramref name="forceChanged"/> says so, so a
+        /// centering force that moves does not send the game's effect
+        /// again.</summary>
+        public static void WriteFanatecGameForce(string devicePath, ushort productId, bool gameCondition, uint effect,
+            int positiveCoefficient, int negativeCoefficient, int offset, int deadBand, int positiveSaturation,
+            int negativeSaturation, int conditionGain, short force, int autoCenter, bool forceChanged)
+        {
+            if (string.IsNullOrEmpty(devicePath)) return;
+            if (gameCondition)
+            {
+                var game = new GameCondition(effect, positiveCoefficient, negativeCoefficient, offset, deadBand,
+                    positiveSaturation, negativeSaturation, conditionGain);
+                if (!_fanatecCondition.TryGetValue(devicePath, out var held) || held != game)
+                {
+                    // A refused write leaves no record, so the next frame tries again.
+                    if (FanatecRawHidWriter.WriteWheelCondition(devicePath, effect, positiveCoefficient, negativeCoefficient,
+                            offset, deadBand, positiveSaturation, negativeSaturation, conditionGain))
+                        _fanatecCondition[devicePath] = game;
+                    else _fanatecCondition.TryRemove(devicePath, out _);
+                }
+                if (forceChanged) FanatecRawHidWriter.WriteWheelConstantForce(devicePath, force, productId);
+                return;
+            }
+            // The game's condition ended. Its slot is centering's again (Apply).
+            _fanatecCondition.TryRemove(devicePath, out _);
+            FanatecRawHidWriter.WriteWheelConstantForce(devicePath, force, productId);
+            // Re-assert the software centering spring each frame so it
+            // survives a game-driven condition overwriting slot 1.
+            if (autoCenter > 0)
+            {
+                FanatecRawHidWriter.WriteAutocenter(devicePath, autoCenter);
+                SpringSlotWritten(devicePath);
+            }
         }
 
         /// <summary>The constant force as it goes on the wire, so two levels
@@ -185,18 +242,16 @@ namespace PadForge.Common.Input
             bool springHeld = vendor == Fanatec && (gameCondition == FfbEffectTypes.Spring || autoCenterSpring);
             bool gameHoldsSlot = vendor == Fanatec && gameCondition is FfbEffectTypes.Spring or FfbEffectTypes.Damper
                 or FfbEffectTypes.Inertia or FfbEffectTypes.Friction;
-            // Nothing was sent and nothing is to send. Spring mode's own spring leaves no record: a wheel
-            // with none is written whole when centering first has a frame for it. A game's effect does
-            // leave one, so its slot is cleared when the effect ends.
-            if (!had && !gameHoldsSlot && springC == 0 && damperC == 0 && frictionS == 0 && frame.Level == 0) return;
-
             // A wheel holds what it was last sent until it is told otherwise, by a run of PadForge that was
-            // killed among others. So the first frame writes every slot centering uses, the empty ones with a
-            // stop, as the Linux drivers do when they take a wheel (new-lg4ff lg4ff_init_slots, hid-fanatecff
-            // ftecff_init_slots). A Thrustmaster's effects exist once they are uploaded, each under its id, and
-            // none is stopped before it is.
-            if (!had && vendor != Thrustmaster)
-                prev = new Applied(Unknown, 0, Unknown, 0, Unknown, 0, GameInertia: vendor == Fanatec);
+            // killed among others. So the first frame writes every slot or id centering uses, the empty ones
+            // with a stop, as the Linux drivers do when they take a wheel (new-lg4ff lg4ff_init_slots,
+            // hid-fanatecff ftecff_init_slots). A Thrustmaster's effects play until they are stopped (a play
+            // count of 0, hid-tmt300rs.c t300rs_play_effect), so its four ids are stopped too. An empty first
+            // frame is no exception: a run killed while Vehicle mode or a Release Test held the slots left
+            // them playing, and the next run may start in Spring mode, whose frames are empty.
+            if (!had)
+                prev = new Applied(Unknown, 0, Unknown, 0, Unknown, vendor == Thrustmaster ? UnknownForce : 0,
+                    GameInertia: vendor == Fanatec);
 
             var next = prev;
             bool capFriction = vendor == Logitech && LogitechRawHidWriter.HasFrictionCap(productId);

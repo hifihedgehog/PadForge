@@ -164,6 +164,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pikitia</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Rārangi</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} putanga</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} putanga</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Nekehanga</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Arokite</value></data>
@@ -306,7 +307,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Patopato "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kāore he kuputuhi)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Kuputuhi</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>meneti</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Pānui hei controller iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Pānui hei papapātuhi</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Pānui hei stick Tekken</value></data>
@@ -519,7 +519,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Tautuhi anō i te pāwhiri</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Tautuhi anō i te pūtau</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Tautuhi anō i te tairongo</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Tautuhi anō i te whakaterenga</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Tautuhi anō i te deadzone</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Tautuhi anō i te wā pupuri</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Tautuhi anō i te Kia oho tonu</value></data>
@@ -734,6 +733,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Tukurua {0} ia {1} ms</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Kiore X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Kiore Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Nekehanga whakapae</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Nekehanga poutū</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Aratau</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mōta mauī</value></data>
@@ -941,6 +942,18 @@
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Tautuhi anō i te whakaterenga</value></data>
   <data name="Pad_ResetGyroOutputCurve" xml:space="preserve"><value>Tautuhi anō i te ānau putanga</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Tairongo</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Anake i te wā</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Ka tatau tēnei pūtake anake i te wā e pēhia ana hoki tēnei tāuru i te pūwhakahaere kotahi. Ko te whakamātautau rohe nō tētahi kawemai ka pānuitia hei awhe rākau, awhe keu rānei e tirohia ana e ia.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Me te wā</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>He tāuru tuarua e tatari ana hoki tēnei pūtake.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Huri tāuru</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Ka kōwhiri i tētahi atu tāuru hei tatari.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Ānau</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ka hiki i te pānui o tēnei tāuru ki tēnei pū i mua i tōna whakahaere i te putanga. Ka waiho tōtika e 0 me 1. Ki runga ake i te 1 he puhoi ake tata ki te waenga.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Awhe o waho</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ka tae te putanga ki te katoa i tēnei rahi o te nekehanga. Ko te 100% he weto.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ka tīmata te putanga i tēnei rahi i te wā tonu ka neke te tāuru. Ko te 0 he weto.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Tere kiore X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Tere kiore Y</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Tūnga kiore X</value></data>
@@ -1859,7 +1872,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>He wiri trigger mai i te bass o te oro pūnaha</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ngā deadzone tītaha, te takotoranga o te controller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, whakamāeneene, Whakaterenga, Ānau putanga</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Pātene whakahohe whāinga, aratau whakahohe, paepae whāinga māmā</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Pātene whakahohe whāinga, aratau whakahohe, Gyro kā, whakawaenga anō, paepae whāinga māmā</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Whakamahia te touchpad hei stick, hei D-pad rānei</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Te wāhanga o te mata ka taea e te papa</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ka whakahohe i ngā gesture o tēnei touchpad</value></data>
@@ -1893,7 +1906,6 @@
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, ringa matau</value></data>
   <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Putanga MIDI</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Mahia</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Paparanga, Puna, Paepae, Ahunga, Consume Trigger Buttons, Tukurua</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Whakaingoa anō</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Tahua hou</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Tēnei pūrere</value></data>
@@ -2059,10 +2071,20 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kāore te pūwhakahaere i te aratau Xbox i whakautu hei Apex 4, nā reira kāore he mea i tukuna, ā, kua whakahokia ki Windows. Whakahokia ki te aratau DInput mā tōna ake pana.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Kāore a Windows i nuku i te pūwhakahaere ki WinUSB, nā reira kāore he mea i tukuna. Whakahokia ki te aratau DInput mā tōna ake pana.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kua mutu. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana i mua i tō tuku anō.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Kāore te port o te mata i tuwhera, nō reira kāore he mea i tukuna. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>He maha ake ngā anga o te pikitia i tā te mata o tēnei pūwhakahaere e pupuri ai.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Kei te tukuna kētia he pikitia ki tēnei pūwhakahaere. Tatari kia oti.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>I tono te mata i te pikitia ki tētahi wāhitau kāore a PadForge e tuhi ki reira, nō reira kāore he mea i tukuna. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>I tukuna te pikitia, engari kāore te pūwhakahaere i hoki ki te aratau DInput. Whakahokia mā tōna ake pana.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Kāore te pūwhakahaere i whakaae ki te tohutohu e whakareri ana i a ia, nō reira kāore he mea i tukuna. Tirohia kua hono, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>I mutu te tuku i tētahi hapa i roto i a PadForge. Kei te kōnae rangitaki ngā taipitopito.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kei te haere tonu tētahi pikitia ki te pūwhakahaere. Me whakamutu te tuku?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Whakahāngai</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Pūrere kāore e mōhiotia</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Deadzone o roto</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>I raro i tēnei rahi o te nekehanga ka pānuitia te tāuru kei waenganui.</value></data>
 </root>

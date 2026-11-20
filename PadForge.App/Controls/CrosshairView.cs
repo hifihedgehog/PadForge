@@ -75,6 +75,16 @@ namespace PadForge.Controls
         private Brush _fill;
         private Pen _outline;
 
+        /// <summary>Builds the look again, reading an Image crosshair's
+        /// picture again through <see cref="CrosshairPictures"/>: a file
+        /// that could not be read before, or was written again since, is
+        /// drawn as it is now.</summary>
+        internal void Reload()
+        {
+            Build();
+            InvalidateVisual();
+        }
+
         private void Build()
         {
             var look = Look;

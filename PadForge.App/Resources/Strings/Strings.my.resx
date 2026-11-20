@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>မရှိ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>စက္ကန့်</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>မိနစ် (0 = မည်သည့်အခါမျှ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>သတ်မှတ်မထား</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ဘယ်)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ အပေါ်)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll မတွေ့ပါ</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll မတွေ့ပါ။ SDL3.dll ကို PadForge.exe ဘေးတွင် ထားပါ။ ၎င်းကို https://github.com/libsdl-org/SDL/releases မှ ဒေါင်းလုဒ်လုပ်ပါ</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll မတွေ့ပါ။ PadForge ကို ထပ်မံ ဒေါင်းလုဒ်လုပ်ပါ။</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ဒရိုက်ဗာ လုပ်ဆောင်ချက် မအောင်မြင်ပါ: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ဆက်တင်များကို ကလစ်ဘုတ်သို့ ကူးယူပြီးပါပြီ။</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>စက်ပစ္စည်း အချက်အလက်ကို ကလစ်ဘုတ်သို့ ကူးယူပြီးပါပြီ။</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>နည်း</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ပုံ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>စာရင်း</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>အထွက် {0} ခု</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>အထွက် {0} ခု</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>လှုပ်ရှားမှု</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ထိန်းချုပ်ကွက်တစ်ခုကို နှိပ်ပြီး ၎င်းကို မောင်းနှင်မည့် ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
@@ -435,9 +437,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge မသိသော ဂိမ်းများ</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>မပို့မီ လည်ပတ်နေသော DSX ကို ရှာသည့် မော့များအတွက်။</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ပြသမည့်အရာ</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>မီနူးဖွင့်ထားစဉ် ၎င်း၏ အဝိုင်း၊ ဇယားကွက် သို့မဟုတ် ဘား</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift အလွှာ ဖွင့်လာသည့်အခါ ထိုအလွှာ သတ်မှတ်ထားသည့် ကြာချိန်အတွင်း ထိုအလွှာ၏ အမည်</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းသည့်အခါ ပရိုဖိုင်၏ အမည်</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>မီနူးဖွင့်ထားစဉ် ၎င်း၏ အဝိုင်း၊ ဇယားကွက် သို့မဟုတ် ဘား။</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift အလွှာ ဖွင့်လာသည့်အခါ ထိုအလွှာ သတ်မှတ်ထားသည့် ကြာချိန်အတွင်း ထိုအလွှာ၏ အမည်။</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းသည့်အခါ ပရိုဖိုင်၏ အမည်။</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>လိပ်စာ ကူးယူရန်</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>မျက်နှာပြင်ပေါ်ရှိ နေရာ</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ဖုန်းတစ်လုံး ချိတ်ဆက်ရန်</value></data>
@@ -633,7 +635,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>ဖွင့်လှစ်ချိန်တွင် အင်ဂျင်ကို အလိုအလျောက် စတင်ရန်</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ဝင်းဒိုး ရှေ့တွင် မရှိတော့သည့်အခါလည်း ဖတ်ယူခြင်း ဆက်လုပ်ရန်</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>စစ်ဆေးနှုန်း (ပရိုဖိုင်က အစားထိုးမထားလျှင်)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>အင်ဂျင်သည် တစ်စက္ကန့်လျှင် 60 မှ 10000 အထိရှိသော ဤအကြိမ်ရေအတိုင်း စက်ပစ္စည်းအားလုံးကို ဖတ်ယူပြီး ဗာချွယ်ကွန်ထရိုလာများကို အပ်ဒိတ်လုပ်သည်။ နှုန်း မြင့်လေ ပရိုဆက်ဆာ အချိန်ကို ပိုသုံးလေ ဖြစ်သည်။ Windows သည် အင်ဂျင်ကို တစ်စက္ကန့်လျှင် အများဆုံး 2000 ခန့်သာ နိုးထစေသောကြောင့် ထိုထက်မြင့်သော နှုန်းတွင် နိုးထသည့်အကြိမ်တိုင်း လုပ်ဆောင်မှု အကြိမ်ပတ် အများအပြားကို လုပ်ဆောင်သည်။ ကိုယ်ပိုင် ဖတ်ယူနှုန်းပါသော ပရိုဖိုင် အသက်ဝင်နေစဉ် ထိုနှုန်းကို အစားသုံးသည်။ ပရိုဖိုင် ပိတ်သွားသည့်အခါ ဤတန်ဖိုး ပြန်လည် အသက်ဝင်သည်။</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>အင်ဂျင်သည် တစ်စက္ကန့်လျှင် 60 မှ 10000 အထိရှိသော ဤအကြိမ်ရေအတိုင်း စက်ပစ္စည်းအားလုံးကို ဖတ်ယူပြီး ဗာချွယ်ကွန်ထရိုလာများကို အပ်ဒိတ်လုပ်သည်။ နှုန်း မြင့်လေ ပရိုဆက်ဆာ အချိန်ကို ပိုသုံးလေ ဖြစ်သည်။ ဤ PC တွင် Windows သည် အင်ဂျင်ကို တစ်စက္ကန့်လျှင် အများဆုံး {0} ကြိမ်သာ နိုးထစေသောကြောင့် ထိုထက်မြင့်သော နှုန်းတွင် နိုးထသည့်အကြိမ်တိုင်း လုပ်ဆောင်မှု အကြိမ်ပတ် အများအပြားကို လုပ်ဆောင်သည်။ ကိုယ်ပိုင် ဖတ်ယူနှုန်းပါသော ပရိုဖိုင် အသက်ဝင်နေစဉ် ထိုနှုန်းကို အစားသုံးသည်။ ပရိုဖိုင် ပိတ်သွားသည့်အခါ ဤတန်ဖိုး ပြန်လည် အသက်ဝင်သည်။</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ဂိမ်းများမှ စက်ပစ္စည်းများကို ဝှက်ရန်</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide စက်ပစ္စည်းဝှက်ခြင်းနှင့် အဆင့်နိမ့် အဝင် hook များအတွက် ပင်မခလုတ်။ ပိတ်ထားလျှင် စက်ပစ္စည်းတစ်ခုချင်းစီ၏ ဆက်တင်များ မည်သို့ပင်ရှိစေ မည်သည့်စက်ပစ္စည်းကိုမျှ မဝှက်ပါ။</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ဖွင့်လှစ်မှုများကြားတွင် စက်ပစ္စည်းများကို ဆက်ဝှက်ထားရန်</value></data>
@@ -924,7 +926,6 @@
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ရိုက်ထည့်သော အက္ခရာများကြား မီလီစက္ကန့်၊ 1000 အထိ။ 0 ဆိုလျှင် စာသားတစ်ခုလုံးကို တစ်ပြိုင်နက် ရိုက်ထည့်သည်။</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>အားနေချိန် ချိတ်ဆက်မှုဖြုတ်ရန်</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>အသေးစိတ်</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>မိနစ်</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ကြိုးတပ်ထားချိန် Bluetooth ကို ဖြုတ်ရန်</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>အမြန်အားသွင်းခြင်း။ ဤကွန်ထရိုလာသည် Bluetooth ဖြင့် ချိတ်ဆက်ထားစဉ် အားသွင်းနေကြောင်း ပြလာသည့်အခါ ရေဒီယိုကို ပါဝါမပေးဘဲ အားသွင်းနိုင်ရန် Bluetooth ချိတ်ဆက်မှုကို ဖြုတ်ပေးသည်။ နံရံအားသွင်းကိရိယာများ အပါအဝင် မည်သည့် USB ပါဝါရင်းမြစ်မဆို ရေတွက်သည်။ ကြိုးတပ်ထားဆဲ Bluetooth ကို ပြန်ဖွင့်လျှင် နောက်တစ်ကြိမ် ကြိုးဖြုတ်သည်အထိ မထိတော့ပါ။</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade ကွန်ထရိုလာအဖြစ် ဖတ်ရန်</value></data>
@@ -966,8 +967,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU သည် အသုံးပြုနေသော ပရိုဖိုင်၏ အမည်ကို ပြပြီး ပရိုဖိုင်ပြောင်းတိုင်း လိုက်ပြောင်းသည်။</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU သည် ပရိုဖိုင်စာရင်းရှိ အသုံးပြုနေသော ပရိုဖိုင်၏ နေရာကို ပြသည်။ မူလ ပရိုဖိုင်သည် 0 ဖြစ်သည်။</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU သည် အသုံးပြုနေသော ပရိုဖိုင်၏ ကိုယ်ပိုင်ပုံကို ပြပြီး ပုံမရှိလျှင် ၎င်း၏ အမည်ကို ပြသည်။ ပရိုဖိုင်တိုင်းသည် ကိုယ်ပိုင်ပုံကို သိမ်းထားသည်။</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU သည် လက်ရှိအချိန်ကို ပြပြီး တစ်မိနစ်လျှင် တစ်ကြိမ် ပြန်ရေးသည်။ အဒက်ပ်တာသည် ပုံတစ်ပုံစီကို 100,000 ကြိမ် ရေးနိုင်ရန် သတ်မှတ်ထားသော မှတ်ဉာဏ်တွင် သိမ်းထားပြီး နေ့ရောညပါ ဆက်တိုက်ပြသပါက ဆယ်ပတ်ခန့်အကြာတွင် ထိုအရေအတွက်သို့ ရောက်သည်။</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU သည် PadForge က ပက်ဒ်ကို တွေ့ပြီးချိန်မှစ၍ နာရီနှင့် မိနစ်ကို ပြပြီး တစ်မိနစ်လျှင် တစ်ကြိမ် ပြန်ရေးသည်။ ပေါ့တ်မှ ဆယ်စက္ကန့်ထက် ပိုကြာအောင် ဖြုတ်ထားသော ပက်ဒ်သည် သုညမှ ပြန်စသည်။ အဒက်ပ်တာသည် ပုံတစ်ပုံစီကို 100,000 ကြိမ် ရေးနိုင်ရန် သတ်မှတ်ထားသော မှတ်ဉာဏ်တွင် သိမ်းထားပြီး နေ့ရောညပါ ဆက်တိုက်ပြသပါက ဆယ်ပတ်ခန့်အကြာတွင် ထိုအရေအတွက်သို့ ရောက်သည်။</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU သည် လက်ရှိအချိန်ကို ပြပြီး တစ်မိနစ်လျှင် တစ်ကြိမ် ပြန်ရေးသည်။ အဒက်ပ်တာသည် ပုံတစ်ပုံစီကို ၎င်း၏ ကိုယ်ပိုင် မှတ်ဉာဏ်တွင် သိမ်းထားသောကြောင့် PadForge သည် ၎င်းကို ထိုထက် ပိုမကြာခဏ ပြန်မရေးပါ။</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU သည် PadForge က ပက်ဒ်ကို တွေ့ပြီးချိန်မှစ၍ နာရီနှင့် မိနစ်ကို ပြပြီး တစ်မိနစ်လျှင် တစ်ကြိမ် ပြန်ရေးသည်။ ပေါ့တ်မှ ဆယ်စက္ကန့်ထက် ပိုကြာအောင် ဖြုတ်ထားသော ပက်ဒ်သည် သုညမှ ပြန်စသည်။ အဒက်ပ်တာသည် ပုံတစ်ပုံစီကို ၎င်း၏ ကိုယ်ပိုင် မှတ်ဉာဏ်တွင် သိမ်းထားသောကြောင့် PadForge သည် ၎င်းကို တစ်မိနစ်လျှင် တစ်ကြိမ်ထက် ပိုမပြန်ရေးပါ။</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU သည် သင်ရွေးသော ပုံကို ပြသည်: BMP သို့မဟုတ် PNG၊ VMU Animator .lcd ဖိုင် သို့မဟုတ် Dreamcast .vms အိုင်ကွန်။ ပုံများကို အလျား 48 ပစ်ဆယ်၊ အမြင့် 32 ပစ်ဆယ်ရှိ အဖြူအမည်းပုံအဖြစ် ဖြတ်ညှိသည်။</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>ပုံရွေးရန်…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} အတွက် ပုံရွေးရန်…</value></data>
@@ -1012,6 +1013,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox မုဒ်ရှိ ကွန်ထရိုလာသည် Apex 4 အဖြစ် မတုံ့ပြန်သဖြင့် ဘာမှ မပို့ခဲ့ဘဲ Windows သို့ ပြန်ပေးထားပြီးဖြစ်သည်။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းပါ။</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows က ကွန်ထရိုလာကို WinUSB သို့ မရွှေ့ပေးသဖြင့် ဘာမှ မပို့ခဲ့ပါ။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းပါ။</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ရပ်လိုက်ပါပြီ။ ထပ်မပို့မီ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>မျက်နှာပြင်၏ ပေါ့တ် မပွင့်သောကြောင့် ဘာမှ မပို့ခဲ့ပါ။ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ကာ ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>ပုံတွင် ဤကွန်ထရိုလာ၏ မျက်နှာပြင် သိမ်းနိုင်သည်ထက် ဖရိမ်များ ပိုများသည်။</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>ဤကွန်ထရိုလာသို့ ပုံတစ်ပုံ ပို့နေဆဲ ဖြစ်သည်။ ၎င်း ပြီးဆုံးသည်အထိ စောင့်ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>မျက်နှာပြင်က PadForge မရေးသော လိပ်စာတစ်ခုတွင် ပုံကို တောင်းဆိုသောကြောင့် ဘာမှ မပို့ခဲ့ပါ။ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ကာ ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>ပုံကို ပို့ပြီးပါပြီ၊ သို့သော် ကွန်ထရိုလာသည် DInput မုဒ်သို့ ပြန်မပြောင်းပါ။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပြန်ပြောင်းပါ။</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>ကွန်ထရိုလာက ၎င်းကို အသင့်ပြင်ပေးသော အမိန့်ကို လက်မခံသောကြောင့် ဘာမှ မပို့ခဲ့ပါ။ ချိတ်ဆက်ထားကြောင်း စစ်ဆေးပြီး ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge အတွင်း အမှားတစ်ခုကြောင့် ပို့ခြင်း ရပ်သွားသည်။ လော့ဂ်ဖိုင်တွင် အသေးစိတ် ပါရှိသည်။</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ပုံတစ်ပုံကို ကွန်ထရိုလာသို့ ပို့နေဆဲ ဖြစ်သည်။ ပို့ခြင်းကို ရပ်မလား?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ဖိုင်များ (*.mpk)|*.mpk|ဖိုင်အားလုံး (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ပေါ့တ် {0}.mpk</value></data>
@@ -1506,7 +1514,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>မီနူး အရွယ်အစားနှင့် တည်နေရာကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>အကွက်ကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်းကို ပြန်လည်သတ်မှတ်</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>အရှိန်မြှင့်ခြင်းကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>ဒက်ဇုန်ကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>ဖိထားချိန်ကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>နှိပ်ချိန်ကာလကို ပြန်လည်သတ်မှတ်</value></data>
@@ -1787,7 +1794,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>မည်သည့်အလွှာမဆို</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာ အသက်ဝင်နေစဉ် အဆက်မပြတ် အလုပ်လုပ်သည်။ အသက်သွင်းခလုတ် မလိုပါ။</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>လုပ်ဆောင်ရန်</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>အလွှာ၊ ရင်းမြစ်၊ စတင်တန်ဖိုး၊ ဦးတည်ချက်၊ အသက်သွင်းခလုတ်များကို သိမ်းယူရန်၊ ထပ်လုပ်</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>လုပ်ဆောင်ချက် ထည့်ရန်</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>အမျိုးအစား</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ဗာချွယ် ခလုတ်များ</value></data>
@@ -1813,7 +1819,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>မောက်စ်ခလုတ် နှိပ်ခြင်း</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>မောက်စ်ခလုတ် လွှတ်ခြင်း</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>မောက်စ် လှိမ့်ခြင်း</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>တာ့ချ်ပက် အုပ်ထပ်ပြကွက် အဖွင့်အပိတ်</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ခလုတ်များ</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>ကီး တွဲဖက်</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} ပုံစံဖြင့် ကီးတွဲဖက်။ ပြင်ဆင်နိုင်သည်။</value></data>
@@ -1944,6 +1949,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{1} ms တိုင်း {0} ကို ထပ်နှိပ်ရန်</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>မောက်စ် X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>မောက်စ် Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>အလျားလိုက် ရွှေ့ပမာဏ</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>ဒေါင်လိုက် ရွှေ့ပမာဏ</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ကြားကာလ</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>မျက်နှာပြင်ပေါ်တွင် ရွေး</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} အကြာတွင် ဖမ်းယူမည်…</value></data>
@@ -1978,6 +1985,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>ပြောင်းပြန် တစ်ဝက်</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>မက်ပင်းလုပ်ထားသော စက်ပစ္စည်း မရှိပါ</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>မသိသော စက်ပစ္စည်း</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>တာ့ချ်ပက် ကလစ်</value></data>
@@ -2420,7 +2428,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>အောက် (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>အပေါ် (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ဖွင့်ခြင်း</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ချိန်ရွယ်ဖွင့် ခလုတ်၊ ဖွင့်ရန် မုဒ်၊ လွယ်ကူချိန်ရွယ် စတင်တန်ဖိုး</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ချိန်ရွယ်ဖွင့် ခလုတ်၊ ဖွင့်ရန် မုဒ်၊ ဂိုင်ရို ဖွင့်၊ ဗဟိုပြန်ချိန်၊ လွယ်ကူချိန်ရွယ် စတင်တန်ဖိုး</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ဂိုင်ရို အသက်ဝင်ချိန်ကို ကန့်သတ်သော ရွေးချယ်နိုင်သည့် ထိန်းချုပ်မှုများ။ ညာ စတစ် တွန်းရွှေ့မှုပမာဏနှင့် ချိန်ရွယ်ဖွင့် ခလုတ်ကို တစ်ခုစီ သတ်မှတ်နိုင်သည်။ သတ်မှတ်ထားသော ထိန်းချုပ်မှုတိုင်း အသက်ဝင်နေစဉ်သာ ဂိုင်ရို အလုပ်လုပ်သည်။</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ဒေသတွင်း</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ကစားသမား</value></data>
@@ -2457,6 +2465,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>လွယ်ကူချိန်ရွယ် စတင်တန်ဖိုး ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>ချိန်ရွယ်ဖွင့် ခလုတ် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>ဖွင့်မုဒ် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>အလွှာ</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>အောက်ပါ အတန်းများတွင် ၎င်း၏ ဂိုင်ရို ဖွင့် ဆက်တင်ကို ပြသပြီး ပြောင်းလဲနိုင်သော အလွှာ။</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ဂိုင်ရို ဖွင့်</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>ချိန်ရွယ်ဖွင့် ခလုတ်အပြင် ဤအလွှာတွင် ဂိုင်ရို အလုပ်လုပ်သည့်အချိန်။ အခြေခံနှင့် တူညီ ဟု သတ်မှတ်ထားသော Shift အလွှာသည် အခြေခံအတိုင်း လိုက်သည်။</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>အမြဲ ဖွင့်</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>အခြေခံနှင့် တူညီ</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>ဖိထားစဉ်</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>မဖိထားစဉ်</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>နှိပ်တိုင်း ဖွင့်/ပိတ် ပြောင်း</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ဂိုင်ရို ဖွင့် ခလုတ်များ</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>ဤ slot ၏ မည်သည့် ကွန်ထရိုလာတွင်မဆို ဂိုင်ရို ဖွင့် က ဖတ်သော ခလုတ်များ။</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>လိုအပ်ချက်</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>အမှန်ခြစ်ထားသော ခလုတ်တစ်ခု လုံလောက်သလား သို့မဟုတ် အမှန်ခြစ်ထားသော ခလုတ်တိုင်းကို ဖိထားရမလား။</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>မည်သည့် ခလုတ်မဆို</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>ခလုတ်တိုင်း</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ဂိုင်ရို ဖွင့်လာသည့်အခါ ဗဟိုပြန်ချိန်</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ဂိုင်ရို ဖွင့်လာတိုင်း ကွန်ထရိုလာ၏ အနေအထားကို အနားယူမှတ်အဖြစ် ယူသည်။</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ဂိုင်ရို ဖွင့် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>ဂိုင်ရို ဖွင့် ခလုတ်များ ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>လိုအပ်ချက် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>ဂိုင်ရို ဖွင့်လာသည့်အခါ ဗဟိုပြန်ချိန် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>ဖွင့်ရန် စတစ် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ဖွင့်ရန် ဦးတည်ချက် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်း</value></data>
@@ -2467,6 +2496,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ဂိမ်းသည် ဤနေရာတွင် သတ်မှတ်ထားသော အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်းနှင့် မျဉ်းကွေးဖြင့် လှုပ်ရှားမှုကို ဖတ်သည်။</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>တိုက်ရိုက်ဖြတ်သန်းခြင်း ချိန်ညှိမှု ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>ဤထည့်သွင်းမှု ရှိနေစဉ်သာ</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>ဤထည့်သွင်းမှုကိုလည်း တူညီသော ကွန်ထရိုလာတွင် နှိပ်ထားသည်ဟု ဖတ်ရနေစဉ်သာ ဤရင်းမြစ်ကို ထည့်တွက်သည်။ တင်သွင်းမှုမှ ဇုန်စစ်ဆေးချက်ကို ၎င်းစစ်ဆေးသော စတစ် သို့မဟုတ် ထရစ်ဂါ အပိုင်းအခြားအဖြစ် ဖတ်သည်။</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>ဤထည့်သွင်းမှုလည်း ရှိနေစဉ်</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>ဤရင်းမြစ်က ထပ်မံ စောင့်သော ဒုတိယ ထည့်သွင်းမှု။</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>ထည့်သွင်းမှု ပြောင်းရန်</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>စောင့်ရန် အခြား ထည့်သွင်းမှုကို ရွေးသည်။</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>မျဉ်းကွေး</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>ဤထည့်သွင်းမှု၏ ဖတ်ရသောတန်ဖိုးကို အထွက်ကို မမောင်းမီ ဤထပ်ကိန်းသို့ မြှင့်သည်။ 0 နှင့် 1 သည် ၎င်းကို မျဉ်းဖြောင့်အတိုင်း ထားသည်။ 1 ထက်ကြီးလျှင် ဗဟိုနားတွင် ပိုနှေးသည်။</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>အပြင် အပိုင်းအခြား</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>ရွေ့လျားမှု၏ ဤပမာဏတွင် အထွက်သည် အပြည့်ရောက်သည်။ 100% သည် ပိတ်ထားခြင်း ဖြစ်သည်။</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>အန်တီဒက်ဇုန်</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>ထည့်သွင်းမှု ရွေ့သည်နှင့် အထွက်သည် ဤပမာဏမှ စတင်သည်။ 0 သည် ပိတ်ထားခြင်း ဖြစ်သည်။</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>ဒက်ဇုန် ပုံသဏ္ဌာန်</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>ပိတ် သည် ဖတ်ရသောတန်ဖိုးကို မပြောင်းဘဲ ထားသည်။ ဝင်ရိုးလိုက် သည် ဤဝင်ရိုးကိုသာ တိုင်းသည်။ အဝိုင်း သည် စတစ်အတွဲကို အတူတကွ တိုင်းသည်။</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>ပိတ်</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>ဝင်ရိုးလိုက်</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>အဝိုင်း</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>အတွင်း ဒက်ဇုန်</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>ရွေ့လျားမှု၏ ဤပမာဏအောက်တွင် ထည့်သွင်းမှုကို ဗဟိုတွင်ရှိသည်ဟု ဖတ်သည်။</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်အလိုက် ဂိုင်ရို အာရုံခံနိုင်စွမ်း မြှောက်ကိန်း။ 1.0 = အင်ဂျင်၏ မူလ (500°/s → တွန်းရွှေ့မှုပမာဏ အပြည့်)။ 1.0 အထက် တန်ဖိုးများသည် ပိုအာရုံခံသည်။ 1.0 အောက် တန်ဖိုးများသည် လျော့အာရုံခံသည်။</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်အလိုက် စောင်းမှု အာရုံခံနိုင်စွမ်း မြှောက်ကိန်း။ 1.0 = တွန်းရွှေ့မှုပမာဏ အပြည့်အတွက် 90° စောင်းမှု။ 1.0 အထက် တန်ဖိုးများသည် စောင်းမှု နည်းနည်းဖြင့် တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်သည်။</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ဂိုင်ရို စောင်းမှု X</value></data>
@@ -3039,6 +3087,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>အဆင့်</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>အသုံးမပြုမှု အချိန်ကန့်သတ်</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>မက်ပင်းလုပ်ထားသော စက်ပစ္စည်းအားလုံး အော့ဖ်လိုင်းဖြစ်နေသောအခါ ဗာချွယ်ကွန်ထရိုလာကို မဖျက်မီ စောင့်မည့် စက္ကန့်အရေအတွက်။ 0 သည် ပိတ်သည်။ အမျိုးအစားတူ ကျန်ရှိသော ကွန်ထရိုလာများသည် ကွက်လပ်ကို ဖြည့်ရန် အပေါ်သို့ ရွှေ့ပြီး နံပါတ်နိမ့်သော ဆလော့များသို့ ပြန်ချိတ်သည်။</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>စက္ကန့် (0 = မည်သည့်အခါမျှ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>အလွှာ ထည့်ရန်</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift အလွှာတစ်ခု ထည့်ပါ။ ခလုတ်တစ်ခုကို ဖိထားစဉ် သို့မဟုတ် အဖွင့်အပိတ်ဖြင့် ဖွင့်ထားစဉ် အသက်ဝင်သော ဒုတိယ မက်ပင်းဇယား။</value></data>
@@ -3150,6 +3199,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>ပြန်ဖြေနှုန်း ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>ထောင့် အတွင်းဒက်ဇုန် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>ထောင့် အပြင်ဒက်ဇုန် ပြန်လည်သတ်မှတ်</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>စတစ် ဒက်ဇုန်</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>ဤတွန်းရွှေ့မှုအောက်တွင် စတစ်ကို ဗဟိုတွင်ရှိသည်ဟု ဖတ်သောကြောင့် စတီယာရင် မစုပုံပါ။</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>စတစ် ဒက်ဇုန် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>ယိမ်းစောင်းမှု အတွင်းဒက်ဇုန် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>ယိမ်းစောင်းမှု အပြင်ဒက်ဇုန် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>ကွန်ထရိုလာ ဦးတည်ပုံ ပြန်လည်သတ်မှတ်</value></data>
@@ -3255,6 +3307,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>{0} N·m အနက်</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>ဤကားသည် စတီယာရင်ဘီးတွင် ရှိသည်ထက် လှည့်အား ပိုတောင်းသဖြင့် မျဉ်းကွေး၏ ထိပ်ပိုင်းကို ဖြတ်ထားသည်။</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>ဗဟိုနား ခံစားမှု၊ ပါဝါ အကူအညီ၊ ဒမ်ပင်း၊ ပွတ်တိုက်အား၊ ဆွဲကိုင်အား၊ ပုံသေ အမြန်နှုန်း၊ ဘီး လှည့်အား</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>ဗဟိုနား ခံစားမှု၊ ပါဝါ အကူအညီ၊ ဒမ်ပင်း၊ ဆွဲကိုင်အား၊ ပုံသေ အမြန်နှုန်း၊ ဘီး လှည့်အား</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>အမြန်နှုန်း နိမ့်ချိန်တွင် စတီယာရင်က ဗဟိုကို မည်မျှ ခိုင်ခိုင် ထိန်းထားသည်။ 100% သည် ကား၏ ကိုယ်ပိုင် အတိုင်း ဖြစ်သည်။</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>ပါဝါ အကူအညီ</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>ကွေ့မှု တိုးလာသည်နှင့်အမျှ ပါဝါစတီယာရင်က အား မည်မျှ လျှော့ပေးသည်။ ပိုများလျှင် ဗဟိုမှ ခွာရာတွင် စတီယာရင် ပိုပေါ့သည်။</value></data>
@@ -3396,7 +3449,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>အသံမြင့်များ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>အသံ ကန့်သတ်ချက် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>စနစ်၏ မူလ အထွက်က ဖွင့်သမျှကို ဤကွန်ထရိုလာ၏ တပ်ဆင်ပါရှိသော စပီကာသို့ တစ်ပြိုင်နက် ကူးယူသည်။ USB နှင့် Bluetooth နှစ်မျိုးလုံးတွင် အလုပ်လုပ်သည်။</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ရွေးထားသော စက်ပစ္စည်းတွင် တပ်ဆင်ပါရှိသော စပီကာ မရှိပါ။ ဤကွန်ထရိုလာအတွက် မက်ခရို အသံများကို စနစ်၏ မူလ အထွက်တွင် ဖွင့်သည်။</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge သည် ဤချိတ်ဆက်မှုမှတစ်ဆင့် ရွေးထားသော စက်ပစ္စည်းပေါ်ရှိ စပီကာသို့ လမ်းကြောင်း မရှိပါ။ ဤကွန်ထရိုလာအတွက် မက်ခရို အသံများကို စနစ်၏ မူလ အထွက်တွင် ဖွင့်သည်။</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) ၏ ဘရောက်ဇာ DualSense စမ်းသပ်ကိရိယာအစုံ: PadForge က ဗာချွယ်မှ ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများသို့ ပို့ပေးသော Sony ဖီချာရီပို့ CRC ဖရိန်ပုံစံ နှင့် ဖမ်းဝဲ စမ်းသပ်အမိန့်များအတွက် ကိုးကားချက်။</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3809,7 +3862,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast မျက်နှာပြင် ပြရန်</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ဤဆလော့ကို ထောက်ပံ့သည့် Bliss-Box ပေါ့တ်တစ်ခုရှိ Dreamcast ပက်တစ်ခုစီ၏ VMU ပေါ်တွင် ပုံများကို ပြသပြီးနောက် ပေါ့တ်တစ်ခုစီကို ၎င်း၏ ကိုယ်ပိုင် မျက်နှာပြင်ဆက်တင်သို့ ပြန်ထားသည်။</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast ပုံများ ပြရန်- {0} × {1} ms၊ ထပ်ခါအကြိမ်ရေ {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ပုံတစ်ပုံစီကို အနည်းဆုံး တစ်စက္ကန့် ပြသည်။ အဒက်ပ်တာသည် ပို့လိုက်သော ပုံတိုင်းကို ရေးသားမှု 100,000 ကြိမ်သာ ခံနိုင်သော မှတ်ဉာဏ်တွင် သိမ်းဆည်းပြီး စက္ကန့်တိုင်း ပုံအသစ် ပို့လျှင် တစ်ရက်ခန့်တွင် ထိုအရေအတွက်ကို ရောက်သောကြောင့် ဖြစ်သည်။ ပုံများသည် BMP သို့မဟုတ် PNG၊ VMU Animator .lcd ဖိုင် သို့မဟုတ် Dreamcast .vms အိုင်ကွန်မှ ရယူသော အလျား 48 ပစ်ဇယ်၊ အမြင့် 32 ပစ်ဇယ်ရှိ အဖြူအမည်း ပုံများ ဖြစ်သည်။</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>ပုံတစ်ပုံစီကို အနည်းဆုံး တစ်စက္ကန့် ပြသည်။ အဒက်ပ်တာသည် ပို့လိုက်သော ပုံတိုင်းကို ၎င်း၏ ကိုယ်ပိုင် မှတ်ဉာဏ်တွင် သိမ်းဆည်းသောကြောင့် PadForge သည် အဒက်ပ်တာသို့ တစ်စက္ကန့်လျှင် ပုံတစ်ပုံထက် ပိုမပို့ပါ။ ပုံများသည် BMP သို့မဟုတ် PNG၊ VMU Animator .lcd ဖိုင် သို့မဟုတ် Dreamcast .vms အိုင်ကွန်မှ ရယူသော အလျား 48 ပစ်ဇယ်၊ အမြင့် 32 ပစ်ဇယ်ရှိ အဖြူအမည်း ပုံများ ဖြစ်သည်။</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>ပုံများ</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>ပုံ ထည့်ရန်…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>ပုံ ဖယ်ရှားရန်</value></data>
@@ -3886,15 +3939,6 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>အလွှာကို ဖွင့်ထားစဉ် အလွှာ၏ ကိုယ်ပိုင် မက်ပင်းထားသော အဝင်များ တစ်ခုမှ အသက်မဝင်ဘဲ ဤမီလီစက္ကန့်အရေအတွက် ကြာလျှင် ၎င်းကိုယ်တိုင် ပြန်ပိတ်သွားသည်။ အလွှာ အသက်ဝင်သည့်အခါ အချိန်မှတ်ကိရိယာ စတင်ပြီး အလွှာအဝင်တိုင်းတွင် ပြန်စသည်။ 0 ဆိုလျှင် သင်ကိုယ်တိုင် ပိတ်သည်အထိ အလွှာ ဖွင့်ထားသည်။</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>ညှိခြင်း ဒက်ဇုန်ကို 25% သို့ ပြန်လည်သတ်မှတ်ရန်။</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>ညှိခြင်း အမြန်နှုန်းကို တစ်စက္ကန့်လျှင် 100% သို့ ပြန်လည်သတ်မှတ်ရန်။</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>လွှတ်သည့်အခါ အဆင့်ကို 100% သို့ ပြန်ခုန်စေရန် ပြန်လည်သတ်မှတ်ရန်။</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>အလိုအလျောက် ပယ်ဖျက်ခြင်းကို 0 သို့ ပြန်လည်သတ်မှတ်ရန် (ပိတ်သည်အထိ အလွှာ ဖွင့်ထားသည်)။</value>
   </data>
@@ -3962,6 +4006,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop ပရိုဖိုင်</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop မက်ခရို</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ညွှန်ပြမြား နယ်မြေ</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ဖိထား)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (လွှတ်)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ဝင်ရောက်)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ပါလာမည့်အရာကို ကြည့်ရန် ဖွဲ့စည်းပုံတစ်ခုကို ရွေးပါ။</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ပါလာမည့်အရာ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ဖြစ်လာမည်</value></data>
@@ -4587,7 +4634,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>ဦးတည်ချက်နှိပ်ခြင်းများသည် ကွက်များကို တစ်ဆင့်ချင်း ဖြတ်သွားပြီး အသစ်ရွေးထားသော ကွက်တစ်ခုစီကို အလုပ်လုပ်စေသည်။ ဤဟော့ဘား အပြုအမူသည် “အလုပ်လုပ်မုဒ်” သို့မဟုတ် “ကလစ်အဝင်” ကို မသုံးပါ။</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi တိုးချဲ့ပရိုတိုကော</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>ပံ့ပိုးထားသော Flydigi ကွန်ထရိုလာများတွင် အပိုခလုတ်များနှင့် လှုပ်ရှားမှု အာရုံခံကိရိယာများကို ဖွင့်ပေးသည်။</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi ဆော့ဖ်ဝဲ လည်ပတ်နေသည်: {0}။ ၎င်းသည် PadForge နှင့် တူညီသော ကွန်ထရိုလာ interface ကို အသုံးပြုနိုင်ပြီး နှစ်ခုလုံး ဝင်ရောက်ခွင့်ရှိစဉ် Vader 5 Pro တစ်ခု ထပ်ခါထပ်ခါ ချိတ်ဆက်မှုပြတ်သည်ဟု အစီရင်ခံထားသည်။ ဤကွန်ထရိုလာ ပြတ်ပြီး ပြန်ချိတ်နေလျှင် PadForge အသုံးပြုနေစဉ် ဝန်ဆောင်မှုကို ရပ်ပါ၊ ကွန်ထရိုလာကို ဝှက်ထားပြီး ဝန်ဆောင်မှုကို HidHide ခွင့်ပြုစာရင်းမှ ဖယ်ရှားပါ၊ သို့မဟုတ် ဆက်တင်များတွင် “Flydigi တိုးချဲ့ပရိုတိုကော” ကို ပိတ်ကြည့်ပါ၊ ၎င်းက ကူညီကြောင်း အတည်မပြုရသေးပါ။</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi ဆော့ဖ်ဝဲ လည်ပတ်နေသည်: {0}။ ၎င်းသည် PadForge အသုံးပြုသော interface မှတစ်ဆင့် ကွန်ထရိုလာနှင့် ဆက်သွယ်သည်။ ဤကွန်ထရိုလာ ပြတ်ပြီး ပြန်ချိတ်နေလျှင် PadForge အသုံးပြုနေစဉ် ထိုဆော့ဖ်ဝဲကို ရပ်ပါ။</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>အဝေးမှ သတ်မှတ်မှု ပြောင်းလဲခြင်းများကို ခွင့်ပြုရန်</value>
   </data>

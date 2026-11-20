@@ -49,10 +49,19 @@ namespace PadForge.ViewModels
                 foreach (MappingItem row in e.OldItems)
                     if (ReferenceEquals(row.Owner, this)) row.Owner = null;
             if (e.Action == NotifyCollectionChangedAction.Reset)
-                foreach (var row in Mappings) row.Owner = this;
+                foreach (var row in Mappings) Join(row);
             else if (e.NewItems != null)
-                foreach (MappingItem row in e.NewItems) row.Owner = this;
+                foreach (MappingItem row in e.NewItems) Join(row);
             MarkListDirty();
+        }
+
+        /// <summary>A row the list takes is the slot's, and flashes when it
+        /// is what a recording that runs now waits for: rows built again
+        /// during a recording are new objects.</summary>
+        private void Join(MappingItem row)
+        {
+            row.Owner = this;
+            row.IsRecordTarget = IsRecordTargetOf(row, _currentRecordingTarget);
         }
 
         private void OnMappedDevicesChangedForList(object sender, NotifyCollectionChangedEventArgs e)

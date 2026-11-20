@@ -67,6 +67,59 @@ namespace PadForge.Tests
             ground.UpdateLayout();
         }
 
+        /// <summary>Gives the card what is held, lets the page settle and
+        /// returns the frame.</summary>
+        private static byte[] Hold(SlotSummary slot, PadViewModel input, System.Windows.Threading.Dispatcher dispatcher, FrameworkElement ground)
+        {
+            slot.ReadHeld(input);
+            PageRenderDump.Settle(dispatcher);
+            Lay(ground);
+            return Shot(ground);
+        }
+
+        /// <summary>Whether two frames differ at a pixel by more than a
+        /// trace.</summary>
+        private static bool Apart(byte[] a, byte[] b, int i)
+            => Math.Abs(a[i] - b[i]) + Math.Abs(a[i + 1] - b[i + 1]) + Math.Abs(a[i + 2] - b[i + 2]) + Math.Abs(a[i + 3] - b[i + 3]) > 24;
+
+        /// <summary>What an element last drew. WPF keeps it in a private
+        /// field and replaces it each time the element draws anew.</summary>
+        private static readonly System.Reflection.FieldInfo Drawn =
+            typeof(UIElement).GetField("_drawingContent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            ?? throw new InvalidOperationException("WPF's UIElement._drawingContent moved. What a part last drew cannot be read.");
+
+        /// <summary>Each part of the page outside the picture, with what it
+        /// last drew, where it sits, its size, whether it shows and its
+        /// opacity.</summary>
+        private static Dictionary<UIElement, (object drawn, Point at, Size size, Visibility shows, double opacity)> Parts(FrameworkElement ground, FrameworkElement stage)
+        {
+            var parts = new Dictionary<UIElement, (object, Point, Size, Visibility, double)>();
+            foreach (var part in Under<UIElement>(ground))
+                if (!ReferenceEquals(part, stage) && !stage.IsAncestorOf(part))
+                    parts[part] = (Drawn.GetValue(part), part.TransformToAncestor(ground).Transform(default), part.RenderSize, part.Visibility, part.Opacity);
+            return parts;
+        }
+
+        /// <summary>The parts outside the picture that drew anew, moved,
+        /// resized, showed, hid or faded between two readings, or an empty
+        /// string when none did.</summary>
+        private static string Moved(Dictionary<UIElement, (object drawn, Point at, Size size, Visibility shows, double opacity)> before,
+            Dictionary<UIElement, (object drawn, Point at, Size size, Visibility shows, double opacity)> after, string what)
+        {
+            static string Name(UIElement part) => part is TextBlock line ? "TextBlock \"" + line.Text + "\"" : part.GetType().Name;
+            var changed = new List<string>();
+            foreach (var (part, was) in before)
+            {
+                if (!after.TryGetValue(part, out var now)) { changed.Add(Name(part) + " left the page"); continue; }
+                if (!ReferenceEquals(was.drawn, now.drawn)) changed.Add(Name(part) + " drew anew");
+                if (was.at != now.at || was.size != now.size) changed.Add(Name(part) + " moved from " + was.at + " " + was.size + " to " + now.at + " " + now.size);
+                if (was.shows != now.shows || was.opacity != now.opacity) changed.Add(Name(part) + " went from " + was.shows + " " + was.opacity + " to " + now.shows + " " + now.opacity);
+            }
+            foreach (var part in after.Keys)
+                if (!before.ContainsKey(part)) changed.Add(Name(part) + " came onto the page");
+            return changed.Count == 0 ? string.Empty : what + "changed parts beside the card's picture: " + string.Join("; ", changed.Take(12));
+        }
+
         [Fact]
         public void AForgingCardOnTheHomePageMovesWithAHeldStick_In2DAndIn3D()
         {
@@ -127,24 +180,46 @@ namespace PadForge.Tests
                     Assert.All(glows, g => Assert.True(g.Visibility != Visibility.Visible, kind + ": the ember marks show over a moving picture"));
                     Rect at = stage.TransformToAncestor(ground).TransformBounds(new Rect(stage.RenderSize));
 
+                    // Each frame draws every line of text on the page anew:
+                    // a bitmap render puts the page on a render channel and
+                    // takes it off again. In loaded runs of the suite one such
+                    // frame drew two glyph edges of unchanged text a little
+                    // differently from every other frame, the same two pixels
+                    // on 2026-11-19 and 2026-11-20, so no two frames are
+                    // compared bit for bit beside the picture. What a held
+                    // input may change beside it is read two ways. No part of
+                    // the page outside the picture draws anew, moves or
+                    // resizes. And a pixel beside the picture counts as
+                    // changed only when both held frames differ from both
+                    // rest frames, taken rest, held, rest, held: a frame drawn
+                    // differently, or a run of them in a row, cannot do that.
+                    var parts = Parts(ground, stage);
+                    var input = new PadViewModel(0) { RawThumbLX = short.MaxValue, LeftTrigger = 1 };
                     byte[] rest = Shot(ground);
-                    slot.ReadHeld(new PadViewModel(0) { RawThumbLX = short.MaxValue, LeftTrigger = 1 });
+                    byte[] held = Hold(slot, input, dispatcher, ground);
                     Assert.NotEqual(StagePose.Rest, slot.StagePose);
-                    PageRenderDump.Settle(dispatcher);
-                    Lay(ground);
-                    byte[] held = Shot(ground);
+                    string moved = Moved(parts, Parts(ground, stage), kind + ": a held stick and trigger ");
+                    Assert.True(moved.Length == 0, moved);
+                    byte[] restAgain = Hold(slot, new PadViewModel(0), dispatcher, ground);
+                    Assert.Equal(StagePose.Rest, slot.StagePose);
+                    moved = Moved(parts, Parts(ground, stage), kind + ": letting go ");
+                    Assert.True(moved.Length == 0, moved);
+                    byte[] heldAgain = Hold(slot, input, dispatcher, ground);
+                    moved = Moved(parts, Parts(ground, stage), kind + ": a stick and trigger held again ");
+                    Assert.True(moved.Length == 0, moved);
 
-                    int inside = 0, outside = 0;
-                    var strays = new System.Collections.Generic.List<string>();
+                    int inside = 0, outside = 0, back = 0;
+                    var strays = new List<string>();
                     for (int y = 0; y < Height; y++)
                         for (int x = 0; x < Width; x++)
                         {
                             int i = (y * Width + x) * 4;
-                            int d = Math.Abs(held[i] - rest[i]) + Math.Abs(held[i + 1] - rest[i + 1])
-                                + Math.Abs(held[i + 2] - rest[i + 2]) + Math.Abs(held[i + 3] - rest[i + 3]);
-                            if (d <= 24) continue;
-                            if (at.Contains(x + 0.5, y + 0.5)) inside++;
-                            else
+                            if (at.Contains(x + 0.5, y + 0.5))
+                            {
+                                if (Apart(held, rest, i)) inside++;
+                                if (restAgain[i] != rest[i] || restAgain[i + 1] != rest[i + 1] || restAgain[i + 2] != rest[i + 2] || restAgain[i + 3] != rest[i + 3]) back++;
+                            }
+                            else if (Apart(held, rest, i) && Apart(held, restAgain, i) && Apart(heldAgain, rest, i) && Apart(heldAgain, restAgain, i))
                             {
                                 outside++;
                                 if (strays.Count < 8)
@@ -152,20 +227,10 @@ namespace PadForge.Tests
                             }
                         }
                     Assert.True(inside > 100, $"{kind}: a held stick and trigger changed {inside} pixels of the card's picture at {at}");
-                    // Seen once, in the 2D pass, as one pixel in a full run of
-                    // the suite (2026-11-17), and in no run of the test alone.
-                    // A held input redraws the picture alone, clipped to its
-                    // own box, so the pixel came from something else that
-                    // changed between the two frames. The frames are kept
-                    // when it comes again.
                     Assert.True(outside == 0, $"{kind}: a held stick and trigger changed {outside} pixels beside the card's picture at {at}: "
-                        + $"{string.Join(", ", strays)}. Frames: {(outside == 0 ? string.Empty : Keep(rest, kind + "-rest") + " and " + Keep(held, kind + "-held"))}");
-
-                    // Let go, and the card is as it was.
-                    slot.ReadHeld(new PadViewModel(0));
-                    PageRenderDump.Settle(dispatcher);
-                    Lay(ground);
-                    Assert.Equal(rest, Shot(ground));
+                        + $"{string.Join(", ", strays)}. Frames: {(outside == 0 ? string.Empty : string.Join(", ", Keep(rest, kind + "-rest"), Keep(held, kind + "-held"), Keep(restAgain, kind + "-rest-again"), Keep(heldAgain, kind + "-held-again")))}");
+                    // Let go, and the card's picture is as it was.
+                    Assert.True(back == 0, $"{kind}: after letting go {back} pixels of the card's picture at {at} differ from the picture at rest");
                     ground.Child = null;
                 }
             }, TimeSpan.FromMinutes(3), "The Home page test timed out.");

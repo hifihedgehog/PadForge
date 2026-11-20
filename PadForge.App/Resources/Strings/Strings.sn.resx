@@ -583,6 +583,18 @@
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Dzorera kupidigura pitch</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Dzorera deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Chete Kana</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Sosi iyi inoverengwa chete kana input iyi ichiratidzawo kuti yakadzvanywa pamudziyo mumwe chete. Bvunzo yenzvimbo yakabva pakuunza inoverengwa sechikamu chesitiki kana chetrigger chainoongorora.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Uye Kana</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Input yechipiri iyo sosi iyi inomirirawo.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Chinja Input</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Inosarudza imwe input yekumirira.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Inosimudza kuverenga kweinput iyi kusvika pasimba iri isati yafambisa output. 0 ne 1 zvinoisiya yakatwasuka. Pamusoro pe 1 inononoka pedyo nepakati.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Mwero wekunze</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Output inosvika pakuzara pachikamu ichi chekufamba. 100% zvinoreva kuti yadzimwa.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Output inotanga pamwero uyu input painongotanga kufamba. 0 zvinoreva kuti yadzimwa.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Kumhanya kwembeva X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Kumhanya kwembeva Y</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Nzvimbo yembeva X</value></data>
@@ -1359,7 +1371,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Kudedera kwetrigger kunobva kubass yeinzwi resystem</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deadzone dzekurereka, Kutarisa kwecontroller</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, kutsetsenura, Kumhanyisa, Curve yekubuda</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bhatani rekunongedza, Mode yekubatidza, Mwero weEasy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bhatani rekunongedza, Mode yekubatidza, Gyro yakabatidzwa, Dzosera pakati, Mwero weEasy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Shandisa touchpad sestick kana D-pad</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Inobatidza gesture dzetouchpad iyi</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekodha dzako</value></data>
@@ -1377,7 +1389,6 @@
   <data name="Menu_EditCell" xml:space="preserve"><value>Gadzirisa seru</value></data>
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Zita</value></data>
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Chiito</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Dzokorora</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Mudziyo uyu</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontiroura yose</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mutambi kana World</value></data>
@@ -1491,4 +1502,5 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Shandisa</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mudziyo usingazivikanwe</value></data>
 </root>

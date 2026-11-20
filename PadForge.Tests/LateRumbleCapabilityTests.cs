@@ -83,6 +83,56 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The state read drops the answer, so a capability found
+        /// late is announced: the Devices row and the controller page read it
+        /// again when it is.</summary>
+        [Fact]
+        public void AFoundCapabilityIsAnnouncedOnceAndTheRowsAndTabsReadIt()
+        {
+            using var wrapper = new SdlDeviceWrapper();
+            var announced = new System.Collections.Generic.List<SdlDeviceWrapper>();
+            Action<SdlDeviceWrapper> listener = w => { lock (announced) announced.Add(w); };
+            bool sdlSays = false;
+            SdlDeviceWrapper.RumbleFoundAfterOpen += listener;
+            try
+            {
+                WithReader(() => sdlSays, asked =>
+                {
+                    try
+                    {
+                        Set(wrapper, "Joystick", Handle);
+                        wrapper.TakeLateRumbleCapability(1_000_000);
+                        Assert.Empty(announced);
+                        sdlSays = true;
+                        Assert.True(wrapper.TakeLateRumbleCapability(1_005_000));
+                        Assert.Single(announced);
+                        Assert.Same(wrapper, announced[0]);
+                        // Kept, not announced again.
+                        wrapper.TakeLateRumbleCapability(1_100_000);
+                        Assert.Single(announced);
+                    }
+                    finally { Set(wrapper, "Joystick", IntPtr.Zero); }
+                });
+            }
+            finally { SdlDeviceWrapper.RumbleFoundAfterOpen -= listener; }
+
+            string service = RepoText("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("SdlDeviceWrapper.RumbleFoundAfterOpen += OnRumbleFoundAfterOpen;", service);
+            Assert.Contains("SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen;", service);
+            int handler = service.IndexOf("private void OnRumbleFoundAfterOpen(", StringComparison.Ordinal);
+            Assert.True(handler > 0);
+            string body = service.Substring(handler, 700);
+            Assert.Contains("_dispatcher.BeginInvoke", body);
+            Assert.Contains("SyncDevicesList", body);
+
+            string page = RepoText("PadForge.App", "Views", "PadPage.xaml.cs");
+            Assert.Contains("SdlDeviceWrapper.RumbleFoundAfterOpen += OnRumbleFoundAfterOpen;", page);
+            Assert.Contains("SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen;", page);
+            int tabs = page.IndexOf("private void OnRumbleFoundAfterOpen(", StringComparison.Ordinal);
+            Assert.True(tabs > 0);
+            Assert.Contains("OnPeripheralOutputsChanged();", page.Substring(tabs, 300));
+        }
+
         [Fact]
         public void AJoystickThatIsNotOpenIsNotAsked()
         {

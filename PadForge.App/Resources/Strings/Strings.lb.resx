@@ -111,6 +111,7 @@
   <data name="Common_None" xml:space="preserve"><value>Keng</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>Sekonnen</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>Minutten (0 = ni)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Net zougewisen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -228,7 +229,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← lénks)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ erop)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll net fonnt</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll net fonnt. Leet SDL3.dll niewent PadForge.exe. Luet se erof ënner https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll net fonnt. Luet PadForge nach eng Kéier erof.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Treiberoperatioun feelgeschloen: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Astellungen an d'Tëschenoflag kopéiert.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Apparatinfo an d'Tëschenoflag kopéiert.</value></data>
@@ -356,6 +357,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Niddreg</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Bild</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lëscht</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Ausgab: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ausgaben: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Beweegung</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klickt op e Bedienelement an dréckt dann d'Agab, déi et steiere soll.</value></data>
@@ -429,9 +431,9 @@
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Spiller, déi PadForge net kennt</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fir Mods, déi no engem lafenden DSX sichen, ier se schécken.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat ugewise gëtt</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De Rank, d'Gitter oder d'Leescht vun engem Menü, soulaang en op ass</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, wann eng Shift-Schicht aktiv gëtt, fir d'Zäit, déi dës Schicht festleet</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Den Numm vum Profil, wann d'Profil wiesselt</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De Rank, d'Gitter oder d'Leescht vun engem Menü, soulaang en op ass.</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, wann eng Shift-Schicht aktiv gëtt, fir d'Zäit, déi dës Schicht festleet.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Den Numm vum Profil, wann d'Profil wiesselt.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adress kopéieren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plaz um Bildschierm</value></data>
   <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>En Handy verbannen</value></data>
@@ -627,7 +629,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine beim Start automatesch starten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Weider ofroen, wann d'Fënster de Fokus verléiert</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>Ofrofrequenz (ausser e Profil iwwerschreift se)</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>D'Engine liest all Apparat aus an aktualiséiert déi virtuell Controller sou vill Mol pro Sekonn, vu 60 bis 10000. Eng méi héich Frequenz brauch méi Prozessorzäit. Windows weckt d'Engine héchstens ongeféier 2000 Mol pro Sekonn, dofir mécht d'Engine bei enger méi héijer Frequenz e puer Duerchgäng bei all Wecken. Soulaang e Profil mat enger eegener Ofrofrequenz aktiv ass, gëllt amplaz dës Frequenz. Dëse Wäert gëllt nees, wann de Profil desaktivéiert gëtt.</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>D'Engine liest all Apparat aus an aktualiséiert déi virtuell Controller sou vill Mol pro Sekonn, vu 60 bis 10000. Eng méi héich Frequenz brauch méi Prozessorzäit. Op dësem PC weckt Windows d'Engine héchstens {0} Mol pro Sekonn, dofir mécht d'Engine bei enger méi héijer Frequenz e puer Duerchgäng bei all Wecken. Soulaang e Profil mat enger eegener Ofrofrequenz aktiv ass, gëllt amplaz dës Frequenz. Dëse Wäert gëllt nees, wann de Profil desaktivéiert gëtt.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Apparater virun de Spiller verstoppen</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Haaptschalter fir d'Verstoppe vun Apparater duerch HidHide an d'Low-Level-Agab-Hooks. Wann en aus ass, gëtt keen Apparat verstoppt, egal wéi d'Astellunge pro Apparat sinn.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparater iwwer Neistarte verstoppt halen</value></data>
@@ -912,7 +914,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekonnen tëscht de getippten Zeechen, bis zu 1000. Bei 0 gëtt de ganzen Text op eemol getippt.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Bei Inaktivitéit trennen</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detailer</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minutten</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth trennen, wann iwwer USB ugeschloss</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wann dëse Controller mellt, datt e lued, während en iwwer Bluetooth verbonnen ass, gëtt d'Bluetooth-Verbindung getrennt, sou datt e lued, ouni de Funkmodul mat Stroum ze versuergen. All USB-Stroumquell zielt, och Chargeuren fir d'Steckdous. Wann Dir Bluetooth erëm uschalt, während de Kabel dra bleift, gëtt et a Rou gelooss, bis de Kabel déi nächst Kéier erausgezu gëtt.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Als iCade-Controller liesen</value></data>
@@ -954,8 +955,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>D'VMU weist den Numm vum aktive Profil a follegt all Profilwiessel.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>D'VMU weist d'Plaz vum aktive Profil an der Profillëscht. D'Standardprofil ass 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>D'VMU weist dem aktive Profil säin eegent Bild oder säin Numm, wann et keent huet. All Profil behält säin eegent Bild.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>D'VMU weist d'Auerzäit a gëtt eemol pro Minutt nei geschriwwen. Den Adapter späichert all Bild an engem Späicher, deen fir 100.000 Schreifvirgäng ausgeluecht ass. Bei enger Uweisung ronderëm d'Auer ass dës Zuel no ongeféier zéng Wochen erreecht.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>D'VMU weist d'Stonnen a Minutten, zënter PadForge de Pad fonnt huet, a gëtt eemol pro Minutt nei geschriwwen. Ass de Pad méi wéi zéng Sekonnen net a sengem Port, fänkt d'Zäit erëm bei null un. Den Adapter späichert all Bild an engem Späicher, deen fir 100.000 Schreifvirgäng ausgeluecht ass. Bei enger Uweisung ronderëm d'Auer ass dës Zuel no ongeféier zéng Wochen erreecht.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>D'VMU weist d'Auerzäit a gëtt eemol pro Minutt nei geschriwwen. Den Adapter späichert all Bild a sengem eegene Späicher, dofir schreift PadForge et net méi dacks nei.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>D'VMU weist d'Stonnen a Minutten, zënter PadForge de Pad fonnt huet, a gëtt eemol pro Minutt nei geschriwwen. Ass de Pad méi wéi zéng Sekonnen net a sengem Port, fänkt d'Zäit erëm bei null un. Den Adapter späichert all Bild a sengem eegene Späicher, dofir schreift PadForge et net méi dacks wéi eemol pro Minutt nei.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>D'VMU weist e Bild, dat Dir wielt: e BMP oder PNG, e VMU-Animator-.lcd-Fichier oder en Dreamcast-.vms-Icon. Biller ginn op 48 op 32 schwaarz-wäiss Pixele reduzéiert.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Bild wielen…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Bild fir {0} wielen…</value></data>
@@ -1000,6 +1001,13 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>De Controller am Xbox-Modus huet net als Apex 4 geäntwert, dofir gouf näischt geschéckt a Windows huet en erëm. Setzt en mat sengem eegene Schalter erëm an den DInput-Modus.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows huet de Controller net op WinUSB gewiesselt, dofir gouf näischt geschéckt. Setzt en mat sengem eegene Schalter erëm an den DInput-Modus.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Gestoppt. Schalt de Controller mat sengem eegene Schalter aus an erëm un, ier Dir nach eng Kéier schéckt.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>De Port vum Écran ass net opgaangen, dofir gouf näischt geschéckt. Schalt de Controller mat sengem eegene Schalter aus an erëm un a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>D'Bild huet méi Biller wéi den Écran vun dësem Controller faasse kann.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Et gëtt schonn e Bild un dëse Controller geschéckt. Waart, bis et fäerdeg ass.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Den Écran huet d'Bild op enger Adress gefrot, op déi PadForge net schreift, dofir gouf näischt geschéckt. Schalt de Controller mat sengem eegene Schalter aus an erëm un a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>D'Bild gouf geschéckt, mee de Controller ass net an den DInput-Modus zréckgewiesselt. Schalt en mat sengem eegene Schalter zréck.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>De Controller huet de Befehl, deen en virbereet, net ugeholl, dofir gouf näischt geschéckt. Kontrolléiert, ob e verbonnen ass, a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>D'Schécken ass wéinst engem Feeler am PadForge gestoppt. D'Logdatei huet d'Detailer.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>E Bild gëtt nach ëmmer un de Controller geschéckt. D'Schécken stoppen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller-Pak-Fichieren (*.mpk)|*.mpk|All Fichieren (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak Port {0}.mpk</value></data>
@@ -1493,7 +1501,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menügeometrie zrécksetzen</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Zell zrécksetzen</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Empfindlechkeet zrécksetzen</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Beschleunegung zrécksetzen</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Doudzon zrécksetzen</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Haltzäit zrécksetzen</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Drockfënster zrécksetzen</value></data>
@@ -1774,7 +1781,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Iergendeng Schicht</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Leeft dauernd, soulaang dëse virtuelle Controller aktiv ass. Keen Ausléiserknäppchen néideg.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Maachen</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Schicht, Quell, Schwell, Richtung, Ausléiserknäppercher verbrauchen, Widderhuelen</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Aktioun derbäisetzen</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Typ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuell Knäppercher</value></data>
@@ -1800,7 +1806,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Mausknäppchen drécken</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Mausknäppchen lassloossen</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>Maus scrollen</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay ëmschalten</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Knäppercher</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>Tastekombinatioun</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>Tastekombinatioun am Format {Key1}{Key2}. Kann geännert ginn.</value></data>
@@ -1931,6 +1936,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} all {1} ms widderhuelen</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Maus X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maus Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Horizontal Verrécklung</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Vertikal Verrécklung</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervall</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Um Bildschierm wielen</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Opnam an {0}…</value></data>
@@ -1965,6 +1972,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_InvHalf" xml:space="preserve"><value>Hallef invertéiert</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Keen Apparat zougeuerdnet</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Onbekannten Apparat</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Touchpad-Klick</value></data>
@@ -2407,7 +2415,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ënnen (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Uewen (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivéierung</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivéierungsknäppchen, Aktivéierungsmodus, Easy-Aim-Schwell</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivéierungsknäppchen, Aktivéierungsmodus, Gyro un, Nei zentréieren, Easy-Aim-Schwell</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional Bedéngungen, déi limitéieren, wéini de Gyro aktiv ass. Den Ausschlag vum rietse Stick an dat Aktivéierungsknäppchen kënnen all eenzel agestallt ginn. Gyro reagéiert nëmmen, soulaang all agestallte Bedéngung aktiv ass.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spiller</value></data>
@@ -2444,6 +2452,27 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy-Aim-Schwell zrécksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>Aktivéierungsknäppchen zrécksetzen</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>Aktivéierungsmodus zrécksetzen</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>Schicht</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>D'Schicht, där hir Astellung „Gyro un“ d'Zeilen hei drënner weisen an änneren.</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>Gyro un</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>Wéini de Gyro op dëser Schicht schafft, zousätzlech zum Aktivéierungsknäppchen. Eng Shift-Schicht op „Wéi d'Basis“ follegt der Basis.</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>Ëmmer un</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Wéi d'Basis</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>Wärend gedréckt</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>Wärend net gedréckt</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>Bei all Drock ëmschalten</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>Knäppercher fir Gyro un</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>D'Knäppercher, déi „Gyro un“ liest, op all Controller vun dësem Slot.</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>Brauch</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Ob ee markéiert Knäppchen duergeet oder ob all markéiert Knäppchen gedréckt musse ginn.</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>Ee Knäppchen</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>All Knäppchen</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>Nei zentréieren, wann de Gyro ugeet</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>Hëlt d'Haltung vum Controller als Rouepunkt, all Kéier wann de Gyro ugeet.</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>Gyro un zrécksetzen</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>Knäppercher fir Gyro un zrécksetzen</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>Brauch zrécksetzen</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>Nei zentréieren, wann de Gyro ugeet, zrécksetzen</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktivéierungsstick zrécksetzen</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktivéierungsrichtung zrécksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Beweegungs-Passthrough</value></data>
@@ -2454,6 +2483,25 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>D'Spill liest d'Beweegung mat der Empfindlechkeet, der Glättung an der Kurv, déi hei agestallt sinn.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Passthrough-Astellungen zrécksetzen</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Nëmme wärend</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Dës Quell zielt nëmmen, wärend dësen Input um selwechte Controller och als gedréckt gelies gëtt. En Zonentest aus engem Import gëtt als de Stick- oder Ofzuchsberäich gelies, deen en iwwerpréift.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>An wärend</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>En zweeten Input, op deen dës Quell och waart.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Input änneren</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Wielt en aneren Input, op deen gewaart gëtt.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurv</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Hieft de Wäert vun dësem Input op dës Potenz, ier en d'Ausgab steiert. 0 an 1 loossen en linear. Iwwer 1 ass et méi lues no beim Zentrum.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Baussebereich</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>D'Ausgab erreecht de vollen Ausschlag bei sou vill vum Wee. 100% ass aus.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-Doudzon</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>D'Ausgab fänkt bei sou vill un, soubal den Input sech beweegt. 0 ass aus.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Doudzonform</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Aus léisst de Wäert, wéi e war. Axial moosst dës Achs eleng. Radial moosst d'Stickpuer zesummen.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>Axial</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Bannenzeg Doudzon</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ënner sou vill vum Wee gëtt den Input als zentréiert gelies.</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator fir d'Gyro-Empfindlechkeet pro Quell. 1.0 = Standard vun der Engine (500°/s → vollen Ausschlag). Wäerter iwwer 1.0 si méi empfindlech. Wäerter ënner 1.0 si manner empfindlech.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator fir d'Neigungsempfindlechkeet pro Quell. 1.0 = 90° Neigung fir vollen Ausschlag. Wäerter iwwer 1.0 erreechen de vollen Ausschlag mat manner Neigung.</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro-Kippwénkel X</value></data>
@@ -3017,6 +3065,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Pegel</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktivitéits-Timeout</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekonnen, bis e virtuelle Controller zerstéiert gëtt, wann all seng zougeuerdent Apparater offline sinn. 0 schalt et aus. Déi verbleiwend Controller vum selwechten Typ réckelen no, fir d'Lück ze fëllen, a gi mat méi niddrege Slots verbonnen.</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>Sekonnen (0 = ni)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Schicht derbäisetzen</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Eng Shift-Schicht derbäisetzen. Eng zweet Zouuerdnungstabell, déi aktiv ass, soulaang e Knäppchen gehal oder ëmgeschalt ass.</value></data>
@@ -3128,6 +3177,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>Ofwéckeltempo zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>Bannenzeg Wénkel-Doudzon zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>Baussenzeg Wénkel-Doudzon zrécksetzen</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>Stick-Doudzon</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>Ënner dësem Ausschlag gëtt de Stick als zentréiert gelies, dofir baut sech keng Steierung op.</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>Stick-Doudzon zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>Bannenzeg Neigungs-Doudzon zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>Baussenzeg Neigungs-Doudzon zrécksetzen</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Orientéierung vum Controller zrécksetzen</value></data>
@@ -3233,6 +3285,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>vun {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>Dësen Auto freet méi Dréimoment, wéi d'Steierrad huet, dofir ass den Uewerdeel vun der Kurv ofgeschnidden.</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>Mëttegefill, Servounterstëtzung, Dämpung, Reiwung, Haftung, Fix Vitess, Dréimoment vum Steierrad</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>Mëttegefill, Servounterstëtzung, Dämpung, Haftung, Fix Vitess, Dréimoment vum Steierrad</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>Wéi staark d'Steierung bei niddreger Vitess hir Mëtt hält. 100% ass dat vum Auto selwer.</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>Servounterstëtzung</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>Wéi vill d'Servosteierung ofhëlt, wann d'Kurvebeschleunegung wiisst. Méi heescht méi liicht Steierung ewech vun der Mëtt.</value></data>
@@ -3374,7 +3427,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Héich Téin zrécksetzen</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tounlimit zrécksetzen</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopéiert alles, wat déi standard Systemausgab spillt, parallel op den agebaute Lautsprecher vun dësem Controller. Funktionéiert iwwer USB a Bluetooth.</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>De gewielten Apparat huet keen agebaute Lautsprecher. Makro-Téin fir dëse Pad spillen op der standard Systemausgab.</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge huet iwwer dës Verbindung kee Wee zu engem Lautsprecher um gewielten Apparat. Makro-Téin fir dëse Pad spillen op der standard Systemausgab.</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>DualSense-Testsuite fir de Browser vum Xuezhou Dai (daidr): Referenz fir d'CRC-Framing vun de Sony-Feature-Reports an d'Firmware-Testbefeeler, déi PadForge vu virtuellen op physesch Pads weiderleet.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3788,7 +3841,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast-Bildschierm weisen</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Weist Biller op der VMU vun all Dreamcast-Controller an engem Bliss-Box-Port, deen dëse Slot fiddert, a setzt duerno all Port op seng eege Bildschiermastellung zréck.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast-Biller weisen: {0} × {1} ms, Unzuel Widderhuelungen {2}</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>All Bild gëtt mindestens eng Sekonn gewisen, well den Adapter all Bild, dat e kritt, an engem Späicher behält, deen fir 100,000 Schreifvirgäng ausgeluecht ass, an en neit Bild all Sekonn erreecht dat an ongeféier engem Dag. D'Biller sinn 48 op 32 schwaarz-wäiss Pixelen aus enger BMP- oder PNG-Datei, enger .lcd-Datei vu VMU Animator oder engem Dreamcast-.vms-Symbol.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>All Bild gëtt mindestens eng Sekonn gewisen. PadForge schéckt dem Adapter héchstens ee Bild pro Sekonn, well den Adapter all Bild, dat e kritt, a sengem eegene Späicher späichert. D'Biller sinn 48 op 32 schwaarz-wäiss Pixelen aus enger BMP- oder PNG-Datei, enger .lcd-Datei vu VMU Animator oder engem Dreamcast-.vms-Symbol.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Biller</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Bild derbäisetzen…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Bild ewechhuelen</value></data>
@@ -3864,15 +3917,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>Soulaang d'Schicht ageschalt ass, schalt se sech no esou ville Millisekonnen eleng aus, wa keng vun hiren eegenen zougeuerdent Agaben aktiv ass. Den Timer start, wann d'Schicht aktivéiert gëtt, a fänkt bei all Schicht-Agab nei un. 0 léisst d'Schicht un, bis Dir se selwer ausschalt.</value>
   </data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
-    <value>Trim-Doudzon op 25% zrécksetzen.</value>
-  </data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve">
-    <value>Trim-Geschwindegkeet op 100% pro Sekonn zrécksetzen.</value>
-  </data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
-    <value>Zrécksetzen, sou datt de Wäert beim Lassloossen op 100% zréckspréngt.</value>
-  </data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Automatescht Ofbriechen op 0 zrécksetzen (d'Schicht bleift un, bis se ausgeschalt gëtt).</value>
   </data>
@@ -3940,6 +3984,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-Profil</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-Makro</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Cursorberäich</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (halen)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (loslossen)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (aktivéieren)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Wielt eng Konfiguratioun, fir ze gesinn, wat iwwerholl gëtt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat iwwerholl gëtt</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Gëtt</value></data>
@@ -4568,7 +4615,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtungsdréck ginn duerch d'Zellen a léisen all nei gewielt Zell aus. Dëst Hotbar-Verhalen benotzt weder Ausléismodus nach Klick-Agab.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Erweidert Flydigi-Protokoll</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Aktivéiert zousätzlech Knäppercher a Beweegungssensoren op ënnerstëtzte Flydigi-Controller.</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-Software leeft: {0}. Si kann déiselwecht Controller-Schnëttstell wéi PadForge benotzen, an et gouf gemellt, datt e Vader 5 Pro sech ëmmer erëm getrennt huet, wärend allen zwee Zougrëff haten. Wann dëse Controller sech trennt an nei verbënnt, stoppt de Service, wärend Dir PadForge benotzt, loosst de Controller verstoppt an huelt de Service vun der HidHide-Whitelist erof, oder probéiert „Erweidert Flydigi-Protokoll“ an den Astellungen auszeschalten. Et ass net bestätegt, datt dat hëlleft.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-Software leeft: {0}. Si kommunizéiert mam Controller iwwer d'Schnëttstell, déi PadForge benotzt. Wann dëse Controller sech trennt an nei verbënnt, stoppt dës Software, wärend Dir PadForge benotzt.</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>Zouweisungsännerungen op Distanz erlaben</value>
   </data>

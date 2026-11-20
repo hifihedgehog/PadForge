@@ -1943,6 +1943,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(InlineIntervalToolTip));
                     OnPropertyChanged(nameof(TriggerPressWindowToolTip));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
+                    OnPropertyChanged(nameof(ShowsLegacyAxisRows));
                 }
             }
         }
@@ -2055,6 +2056,13 @@ namespace PadForge.ViewModels
             _triggerMode == MacroTriggerMode.Toggle ||
             _triggerMode == MacroTriggerMode.Turbo ||
             _triggerMode == MacroTriggerMode.ShortPress;
+
+        /// <summary>True when the editor's Threshold and Direction rows show:
+        /// the trigger-combo panel is up and the macro holds legacy
+        /// slot-combined axis targets. The More fold's hint names the two
+        /// rows by this rule.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool ShowsLegacyAxisRows => ShowsTriggerComboEditor && HasLegacyAxisTrigger;
 
         private int _triggerHoldMs = 500;
 
@@ -2257,6 +2265,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(TriggerAxisTargets));
                 OnPropertyChanged(nameof(UsesAxisTrigger));
                 OnPropertyChanged(nameof(HasLegacyAxisTrigger));
+                OnPropertyChanged(nameof(ShowsLegacyAxisRows));
                 OnPropertyChanged(nameof(TriggerDisplayText));
                 OnPropertyChanged(nameof(TriggerInputItems));
                 OnPropertyChanged(nameof(HasTriggerInputItems));
@@ -2772,6 +2781,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(TriggerAxisEntries));
                 OnPropertyChanged(nameof(HasTriggerAxisEntries));
                 OnPropertyChanged(nameof(HasLegacyAxisTrigger));
+                OnPropertyChanged(nameof(ShowsLegacyAxisRows));
             });
 
         private RelayCommand _addActionCommand;
@@ -8335,6 +8345,10 @@ namespace PadForge.ViewModels
     {
         public MacroOutputChannel Value { get; set; }
         public string Name { get; set; } = "";
+        // Equal by Value: a box finds its pick in a list made again (for a new language, or on a read)
+        // by Equals, and an item equal only to itself made the box write null and drop the pick.
+        public override bool Equals(object obj) => obj is MacroOutputChannelOption o && o.Value.Equals(Value);
+        public override int GetHashCode() => Value.GetHashCode();
     }
 
     /// <summary>Display-name resolver for <see cref="MacroOutputChannel"/> values.
@@ -8577,7 +8591,8 @@ namespace PadForge.ViewModels
             PadForge.Models2D.NintendoPreviewMap.UsesValveRoles(profileId);
 
         /// <summary>Any profile whose raw grid is lettered rather than
-        /// numbered: the two Nintendo families or the three Valve ones.</summary>
+        /// numbered: the two Nintendo families, the three Valve ones or
+        /// SInput.</summary>
         public static bool IsLetteredProfile(string profileId) =>
             IsNintendoLetteredProfile(profileId) || IsValveLetteredProfile(profileId);
 

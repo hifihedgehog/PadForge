@@ -117,6 +117,7 @@
   <data name="Common_None" xml:space="preserve"><value>なし</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>秒</value></data>
+  <data name="Common_MinutesZeroNever" xml:space="preserve"><value>分 (0 = 無効)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未割り当て</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -237,7 +238,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← 左)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ 上)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll が見つかりません</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll が見つかりません。 PadForge.exe と同じフォルダーに SDL3.dll を配置してください。ダウンロード先: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll が見つかりません。PadForge をもう一度ダウンロードしてください。</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ドライバー操作に失敗しました: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>設定をクリップボードにコピーしました。</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>デバイス情報をクリップボードにコピーしました。</value></data>
@@ -418,7 +419,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>起動時にエンジンを自動開始する</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ウィンドウがフォーカスを失ってもポーリングを継続する</value></data>
   <data name="Settings_PollingRate" xml:space="preserve"><value>ポーリングレート（プロファイルが上書きしない限り）</value></data>
-  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>エンジンは、すべてのデバイスを読み取って仮想コントローラーを更新する処理を、1秒あたりこの回数（60から10000まで）行います。レートを上げると、プロセッサの使用時間が増えます。Windowsがエンジンを起こすのは多くても毎秒約2000回なので、それより高いレートでは、起こされるたびに複数回のパスを実行します。独自のポーリングレートを持つプロファイルが有効な間はそのレートが適用され、無効になるとこの値に戻ります。</value></data>
+  <data name="Settings_PollingRateTooltip_Format" xml:space="preserve"><value>エンジンは、すべてのデバイスを読み取って仮想コントローラーを更新する処理を、1秒あたりこの回数（60から10000まで）行います。レートを上げると、プロセッサの使用時間が増えます。このPCでは、Windowsがエンジンを起こすのは多くても毎秒{0}回なので、それより高いレートでは、起こされるたびに複数回のパスを実行します。独自のポーリングレートを持つプロファイルが有効な間はそのレートが適用され、無効になるとこの値に戻ります。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ゲームからデバイスを隠す</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide によるデバイス非表示と低レベル入力フックのマスタースイッチです。オフの場合、個別デバイスの設定に関わらずすべてのデバイスが表示されます。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>ウィンドウ</value></data>
@@ -1108,7 +1109,6 @@
   <data name="Macro_Layer_Any" xml:space="preserve"><value>すべてのレイヤー</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>この仮想コントローラーがアクティブな間、継続的に実行されます。トリガーボタンは不要です。</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>アクション</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>レイヤー、ソース、しきい値、方向、トリガーボタンを消費する、繰り返し</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>種類</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>仮想ボタン</value></data>
@@ -1134,7 +1134,6 @@
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>マウスボタン押下</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>マウスボタン解放</value></data>
   <data name="Macro_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Macro_KeyCombo" xml:space="preserve"><value>キーコンボ</value></data>
   <data name="Macro_KeyComboTooltip" xml:space="preserve"><value>{Key1}{Key2} 形式のキーコンボ。編集可能。</value></data>
@@ -1287,6 +1286,7 @@
   <data name="Mapping_InvHalf" xml:space="preserve"><value>反転 半分</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>マッピング済みデバイスなし</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>不明なデバイス</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>プロファイル</value></data>
@@ -1862,7 +1862,7 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>下 (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>上 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>アクティベート</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>アクティベートボタン、アクティベートモード、Easy Aim しきい値</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>アクティベートボタン、アクティベートモード、ジャイロオン、再センタリング、Easy Aim しきい値</value></data>
   <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ジャイロの作動条件を任意で制限。右スティック偏倚とアクティベートボタンのいずれかで出力をゲート可能。両方設定した場合は両方アクティブでなければ作動しません。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ローカル</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>プレイヤー</value></data>
@@ -1899,6 +1899,27 @@
   <data name="Pad_ResetGyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim しきい値をリセット</value></data>
   <data name="Pad_ResetGyroAimEngageButton" xml:space="preserve"><value>アクティベートボタンをリセット</value></data>
   <data name="Pad_ResetGyroAimEngageMode" xml:space="preserve"><value>起動モードをリセット</value></data>
+  <data name="Pad_GyroActivation_Layer" xml:space="preserve"><value>レイヤー</value></data>
+  <data name="Pad_GyroActivation_Layer_Tooltip" xml:space="preserve"><value>下の行が表示し変更する、ジャイロオンの設定を持つレイヤーです。</value></data>
+  <data name="Pad_GyroActivation" xml:space="preserve"><value>ジャイロオン</value></data>
+  <data name="Pad_GyroActivation_Tooltip" xml:space="preserve"><value>このレイヤーでジャイロが作動する条件です。アクティベートボタンに加えて適用されます。シフトレイヤーを「Base と同じ」にすると、Base の設定に従います。</value></data>
+  <data name="Pad_GyroActivation_Always" xml:space="preserve"><value>常にオン</value></data>
+  <data name="Pad_GyroActivation_SameAsBase" xml:space="preserve"><value>Base と同じ</value></data>
+  <data name="Pad_GyroActivation_Hold" xml:space="preserve"><value>押している間</value></data>
+  <data name="Pad_GyroActivation_Release" xml:space="preserve"><value>押していない間</value></data>
+  <data name="Pad_GyroActivation_Toggle" xml:space="preserve"><value>押すたびに切り替え</value></data>
+  <data name="Pad_GyroActivation_Buttons" xml:space="preserve"><value>ジャイロオンのボタン</value></data>
+  <data name="Pad_GyroActivation_Buttons_Tooltip" xml:space="preserve"><value>このスロットのどのコントローラーでも、ジャイロオンが読み取るボタンです。</value></data>
+  <data name="Pad_GyroActivation_Needs" xml:space="preserve"><value>必要な条件</value></data>
+  <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>チェックしたボタンのどれか1つで足りるか、すべてを押している必要があるかを選びます。</value></data>
+  <data name="Pad_GyroActivation_NeedsAny" xml:space="preserve"><value>いずれかのボタン</value></data>
+  <data name="Pad_GyroActivation_NeedsAll" xml:space="preserve"><value>すべてのボタン</value></data>
+  <data name="Pad_GyroRecenterOnEngage" xml:space="preserve"><value>ジャイロがオンになったときに再センタリング</value></data>
+  <data name="Pad_GyroRecenterOnEngage_Tooltip" xml:space="preserve"><value>ジャイロがオンになるたびに、コントローラーの現在の姿勢を基準位置にします。</value></data>
+  <data name="Pad_ResetGyroActivation" xml:space="preserve"><value>ジャイロオンをリセット</value></data>
+  <data name="Pad_ResetGyroActivationButtons" xml:space="preserve"><value>ジャイロオンのボタンをリセット</value></data>
+  <data name="Pad_ResetGyroActivationNeeds" xml:space="preserve"><value>必要な条件をリセット</value></data>
+  <data name="Pad_ResetGyroRecenterOnEngage" xml:space="preserve"><value>ジャイロがオンになったときの再センタリングをリセット</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>起動スティックをリセット</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>起動方向をリセット</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>モーションのパススルー</value></data>
@@ -1909,6 +1930,25 @@
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ゲームは、ここで設定した感度、スムージング、カーブを適用したモーションを読み取ります。</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>この間のみ</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>このソースは、同じコントローラーでこの入力も押されていると読み取られている間だけ有効です。インポートされたゾーン判定は、それが調べるスティックまたはトリガーの範囲として読み取られます。</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>さらに次の間</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>このソースがさらに待つ、2つ目の入力です。</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>入力を変更</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>待つ対象の別の入力を選びます。</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>カーブ</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>この入力の読み取り値を、出力に反映する前にこの値で累乗します。0 と 1 では直線のままです。1 より大きいと、中央付近でゆるやかになります。</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>外側の範囲</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>入力の移動量がこの割合に達すると、出力が最大になります。100% でオフです。</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>アンチデッドゾーン</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>入力が動いた時点で、出力がこの値から始まります。0 でオフです。</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>デッドゾーン形状</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>オフでは読み取り値をそのままにします。軸方向では、この軸だけで測ります。放射状では、スティックの2軸をまとめて測ります。</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Axial" xml:space="preserve"><value>軸方向</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>放射状</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>内側デッドゾーン</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>入力の移動量がこの割合を下回る間は、中央として読み取られます。</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ソースごとの傾き感度倍率。1.0 = 90°の傾きでフルストローク。1.0 を超える値はより少ない傾きでフルストロークに達します。</value></data>
   <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ジャイロ傾斜 X</value></data>
@@ -1976,6 +2016,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>エンジンを停止中…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>非アクティブタイムアウト</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残った同じ種類のコントローラーは隙間を埋めるために上にシフトし、低いスロットに再バインドされます。</value></data>
+  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)。</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -2663,6 +2704,9 @@
   <data name="Pad_Steering_Reset_WindUnwindRate" xml:space="preserve"><value>巻き戻しレートをリセット</value></data>
   <data name="Pad_Steering_Reset_AngleInnerDz" xml:space="preserve"><value>角度内側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_AngleOuterDz" xml:space="preserve"><value>角度外側デッドゾーンをリセット</value></data>
+  <data name="Pad_Steering_StickDeadZone" xml:space="preserve"><value>スティックデッドゾーン</value></data>
+  <data name="Pad_Steering_StickDeadZone_Tooltip" xml:space="preserve"><value>スティックの傾きがこの値を下回る間は中央として読み取られ、ステアリングは蓄積されません。</value></data>
+  <data name="Pad_Steering_Reset_StickDeadZone" xml:space="preserve"><value>スティックデッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_MotionInnerDz" xml:space="preserve"><value>リーン内側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_MotionOuterDz" xml:space="preserve"><value>リーン外側デッドゾーンをリセット</value></data>
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
@@ -2726,6 +2770,7 @@
   <data name="Pad_Centering_PeakOf_Format" xml:space="preserve"><value>/ {0} N·m</value></data>
   <data name="Pad_Centering_PeakOver" xml:space="preserve"><value>この車はステアリングが出せる以上のトルクを求めるため、カーブの頂点が頭打ちになります。</value></data>
   <data name="Pad_More_Centering" xml:space="preserve"><value>オンセンター特性、パワーアシスト、ダンピング、フリクション、グリップ、固定速度、ステアリングトルク上限</value></data>
+  <data name="Pad_More_Centering_NoFriction" xml:space="preserve"><value>オンセンター特性、パワーアシスト、ダンピング、グリップ、固定速度、ステアリングトルク上限</value></data>
   <data name="Pad_Centering_OnCenter_Tooltip" xml:space="preserve"><value>低速でステアリングが中央をどれだけ強く保つかです。100% が実際の車と同じ強さです。</value></data>
   <data name="Pad_Centering_Assist" xml:space="preserve"><value>パワーアシスト</value></data>
   <data name="Pad_Centering_Assist_Tooltip" xml:space="preserve"><value>コーナリングが強まるにつれて、パワーステアリングがどれだけ操舵力を軽くするかです。大きいほど、中央から離れたときのステアリングが軽くなります。</value></data>
@@ -2867,7 +2912,7 @@
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>高音をリセット</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
-  <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
+  <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge には、この接続で選択中のデバイスのスピーカーへの経路がありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
@@ -3290,7 +3335,6 @@
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>任意。プログラムが現在のディレクトリとして使用するフォルダーです。プログラムファイルがある場所ではありません。空欄にすると既定値が使われます。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>詳細</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB接続時にBluetoothを切断</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>クイックチャージ。Bluetooth接続中にこのコントローラーが充電中と報告すると、Bluetoothリンクを切断し、無線に電力を使わずに充電します。壁の充電器を含め、あらゆるUSB電源が対象です。ケーブルを挿したままBluetoothを再接続した場合は、次にケーブルを抜くまでそのままにします。</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade コントローラーとして読み取る</value></data>
@@ -3332,8 +3376,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイルの名前を表示し、プロファイルの切り替えに追従します。</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>ビジュアルメモリにプロファイル一覧でのアクティブなプロファイルの位置を表示します。デフォルト プロファイルは 0 です。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge がコントローラーを見つけてからの時間と分をビジュアルメモリに表示し、1 分に 1 回書き換えます。コントローラーがポートから 10 秒を超えて外れると、0 から数え直します。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。アダプターは各画像を自身のメモリに保存するため、PadForge の書き換えはこれより頻繁には行われません。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge がコントローラーを見つけてからの時間と分をビジュアルメモリに表示し、1 分に 1 回書き換えます。コントローラーがポートから 10 秒を超えて外れると、0 から数え直します。アダプターは各画像を自身のメモリに保存するため、PadForge の書き換えは 1 分に 1 回より頻繁には行われません。</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>ビジュアルメモリに選んだ画像を表示します。BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンが使えます。画像は 48×32 の白黒ピクセルに変換されます。</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>画像を選択…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} の画像を選択…</value></data>
@@ -3378,6 +3422,13 @@
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox モードのコントローラーが Apex 4 として応答しなかったため、何も送信されず、Windows に戻っています。本体のスイッチで DInput モードに戻してください。</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows がコントローラーを WinUSB に移せなかったため、何も送信されていません。本体のスイッチで DInput モードに戻してください。</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>停止しました。もう一度送信する前に、コントローラー本体のスイッチでオフにしてからオンにしてください。</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>画面のポートを開けなかったため、何も送信されませんでした。コントローラー本体のスイッチでオフにしてからオンにし、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>画像のフレーム数が、このコントローラーの画面に保存できる数を超えています。</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>このコントローラーにはすでに画像を送信中です。完了するまでお待ちください。</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>画面が、PadForge が書き込まないアドレスへの画像の書き込みを要求したため、何も送信されませんでした。コントローラー本体のスイッチでオフにしてからオンにし、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>画像は送信されましたが、コントローラーが DInput モードに戻りませんでした。コントローラー本体のスイッチで戻してください。</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>コントローラーが準備のコマンドを受け付けなかったため、何も送信されませんでした。接続されていることを確認して、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>PadForge のエラーにより送信が停止しました。詳細はログファイルを確認してください。</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>コントローラーへ画像を送信中です。送信を中止しますか？</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>コントローラパックのファイル (*.mpk)|*.mpk|すべてのファイル (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>コントローラパック ポート {0}.mpk</value></data>
@@ -3532,6 +3583,7 @@
   <data name="Pad_Battery_Low" xml:space="preserve"><value>低下</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>画像</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>リスト</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>{0} 個の出力</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} 個の出力</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>モーション</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>コントローラーのボタンやスティックをクリックし、割り当てる入力を押してください。</value></data>
@@ -3790,7 +3842,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 画面を表示</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する Bliss-Box ポートの各 Dreamcast コントローラーのビジュアルメモリで画像を再生し、その後、各ポートを本来の画面設定に戻します。</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast の画像 {0} 枚を各 {1} ms で {2} 回表示</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>アダプターは送られた画像をすべて、書き込み 10 万回の定格のメモリに書き込むため、各画像は最低 1 秒表示されます。毎秒新しい画像を送ると、約 1 日でこの回数に達します。画像は 48×32 の白黒ピクセルで、BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンから読み込めます。</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>各画像は最低 1 秒表示されます。PadForge がアダプターに送る画像は多くても毎秒 1 枚で、アダプターは送られた画像をすべて自身のメモリに保存するためです。画像は 48×32 の白黒ピクセルで、BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンから読み込めます。</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>画像</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>画像を追加…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>画像を削除</value></data>
@@ -3845,7 +3897,6 @@
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>メニュー配置をリセット</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>セルをリセット</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>感度をリセット</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>加速をリセット</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>デッドゾーンをリセット</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>長押し時間をリセット</value></data>
   <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>入力受付時間をリセット</value></data>
@@ -3920,9 +3971,6 @@
   <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>ガイド LED の明るさをリセット</value></data>
   <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>ガイド LED モードをリセット</value></data>
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>自動解除を 0 にリセット (レイヤーはオフに切り替えるまで有効のまま)。</value></data>
-  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>トリムデッドゾーンを 25% にリセット。</value></data>
-  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>トリム速度を毎秒 100% にリセット。</value></data>
-  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>リリース時にレベルが 100% に戻る設定にリセット。</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>無操作時の自動解除</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>レイヤーがトグルでオンの間、レイヤー自身にマッピングされた入力が何もアクティブでない状態がこのミリ秒続くと、自動的にオフへ戻ります。タイマーはレイヤーの有効化時に開始し、レイヤーへの入力があるたびにやり直されます。0 なら自分でオフに切り替えるまでオンのままです。</value></data>
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
@@ -3936,6 +3984,8 @@
   <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} を {1} ms ごとにリピート</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>マウス X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>マウス Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>水平オフセット</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>垂直オフセット</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>間隔</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>画面上で選択</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>あと {0} 秒でキャプチャ…</value></data>
@@ -4004,6 +4054,9 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop プロファイル</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop マクロ</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>カーソル領域</value></data>
+  <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ホールド)</value></data>
+  <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (リリース)</value></data>
+  <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (アクティベート)</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選ぶと、反映される内容を確認できます。</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>反映される内容</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>変換先</value></data>
@@ -4774,7 +4827,7 @@
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向入力でセルを順に移動し、新しく選ばれたセルを発動します。発動モードやクリック入力は使いません。ホットバースタイルは発動せずに移動し、専用の発動操作で発動します。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 拡張プロトコル</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>対応するFlydigiコントローラーの追加ボタンとモーションセンサーを有効にします。</value></data>
-  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi のソフトウェアが実行中です: {0}。PadForge と同じコントローラーインターフェイスを使用できます。両方がアクセスできる状態で Vader 5 Pro が繰り返し切断されたという報告があります。このコントローラーが切断と再接続を繰り返す場合は、PadForge の使用中にサービスを停止する、コントローラーを非表示のままにして HidHide のホワイトリストからサービスを削除する、または設定の「Flydigi 拡張プロトコル」をオフにして試してください。効果は確認されていません。</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi のソフトウェアが実行中です: {0}。PadForge が使用するインターフェイスを通じてコントローラーと通信します。このコントローラーが切断と再接続を繰り返す場合は、PadForge の使用中はそのソフトウェアを停止してください。</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>リモートからの割り当て変更を許可</value>
   </data>
@@ -5434,9 +5487,6 @@
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>表示内容を選択…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 画面オーバーレイ</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>表示する内容がまだありません。「追加機能」の「画面オーバーレイ」ページで表示内容を選択してください。</value></data>
-  <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>
-  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>クロスヘアの切り替え</value></data>
-  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>拡大鏡の切り替え</value></data>
   <data name="Macro_EveryCrosshair" xml:space="preserve"><value>すべてのクロスヘア</value></data>
   <data name="Macro_Crosshair" xml:space="preserve"><value>クロスヘア</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>画面オーバーレイの切り替え</value></data>

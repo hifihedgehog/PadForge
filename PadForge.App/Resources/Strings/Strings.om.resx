@@ -161,7 +161,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← bitaa)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ol)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll hin argamne</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll hin argamne. SDL3.dll PadForge.exe cinaa kaa'i. https://github.com/libsdl-org/SDL/releases irraa buufadhu</value></data>
+  <data name="Status_SDL3NotFoundDownloadAgain" xml:space="preserve"><value>SDL3.dll hin argamne. PadForge irra deebi'ii buufadhu.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Garagalchuun hin milkoofne: {0}</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Maxxansuun hin milkoofne: {0}</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Piroofaayiliin "{0}" uumameera.</value></data>
@@ -310,7 +310,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" barreessi</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(barruu hin jiru)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Barruu</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>daqiiqaa</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Akka kontirolaa iCade-tti dubbisi</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Akka kiiboordiitti dubbisi</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Lakkoofsa taphataa…</value></data>
@@ -624,6 +623,8 @@
   <data name="Macro_CursorPinMode_Label" xml:space="preserve"><value>Haala</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Maawusii X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maawusii Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Siqsuu dalgaa</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Siqsuu dhaabbataa</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Iskiriinii irratti fili</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Haala</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Qabadhu</value></data>
@@ -647,6 +648,7 @@
   <data name="Mapping_Half" xml:space="preserve"><value>Walakkaa</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Meeshaan walqabsiifame hin jiru</value></data>
+  <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Meeshaa hin beekamne</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Taachpaadii cuqaasuu</value></data>
@@ -850,6 +852,21 @@
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Piichii garagalchuu deebisi</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Deedzoonii deebisi</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Miira</value></data>
+  <data name="Mapping_Gate" xml:space="preserve"><value>Yeroo qofa</value></data>
+  <data name="Mapping_Gate_Tooltip" xml:space="preserve"><value>Maddi kun kan lakkaa'amu yeroo galteen kun to'ataa walfakkaataa irratti tuqamee dubbifamu qofa. Qorannoon zoonii galchaa irraa dhufe akka daangaa ulee ykn tiriigarii inni qoruutti dubbifama.</value></data>
+  <data name="Mapping_Gate2" xml:space="preserve"><value>Akkasumas yeroo</value></data>
+  <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Galtee lammaffaa maddi kun akkasumas eegu.</value></data>
+  <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Galtee jijjiiri</value></data>
+  <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Galtee biraa kan eegamu filata.</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kurfii</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Dubbisa galtee kanaa osoo inni ba'aa hin oofne humna kanaan ol kaasa. 0 fi 1 akkuma qajeelaatti dhiisu. 1 ol yoo ta'e giddugala bira suuta ta'a.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Daangaa alaa</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Ba'aan yeroo deemsi hammana ga'u guutuu ga'a. 100% cufaa dha.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deedzoonii</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Ba'aan akkuma galteen sochooteen hammana irraa jalqaba. 0 cufaa dha.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Boca deedzoonii</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Cufaan dubbisa akkuma jirutti dhiisa. Aksiisiin aksisii kana qofa safara. Raadiyaaliin cimdii ulee waliin safara.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Cufaa</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Saffisa maawusii X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Saffisa maawusii Y</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Bakka maawusii X</value></data>
@@ -1972,7 +1989,7 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Raafama tiriigarii sagalee gadi aanaa sirnaa irraa</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Deedzoonii jallachuu, Kallattii kontirolaa</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deedzoonii, lallaafsuu, Ariitii, Kurfii bahiinsaa</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Qabduu akeekaa kaasuu, Haala kaasuu, Daangaa akeeka salphaa</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Qabduu akeekaa kaasuu, Haala kaasuu, Jayiroo banaa, Gidduutti deebisi, Daangaa akeeka salphaa</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Taachpaadii akka sitikii ykn D-pad fayyadami</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Mallattoo taachpaadii kanaa dandeessisa</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Harkisuu, tuquu, cuniinsuu, bocawwan</value></data>
@@ -1983,7 +2000,6 @@
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Garagalchi, Momentum, Deebii, Ariitii, darbuu</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>"Map All" bahiinsa tuquu A fi B irra darba. Tokko walqabsiisuuf geengoo naannoo A ykn B jiru cuqaasi.</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Godhi</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Sadarkaa, Madda, Daangaa jalqabaa, Kallattii, Consume Trigger Buttons, Irra deebi'i</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Maqaa jijjiiri</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Baafata haaraa</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Seelii dabali</value></data>
@@ -2004,8 +2020,8 @@
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Haalli mataa tarree Head Tracker kan [Meeshaalee] irra jiruudha. Kutaa Ramaddiiwwan kontirolaa tokkoo keessatti naanna'iinsa mataa aksisii sitikii tokkootti ramadi.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Gatiiwwan kun tarree Game Telemetry kan [Meeshaalee] irra jiruudha. Kutaa Ramaddiiwwan kontirolaa tokkoo keessatti ramadi ykn maakiroowwan kaasuuf itti fayyadami.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Maddoota</value></data>
-  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Geengoo, kaarqaa ykn baarii meenuu yeroo inni banamee jiru</value></data>
-  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Maqaa piroofaayilii yeroo piroofaayiliin jijjiiramu</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Geengoo, kaarqaa ykn baarii meenuu yeroo inni banamee jiru.</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Maqaa piroofaayilii yeroo piroofaayiliin jijjiiramu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Teessoo garagalchi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Bilbilli wal qunnamu as fi fuula Meeshaalee irratti mul'ata, achitti kontirolaa tokkoof ramadda.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Wal qunnamaa</value></data>

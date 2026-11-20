@@ -97,6 +97,11 @@ namespace PadForge.Tests
             Assert.All(gaps.Where(g => g > 100), g => Assert.True(g >= Grid - 5 * 100, "gap " + g));
         }
 
+        /// <summary>A pass that took far longer than the bound drops the
+        /// passes it missed, and the loop sleeps a whole interval before the
+        /// next: the stall used up the tick's time a burst may have. The
+        /// pass after a stall ran at once, so a loop whose every pass took
+        /// that long never slept.</summary>
         [Fact]
         public void AStallIsFollowedByNoBurst()
         {
@@ -112,10 +117,48 @@ namespace PadForge.Tests
             }
             // A pass that took fifty milliseconds, as a device sweep can.
             now += 50 * Second / 1000;
-            Assert.Equal(0, schedule.Next(now));     // the pass after the stall runs at once
+            long after = schedule.Next(now);
+            Assert.Equal(now + Second / 1000, after);   // a whole interval from the stall's end
+            now = after;
+            schedule.Woke(now);
             now += 100;
-            long next = schedule.Next(now);
-            Assert.Equal(now - 100 + Second / 1000, next); // and the one after it is a whole interval on
+            Assert.Equal(after + Second / 1000, schedule.Next(now)); // and on at the rate, nothing owed
+        }
+
+        /// <summary>A wake that came far behind the schedule, as after a
+        /// resume from sleep, starts the schedule again from that moment:
+        /// within the tick's time after the wake the next pass is due at
+        /// once, and none of the missed ones follow.</summary>
+        [Fact]
+        public void AWakeFarBehindStartsTheScheduleAgain()
+        {
+            long now = 0;
+            var schedule = new PollSchedule(Second, Grid, 1000, now);
+            now += 100;
+            long until = schedule.Next(now);
+            now = until + 50 * Second / 1000;   // the wake came fifty milliseconds late
+            schedule.Woke(now);
+            now += 100;
+            Assert.Equal(0, schedule.Next(now));
+            long start = now;
+            now += 100;
+            Assert.Equal(start + Second / 1000, schedule.Next(now));
+        }
+
+        /// <summary>A processor whose every pass outlasts the stall bound and
+        /// an interval still sleeps after each pass. The stall branch
+        /// answered "run now" every time, so the loop never slept at the
+        /// poll thread's raised priority (#331).</summary>
+        [Theory]
+        [InlineData(10000, 30_000)]   // 3 ms passes at 10000 a second
+        [InlineData(1000, 60_000)]    // 6 ms passes at 1000 a second
+        [InlineData(60, 900_000)]     // 90 ms passes at 60 a second
+        public void APassLongerThanTheStallBoundIsFollowedByASleep(int hz, long passCost)
+        {
+            var starts = Run(hz, 2, passCost: passCost);
+            var gaps = Enumerable.Range(1, starts.Count - 1).Select(i => starts[i] - starts[i - 1]).ToList();
+            Assert.NotEmpty(gaps);
+            Assert.All(gaps, g => Assert.True(g > passCost, "a pass ran back to back after one of " + passCost + " ticks"));
         }
 
         [Fact]
@@ -278,8 +321,9 @@ namespace PadForge.Tests
         /// clock: every second reads the rate though each wake comes up to
         /// half a millisecond late, and the second with a 20 ms stall reads
         /// lower, by the passes the stall dropped. Timed by when its passes
-        /// ended, the same loop reads a hertz or more off now and then, as
-        /// Home showed 1001 Hz at 1000.</summary>
+        /// ended, the same loop reads a hertz or more off now and then: here
+        /// at 4000 and 10000, where several passes end at each wake, as Home
+        /// showed 1001 Hz at 1000.</summary>
         [Theory]
         [InlineData(250)]
         [InlineData(1000)]
@@ -314,7 +358,7 @@ namespace PadForge.Tests
             var off = shown.Where(r => Shown(r) != Shown(hz)).ToList();
             Assert.Single(off);
             Assert.True(off[0] < hz * 0.995, $"the stalled second read {off[0]:F1} Hz at {hz}");
-            if (hz >= 1000)
+            if (hz > 1000)
                 Assert.Contains(ended, r => Shown(r) != Shown(hz) && r > hz * 0.995);
 
             string loop = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.cs");

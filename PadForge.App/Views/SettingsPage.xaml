@@ -639,8 +639,14 @@
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}"/>
                                         <ui:NumberBox Value="{Binding PollingRateHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Minimum="60" Maximum="10000"
-                                                      AutomationProperties.Name="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Settings_PollingRateTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                      AutomationProperties.Name="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}">
+                                            <ui:NumberBox.ToolTip>
+                                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                    <Binding Path="PollingWakesPerSecond"/>
+                                                    <Binding Path="Settings_PollingRateTooltip_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </ui:NumberBox.ToolTip>
+                                        </ui:NumberBox>
                                         <TextBlock Style="{StaticResource DzPercent}" Text="{Binding Common_Hz, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock Style="{StaticResource RowStatus}" Text="{Binding PollingOverrideNote}"
                                                    Foreground="{DynamicResource WaitBrush}"
@@ -658,7 +664,7 @@
                                                       AutomationProperties.Name="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock Style="{StaticResource DzPercent}" controls:SettingRow.Fills="True"
-                                                   Text="{Binding Common_Seconds, Source={x:Static strings:Strings.Instance}}"/>
+                                                   Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HmInactivityDestroyTimeoutSeconds"
                                                                   SettingLabel="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}"
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_HmInactivityDestroyTimeoutSeconds_197"/>
@@ -809,7 +815,7 @@
                                                                   AutomationProperties.Name="{Binding Settings_BatteryNotifyRepeat, Source={x:Static strings:Strings.Instance}}"
                                                                   IsEnabled="{Binding DataContext.BatteryNotifyEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                     <TextBlock Style="{StaticResource DzPercent}" controls:SettingRow.Fills="True"
-                                                               Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"/>
+                                                               Text="{Binding Common_MinutesZeroNever, Source={x:Static strings:Strings.Instance}}"/>
                                                     <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyRepeatMinutes"
                                                                               SettingLabel="{Binding Settings_BatteryNotifyRepeat, Source={x:Static strings:Strings.Instance}}"
                                                                               AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyRepeatMinutes_277"/>

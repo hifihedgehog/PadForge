@@ -1445,7 +1445,7 @@ namespace PadForge.ViewModels
         /// Bluetooth as <see cref="IsBluetoothLink"/> says, or USB, PS/2 or
         /// I2C as the device tree shows (Common.DeviceTransport.LinkOf).
         /// None for a virtual device and one the tree does not hold. Read
-        /// again when the device comes back, since a device first seen while
+        /// again when the row comes online, since a device first seen while
         /// it was away is not in the tree then.</summary>
         public Common.DeviceLink Link => Common.DeviceTransport.LinkOf(_devicePath, _vendorId, _productId);
 

@@ -247,7 +247,6 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(makomi ezali te)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Makomi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Ba détail</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Tanga lokola manette iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Tanga lokola clavier</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Tanga lokola ba stick Tekken</value></data>
@@ -465,7 +464,6 @@
   <data name="Menu_Reset_Style" xml:space="preserve"><value>Kozongisa style</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Kozongisa clic</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Kozongisa sensibilité</value></data>
-  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Kozongisa accélération</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Kozongisa zone morte</value></data>
   <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Kozongisa ntango ya kosimba</value></data>
   <data name="Macro_Reset_Interval" xml:space="preserve"><value>Kozongisa intervalle</value></data>
@@ -544,7 +542,6 @@
   <data name="Macro_MouseMove" xml:space="preserve"><value>Mouvement ya souris</value></data>
   <data name="Macro_MouseButtonPress" xml:space="preserve"><value>Kofina bouton ya souris</value></data>
   <data name="Macro_MouseButtonRelease" xml:space="preserve"><value>Kotika bouton ya souris</value></data>
-  <data name="Macro_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer superposition ya pavé tactile</value></data>
   <data name="Macro_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="Macro_Axis" xml:space="preserve"><value>Axe</value></data>
   <data name="Macro_LeftStickX" xml:space="preserve"><value>Stick ya loboko ya mwasi X</value></data>
@@ -595,6 +592,8 @@
   <data name="MacroAction_MouseRecenter_Format" xml:space="preserve"><value>Kozongisa souris na katikati: {0}</value></data>
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Souris X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Souris Y</value></data>
+  <data name="Macro_NudgeDx_Label" xml:space="preserve"><value>Décalage horizontal</value></data>
+  <data name="Macro_NudgeDy_Label" xml:space="preserve"><value>Décalage vertical</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalle</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Kosimba</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Moteur ya loboko ya mwasi</value></data>
@@ -1797,6 +1796,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ekiti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Elilingi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_One_Format" xml:space="preserve"><value>Sortie: {0}</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ba sortie: {0}</value></data>
   <data name="Pad_Band_Motion" xml:space="preserve"><value>Mouvement</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pona contrôle moko, sima finá entrée oyo ekotambwisa yango.</value></data>
@@ -1827,7 +1827,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration ya gâchette uta na basse ya audio ya système</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Ba zone morte ya kogumbama, Orientation ya manette</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zone morte, lissage, Accélération, Courbe ya kobima</value></data>
-  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton ya activation ya visée, Mode ya activation, Seuil ya Easy Aim</value></data>
+  <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton ya activation ya visée, Mode ya activation, Gyro epeli, Kozongisa na katikati, Seuil ya Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Salela touchpad lokola stick to croix directionnelle</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Efungoli ba geste ya touchpad oyo</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Glissement, kobeta, pincement, ba forme</value></data>
@@ -1838,7 +1838,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kobalola, Élan, Réponse, Accélération, kobwaka</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Source ya miroir, Volume ya casque, buffer, Nzela ya kobima</value></data>
   <data name="Macro_Do_Header" xml:space="preserve"><value>Sala</value></data>
-  <data name="Pad_More_Macro" xml:space="preserve"><value>Couche, Source, Seuil, Direction, Consume Trigger Buttons, Repeat</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Kobongola nkombo</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu ya sika</value></data>
   <data name="Menu_AddCell" xml:space="preserve"><value>Kobakisa case</value></data>
@@ -2008,6 +2007,13 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Manette na mode Xbox eyanolaki te lokola Apex 4, yango wana eloko moko te etindamaki mpe Windows ezwi yango lisusu. Zongisa yango na mode DInput na interrupteur na yango moko.</value></data>
   <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows etyaki manette na WinUSB te, yango wana eloko moko te etindamaki. Zongisa yango na mode DInput na interrupteur na yango moko.</value></data>
   <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Etelemi. Kufisa mpe pelisa manette na interrupteur na yango moko liboso otinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpenPlain" xml:space="preserve"><value>Port ya écran efungwamaki te, yango wana eloko moko etindamaki te. Kufisa mpe pelisa manette na interrupteur na yango moko mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_TooManyFrames" xml:space="preserve"><value>Elili ezali na ba frame ebele koleka oyo écran ya manette oyo ekoki kobomba.</value></data>
+  <data name="FlydigiScreen_Fail_Busy" xml:space="preserve"><value>Elili moko ezali kokende na manette oyo. Zela ete esila.</value></data>
+  <data name="FlydigiScreen_Fail_BadAddress" xml:space="preserve"><value>Écran esengaki elili na adresse oyo PadForge ekomaka te, yango wana eloko moko etindamaki te. Kufisa mpe pelisa manette na interrupteur na yango moko mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_NotSwitchedBack" xml:space="preserve"><value>Elili etindamaki, kasi manette ezongaki na mode DInput te. Zongisa yango na interrupteur na yango moko.</value></data>
+  <data name="FlydigiScreen_Fail_SwitchNotSent" xml:space="preserve"><value>Manette endimaki te commande oyo ebongisaka yango, yango wana eloko moko etindamaki te. Tala soki ekangisami mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_Fault" xml:space="preserve"><value>Botindi etelemi mpo na libunga moko kati na PadForge. Fichier ya log ezali na ba détail.</value></data>
   <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Elili ezali kaka kokende na manette. Kotelemisa kotinda?</value></data>
   <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
@@ -2015,4 +2021,15 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Kosalela</value></data>
   <data name="About_SteeringRefs" xml:space="preserve"><value>Ba référence ya ndenge volant eyokamaka</value></data>
+  <data name="Mapping_SourceCurve" xml:space="preserve"><value>Courbe</value></data>
+  <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Etombolaka botangi ya input oyo na puissance oyo liboso ete etambwisa sortie. 0 mpe 1 etikaka yango semba. Likolo ya 1 ezali malembe pene ya katikati.</value></data>
+  <data name="Mapping_SourceOuterRange" xml:space="preserve"><value>Plage ya libanda</value></data>
+  <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Sortie ekomaka mobimba na eteni oyo ya mobembo. Na 100% ezimi.</value></data>
+  <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-zone morte</value></data>
+  <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Sortie ebandaka na motango oyo kaka ntango input eningani. Na 0 ezimi.</value></data>
+  <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Lolenge ya zone morte</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Ezimi etikaka botangi ndenge ezali. Axiale emekaka axe oyo yango moko. Radiale emekaka stick mobimba, ba axe mibale elongo.</value></data>
+  <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Ezimi</value></data>
+  <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zone morte ya kati</value></data>
+  <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Na nse ya eteni oyo ya mobembo, input etangami lokola ezali na katikati.</value></data>
 </root>

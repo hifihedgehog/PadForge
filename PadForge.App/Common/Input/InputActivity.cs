@@ -14,9 +14,10 @@ namespace PadForge.Common.Input
     ///
     /// <para>Every kind of input the idle test counts is counted here. A
     /// finger on a touchpad, a pen on a tablet and a pad pressed in are
-    /// held, as are a note on a MIDI device and a key above rest on an
-    /// analog keyboard, and a MIDI knob or pitch wheel that turns has
-    /// moved. A touchpad's row stayed dark under a finger while the light
+    /// held, as are a note on a MIDI device, a key above rest on an analog
+    /// keyboard, the Wii remote's pointer in view, a Joy-Con 2 moved as a
+    /// mouse, a Ring-Con flexed and an NFC tag on the reader, and a MIDI
+    /// knob or pitch wheel that turns has moved. A touchpad's row stayed dark under a finger while the light
     /// read buttons, directions, axes and the mouse's counts alone (owner,
     /// 2026-11-14).</para>
     ///
@@ -115,6 +116,18 @@ namespace PadForge.Common.Input
             if (notes != null)
                 for (int i = 0; i < notes.Length; i++)
                     if (notes[i]) return true;
+
+            // The pointer, the ring and a tag, as the idle test counts them
+            // (IdleInputDetector): the Wii remote's IR in view, a Joy-Con 2
+            // moved as a mouse, a Ring-Con flexed past its slop and an NFC
+            // tag on the reader.
+            if (state.Ir.Detected || state.JoyCon2MouseDX != 0f || state.JoyCon2MouseDY != 0f
+                || Math.Abs(state.RingConStrain) > IdleInputDetector.RingConSlop)
+                return true;
+            var tag = state.NfcTag;
+            if (tag != null)
+                for (int i = 0; i < tag.Length; i++)
+                    if (tag[i]) return true;
 
             // A key above rest on an analog keyboard: an entry exists only
             // while its key is.

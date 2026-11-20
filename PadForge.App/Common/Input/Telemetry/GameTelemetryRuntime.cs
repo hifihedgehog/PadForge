@@ -311,7 +311,7 @@ namespace PadForge.Common.Input.Telemetry
         // lock.
         private static readonly object _engineLock = new();
         private static float _engineRpm, _engineMaxRpm, _engineSpeed, _engineGrip;
-        private static bool _engineLive, _engineMaxLearned;
+        private static bool _engineLive, _engineMaxLearned, _engineSpeedReported;
         private static long _engineAtMs;
 
         /// <summary>Written by the row on every read (Step 2, the poll
@@ -334,6 +334,7 @@ namespace PadForge.Common.Input.Telemetry
                 _engineMaxRpm = frame.MaxRpm;
                 _engineMaxLearned = frame.MaxRpmLearned;
                 _engineSpeed = frame.SpeedMs;
+                _engineSpeedReported = frame.SpeedReported;
                 _engineGrip = frame.Grip;
                 _engineAtMs = nowMs;
             }
@@ -371,13 +372,16 @@ namespace PadForge.Common.Input.Telemetry
         /// centering (#588). True while the row is live, the game is driving
         /// and the row published within <see cref="EngineStaleMs"/> of
         /// <paramref name="nowMs"/>, whether or not a max RPM is known.
+        /// <paramref name="hasSpeed"/> is false where the format sends no
+        /// speed, and <paramref name="speed"/> is then 0 and no reading.
         /// <paramref name="grip"/> is 0 where the game sends no word on the
         /// road.</summary>
-        internal static bool TryGetMotion(long nowMs, out float speed, out float grip)
+        internal static bool TryGetMotion(long nowMs, out float speed, out bool hasSpeed, out float grip)
         {
             lock (_engineLock)
             {
                 speed = _engineSpeed;
+                hasSpeed = _engineSpeedReported;
                 grip = _engineGrip;
                 return _engineLive && nowMs - _engineAtMs <= EngineStaleMs;
             }

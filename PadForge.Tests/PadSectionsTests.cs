@@ -943,7 +943,7 @@ namespace PadForge.Tests
             var pickers = System.Text.RegularExpressions.Regex.Matches(text.Substring(motion, macros - motion),
                     "<(?:ComboBox|ui:NumberBox)\\b(?:[^<>\"]|\"[^\"]*\")*>")
                 .Select(m => m.Value).Where(t => t.Contains("controls:SettingRow.Fills=\"True\"", StringComparison.Ordinal)).ToList();
-            Assert.Equal(30, pickers.Count);
+            Assert.Equal(33, pickers.Count);
             Assert.All(pickers, t => Assert.Contains("MinWidth=\"120\" HorizontalAlignment=\"Left\" MaxWidth=", t));
 
             var more = Named(page, "GyroSensitivityMore");
@@ -2293,7 +2293,6 @@ namespace PadForge.Tests
                 ("Pad_More_SoundOutput", "Mirror Source, Headphone Volume, buffer, Output Path"),
                 ("Pad_RumbleAudio_Subtitle", "Plays game rumble as low tones through bass shakers or a subwoofer."),
                 ("Macro_EmptyHint", "Pick a macro in the list, or press + beside Macros to make one."),
-                ("Pad_More_Macro", "Layer, Source, Threshold, Direction, Consume Trigger Buttons, Repeat"),
             })
                 Assert.Equal(english, data[key]);
             Assert.Contains("Press + beside Menus", data["Menu_EmptyHint"]);

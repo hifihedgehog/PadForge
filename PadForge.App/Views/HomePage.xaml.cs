@@ -23,6 +23,18 @@ namespace PadForge.Views
             InitializeComponent();
             WireCardsFit();
             Loaded += (_, _) => WireDragHandlers();
+            // A card shows its model moving only where the computer draws 3D
+            // with its graphics card, and a remote desktop session changes
+            // that while the program runs. A change made while the page was
+            // away is read when it comes back.
+            _renderTier = System.Windows.Media.RenderCapability.Tier;
+            Loaded += (_, _) =>
+            {
+                System.Windows.Media.RenderCapability.TierChanged -= OnRenderTierChanged;
+                System.Windows.Media.RenderCapability.TierChanged += OnRenderTierChanged;
+                OnRenderTierChanged(this, EventArgs.Empty);
+            };
+            Unloaded += (_, _) => System.Windows.Media.RenderCapability.TierChanged -= OnRenderTierChanged;
             // The Add Controller tile shares the slot WrapPanel through a
             // CompositeCollection (#175 phase 2 item 3), and its
             // CollectionContainer sits outside the visual tree, so a
@@ -33,6 +45,16 @@ namespace PadForge.Views
                 if (e.NewValue is ViewModels.DashboardViewModel vm)
                     SlotsCollectionContainer.Collection = vm.SlotSummaries;
             };
+        }
+
+        private int _renderTier;
+
+        private void OnRenderTierChanged(object sender, EventArgs e)
+        {
+            int tier = System.Windows.Media.RenderCapability.Tier;
+            if (tier == _renderTier) return;
+            _renderTier = tier;
+            (DataContext as ViewModels.DashboardViewModel)?.RenderTierChanged();
         }
 
         /// <summary>The Add Controller tile, which takes the focus back when

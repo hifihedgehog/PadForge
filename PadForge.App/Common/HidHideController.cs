@@ -814,7 +814,13 @@ namespace PadForge.Common
         /// had HidHide, PadForge started at 17:38:24 and the driver first
         /// loaded at 17:40:54. The driver's application list held PadForge's
         /// own path, and the DualSense PadForge was set to hide was not on
-        /// its device list.</para>
+        /// its device list. The driver's own trace of PadForge's next apply
+        /// shows why. PadForge wrote the hide and opened the DualSense half
+        /// a millisecond later. The driver knew that process as
+        /// \Device\HarddiskVolume3\Windows\System32\Windows.Devices.Enumeration.dll,
+        /// an image mapped into it after the driver started, found no such
+        /// name on its list, and denied the open ("Device is black-listed
+        /// hence deny access"). PadForge took the hide back.</para>
         ///
         /// <para>So the process maps its own image file as an image and lets
         /// go of it at once. No code of the image runs, since nothing goes

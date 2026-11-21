@@ -8976,10 +8976,12 @@
                                             <ui:Button Command="{Binding ResetGyroActivationNeedsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetGyroActivationNeeds, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                            <TextBlock Text="{Binding Pad_GyroRecenterOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                        <!-- One on/off setting: a switch row, as the
+                                             page's other switches are. -->
+                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" ValueWidth="66" MinHeight="44">
+                                            <TextBlock Text="{Binding Pad_GyroRecenterOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"
                                                        ToolTip="{Binding Pad_GyroRecenterOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                            <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                       Content="{Binding Pad_GyroRecenterOnEngage, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding GyroRecenterOnEngage, Mode=TwoWay}" VerticalAlignment="Center"
                                                       ToolTip="{Binding Pad_GyroRecenterOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>

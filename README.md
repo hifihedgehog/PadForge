@@ -813,7 +813,7 @@ Comparison reflects each tool's shipping release as of July 2026, with the rows 
 | 3D + 2D controller visualization | ✅ | ⚠ 2D Xbox 360 only | ❌ | ⚠ 2D only | ⚠ basic | ⚠ configurator preview |
 | Multi-point sensitivity curve editor | ✅ unlimited points | ⚠ single slider | ⚠ deadzone only | ✅ custom 4-point | ⚠ preset curves | ✅ response curves |
 | 2026 Steam Controller support | ✅ via SDL3 fork | ❌ | ❌ | ⚠ unverified | ❌ | ✅ |
-| Handheld PC hidden buttons (rear paddles, vendor hotkeys) as mappable inputs | ✅ learned per device, no per-model table | ⚠ unverified | ⚠ unverified | ❌ documented unsupported on ROG Ally and Ayaneo | ⚠ unverified | ⚠ unverified |
+| Handheld PC hidden buttons (rear paddles, vendor hotkeys) as mappable inputs | ✅ learned per device, no per-model table | ⚠ unverified | ⚠ unverified | ⚠ back paddles unsupported on the original ROG Ally and some buttons on the AYANEO 2S, full ROG Ally X support since 9.0 | ⚠ unverified | ⚠ unverified |
 | DualShock 3 support | ✅ USB + in-app Bluetooth pairing, sixaxis, pressure, rumble | ❌ | ❌ | ✅ input + gyro | ✅ input, accel pitch/roll | ✅ native, no gyro |
 | Wii Remote / Nunchuk / Classic / Wii U Pro as a source | ✅ all four forms, in-app pairing, IR pointer | ❌ | ❌ | ✅ pairing, no IR pointer (v9.4+) | ❌ | ❌ |
 

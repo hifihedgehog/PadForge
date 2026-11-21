@@ -6146,7 +6146,7 @@
                                             <controls:SettingRow Grow="True" MinHeight="44">
                                                 <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
+                                                         Style="{StaticResource DzValueEdit}" Margin="0"/>
                                                 <TextBlock Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
                                                            FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                 <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
@@ -6287,13 +6287,13 @@
                                     <controls:SettingRow Grow="True" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                    ToolTip="{Binding Pad_MouseGestures_FlickThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding MouseGestureFlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding MouseGestureFlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                         <ui:Button Command="{Binding ResetMouseGestureFlickThresholdCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetMouseGestureFlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow Grow="True" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_MouseGestures_Cooldown, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding MouseGestureCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding MouseGestureCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding ResetMouseGestureCooldownCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetMouseGestureCooldown, Source={x:Static strings:Strings.Instance}}"/>
@@ -9847,7 +9847,7 @@
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                                 <TextBlock Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                           />
-                                                <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                                 <ui:Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
@@ -9902,14 +9902,14 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
                                             <ui:Button Command="{Binding ResetTouchpadSwipeDistanceThresholdCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadSwipeDistance, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                             <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadSwipeTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadSwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
@@ -9936,7 +9936,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
                                             <ui:Button Command="{Binding ResetTouchpadRadialCenterDeadzoneCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadRadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
@@ -9951,7 +9951,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                             <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadTapTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadTapTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
@@ -9959,7 +9959,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                             <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadMultiTapGapMsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadMultiTapGap, Source={x:Static strings:Strings.Instance}}"/>
@@ -9967,7 +9967,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_TapMaxMotion, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                        ToolTip="{Binding Pad_Touchpad_TapMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadTapMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadTapMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
                                                      ToolTip="{Binding Pad_Touchpad_TapMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadTapMaxMotionCommand}" Style="{StaticResource ResetButton}"
@@ -9984,7 +9984,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                             <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadLongPressTimeWindowMsCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadLongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
@@ -9992,7 +9992,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_LongPressMaxMotion, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                        ToolTip="{Binding Pad_Touchpad_LongPressMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadLongPressMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadLongPressMaxMotion, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
                                                      ToolTip="{Binding Pad_Touchpad_LongPressMaxMotion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadLongPressMaxMotionCommand}" Style="{StaticResource ResetButton}"
@@ -10009,7 +10009,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_TwoFingerAngle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                        ToolTip="{Binding Pad_Touchpad_TwoFingerAngle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadTwoFingerSwipeAngularTolerance, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadTwoFingerSwipeAngularTolerance, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
                                                      ToolTip="{Binding Pad_Touchpad_TwoFingerAngle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="°" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadTwoFingerSwipeAngularToleranceCommand}" Style="{StaticResource ResetButton}"
@@ -10025,7 +10025,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_PinchThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                        ToolTip="{Binding Pad_Touchpad_PinchThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadPinchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadPinchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
                                                      ToolTip="{Binding Pad_Touchpad_PinchThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadPinchThresholdCommand}" Style="{StaticResource ResetButton}"
@@ -10041,7 +10041,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_RotateThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                        ToolTip="{Binding Pad_Touchpad_RotateThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadRotateThresholdDegrees, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadRotateThresholdDegrees, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:F2}}"
                                                      ToolTip="{Binding Pad_Touchpad_RotateThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="°" Style="{StaticResource DzPercent}"/>
                                             <ui:Button Command="{Binding ResetTouchpadRotateThresholdDegreesCommand}" Style="{StaticResource ResetButton}"
@@ -10078,7 +10078,7 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                       />
-                                            <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
+                                            <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"/>
                                             <ui:Button Command="{Binding ResetTouchpadGestureMatchThresholdCommand}" Style="{StaticResource ResetButton}"
                                                     ToolTip="{Binding Pad_ResetTouchpadMatchThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
@@ -12453,7 +12453,7 @@
                                         </controls:SettingRow.Style>
                                         <TextBlock Text="{Binding Pad_Audio_EngageRelease_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                    ToolTip="{Binding Pad_Audio_EngageRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Style="{StaticResource DzValueEdit}" Text="{Binding DeviceConfig.AudioMirrorEngageReleaseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        <TextBox Style="{StaticResource DzValueEdit}" Margin="0" Text="{Binding DeviceConfig.AudioMirrorEngageReleaseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"/>
                                         <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                                         <ui:Button Command="{Binding ResetMirrorEngageReleaseMsCommand}" Style="{StaticResource ResetButton}"

@@ -2151,7 +2151,7 @@
                                     </controls:SettingRow>
                                     <controls:SettingRow MinHeight="44" Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Extras_Crosshair_PictureSize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                        <TextBox Style="{StaticResource DzValueEdit}" Margin="0" FontSize="12"
                                                  Text="{Binding ImageWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  AutomationProperties.Name="{Binding Extras_Crosshair_Width, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock Text="×" VerticalAlignment="Center" Margin="8,0,8,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

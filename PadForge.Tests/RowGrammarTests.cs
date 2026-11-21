@@ -131,5 +131,30 @@ namespace PadForge.Tests
                 Assert.Equal(ControlColumn(row), double.Parse(((string)line.Attribute("Margin")).Split(',')[0], CultureInfo.InvariantCulture));
             }
         }
+
+        /// <summary>A number box that is a row's first control starts where
+        /// the row's control does, as a picker or a slider there does, and as
+        /// Wheel Torque's always has. The value style sets the box 10 after a
+        /// slider, and a box with no slider before it kept that 10, so Mouse
+        /// Gestures' Flick Distance and Cooldown stood 10 right of the Custom
+        /// Activation Input picker between them (seen in the 6.0.0
+        /// screenshots). The Extras page's crosshair Picture Size kept its
+        /// style's 8 the same way.</summary>
+        [Theory]
+        [InlineData("PadPage.xaml", 18)]
+        [InlineData("ExtrasPage.xaml", 1)]
+        public void ANumberBoxThatOpensARowStartsAtItsColumn(string file, int boxes)
+        {
+            var page = XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Views", file));
+            var first = page.Descendants().Where(e => e.Name.LocalName == "SettingRow" && !IsEndsRow(e))
+                .Select(r => r.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList())
+                .Where(parts => parts.Count > 1 && parts[0].Name.LocalName == "TextBlock" && parts[1].Name.LocalName == "TextBox"
+                    && (string)parts[1].Attribute("Style") is "{StaticResource DzValueEdit}" or "{StaticResource FieldValueEdit}")
+                .Select(parts => (Label: (string)parts[0].Attribute("Text"), Margin: (string)parts[1].Attribute("Margin")))
+                .ToList();
+            Assert.Equal(boxes, first.Count);
+            Assert.Empty(first.Where(b => b.Margin == null || double.Parse(b.Margin.Split(',')[0], CultureInfo.InvariantCulture) != 0)
+                .Select(b => b.Label));
+        }
     }
 }

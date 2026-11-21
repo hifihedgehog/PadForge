@@ -7,7 +7,7 @@ namespace PadForge.Common.Input.Peripherals
     /// <summary>
     /// Roccat's mice, mousepads, headset and Horde Aimo keyboard, each lit
     /// through the one HID collection OpenRGB's RoccatController detector
-    /// registration names for it (RoccatControllerDetect.cpp:390-434), as
+    /// registration names for it (RoccatControllerDetect.cpp:411-456 at 6b681e3c), as
     /// OpenRGB lights it (#557). The Vulcan, Pyro and Magma keyboards, which
     /// take two collections, are <see cref="RoccatVulcanLighting"/>.
     ///
@@ -33,6 +33,14 @@ namespace PadForge.Common.Input.Peripherals
     /// (RoccatKoneXPController.cpp:153-170 and 292-307), then OpenRGB's
     /// report 0D 7A for the colors (lines 259-290). Hand-back: the control
     /// report off and the ready wait.</para>
+    ///
+    /// <para>Kone XTD (OpenRGB e2e64625). Its Direct mode sends feature report
+    /// 10, 16 bytes: 10 10 02 01 and the four LEDs' colors, which the mouse
+    /// does not store (SendDirectColors, RoccatKoneXTDController.cpp:158-176).
+    /// Leaving Direct, and closing, sends 10 10 00 FF, which hands the LEDs
+    /// back to the active profile's lighting (ReleaseDirect, lines 178-189,
+    /// RGBController_RoccatKoneXTD.cpp:127-137 and 193-197). That is the
+    /// hand-back.</para>
     ///
     /// <para>Kone Aimo and Kone Aimo 16K. OpenRGB reads report 0 and sends
     /// the same control report on, then sends every color in one report
@@ -189,6 +197,12 @@ namespace PadForge.Common.Input.Peripherals
                     return Direct(KoneXpLights(), "OpenRGB RGBController_RoccatKoneXP.cpp:177-232", KoneXp);
                 case "DetectRoccatMouseControllers":
                     return Direct(KoneAimoLights(), "OpenRGB RGBController_RoccatKoneAimo.cpp:58-157", KoneAimo);
+                case "DetectRoccatKoneXTDControllers":
+                {
+                    var lights = new LightInfo[KoneXtdLeds];
+                    for (int i = 0; i < lights.Length; i++) lights[i] = Zone(i, i + 1);
+                    return Direct(lights, "OpenRGB RGBController_RoccatKoneXTD.cpp:139-158", KoneXtd);
+                }
                 case "DetectRoccatBurstProAirControllers":
                     // Its one registration is the mouse collection, which Windows
                     // holds, and its frames are feature reports, which pass there
@@ -358,6 +372,38 @@ namespace PadForge.Common.Input.Peripherals
             return buf;
         }
 
+        /// <summary>ROCCAT_KONE_XTD_NUMBER_OF_LEDS (RoccatKoneXTDController.h:19).</summary>
+        internal const int KoneXtdLeds = 4;
+
+        /// <summary>The Kone XTD's live colors, SendDirectColors
+        /// (RoccatKoneXTDController.cpp:158-176): report 10, its length 10, 02 01,
+        /// then red, green and blue per LED, 16 bytes.</summary>
+        internal static byte[] KoneXtdDirect(IReadOnlyList<int> colors)
+        {
+            var buf = new byte[0x10];
+            buf[0] = 0x10;
+            buf[1] = 0x10;
+            buf[2] = 0x02;
+            buf[3] = 0x01;
+            for (int i = 0; i < KoneXtdLeds; i++)
+            {
+                buf[0x04 + i * 3] = R(At(colors, i));
+                buf[0x05 + i * 3] = G(At(colors, i));
+                buf[0x06 + i * 3] = B(At(colors, i));
+            }
+            return buf;
+        }
+
+        /// <summary>ReleaseDirect (lines 178-189): 10 10 00 FF, the rest zero.</summary>
+        internal static byte[] KoneXtdRelease()
+        {
+            var buf = new byte[0x10];
+            buf[0] = 0x10;
+            buf[1] = 0x10;
+            buf[3] = 0xFF;
+            return buf;
+        }
+
         internal const int BurstProAirLeds = 4;
 
         /// <summary>The Burst Pro Air's mode report, SetModeValues
@@ -523,6 +569,13 @@ namespace PadForge.Common.Input.Peripherals
             },
             Release = (io, _) => io.SetFeature(KoneAimoRelease),
             ReleaseFrames = new[] { KoneAimoRelease },
+        };
+
+        private static Protocol KoneXtd() => new()
+        {
+            Frame = KoneXtdDirect,
+            Release = (io, _) => io.SetFeature(KoneXtdRelease()),
+            ReleaseFrames = new[] { KoneXtdRelease() },
         };
 
         private static Protocol BurstProAir() => new()

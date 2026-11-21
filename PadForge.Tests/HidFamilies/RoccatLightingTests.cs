@@ -36,7 +36,7 @@ namespace PadForge.Tests
 
         // ── Registrations ──
 
-        /// <summary>RoccatControllerDetect.cpp:390-434 registers 28
+        /// <summary>RoccatControllerDetect.cpp:411-456 registers 29
         /// detectors. Every one but the Vulcan keyboards' is a model of the
         /// HID family, under OpenRGB's name, and the Vulcan keyboards' are
         /// models of the Vulcan family at their control collection, with
@@ -45,7 +45,7 @@ namespace PadForge.Tests
         public void EveryRegistration_IsLit()
         {
             var registrations = OpenRgbRegistrations.Of("RoccatController").ToList();
-            Assert.Equal(28, registrations.Count);
+            Assert.Equal(29, registrations.Count);
             int vulcans = 0;
             foreach (var r in registrations)
             {
@@ -810,6 +810,34 @@ namespace PadForge.Tests
             Assert.Equal("0E 06 01 00 00 FF", Hex(Assert.Single(session.CrashFrames)));
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal("0E 06 01 00 00 FF", Hex(io.Calls.Last().Bytes));
+            Assert.Empty(session.CrashFrames);
+        }
+
+        /// <summary>The Kone XTD, OpenRGB e2e64625 (RoccatControllerDetect.cpp:443 at
+        /// 6b681e3c): four LEDs on one linear zone (RGBController_RoccatKoneXTD.cpp:139-158),
+        /// lit as Direct lights them. Each picture is feature report 10 of 16 bytes, 10 10 02 01
+        /// and red, green and blue per LED, which the mouse does not store
+        /// (SendDirectColors, RoccatKoneXTDController.cpp:158-176). Leaving Direct sends
+        /// 10 10 00 FF, which hands the LEDs back to the profile's lighting (ReleaseDirect,
+        /// lines 178-189, and the destructor, RGBController_RoccatKoneXTD.cpp:127-137).</summary>
+        [Fact]
+        public void AKoneXtdSession_PaintsLiveColors_AndHandsTheLedsBack()
+        {
+            var r = OpenRgbRegistrations.Of("RoccatController").Single(x => x.Name == "Roccat Kone XTD");
+            Assert.Equal((0x1E7D, 0x2E22, 0, 0x0B, 0), (r.VendorId, r.ProductId, r.Interface, r.UsagePage, r.Usage));
+            var model = ModelNamed("Roccat Kone XTD");
+            Assert.Equal(Enumerable.Range(0, 4), model.Map.Lights.Select(l => l.Address));
+            Assert.All(model.Map.Lights, l => Assert.Equal(LightKind.Zone, l.Kind));
+            var io = new FakeReportChannel { Path = null, FeatureReportLength = 16 };
+            var session = model.Begin(io, _ => { });
+            Assert.Empty(io.Calls);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, model.Map.Lights,
+                new[] { 0x112233, 0x445566, 0x778899, 0xAABBCC }));
+            Assert.Equal(new[] { "10 10 02 01 11 22 33 44 55 66 77 88 99 AA BB CC" }, io.Calls.Select(c => Hex(c.Bytes)));
+            Assert.Equal("set", io.Calls.First().Kind);
+            Assert.Equal("10 10 00 FF 00 00 00 00 00 00 00 00 00 00 00 00", Hex(Assert.Single(session.CrashFrames)));
+            Assert.True(session.HandBack(io, _ => { }));
+            Assert.Equal("10 10 00 FF 00 00 00 00 00 00 00 00 00 00 00 00", Hex(io.Calls.Last().Bytes));
             Assert.Empty(session.CrashFrames);
         }
 

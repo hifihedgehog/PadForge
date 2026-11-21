@@ -12424,7 +12424,7 @@
                                      macro sounds are filtered too, so no IsEnabled gate.
                                      A pad that plays samples has no pitch to filter and
                                      does not show it. -->
-                                <StackPanel Margin="0,0,0,8"
+                                <StackPanel
                                             Visibility="{Binding SelectedDeviceHasToneFilter, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_ToneFilter_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
@@ -12465,6 +12465,14 @@
                                         <ui:Button Command="{Binding ResetToneLimitHzCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetToneLimit, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
+                                </StackPanel>
+                                <!-- The persona haptic track and the Steam Controller
+                                     2026's low-pass belong to every pad that plays haptic
+                                     tones. A pad that plays samples shows them too: the
+                                     Apex 6 Pro's grips play the track (#586), and in the
+                                     tone filter's panel it could never be turned on. -->
+                                <StackPanel Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <!-- Persona haptics on the actuators (#271 item 1):
                                          when a game drives this slot's virtual DualSense
                                          with authored haptic audio, render it here through

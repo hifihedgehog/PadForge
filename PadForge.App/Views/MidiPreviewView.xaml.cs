@@ -258,12 +258,16 @@ namespace PadForge.Views
 
             double x = LayoutPadding;
             double topY = LayoutPadding;
+            // Where the section titles end. With one control or one note the
+            // bars and keys alone are narrower than "CC Outputs".
+            double titlesRight = 0;
 
             // ── CC Sliders section ──
             if (mc.CcCount > 0)
             {
                 var ccLabel = CreateLabel(Strings.Instance.Preview_CCOutputs, x, topY);
                 MidiCanvas.Children.Add(ccLabel);
+                titlesRight = Math.Max(titlesRight, x + WidthOf(ccLabel));
                 topY += LabelHeight + 4;
 
                 var ccNumbers = mc.GetCcNumbers();
@@ -283,6 +287,7 @@ namespace PadForge.Views
                 double pianoX = LayoutPadding;
                 var pianoLabel = CreateLabel(Strings.Instance.Preview_NoteOutputs, pianoX, topY);
                 MidiCanvas.Children.Add(pianoLabel);
+                titlesRight = Math.Max(titlesRight, pianoX + WidthOf(pianoLabel));
                 topY += LabelHeight + 4;
 
                 var noteNumbers = mc.GetNoteNumbers();
@@ -297,12 +302,19 @@ namespace PadForge.Views
                 topY += WhiteKeyHeight + LabelHeight + 4;
             }
 
-            MidiCanvas.Width = x + LayoutPadding;
+            MidiCanvas.Width = Math.Max(x, titlesRight) + LayoutPadding;
             MidiCanvas.Height = topY + LayoutPadding;
             _layoutBuilt = true;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             _dirty = true;
             PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>The width a label's words take on one line.</summary>
+        private static double WidthOf(TextBlock label)
+        {
+            label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            return label.DesiredSize.Width;
         }
 
         /// <summary>Where a target's control is drawn (#574): a control's

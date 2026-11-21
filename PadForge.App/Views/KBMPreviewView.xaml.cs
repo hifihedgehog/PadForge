@@ -315,6 +315,9 @@ namespace PadForge.Views
         /// layout's key pitch.</summary>
         private const double KeyUnit = 24, KeyGap = 2;
 
+        /// <summary>The room a key's legend keeps clear at each side.</summary>
+        private const double KeyLegendRoom = 2;
+
         /// <summary>The keyboard half: the picked keyboard as its own board
         /// (HIDMaestro 1.12.0, KeyboardFamilies), or the generic keyboard for
         /// Windows input and for a keyboard profile no drawing covers.</summary>
@@ -436,13 +439,22 @@ namespace PadForge.Views
                 ToolTip = rowLabel ?? (string.IsNullOrEmpty(legend) ? null : legend),
                 Opacity = live ? 1.0 : 0.35,
             };
-            border.Child = new TextBlock
+            // The legend keeps 2 of the key's width clear at each side. One
+            // too long for that (NumLk, Home, PgUp, a long Japanese legend)
+            // draws smaller to fit, and the rest keep their size.
+            border.Child = new Viewbox
             {
-                Text = legend ?? string.Empty, FontSize = 8,
-                FontFamily = font ?? (FontFamily)FindResource("BodyFontFamily"),
+                Stretch = Stretch.Uniform, StretchDirection = StretchDirection.DownOnly,
+                Margin = new Thickness(KeyLegendRoom, 0, KeyLegendRoom, 0),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Opacity = 0.8, IsHitTestVisible = false
+                IsHitTestVisible = false,
+                Child = new TextBlock
+                {
+                    Text = legend ?? string.Empty, FontSize = 8,
+                    FontFamily = font ?? (FontFamily)FindResource("BodyFontFamily"),
+                    Opacity = 0.8, IsHitTestVisible = false
+                },
             };
             Canvas.SetLeft(border, x);
             Canvas.SetTop(border, y);

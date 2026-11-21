@@ -641,8 +641,10 @@ namespace PadForge.Tests
             var functions = run.Strings("FunctionStrings");
             var perPage = run.Strings("PerPageShots");
             var tail = run.Strings("TailShots");
-            // Positive control: the scan finds the shots of both passes.
-            Assert.True(perPage.Count > 20 && tail.Count > 20, $"found {perPage.Count} per-page shots and {tail.Count} tail shots");
+            // Positive control: the scan finds the shots of both passes. The
+            // tail's count fell when the Workshop's five frames became a
+            // recipe both passes call (Capture-Workshop).
+            Assert.True(perPage.Count > 20 && tail.Count > 15, $"found {perPage.Count} per-page shots and {tail.Count} tail shots");
             Assert.Contains("dashboard", perPage);
 
             string only = run.Result.GetProperty("OnlyHelp").GetString();
@@ -1385,6 +1387,219 @@ namespace PadForge.Tests
             int work = capBody.IndexOf(".WorkingArea", StringComparison.Ordinal);
             int capGrab = capBody.IndexOf("CopyFromScreen", StringComparison.Ordinal);
             Assert.True(dwm >= 0 && work > dwm && capGrab > work, "Cap does not clip its frame to the visible window and the work area");
+        }
+
+        /// <summary>
+        /// The controller page shots PadForge 6.0.0 added are taken by both
+        /// passes. The Centering card in Vehicle mode, the Release Test
+        /// window after a run and the Gyro card's Engage line each have one
+        /// recipe, which the full run and the focused pass both call. The
+        /// source's shaping line is a shot of the row options recipe, which
+        /// both call, and the focused pass stages the list for it by name.
+        /// The staged wheel is offline, so no test can finish on it: the
+        /// Release Test recipe has the build draw the window
+        /// (PageRenderDumpPages.DrawCentering) and copies the picture of the
+        /// finished run, under the name that test draws it by. A recipe that
+        /// changes a setting for its frame puts it back after the frame.
+        /// Each shot has its row in the table that makes the repo's JPG.
+        /// </summary>
+        [Fact]
+        public void TheWheelCenteringAndGyroEngageShotsAreTakenByBothPasses()
+        {
+            string script = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("tools", "capture_all.ps1"))).Replace("\r\n", "\n");
+            string Body(string name)
+            {
+                int at = script.IndexOf("\nfunction " + name + " {\n", StringComparison.Ordinal);
+                Assert.True(at >= 0, "no function " + name);
+                return script.Substring(at, script.IndexOf("\n}\n", at, StringComparison.Ordinal) - at);
+            }
+
+            // The focused pass calls each recipe bare, and the full run calls
+            // the two that stand on the Xbox slot's page from that page.
+            Assert.Single(Regex.Matches(script, @"^    Capture-WheelCentering$", RegexOptions.Multiline));
+            Assert.Single(Regex.Matches(script, @"^\s+Capture-WheelCentering -OnPage$", RegexOptions.Multiline));
+            Assert.Single(Regex.Matches(script, @"^    Capture-GyroEngage$", RegexOptions.Multiline));
+            Assert.Single(Regex.Matches(script, @"^\s+Capture-GyroEngage -OnPage$", RegexOptions.Multiline));
+            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-WheelReleaseTest$", RegexOptions.Multiline).Count);
+            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-RowOptionShots$", RegexOptions.Multiline).Count);
+            Assert.Contains("$xboxGridShots = @(\"pad-mappings\", \"mapping-source-shaping\",", script, StringComparison.Ordinal);
+            Assert.Contains("Cap \"mapping-source-shaping\"", Body("Capture-RowOptionShots"), StringComparison.Ordinal);
+
+            // The window after a run comes from the build, by the name the
+            // page render gives it.
+            string render = Body("Capture-WheelReleaseTest");
+            Assert.Contains("\"FullyQualifiedName~PageRenderDumpPages.DrawCentering\"", render, StringComparison.Ordinal);
+            Assert.Contains("$env:PADFORGE_PAGE_RENDER_DIR = $renderDir", render, StringComparison.Ordinal);
+            Assert.Contains("Join-Path $renderDir \"dialog-release-test-done.png\"", render, StringComparison.Ordinal);
+            Assert.Contains("Join-Path $script:OutputDir \"wheel-release-test.png\"", render, StringComparison.Ordinal);
+            Assert.DoesNotContain("CopyFromScreen", render, StringComparison.Ordinal);
+            string dump = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("PadForge.Tests", "PageRenderDumpPages.cs")));
+            Assert.Contains("public void DrawCentering()", dump, StringComparison.Ordinal);
+            Assert.Contains("\"dialog-release-test-done.png\"", dump, StringComparison.Ordinal);
+
+            // Vehicle and While Held are set for one frame each, and the
+            // setting each replaced goes back after it.
+            string centering = Body("Capture-WheelCentering");
+            int vehicle = centering.IndexOf("Select-ComboItem $mode \"Vehicle\"", StringComparison.Ordinal);
+            int frame = centering.IndexOf("Cap $shot", StringComparison.Ordinal);
+            int spring = centering.IndexOf("Select-ComboItem $mode \"Spring\"", StringComparison.Ordinal);
+            Assert.True(vehicle >= 0 && frame > vehicle && spring > frame, "the Centering recipe does not put Spring back after its frame");
+            string engage = Body("Capture-GyroEngage");
+            int held = engage.IndexOf("-ItemName \"While Held\"", StringComparison.Ordinal);
+            int engageFrame = engage.IndexOf("Cap \"pad-gyro-engage\"", StringComparison.Ordinal);
+            int always = engage.LastIndexOf("-ItemName \"Always On\"", StringComparison.Ordinal);
+            Assert.True(held >= 0 && engageFrame > held && always > engageFrame, "the Engage recipe does not put Always On back after its frame");
+            // A list with no button to check is the program's fault to mend, so the
+            // recipe refuses the frame and does not go around it.
+            Assert.Contains("Refuse-Shots @(\"pad-gyro-engage\") \"Gyro On Buttons lists no button to check after While Held was picked\"", engage, StringComparison.Ordinal);
+            // Two Devices frames are taken at a card of the device's panel, brought
+            // there through the panel's own scroll pattern.
+            Assert.Contains("\"devices-power\" = \"Settings\"", script, StringComparison.Ordinal);
+            Assert.Contains("\"devices-move\"  = \"Test Inputs\"", script, StringComparison.Ordinal);
+            Assert.Contains("-Aid \"Devices_PanelScroll\"", Body("Set-DevicePanelScroll"), StringComparison.Ordinal);
+            Assert.DoesNotContain("ScrollAt(", Body("Set-DevicePanelScroll"), StringComparison.Ordinal);
+
+            // The window the card's foot opens is looked at and closed, and
+            // its picture stays beside the log, out of the docs' folder.
+            string live = Body("Show-ReleaseTestLive");
+            Assert.Contains("\"release-test-live.png\"", live, StringComparison.Ordinal);
+            Assert.DoesNotContain("$script:OutputDir", live, StringComparison.Ordinal);
+            Assert.Contains("Close-DialogHwnd $dlg", live, StringComparison.Ordinal);
+            Assert.Contains("Assert-MainWindowBack \"the Release Test window\"", live, StringComparison.Ordinal);
+
+            // The Extended, Keyboard + Mouse, MIDI and VR slots' frames and
+            // the Profiles page's In front now line were blocks of the full
+            // run alone. A dialog left open spoiled them in the 6.0.0 run,
+            // and a retake could not reach them. Each is a recipe now, which
+            // the full run and the focused pass both call.
+            foreach (string recipe in new[] { "Capture-ExtendedSlot", "Capture-KbmSlot", "Capture-MidiSlot", "Capture-VrSlot", "Capture-ForegroundReadout", "Capture-Workshop" })
+            {
+                Assert.Equal(2, Regex.Matches(script, @"^\s*" + Regex.Escape(recipe) + "$", RegexOptions.Multiline).Count);
+                Assert.Contains("Refuse-Shots", Body(recipe), StringComparison.Ordinal);
+            }
+            // The Clone Device 1:1 confirm is found among the process's
+            // windows and closed there, and a confirm that stays up stops
+            // the PadForge shots behind it.
+            string extended = Body("Capture-ExtendedSlot");
+            int confirm = extended.IndexOf("Cap \"pad-extended-clone-device\" -AllowModal", StringComparison.Ordinal);
+            int closed = extended.IndexOf("Close-DialogHwnd $cloneDlg", StringComparison.Ordinal);
+            int back = extended.IndexOf("Assert-MainWindowBack \"the Clone Device 1:1 confirm\"", StringComparison.Ordinal);
+            Assert.True(confirm >= 0 && closed > confirm && back > closed, "the Clone Device 1:1 confirm is not closed and checked after its frame");
+            // The Extended slot keeps its Custom preset by name, never by
+            // its place in the Preset list.
+            Assert.Contains("$customPreset = \"padforge-custom (Custom)\"", extended, StringComparison.Ordinal);
+            Assert.Contains("Select-ComboItem $profileCombo $customPreset", extended, StringComparison.Ordinal);
+            Assert.DoesNotContain("$items[2]", script, StringComparison.Ordinal);
+
+            // The tags and leader lines are on as a page opens since
+            // PadForge 6, so the recipe photographs a toggle that reads on
+            // and presses one only where it reads off.
+            string overlay = Body("Capture-AnnotationOverlay");
+            int readsOn = overlay.IndexOf("if ($coldBefore -ge 12) {", StringComparison.Ordinal);
+            int press = overlay.IndexOf("& $press \"on\"", StringComparison.Ordinal);
+            Assert.True(readsOn >= 0 && press > readsOn, "the annotation recipe presses the toggle before it reads it");
+            Assert.DoesNotContain("& $press \"off\"", overlay, StringComparison.Ordinal);
+            Assert.Contains("private bool _annotationOverlayEnabled = true;",
+                File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("PadForge.App", "ViewModels", "PadViewModel.cs"))), StringComparison.Ordinal);
+
+            // A colorway's frame shows the finish: the tags go off for a
+            // family's frames and come back on after them.
+            string colorways = Body("Capture-Colorways");
+            int tagsOff = colorways.IndexOf("Set-AnnotationOverlay -On $false", StringComparison.Ordinal);
+            int finish = colorways.IndexOf("Cap $sc.Shot", StringComparison.Ordinal);
+            int tagsOn = colorways.IndexOf("Set-AnnotationOverlay -On $true", StringComparison.Ordinal);
+            Assert.True(tagsOff >= 0 && finish > tagsOff && tagsOn > finish, "the colorway frames are not taken with the tags off and the tags put back");
+
+            // A Devices row is selected through its own pattern, with no
+            // estimate of where the list's view ends.
+            string pick = Body("Select-DeviceByName36");
+            int byPattern = pick.IndexOf("$sel36.Select()", StringComparison.Ordinal);
+            int byClick = pick.IndexOf("Click-El $it -Label \"Device '$NamePart'\"", StringComparison.Ordinal);
+            Assert.True(byPattern >= 0 && byClick > byPattern, "a Devices row is clicked before its selection pattern is tried");
+
+            // The bar under the picture shows a picked row's lines with no
+            // switch to open: the page has no More Options switch.
+            Assert.DoesNotContain("Pad_PickedOptions", script, StringComparison.Ordinal);
+            string page = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("PadForge.App", "Views", "PadPage.xaml")));
+            Assert.DoesNotContain("Pad_PickedOptions", page, StringComparison.Ordinal);
+            Assert.Contains("AutomationProperties.AutomationId=\"Pad_PickedLetGo\"", page, StringComparison.Ordinal);
+            Assert.Contains("-Aid \"Pad_PickedLetGo\"", Body("Open-PickedRow"), StringComparison.Ordinal);
+
+            string convert = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("tools", "convert_screenshots.ps1")));
+            Assert.Contains("$script:WheelCenteringShots = @(\"pad-wheel-centering\", \"pad-wheel-centering-more\")", script, StringComparison.Ordinal);
+            foreach (string shot in new[] { "pad-wheel-centering", "pad-wheel-centering-more", "wheel-release-test", "pad-gyro-engage", "mapping-source-shaping" })
+                Assert.Matches("(?m)^    \"" + Regex.Escape(shot) + "\"\\s+= \"[a-z0-9-]+\"\\r?$", convert);
+        }
+
+        /// <summary>
+        /// No frame is taken under a dialog a recipe left open. Every dialog
+        /// of PadForge 6 is a DialogWindow shown modally, which disables the
+        /// main window while it is up. The 6.0.0 run left the Clone Device
+        /// 1:1 confirm over 28 frames and Get Profiles over three more, each
+        /// from a recipe that took its own close for done. So the shot
+        /// function closes any dialog that stands over the main window
+        /// before a frame that is not a dialog's own (-AllowModal), names it
+        /// in red, counts it, and refuses the frame when the main window
+        /// does not come back. A helper whose answer is a handle or a yes
+        /// keeps the page change's answer out of it: with it, Get Profiles'
+        /// handle read as zero, and its recipes left the window open.
+        /// </summary>
+        [Fact]
+        public void NoFrameIsTakenUnderADialogARecipeLeftOpen()
+        {
+            string script = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("tools", "capture_all.ps1"))).Replace("\r\n", "\n");
+            string Body(string name)
+            {
+                int at = script.IndexOf("\nfunction " + name + " {\n", StringComparison.Ordinal);
+                Assert.True(at >= 0, "no function " + name);
+                return script.Substring(at, script.IndexOf("\n}\n", at, StringComparison.Ordinal) - at);
+            }
+
+            // The guard stands before the frame is grabbed, and a dialog
+            // that stays ends the shot.
+            string cap = Body("Cap");
+            int guard = cap.IndexOf("if (-not $AllowModal -and $script:hwnd -and -not (Close-StrayDialogs -Before $Name)) {", StringComparison.Ordinal);
+            int refuse = cap.IndexOf("Refuse-Shots @($Name) \"a dialog stayed open over the main window\"", StringComparison.Ordinal);
+            int leave = refuse < 0 ? -1 : cap.IndexOf("return", refuse, StringComparison.Ordinal);
+            int grab = cap.IndexOf("CopyFromScreen", StringComparison.Ordinal);
+            Assert.True(guard >= 0 && refuse > guard && leave > refuse && grab > leave, "Cap grabs the screen without first closing a dialog left open");
+            // The warning that named a leak and photographed it anyway is gone.
+            Assert.DoesNotContain("a dialog is open while capturing", script, StringComparison.Ordinal);
+
+            // A dialog is there while the main window is disabled. Each one
+            // is closed, counted and named, and the answer is whether the
+            // main window is its own again.
+            string close = Body("Close-StrayDialogs");
+            Assert.Contains("if ([Win32]::IsWindowEnabled([IntPtr]$script:hwnd)) { return $true }", close, StringComparison.Ordinal);
+            Assert.Contains("[UiSettle]::ActiveDialog([IntPtr]$script:hwnd)", close, StringComparison.Ordinal);
+            Assert.Contains("Close-DialogHwnd $stray", close, StringComparison.Ordinal);
+            Assert.Equal(2, Regex.Matches(close, @"\$script:modalLeaks\+\+").Count);
+            Assert.EndsWith("return [Win32]::IsWindowEnabled([IntPtr]$script:hwnd)", close.TrimEnd(), StringComparison.Ordinal);
+            // What closes one declines: WM_CLOSE first, then Escape, then a
+            // closing button of the dialog's own.
+            string one = Body("Close-DialogHwnd");
+            int wmClose = one.IndexOf("0x0010", StringComparison.Ordinal);
+            int escape = one.IndexOf("SendWait(\"{ESC}\")", StringComparison.Ordinal);
+            Assert.True(wmClose >= 0 && escape > wmClose, "a dialog is not closed by WM_CLOSE and then Escape");
+
+            // What the guard rests on: the dialogs are DialogWindows, one
+            // class for all of them, and the main window's own dialogs in
+            // the page area (Add a Controller, Search) are frames a recipe
+            // takes with -AllowModal and closes itself.
+            string views = Path.GetDirectoryName(AuditDelta20260823Tests.FindRepoFile(Path.Combine("PadForge.App", "Views", "DialogWindow.cs")));
+            int dialogs = Directory.GetFiles(views, "*.xaml").Count(f => File.ReadAllText(f).TrimStart('\uFEFF').StartsWith("<views:DialogWindow ", StringComparison.Ordinal));
+            Assert.True(dialogs >= 20, "only " + dialogs + " dialogs are DialogWindows");
+            Assert.Contains("Cap \"add-controller-popup\" -AllowModal", script, StringComparison.Ordinal);
+            Assert.Contains("Cap \"search\" -AllowModal", script, StringComparison.Ordinal);
+
+            // A page change answers True, and a function's answer is all it
+            // wrote: these two keep that True out of theirs.
+            foreach (string helper in new[] { "Open-GetProfiles", "Open-ProfileCardMenuItem" })
+            {
+                string body = Body(helper);
+                Assert.Contains("Nav \"Profiles\" | Out-Null", body, StringComparison.Ordinal);
+                Assert.DoesNotMatch(@"(?m)^\s*Nav ""[A-Za-z]+""\s*(;|$)", body);
+            }
         }
 
         /// <summary>

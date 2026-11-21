@@ -183,6 +183,11 @@ $map = @{
     "profiles-get-file"             = "profiles-get-file"
     "extras-crosshair"              = "crosshair"
     "extras-magnifier"              = "magnifier"
+    "pad-wheel-centering"           = "wheel-centering"
+    "pad-wheel-centering-more"      = "wheel-centering-more"
+    "wheel-release-test"            = "wheel-release-test"
+    "pad-gyro-engage"               = "gyro-engage"
+    "mapping-source-shaping"        = "mapping-source-shaping"
     # Captured before 6.0.0 and encoded one file at a time at a release prep,
     # each under its PNG's own name. Mapped so a full conversion refreshes
     # them with the rest.

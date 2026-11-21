@@ -47,6 +47,9 @@ ALIASES = {
     "screen-overlay": "dashboard-screen-overlay",
     "crosshair": "extras-crosshair",
     "magnifier": "extras-magnifier",
+    "wheel-centering": "pad-wheel-centering",
+    "wheel-centering-more": "pad-wheel-centering-more",
+    "gyro-engage": "pad-gyro-engage",
 }
 
 # Site assets that deliberately have no captured source (brand art, awards).

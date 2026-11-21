@@ -2202,6 +2202,8 @@ namespace PadForge.Tests
                 "Capture-SourcePicker", "Capture-IconPicker", "Capture-MotionRow", "Capture-MenuShots", "Capture-MacroShots",
                 "Capture-RowOptionShots", "Capture-PeripheralTabs", "Capture-FalconPadShots", "Capture-ScreenColorLighting",
                 "Capture-Ds3Preset", "Capture-Colorways", "Capture-AnnotationOverlay",
+                "Capture-WheelCentering", "Show-ReleaseTestLive", "Capture-GyroEngage", "Set-GyroOnButtons",
+                "Capture-ExtendedSlot", "Capture-KbmSlot", "Capture-MidiSlot", "Capture-VrSlot",
                 "Open-Extra", "Show-ExtraAnchors", "Capture-ExtrasPages", "Capture-ExtrasCatalog", "Capture-WebPlainSection",
                 "Capture-GameModsCard", "Capture-GameTelemetryCard", "Capture-TelemetryFormatEditor", "Capture-ScreenOverlayCard",
             })

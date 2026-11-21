@@ -5917,8 +5917,9 @@ namespace PadForge
             _searchService.IndexBuilt += (s, e) =>
             {
                 if (!_searchOpen) return;
-                _searchService.RefreshAvailability();
-                _searchVm.Run();
+                _searchService.RefreshAvailability(otherControllers: false);
+                _searchVm.Run(keepSelection: true);
+                ReadOtherControllersLater();
             };
             TitleSearchBox.Click += (s, e) => OpenSearch();
             PreviewKeyDown += Window_SearchKey;
@@ -5989,10 +5990,13 @@ namespace PadForge
                     break;
                 }
             }
-            _searchService.RefreshAvailability();
+            // The bound controller and the other pages are read now, and the
+            // other controllers once Search has drawn.
+            _searchService.RefreshAvailability(otherControllers: false);
             _searchVm.Run();
             SearchHost.Open(System.Windows.Input.Keyboard.FocusedElement);
             _searchOpen = true;
+            ReadOtherControllersLater();
             SetNavActiveByTag(null);
             RefreshControllerSelectionVisuals();
             SetPagesTabStop(false);
@@ -6002,6 +6006,12 @@ namespace PadForge
                 SearchPanelView.FocusQuery();
             }));
         }
+
+        /// <summary>Reads the other controllers once Search has drawn, unless
+        /// it has closed by then, and runs the query again on the answers,
+        /// keeping the picked result.</summary>
+        private void ReadOtherControllersLater()
+            => _searchService.ReadOtherControllersLater(Dispatcher, () => _searchOpen, () => _searchVm.Run(keepSelection: true));
 
         /// <summary>Closes Search. A result that opens takes the focus to
         /// its place, so only Escape, the Esc key label and the ground give

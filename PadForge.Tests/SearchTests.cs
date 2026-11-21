@@ -242,9 +242,13 @@ namespace PadForge.Tests
             int refuse = code.IndexOf("if (_recorderService?.IsRecording == true) return;", open, StringComparison.Ordinal);
             Assert.True(refuse > open && refuse - open < 200, "Search opens while an input is recorded");
             // What shows is read as Search opens, and again when the index
-            // arrives while it is open.
-            int refresh = code.IndexOf("_searchService.RefreshAvailability();", open, StringComparison.Ordinal);
+            // arrives while it is open. The other controllers are read once
+            // Search has drawn.
+            int refresh = code.IndexOf("_searchService.RefreshAvailability(otherControllers: false);", open, StringComparison.Ordinal);
             Assert.True(refresh > open && refresh - open < 2500, "Search does not read what shows as it opens");
+            int shown = code.IndexOf("_searchOpen = true;", refresh, StringComparison.Ordinal);
+            int late = code.IndexOf("ReadOtherControllersLater();", refresh, StringComparison.Ordinal);
+            Assert.True(shown > refresh && late > shown && late - shown < 200, "the other controllers are not read after Search shows");
             At(code, "_searchService.IndexBuilt += (s, e) =>");
             At(code, "TitleSearchBox.Click += (s, e) => OpenSearch();");
         }

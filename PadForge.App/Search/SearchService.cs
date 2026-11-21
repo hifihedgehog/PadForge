@@ -130,51 +130,77 @@ namespace PadForge.Search
         ///
         /// <para>The controller page shows one controller at a time, and
         /// what it shows depends on the controller's kind and its devices.
-        /// So the page is bound to each controller made in turn, the one it
-        /// was bound to first and then the rest in sidebar order, and read
-        /// as it shows each. An entry that shows on more than one controller
-        /// is kept for the first of them: a setting the bound controller has
-        /// stays that controller's, and a setting it lacks is offered on the
-        /// first controller that has it. Each other controller is bound the
-        /// way a visit to its page binds it (the bind step the window
-        /// passes). The page is bound back to its controller at the end,
-        /// before anything is drawn.</para></summary>
-        internal void RefreshAvailability()
+        /// So the page is read as it shows the controller it is bound to,
+        /// and then bound to each other controller made in turn, in sidebar
+        /// order, and read as it shows each (<see cref="ReadOtherControllers"/>).
+        /// An entry that shows on more than one controller is kept for the
+        /// first of them: a setting the bound controller has stays that
+        /// controller's, and a setting it lacks is offered on the first
+        /// controller that has it.</para>
+        ///
+        /// <para>With <paramref name="otherControllers"/> false the other
+        /// controllers are left for <see cref="ReadOtherControllers"/>, so
+        /// Search can show before they are read.</para></summary>
+        internal void RefreshAvailability(bool otherControllers = true)
         {
             _available.Clear();
             _settingsGroup.Clear();
             _locator.Reset();
+            _read++;
+            _othersToRead = false;
+            _taken = new HashSet<(SearchEntry, string, string)>();
             ReadEntries(e => e.Page != SearchPage.Pad, null, null, false);
 
+            if (Pad == null) return;
+            _readBound = BoundPad;
+            if (IsMade(_readBound))
+                ReadEntries(e => e.Page == SearchPage.Pad, _readBound, _taken, readValues: false);
+            _othersToRead = true;
+            if (otherControllers) ReadOtherControllers();
+        }
+
+        /// <summary>How many reads have begun, so a late read knows a newer
+        /// read has replaced the one it belongs to.</summary>
+        private int _read;
+
+        /// <summary>The controller the page was bound to when the read
+        /// began, the entries taken so far, and whether the other
+        /// controllers are still to be read.</summary>
+        private PadViewModel _readBound;
+        private HashSet<(SearchEntry, string, string)> _taken = new();
+        private bool _othersToRead;
+
+        /// <summary>Reads every controller made but the bound one, which
+        /// <see cref="RefreshAvailability"/> left to read. Each is bound the
+        /// way a visit to its page binds it (the bind step the window
+        /// passes). The bound controller was not refreshed by Search, and is
+        /// bound back by its data alone, before anything is drawn. Does
+        /// nothing when there is nothing left to read, or when the page has
+        /// been bound to another controller since the read began.</summary>
+        internal void ReadOtherControllers()
+        {
+            if (!_othersToRead) return;
+            _othersToRead = false;
             var page = Pad;
-            if (page == null) return;
-            var bound = BoundPad;
+            var bound = _readBound;
+            if (page == null || !ReferenceEquals(page.DataContext, bound)) return;
             var order = new List<PadViewModel>();
-            if (IsMade(bound)) order.Add(bound);
             foreach (int index in _vm.NavControllerItems.Select(n => n.PadIndex).Concat(Enumerable.Range(0, InputManager.MaxPads)))
             {
                 var other = index >= 0 && index < _vm.Pads.Count ? _vm.Pads[index] : null;
-                if (IsMade(other) && !order.Contains(other)) order.Add(other);
+                if (IsMade(other) && !ReferenceEquals(other, bound) && !order.Contains(other)) order.Add(other);
             }
             if (order.Count == 0) return;
 
-            var taken = new HashSet<(SearchEntry, string, string)>();
             page.ReadingForSearch = true;
             try
             {
                 foreach (var pad in order)
                 {
-                    if (!ReferenceEquals(page.DataContext, pad))
-                    {
-                        // Another controller is bound as a visit to its page
-                        // binds it, so its rows are the stored ones. The
-                        // bound controller was not refreshed by Search, and
-                        // is bound back by its data alone.
-                        if (_bindPad != null) _bindPad(pad);
-                        else page.DataContext = pad;
-                        _locator.Reset();
-                    }
-                    ReadEntries(e => e.Page == SearchPage.Pad, pad, taken, readValues: !ReferenceEquals(pad, bound));
+                    if (_bindPad != null) _bindPad(pad);
+                    else page.DataContext = pad;
+                    _locator.Reset();
+                    ReadEntries(e => e.Page == SearchPage.Pad, pad, _taken, readValues: true);
                 }
             }
             finally
@@ -183,6 +209,21 @@ namespace PadForge.Search
                 page.ReadingForSearch = false;
                 _locator.Reset();
             }
+        }
+
+        /// <summary>Reads the other controllers at Background priority, once
+        /// Search has drawn, then calls <paramref name="whenRead"/>. Skipped
+        /// when Search has closed by then (<paramref name="isOpen"/>), or a
+        /// newer read has begun, which posts its own.</summary>
+        internal void ReadOtherControllersLater(Dispatcher dispatcher, Func<bool> isOpen, Action whenRead)
+        {
+            int read = _read;
+            dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (read != _read || !_othersToRead || !isOpen()) return;
+                ReadOtherControllers();
+                whenRead?.Invoke();
+            }));
         }
 
         /// <summary>Reads the entries <paramref name="which"/> picks as their

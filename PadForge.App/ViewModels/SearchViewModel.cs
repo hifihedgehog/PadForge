@@ -82,10 +82,16 @@ namespace PadForge.ViewModels
         /// <summary>Raised by Escape.</summary>
         public event EventHandler CloseRequested;
 
-        /// <summary>Runs the query again: on a change of language, and when
-        /// Search opens on the words it had.</summary>
-        public void Run()
+        /// <summary>Runs the query again: on a change of language, when
+        /// Search opens on the words it had, and when more answers come in
+        /// while it is open. <paramref name="keepSelection"/> keeps the
+        /// picked result picked when it is still in the list (the same entry
+        /// on the same controller, the same item or place), so a row does not
+        /// move out from under the arrow keys. Otherwise the first is
+        /// picked.</summary>
+        public void Run(bool keepSelection = false)
         {
+            var picked = keepSelection ? _selected : null;
             var found = _query?.Invoke(_queryText) ?? Array.Empty<SearchResult>();
             Results.Clear();
             foreach (var r in found) Results.Add(r);
@@ -93,11 +99,17 @@ namespace PadForge.ViewModels
             NoResultsText = _queryText.Trim().Length > 0 && onlyDocs
                 ? string.Format(Strings.Instance.Search_NoResults_Format, _queryText.Trim())
                 : string.Empty;
-            SelectedResult = Results.FirstOrDefault();
+            SelectedResult = (picked == null ? null : Results.FirstOrDefault(r => SameResult(r, picked))) ?? Results.FirstOrDefault();
             OnPropertyChanged(nameof(HasResults));
             OnPropertyChanged(nameof(NoResultsText));
             OnPropertyChanged(nameof(HasNoResultsText));
         }
+
+        /// <summary>Whether two runs' results stand for the same thing: the
+        /// same entry on the same controller and the same item or place, or
+        /// the same page, controller, device, profile or query.</summary>
+        internal static bool SameResult(SearchResult a, SearchResult b)
+            => a.Target == b.Target && ReferenceEquals(a.Entry, b.Entry) && ReferenceEquals(a.Pad, b.Pad) && Equals(a.Payload, b.Payload);
 
         /// <summary>Moves the pick by <paramref name="delta"/> results, and
         /// stops at either end.</summary>

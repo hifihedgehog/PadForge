@@ -34,7 +34,7 @@ namespace PadForge.Tests
             VirtualControllerType.Midi, VirtualControllerType.Vr,
         };
 
-        private const int XboxPad = 0, PlayStationPad = 1, MidiPad = 3, VrPad = 4;
+        private const int XboxPad = 0, PlayStationPad = 1, KeyboardMousePad = 2, MidiPad = 3, VrPad = 4;
 
         /// <summary>Five controllers of five kinds, each made, the controller
         /// page bound to <paramref name="bound"/> (or to none), and Search
@@ -43,7 +43,7 @@ namespace PadForge.Tests
         /// <paramref name="inWindow"/> shows the page in a window off the
         /// screen, so a landing's ring has a layer to draw on.</summary>
         private void WithControllers(int bound, Action<MainViewModel, PadPage, SearchService, List<string>> body,
-            Func<MainViewModel, PadPage, Action<PadViewModel>> bindPad = null, bool inWindow = false)
+            Func<MainViewModel, PadPage, Action<PadViewModel>> bindPad = null, bool inWindow = false, bool readFirst = true)
         {
             var lines = new List<string>();
             try
@@ -77,12 +77,12 @@ namespace PadForge.Tests
                         PageRenderDump.Settle(dispatcher);
                         var service = new SearchService(main, p => p == SearchPage.Pad ? page : null, bindPad?.Invoke(main, page));
                         service.SetIndex(SearchIndexBuilder.Build(SearchSources.Load()));
-                        var clock = Stopwatch.StartNew();
-                        service.RefreshAvailability();
-                        lines.Add("availability read in " + clock.ElapsedMilliseconds + " ms");
-                        clock.Restart();
-                        _ = new SearchViewModel(service.Query) { Query = "deadzone" };
-                        lines.Add("first query ran in " + clock.ElapsedMilliseconds + " ms");
+                        if (readFirst)
+                        {
+                            var clock = Stopwatch.StartNew();
+                            service.RefreshAvailability();
+                            lines.Add("availability read in " + clock.ElapsedMilliseconds + " ms");
+                        }
                         body(main, page, service, lines);
                     }
                     finally
@@ -324,30 +324,15 @@ namespace PadForge.Tests
             });
         }
 
-        /// <summary>The read's time with the window's own bind step: the
+        /// <summary>The window's own bind step (MainWindow.BindPadPage): the
         /// stored rows mirrored in under MirrorOnly, the selected device's
-        /// inputs refreshed, then the page's data. Cold is the first read
-        /// on a new page, warm the reads after it.</summary>
-        [Fact]
-        public void TheReadsTime_WithTheVisitsBindStep()
-        {
-            SettingsService settings = null;
-            InputService input = null;
-            WithControllers(VrPad, (main, page, service, lines) =>
+        /// inputs refreshed, then the page's data.</summary>
+        private static Func<MainViewModel, PadPage, Action<PadViewModel>> VisitBind(List<IDisposable> made)
+            => (main, page) =>
             {
-                for (int k = 0; k < 4; k++)
-                {
-                    var clock = Stopwatch.StartNew();
-                    service.RefreshAvailability();
-                    _ = new SearchViewModel(service.Query) { Query = "deadzone" };
-                    lines.Add("warm read " + k + ": " + clock.ElapsedMilliseconds + " ms");
-                }
-                Assert.Contains(Search(service, "deadzone", lines).Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
-                input.Dispose();
-            }, (main, page) =>
-            {
-                settings = new SettingsService(main);
-                input = new InputService(main) { SettingsService = settings };
+                var settings = new SettingsService(main);
+                var input = new InputService(main) { SettingsService = settings };
+                made.Add(input);
                 return pad =>
                 {
                     settings.MirrorOnly(() => InputService.RefreshMappingsToViewModel(pad));
@@ -356,6 +341,129 @@ namespace PadForge.Tests
                         input.RefreshAvailableInputsForSlot(pad);
                     page.DataContext = pad;
                 };
+            };
+
+        /// <summary>Times Ctrl+K as it was: every controller read before
+        /// Search shows, then the query run. Cold is the first open on a new
+        /// page, warm the four after it.</summary>
+        [Fact]
+        public void CtrlKsTime_EveryControllerReadFirst()
+        {
+            var made = new List<IDisposable>();
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                for (int k = 0; k < 5; k++)
+                {
+                    var clock = Stopwatch.StartNew();
+                    service.RefreshAvailability();
+                    var search = new SearchViewModel(service.Query) { Query = "deadzone" };
+                    lines.Add((k == 0 ? "cold" : "warm") + " open, shown and every row in: " + clock.ElapsedMilliseconds + " ms");
+                    Assert.Contains(search.Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                }
+                made.ForEach(d => d.Dispose());
+            }, VisitBind(made), readFirst: false);
+        }
+
+        /// <summary>Times Ctrl+K as it is: the bound controller read, the
+        /// query run and Search shown, then the other controllers read and
+        /// the query run again.</summary>
+        [Fact]
+        public void CtrlKsTime_BoundControllerFirst()
+        {
+            var made = new List<IDisposable>();
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                for (int k = 0; k < 5; k++)
+                {
+                    var clock = Stopwatch.StartNew();
+                    service.RefreshAvailability(otherControllers: false);
+                    var search = new SearchViewModel(service.Query) { Query = "deadzone" };
+                    long shown = clock.ElapsedMilliseconds;
+                    service.ReadOtherControllers();
+                    search.Run(keepSelection: true);
+                    lines.Add((k == 0 ? "cold" : "warm") + " open, shown: " + shown + " ms, other controllers' rows in: " + clock.ElapsedMilliseconds + " ms");
+                    Assert.Contains(search.Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                }
+                made.ForEach(d => d.Dispose());
+            }, VisitBind(made), readFirst: false);
+        }
+
+        /// <summary>Search shows on the bound controller's answers: with the
+        /// VR controller's page bound, "deadzone" first finds nothing on a
+        /// controller. The late read brings the Xbox controller's rows in and
+        /// runs the query again, and the line that says nothing matches
+        /// goes.</summary>
+        [Fact]
+        public void TheFirstResults_AreTheBoundControllers_AndTheOthersArriveWithTheLateRead()
+        {
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                service.RefreshAvailability(otherControllers: false);
+                var search = Search(service, "deadzone", lines);
+                Assert.DoesNotContain(search.Results, r => r.Pad != null && !ReferenceEquals(r.Pad, main.Pads[VrPad]));
+                Assert.NotEqual(string.Empty, search.NoResultsText);
+
+                int runs = 0;
+                service.ReadOtherControllersLater(page.Dispatcher, () => true, () => { runs++; search.Run(keepSelection: true); });
+                // Posted, not run: nothing came in yet.
+                Assert.Equal(0, runs);
+                Assert.DoesNotContain(search.Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                Pump(page.Dispatcher, 300);
+                lines.Add("after the late read:");
+                lines.AddRange(search.Results.Select(r => "  " + Line(r)));
+                Assert.Equal(1, runs);
+                Assert.Equal(2, StickDeadzones(search, main.Pads[XboxPad]).Count);
+                Assert.Equal(string.Empty, search.NoResultsText);
+                Assert.Same(main.Pads[VrPad], page.DataContext);
+            });
+        }
+
+        /// <summary>A Search closed before the late read runs skips it: no
+        /// other controller is bound, and the query is not run again.</summary>
+        [Fact]
+        public void AClosedSearch_SkipsTheLateRead()
+        {
+            var bound = new List<PadViewModel>();
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                service.RefreshAvailability(otherControllers: false);
+                bound.Clear();
+                bool ran = false;
+                service.ReadOtherControllersLater(page.Dispatcher, () => false, () => ran = true);
+                Pump(page.Dispatcher, 300);
+                Assert.False(ran);
+                Assert.Empty(bound);
+                Assert.DoesNotContain(service.Query("deadzone"), r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                Assert.Same(main.Pads[VrPad], page.DataContext);
+            }, (main, page) => pad => { bound.Add(pad); page.DataContext = pad; });
+        }
+
+        /// <summary>The query run again after the late read keeps the picked
+        /// result picked, though the other controllers' rows come in above
+        /// it.</summary>
+        [Fact]
+        public void ThePickedResult_StaysPicked_WhenTheOtherControllersComeIn()
+        {
+            WithControllers(KeyboardMousePad, (main, page, service, lines) =>
+            {
+                service.RefreshAvailability(otherControllers: false);
+                var search = Search(service, "deadzone", lines);
+                Assert.True(search.Results.Count >= 3, "the Keyboard + Mouse page has too few answers to move the pick");
+                search.MoveSelection(2);
+                var picked = search.SelectedResult;
+                int before = search.Results.Count;
+                var order = search.Results.ToList();
+
+                service.ReadOtherControllersLater(page.Dispatcher, () => true, () => search.Run(keepSelection: true));
+                Pump(page.Dispatcher, 300);
+                lines.Add("after the late read:");
+                lines.AddRange(search.Results.Select(r => "  " + Line(r)));
+                // The list changed: other controllers' rows came in.
+                Assert.Contains(search.Results, r => r.Pad != null && !ReferenceEquals(r.Pad, main.Pads[KeyboardMousePad]));
+                Assert.False(order.Select(Line).SequenceEqual(search.Results.Select(Line)), "the late read changed nothing");
+                Assert.True(SearchViewModel.SameResult(picked, search.SelectedResult), "the pick moved to " + search.SelectedResult);
+                // The picked row stands lower in the list now, and stays picked.
+                Assert.True(search.Results.IndexOf(search.SelectedResult) > order.IndexOf(picked), "the other controllers' rows did not come in above the pick");
             });
         }
 

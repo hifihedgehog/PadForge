@@ -26,9 +26,9 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>2,669</b> devices known by USB identity · <b>344</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>2,687</b> devices known by USB identity · <b>344</b> device profiles · polling up to <b>10,000 Hz</b> · <b>$0</b> forever</p>
 
-![Dashboard](screenshots/dashboard.jpg)
+![Home, with the engine's card and a card for each virtual controller](screenshots/dashboard.jpg)
 
 <p align="center">
   <a href="https://www.softpedia.com/get/Gaming-Related/PadForge.shtml">
@@ -49,6 +49,23 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
   <br>
   <em>Powered by HIDMaestro. One driver, 344 device profiles.</em>
 </p>
+
+<details>
+<summary><b>New in 6.0.0:</b> a rebuilt interface with Home, Extras and search, a wheel that centers the way a car's steering does, crosshairs and a magnifier over your game, Flydigi Apex triggers, lights and screens, SInput pads, and polling up to 10,000 Hz</summary>
+
+- PadForge 6 rebuilds the interface around what most people do first, and removes no feature. Home replaces the Dashboard. One switch starts the engine, and each virtual controller has a card with a picture of its controller that lights as you press. On a first run, one click makes the first controller for the connected device, mapped 1:1, and from then on Home offers a virtual controller to each new game controller it meets. The services that stood on the Dashboard are tiles on the new Extras page, and each opens a page of its own. A controller's page trades up to fourteen tabs for six sections: Mappings, Sticks & Triggers, Rumble & Haptics, Motion & Touch, Lights & Sound, and Macros & Menus. Ctrl+K finds pages, controllers, devices, profiles, settings and actions, and Settings has five groups and a search box of its own. The interface was checked in page renders and with the NVDA screen reader, and no controller was put through every page by hand ([#574](https://github.com/hifihedgehog/PadForge/issues/574)).
+- A force feedback wheel can center the way a car's steering does. The new Centering card keeps the plain spring as Spring mode and adds Vehicle mode: the torque a car's steering puts on the rim at its speed and grip, for a Sedan, a Compact, a Van, a Race Car or the Stanford X1, with the speed read from your game's telemetry. Release Test measures the wheel with your hands off it and sets the damping that brings it back without swinging past center. No wheel has run it yet, and every stability and Release Test result comes from a simulated wheel ([#588](https://github.com/hifihedgehog/PadForge/issues/588)).
+- Crosshair and Magnifier are two new extras. Crosshair shows up to ten crosshairs over your game, each a cross, a circle, a dot or a picture of your own. Magnifier is a lens like a sniper scope, the whole display zoomed in, or a spotlight that darkens the rest, at 1.25 to 16 times. Macros show and hide either one, and one shows the magnifier only while a button is held. A game in exclusive full screen hides them ([#585](https://github.com/hifihedgehog/PadForge/issues/585)).
+- A Flydigi Apex 4, Apex 5 or Apex 6 Pro gets what a DualSense or an Xbox pad gets on a virtual controller: adaptive trigger effects, impulse triggers, its own lights on the Lighting card, and Controller Screen…, which sends a picture or a GIF to the pad's screen by cable. The Apex 4 and Apex 5 triggers resist, and the Apex 6 Pro's trigger coils vibrate while its grip coils play the DualSense haptic track. No Flydigi pad has run against PadForge yet ([#586](https://github.com/hifihedgehog/PadForge/issues/586)).
+- SInput pads work as input devices. SInput is Hand Held Legend's HID gamepad protocol, and a pad that speaks it arrives with its buttons, sticks, triggers, motion, touchpads, battery and rumble, and plays PadForge's sounds on its haptics. An Extended virtual controller can be an SInput Gamepad too. No SInput pad has run against PadForge yet, and no game has run on the virtual one ([#584](https://github.com/hifihedgehog/PadForge/issues/584)).
+- The polling rate is set in Hz, from 60 to 10000, in Settings and in each profile. It was a whole number of milliseconds, and a saved interval becomes its rate as it loads. Windows wakes the engine at most 2000 times a second on a PC whose timer ticks every 0.5 ms, so a higher rate runs several passes at each wake.
+- HIDMaestro 2.3.0 adds six virtual controller profiles: Xbox One S Controller (Model 1708): Full, a wired Xbox One S pad that Windows' own Xbox drivers bind, the USB forms of the Nintendo Switch Online Genesis, N64 and SNES pads, and the Joy-Con Charging Grip with the left or the right Joy-Con. On Windows on ARM every virtual controller now runs as a USB device that Windows' own drivers bind. No PadForge build has driven the six new profiles yet.
+- PadForge lights more RGB devices by itself, 1,572 in all: the ROG Falchion Ace 75 HE key by key, Cooler Master's MK721 and CK721 LINE, the Roccat Kone XTD, and the light bars of the Corsair K70 PRO MINI WIRELESS. None of these has run against PadForge yet. PadForge now knows 2,687 devices by USB identity.
+- Also new. The Logitech RS50 is a wheel, and rumble plays on top of a wheel's centering spring, where turning centering on silenced it ([#572](https://github.com/hifihedgehog/PadForge/issues/572)). Audio Rumble's Sensitivity runs to 60 and its Bass Cutoff to 2000 Hz, for engine notes above the bass range ([#571](https://github.com/hifihedgehog/PadForge/issues/571)). Each shift layer sets how long its flyout stays ([#581](https://github.com/hifihedgehog/PadForge/issues/581)). A Bluetooth Switch 2 controller keeps its place through a lost link for up to 12 seconds, not yet run on a Joy-Con 2 clone ([#568](https://github.com/hifihedgehog/PadForge/issues/568)).
+- Fixes. Hiding a controller works when HidHide was installed while PadForge was already running. With two XInput pads of one ID, rumble and Hide from Games reach the pad on each card's number ([#583](https://github.com/hifihedgehog/PadForge/issues/583)). A steady rumble no longer stops after 65.5 seconds, and forces meant to last now last on a DirectInput wheel. FPS Mouse moves at the same speed at every polling rate, so a speed tuned at a rate other than 1000 Hz needs tuning again. PadForge no longer lists its own Xbox One or Xbox Series virtual controller as an input device.
+- Bundled: HIDMaestro 2.3.0 with 344 device profiles, and BthPS3 3.2.1.
+
+</details>
 
 <details>
 <summary><b>New in 5.3.0:</b> reWASD and DS4Windows profiles imported whole, key-by-key lighting on 1,563 RGB devices, lights that follow your screen, a keyboard you type on with the controller, and Twitch chat at the controls</summary>
@@ -286,14 +303,18 @@ Full documentation at [padforge.org/docs](https://padforge.org/docs/). Every dev
 
 1. Download the `win-x64` zip from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest) and extract `PadForge.exe`. On Windows on ARM, take the `win-arm64` zip.
 2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first Xbox, PlayStation, Nintendo, or Extended virtual controller it starts installs HIDMaestro inside that same elevated session.
-3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Nintendo, Extended, Keyboard + Mouse, MIDI, or VR.
-4. Open the Devices page and drag a physical device's card onto the new slot's card in the sidebar.
-5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
+3. On a first run, Home asks **What should games see?** Click Xbox, PlayStation, or Keyboard + Mouse. PadForge makes that virtual controller for the controller you have connected, with its buttons, sticks and triggers mapped 1:1.
+4. For each controller after that, click **Add Controller** on Home or in the sidebar. Under **Driven By** pick the device, then click a type: Xbox, PlayStation, Nintendo, Keyboard + Mouse, Extended, MIDI, or VR.
+5. To put another device on a controller, open the Devices page and drag the device onto that controller in the sidebar, or turn the controller on under **Used By** in the device's panel. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or click a control on the picture in the **Mappings** section and press the input that should drive it.
 6. Launch your game. The game sees the virtual controller as real hardware.
 
-Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → HidHide Driver** to hide the physical one.
+Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from the **Drivers** group in Settings to hide the physical one.
 
-From 4.5.3 on, **Settings → Updates** keeps PadForge current. It checks GitHub on its own and installs a new version in place, settings untouched.
+From 4.5.3 on, the **Updates** card in Settings keeps PadForge current. It checks GitHub on its own and installs a new version in place, settings untouched.
+
+Everything has a place in the sidebar: **Home**, **Devices**, **Profiles**, **Extras**, then one entry for each virtual controller, with **Settings** and **About** at its foot. Press Ctrl+K anywhere, or click the box in the title bar, to find a page, a controller, a device, a profile, a setting or an action. A result opens its page and shows the control.
+
+![Search, opened with Ctrl+K](screenshots/search.jpg)
 
 ---
 
@@ -301,17 +322,21 @@ From 4.5.3 on, **Settings → Updates** keeps PadForge current. It checks GitHub
 
 PadForge translates a PS5 DualSense into the Xbox pad a Steam game expects. A Logitech G29 wheel into the gamepad a racing game accepts. A Saitek HOTAS into the gamepad a flight game stubbornly insists on. The game never knows the difference.
 
-![Mappings tab](screenshots/mappings.jpg)
+A virtual controller's page has a header and six sections: **Mappings**, **Sticks & Triggers**, **Rumble & Haptics**, **Motion & Touch**, **Lights & Sound**, and **Macros & Menus**. The first is named Keys & Mouse, Notes & Controls or Hands on a Keyboard + Mouse, MIDI or VR controller, and a section shows only when the controller and its devices have something for it. The header holds the type chip, the **Preset**, the power switch and **More**, with Copy, Paste, Copy From and Clear All, and under it **Driven by** names each device on the controller.
+
+Mappings has two views. **Picture** shows the controller in 3D or 2D: click a control, then press the input that should drive it. **List** shows every mapping in one table, with a column for each device that drives the controller, and a click on a cell records from that device alone.
+
+![The Mappings section in its List view](screenshots/mappings.jpg)
 
 ### Pedals, wheel, and HOTAS throttle. One virtual stick.
 
-One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only One) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. A Primary Mode dropdown sets how the main source reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
+One mapping row can read from any number of physical inputs across any number of physical devices. Six combine modes (Strongest, Combined, Average, Either, Both, Only One) plus a drag-and-drop custom formula editor. Cross-device chords so a button on the wheel and a button on the shifter trigger one virtual press. Each source has a Mode picker that sets how it reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp builds a stick axis from two keyboard keys. The Up key drives toward +1 and the Down key toward -1, each over an Attack time. Release ramps back to center over a Release time when Autocenter is on, or holds where you left it when off. A Reverse multiplier sets how fast it returns when you press the opposite key.
 
 ### Your racing game's speed, RPM and pedals, as inputs.
 
-Driving games send PadForge their telemetry: Forza, F1, the Codemasters rally games, EA SPORTS WRC, BeamNG.drive, Live for Speed, Project CARS 2, Automobilista 2 and the truck simulators over the network, and Assetto Corsa and Assetto Corsa Competizione through shared memory. Turn on Listen for Game Telemetry on the Dashboard, and a Game Telemetry row on the Devices page carries speed, RPM, throttle, brake, clutch, handbrake and steering as axes, and the gear as buttons. Map them like any controller's inputs, start a macro when the RPM passes a mark, or play an adaptive trigger effect on a DualSense near the limiter. Custom Formats describes a game PadForge does not know, field by field, and Forward to Port hands every packet on to a program such as SimHub.
+Driving games send PadForge their telemetry: Forza, F1, the Codemasters rally games, EA SPORTS WRC, BeamNG.drive, Live for Speed, Project CARS 2, Automobilista 2 and the truck simulators over the network, and Assetto Corsa and Assetto Corsa Competizione through shared memory. Turn on Listen for Game Telemetry on the Game Telemetry page, under Extras, and a Game Telemetry row on the Devices page carries speed, RPM, throttle, brake, clutch, handbrake and steering as axes, and the gear as buttons. Map them like any controller's inputs, start a macro when the RPM passes a mark, or play an adaptive trigger effect on a DualSense near the limiter. Custom Formats describes a game PadForge does not know, field by field, and Forward to Port hands every packet on to a program such as SimHub.
 
-![The Game Telemetry section on the Dashboard](screenshots/game-telemetry.jpg)
+![The Game Telemetry page, under Extras](screenshots/game-telemetry.jpg)
 
 ### Squeeze a digital trigger like it's analog.
 
@@ -331,15 +356,17 @@ Rapid Trigger presses and releases on movement instead of at one fixed point: li
 
 ### Copy a controller onto a slot, one to one.
 
-Assign a device to an Extended slot and click Clone Device 1:1. Every button and axis lands on the matching virtual output, straight through, with no per-input mapping. It works even when the device is assigned but unplugged, so you can set the profile up before the controller is plugged in.
+Assign a device to an Extended slot and click Clone Device 1:1 on its Extended Controller card. Every button and axis lands on the matching virtual output, straight through, with no per-input mapping. It works even when the device is assigned but unplugged, so you can set the profile up before the controller is plugged in.
 
 ![Clone Device on an Extended slot](screenshots/extended.jpg)
 
 ### A virtual Switch Pro Controller.
 
-The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestro. Games and emulators that speak Switch see the real thing: sticks, triggers, the full button set, gyro passed through from your physical pad, and the HOME button LED under your control. It sits in the Add Controller popup between PlayStation and Extended.
+The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestro. Games and emulators that speak Switch see the real thing: sticks, triggers, the full button set, gyro passed through from your physical pad, and the HOME button LED under your control. It sits in Add a Controller under Common, beside Xbox and PlayStation.
 
-The slot's preset dropdown also holds the Switch 2 Pro Controller, in two forms. **Nintendo Switch 2 Pro Controller** is a HID gamepad any program reads, with no motion in its report. **Nintendo Switch 2 Pro Controller: Full** is the pad as it appears over USB, with the gyro, the accelerometer and rumble. Steam reads it, and so does a program whose SDL is built with libusb. Every other program sees a gamepad that never reports, as it does with the real pad on Windows.
+The **Preset** picker in the controller's header also holds the Switch 2 Pro Controller, in two forms. **Nintendo Switch 2 Pro Controller** is a HID gamepad any program reads, with no motion in its report. **Nintendo Switch 2 Pro Controller: Full** is the pad as it appears over USB, with the gyro, the accelerometer and rumble. Steam reads it, and so does a program whose SDL is built with libusb. Every other program sees a gamepad that never reports, as it does with the real pad on Windows.
+
+HIDMaestro 2.3.0 adds six presets. An Extended slot gains the USB forms of the Nintendo Switch Online Genesis, N64 and SNES pads, and the Joy-Con Charging Grip with a left or a right Joy-Con. They answer the Switch protocol, so SDL opens them as it opens the real ones. An Xbox slot gains **Xbox One S Controller (Model 1708): Full**, a wired Xbox One S pad that Windows' own Xbox drivers bind. No PadForge build has driven any of the six yet.
 
 ![Nintendo virtual controller with the Switch Pro preset](screenshots/nintendo.jpg)
 
@@ -359,7 +386,7 @@ Stated plainly, because it decides whether this is useful to you: PadForge does 
 
 ### Thirteen profiles that work on whatever pad you plug in.
 
-Pick a starter profile, assign any controller, and play. They cover a kind of game rather than a single title: Desktop, WASD and Mouse, Point and Click, Strategy, Isometric RPG, Twin-Stick, Media Remote, Hotbar, Fighting Games, Emulation, Racing, Space Sim, and Gyro Aim. Nothing is locked, so saving one adds an ordinary profile you can edit.
+Pick a starter profile from **Get Profiles** on the Profiles page, assign any controller, and play. They cover a kind of game rather than a single title: Desktop, WASD and Mouse, Point and Click, Strategy, Isometric RPG, Twin-Stick, Media Remote, Hotbar, Fighting Games, Emulation, Racing, Space Sim, and Gyro Aim. Nothing is locked, so saving one adds an ordinary profile you can edit.
 
 They never name hardware, which is why one profile drives a DualSense, an Xbox pad, and a Switch Pro Controller the same way. Every profile that moves a cursor offers the touchpad and the stick at once: the stick moves it as a rate, and the moment a finger lands on the pad the cursor goes where the finger is. Hotbar puts thirty-two abilities behind two triggers, eight per trigger with sixteen more on a double tap. Fighting Games ships SOCD cleaning set to Neutral on both axes and binds exactly one directional surface, which is what tournament rules require. Emulation puts save states, rewind, and fast-forward behind a held Back, the way RetroArch's own hotkey modifier works, and mirrors the left stick onto the D-pad for cores that have no analog sticks at all.
 
@@ -367,19 +394,19 @@ They never name hardware, which is why one profile drives a DualSense, an Xbox p
 
 ### Borrow a controller layout from the Steam Workshop.
 
-Point PadForge at a game and it browses the community controller configs published on the Steam Workshop, then translates the one you pick into a PadForge profile: buttons, sticks, triggers, keyboard and mouse bindings, shift layers, and macros. The connection to Steam is anonymous, so no account and no login. It stays off until you enable community config lookup in Settings, and an import report shows what came across cleanly and what needed a substitute.
+Search for a game under **Community** in Get Profiles and PadForge browses the community controller configs published on the Steam Workshop, then translates the one you pick into a PadForge profile: buttons, sticks, triggers, keyboard and mouse bindings, shift layers, and macros. The connection to Steam is anonymous, so no account and no login. It stays off until you turn on Enable Community Configs in Settings, and an import report shows what came across cleanly and what needed a substitute.
 
 ![Steam Workshop config browser](screenshots/workshop-configs.jpg)
 
 ### Bring your reWASD or DS4Windows profile.
 
-Open a reWASD config or a DS4Windows profile from the Profiles page, or drop the file on it. Before anything changes, the preview lists every binding as Clean, Partial or Skipped, each with its reason, and names any program the profile would run. One click makes it an ordinary PadForge profile. reWASD's shifts become shift layers, its single, double, triple and long presses become macros that keep the file's wait times, and turbo, toggles, radial menus and the lightbar on each layer come across. A DS4Windows profile brings its shift modifiers, the special actions in its Actions.xml, its gyro and touchpad output modes, its lightbar, its adaptive trigger effects and its two-stage triggers. Keyboard and mouse inputs read the merged keyboard and mouse rows, so they work the moment the profile loads.
+Open a reWASD config or a DS4Windows profile under **Import a File** in Get Profiles, or drop the file on the Profiles page. Before anything changes, the preview lists every binding as Clean, Partial or Skipped, each with its reason, and names any program the profile would run. One click makes it an ordinary PadForge profile. reWASD's shifts become shift layers, its single, double, triple and long presses become macros that keep the file's wait times, and turbo, toggles, radial menus and the lightbar on each layer come across. A DS4Windows profile brings its shift modifiers, the special actions in its Actions.xml, its gyro and touchpad output modes, its lightbar, its adaptive trigger effects and its two-stage triggers. Keyboard and mouse inputs read the merged keyboard and mouse rows, so they work the moment the profile loads.
 
 ![The import preview for a reWASD config](screenshots/import-preview.jpg)
 
 ### Caps Lock for your controller.
 
-Each slot can carry extra mapping tables that turn on while a button, chord, or axis fires. Six activation modes: Hold, Toggle, Latch, Cycle, Sticky, and No Button. Latch presses a layer on and leaves it on. Press it again for Base, or press a different Latch button to switch. Cycle puts a queue of layers under one control. The activator steps forward, a second Previous button steps back through the same list, and that Previous button can sit on another device. Wrap Around loops past the last layer to the first. Include Base folds the resting layer into the rotation or leaves it out. A No Button layer has no activator of its own and exists only to ride a Cycle queue. Each layer carries its own color and emoji icon, and a Win11-style flyout confirms the active layer the moment it engages.
+Each slot can carry extra mapping tables that turn on while a button, chord, or axis fires. Six activation modes: Hold, Toggle, Latch, Cycle, Sticky, and No Button. Latch presses a layer on and leaves it on. Press it again for Base, or press a different Latch button to switch. Cycle puts a queue of layers under one control. The activator steps forward, a second Previous button steps back through the same list, and that Previous button can sit on another device. Wrap Around loops past the last layer to the first. Include Base folds the resting layer into the rotation or leaves it out. A No Button layer has no activator of its own and exists only to ride a Cycle queue. Each layer carries its own color and emoji icon, and a Win11-style flyout confirms the active layer the moment it engages. Each layer sets how long its flyout stays: While the Layer Is On, For 2 Seconds, or Never.
 
 ### Tap for one thing, hold for another.
 
@@ -407,9 +434,9 @@ Press two opposite keys together and SOCD cleaning decides what the Keyboard & M
 
 ### Turn the DualSense pad into a mouse, a stick, or a D-pad.
 
-A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert, and pick a Pointer Response: Simple, or a Trackpad curve that moves the cursor the way a laptop touchpad does. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Pressure-sensitive pads expose per-finger pressure as mapping sources, and swipe haptics tick the pad as your finger travels. Every toggle saves per pad per slot.
+A Touchpad card in the Motion & Touch section of every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert, and pick a Response: Simple, or a Trackpad curve that moves the cursor the way a laptop touchpad does. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Pressure-sensitive pads expose per-finger pressure as mapping sources, and swipe haptics tick the pad as your finger travels. Every toggle saves per pad per slot.
 
-![Touchpad tab](screenshots/touchpad.jpg)
+![The Touchpad card](screenshots/touchpad.jpg)
 
 ### A macro that types for you.
 
@@ -419,7 +446,7 @@ Drop a Text Block into a macro's action sequence and it types out plain text, on
 
 ### A menu cell that runs a macro, drawn with your icons.
 
-A slot's radial and grid menus put a page of actions under one button, and a cell can run a macro instead of pressing a button. The icons are yours to supply: an icon package is one zip of PNG, JPG, BMP, or GIF images with a `.pficons` extension, added from the Icon Packages card on the Menus tab. PadForge reads straight from the file and never unpacks it, so keeping a package next to `PadForge.exe` keeps the setup portable. SVG is not read.
+A slot's radial and grid menus put a page of actions under one button, and a cell can run a macro instead of pressing a button. The icons are yours to supply: an icon package is one zip of PNG, JPG, BMP, or GIF images with a `.pficons` extension, added from the Icon Packages card in the Macros & Menus section. PadForge reads straight from the file and never unpacks it, so keeping a package next to `PadForge.exe` keeps the setup portable. SVG is not read.
 
 A menu can also be a hotbar, Steam Input's: one row of cells that one input shows and hides, two step through and a fourth fires, with Steam's fire modes and its Wrap Around, Hide After Firing and Re-Center Each Time switches.
 
@@ -427,44 +454,54 @@ A menu can also be a hotbar, Steam Input's: one row of cells that one input show
 
 Set a menu's style to Keyboard and the controller types into any Windows program, in the keyboard layout of the window you type into. Grid moves one highlight, Split gives each thumb its own half of the keyboard, and Wheel is a daisy wheel of eight letter groups. Any input on the slot's devices opens it, and Open When a Text Box Is Selected opens it when a text box takes focus. Word suggestions come from Windows' own text prediction, and the keys can type through a HIDMaestro keyboard that programs take for hardware. While the keyboard is open, the rest of the controller rests. The Desktop starter profile opens one on X, and a Steam config's Show Keyboard imports as one.
 
-![A Keyboard menu on the Menus tab](screenshots/menus-keyboard.jpg)
+![A Keyboard menu in the Macros & Menus section](screenshots/menus-keyboard.jpg)
 
 ---
 
 ## Feel: your wheel fights back.
 
-Plug a Logitech, Fanatec, or Thrustmaster wheel into a slot and PadForge drives its force feedback in the wheel's own native protocol: constant force plus spring, damper, and friction straight from the game. A dedicated Wheel tab sets rotation range in degrees, auto-center strength, and the RPM shift LEDs. A racing game that only knows how to talk to an Xbox pad now loads your wheel up with real road feel.
+Plug a Logitech, Fanatec, or Thrustmaster wheel into a slot and PadForge drives its force feedback in the wheel's own native protocol: constant force plus spring, damper, and friction straight from the game. In the Rumble & Haptics section, the Wheel card sets the rotation range in degrees and the RPM shift LEDs, and the Centering card under it sets how the wheel comes back to center. A racing game that only knows how to talk to an Xbox pad now loads your wheel up with real road feel. The Logitech RS50 is a wheel in its PC, PlayStation and Xbox modes, though no RS50 has run against PadForge yet.
 
-![Wheel tab](screenshots/wheel.jpg)
+![The Wheel card and the Centering card](screenshots/wheel.jpg)
+
+### Steering that centers like a car's.
+
+The Centering card has two modes. **Spring** is the plain centering spring, one strength, as before. **Vehicle** works out the torque a car's steering puts on the rim at its speed and grip, from the steering feel model of Balachandran and Gerdes. Pick the car, a Sedan, a Compact, a Van, a Race Car or the Stanford X1, each built from its published figures. **Speed** comes **From the Game** or is **Fixed**, and **Steering Weight** sets how heavy the wheel feels. From the Game reads the telemetry that feeds the RPM shift LEDs: Forza, the F1 and Codemasters games, Assetto Corsa and Assetto Corsa Competizione, iRacing, rFactor 2, RaceRoom, Project CARS 2, Automobilista 2, BeamNG.drive, Live for Speed and the truck simulators, and whatever the Game Telemetry extra hears. The card draws the torque at the rim against the steering angle in N·m. Under **More** are On-Center Feel, Power Assist, Damping, Friction, Grip, Fixed Speed and Wheel Torque.
+
+**Release Test** measures the wheel with your hands off it. PadForge turns the wheel, lets it go and records how it comes back, then sets the damping that returns it without swinging past center.
+
+The wheel's own firmware runs the spring, the damper and the friction, and PadForge sets the steering curve from the PC on each pass. Rumble, Audio Rumble and haptics play on top of a wheel's centering spring. A game's own force feedback and Constant Force still take the wheel from the spring, and a wheel that runs one effect at a time keeps the spring and drops rumble.
+
+The limits, stated plainly. No wheel has run Vehicle mode or the Release Test: every stability and Release Test result comes from a simulated wheel. A game that sends no telemetry uses Fixed Speed, and Codemasters' flat telemetry, BeamNG.drive and Live for Speed send no road surface, so Grip is the one you chose. Torque is in N·m from the figures Logitech and Fanatec publish, and a wheel whose maker publishes none, Thrustmaster's among them, starts from a high figure, so its forces are weak until you enter its own Wheel Torque. Over Remote Link, centering reaches a Logitech, Fanatec or Thrustmaster wheel only. The [Wheel Centering](https://padforge.org/docs/features/wheel-centering/) page has every setting and the rest of the limits.
 
 ### Forza, Gears, and Halo on your real Xbox pad.
 
 PadForge passes Xbox impulse trigger data straight to the assigned physical Xbox One, Elite, or Series pad. The same data routes to DualSense as Adaptive Trigger Vibration so a DualSense playing Forza buzzes the triggers in step with an Xbox One pad doing the same. Plus audio-bass-driven trigger rumble and a constant trigger force that resumes when the game stops.
 
-![Impulse Triggers tab](screenshots/impulse-triggers.jpg)
+![The Impulse Triggers card](screenshots/impulse-triggers.jpg)
 
 ### Rumble you can sit on.
 
-The Bass Shakers tab routes the game rumble and force feedback a virtual controller receives to any audio output as low-frequency tones, for bass shakers and subwoofers. Four voices (low motor, high motor, left and right trigger) each carry their own frequency from 20 to 120 Hz and gain, with a mono or controller-stereo channel split and a frequency sweep to find where your shaker responds strongest. Game feedback and test rumble play through the shaker. Macro rumble stays on the controller.
+The Bass Shakers card routes the game rumble and force feedback a virtual controller receives to any audio output as low-frequency tones, for bass shakers and subwoofers. Four voices (low motor, high motor, left and right trigger) each carry their own frequency from 20 to 120 Hz and gain, with a mono or controller-stereo channel split and a frequency sweep to find where your shaker responds strongest. Game feedback and test rumble play through the shaker. Macro rumble stays on the controller.
 
 ### Adaptive triggers and lightbar that don't need the game's blessing.
 
 Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Fifteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants), and one that follows your screen. The lightbar and adaptive triggers work in games that have never heard of a DualSense.
 
-| ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
+| ![The Adaptive Triggers card](screenshots/adaptive-triggers.jpg) | ![The Lighting card](screenshots/lighting.jpg) |
 |:---:|:---:|
 
 ### Game mods made for DSX, with no DSX.
 
-Fan mods give the Grand Theft Auto games, Red Dead Redemption 2, Skyrim, Fallout 4 and others adaptive triggers, and they send their effects to a program named DSX. PadForge takes DSX's place. Turn on Accept DSX Game Mods, and a mod's trigger effects, lightbar, player lights and mute light play on the PlayStation controllers on your virtual controllers, with no DSX installed. Mods written for DualSenseY, DSZ or the DS4Windows fork that speaks the same protocol work too.
+Fan mods give the Grand Theft Auto games, Red Dead Redemption 2, Skyrim, Fallout 4 and others adaptive triggers, and they send their effects to a program named DSX. PadForge takes DSX's place. Turn on Accept DSX Game Mods on the Game Mods page, under Extras, and a mod's trigger effects, lightbar, player lights and mute light play on the PlayStation controllers on your virtual controllers, with no DSX installed. Mods written for DualSenseY, DSZ or the DS4Windows fork that speaks the same protocol work too.
 
-![The Game Mods section on the Dashboard](screenshots/game-mods.jpg)
+![The Game Mods page, under Extras](screenshots/game-mods.jpg)
 
 ### A Novint Falcon that pushes back.
 
-The Novint Falcon's handle moves in three dimensions and pushes back with three motors. Through Force Dimension's SDK, PadForge reads the handle as a stick and the grip's four buttons as buttons, and puts a game's rumble and force feedback on the handle as force, about a thousand times a second. Pick the Joystick feel for a self-centering stick or the Aim feel to aim like a mouse, on the Force Feedback tab.
+The Novint Falcon's handle moves in three dimensions and pushes back with three motors. Through Force Dimension's SDK, PadForge reads the handle as a stick and the grip's four buttons as buttons, and puts a game's rumble and force feedback on the handle as force, about a thousand times a second. Pick the Joystick feel for a self-centering stick or the Aim feel to aim like a mouse, on the Novint Falcon card in the Rumble & Haptics section.
 
-![The Novint Falcon card on the Force Feedback tab](screenshots/novint-falcon.jpg)
+![The Novint Falcon card in the Rumble & Haptics section](screenshots/novint-falcon.jpg)
 
 ### Turn the glowing Xbox button up or down.
 
@@ -474,11 +511,11 @@ PadForge sets the Guide button LED brightness on an Xbox One, Elite, or Series p
 
 ### The desk lights up with the pad.
 
-Mice and keyboards light the way a DualSense does. Assign one to a virtual controller, turn on Control This Device's Lighting on its Lighting tab, and it takes that controller's lighting with the same modes a lightbar has: Player Number, Static, Breathing, Strobe, Rainbow, Color Cycle, Battery, the six audio modes, the input-reactive overlay and the lightbar macros. On a PlayStation virtual controller, a game that writes the lightbar takes over as it does on a DualSense. While its vendor's software is closed, PadForge lights a device on its own, and each device shows its own virtual controller's color. Logitech mice and keyboards light straight over HID++ where they report lighting feature 0x8070 or 0x8071, per-key keyboards included, and Battery mode reads their charge. A Logitech device that can be held more firmly gets a Lighting Hold picker, for one that dims its lights or shows its saved profile over the color. Razer mice, keyboards and keypads light through their own feature reports, 221 product IDs in all, and SteelSeries mice and keyboards through their control collection, 102 product IDs. A device Windows Dynamic Lighting drives lights through HID LampArray once Dynamic Lighting is turned off for it in Windows Settings. While G HUB, Logitech Gaming Software, Razer Synapse or SteelSeries GG runs, that program has its brand's devices, and they light through it: Logitech's LED engine, which PadForge loads rather than ships, the REST server Razer Synapse hosts, and GameSense in SteelSeries GG. Those three light every device of a kind at once, so when two virtual controllers light the same kind, the one with the smaller player number sets it. The Razer Chroma, Logitech LIGHTSYNC and SteelSeries GG rows appear on the Devices page once that software is installed. They light what PadForge does not read: Razer headsets, mousepads and Chroma Link strips, Logitech headsets, mousepads and speakers, and SteelSeries headsets. They also light any mouse or keyboard of their brand that no virtual controller lights on its own, and a device lit from its own Lighting tab outranks them whatever the player numbers. Turning off Control This Device's Lighting stops that virtual controller from lighting the device, though a vendor row or another device of its kind can still set its color, and a Set Chroma Color macro on that virtual controller still paints a Razer device. Earlier versions mirrored the lightbar to Chroma and LIGHTSYNC from two Dashboard toggles, and a toggle that was on now assigns its row to the first DualSense or DualShock 4 virtual controller, if there is one.
+Mice and keyboards light the way a DualSense does. Assign one to a virtual controller, turn on Control This Device’s Lighting on its Lighting Control card, and it takes that controller's lighting with the same modes a lightbar has: Player Number, Static, Breathing, Strobe, Rainbow, Color Cycle, Battery, the six audio modes, the input-reactive overlay and the lightbar macros. On a PlayStation virtual controller, a game that writes the lightbar takes over as it does on a DualSense. While its vendor's software is closed, PadForge lights a device on its own, and each device shows its own virtual controller's color. Logitech mice and keyboards light straight over HID++ where they report lighting feature 0x8070 or 0x8071, per-key keyboards included, and Battery mode reads their charge. A Logitech device that can be held more firmly gets a Lighting Hold picker, for one that dims its lights or shows its saved profile over the color. Razer mice, keyboards and keypads light through their own feature reports, 221 product IDs in all, and SteelSeries mice and keyboards through their control collection, 102 product IDs. A device Windows Dynamic Lighting drives lights through HID LampArray once Dynamic Lighting is turned off for it in Windows Settings. While G HUB, Logitech Gaming Software, Razer Synapse or SteelSeries GG runs, that program has its brand's devices, and they light through it: Logitech's LED engine, which PadForge loads rather than ships, the REST server Razer Synapse hosts, and GameSense in SteelSeries GG. Those three light every device of a kind at once, so when two virtual controllers light the same kind, the one with the smaller player number sets it. The Razer Chroma, Logitech LIGHTSYNC and SteelSeries GG rows appear on the Devices page once that software is installed. They light what PadForge does not read: Razer headsets, mousepads and Chroma Link strips, Logitech headsets, mousepads and speakers, and SteelSeries headsets. They also light any mouse or keyboard of their brand that no virtual controller lights on its own, and a device lit from its own Lighting card outranks them whatever the player numbers. Turning off Control This Device’s Lighting stops that virtual controller from lighting the device, though a vendor row or another device of its kind can still set its color, and a Set Chroma Color macro on that virtual controller still paints a Razer device. Earlier versions mirrored the lightbar to Chroma and LIGHTSYNC from two Dashboard toggles, and a toggle that was on now assigns its row to the first DualSense or DualShock 4 virtual controller, if there is one.
 
-Haptic mice rumble the way a gamepad does. Assign a Logitech MX Master 4, or a SteelSeries Rival 500, 700 or 710, to a virtual controller, and it takes that controller's rumble through its own Force Feedback tab, the tab a gamepad gets. The MX Master 4 plays Logitech's own haptic waveforms over HID++ and needs no Logitech software. The Rivals vibrate through the tactile handler in SteelSeries GG, which drives every Rival at once, so the one on the virtual controller with the lowest player number sets their rumble. A Logitech iFeel Mouse or iFeel MouseMan rumbles as well, once Play Rumble on This Mouse on the Devices page has moved it to Windows' WinUSB driver. Windows then stops using it as a pointer until Restore the Windows Driver brings its own driver back, and PadForge moves the pointer from it while it is assigned to a Keyboard + Mouse virtual controller. Razer Sensa HD hardware works the same way through the Razer Sensa row, which appears on the Devices page once Razer Synapse is installed and plays through the Interhaptics engine bundled inside the executable.
+Haptic mice rumble the way a gamepad does. Assign a Logitech MX Master 4, or a SteelSeries Rival 500, 700 or 710, to a virtual controller, and it takes that controller's rumble through its own Force Feedback card, the card a gamepad gets. The MX Master 4 plays Logitech's own haptic waveforms over HID++ and needs no Logitech software. The Rivals vibrate through the tactile handler in SteelSeries GG, which drives every Rival at once, so the one on the virtual controller with the lowest player number sets their rumble. A Logitech iFeel Mouse or iFeel MouseMan rumbles as well, once Play Rumble on This Mouse on the Devices page has moved it to Windows' WinUSB driver. Windows then stops using it as a pointer until Restore the Windows Driver brings its own driver back, and PadForge moves the pointer from it while it is assigned to a Keyboard + Mouse virtual controller. Razer Sensa HD hardware works the same way through the Razer Sensa row, which appears on the Devices page once Razer Synapse is installed and plays through the Interhaptics engine bundled inside the executable.
 
-Beyond those three brands, PadForge lights 1,565 RGB keyboards, mice, headsets and other devices by USB identity, in the protocols OpenRGB, OpenRazer, SignalRGB's plugins and QMK document: Corsair, ASUS, Keychron, Wooting, MSI, HyperX, Roccat and many more, each listed by name on the [Supported Devices](https://padforge.org/docs/devices/supported/#rgb-keyboards-mice-and-other-lit-devices) page. Where a device's lights are known one by one, the Lighting tab's Key Colors card paints them key by key on each shift layer, Set Key Colors and Clear Key Colors macros color chosen keys for as long as you set, and Map Key Lights names a light by the key you press under it, once for every device of that model. The ASUS Aura, MSI Mystic Light and Corsair iCUE rows join the vendor rows and light through those makers' SDKs while Armoury Crate, MSI Center or iCUE runs. Most of these devices have not run against PadForge yet: their frames follow the references' own code, checked by running those references against PadForge's tables.
+Beyond those three brands, PadForge lights 1,572 RGB keyboards, mice, headsets and other devices by USB identity, in the protocols OpenRGB, OpenRazer, SignalRGB's plugins and QMK document: Corsair, ASUS, Keychron, Wooting, MSI, HyperX, Roccat and many more, each listed by name on the [Supported Devices](https://padforge.org/docs/devices/supported/#rgb-keyboards-mice-and-other-lit-devices) page. Where a device's lights are known one by one, the Key Colors card paints them key by key on each shift layer, Set Key Colors and Clear Key Colors macros color chosen keys for as long as you set, and Map Key Lights names a light by the key you press under it, once for every device of that model. The ASUS Aura, MSI Mystic Light and Corsair iCUE rows join the vendor rows and light through those makers' SDKs while Armoury Crate, MSI Center or iCUE runs. PadForge 6 brought the tables up to their references and added the ROG Falchion Ace 75 HE key by key, as G-Helper drives it, Cooler Master's MK721 and CK721 LINE, the Roccat Kone XTD, and the light bars of the Corsair K70 PRO MINI WIRELESS. Most of these devices have not run against PadForge yet, those four among them: their frames follow the references' own code, checked by running those references against PadForge's tables.
 
 ![Map Key Lights](screenshots/map-key-lights.jpg)
 
@@ -486,17 +523,17 @@ Beyond those three brands, PadForge lights 1,565 RGB keyboards, mice, headsets a
 
 Screen Color is a lighting mode that follows one display: the whole screen, an edge, a corner, the center or an area you set, read as its most common color or its average, with saturation, brightness and smoothing of your own. A keyboard or mouse whose lights are known one by one spreads the screen across them, so each key takes the color of the screen at its own place. On an HDR display PadForge reads the desktop against the white level Windows draws SDR content at. It reads the finished picture Windows composes, keeps none of it, and changes nothing in any game.
 
-![Screen Color on the Lighting tab](screenshots/screen-color.jpg)
+![Screen Color on the Lighting card](screenshots/screen-color.jpg)
 
 ### Sound from the speaker in your hands.
 
-The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth, through its speaker or its headphone jack, with its headset microphone, and the second model (CUH-ZCT2) plays through its headphone jack on a cable too. Each speaker-capable pad gets its own per-slot Audio tab, with a source picker and a master volume. Controllers with haptic actuators instead of a speaker (Joy-Con, Switch Pro, the Steam Controller, the Steam Deck, and the Steam Controller 2026) play the same macro sounds as a vibrating tone, so beeps and short cues come through the grip. On a combined Joy-Con pair the tone follows the motor the game drives, left motor through the left coil and right through the right. A Wii Remote plays them through its own speaker.
+The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth, through its speaker or its headphone jack, with its headset microphone, and the second model (CUH-ZCT2) plays through its headphone jack on a cable too. Each speaker-capable pad gets its own per-slot Audio card in the Lights & Sound section, with a source picker and a master volume. Controllers with haptic actuators instead of a speaker (Joy-Con, Switch Pro, the Steam Controller, the Steam Deck, and the Steam Controller 2026) play the same macro sounds as a vibrating tone, so beeps and short cues come through the grip. On a combined Joy-Con pair the tone follows the motor the game drives, left motor through the left coil and right through the right. A Wii Remote plays them through its own speaker.
 
 The DualSense headset jack gets a processing chain of its own: bs2b crossfeed with the classic presets, Jan Meier, and a custom cutoff and feed, a graphic parametric EQ you drag into shape or load from an AutoEq profile for your exact headphones, and a limiter so a boosted band never clips the pad's encoder. Follow Headphone Jack switches the pad's output the moment you plug in, with or without a virtual DualSense on the slot.
 
-![Audio tab with crossfeed, the graphic EQ, and the limiter](screenshots/audio-dsp.jpg)
+![The Crossfeed, Parametric EQ and Limiter cards under the Audio card](screenshots/audio-dsp.jpg)
 
-![Audio tab](screenshots/audio.jpg)
+![The Audio card](screenshots/audio.jpg)
 
 ### Native haptics on the 2026 Steam Controller.
 
@@ -506,13 +543,19 @@ With a DualSense persona on the slot, a Steam Controller 2026 on USB or its dong
 
 Some games play a DualSense's haptics as audio, which a plain rumble pad never felt. PadForge now turns that haptic track into rumble for every rumble pad on the virtual controller, and Bass Shakers follow it too. A DualSense that plays the track itself keeps it.
 
+### Flydigi Apex triggers, lights and screens.
+
+A Flydigi Apex 4 (in DInput mode), Apex 5 or Apex 6 Pro gets what a DualSense or an Xbox pad gets on a slot. Adaptive Triggers, Impulse Triggers, a game's trigger effects, macros and game mods reach its triggers: resistance on the Apex 4 and Apex 5, and vibration on the Apex 6 Pro's trigger coils. The Apex 6 Pro's grip coils play the DualSense haptic track itself. The Lighting card paints the Apex 4's four groups, the Apex 5's twelve lights and the Apex 6 Pro's one color, and gives each pad its own lighting back afterward. **Controller Screen…** on the Devices page sends a picture, a GIF, or the active profile's picture, name or number to the pad's screen.
+
+No Flydigi pad has run against PadForge yet. The frames, lighting blocks and screen packets match the test vectors and captures of the projects they follow. The screen takes a picture by cable only. An Apex 4 send moves the pad to Xbox mode and WinUSB for the send, and needs every other Xbox 360 pad unplugged. The Apex 6 Pro stores each light write, so its color changes at most once every 1.5 seconds and 300 times a run. The plain Apex 6 is refused, and while Flydigi Space Station runs, it holds the pad's replies. [Flydigi Apex Controllers](https://padforge.org/docs/features/flydigi-apex/) has each model in full.
+
 ---
 
 ## Motion: aim with the controller, not the stick.
 
 Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table, and a paired Joy-Con exposes the LEFT Joy-Con's motion as separate aux sources beside the pair's own. Motion Shake binds like any other source on anything with an accelerometer, and on a Wii Remote the aux entry names itself Nunchuk Shake.
 
-![Gyro tab](screenshots/gyro.jpg)
+![The Gyro card in the Motion & Touch section](screenshots/gyro.jpg)
 
 ### Flick Stick, for aiming with a twist.
 
@@ -526,7 +569,7 @@ The Wii Remote's IR camera drives an on-screen pointer, mapped to the mouse or a
 
 ### Hold the Wii Remote any way you like.
 
-A Grip card on the Gyro tab says how the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, and gravity rotate into the game's frame together, for mappings and for the motion the virtual controller reports, and the D-pad follows the same frame, so Up is up in the hold you are using. Mario Kart in an emulator gets a wheel.
+A Grip card under the Gyro card says how the controller is held: "Pointing", "Sideways, Face Up", "Wii Wheel, Face Toward You", or "Upright". The gyro, the accelerometer, and gravity rotate into the game's frame together, for mappings and for the motion the virtual controller reports, and the D-pad follows the same frame, so Up is up in the hold you are using. Mario Kart in an emulator gets a wheel.
 
 ### Turn your head to aim.
 
@@ -536,7 +579,7 @@ Worth knowing because it explains the behavior: on these headsets the raw gyro c
 
 ### Or let OpenTrack turn it.
 
-PadForge reads OpenTrack's UDP output, on port 4242 by default, and the FreeTrack 2.0 shared memory at the same time. Either one arrives as a single Head Tracker device with six axes, yaw, pitch and roll plus the three translations, which bind in the mapping table like any other axis. Turn it on in the Dashboard's Head Tracking section, where the port, the rotation range in degrees, and the translation range in centimeters are set.
+PadForge reads OpenTrack's UDP output, on port 4242 by default, and the FreeTrack 2.0 shared memory at the same time. Either one arrives as a single Head Tracker device with six axes, yaw, pitch and roll plus the three translations, which bind in the mapping table like any other axis. Turn it on from the Head Tracking page, under Extras, where the port, the rotation range in degrees, and the translation range in centimeters are set.
 
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 
@@ -560,19 +603,25 @@ Motion Pitch, Motion Yaw and Motion Roll rows give a PlayStation, Nintendo or Va
 
 ### A Wii Remote becomes a light gun.
 
-Calibrate a Wii Remote to your screen from its Light Gun section on the Devices page: point at four targets in turn and press B on each. The crosshair then lands where the remote points, corrected for twist, and holds through a moment out of the sensor bar's sight. A Namco GunCon 2 calibrates the same way.
+Calibrate a Wii Remote to your screen from Gun Calibration on its Settings card on the Devices page: point at four targets in turn and press B on each. The crosshair then lands where the remote points, corrected for twist, and holds through a moment out of the sensor bar's sight. A Namco GunCon 2 calibrates the same way.
 
-![The Light Gun section on the Devices page](screenshots/devices-light-gun.jpg)
+![Gun Calibration on a Wii Remote's Settings card, on the Devices page](screenshots/devices-light-gun.jpg)
 
 ---
 
 ## Anywhere: open a browser. Press buttons.
 
-PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout, and play. Ten controller layouts (Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, Steam Controller), a multi-touch touchpad, and a builder that starts from a blank surface. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad, analog trigger sliders. Rumble feedback through the Vibration API, and on the DualShock 4 and DualSense layouts the slot's LED color lights the pad's own lightbar, with the DualSense's player indicator row beneath it. The server also binds a self-signed certificate and serves over HTTPS, which is what lets the browser hand over the handset's gyroscope and accelerometer. Scan the QR code on the Dashboard to get there. No app to install on the phone.
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout, and play. Ten controller layouts (Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, Steam Controller), a multi-touch touchpad, and a builder that starts from a blank surface. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad, analog trigger sliders. Rumble feedback through the Vibration API, and on the DualShock 4 and DualSense layouts the slot's LED color lights the pad's own lightbar, with the DualSense's player indicator row beneath it. The server also binds a self-signed certificate and serves over HTTPS, which is what lets the browser hand over the handset's gyroscope and accelerometer. Scan the QR code on the Web Controller page, under Extras, to get there. No app to install on the phone. The phone's home page shows your last layout as one button and four common layouts, with the rest under More Layouts.
 
-No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
+No phone handy? Turn on **Touchpad Overlay** from Extras. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
 
 ![Web controller](screenshots/web-controller.jpg)
+
+### Extras: every optional feature, one tile each.
+
+The web controller is one of twelve extras. The Extras page lists them as tiles in three groups. **More Ways to Play** holds Web Controller, Head Tracking, Game Telemetry and Twitch Chat. **Send It Elsewhere** holds Remote Link, Motion Server and Game Mods. **On Screen** holds Overlays, Touchpad Overlay, Screen Overlay, Crosshair and Magnifier. A tile has the extra's name, one line on what it does, its switch and its state, and a click opens the extra's own page. Each stays out of the way until you turn it on, and the ones that are on show on Home under **Extras in Use**.
+
+![The Extras page](screenshots/extras-catalog.jpg)
 
 ### The controller is on the other PC. The game doesn't care.
 
@@ -606,17 +655,33 @@ Handheld gaming PCs (Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zota
 
 Turn on Allow External Control by Launchers and Scripts on the Profiles page and PadForge serves a local named pipe. Playnite, LaunchBox, or a one-line script activates a profile by name, and that profile is held, so the foreground-window watcher stands down until the script releases it or you switch profiles yourself. Local machine only, and the pipe stays closed until you open it. A profile can also carry its own polling rate, from 60 Hz to 10000 Hz, overriding the Settings polling rate while it is active.
 
+### Polling from 60 to 10,000 Hz.
+
+**Polling Rate** in Settings sets how many times a second the engine reads every device and updates the virtual controllers: any rate from 60 to 10000 Hz, 1000 by default. A higher rate uses more processor time. Windows wakes the engine at most 2000 times a second on a PC whose timer ticks every 0.5 ms, and 1000 times on one whose timer ticks every millisecond, so a higher rate runs several passes at each wake. Above 1000 Hz, what a game reads from a virtual controller whose frames carry a clock has not been measured.
+
 ### The web controller over plain HTTP, and your menus on the phone.
 
 Some browsers refuse PadForge's self-signed certificate, and a tunnel brings a certificate of its own. Also Serve Plain HTTP adds a second address for both, guarded by a ten-character access code that its link and QR code carry. Web Menus turns a phone into a panel of tiles for a slot's Touch Grid menus, and menu cells and shift layers take emoji and pictures as icons.
 
-![The Plain HTTP Address section on the Dashboard](screenshots/dashboard-web-plain.jpg)
+![Plain HTTP Address on the Web Controller page, under More](screenshots/dashboard-web-plain.jpg)
 
 ### Your stream's chat, at the controls.
 
-Turn on Read Twitch Chat on the Dashboard and enter your channel's name. Viewers type ! and a word in your chat, and each word is a button on the Twitch Chat row on the Devices page, mapped like any controller's: !a500ms holds A for 500 ms, !a+b presses both, and !a b presses one after the other. Viewers take turns with !claim, approved by viewers or by moderators as you choose, and skip a command with !skip, which takes two viewers or one moderator. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds. The controller picture for your broadcast is an address you add to OBS as a browser source. It has not run against a live channel yet.
+Turn on Read Twitch Chat on the Twitch Chat page, under Extras, and enter your channel's name. Viewers type ! and a word in your chat, and each word is a button on the Twitch Chat row on the Devices page, mapped like any controller's: !a500ms holds A for 500 ms, !a+b presses both, and !a b presses one after the other. Viewers take turns with !claim, approved by viewers or by moderators as you choose, and skip a command with !skip, which takes two viewers or one moderator. Only the newest 20 commands wait in line, and a command plays for at most 10 seconds. The controller picture for your broadcast is an address you add to OBS as a browser source. It has not run against a live channel yet.
 
-![The Twitch Chat card on the Dashboard](screenshots/twitch-chat.jpg)
+![The Twitch Chat page, under Extras](screenshots/twitch-chat.jpg)
+
+### A crosshair and a scope over any game.
+
+**Crosshair** shows up to ten crosshairs, each in a window of its own that clicks pass through, centered on the display it names with an offset if you want one. Pick a style. **Cross** has a gap, a center dot and a T shape. **Circle** is a ring of 3 to 64 sides. **Dot** is a filled dot. **Picture** takes any PNG, GIF, BMP, ICO, TIFF, JPEG or WebP with its transparency. Color, rotation, an outline and Smooth Edges apply, and each crosshair draws a live preview.
+
+![The Crosshair page, under Extras](screenshots/crosshair.jpg)
+
+**Magnifier** is a lens like a sniper scope, the whole display zoomed in, or a spotlight that darkens the rest. It centers on the display, the pointer or the first crosshair that is on, and zooms from 1.25 to 16 times. Three macro actions drive the two: Toggle Crosshair, for one crosshair or every one, Toggle Magnifier, and Magnifier (While Held), for aiming down sights. reWASD's crosshair commands import as Toggle Crosshair.
+
+![The Magnifier page, under Extras](screenshots/magnifier.jpg)
+
+A game in exclusive full screen hides the crosshairs, the lens and the spotlight, so run it windowed or borderless. Full Screen mode zooms the whole desktop with Windows' full-screen magnifier, crosshairs included, and Windows gives that magnifier to one program at a time. The [Crosshair](https://padforge.org/docs/features/crosshair/) and [Magnifier](https://padforge.org/docs/features/magnifier/) pages list every setting.
 
 ---
 
@@ -624,7 +689,13 @@ Turn on Read Twitch Chat on the Dashboard and enter your channel's name. Viewers
 
 Two sim racers on two wheels at once. A flight stick plus throttle plus rudder pedals as one virtual HOTAS. Mixed gamepad types in one session. Up to 16 controllers. One combo press toggles every virtual controller on or off when you need to step away.
 
-![Dashboard with multiple slots](screenshots/dashboard.jpg)
+Home shows them all. Each virtual controller has a card with a picture of its controller that lights as you press, pull and push, and that moves in 3D or 2D while the controller runs. Cards are Detailed, Compact or Auto, and one switch on the engine's card starts and stops them all. When PadForge first meets a game controller that is connected and on no virtual controller, Home offers one for it: **Use It** opens Add a Controller for that device, and **Not Now** ends the offer.
+
+![Home with several virtual controllers](screenshots/dashboard.jpg)
+
+![Home on a first run, asking what games should see](screenshots/home-first-run.jpg)
+
+The Devices page lists every device by kind, Gamepad, Joystick, Wheel, Keyboard, Mouse and Other, with the connected ones first. A device's panel shows its picture, its link and its battery, then **Used By**, **Test Inputs**, a **Settings** card and **Details**.
 
 ### The PlayStation 3 pad, wired or wireless.
 
@@ -634,7 +705,7 @@ Plug a DualShock 3 in over USB and PadForge binds it with WinUSB on the spot, no
 
 ### Pair a Wii Remote over Bluetooth, in-app.
 
-A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC. A Wii Balance Board reports total weight and left-right / front-back lean as mapping sources.
+A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair a Controller**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC. A Wii Balance Board reports total weight and left-right / front-back lean as mapping sources.
 
 ![Pair a Wii controller](screenshots/wii-pair.jpg)
 
@@ -646,7 +717,7 @@ The media row on a keyboard, a media remote, a headset's transport buttons: PadF
 
 Every wireless pad that reports a battery shows its charge on the Devices page, with a charging glyph while it tops up. Set an Idle Disconnect timer and a Bluetooth controller drops its link after a few quiet minutes, so it sleeps instead of draining on the coffee table. A Disconnect Controller macro turns one off on command, from a chord or a button.
 
-![Battery indicator and the Power section on the Devices page](screenshots/devices.jpg)
+![A device's battery and its Settings card on the Devices page](screenshots/devices.jpg)
 
 ### Plug it in, and the radio lets go.
 
@@ -660,21 +731,31 @@ Turn on Read Bliss-Box Adapters and each port of a Bliss-Box adapter names the c
 
 Logitech's GamePanel devices, the G15, G19, G510 and G13 among them, the Mad Catz S.T.R.I.K.E. 7, and a phone running Logitech Arx Control each get a row of their own. The screen shows the profile, a clock, play time, a stopwatch, a picture, or a PlayStation controller's lightbar color, and the keys beside it map as buttons. A macro can play pictures on a screen, switch its mode and run its stopwatch.
 
-![The Keyboard Screens card in Settings](screenshots/settings-keyboard-screens.jpg)
+![Keyboard Screens in Settings, under Hardware](screenshots/settings-keyboard-screens.jpg)
 
 ### A keyboard screen, without the keyboard.
 
-The Screen Overlay card on the Dashboard shows what a keyboard screen shows, a picture, a timer, the time or a lightbar's color, in a window above your game on any PC. Add several, zoom and pan a picture, and place each one: while PadForge is in front, drag it with the right mouse button and size it from its corner, and while another program is in front, clicks pass through it. The macros that drive a keyboard screen drive an overlay too.
+The Screen Overlay extra shows what a keyboard screen shows, a picture, a timer, the time or a lightbar's color, in a window above your game on any PC. Add several, zoom and pan a picture, and place each one: while PadForge is in front, drag it with the right mouse button and size it from its corner, and while another program is in front, clicks pass through it. The macros that drive a keyboard screen drive an overlay too.
 
-![The Screen Overlay card on the Dashboard](screenshots/screen-overlay.jpg)
+![The Screen Overlay page, under Extras](screenshots/screen-overlay.jpg)
 
 ### A keyboard or mouse for PadForge alone.
 
 Use Only in PadForge on a USB keyboard's or mouse's row moves it to Windows' WinUSB driver, so it stops typing or moving the pointer in every other program, and its keys and buttons reach only your mappings and macros: a second keyboard becomes a macro pad. A laptop's precision touchpad works the same way while PadForge runs, through HidHide. A 15-second Keep prompt gives the device back to Windows unless you keep it, and its row restores the Windows driver at any time. The switch and its restore have run on one keyboard and one mouse, and no key or button read through PadForge has been confirmed yet.
 
-### 2,669 devices by name, and the ones Windows can't read.
+### SInput pads, in and out.
 
-PadForge's SDL3 build adds 289 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
+SInput is Hand Held Legend's HID gamepad protocol. A pad that speaks it arrives with its buttons, sticks, triggers, gyro, accelerometer, touchpads, battery and rumble. Its player light shows its PadForge slot, and its HD haptics play PadForge's tones, so it gets the Audio card, sound macros and touchpad pulses. An Extended slot can pick **SInput Gamepad**, a virtual SInput controller with motion and both touchpads, and a game's rumble on it reaches the slot's devices.
+
+No SInput pad has run against PadForge yet. HOJA firmware plays a tone's pitch, and OpenPuck its amplitude alone. The SInput Gamepad preset was read back through SDL, and no game has run on it.
+
+### A Switch 2 controller that rides out a dropped link.
+
+A Bluetooth Switch 2 controller whose link drops keeps its place, with its controls at rest, while the link comes back for up to 12 seconds. Then input resumes or the pad leaves the list. A pad PadForge turns off, on idle or with the disconnect chord, leaves at once. A Joy-Con 2 clone such as the Mobapad M12-S sends a pairing request after each connect, and Windows drops its link about 30 seconds later. Such a clone is expected to pause for a moment each time, where it was lost for good. No clone has run this build, so that is a hypothesis.
+
+### 2,687 devices by name, and the ones Windows can't read.
+
+PadForge's SDL3 build adds 286 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
 
 ![Pair a serial controller](screenshots/serial-pair.jpg)
 
@@ -682,7 +763,7 @@ PadForge's SDL3 build adds 289 pads from the community SDL_GameControllerDB to t
 
 ## PadForge vs other controller mappers
 
-Comparison reflects each tool's shipping release as of July 2026, with the rows added for 4.4.0 re-checked in September 2026. Verified against each project's own docs and source: x360ce v4.17.15.0 (last release Nov 2020), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
+Comparison reflects each tool's shipping release as of July 2026, with the rows added for 4.4.0 re-checked in September 2026 and x360ce's column re-read in November 2026 against the release notes of its v4.18 through v4.30. Verified against each project's own docs and source: x360ce v4.30.63.0 (Nov 2026), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
 
 <details>
 <summary><b>Feature by feature</b></summary>
@@ -692,21 +773,21 @@ Comparison reflects each tool's shipping release as of July 2026, with the rows 
 | Free | ✅ | ✅ | ✅ | $9.99+ | ✅ | ✅ |
 | Source available | ✅ CC BY-NC-SA | ✅ | ✅ archived | ❌ | ✅ | ❌ |
 | Works outside Steam | ✅ | ✅ | ✅ | ✅ | ✅ | only via Add Non-Steam Game |
-| Actively developed | ✅ 2026 | no release since Nov 2020 | deprecated 2024 | ✅ v9.4 (2026) | ✅ v3.5 (Feb 2026) | ✅ |
+| Actively developed | ✅ 2026 | ✅ v4.30 (Nov 2026) | deprecated 2024 | ✅ v9.4 (2026) | ✅ v3.5 (Feb 2026) | ✅ |
 | Xbox 360 virtual output | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Xbox One / Series virtual output | ✅ | ❌ | ❌ | ✅ Xbox One | ❌ | ❌ |
 | DualShock 4 virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | DualSense virtual output | ✅ | ❌ | ❌ | ❌ input only | ❌ | ❌ |
 | Switch Pro virtual output | ✅ via HIDMaestro | ❌ | ❌ | ✅ | ❌ | ❌ |
 | Steam Deck / Steam Controller virtual output | ✅ via HIDMaestro, Valve VID/PID, both trackpads | ❌ | ❌ | ❌ Xbox 360 / Xbox One / DS4 / Switch Pro / DS3 only | ❌ xbox360 / dualshock4 only | ❌ |
-| Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 135 controller profiles + Custom | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 143 controller profiles + Custom | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI input as a mapping source | ✅ notes / CC / pitch bend / encoders | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠ "Combine Into" merges pads | ⚠ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠ per-input Activators |
-| Custom formula editor (arithmetic, logic, if-then-else) | ✅ drag-and-drop operators + 15 starter recipes | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Shift layers / modifier overlays | ✅ Hold / Toggle / Latch / Cycle / Sticky / No Button | ❌ | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
-| Cross-device chords (input on pad A + input on pad B) | ✅ | ❌ | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
+| Multi-source per row (one output, many inputs) | ✅ 6 combine modes + formula | ⚠ "Combine Into" merges pads, a formula on a mapping row (v4.18+) | ⚠ MapperDataCollection (basic) | ❌ uses per-input Activators | ❌ | ⚠ per-input Activators |
+| Custom formula editor (arithmetic, logic, if-then-else) | ✅ drag-and-drop operators + 15 starter recipes | ⚠ typed formula on a mapping row (v4.18+) | ❌ | ❌ | ❌ | ❌ |
+| Shift layers / modifier overlays | ✅ Hold / Toggle / Latch / Cycle / Sticky / No Button | ⚠ a held button turns other buttons into a second set (v4.28 help) | ❌ | ✅ up to 10 (Hold / Toggle / Custom) | ✅ Mode Shifts | ✅ Action Set Layers (stackable) |
+| Cross-device chords (input on pad A + input on pad B) | ✅ | ⚠ a formula can read another device on the controller (v4.27+) | ❌ | ✅ via Group of devices | ❌ | ❌ same controller only |
 | SOCD cleaning (opposite-key resolution) | ✅ last-wins Snap Tap / first-wins / neutral, keys and controller buttons | ❌ | ❌ | ❌ open feature request | ❌ | ❌ |
 | Mouse gestures (flick a held mouse button) | ✅ up / down / left / right / click, per-gesture actions | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Gyro mapping | ✅ Local / Player / World, RWC, Aim Engage, Flick Stick | ❌ | ❌ | ✅ since v5.3 (curves, Flick Stick) | ✅ gyro-to-mouse, gyro-to-RS | ✅ |
@@ -716,19 +797,19 @@ Comparison reflects each tool's shipping release as of July 2026, with the rows 
 | Audio-bass trigger rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Audio-bass body rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ 11 presets | ⚠ limited | ❌ |
-| DualSense lightbar | ✅ 14 modes inc. Strobe + Battery | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠ basic, no audio | ⚠ unverified |
+| DualSense lightbar | ✅ 15 modes inc. Strobe, Battery + Screen Color | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠ basic, no audio | ⚠ unverified |
 | Xbox Guide button LED brightness | ✅ Xbox One / Elite / Series + Steam Controller, fixed or battery-following | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Controller speaker audio (DualSense / DualShock 4) | ✅ mirror Windows audio + macro sounds, USB / BT | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Touchpad: joystick / D-pad / mouse + gesture engine | ✅ joystick (anchor-relative), wedge D-pad, per-axis mouse (sensitivity + invert), in-box gestures (4-way / 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger), shape templates (Circle in either direction, Square, Triangle, Z, Checkmark), custom recorded shapes | ❌ | ❌ | ⚠ touchpad-as-mouse / -as-stick + click, no gesture engine | ⚠ touchpad-as-mouse + four-direction Touchpad Swipe bindings | ⚠ joystick / D-pad / mouse / touch menu, no multi-finger or shape recognition |
 | HID PID 1.0 force feedback (wheels) | ✅ | ✅ constant + periodic (DirectInput) | ⚠ basic passthrough only | ❌ | ❌ | ❌ |
-| Native wheel FFB protocol (Logitech / Fanatec / Thrustmaster) | ✅ + rotation range, auto-center, RPM LEDs | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Native wheel FFB protocol (Logitech / Fanatec / Thrustmaster) | ✅ + rotation range, centering by spring or a car's steering model, RPM LEDs | ⚠ Logitech wheel range and a centering spring with a Car list (v4.21+) | ❌ | ❌ | ❌ | ❌ |
 | DSU / Cemuhook motion server (Cemu, Dolphin, Yuzu, Ryujinx) | ✅ | ❌ | ❌ | ✅ port 26760 | ✅ | ❌ |
 | Phone as controller | ✅ in-browser, no app install, up to 16 phones at once, touchpad layout included | ❌ | ❌ | ⚠ reWASD Mobile app (one phone, no touchpad layout) | ❌ | ❌ |
 | Share a controller with another PC's games over a network | ✅ Remote Link, LAN or internet by code, both directions, feedback returns | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Per-app profile switching | ✅ | ✅ since v4.17.12 (Nov 2020) | ❌ | ✅ Autodetect | ✅ | ✅ per-game by design |
 | Profile switching driven by a launcher or script | ✅ local named pipe, profile held until released | ⚠ unverified | ⚠ unverified | ✅ reWASDCommandLine `apply` | ✅ `-command LoadProfile` / `LoadTempProfile` | ⚠ unverified |
 | Max simultaneous virtual controllers | 16 | 4 (hard-coded PAD1-4 in UI) | 4 (UI matches XInput slot indices) | 4 (Slot UI cap) | 4 (Output Slots UI cap) | 1 per physical pad |
-| 1000 Hz polling | ✅ | ⚠ unverified | ⚠ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠ unverified |
+| Polling rate | ✅ 60 to 10,000 Hz | ✅ up to 4000 Hz (v4.30) | ⚠ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ 1000 Hz on USB DS4 | ⚠ unverified |
 | 3D + 2D controller visualization | ✅ | ⚠ 2D Xbox 360 only | ❌ | ⚠ 2D only | ⚠ basic | ⚠ configurator preview |
 | Multi-point sensitivity curve editor | ✅ unlimited points | ⚠ single slider | ⚠ deadzone only | ✅ custom 4-point | ⚠ preset curves | ✅ response curves |
 | 2026 Steam Controller support | ✅ via SDL3 fork | ❌ | ❌ | ⚠ unverified | ❌ | ✅ |
@@ -745,13 +826,25 @@ Comparison reflects each tool's shipping release as of July 2026, with the rows 
 <details>
 <summary><b>Every page, in screenshots</b></summary>
 
-### Dashboard
-![Dashboard](screenshots/dashboard.jpg)
-Polling rate, device count, every virtual controller slot, and the service sections: web controller, Remote Link, head tracking, DSU motion server, and the overlays. Driver status lives on the Settings page.
+### Home
+![Home](screenshots/dashboard.jpg)
+The engine's card with its one switch, the polling rate, the controllers that are live and the devices connected, then a card for each virtual controller and the extras that are on. Driver status lives in Settings, under Drivers.
+
+### Home on a first run
+![Home on a first run](screenshots/home-first-run.jpg)
+What should games see? One click on Xbox, PlayStation or Keyboard + Mouse makes the first virtual controller for the connected controller, mapped 1:1.
+
+### Search
+![Search](screenshots/search.jpg)
+Ctrl+K, or the box in the title bar, finds pages, controllers, devices, profiles, settings and actions, and opens the one you pick.
+
+### Extras
+![The Extras page](screenshots/extras-catalog.jpg)
+The twelve extras as tiles in three groups, each with its switch and its state: the web controller, head tracking, game telemetry, Twitch chat, Remote Link, the DSU motion server, game mods and the overlays among them.
 
 ### 3D controller visualization
 ![Controller](screenshots/controller.jpg)
-Interactive 3D model per profile. Rotate, zoom, pan. Buttons, sticks, and triggers highlight while you press them. Click one to map it: the next input you press or move becomes its binding. Xbox Series profiles add a clickable Share button.
+The Picture view of the Mappings section, in 3D. Rotate, zoom, pan. Buttons, sticks, and triggers highlight while you press them. Click one to map it: the next input you press or move becomes its binding. Xbox Series profiles add a clickable Share button.
 
 ### 2D controller visualization
 ![Controller 2D](screenshots/controller-2d.jpg)
@@ -759,7 +852,7 @@ Flat schematic of the same controller, same live state. Click a control to map i
 
 ### Button and axis mappings
 ![Mappings](screenshots/mappings.jpg)
-Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation. A Primary Mode dropdown picks how the source reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
+The List view of the Mappings section. Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Inverted, Inverted Half, or an Axis-to-Button Deadzone. Each source's Mode picker sets how it reads: Direct, Incremental, Ramp, Toggle, Rapid Trigger, or Invert On Hold. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
 
 PadForge reads the four Xbox Elite paddles as buttons of their own, beside the XInput state that carries the rest of the pad. Detected paddles use the same mappings, macros, and shift layers as other button sources. Over Bluetooth they come from the controller's own Bluetooth LE service. Over USB and the Xbox Wireless Adapter they come from the Windows GameInput service, which takes Windows 11 24H2 or 25H2 at build 26100.8973 or 26200.8973 (July 28, 2026) or later. The GameInput redistributable is not required. On Windows 10 and older Windows 11, paddles are read over Bluetooth only.
 
@@ -781,10 +874,10 @@ Floor and ceiling per trigger. Anti-deadzone. Sensitivity curves. Live value bar
 
 ### Force feedback and rumble
 ![Force Feedback](screenshots/force-feedback.jpg)
-Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Music feels physical even when the game is silent.
+Per-motor strength, overall gain, motor swap. Live motor activity bars. Audio Rumble captures system audio, isolates bass through a 48 dB/octave filter, and pushes it to the rumble motors. Its Sensitivity runs from 1 to 60 and its Bass Cutoff from 20 to 2000 Hz, high enough for engine notes above the bass range. Music feels physical even when the game is silent.
 
 ### Novint Falcon
-![The Novint Falcon section on the Force Feedback tab](screenshots/novint-falcon.jpg)
+![The Novint Falcon card in the Rumble & Haptics section](screenshots/novint-falcon.jpg)
 How a Falcon feels on this slot: the Joystick or Aim feel, the centering spring, the kick and shake a game's rumble plays, gravity compensation and the force limit.
 
 ### Trigger routing
@@ -793,10 +886,10 @@ Send the main rumble motors into the trigger motors, one trigger at a time. Dupl
 
 ### Wheel
 ![Wheel](screenshots/wheel.jpg)
-Native force feedback for Logitech, Fanatec, and Thrustmaster wheels: constant force plus spring, damper, and friction from the game. Set rotation range in degrees, auto-center strength, and the RPM shift LEDs. Other force-feedback wheels still work through the generic path.
+Native force feedback for Logitech, Fanatec, and Thrustmaster wheels: constant force plus spring, damper, and friction from the game. The Wheel card sets the rotation range in degrees and the RPM shift LEDs, and the Centering card sets Spring mode with its Auto Centering Strength, or Vehicle mode. Other force-feedback wheels still work through the generic path.
 
 ### Steering Angle Rumble
-![The Steering Angle Rumble card on the Force Feedback tab](screenshots/steering-angle-rumble.jpg)
+![Steering Angle Rumble on the Force Feedback card, under More](screenshots/steering-angle-rumble.jpg)
 Rumble that grows as a virtual stick axis leaves center, split by direction across the two motors or kept on one.
 
 ### DualSense Adaptive Triggers
@@ -808,7 +901,7 @@ Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multiple-Position 
 Fifteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time, and Screen Color. A separate Input Reactive overlay flashes on button presses in three variants (Random Color per Press, Cycle Through Palette, Base Color per Press). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
 
 ### Screen Color
-![Screen Color on the Lighting tab](screenshots/screen-color.jpg)
+![Screen Color on the Lighting card](screenshots/screen-color.jpg)
 The display to read, the part of it, Most Common Color or Average Color, and saturation, brightness and smoothing. A device whose lights are known one by one spreads the screen across them.
 
 ### Guide button LED
@@ -821,38 +914,38 @@ Controller speaker output for the DualSense and DualShock 4. Pick a Windows audi
 
 ### Touchpad
 ![Touchpad](screenshots/touchpad.jpg)
-Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Eight cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity, invert, and a Simple or Trackpad pointer response with acceleration), Absolute Pointer (the screen region the pointer sources map onto), Synthetic Pressure (a set pressure for pads that report every touch at full pressure), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, two- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile), and Swipe Haptics (travel ticks with intensity).
+Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Eight cards: Touchpad, which holds the mouse output (per-axis sensitivity, invert, and a Simple or Trackpad response with acceleration), Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Absolute Pointer (the screen region the pointer sources map onto), Synthetic Pressure (a set pressure for pads that report every touch at full pressure), Swipe Haptics (travel ticks with intensity), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, two- to five-finger, shape templates), and Custom Gestures (recorded shape templates per profile).
 
 ### Wii pointer modes
 ![Wii pointer modes](screenshots/pointer.jpg)
 The Wii Remote's IR camera as an on-screen pointer. FPS-mouse mode, aspect-corrected border modes, and an off-screen freeze that holds position instead of snapping to a corner.
 
 ### Wii Remote grip
-![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg)
-How the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, gravity, and the D-pad all rotate into the game's frame together.
+![The Grip card under the Gyro card](screenshots/gyro-grip.jpg)
+How the controller is held: "Pointing", "Sideways, Face Up", "Wii Wheel, Face Toward You", or "Upright". The gyro, the accelerometer, gravity, and the D-pad all rotate into the game's frame together.
 
 ### Macros
 ![Macros](screenshots/macros.jpg)
-Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. A Switch Layer action jumps the slot to Base or any authored layer, and a per-macro layer scope limits a macro to chosen shift layers. A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
+Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. The Macros & Menus section lists macros and menus beside the editor: a macro reads When, Do and More, with its actions as numbered steps. A Switch Layer action jumps the slot to Base or any authored layer, and a per-macro layer scope limits a macro to chosen shift layers. Duplicate copies a macro in place, and Copy, Paste and Copy From…, under More, carry macros to and from another virtual controller. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
 
 ### Set Chroma Color
 ![A Set Chroma Color action in the macro editor](screenshots/macro-set-chroma-color.jpg)
-Paints the Razer devices assigned to its virtual controller, and every other Razer device of their kinds, one color while the action runs, or every Razer device when the Razer Chroma row is assigned, over any virtual controller's Lighting tab. When macros on two virtual controllers paint the same kind of device, the smaller player number wins. Needs Razer Synapse.
+Paints the Razer devices assigned to its virtual controller, and every other Razer device of their kinds, one color while the action runs, or every Razer device when the Razer Chroma row is assigned, over any virtual controller's Lighting card. When macros on two virtual controllers paint the same kind of device, the smaller player number wins. Needs Razer Synapse.
 
 ### Menu macro cells
 ![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg)
 A cell in a radial or grid menu can run a macro instead of pressing a button.
 
 ### Keyboard menu
-![A Keyboard menu on the Menus tab](screenshots/menus-keyboard.jpg)
+![A Keyboard menu in the Macros & Menus section](screenshots/menus-keyboard.jpg)
 A menu set to the Keyboard style: its layout, what opens it, its controls and where its keys type.
 
 ### Hotbar menu
-![A Hotbar menu on the Menus tab](screenshots/menus-hotbar.jpg)
+![A Hotbar menu in the Macros & Menus section](screenshots/menus-hotbar.jpg)
 A menu set to the Hotbar style: Show or Hide, Previous, Next and Fire, and Steam's three switches.
 
 ### Menu icon packages
-![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg)
+![The Icon Packages card in the Macros & Menus section](screenshots/menu-icon-packs.jpg)
 An icon package is one zip of images with a .pficons extension. Add one and its icons are available on any menu cell. PadForge reads straight from the file and never unpacks it.
 
 ### Icon picker
@@ -861,7 +954,11 @@ Emoji by category, pictures from your icon packages, or an image file, for a men
 
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)
-Each profile holds its own mappings, deadzones, force feedback, lighting, and macros. PadForge watches the foreground window and switches profiles automatically when a matching app gains focus. Controller-shortcut combos cycle profiles without touching the keyboard.
+Each profile holds its own mappings, deadzones, force feedback, lighting, and macros, and has a card on the Profiles page with Load on it and Edit…, Save As…, Save Current Setup Here, Export… and Delete under More. With Switch Profiles by Game on, PadForge watches the foreground window and switches profiles when a matching app gains focus. The Shortcuts card assigns button combos that switch profiles from any controller.
+
+### Get Profiles
+![Get Profiles on Import a File](screenshots/profiles-get-file.jpg)
+One window for a new profile from elsewhere: Starters, Community for Steam Workshop configs, and Import a File for PadForge, reWASD and DS4Windows files.
 
 ### External profile control
 ![Allow External Control by Launchers and Scripts on the Profiles page](screenshots/profiles-external-control.jpg)
@@ -873,7 +970,7 @@ A profile can override the Settings polling rate: 10000, 8000, 4000, 2000, 1000,
 
 ### Steam Workshop config import
 ![Steam Workshop config browser](screenshots/workshop-search.jpg)
-Browse community controller configs from the Steam Workshop over an anonymous Steam connection with no account, and translate the one you pick into a PadForge profile. A per-import report lists what came across clean, what was approximated, and what was skipped. Off by default until you enable community config lookup in Settings.
+Browse community controller configs from the Steam Workshop over an anonymous Steam connection with no account, and translate the one you pick into a PadForge profile. A per-import report lists what came across clean, what was approximated, and what was skipped. Off by default until you turn on Enable Community Configs in Settings, under Data & Privacy.
 
 ### reWASD and DS4Windows import
 ![The import preview for a reWASD config](screenshots/import-preview.jpg)
@@ -893,14 +990,14 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 344 profiles, and PadForge offers the 246 that carry a captured HID descriptor, all but the GameCube adapter's Full persona: 143 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 344 profiles and can deploy 247 of them: 246 from a captured HID descriptor, and the Xbox One S: Full profile without one. PadForge offers the 246 that remain once the GameCube adapter's Full persona is held back: 143 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
-![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
+![An Extended slot presenting a Steam Deck](screenshots/extended-steam-deck.jpg)
 An Extended slot on a Steam Deck profile: Valve's own vendor and product IDs, both trackpads, and the rear buttons, with a one-to-one automap from a real Deck.
 
 ### Steam Controller virtual controller
-![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg)
+![An Extended slot presenting a Steam Controller 2026](screenshots/extended-steam-controller.jpg)
 The Steam Controller (Wired) and the Steam Controller (2026) present the same way, each with its own input frame, its own automap, and a 3D body meshed from Valve's published CAD.
 
 ### PlayStation virtual controller
@@ -915,13 +1012,13 @@ Channel 1-16. Configurable CC mapping, note mapping, and velocity. Axes send Con
 ![MIDI input](screenshots/midi-input.jpg)
 A MIDI keyboard or pad controller as a mapping source. Notes, Control Change, pitch bend, and encoder dials bind like buttons and axes. Same MIDI API as the virtual output. On the legacy MIDI API, PadForge opens only the input devices assigned to a slot.
 
-### Add controller
-![Add Controller](screenshots/add-controller-popup.jpg)
-Pick the virtual controller type. Buttons dim when you hit the per-type limit.
+### Add a Controller
+![Add a Controller](screenshots/add-controller-popup.jpg)
+Pick the device under Driven By, or Choose Later, then click a type: Xbox, PlayStation and Nintendo under Common, and Keyboard + Mouse, Extended, MIDI and VR under More Outputs. Each type has one line on what it is for, and a type that cannot be made says why.
 
 ### Devices
 ![Devices](screenshots/devices.jpg)
-Every detected gamepad, joystick, keyboard, mouse, and touchpad as a card. Live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
+Every detected device as a row, by kind: Gamepad, Joystick, Wheel, Keyboard, Mouse and Other, connected ones first, each with its link and a tile that lights while it sends. Select one and its panel shows Used By, then Test Inputs with live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions. Its Settings card holds Hide from Games, and Details holds Force Raw Joystick Mode for when SDL3 guesses the gamepad layout wrong.
 
 ### Map Key Lights
 ![The Map Key Lights window](screenshots/map-key-lights.jpg)
@@ -936,15 +1033,15 @@ The Twitch Chat row, a button per chat word, and the Chat Commands window that a
 A Hall effect or analog keyboard as its own row, every key a source with its depth.
 
 ### Light gun
-![The Light Gun section on the Devices page](screenshots/devices-light-gun.jpg)
+![Gun Calibration on a Wii Remote's Settings card, on the Devices page](screenshots/devices-light-gun.jpg)
 Calibrate a Wii Remote or a GunCon 2 to your screen: four targets, one press each.
 
 ### Quick Charge
-![The Power section on a DualSense device card](screenshots/devices-quick-charge.jpg)
+![Disconnect Bluetooth When Plugged In over USB on a DualSense's Settings card](screenshots/devices-quick-charge.jpg)
 Disconnect Bluetooth When Plugged In over USB drops the radio link when the pad reports it is charging, so it charges without powering the radio. Any USB power source counts.
 
 ### DualShock 3
-![DualShock 3 device card](screenshots/devices-ds3.jpg)
+![A DualShock 3 on the Devices page](screenshots/devices-ds3.jpg)
 A PlayStation 3 pad over USB (WinUSB) or Bluetooth. Sixaxis motion, ten pressure axes, rumble, player LED, and battery all report.
 
 ### Pair a DualShock 3
@@ -969,14 +1066,14 @@ Sixaxis accelerometer and gyro through the gyro pipeline: gyro-to-mouse, gyro-to
 
 ### DualShock 3 virtual controller
 ![A PlayStation slot on the DualShock 3 preset](screenshots/playstation-ds3.jpg)
-The DualShock 3 (SIXAXIS) presets, with the pad's own 3D model in the Preview tab.
+The DualShock 3 (SIXAXIS) presets, with the pad's own 3D model in the Picture view.
 
 ### Web controller
 ![Web Controller](screenshots/web-controller.jpg)
-Connect a phone or tablet over Wi-Fi or scan the Dashboard QR code. Ten controller layouts, a multi-touch touchpad, and a blank-surface builder, with virtual sticks, D-pad, analog trigger sliders, and rumble. Touch the sticks to push them. Tap to click. Served over HTTPS so the browser will hand over the handset's motion sensors.
+Connect a phone or tablet over Wi-Fi or scan the QR code on the Web Controller page. Ten controller layouts, a multi-touch touchpad, and a blank-surface builder, with virtual sticks, D-pad, analog trigger sliders, and rumble. Touch the sticks to push them. Tap to click. Served over HTTPS so the browser will hand over the handset's motion sensors.
 
 ### Plain HTTP address
-![The Plain HTTP Address section on the Dashboard](screenshots/dashboard-web-plain.jpg)
+![Plain HTTP Address on the Web Controller page, under More](screenshots/dashboard-web-plain.jpg)
 A second address over plain HTTP, behind a ten-character access code, for browsers that refuse the certificate and for tunnels.
 
 ### Remote Link
@@ -984,16 +1081,16 @@ A second address over plain HTTP, behind a ten-character access code, for browse
 Pair your PCs and share their controllers every way. A wheel on one drives a game on another, with rumble, force feedback, adaptive triggers, lightbar, player LEDs, and speaker audio returning to the physical pad. Pair each pair once with a six-digit code. Trusted PCs reconnect on their own.
 
 ### Head tracking
-![The Head Tracking section on the Dashboard](screenshots/dashboard-head-tracking.jpg)
+![The Head Tracking page, under Extras](screenshots/dashboard-head-tracking.jpg)
 OpenTrack over UDP, the FreeTrack 2.0 shared memory, and a VR headset through an OpenXR runtime, as one six-axis Head Tracker device. Set the UDP port, the rotation range in degrees, and the translation range in centimeters, and pin any single axis to its own range.
 
 ### Game Mods
-![The Game Mods section on the Dashboard](screenshots/game-mods.jpg)
-Accept DSX Game Mods, the port mods send to, the DSX.exe stand-in some mods look for, and the line that says the server is listening.
+![The Game Mods page, under Extras](screenshots/game-mods.jpg)
+Accept DSX Game Mods and the line that says the server is listening, with the port mods send to and the DSX.exe stand-in some mods look for under More.
 
 ### Game Telemetry
-![The Game Telemetry section on the Dashboard](screenshots/game-telemetry.jpg)
-Listen for Game Telemetry, the game, the port, Forward to Port and Full Speed, with the line that waits for a game.
+![The Game Telemetry page, under Extras](screenshots/game-telemetry.jpg)
+Listen for Game Telemetry, the game, and the line that waits for a game, with the ports, Forward to Port, Full Speed and Custom Formats… under More.
 
 ### Custom telemetry formats
 ![The Custom Telemetry Formats window](screenshots/telemetry-custom-formats.jpg)
@@ -1007,30 +1104,42 @@ Read the G-keys on a Logitech keyboard, and a Logitech mouse's buttons 6 through
 
 ### Assignment prompts
 ![The Assignment Prompts card in Settings](screenshots/settings-assignment-prompts.jpg)
-When a device connects while a virtual controller's page is open, PadForge offers to assign it there. Two opt-outs, both on. Keyboards, mice, touchpads, and media keys are never offered.
+When a device connects while a virtual controller's page is open, PadForge offers to assign it there, and Home offers a new device a virtual controller of its own. Three switches, all on. Nothing is assigned until you accept an offer, and keyboards, mice, touchpads, and media keys are never offered.
 
-### Handheld PC buttons
-![The Handheld PC Buttons card in Settings](screenshots/settings-handheld-buttons.jpg)
-Learn a handheld's rear paddles, menu keys, and vendor hotkeys by pressing each one. Learned key combinations are swallowed before the shell sees them.
+### Hardware Support
+![The Hardware Support card in Settings](screenshots/settings-handheld-buttons.jpg)
+Flydigi Enhanced Protocol, Read Logitech G-Keys, Read Analog Keyboards and Read Bliss-Box Adapters, the last two each with a line that says what it found, then Handheld PC Buttons: learn a handheld's rear paddles, menu keys, and vendor hotkeys by pressing each one. Learned key combinations are swallowed before the shell sees them.
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language (109 languages, switched live with no restart, and laid out right to left for Arabic, Persian, Urdu, and Central Kurdish). Theme (System Default / Light / Dark). Updates. Polling rate (60 to 10000 Hz). Auto-start at login, minimize to tray, master input-hiding toggle. Driver status for HidHide, HIDMaestro, Windows MIDI Services, and SteamVR.
+Five groups and a search box. General: Language (109 languages, switched live with no restart, and laid out right to left for Arabic, Persian, Urdu, and Central Kurdish), Theme (System Default / Light / Dark), Start at Login, Minimize to System Tray, and Updates. Input: the Input Engine with its Polling Rate (60 to 10000 Hz), Assignment Prompts and Battery Alerts. Hardware: Hardware Support. Drivers: one list with a status and a button each for HidHide, HIDMaestro, BthPS3 Bluetooth, Windows MIDI Services, and SteamVR, and HidHide Options with the Hide Devices from Games switch for every device. Data & Privacy: Community Configs, the settings file and Diagnostics.
+
+### Settings search
+![The Settings search box with a result](screenshots/settings-search.jpg)
+Type in the search box at the top of Settings and the settings that match show, whatever group they are in.
 
 ### Input Engine
 ![The Input Engine card in Settings](screenshots/settings-input-engine.jpg)
-Read Analog Keyboards and Read Bliss-Box Adapters, each with a line that says what it found.
+Auto-Start Engine on Launch, Continue Polling When Window Loses Focus, the Polling Rate in Hz and the Inactivity Timeout.
 
 ### Keyboard screens
-![The Keyboard Screens card in Settings](screenshots/settings-keyboard-screens.jpg)
+![Keyboard Screens in Settings, under Hardware](screenshots/settings-keyboard-screens.jpg)
 Drive Keyboard Screens, the lines that say what a PC without a screen is missing, and the S.T.R.I.K.E. 7 library's buttons.
 
 ### Screen Overlay
-![The Screen Overlay card on the Dashboard](screenshots/screen-overlay.jpg)
-Enable Screen Overlay, its opacity, Choose What It Shows and Add Overlay.
+![The Screen Overlay page, under Extras](screenshots/screen-overlay.jpg)
+Enable Screen Overlay, its opacity, Choose What It Shows… and Add Overlay.
+
+### Crosshair
+![The Crosshair page, under Extras](screenshots/crosshair.jpg)
+Show Crosshair, the Style, and the live preview of a crosshair, with Add Crosshair for as many as ten.
+
+### Magnifier
+![The Magnifier page, under Extras](screenshots/magnifier.jpg)
+Show Magnifier, the Mode (Lens, Full Screen or Spotlight), what it centers on, and the Zoom.
 
 ### Novint Falcon library
-![The Novint Falcon card in Settings](screenshots/settings-novint-falcon.jpg)
+![Novint Falcon in Settings, under Hardware](screenshots/settings-novint-falcon.jpg)
 Drive Novint Falcon, the line that says which Force Dimension library loaded, and the buttons that choose one or fetch it.
 
 ### Updates
@@ -1045,6 +1154,8 @@ Checks GitHub 20 seconds after launch and every 12 hours. Install and Restart re
 
 - PadForge runs elevated so it can install and manage the HIDMaestro driver. Non-elevated games still read the virtual controllers normally.
 - HidHide's device hiding is machine-wide, not per-game.
+- A game in exclusive full screen hides the crosshairs and the magnifier's lens and spotlight. Run it windowed or borderless.
+- No wheel has run Vehicle mode centering or the Release Test, and no Flydigi Apex pad and no SInput pad has run against PadForge. Their sections above say what each was checked against.
 - MIDI runs on Windows MIDI Services where it is available: the API built into Windows, or a Windows MIDI Services runtime, which PadForge installs from Settings on Windows 11 24H2 or later. Where neither runs, as on Windows 10, on Windows 11 before 24H2 or in Legacy API mode, PadForge uses the legacy MIDI API, which cannot create a port. Each MIDI slot then sends to an existing port picked on its page, and MIDI input opens only the devices assigned to a slot.
 
 ---
@@ -1066,13 +1177,13 @@ A few features wait on their vendors, because an ARM64 program can load ARM64 li
 | VR headset and controllers through SteamVR | Not available. PadForge loads SteamVR's win64 library |
 | Logitech LIGHTSYNC, OpenXR headset input | Only if the vendor's software installs an ARM64 engine or runtime |
 
-The ARM64 build has not run on ARM64 hardware yet.
+An earlier build of this release ran on one Windows 11 ARM64 PC, with a virtual Xbox controller and a DualSense hidden from games, before the last HIDMaestro update. The other virtual controller types have not been run on ARM64 hardware, and no Bluetooth profile has been driven there with the bundled HIDMaestro.
 
 ### Drivers
 
 PadForge installs **HIDMaestro** the first time it starts an Xbox, PlayStation, Nintendo, or Extended virtual controller. HIDMaestro is the engine that creates virtual controllers. Assign a device to a slot and HIDMaestro spins up a HID device matching the controller "shape" you picked. A controller that is a USB device needs usbip-win2's virtual USB host controller, and the first one created installs it from the driver HIDMaestro carries inside itself. On x64 those are the composite USB controllers and a few profiles such as Xbox One S: Full. On Windows on ARM every virtual controller is one.
 
-To take HIDMaestro off the PC, open **Settings → HIDMaestro Driver** and select **Uninstall**. PadForge lists what HIDMaestro left first: its virtual controllers, its driver and signing certificate, its registry keys and its files, and the Windows settings it changed go back to what they were. Other programs that use HIDMaestro lose its driver until they next start, and PadForge installs it again the next time it starts a virtual controller. On a PC where PadForge is already gone, run `HIDMaestroUninstall.exe` from the [HIDMaestro release](https://github.com/hifihedgehog/HIDMaestro/releases/latest).
+To take HIDMaestro off the PC, open Settings, and in the **Drivers** group select **Uninstall** on the HIDMaestro row. PadForge lists what HIDMaestro left first: its virtual controllers, its driver and signing certificate, its registry keys and its files, and the Windows settings it changed go back to what they were. Other programs that use HIDMaestro lose its driver until they next start, and PadForge installs it again the next time it starts a virtual controller. On a PC where PadForge is already gone, run `HIDMaestroUninstall.exe` from the [HIDMaestro release](https://github.com/hifihedgehog/HIDMaestro/releases/latest).
 
 Three more drivers are optional. PadForge offers to install each one only when you need its feature:
 
@@ -1102,26 +1213,26 @@ See [BUILD.md](BUILD.md) for project structure, architecture notes, and develope
 
 ## Don't see your controller in the picker?
 
-PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. Of HIDMaestro's 344 profiles, 97 are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
+PadForge's controller picker holds the HIDMaestro profiles it can deploy. Of HIDMaestro's 344 profiles, 97 cannot be deployed yet, since they are missing their captured HID descriptors, so they don't appear. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
 
-To capture and use a profile locally:
+To capture and use a preset locally:
 
 1. Create or open any **Extended**-type slot.
-2. On the Controller page, click **Imported Profiles…** on the Extended config bar.
-3. Under **Connected Devices Available to Import**, pick your plugged-in device and click **Import**.
-4. The new profile appears in the slot's dropdown with a "(User Generated)" suffix and stays available across every Extended slot from then on.
+2. In its Mappings section, click **Controller Presets…** on the Extended Controller card under the picture.
+3. Under **Import from a Connected Device**, pick your plugged-in device and click **Import**.
+4. The new preset appears in the slot's **Preset** picker with a "(User Generated)" suffix and stays available across every Extended slot from then on.
 
-Profiles live inside `PadForge.xml` and travel with your settings.
+Presets live inside `PadForge.xml` and travel with your settings.
 
-To share a captured profile upstream:
+To share a captured preset upstream:
 
-1. In the same dialog, select your imported profile under **Your imported profiles**.
+1. In the same window, find your preset under **Imported**.
 2. Click **Export…** and save the JSON.
 3. Open a [profile contribution issue on HIDMaestro](https://github.com/hifihedgehog/HIDMaestro/issues/new?template=profile-contribution.yml) and attach the file. Once merged, the profile ships in the next HIDMaestro release for everyone.
 
-To import a profile someone else captured:
+To import a preset someone else captured:
 
-1. Click **Import from File…** in the same dialog and pick the `.json` they sent you.
+1. Click **Import from File…** in the same window and pick the `.json` they sent you.
 
 PadForge reads only the HID descriptor during capture. It does not record or forward your controller's input.
 
@@ -1145,7 +1256,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | Arcade I/O references | The protocols behind the SDL fork's drivers for Namco and Konami arcade I/O boards and JVS boards, read from [arcade-docs](https://github.com/shizmob/arcade-docs), [bemanitools](https://github.com/djhackersdev/bemanitools), [Dolphin](https://github.com/dolphin-emu/dolphin), [ITAIKO-firmware](https://github.com/itaiko-project/ITAIKO-firmware), [JoypadOS](https://github.com/joypad-ai/joypad-os), [jvsio](https://github.com/toyoshim/jvsio), [MAME](https://github.com/mamedev/mame), [OpenITG](https://github.com/openitg/openitg), [p4io-mdxfdrv](https://github.com/KokoseiJ/p4io-mdxfdrv), [RPCS3](https://github.com/RPCS3/rpcs3) and [TaikoZucchini](https://github.com/LucaSilva-r/TaikoZucchini). Documentation only, no code ships | Apache-2.0, BSD-3-Clause, GPL-2.0, GPL-2.0-or-later, GPL-3.0, MIT, StepMania license, Unlicense, WTFPL |
 | [AudioEndPointLibrary](https://github.com/Belphemur/AudioEndPointLibrary) | Layout of Windows' undocumented IPolicyConfig interface, which PadForge uses to re-enable a controller's audio endpoint, by Antoine Aflalo. Documentation only, no code ships | MIT |
 | [Aurora](https://github.com/Aurora-RGB/Aurora) and friends | Logitech LED SDK engine entry points, calling convention and zone layout behind Logitech lighting through G HUB, with [Artemis.Plugins](https://github.com/Artemis-RGB/Artemis.Plugins), [LogiLed2Corsair](https://github.com/VRocker/LogiLed2Corsair), [Logitech-LED](https://github.com/sidewinder94/Logitech-LED), [logitech-led-sdk-rs](https://github.com/nathaniel-daniel/logitech-led-sdk-rs) and [RGB.NET](https://github.com/DarthAffe/RGB.NET). PadForge loads G HUB's own engine and ships no Logitech code | MIT, PolyForm Noncommercial, GPL-2.0, MIT OR Apache-2.0, LGPL-2.1 |
-| [AutoEq](https://github.com/jaakkopasanen/AutoEq) | The parametric EQ profile format the Audio tab imports, by Jaakko Pasanen. Format reference only, no code ships | MIT |
+| [AutoEq](https://github.com/jaakkopasanen/AutoEq) | The parametric EQ profile format a controller's Parametric EQ card imports, by Jaakko Pasanen. Format reference only, no code ships | MIT |
 | [AutoHotkey](https://github.com/AutoHotkey/AutoHotkey) | SendInput techniques behind Text Block macros and the keyboard chord hook: Unicode typing, batch limits, the Win-key mask key and tagged injected input. Documentation only, no GPL code ships | GPL-2.0-or-later |
 | Bliss-Box references | The Bliss-Box API behind Read Bliss-Box Adapters, read from Bliss-Box LLC's [API Tool](https://sourceforge.net/p/bliss-box-api/code/HEAD/tree/) and [DeviceBuddy](https://github.com/ulao/DeviceBuddy), with button names from the Bliss-Box files in SteveFox1620's [retroarch-joypad-autoconfig](https://github.com/SteveFox1620/retroarch-joypad-autoconfig) fork, Controller Pak checksums checked against [libdragon](https://github.com/DragonMinded/libdragon), and the PlayStation pad reply from [psx-spx](https://psx-spx.consoledev.net/) and Linux's [psxpad-spi](https://github.com/torvalds/linux/blob/master/drivers/input/joystick/psxpad-spi.c) driver. Controller names and support notes also come from Bliss-Box LLC's [compatibility list](https://docs.google.com/spreadsheets/d/1oMFpFBTok4IsV2DBt48HlUafx2qMWoTxGjpKMFjfSDM/edit#gid=0), and the adapters' behavior was checked against their firmware. Documentation only, no code ships | BSD-style with redistribution free of charge (API Tool), source available (DeviceBuddy), Unlicense (libdragon), GPL-2.0-or-later (psxpad-spi), no license published (the autoconfig fork, psx-spx, the compatibility list, the firmware) |
 | [Bluepad32](https://github.com/ricardoquesada/bluepad32) | The Bluetooth HID feature-report request PadForge sends to identify a PS Move accessory, by Ricardo Quesada. Documentation only, no code ships | Apache-2.0 |
@@ -1249,7 +1360,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [psmoveapi](https://github.com/thp/psmoveapi) | PlayStation Move report layouts, sensor calibration decode, LED pacing and the read-over-USB, cache-for-Bluetooth calibration design, plus the EXT accessory handshake behind the Sharp Shooter and Racing Wheel, by Thomas Perl, cross-checked against the [moveonpc](https://github.com/nitsch/moveonpc/wiki) wiki. PadForge's implementation is original C# | BSD 2-Clause, none published (moveonpc) |
 | [$Q Recognizer](https://depts.washington.edu/acelab/proj/dollar/qdollar.html) | Touchpad shape-template matcher: re-derived C# port of the canonical JS reference by Magrofuoco / Vatavu / Anthony / Wobbrock | BSD 3-Clause |
 | [QMK Firmware](https://github.com/qmk/qmk_firmware) | Key positions and base-layer keys of the keyboards the Keyboard + Mouse preview draws, generated by tools/gen_kbm_layouts.py from QMK's layout data and, for the Q6, [Keychron's QMK fork](https://github.com/Keychron/qmk_firmware). The keys of keyboards flashed with SignalRGB's firmware, generated from both by tools/gen_plugin_key_tables.py, with the GMMK 3's LED order read from [QMK-OpenRGB](https://github.com/ell1010/QMK-OpenRGB) | GPL-2.0-or-later |
-| [QR-Code-generator](https://github.com/nayuki/QR-Code-generator) | Byte-mode QR encoder for the Dashboard's web controller card, ported from Nayuki's reference implementation | MIT |
+| [QR-Code-generator](https://github.com/nayuki/QR-Code-generator) | Byte-mode QR encoder for the Web Controller's addresses, ported from Nayuki's reference implementation | MIT |
 | Racing telemetry references | Shared-memory and UDP layouts behind Game Telemetry and the wheel RPM shift LEDs, read from [assettocorsasharedmemory](https://github.com/mdjarv/assettocorsasharedmemory), [CMTelemetry](https://github.com/gazz/CMTelemetry), [CrewChiefV4](https://gitlab.com/mr_belowski/CrewChiefV4), [dirt-rally-telemetry-dashboard](https://github.com/gabrielgouv/dirt-rally-telemetry-dashboard), [ets2-telemetry-udp](https://github.com/MrHokss/ets2-telemetry-udp), [f1-24-udp](https://github.com/MacManley/f1-24-udp), [fh6-tel](https://github.com/TheBanHammer/fh6-tel), [forza-data-web](https://github.com/geeooff/forza-data-web), [forza-telemetry](https://github.com/austinbaccus/forza-telemetry), [Forza-Telemetry-Splitter](https://github.com/jakemismas/Forza-Telemetry-Splitter), [InSim.NET](https://github.com/alexmcbride/insimdotnet), [irsdkSharp](https://github.com/SlevinthHeaven/irsdkSharp), [IRSDKSharper](https://github.com/mherbold/IRSDKSharper), [out-gauge-cluster](https://github.com/fuelsoft/out-gauge-cluster), [PCars2UdpNet](https://github.com/RacingSimTools/PCars2UdpNet), [project-cars-2-udp](https://github.com/MacManley/project-cars-2-udp), [pyirsdk](https://github.com/kutu/pyirsdk), [r3e-api](https://github.com/sector3studios/r3e-api), [rF2SharedMemoryMapPlugin](https://github.com/TheIronWolfModding/rF2SharedMemoryMapPlugin), [rFactorSharedMemoryMap](https://github.com/dallongo/rFactorSharedMemoryMap), [rust_ams2_sharedmem](https://github.com/chris-ldgk/rust_ams2_sharedmem), [scs-sdk-plugin](https://github.com/RenCloud/scs-sdk-plugin), [simapi](https://github.com/Spacefreak18/simapi), [tm-bt-led](https://github.com/mplutka/tm-bt-led) and [vAzhureRacingHub](https://github.com/vazhure/vAzhureRacingHub). The RPM lights' Assetto Corsa reader reproduces assettocorsasharedmemory's static-page struct prefix. No GPL or LGPL code ships | Apache-2.0, GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0, MIT, Unlicense, none published (CMTelemetry, rust_ams2_sharedmem) |
 | [RetroArch](https://github.com/libretro/RetroArch) | A custom web pad keeps each cluster's distance from the nearer edge of a wider screen, as RetroArch's overlays move their two halves. Documentation only, no GPL code ships | GPL-3.0-or-later |
 | Ring-Con references | The Ring-Con start and stop sequences behind the SDL fork's Switch driver and the strain scale PadForge reads, read from [demo-of-ring-con-with-web-hid](https://github.com/mascii/demo-of-ring-con-with-web-hid), [Eden](https://git.eden-emu.dev/eden-emu/eden), [joy](https://github.com/Yamakaky/joy) by Yamakaky, [joy-con-webhid](https://github.com/tomayac/joy-con-webhid), [Nintendo_Switch_Reverse_Engineering](https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering), [osc-ringcon](https://github.com/nil-vr/osc-ringcon), [Ringcon-Driver](https://github.com/ringrunnermg/Ringcon-Driver) and [RingconProtocolDebug](https://github.com/nobu-e758/RingconProtocolDebug). Documentation only, no code ships | Apache-2.0, GPL-3.0-or-later, MIT, none published (demo-of-ring-con-with-web-hid, Nintendo_Switch_Reverse_Engineering) |
@@ -1290,7 +1401,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [xbledctl](https://github.com/Leclowndu93150/xbledctl) | Xbox Guide button LED brightness: the `\\.\XboxGIP` interface research and LED packet layout PadForge's writer derives from | MIT |
 | Xbox controller references | The protocols behind the SDL fork's original Xbox, Steel Battalion, Xbox 360 chatpad and Xbox 360 uDraw drivers, and the Xbox 360 receivers PadForge binds to Windows' own driver, read from [brandonw.net](https://brandonw.net/udraw/), [Chatpad Super Driver](https://github.com/GAFBlizzard/chatpad-super-driver), [Cxbx-Reloaded](https://github.com/Cxbx-Reloaded/Cxbx-Reloaded), [euc.jp](http://euc.jp/periphs/xbox-controller.en.html) by ITO Takayuki, [JoypadOS](https://github.com/joypad-ai/joypad-os), [libSteelBattalion](https://github.com/faha223/libSteelBattalion), [libsteelbat](https://github.com/qdot/libsteelbat), [Linux kernel](https://github.com/torvalds/linux), [ogx360](https://github.com/Ryzee119/ogx360), [s-config.com](https://www.s-config.com/), [SBC](https://github.com/SantiagoSaldana/SBC), [Spivey's Corner](https://spivey.oriel.ox.ac.uk/corner/Notes_on_the_XBox360_chatpad), [steel-battalion-net](https://github.com/jcoutch/steel-battalion-net), [SteelBattalionController](https://github.com/faha223/SteelBattalionController), [SteelBattalionDriver](https://github.com/caosdoar/SteelBattalionDriver), [SteelBattalionMapper](https://github.com/Shopcreeper/SteelBattalionMapper), [tusb_xinput](https://github.com/Ryzee119/tusb_xinput), [uDrawTablet](https://github.com/brandonlw/uDrawTablet), [Xb2XInput](https://github.com/emoose/Xb2XInput), [xb360ChatpadToKM](https://github.com/jackdarker/xb360ChatpadToKM), [xbox360wirelesschatpad](https://github.com/Kytech/xbox360wirelesschatpad), [xboxdevwiki](https://xboxdevwiki.net/Xbox_Input_Devices), [xboxdrv](https://github.com/xboxdrv/xboxdrv) and [xemu](https://github.com/xemu-project/xemu). Documentation only, no code ships | Apache-2.0, GPL-2.0-or-later, GPL-3.0, GPL-3.0-or-later, LGPL-2.0-or-later, LGPL-3.0, MIT, none published (brandonw.net, euc.jp by ITO Takayuki, libSteelBattalion, libsteelbat, s-config.com, Spivey's Corner, uDrawTablet, xbox360wirelesschatpad, xboxdevwiki) |
 | [xone](https://github.com/medusalix/xone) / [xow](https://github.com/medusalix/xow) | GIP LED command documentation corroborating xbledctl. Documentation only, no GPL code ships | GPL-2.0-or-later |
-| [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger tab icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
+| [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
 | [Zergatul.Obs.InputOverlay](https://github.com/Zergatul/Zergatul.Obs.InputOverlay) | Mouse artwork in the Keyboard + Mouse visualization, by Igor Budzhak | MIT |
 | [ZstdSharp](https://github.com/oleg-st/ZstdSharp) | Zstandard decompression SteamKit2 uses for Steam depot chunks. A C# port of the zstd compression library, by Oleg Stepanischev | MIT |
 
@@ -1316,7 +1427,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **AntiMicroX** (GPL-3.0-or-later) documented the strategy and desktop layouts behind the starter profiles and the turbo behavior the pressure-scaled turbo avoids. Read as documentation only, no GPL code ships.
 - **Arcade I/O references**: the protocols behind the SDL fork's drivers for Namco and Konami arcade I/O boards and JVS boards were read from [arcade-docs](https://github.com/shizmob/arcade-docs) (WTFPL), [bemanitools](https://github.com/djhackersdev/bemanitools) (Unlicense), [Dolphin](https://github.com/dolphin-emu/dolphin) (GPL-2.0-or-later), [ITAIKO-firmware](https://github.com/itaiko-project/ITAIKO-firmware) (MIT), [JoypadOS](https://github.com/joypad-ai/joypad-os) (Apache-2.0), [jvsio](https://github.com/toyoshim/jvsio) (BSD-3-Clause), [MAME](https://github.com/mamedev/mame) (BSD-3-Clause), [OpenITG](https://github.com/openitg/openitg) (MIT-style StepMania license), [p4io-mdxfdrv](https://github.com/KokoseiJ/p4io-mdxfdrv) (GPL-3.0), [RPCS3](https://github.com/RPCS3/rpcs3) (GPL-2.0) and [TaikoZucchini](https://github.com/LucaSilva-r/TaikoZucchini) (MIT) as documentation. No code from them ships.
 - **AudioEndPointLibrary** (MIT, by Antoine Aflalo) documented the layout of Windows' undocumented IPolicyConfig interface, which PadForge uses to re-enable a controller's audio endpoint. No code from it ships.
-- **AutoEq** (MIT, by Jaakko Pasanen) defines the parametric EQ profile format the Audio tab imports. No code from it ships.
+- **AutoEq** (MIT, by Jaakko Pasanen) defines the parametric EQ profile format a controller's Parametric EQ card imports. No code from it ships.
 - **AutoHotkey** (GPL-2.0-or-later) documented the SendInput techniques behind Text Block macros and the keyboard chord hook: Unicode typing, batch limits, the Win-key mask key and tagged injected input. Read as documentation only, no GPL code ships.
 - **Bliss-Box references**: the Bliss-Box API behind Read Bliss-Box Adapters was read from Bliss-Box LLC's [API Tool](https://sourceforge.net/p/bliss-box-api/code/HEAD/tree/) (BSD-style with redistribution free of charge, by Sean Green, with John "Nielk1" Klein's Controller Pak work) and [DeviceBuddy](https://github.com/ulao/DeviceBuddy) (source available, Bliss-Box LLC), with button names from the Bliss-Box files in SteveFox1620's [retroarch-joypad-autoconfig](https://github.com/SteveFox1620/retroarch-joypad-autoconfig) fork (no license published), Controller Pak checksums checked against [libdragon](https://github.com/DragonMinded/libdragon) (Unlicense), and the PlayStation pad reply from [psx-spx](https://psx-spx.consoledev.net/) (Martin Korth's specification and its contributors, no license published) and Linux's [psxpad-spi](https://github.com/torvalds/linux/blob/master/drivers/input/joystick/psxpad-spi.c) driver (GPL-2.0-or-later). Controller names and support notes also come from Bliss-Box LLC's [compatibility list](https://docs.google.com/spreadsheets/d/1oMFpFBTok4IsV2DBt48HlUafx2qMWoTxGjpKMFjfSDM/edit#gid=0) (no license published), and the adapters' behavior was checked against their firmware (Bliss-Box LLC, no license published). Read as documentation only, no code ships.
 - **Bluepad32** (Apache-2.0, by Ricardo Quesada) documented the Bluetooth HID feature-report request PadForge sends to identify a PS Move accessory. Read as documentation only, no code ships.
@@ -1414,7 +1525,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **psmoveapi** is licensed under the BSD 2-Clause License. Copyright (c) 2011, 2012 Thomas Perl. Reference for the PlayStation Move report layouts, sensor calibration decode, LED pacing, calibration caching and the EXT accessory handshake behind the Sharp Shooter and Racing Wheel, cross-checked against the [moveonpc](https://github.com/nitsch/moveonpc/wiki) wiki, which publishes no license. PadForge's implementation is original C#.
 - **$Q Recognizer** is licensed under the BSD 3-Clause License. Copyright (c) 2018-2019, Nathan Magrofuoco, Jacob O. Wobbrock, Radu-Daniel Vatavu, and Lisa Anthony. The touchpad shape-matcher in PadForge.Engine.Touchpad.ShapeRecognizer is a C# re-derivation of the canonical JavaScript reference at depts.washington.edu/acelab/proj/dollar/qdollar.js.
 - **QMK Firmware** and [Keychron's QMK fork](https://github.com/Keychron/qmk_firmware) are licensed under the GNU General Public License v2.0 or later. The key positions and base-layer keys of the keyboards the Keyboard + Mouse preview draws are generated from their layout data by tools/gen_kbm_layouts.py, the keys of keyboards flashed with SignalRGB's firmware from their LED lists, layouts and default keymaps by tools/gen_plugin_key_tables.py, and LICENSE carries the full GPL-2.0 text.
-- **QR-Code-generator** is licensed under the MIT License. Copyright (c) Project Nayuki. The Dashboard web controller card's QR encoder is a C# port of its reference implementation.
+- **QR-Code-generator** is licensed under the MIT License. Copyright (c) Project Nayuki. The QR encoder for the Web Controller's addresses is a C# port of its reference implementation.
 - **Racing telemetry references**: the shared-memory and UDP layouts behind Game Telemetry and the wheel RPM shift LEDs were read from assettocorsasharedmemory (MIT, Copyright (c) 2016 Mathias Djärv, whose static-page struct prefix the RPM lights' Assetto Corsa reader reproduces), CMTelemetry (no license published), CrewChiefV4 (MIT, Copyright (c) 2019-2024 Britton IT Ltd), dirt-rally-telemetry-dashboard (MIT), ets2-telemetry-udp (MIT), f1-24-udp (MIT), fh6-tel (MIT), forza-data-web (Apache-2.0), forza-telemetry (MIT), Forza-Telemetry-Splitter (MIT), InSim.NET (LGPL-2.1), irsdkSharp (MIT), IRSDKSharper (GPL-3.0), out-gauge-cluster (Apache-2.0), PCars2UdpNet (MIT), project-cars-2-udp (MIT), pyirsdk (MIT), r3e-api (Unlicense), rF2SharedMemoryMapPlugin (GPL-3.0), rFactorSharedMemoryMap (GPL-2.0), rust_ams2_sharedmem (no license published), scs-sdk-plugin (MIT), simapi (LGPL-3.0), tm-bt-led (MIT) and vAzhureRacingHub (GPL-3.0). Apart from that struct prefix, the readers are original C#, and no GPL or LGPL code ships.
 - **Razer Chroma** framing was corroborated against [Colore](https://github.com/chroma-sdk/Colore) (MIT, by Adam Hellberg and Brandon Scott) as documentation. No code from it ships.
 - **RetroArch** (GPL-3.0-or-later): a custom web pad keeps each cluster's distance from the nearer edge of a wider screen, as RetroArch's overlays move their two halves. Read as documentation only, no GPL code ships.
@@ -1452,7 +1563,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **X1nput** (MIT, by araghon007) documented the Xbox impulse-trigger 9-byte report and its write path. No code from it ships.
 - **xbledctl** is licensed under the MIT License. Copyright (c) 2026 Leclowndu93150. PadForge's Xbox Guide LED writer derives its `\\.\XboxGIP` packet layout and device-discovery sequence from it.
 - **Xbox controller references**: the protocols behind the SDL fork's original Xbox, Steel Battalion, Xbox 360 chatpad and Xbox 360 uDraw drivers, and the Xbox 360 receivers PadForge binds to Windows' own driver were read from [brandonw.net](https://brandonw.net/udraw/) (no license published), [Chatpad Super Driver](https://github.com/GAFBlizzard/chatpad-super-driver) (MIT), [Cxbx-Reloaded](https://github.com/Cxbx-Reloaded/Cxbx-Reloaded) (GPL-2.0-or-later), [euc.jp](http://euc.jp/periphs/xbox-controller.en.html) by ITO Takayuki (all rights reserved, read through the Wayback Machine), [JoypadOS](https://github.com/joypad-ai/joypad-os) (Apache-2.0), [libSteelBattalion](https://github.com/faha223/libSteelBattalion) (no license published), [libsteelbat](https://github.com/qdot/libsteelbat) (no license published), [Linux kernel](https://github.com/torvalds/linux) (GPL-2.0-or-later), [ogx360](https://github.com/Ryzee119/ogx360) (GPL-3.0-or-later), [s-config.com](https://www.s-config.com/) (no license published), [SBC](https://github.com/SantiagoSaldana/SBC) (MIT in its license file and headers, LGPL-2.1-or-later in its readme), [Spivey's Corner](https://spivey.oriel.ox.ac.uk/corner/Notes_on_the_XBox360_chatpad) (no license published), [steel-battalion-net](https://github.com/jcoutch/steel-battalion-net) (LGPL-3.0 text, GPL-3.0-or-later file headers), [SteelBattalionController](https://github.com/faha223/SteelBattalionController) (Apache-2.0), [SteelBattalionDriver](https://github.com/caosdoar/SteelBattalionDriver) (GPL-3.0), [SteelBattalionMapper](https://github.com/Shopcreeper/SteelBattalionMapper) (GPL-3.0-or-later), [tusb_xinput](https://github.com/Ryzee119/tusb_xinput) (MIT, with its JoypadOS fork at https://github.com/joypad-ai/tusb_xinput, MIT), [uDrawTablet](https://github.com/brandonlw/uDrawTablet) (no license published), [Xb2XInput](https://github.com/emoose/Xb2XInput) (GPL-3.0), [xb360ChatpadToKM](https://github.com/jackdarker/xb360ChatpadToKM) (GPL-3.0), [xbox360wirelesschatpad](https://github.com/Kytech/xbox360wirelesschatpad) (a warranty disclaimer, no license grant), [xboxdevwiki](https://xboxdevwiki.net/Xbox_Input_Devices) (no license published), [xboxdrv](https://github.com/xboxdrv/xboxdrv) (GPL-3.0-or-later) and [xemu](https://github.com/xemu-project/xemu) (LGPL-2.0-or-later) as documentation. No code from them ships.
-- **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.
+- **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger icon geometry derives from it.
 - **ZstdSharp** is licensed under the MIT License. Copyright (c) 2021 Oleg Stepanischev. Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd compression library.
 See [LICENSE](LICENSE) for the full license text.
 

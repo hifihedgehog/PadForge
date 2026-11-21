@@ -266,7 +266,7 @@ Drivers that install into Windows follow the machine. HIDMaestro 2.3.0 and BthPS
 
 Of the Visual C++ runtime, both builds bundle `vcruntime140.dll` and `msvcp140.dll`. `SDL3.dll` imports `msvcp140.dll` for the Elite paddle reader, which is C++. Neither item carries an `Exists` condition, so a missing file stops the build and names it. `vcruntime140_1.dll` is x64 only. It holds an exception handler that exists for the x64 ABI alone, and the copy in Microsoft's ARM64 redist folder is an x64 image. `BundledSdlRuntimeImportsTests` reads each bundled `SDL3.dll` for the runtime DLLs it names and fails when one is not in that architecture's `Resources/VisualCpp` folder. It did exactly that when the ARM64 `SDL3.dll` first arrived with the paddle reader in it.
 
-None of the ARM64 path has run on ARM64 hardware. The bench is x64.
+An earlier build of 6.0.0 ran on one Windows 11 ARM64 PC, with a virtual Xbox controller and a DualSense hidden through HidHide, before the last HIDMaestro update. The rest of the ARM64 path has not run on ARM64 hardware.
 
 ## Runtime Requirements
 
@@ -291,8 +291,9 @@ None of the ARM64 path has run on ARM64 hardware. The bench is x64.
 ## Architecture Notes
 
 ### Threading Model
-- **InputManager** runs a background thread at configurable polling rate (default ~1000Hz).
-  Uses hybrid sleep/spin-wait for sub-ms precision.
+- **InputManager** runs a background thread at a configurable polling rate, 60 to 10000 Hz, 1000 by default
+  (`MinPollingRateHz`, `MaxPollingRateHz`, `DefaultPollingRateHz`). It sleeps on a high-resolution waitable timer
+  between passes and does not spin. Above the rate Windows wakes it at, the passes due at one wake run back to back.
 - **InputService** runs a DispatcherTimer on the UI thread at ~30Hz.
 - State transfer: InputManager writes to `CombinedOutputStates[]` and the per-type raw arrays
   (`CombinedRawHidStates[]`, `CombinedKbmRawStates[]`, `CombinedMidiRawStates[]`,
@@ -315,7 +316,7 @@ All gamepad-style virtuals run on HIDMaestro via `HMaestroVirtualController.cs`:
 - **Nintendo**: the Switch Pro Controller and Switch 2 Pro Controller profiles, up to 16 simultaneous
 - **Extended**: every other offered HIDMaestro profile (third-party pads, wheels, flight sticks) plus fully custom HID descriptors, up to 16 simultaneous
 
-HIDMaestro ships 344 profiles. PadForge offers the 246 that carry a captured HID descriptor (`HMProfile.IsDeployable`), all but the GameCube adapter's Full persona, which it withholds (`HMaestroProfileCatalog.WithheldProfileIds`), split by `HMaestroProfileCatalog` into these four buckets and the Keyboard + Mouse slot's two device lists: the 51 keyboard profiles and the 52 mouse profiles.
+HIDMaestro ships 344 profiles. 247 can be deployed (`HMProfile.IsDeployable`): 246 from a captured HID descriptor, and the Xbox One S: Full profile, which deploys without one. PadForge offers the 246 of those it does not withhold, every one but the GameCube adapter's Full persona (`HMaestroProfileCatalog.WithheldProfileIds`). The other 97 cannot be deployed yet. The offered profiles are split by `HMaestroProfileCatalog` into these four buckets and the Keyboard + Mouse slot's two device lists: the 51 keyboard profiles and the 52 mouse profiles.
 
 Non-gamepad virtuals:
 - **KeyboardMouse**: `KeyboardMouseVirtualController.cs`, up to 16 simultaneous. Each half sends through Windows input (`SendInput`) or through a HIDMaestro keyboard or mouse picked on the slot

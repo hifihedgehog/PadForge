@@ -114,29 +114,39 @@ namespace PadForge.Tests
 
         /// <summary>
         /// Every profile count README.md and BUILD.md give matches the
-        /// HIDMaestro.Core that ships: the catalog size, the profiles
-        /// PadForge offers (a captured descriptor, nothing withheld, Custom
-        /// not counted), and the profiles that lack a captured descriptor.
-        /// Three README sites and BUILD.md still said 231 and 133 after two
-        /// HIDMaestro bumps moved the rest. The missing captures are counted
-        /// on their own: a withheld profile has a capture, so the catalog
-        /// less the offered profiles overstated them once HIDMaestro 2.0.0
-        /// gave the withheld Wii U GameCube adapter its descriptor. The
-        /// released "New in" blocks keep the counts of their release.
+        /// HIDMaestro.Core that ships: the catalog size, the profiles that
+        /// can be deployed, the profiles PadForge offers (deployable, nothing
+        /// withheld, Custom not counted), and the profiles that cannot be
+        /// deployed. Three README sites and BUILD.md still said 231 and 133
+        /// after two HIDMaestro bumps moved the rest. The profiles that
+        /// cannot be deployed are counted on their own: a withheld profile
+        /// can be deployed, so the catalog less the offered profiles
+        /// overstated them once HIDMaestro 2.0.0 gave the withheld Wii U
+        /// GameCube adapter its descriptor. The released "New in" blocks
+        /// keep the counts of their release.
+        ///
+        /// <para>Both files said the offered profiles are the ones that
+        /// carry a captured descriptor, and that the rest "are missing
+        /// their captures". HIDMaestro 2.3.0 made both wrong by one: its
+        /// Xbox One S: Full profile deploys without a captured descriptor.
+        /// The sentences now say how many profiles can and cannot be
+        /// deployed, which is what this test counts.</para>
         /// </summary>
         [Fact]
         public void EveryProfileCountMatchesTheBundledCatalog()
         {
-            int total, offered, missing;
+            int total, deployable, offered, undeployable;
             using (var ctx = new HMContext())
             {
                 ctx.LoadDefaultProfiles();
                 total = ctx.AllProfiles.Count;
+                deployable = ctx.AllProfiles.Count(p => p.IsDeployable);
                 offered = ctx.AllProfiles.Count(p => p.IsDeployable && !HMaestroProfileCatalog.IsWithheldProfile(p.Id));
-                missing = ctx.AllProfiles.Count(p => !p.IsDeployable);
+                undeployable = ctx.AllProfiles.Count(p => !p.IsDeployable);
             }
             Assert.True(total > offered && offered > 0, $"catalog {total}, offered {offered}");
-            Assert.True(missing > 0 && missing < total, $"catalog {total}, missing captures {missing}");
+            Assert.True(deployable >= offered && deployable < total, $"catalog {total}, deployable {deployable}, offered {offered}");
+            Assert.True(undeployable > 0 && undeployable < total, $"catalog {total}, cannot be deployed {undeployable}");
 
             var texts = new[] { ("README.md", ReadmeWithoutNewInBlocks()), ("BUILD.md", Text("BUILD.md")) };
 
@@ -153,8 +163,14 @@ namespace PadForge.Tests
                 foreach (string pattern in new[] { @"(\d+) of HIDMaestro['’]s", @"offers the (\d+)" })
                     foreach (Match m in Regex.Matches(text, pattern))
                         counts.Add(($"{name}: {m.Value}", int.Parse(m.Groups[1].Value), offered));
-                foreach (Match m in Regex.Matches(text, @"(\d+) are missing their captures"))
-                    counts.Add(($"{name}: {m.Value}", int.Parse(m.Groups[1].Value), missing));
+                foreach (string pattern in new[] { @"can deploy (\d+)", @"(\d+) can be deployed" })
+                    foreach (Match m in Regex.Matches(text, pattern))
+                        counts.Add(($"{name}: {m.Value}", int.Parse(m.Groups[1].Value), deployable));
+                var cannot = Regex.Matches(text, @"(\d+) cannot be deployed yet");
+                // Positive control: each file still says how many cannot be deployed.
+                Assert.True(cannot.Count >= 1, $"{name} no longer says how many profiles cannot be deployed yet");
+                foreach (Match m in cannot)
+                    counts.Add(($"{name}: {m.Value}", int.Parse(m.Groups[1].Value), undeployable));
             }
 
             // Positive control: the patterns still find the sentences.
@@ -320,6 +336,7 @@ namespace PadForge.Tests
 
         private static readonly (string Version, string Sha256)[] RecordedNewInBlocks =
         {
+            ("6.0.0", "5bbc4a743ee1045ce22075837c7fe19dcbcb5330a1a14dd32277cfe51fecc8e1"),
             ("5.3.0", "d91993bdf93bbaaca8ed7e012a5255d7b4f9ebed189a1bfa160ad3c6b0be8ef3"),
             ("5.2.0", "9c5cd026ac4106c58c7ca644d7c0303e160f95e4f3cfd0dd456bc3db86334b00"),
             ("5.1.0", "31f173ae7831da8e37b738510723fbae62f05992a05e89ab3510b2c4ddcd3213"),

@@ -13,8 +13,9 @@
     <UserControl.Resources>
         <!-- A row, as the board draws one: 20 in from the card's edge and
              10 from its end, and with 2 over and under its 44 the board's
-             48. Its label takes the room and its controls stand at its end
-             (SettingRow.Ends, set on the groups' host). -->
+             48. Its label takes the room and its controls stand at the
+             card's end (SettingRow.Ends and no reach, set on the groups'
+             host). -->
         <Style TargetType="controls:SettingRow">
             <Setter Property="Margin" Value="20,2,10,2"/>
         </Style>
@@ -285,7 +286,7 @@
                 </Grid>
 
                 <StackPanel x:Name="GroupsHost" controls:FlexLinePanel.Basis="480" controls:FlexLinePanel.Grow="999" MaxWidth="822"
-                            VerticalAlignment="Top" controls:SettingRow.Ends="True">
+                            VerticalAlignment="Top" controls:SettingRow.Ends="True" controls:SettingRow.Reach="Infinity">
                     <TextBlock x:Name="SearchNoneLine" common:LiveText.Polite="True" Visibility="Collapsed" Margin="0,9,0,0"
                                TextWrapping="Wrap" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                AutomationProperties.AutomationId="Settings_SearchNone"/>

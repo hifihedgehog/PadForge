@@ -49,7 +49,11 @@ namespace PadForge.Controls
     /// a card stay in one column whatever each row reports. The child
     /// marked to fill is the one that gives way first when the row is
     /// narrow, down to <see cref="FillLeast"/>, and then the label wraps.
-    /// The reach does not apply: the page holds its cards to a column.</para>
+    /// Such a row keeps its parts within its reach as every row does, so
+    /// its reset stands in the column of its card's other resets, unless
+    /// its words on one line need more. The Settings page sets no reach:
+    /// it holds its cards to a column and its board puts the controls at
+    /// the card's end.</para>
     /// </summary>
     public sealed class SettingRow : Panel
     {
@@ -308,7 +312,8 @@ namespace PadForge.Controls
             _fillWanted = fillWanted;
             _fillLeast = fillLeast;
 
-            var (leadWidth, fillWidth) = EndsWidths(availableSize.Width, leadWanted, fixedWidth, fillWanted, fillLeast);
+            double room = EndsRoom(availableSize.Width);
+            var (leadWidth, fillWidth) = EndsWidths(room, leadWanted, fixedWidth, fillWanted, fillLeast);
             // A part that gets the width it asked for keeps the measure it
             // had with no bound, as FlexLinePanel's parts do. Measured again
             // at that width, which layout rounding may have taken part of a
@@ -330,13 +335,21 @@ namespace PadForge.Controls
             return new Size(width, height);
         }
 
+        /// <summary>The room a row whose controls stand at its end lays its
+        /// parts out in: its reach, or what its parts ask for on one line
+        /// when that is more, never more than its width.</summary>
+        private double EndsRoom(double width)
+            => RoomFor(width, GetReach(this), _leadWanted + _endsFixed + _fillWanted);
+
         private Size ArrangeEnds(Size finalSize)
         {
             var (lead, fill, control, trailing) = EndsParts();
-            double fillWidth = EndsWidths(finalSize.Width, _leadWanted, _endsFixed, _fillWanted, _fillLeast).Fill;
+            double room = EndsRoom(finalSize.Width);
+            double fillWidth = EndsWidths(room, _leadWanted, _endsFixed, _fillWanted, _fillLeast).Fill;
 
-            // The trailing parts from the row's end, the first outermost.
-            double right = finalSize.Width;
+            // The trailing parts from the end of the row's room, the first
+            // outermost.
+            double right = room;
             foreach (UIElement child in InternalChildren)
             {
                 if (child == null || child.Visibility == Visibility.Collapsed || !IsTrailing(child)) continue;

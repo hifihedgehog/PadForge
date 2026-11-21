@@ -471,8 +471,9 @@ namespace PadForge.Tests
 
         /// <summary>The Settings board's row: the label takes the room the
         /// row has left, the control stands at the row's end and the reset
-        /// after it, 12 on. The row takes its whole width whatever the
-        /// reach is. A row with no reset ends on its control.</summary>
+        /// after it, 12 on. On the Settings page, which sets no reach, the
+        /// row takes its whole width. A row with no reset ends on its
+        /// control.</summary>
         [Fact]
         public void WithEndsSet_TheLabelTakesTheRoom_AndTheControlStandsAtTheRowsEnd() => RunSta(() =>
         {
@@ -483,6 +484,7 @@ namespace PadForge.Tests
             var host = new StackPanel();
             host.Children.Add(row);
             SettingRow.SetEnds(host, true);
+            SettingRow.SetReach(host, double.PositiveInfinity);
             Assert.True(SettingRow.GetEnds(row));
 
             var label = new TextBlock { Text = "Start at Login", Margin = new Thickness(0, 0, 12, 0), TextWrapping = TextWrapping.Wrap };
@@ -521,6 +523,40 @@ namespace PadForge.Tests
             Assert.Equal(768, LayoutInformation.GetLayoutSlot(label).Width);
         });
 
+        /// <summary>A switch row in a card wider than the reach keeps its
+        /// switch and reset within the reach, so the resets of a card stand
+        /// in one column, as the boards draw them (every row's reset is the
+        /// last 30 of its column, Motion.dc.html lines 53 and 56). On the
+        /// controller page the switch rows ran to the card's far edge while
+        /// its slider and picker rows stopped at the reach (seen in the
+        /// 6.0.0 screenshots: Mouse Gestures, Gyro's More).</summary>
+        [Fact]
+        public void WithEndsSet_InACardWiderThanTheReach_TheResetStandsInTheSliderRowsColumn() => RunSta(() =>
+        {
+            var card = new StackPanel();
+            var (sliderRow, _, _, _, sliderReset) = SliderRow(withReach: true);
+            var row = new SettingRow { MinHeight = 44 };
+            SettingRow.SetEnds(row, true);
+            var label = new TextBlock { Text = "Invert Pitch (Y)", Margin = new Thickness(0, 0, 12, 0), TextWrapping = TextWrapping.Wrap };
+            var toggle = new Border { Width = 40, Height = 22 };
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            foreach (UIElement part in new UIElement[] { label, toggle, reset }) row.Children.Add(part);
+            card.Children.Add(sliderRow);
+            card.Children.Add(row);
+
+            Layout(card, 1300);
+            Assert.Equal(628, LeftOf(sliderReset, sliderRow));
+            Assert.Equal(LeftOf(sliderReset, card), LeftOf(reset, card));
+            Assert.Equal(628 - 12 - 40, LeftOf(toggle, row));
+            Assert.Equal(new Rect(0, 0, 628 - 12 - 40, 44), LayoutInformation.GetLayoutSlot(label));
+
+            // A card narrower than the reach: the row's own width.
+            Layout(card, 500);
+            Assert.Equal(468, LeftOf(reset, row));
+            Assert.Equal(LeftOf(sliderReset, card), LeftOf(reset, card));
+        });
+
         /// <summary>What a setting reports stands aside: before the switch
         /// it was written after, so the switches of a card keep one column
         /// whatever each row reports. It is the part that gives way in a
@@ -531,7 +567,7 @@ namespace PadForge.Tests
             Assert.Equal(96.0, SettingRow.FillLeast);
             const string LabelText = "Read Analog Keyboards", StatusText = "No supported analog keyboard found.";
             var margin = new Thickness(0, 0, 12, 0);
-            var row = new SettingRow { MinHeight = 44 };
+            var row = Unbounded(new SettingRow { MinHeight = 44 });
             SettingRow.SetEnds(row, true);
             var label = new TextBlock { Text = LabelText, Margin = margin, TextWrapping = TextWrapping.Wrap };
             var toggle = new Border { Width = 40, Height = 22 };
@@ -584,7 +620,7 @@ namespace PadForge.Tests
         [Fact]
         public void WithEndsSet_AFieldTakesItsMaxWidth_AndAPickerItsContent() => RunSta(() =>
         {
-            var row = new SettingRow { MinHeight = 44 };
+            var row = Unbounded(new SettingRow { MinHeight = 44 });
             SettingRow.SetEnds(row, true);
             var label = new Border { Width = 120, Height = 20 };
             var field = new Border { MaxWidth = 420, MinWidth = 200, Height = 30 };

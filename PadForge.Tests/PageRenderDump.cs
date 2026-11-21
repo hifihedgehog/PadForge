@@ -508,6 +508,21 @@ namespace PadForge.Tests
                         Lookups(all);
                         Fold(false, open);
                     }
+
+                    // The Gyro card alone on its row, as for a pad with no
+                    // touchpad (pad-ds3-gyro), its More open: the switch
+                    // rows and the slider rows of one card wider than the
+                    // rows' reach.
+                    vm.SelectedConfigTab = 8;
+                    var others = new[] { "TabTouchpad", "TabPointer" }.Select(n => (UIElement)page.FindName(n)).ToList();
+                    var shown = others.Select(o => o.Visibility).ToList();
+                    Picture("section-motion-gyro-alone.png", () =>
+                    {
+                        foreach (var other in others) other.Visibility = Visibility.Collapsed;
+                        Fold(true, new[] { "GyroSensitivityMore" });
+                    }, TallHeight);
+                    Fold(false, new[] { "GyroSensitivityMore" });
+                    for (int i = 0; i < others.Count; i++) others[i].Visibility = shown[i];
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
                 finally

@@ -12,7 +12,7 @@ namespace PadForge.Common.Input.Peripherals
     /// 4f2d8920. The collections are OpenRGB's registrations
     /// (CorsairPeripheralV2ControllerDetect.cpp, through
     /// <see cref="OpenRgbRegistrations"/>). Every frame is an output report,
-    /// report ID 0, as long as the device's packet size, 65 bytes or 1025
+    /// report ID 0, as long as the device's packet size, 65, 129 or 1025 bytes
     /// (<see cref="CorsairV2Device.PacketSize"/>), whose byte 1 is the write
     /// command: 08 for a wired device, 09 for one behind a receiver, 80 for
     /// the K57 (CorsairPeripheralV2Controller.h:24-30). A device only
@@ -30,7 +30,8 @@ namespace PadForge.Common.Input.Peripherals
     /// device's lighting register and packet size (lines 103-104), and the
     /// lighting resource: a transaction is opened on resource 22, and one the
     /// device refuses is opened on resource 1 instead, then closed (lines
-    /// 114-136), except on the K100s and the K65 Mini, which stay on 22. Then
+    /// 114-136), except on the K100s, the K70 PRO MINI WIRELESS and the K65 Mini,
+    /// which stay on 22. Then
     /// software render mode, 01 03 00 02, a read of the lighting register
     /// (CorsairPeripheralV2HardwareController.cpp:15-19,
     /// CorsairPeripheralV2SoftwareController.cpp:15-19), and the board
@@ -158,9 +159,10 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:74).</summary>
         internal const ushort K57Wired = 0x1B6E;
 
-        /// <summary>The K100s and the K65 Mini, whose lighting stays on resource
-        /// 22 (lines 114-123).</summary>
-        internal static bool KeepsResource22(uint productId) => productId is 0x1B7C or 0x1BC5 or 0x1B7D or 0x1BAF;
+        /// <summary>The K100s, the K70 PRO MINI WIRELESS and the K65 Mini, whose
+        /// lighting stays on resource 22 (CorsairPeripheralV2Controller.cpp:114-125 at
+        /// 6b681e3c).</summary>
+        internal static bool KeepsResource22(uint productId) => productId is 0x1B7C or 0x1BC5 or 0x1B7D or 0x1BB6 or 0x1BD3 or 0x1BAF;
 
         /// <summary>CORSAIR_V2_PACKET_SIZE, the packet size before a device is known
         /// (CorsairPeripheralV2Controller.h:30, the member's default).</summary>
@@ -240,13 +242,13 @@ namespace PadForge.Common.Input.Peripherals
         /// frames are this family's, opening the lighting endpoint and writing
         /// to it, and a mouse takes its colors as blocks of reds, greens and
         /// blues, as the plugin's ledSpacing says and this family's mice do. A
-        /// keyboard takes triplets at the plugin's LED numbers, which on the
-        /// K70 Pro Mini run four below this family's (its Esc is 37 where
-        /// OpenRGB's is 41). The K70 Pro's third ID takes OpenRGB's K70 Pro, as
-        /// the plugin lists them together. An ID that <see cref="OtherIds"/>
-        /// gives to a device of OpenRGB's list is left out: that device's
-        /// table lights it, and a second table here for the same keyboard
-        /// was one nothing chose while the first matched.
+        /// keyboard takes triplets at the plugin's LED numbers. The K70 Pro's third
+        /// ID takes OpenRGB's K70 Pro, as the plugin lists them together. An ID
+        /// of OpenRGB's list, or one <see cref="OtherIds"/> gives to a device of
+        /// that list, is left out: that device's table lights it, and a second
+        /// table here for the same keyboard was one nothing chose while the
+        /// first matched. The K70 PRO MINI WIRELESS left the plugin's rows when
+        /// OpenRGB listed it (3035206c).
         /// </summary>
         internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
             .Where(d => !IsReceiver(d.Product) && !OtherIds.ContainsKey((ushort)d.Product)
@@ -259,7 +261,10 @@ namespace PadForge.Common.Input.Peripherals
         /// plugin lists them together.</summary>
         private static CorsairV2Device PluginDevice(PluginCorsairDevice row)
         {
-            if (row.Product == 0x1BD4) return CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4, PictureHandle = 0 };
+            // The plugin's 65 and its collection's length, not OpenRGB's 129 for the
+            // K70 RGB PRO (634b62fe): a collection that takes more raises it in Begin.
+            if (row.Product == 0x1BD4)
+                return CorsairLights.K70RgbProDevice with { Name = "Corsair K70 RGB PRO", ProductId = 0x1BD4, PictureHandle = 0, PacketSize = CorsairLights.PacketLength };
             var table = row.Table();
             var lights = table.Usages != null
                 ? PluginKeyNames.Lights(table)

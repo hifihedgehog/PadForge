@@ -340,6 +340,54 @@ namespace PadForge.Tests
             Assert.True(session.Triplets);
         }
 
+        /// <summary>The K70 PRO MINI WIRELESS keeps resource 22 with the K100s and the K65
+        /// Mini (CorsairPeripheralV2Controller.cpp:114-125 at 6b681e3c, OpenRGB 3035206c), so a
+        /// refusal never moves it to resource 1, and it paints in 1025-byte reports.</summary>
+        [Theory]
+        [InlineData(0x1BB6)]
+        [InlineData(0x1BD3)]
+        public void TheK70ProMiniWireless_StaysOnResource22(int product)
+        {
+            var model = Family().Match(Collection((ushort)product));
+            Assert.Equal(product == 0x1BB6 ? "Corsair K70 PRO MINI WIRELESS Black" : "Corsair K70 PRO MINI WIRELESS White", model.Name);
+            var io = Device((uint)product, startError: 5);
+            var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            Assert.Equal(new[]
+            {
+                "out 00 08 01 03 00 02", "in 50",
+                "out 00 08 02 5F 00 00", "in 50",
+                "out 00 08 02 41 00 00", "in 50",
+            }, io.Log);
+            Assert.Equal(CorsairPeripheralV2Lighting.LightCtrl2, session.LightCtrl);
+            Assert.True(session.Triplets);
+            io.Log.Clear();
+            io.Outputs.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, session.Map.Lights, new int[session.Map.Lights.Count]));
+            Assert.Equal("out 00 08 0D 01 22 00", io.Log[0]);
+            Assert.Equal(1025, io.Outputs.Single(f => f[2] == 0x06).Length);
+        }
+
+        /// <summary>The K70 RGB PRO's ID only SignalRGB's plugin lists, 1BD4, takes OpenRGB's
+        /// K70 RGB PRO table and the plugin's rule for its reports: the collection's write length
+        /// (Corsair_Bragi_Device.js at 95031635, lines 1862-1864 and 2446-2474). OpenRGB's 129 for
+        /// the K70 RGB PRO (634b62fe) is no length of the plugin's, so a collection of 65 takes 65
+        /// and one of 129 takes 129.</summary>
+        [Theory]
+        [InlineData(65)]
+        [InlineData(129)]
+        public void TheK70RgbProsPluginId_WritesAtItsCollectionsLength(int length)
+        {
+            var model = Family().Match(Collection(0x1BD4));
+            Assert.Equal("Corsair K70 RGB PRO", model.Name);
+            var answers = Device(0x1BD4, pidByCmd: cmd => cmd == 0x09 ? 0xFFFFu : 0x1BD4u);
+            var io = new FakeCorsairChannel { OutputReportLength = length, InputReportLength = length, Answer = answers.Answer };
+            var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            Assert.Equal(0, session.Device.PictureHandle);
+            io.Outputs.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, session.Map.Lights, new int[session.Map.Lights.Count]));
+            Assert.All(io.Outputs, f => Assert.Equal(length, f.Length));
+        }
+
         [Fact]
         public void TheK57_WritesWith80_AndReadsNoAnswers()
         {

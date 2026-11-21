@@ -61,8 +61,9 @@ namespace PadForge.Common.Input.Peripherals
         public byte LightCtrlReg { get; init; } = 0x5F;
 
         /// <summary>pkt_size, the length of every report the device takes
-        /// (CorsairPeripheralV2Controller.cpp:103-104): 65, or 1025 for the K65 Mini
-        /// and the K70 RGB PRO V2. A picture is cut to fit it.</summary>
+        /// (CorsairPeripheralV2Controller.cpp:103-104): 65, 129 for the K70 RGB PRO,
+        /// or 1025 for the K65 Mini, the K70 RGB PRO V2, the K70 PRO MINI WIRELESS and
+        /// the K100 RGB Optical V1. A picture is cut to fit it.</summary>
         public int PacketSize { get; init; } = CorsairLights.PacketLength;
 
         /// <summary>The handle a picture is written on. OpenRGB opens handle 1 for

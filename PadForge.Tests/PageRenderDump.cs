@@ -742,6 +742,19 @@ namespace PadForge.Tests
             Shot("home-detailed-many.png", 1456, 1500, () => dash.HomeCards = HomeCardSize.Detailed);
             Shot("home-auto-tall.png", 1456, 1500, () => dash.HomeCards = HomeCardSize.Auto);
             Shot("home-auto-many-again.png", 1456, 988, null);
+            // The Web Controller's tile with its address, four tiles across
+            // and then narrower: the address breaks after "://" or before
+            // its port, never inside a number. Last, so no picture above
+            // changes with it.
+            Shot("home-address.png", PageWidth, 1500, () =>
+            {
+                dash.EnableGameTelemetry = true;
+                dash.EnableTwitchChat = true;
+                dash.HeadTrackingEnabled = true;
+                dash.WebControllerStatus = string.Format(s.Server_RunningOn_Format, "https://192.168.100.120:8080");
+            });
+            Shot("home-address-1040.png", 1040, 1500, null);
+            Shot("home-address-940.png", 940, 1500, null);
         }
 
         /// <summary>The still of every 3D model in its first finish, as a Home card's stage shows

@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using System.Xml.Serialization;
 using PadForge.Common.Input;
 using PadForge.Controls;
+using PadForge.Converters;
 using PadForge.Engine.Common.OpenXr;
 using PadForge.Services;
 using PadForge.ViewModels;
@@ -1217,6 +1218,100 @@ namespace PadForge.Tests
             Assert.Equal("Extras_Open_MotionServer",
                 AutomationProperties.GetAutomationId(Assert.IsType<Button>(tile.Template.FindName(ExtraTile.OpenPartName, tile))));
         });
+
+        /// <summary>Home's tile breaks an address between its parts, never
+        /// inside its port. A wrapped TextBlock breaks a word that does not
+        /// fit at the last character that does, and the Web Controller's
+        /// tile read "https://10.19.90.40:808" over "0" in a window one
+        /// character too narrow. The tile draws its status through
+        /// SoftBreakAddressConverter, which gives an address a break place
+        /// after "://" and before its port's colon. The status a screen
+        /// reader gets stays the string as written.</summary>
+        [Fact]
+        public void HomesTile_BreaksAnAddressBeforeItsPort_NeverInsideIt() => RunSta(() =>
+        {
+            const string address = "https://10.19.90.40:8080";
+            string status = string.Format(Strings.Instance.Server_RunningOn_Format, address);
+            string drawn = SoftBreakAddressConverter.Apply(status);
+            Assert.Equal(status.Replace(address, "https://\u200B10.19.90.40\u200B:8080"), drawn);
+            Assert.Equal("https://\u200B192.168.100.120\u200B:8080 and http://\u200B192.168.100.120\u200B:8081",
+                SoftBreakAddressConverter.Apply("https://192.168.100.120:8080 and http://192.168.100.120:8081"));
+            // A line with no address is drawn as written, a time and a port
+            // number in plain words among them.
+            foreach (string plainLine in new[] { "Listening on port 26760", "Waiting for a tracker on UDP port 4242.", "Stopped at 12:30", "", null })
+                Assert.Equal(plainLine, SoftBreakAddressConverter.Apply(plainLine));
+
+            var styles = ShippedStyles();
+            var row = new ExtraTile
+            {
+                Key = "WebController",
+                Glyph = "\uE774",
+                Title = "Web Controller",
+                Status = status,
+                ActionText = "Show QR",
+                IsOn = true,
+                Resources = styles,
+                Style = (Style)styles["HomeExtraTile"],
+            };
+            Assert.True(row.ApplyTemplate(), "Home's tile has no template");
+            var text = Assert.IsType<TextBlock>(row.Template.FindName("StatusText", row));
+            var open = Assert.IsType<Button>(row.Template.FindName(ExtraTile.OpenPartName, row));
+            Assert.Equal(drawn, text.Text);
+            Assert.Equal(status, AutomationProperties.GetItemStatus(open));
+
+            // The layout itself, in the tile's own face and size, at a width
+            // four pixels short of the whole address. Every line but the
+            // last ends at a space or at a break place, so no line ends
+            // inside the address.
+            List<string> Lines(string words, double width)
+            {
+                var block = new TextBlock
+                {
+                    Text = words,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontFamily = text.FontFamily,
+                    FontSize = text.FontSize,
+                    FontWeight = text.FontWeight,
+                };
+                block.Measure(new Size(width, double.PositiveInfinity));
+                block.Arrange(new Rect(new Size(width, block.DesiredSize.Height)));
+                var lines = new List<string>();
+                for (var at = block.ContentStart.GetLineStartPosition(0); at != null;)
+                {
+                    var next = at.GetLineStartPosition(1);
+                    lines.Add(new System.Windows.Documents.TextRange(at, next ?? block.ContentEnd).Text);
+                    at = next;
+                }
+                return lines;
+            }
+            static bool EndsAtABreak(string line) => line.EndsWith(' ') || line.EndsWith('\u200B');
+            double whole = new FormattedTextWidth(address, text).Width;
+            Assert.True(whole > 40, $"the address measured {whole:F1} px");
+            var broken = Lines(drawn, whole - 4);
+            Assert.True(broken.Count >= 2, "the line did not wrap at this width, so it proves nothing");
+            Assert.Equal(drawn, string.Concat(broken));
+            Assert.All(broken.Take(broken.Count - 1), line => Assert.True(EndsAtABreak(line), $"a line ends inside the address: \"{line}\""));
+            Assert.Contains(broken, line => line.Contains("10.19.90.40"));
+            // The control: the same words with no break place are cut
+            // inside the address at this width.
+            var cut = Lines(status, whole - 4);
+            Assert.Equal(status, string.Concat(cut));
+            Assert.Contains(cut.Take(cut.Count - 1), line => !EndsAtABreak(line));
+        });
+
+        /// <summary>The width of one unwrapped line in a text block's face,
+        /// size and weight.</summary>
+        private readonly struct FormattedTextWidth
+        {
+            public FormattedTextWidth(string words, TextBlock like)
+            {
+                var probe = new TextBlock { Text = words, FontFamily = like.FontFamily, FontSize = like.FontSize, FontWeight = like.FontWeight };
+                probe.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                Width = probe.DesiredSize.Width;
+            }
+
+            public double Width { get; }
+        }
 
         /// <summary>Every element of a type at or under a root, in the
         /// logical tree, which a template's content has before any layout.</summary>

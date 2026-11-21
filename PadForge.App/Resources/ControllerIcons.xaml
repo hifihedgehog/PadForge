@@ -1356,9 +1356,21 @@
                                                    TextTrimming="CharacterEllipsis"/>
                                         <!-- The extra's live status, as the catalog's tile
                                              has it: ember and semibold while the extra is
-                                             live. -->
-                                        <TextBlock x:Name="StatusText" Text="{TemplateBinding Status}" FontSize="13" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource EmberHotBrush}" FontWeight="SemiBold"/>
+                                             live. It wraps, and an address in it breaks
+                                             after "://" or before its port, never inside
+                                             a number: the converter gives it those two
+                                             break places. It is made here, not looked
+                                             up, as the format converter below is. -->
+                                        <TextBlock x:Name="StatusText" FontSize="13" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource EmberHotBrush}" FontWeight="SemiBold">
+                                            <TextBlock.Text>
+                                                <Binding Path="Status" RelativeSource="{RelativeSource TemplatedParent}">
+                                                    <Binding.Converter>
+                                                        <conv:SoftBreakAddressConverter/>
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                         <!-- "On." and the extra's one line from the
                                              catalog, while it reports no status. -->
                                         <TextBlock x:Name="OnLine" FontSize="13" TextWrapping="Wrap" Visibility="Collapsed"

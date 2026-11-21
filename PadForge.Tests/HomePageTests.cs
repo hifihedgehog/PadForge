@@ -888,8 +888,11 @@ namespace PadForge.Tests
             // Under the name: the status alone, ember and semibold while it
             // is live as on the catalog's tile, or the word On and the line
             // while there is no status.
-            At(home, "<TextBlock x:Name=\"StatusText\" Text=\"{TemplateBinding Status}\" FontSize=\"13\" TextWrapping=\"Wrap\"");
-            At(home, "Foreground=\"{DynamicResource EmberHotBrush}\" FontWeight=\"SemiBold\"/>");
+            At(home, "<TextBlock x:Name=\"StatusText\" FontSize=\"13\" TextWrapping=\"Wrap\"");
+            At(home, "Foreground=\"{DynamicResource EmberHotBrush}\" FontWeight=\"SemiBold\">");
+            // It draws the status through the converter that lets an
+            // address break before its port.
+            Assert.Matches(new Regex("<Binding Path=\"Status\" RelativeSource=\"\\{RelativeSource TemplatedParent\\}\">\\s*<Binding.Converter>\\s*<conv:SoftBreakAddressConverter/>"), home);
             At(home, "<Binding Path=\"Line\" RelativeSource=\"{RelativeSource TemplatedParent}\"/>");
             At(home, "<Binding Path=\"Home_ExtraOn_Format\" Source=\"{x:Static strings:Strings.Instance}\"/>");
             Assert.Matches(new Regex("<Trigger Property=\"Status\" Value=\"\">\\s*<Setter TargetName=\"StatusText\" Property=\"Visibility\" Value=\"Collapsed\"/>\\s*<Setter TargetName=\"OnLine\" Property=\"Visibility\" Value=\"Visible\"/>"), home);

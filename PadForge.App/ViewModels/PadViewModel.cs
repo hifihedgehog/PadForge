@@ -113,6 +113,11 @@ namespace PadForge.ViewModels
             // calls RebuildLayerTabs with the slot's actual activators
             // during ApplyProfile and after any add / edit / delete.
             RebuildLayerTabs(null);
+            // The Engage card's Gyro On Buttons list. It was built only when
+            // the activation's text or the shown layer changed, so a
+            // controller with no entry yet had nothing to tick once a mode
+            // asked for buttons.
+            ShowGyroActivationLayer();
         }
 
         private void OnCatalogReloaded(object sender, EventArgs e)

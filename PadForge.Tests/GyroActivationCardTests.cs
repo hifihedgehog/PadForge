@@ -105,6 +105,26 @@ namespace PadForge.Tests
             Assert.Equal("Layer_1=Hold,Any,", vm.GyroActivation);
         }
 
+        /// <summary>A controller that never had a Gyro On entry still lists
+        /// its buttons. The list was built only when the activation's text
+        /// or the shown layer changed, so on a new controller While Held
+        /// showed the Gyro On Buttons row with nothing in it to tick, until
+        /// the Layer picker moved. The list is now built with the
+        /// controller.</summary>
+        [Fact]
+        public void ANewControllersButtons_AreListed_BeforeAnyEntryExists()
+        {
+            var vm = new PadViewModel(0);
+            Assert.Equal("", vm.GyroActivation);
+            Assert.NotEmpty(vm.GyroActivationButtons);
+            Assert.DoesNotContain(vm.GyroActivationButtons, b => b.IsOn);
+
+            vm.GyroActivationMode = "Hold";
+            Assert.True(vm.GyroActivationUsesButtons);
+            Assert.Single(vm.GyroActivationButtons, b => b.Descriptor == "Gamepad ButtonA").IsOn = true;
+            Assert.Equal("Base=Hold,Any,Gamepad ButtonA", vm.GyroActivation);
+        }
+
         [Fact]
         public void AnImportedButtonTheListLacks_StillShowsChecked()
         {

@@ -193,15 +193,16 @@ namespace PadForge.Tests
 
         /// <summary>EVERY manual lane calls that choke point, which is the
         /// half the sibling test above assumed rather than checked. There are
-        /// four ways a user switches profiles by hand: the status-bar
-        /// switcher, the Profiles page Load button, Revert to Default, and a
-        /// controller shortcut. Only the switcher called
-        /// NoteManualProfileSwitch. The Load and Revert buttons noted nothing
-        /// at all, so auto-switch could yank the profile straight back, and
-        /// the shortcut lane set the override directly and left the external
-        /// pin standing, so the checkbox tooltip's promise that switching
-        /// profiles yourself releases a scripted hold was false on two of the
-        /// four. All four go through the one funnel now.</summary>
+        /// five ways a user switches profiles by hand: the title bar's
+        /// switcher, the Profiles page Load button, Revert to Default, a
+        /// controller shortcut, and a profile from Get Profiles applied at
+        /// once. Only the switcher called NoteManualProfileSwitch at first.
+        /// The Load and Revert buttons noted nothing at all, so auto-switch
+        /// could yank the profile straight back, and the shortcut lane set
+        /// the override directly and left the external pin standing, so the
+        /// checkbox tooltip's promise that switching profiles yourself
+        /// releases a scripted hold was false on two of the four lanes there
+        /// were then. All five go through the one funnel now.</summary>
         [Fact]
         public void EveryManualSwitchLaneGoesThroughThatChokePoint()
         {
@@ -224,10 +225,20 @@ namespace PadForge.Tests
             int revertApply = revertBody.IndexOf("_inputService.RevertToDefaultProfile();", StringComparison.Ordinal);
             Assert.True(revertNote > 0 && revertApply > revertNote);
 
-            // The status-bar switcher, which always did.
+            // The title bar's switcher, which always did.
             int sw = mw.IndexOf("private void ActivateProfileFromSwitcher(", StringComparison.Ordinal);
             Assert.True(sw > 0);
             Assert.Contains("_inputService.NoteManualProfileSwitch();", mw.Substring(sw, 900));
+
+            // A profile from Get Profiles applied at once, before the switch.
+            int workshop = mw.IndexOf("private string AddWorkshopProfile(Services.ProfileData profile, bool applyAfter)", StringComparison.Ordinal);
+            Assert.True(workshop > 0);
+            int workshopEnd = mw.IndexOf("return profile.Name;", workshop, StringComparison.Ordinal);
+            Assert.True(workshopEnd > workshop);
+            string workshopBody = mw.Substring(workshop, workshopEnd - workshop);
+            int workshopNote = workshopBody.IndexOf("_inputService.NoteManualProfileSwitch();", StringComparison.Ordinal);
+            int workshopApply = workshopBody.IndexOf("_inputService.LoadProfile(profile.Id);", StringComparison.Ordinal);
+            Assert.True(workshopNote > 0 && workshopApply > workshopNote);
 
             // The controller shortcut lane takes the funnel rather than
             // poking the foreground monitor and skipping the pin release.

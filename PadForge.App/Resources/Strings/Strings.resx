@@ -577,6 +577,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>The G-key SDK refused to start. Logitech Gaming Software is usually not running.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connected, no key seen yet. In Logitech Gaming Software, drag the G-key command onto each key in the PadForge profile, and make that profile persistent. A G600 or G300 mouse also has to be out of on-board memory mode.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Running, {0} key events</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Running, {0} key event</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Read Analog Keyboards</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Reads how far every key is pressed on analog keyboards from Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA, and other makers, each as its own device row. The documentation lists every supported model. Razer keyboards need Razer Synapse running. Most of the others are read over the channel their own configurator uses, so close the configurator while this is on.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No supported analog keyboard found.</value></data>
@@ -1006,6 +1007,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Send</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Frames: {0}. Sending takes about {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>The controller takes {0} frames at most, so the last {1} were left out.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>The controller takes {0} frames at most, so the last one was left out.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Connect the controller by cable. It restarts on its own about 15 seconds after the picture is in.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Connect the controller by cable. For the send, PadForge switches it to Xbox mode and moves it from Windows’ Xbox driver to WinUSB, then puts both back.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge will switch the controller to Xbox mode, move it to WinUSB for the send, then give it back to Windows’ Xbox driver and switch it back to DInput mode. Unplug every other Xbox 360 controller first. Send now?</value></data>
@@ -1198,6 +1200,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows no longer moves the pointer with {0}. If you did not mean that, do nothing and it comes back.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows no longer moves the pointer with {0}. If you did not mean that, do nothing and it comes back.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Giving it back in {0} seconds</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Giving it back in {0} second</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Keep</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Give It Back</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Unplug the other keyboards of this model first. Windows moves every plugged-in one to PadForge’s driver at once, and stops typing with each.</value></data>
@@ -1613,8 +1616,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clone</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Select a device on this slot to clone.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>The selected device exposes no axes, buttons, or hats to clone.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clone {0} onto this slot as a 1:1 passthrough? The layout becomes {1} axes, {2} buttons, and {3} POVs, and this device’s rows on the slot are replaced with its own inputs.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>This device has more inputs than an Extended controller can carry. Mapped {0} of {1} axes, {2} of {3} buttons, and {4} of {5} POVs. The rest were left unmapped.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clone {0} onto this slot as a 1:1 passthrough? The layout becomes {1}, {2}, and {3}, and this device’s rows on the slot are replaced with its own inputs.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>This device has more inputs than an Extended controller can carry. Mapped {0} of {1}, {2} of {3}, and {4} of {5}. The rest were left unmapped.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Controller Presets</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Add a preset for a controller PadForge does not ship, from a file or from the controller itself.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Imported</value></data>
@@ -2084,6 +2087,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sets the assigned slot’s lightbar mode to a specific value. Persists like an edit on the Lighting card until another action or the user changes it.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Cycle Lightbar Modes</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cycle through {0} lightbar modes</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Cycle through {0} lightbar mode</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Advances the slot’s lightbar mode through the modes selected below. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hold</value></data>
@@ -2481,6 +2485,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>All samples captured. Name the gesture and click Save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} of {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} samples</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} sample</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Samples to Capture</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Samples to capture</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 is the standard. More samples give a surer match, and fewer are quicker to record.</value></data>
@@ -3599,6 +3604,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Gun Offscreen</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Cycle Pointer Modes</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Cycle through {0} pointer modes</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Cycle through {0} pointer mode</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Advances the Wii pointer mode through the modes selected below for every IR-capable remote on the slot. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pick which pointer modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -4021,7 +4027,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Let go of the button.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Step {0} of {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>No change was seen. Select Start Over, then press and hold the button when asked.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Watched {0} vendor reports and {1} event classes. During the press: {2} reports, {3} events.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Vendor reports watched: {0}. Event classes watched: {1}. Reports during the press: {2}. Events during the press: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Button captured. Enter a name and click Register.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Source</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Name</value></data>
@@ -4057,12 +4063,17 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Forget All</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Remove every name learned for this model.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Exported {0} names.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Exported {0} name.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Imported {0} names.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Imported {0} name.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Imported {0} names for another model, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Imported {0} name for another model, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>That file holds no key light names.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Exported {0} buttons.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Exported {0} button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Imported {0} buttons.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Imported {0} button.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld PC Buttons</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming PCs and laptops carry buttons the operating system never shows as a controller: rear paddles, menu keys, wheels, vendor hotkeys. Turn this on to learn them once by pressing them, then map them like any other button. Also adds the machine’s own gyroscope as a motion device.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Enable Handheld PC Buttons</value></data>
@@ -4226,9 +4237,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Ascending</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Descending</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} bindings</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} binding</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} found</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Showing {0} of {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configs</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} config</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>full controller support</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>partial controller support</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Search Games</value></data>
@@ -4238,7 +4251,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mo ago</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} yr ago</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subscribers</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} subscriber</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votes</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} vote</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>All</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>No Configs for This Game Yet</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop has no community controller configs for {0}. You can be the first: build one in Steam, and it appears here.</value></data>
@@ -4271,6 +4286,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>layer: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no device-free trigger for this input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game actions, Steam-only, no game-side hook</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} in-game action, Steam-only, no game-side hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-client action {0}, no equivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controller action {0} not supported</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>unknown binding type {0}</value></data>
@@ -4368,6 +4384,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Toggle Wheel Scroll</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches a continuous scroll. While latched, sends the tick count once per interval until the next fire or until the macro is disabled.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Toggle wheel scroll ({0} ticks every {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Toggle wheel scroll ({0} tick every {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulse While Latched</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>While latched, pulse the output on and off at the repeat interval instead of holding it solid.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axis Add (Relative)</value></data>
@@ -4389,6 +4406,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>When physical movement pushes the target past the threshold, the macro stops writing the axis for the rest of the activation.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(yields to physical)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cycle tap list ({0} steps)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Cycle tap list ({0} step)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Steps</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
@@ -4472,6 +4490,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>on-screen menu created ({0} bound cells)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>on-screen menu created ({0} bound cell)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
@@ -4660,6 +4679,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pick the .txt AutoEq downloaded. This is the one to use: autoeq.app hands you a file rather than text you can copy.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For a correction matched to your headphones: open autoeq.app, choose your model, pick Custom Parametric Eq and download it, then Import from File. The Graphic Eq download has no filter lines and will not import.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Imported {0} bands with a {1:0.#} dB preamp from {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Imported {0} band with a {1:0.#} dB preamp from {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>No filter lines in that profile. AutoEq’s Graphic Eq export cannot be read here. Download the Custom Parametric Eq one instead. The current EQ is unchanged.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nothing to import. The current EQ is unchanged.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Could not read that file: {0}</value></data>
@@ -5547,11 +5567,17 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Ends the Set Key Colors actions running on this virtual controller that light one of the keys picked here, or every one when none is picked.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Clear all key colors</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Clear key colors on {0} lights</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Clear key colors on {0} light</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} lights in {1} for {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} light in {1} for {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} lights in {1} while held</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} light in {1} while held</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} lights in {1} until cleared</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} light in {1} until cleared</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} lights in {1}, fading over {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} light in {1}, fading over {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} lights in {1}, counting down over {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} light in {1}, counting down over {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Keys</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Every Light</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>No keys picked, so the action lights nothing.</value></data>

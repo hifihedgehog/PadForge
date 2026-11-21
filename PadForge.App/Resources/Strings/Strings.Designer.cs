@@ -118,6 +118,75 @@ public class Strings : INotifyPropertyChanged
     public static string Get(string key) => _rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
     /// <summary>
+    /// The strings that put a count before a noun, each with the string that
+    /// says the same for a count of one: "{0} axes" and "1 axis". A string
+    /// with a place for a number before a plural noun read "1 POVs" and
+    /// "Exported 1 names." until it had a pair here. The key is the string
+    /// for any other count. Code asks <see cref="Counted"/> or
+    /// <see cref="CountFormat"/> for the words and never formats one of
+    /// these strings by itself.
+    /// </summary>
+    internal static readonly IReadOnlyDictionary<string, string> OneForms = new Dictionary<string, string>
+    {
+        [nameof(Devices_Caps_Axes_Format)] = nameof(Devices_Caps_OneAxis),
+        [nameof(Devices_Caps_Buttons_Format)] = nameof(Devices_Caps_OneButton),
+        [nameof(Devices_Caps_Povs_Format)] = nameof(Devices_Caps_OnePov),
+        [nameof(ImportFromDevice_StatusFound_Format)] = nameof(ImportFromDevice_StatusFoundOne),
+        [nameof(Pad_Touchpad_CustomGesture_NFingers_Format)] = nameof(Pad_Touchpad_CustomGesture_OneFinger),
+        [nameof(Pad_Band_Count_Format)] = nameof(Pad_Band_Count_One_Format),
+        [nameof(Settings_GKeysStatus_Running_Format)] = nameof(Settings_GKeysStatus_Running_One_Format),
+        [nameof(FlydigiScreen_Cut_Format)] = nameof(FlydigiScreen_Cut_One_Format),
+        [nameof(Devices_DriverKeepCountdown_Format)] = nameof(Devices_DriverKeepCountdown_One_Format),
+        [nameof(MacroAction_LightbarModeCycle_Format)] = nameof(MacroAction_LightbarModeCycle_One_Format),
+        [nameof(Recorder_Samples_Format)] = nameof(Recorder_Samples_One_Format),
+        [nameof(MacroAction_PointerModeCycle_Format)] = nameof(MacroAction_PointerModeCycle_One_Format),
+        [nameof(MapKeyLights_ExportedFormat)] = nameof(MapKeyLights_ExportedOneFormat),
+        [nameof(MapKeyLights_ImportedFormat)] = nameof(MapKeyLights_ImportedOneFormat),
+        [nameof(MapKeyLights_ImportedOtherFormat)] = nameof(MapKeyLights_ImportedOtherOneFormat),
+        [nameof(Handheld_ExportedFormat)] = nameof(Handheld_ExportedOneFormat),
+        [nameof(Handheld_ImportedFormat)] = nameof(Handheld_ImportedOneFormat),
+        [nameof(Workshop_LayerBindings_Format)] = nameof(Workshop_LayerBindings_One_Format),
+        [nameof(Workshop_ConfigsCount_Format)] = nameof(Workshop_ConfigsCount_One_Format),
+        [nameof(Workshop_Subs_Format)] = nameof(Workshop_Subs_One_Format),
+        [nameof(Workshop_Votes_Format)] = nameof(Workshop_Votes_One_Format),
+        [nameof(Workshop_Tr_GameActionsNotSupported)] = nameof(Workshop_Tr_GameActionsNotSupported_One),
+        [nameof(MacroAction_ToggleWheel_Format)] = nameof(MacroAction_ToggleWheel_One_Format),
+        [nameof(MacroAction_CycleTapList_Format)] = nameof(MacroAction_CycleTapList_One_Format),
+        [nameof(Workshop_Tr_MenuEmitted)] = nameof(Workshop_Tr_MenuEmitted_One),
+        [nameof(Pad_Audio_EqImport_Ok_Format)] = nameof(Pad_Audio_EqImport_Ok_One_Format),
+        [nameof(MacroAction_ClearKeyColors_Format)] = nameof(MacroAction_ClearKeyColors_One_Format),
+        [nameof(MacroAction_SetKeyColors_Timed_Format)] = nameof(MacroAction_SetKeyColors_Timed_One_Format),
+        [nameof(MacroAction_SetKeyColors_Held_Format)] = nameof(MacroAction_SetKeyColors_Held_One_Format),
+        [nameof(MacroAction_SetKeyColors_Sticky_Format)] = nameof(MacroAction_SetKeyColors_Sticky_One_Format),
+        [nameof(MacroAction_SetKeyColors_Fade_Format)] = nameof(MacroAction_SetKeyColors_Fade_One_Format),
+        [nameof(MacroAction_SetKeyColors_Countdown_Format)] = nameof(MacroAction_SetKeyColors_Countdown_One_Format),
+    };
+
+    /// <summary>The words a count is written in: the string for a count of
+    /// one when the count is one (or minus one) and <see cref="OneForms"/>
+    /// pairs the key, and the key's own string for any other count.</summary>
+    public static string CountFormat(string manyKey, long count)
+        => Get((count == 1 || count == -1) && OneForms.TryGetValue(manyKey, out string oneKey) ? oneKey : manyKey);
+
+    /// <summary>The words for a count that arrives as text, as an import
+    /// report's values do. Text that is not a whole number counts as many.</summary>
+    public static string CountFormat(string manyKey, string count)
+        => long.TryParse(count, NumberStyles.Integer, CultureInfo.InvariantCulture, out long n)
+            ? CountFormat(manyKey, n)
+            : Get(manyKey);
+
+    /// <summary>A count in its words. The count is the format's first value
+    /// and <paramref name="more"/> follow it, so both strings of a pair
+    /// number their other values alike.</summary>
+    public static string Counted(string manyKey, long count, params object[] more)
+    {
+        var values = new object[1 + (more?.Length ?? 0)];
+        values[0] = count;
+        more?.CopyTo(values, 1);
+        return string.Format(CultureInfo.CurrentCulture, CountFormat(manyKey, count), values);
+    }
+
+    /// <summary>
     /// Changes the UI culture, refreshes all XAML bindings to this instance,
     /// and raises <see cref="CultureChanged"/> for ViewModel refresh.
     /// </summary>
@@ -663,6 +732,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GKeysStatus_InitRefused => Get("Settings_GKeysStatus_InitRefused");
     public string Settings_GKeysStatus_NoKeysYet => Get("Settings_GKeysStatus_NoKeysYet");
     public string Settings_GKeysStatus_Running_Format => Get("Settings_GKeysStatus_Running_Format");
+    public string Settings_GKeysStatus_Running_One_Format => Get("Settings_GKeysStatus_Running_One_Format");
     public string Settings_AnalogKeyboards => Get("Settings_AnalogKeyboards");
     public string Settings_AnalogKeyboardsTooltip => Get("Settings_AnalogKeyboardsTooltip");
     public string Settings_AnalogKeyboardsStatus_None => Get("Settings_AnalogKeyboardsStatus_None");
@@ -1057,6 +1127,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EqImport_Empty => Get("Pad_Audio_EqImport_Empty");
     public string Pad_Audio_EqImport_NoFilters => Get("Pad_Audio_EqImport_NoFilters");
     public string Pad_Audio_EqImport_Ok_Format => Get("Pad_Audio_EqImport_Ok_Format");
+    public string Pad_Audio_EqImport_Ok_One_Format => Get("Pad_Audio_EqImport_Ok_One_Format");
     public string Pad_Audio_EqImport_ReadFailed_Format => Get("Pad_Audio_EqImport_ReadFailed_Format");
     public string Pad_Audio_EqImport_Tooltip => Get("Pad_Audio_EqImport_Tooltip");
     public string Pad_Audio_EqPreamp => Get("Pad_Audio_EqPreamp");
@@ -1372,6 +1443,7 @@ public class Strings : INotifyPropertyChanged
     public string FlydigiScreen_Send => Get("FlydigiScreen_Send");
     public string FlydigiScreen_Size_Format => Get("FlydigiScreen_Size_Format");
     public string FlydigiScreen_Cut_Format => Get("FlydigiScreen_Cut_Format");
+    public string FlydigiScreen_Cut_One_Format => Get("FlydigiScreen_Cut_One_Format");
     public string FlydigiScreen_Note_Serial => Get("FlydigiScreen_Note_Serial");
     public string FlydigiScreen_Note_Apex4 => Get("FlydigiScreen_Note_Apex4");
     public string FlydigiScreen_Apex4Confirm => Get("FlydigiScreen_Apex4Confirm");
@@ -1564,6 +1636,7 @@ public class Strings : INotifyPropertyChanged
     public string Devices_DriverKeepMessage_Mouse_Format => Get("Devices_DriverKeepMessage_Mouse_Format");
     public string Devices_TouchpadKeepMessage_Format => Get("Devices_TouchpadKeepMessage_Format");
     public string Devices_DriverKeepCountdown_Format => Get("Devices_DriverKeepCountdown_Format");
+    public string Devices_DriverKeepCountdown_One_Format => Get("Devices_DriverKeepCountdown_One_Format");
     public string Devices_DriverKeep => Get("Devices_DriverKeep");
     public string Devices_DriverGiveBack => Get("Devices_DriverGiveBack");
     public string Status_DriverBindOthersPluggedIn_Keyboard => Get("Status_DriverBindOthersPluggedIn_Keyboard");
@@ -2853,6 +2926,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_LightbarModeSet_Tooltip => Get("MacroAction_LightbarModeSet_Tooltip");
     public string MacroAction_Type_LightbarModeCycle => Get("MacroAction_Type_LightbarModeCycle");
     public string MacroAction_LightbarModeCycle_Format => Get("MacroAction_LightbarModeCycle_Format");
+    public string MacroAction_LightbarModeCycle_One_Format => Get("MacroAction_LightbarModeCycle_One_Format");
     public string MacroAction_LightbarModeCycle_Tooltip => Get("MacroAction_LightbarModeCycle_Tooltip");
     public string Macro_LightbarHold_Label => Get("Macro_LightbarHold_Label");
     public string Macro_LightbarHold_Reactive => Get("Macro_LightbarHold_Reactive");
@@ -2935,6 +3009,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_Type_ToggleWheel => Get("MacroAction_Type_ToggleWheel");
     public string MacroAction_ToggleWheel_Tooltip => Get("MacroAction_ToggleWheel_Tooltip");
     public string MacroAction_ToggleWheel_Format => Get("MacroAction_ToggleWheel_Format");
+    public string MacroAction_ToggleWheel_One_Format => Get("MacroAction_ToggleWheel_One_Format");
     public string Macro_PulseWhileLatched => Get("Macro_PulseWhileLatched");
     public string Macro_PulseWhileLatched_Tooltip => Get("Macro_PulseWhileLatched_Tooltip");
     public string Macro_PressureScaledRate => Get("Macro_PressureScaledRate");
@@ -2967,6 +3042,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_AxisYieldToPhysical_Tooltip => Get("Macro_AxisYieldToPhysical_Tooltip");
     public string MacroAction_YieldSuffix => Get("MacroAction_YieldSuffix");
     public string MacroAction_CycleTapList_Format => Get("MacroAction_CycleTapList_Format");
+    public string MacroAction_CycleTapList_One_Format => Get("MacroAction_CycleTapList_One_Format");
     public string Macro_CycleSteps_Label => Get("Macro_CycleSteps_Label");
     public string Macro_CycleWrap_Label => Get("Macro_CycleWrap_Label");
     public string MacroAction_ToggleKey_Format => Get("MacroAction_ToggleKey_Format");
@@ -3303,6 +3379,7 @@ public class Strings : INotifyPropertyChanged
     public string Recorder_Complete => Get("Recorder_Complete");
     public string Recorder_NextSample_Format => Get("Recorder_NextSample_Format");
     public string Recorder_Samples_Format => Get("Recorder_Samples_Format");
+    public string Recorder_Samples_One_Format => Get("Recorder_Samples_One_Format");
     public string Recorder_SampleCount_Label => Get("Recorder_SampleCount_Label");
     public string Recorder_MoreHint => Get("Recorder_MoreHint");
     public string Recorder_SampleCount_Hint => Get("Recorder_SampleCount_Hint");
@@ -3383,6 +3460,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GunOffscreen => Get("Mapping_GunOffscreen");
     public string MacroAction_Type_PointerModeCycle => Get("MacroAction_Type_PointerModeCycle");
     public string MacroAction_PointerModeCycle_Format => Get("MacroAction_PointerModeCycle_Format");
+    public string MacroAction_PointerModeCycle_One_Format => Get("MacroAction_PointerModeCycle_One_Format");
     public string MacroAction_PointerModeCycle_Tooltip => Get("MacroAction_PointerModeCycle_Tooltip");
     public string Macro_PointerCycleModes_Hint => Get("Macro_PointerCycleModes_Hint");
     public string MacroAction_Type_PointerModeSet => Get("MacroAction_Type_PointerModeSet");
@@ -3965,12 +4043,17 @@ public class Strings : INotifyPropertyChanged
     public string MapKeyLights_ForgetAll => Get("MapKeyLights_ForgetAll");
     public string MapKeyLights_ForgetAll_Tooltip => Get("MapKeyLights_ForgetAll_Tooltip");
     public string MapKeyLights_ExportedFormat => Get("MapKeyLights_ExportedFormat");
+    public string MapKeyLights_ExportedOneFormat => Get("MapKeyLights_ExportedOneFormat");
     public string MapKeyLights_ImportedFormat => Get("MapKeyLights_ImportedFormat");
+    public string MapKeyLights_ImportedOneFormat => Get("MapKeyLights_ImportedOneFormat");
     public string MapKeyLights_ImportedOtherFormat => Get("MapKeyLights_ImportedOtherFormat");
+    public string MapKeyLights_ImportedOtherOneFormat => Get("MapKeyLights_ImportedOtherOneFormat");
     public string MapKeyLights_ImportNotAFile => Get("MapKeyLights_ImportNotAFile");
     public string Handheld_Import => Get("Handheld_Import");
     public string Handheld_ExportedFormat => Get("Handheld_ExportedFormat");
+    public string Handheld_ExportedOneFormat => Get("Handheld_ExportedOneFormat");
     public string Handheld_ImportedFormat => Get("Handheld_ImportedFormat");
+    public string Handheld_ImportedOneFormat => Get("Handheld_ImportedOneFormat");
     public string Settings_Handheld => Get("Settings_Handheld");
     public string Settings_HandheldDesc => Get("Settings_HandheldDesc");
     public string Settings_HandheldEnable => Get("Settings_HandheldEnable");
@@ -4493,9 +4576,11 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Sort_Ascending => Get("Workshop_Sort_Ascending");
     public string Workshop_Sort_Descending => Get("Workshop_Sort_Descending");
     public string Workshop_LayerBindings_Format => Get("Workshop_LayerBindings_Format");
+    public string Workshop_LayerBindings_One_Format => Get("Workshop_LayerBindings_One_Format");
     public string Workshop_Found_Format => Get("Workshop_Found_Format");
     public string Workshop_ShowingOf_Format => Get("Workshop_ShowingOf_Format");
     public string Workshop_ConfigsCount_Format => Get("Workshop_ConfigsCount_Format");
+    public string Workshop_ConfigsCount_One_Format => Get("Workshop_ConfigsCount_One_Format");
     public string Workshop_ControllerSupportFull => Get("Workshop_ControllerSupportFull");
     public string Workshop_ControllerSupportPartial => Get("Workshop_ControllerSupportPartial");
     public string Workshop_BackToSearch => Get("Workshop_BackToSearch");
@@ -4505,7 +4590,9 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_TimeMonths_Format => Get("Workshop_TimeMonths_Format");
     public string Workshop_TimeYears_Format => Get("Workshop_TimeYears_Format");
     public string Workshop_Subs_Format => Get("Workshop_Subs_Format");
+    public string Workshop_Subs_One_Format => Get("Workshop_Subs_One_Format");
     public string Workshop_Votes_Format => Get("Workshop_Votes_Format");
+    public string Workshop_Votes_One_Format => Get("Workshop_Votes_One_Format");
     public string Workshop_TagAll => Get("Workshop_TagAll");
     public string Workshop_EmptyTitle => Get("Workshop_EmptyTitle");
     public string Workshop_EmptyBody_Format => Get("Workshop_EmptyBody_Format");
@@ -4538,6 +4625,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ShiftLayerEmitted => Get("Workshop_Tr_ShiftLayerEmitted");
     public string Workshop_Tr_NoDeviceFreeTrigger => Get("Workshop_Tr_NoDeviceFreeTrigger");
     public string Workshop_Tr_GameActionsNotSupported => Get("Workshop_Tr_GameActionsNotSupported");
+    public string Workshop_Tr_GameActionsNotSupported_One => Get("Workshop_Tr_GameActionsNotSupported_One");
     public string Workshop_Tr_SteamSystemAction => Get("Workshop_Tr_SteamSystemAction");
     public string Workshop_Tr_UnsupportedControllerAction => Get("Workshop_Tr_UnsupportedControllerAction");
     public string Workshop_Tr_UnknownBindingType => Get("Workshop_Tr_UnknownBindingType");
@@ -4683,6 +4771,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_ShiftLayerFlyout => Get("Dashboard_ShiftLayerFlyout");
     public string Dashboard_ProfileOverlay => Get("Dashboard_ProfileOverlay");
     public string Workshop_Tr_MenuEmitted => Get("Workshop_Tr_MenuEmitted");
+    public string Workshop_Tr_MenuEmitted_One => Get("Workshop_Tr_MenuEmitted_One");
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");
     public string Workshop_Tr_MenuIconUnresolved => Get("Workshop_Tr_MenuIconUnresolved");
@@ -5331,11 +5420,17 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_ClearKeyColors_Tooltip => Get("MacroAction_ClearKeyColors_Tooltip");
     public string MacroAction_ClearKeyColors_All => Get("MacroAction_ClearKeyColors_All");
     public string MacroAction_ClearKeyColors_Format => Get("MacroAction_ClearKeyColors_Format");
+    public string MacroAction_ClearKeyColors_One_Format => Get("MacroAction_ClearKeyColors_One_Format");
     public string MacroAction_SetKeyColors_Timed_Format => Get("MacroAction_SetKeyColors_Timed_Format");
+    public string MacroAction_SetKeyColors_Timed_One_Format => Get("MacroAction_SetKeyColors_Timed_One_Format");
     public string MacroAction_SetKeyColors_Held_Format => Get("MacroAction_SetKeyColors_Held_Format");
+    public string MacroAction_SetKeyColors_Held_One_Format => Get("MacroAction_SetKeyColors_Held_One_Format");
     public string MacroAction_SetKeyColors_Sticky_Format => Get("MacroAction_SetKeyColors_Sticky_Format");
+    public string MacroAction_SetKeyColors_Sticky_One_Format => Get("MacroAction_SetKeyColors_Sticky_One_Format");
     public string MacroAction_SetKeyColors_Fade_Format => Get("MacroAction_SetKeyColors_Fade_Format");
+    public string MacroAction_SetKeyColors_Fade_One_Format => Get("MacroAction_SetKeyColors_Fade_One_Format");
     public string MacroAction_SetKeyColors_Countdown_Format => Get("MacroAction_SetKeyColors_Countdown_Format");
+    public string MacroAction_SetKeyColors_Countdown_One_Format => Get("MacroAction_SetKeyColors_Countdown_One_Format");
     public string MacroAction_KeyColors_Keys => Get("MacroAction_KeyColors_Keys");
     public string MacroAction_KeyColors_AllLights => Get("MacroAction_KeyColors_AllLights");
     public string MacroAction_KeyColors_NoKeys => Get("MacroAction_KeyColors_NoKeys");

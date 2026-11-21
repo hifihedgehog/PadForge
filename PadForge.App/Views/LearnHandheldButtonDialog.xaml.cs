@@ -335,7 +335,7 @@ namespace PadForge.Views
                     Buttons = HandheldButtonRegistry.SaveRegistry().Select(PadForge.Services.HandheldButtonData.From).ToList(),
                 };
                 File.WriteAllText(dlg.FileName, JsonSerializer.Serialize(file, new JsonSerializerOptions { WriteIndented = true }));
-                StatusText.Text = string.Format(Strings.Instance.Handheld_ExportedFormat, file.Buttons.Count);
+                StatusText.Text = Strings.Counted(nameof(Strings.Handheld_ExportedFormat), file.Buttons.Count);
             }
             catch (Exception ex)
             {
@@ -365,7 +365,7 @@ namespace PadForge.Views
                         if (HandheldButtonRegistry.Register(entry) != null) added++;
                     }
                 }
-                StatusText.Text = string.Format(Strings.Instance.Handheld_ImportedFormat, added);
+                StatusText.Text = Strings.Counted(nameof(Strings.Handheld_ImportedFormat), added);
                 RefreshList();
             }
             catch (Exception ex)

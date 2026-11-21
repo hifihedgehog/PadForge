@@ -403,7 +403,7 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(Strings.Instance.MacroAction_SetKeyColors_Countdown_Format, 2, "#FF0000", 5000),
                 countdown.DisplayText);
             var held = SetColors("k1E", 0x00FF00, hold: MacroKeyColorHold.UntilRelease);
-            Assert.Equal(string.Format(Strings.Instance.MacroAction_SetKeyColors_Held_Format, 1, "#00FF00"), held.DisplayText);
+            Assert.Equal(Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Held_Format), 1, "#00FF00"), held.DisplayText);
             Assert.Equal(Strings.Instance.MacroAction_ClearKeyColors_All,
                 new MacroAction { Type = MacroActionType.ClearKeyColors }.DisplayText);
         }

@@ -119,7 +119,7 @@ namespace PadForge.Views
                 var names = LearnedKeyMaps.For(product);
                 var file = new ExportFile { Product = product, Device = _vm.DeviceName, Names = LearnedKeyMaps.Format(names) };
                 File.WriteAllText(dlg.FileName, JsonSerializer.Serialize(file, new JsonSerializerOptions { WriteIndented = true }));
-                ShowNote(string.Format(Strings.Instance.MapKeyLights_ExportedFormat, names.Count));
+                ShowNote(Strings.Counted(nameof(Strings.MapKeyLights_ExportedFormat), names.Count));
             }
             catch (Exception ex)
             {
@@ -146,8 +146,8 @@ namespace PadForge.Views
                 var names = LearnedKeyMaps.Parse(file.Names);
                 LearnedKeyMaps.Replace(file.Product.Trim(), names);
                 ShowNote(string.Equals(file.Product.Trim(), _vm.Product, StringComparison.OrdinalIgnoreCase)
-                    ? string.Format(Strings.Instance.MapKeyLights_ImportedFormat, names.Count)
-                    : string.Format(Strings.Instance.MapKeyLights_ImportedOtherFormat, names.Count, file.Device ?? file.Product));
+                    ? Strings.Counted(nameof(Strings.MapKeyLights_ImportedFormat), names.Count)
+                    : Strings.Counted(nameof(Strings.MapKeyLights_ImportedOtherFormat), names.Count, file.Device ?? file.Product));
             }
             catch (Exception ex)
             {

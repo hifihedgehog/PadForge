@@ -1649,9 +1649,7 @@ namespace PadForge.ViewModels
         public TouchpadCustomGesture Source { get; }
         public string Name => Source?.Name ?? string.Empty;
         public int FingerCount => Source?.FingerPaths?.Count ?? 1;
-        public string Summary => FingerCount == 1
-            ? Strings.Instance.Pad_Touchpad_CustomGesture_OneFinger
-            : string.Format(Strings.Instance.Pad_Touchpad_CustomGesture_NFingers_Format, FingerCount);
+        public string Summary => Strings.Counted(nameof(Strings.Pad_Touchpad_CustomGesture_NFingers_Format), FingerCount);
 
         public TouchpadCustomGestureItem(TouchpadCustomGesture source) { Source = source; }
     }

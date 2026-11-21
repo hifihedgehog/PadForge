@@ -553,7 +553,7 @@ namespace PadForge.Views
         {
             if (SamplesText == null) return;
             SamplesText.Text = string.Format(
-                Strings.Instance.Recorder_Samples_Format,
+                Strings.CountFormat(nameof(Strings.Recorder_Samples_Format), _targetSampleCount),
                 _capturedSamples.Count, _targetSampleCount);
 
             if (StatusText == null) return;

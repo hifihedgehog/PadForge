@@ -217,7 +217,8 @@ namespace PadForge.Views
                 string size = string.Format(CultureInfo.CurrentCulture, s.FlydigiScreen_Size_Format, _picture.Frames.Count,
                     time.ToString(time.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss", CultureInfo.CurrentCulture));
                 if (_cut > 0)
-                    size += " " + string.Format(CultureInfo.CurrentCulture, s.FlydigiScreen_Cut_Format, maximum, _cut);
+                    size += " " + string.Format(CultureInfo.CurrentCulture,
+                        Strings.CountFormat(nameof(Strings.FlydigiScreen_Cut_Format), _cut), maximum, _cut);
                 SizeText.Text = size;
             }
             NoteText.Text = Model == FlydigiApexModel.Apex4 ? s.FlydigiScreen_Note_Apex4 : s.FlydigiScreen_Note_Serial;

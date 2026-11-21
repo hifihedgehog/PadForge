@@ -1582,16 +1582,13 @@ namespace PadForge.ViewModels
 
                 // Touchpad-only devices: skip "0 axes, 0 buttons, 0 POVs" noise.
                 // Each count reads as one or as many, "1 axis" beside "2 buttons".
-                var s = Strings.Instance;
                 var sb = new System.Text.StringBuilder();
                 void Append(string cap) { if (sb.Length > 0) sb.Append(", "); sb.Append(cap); }
-                string Count(int n, string one, string many)
-                    => n == 1 ? one : string.Format(System.Globalization.CultureInfo.CurrentCulture, many, n);
                 if (!isTouchpadType)
                 {
-                    Append(Count(_axisCount, s.Devices_Caps_OneAxis, s.Devices_Caps_Axes_Format));
-                    Append(Count(_buttonCount, s.Devices_Caps_OneButton, s.Devices_Caps_Buttons_Format));
-                    Append(Count(_povCount, s.Devices_Caps_OnePov, s.Devices_Caps_Povs_Format));
+                    Append(Strings.Counted(nameof(Strings.Devices_Caps_Axes_Format), _axisCount));
+                    Append(Strings.Counted(nameof(Strings.Devices_Caps_Buttons_Format), _buttonCount));
+                    Append(Strings.Counted(nameof(Strings.Devices_Caps_Povs_Format), _povCount));
                 }
 
                 if (_hasRumble) Append(Strings.Instance.Devices_Rumble);

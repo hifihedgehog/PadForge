@@ -6451,8 +6451,8 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
                     MacroActionType.MouseNudge => string.Format(
                         Strings.Instance.MacroAction_MouseNudge_Format, _nudgeDx, _nudgeDy),
-                    MacroActionType.CycleTapList => string.Format(
-                        Strings.Instance.MacroAction_CycleTapList_Format, ParsedCycleSteps.Length),
+                    MacroActionType.CycleTapList => Strings.Counted(
+                        nameof(Strings.MacroAction_CycleTapList_Format), ParsedCycleSteps.Length),
                     MacroActionType.SystemVolume => _volumeLimit < 100
                         ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
                         : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
@@ -6479,11 +6479,11 @@ namespace PadForge.ViewModels
                     MacroActionType.LightbarModeSet => string.Format(
                         Strings.Instance.MacroAction_LightbarModeSet_Format,
                         LightbarModeDisplayName(_lightbarTargetMode)),
-                    MacroActionType.LightbarModeCycle => string.Format(
-                        Strings.Instance.MacroAction_LightbarModeCycle_Format,
+                    MacroActionType.LightbarModeCycle => Strings.Counted(
+                        nameof(Strings.MacroAction_LightbarModeCycle_Format),
                         CountSelectedCycleModes()),
-                    MacroActionType.PointerModeCycle => string.Format(
-                        Strings.Instance.MacroAction_PointerModeCycle_Format,
+                    MacroActionType.PointerModeCycle => Strings.Counted(
+                        nameof(Strings.MacroAction_PointerModeCycle_Format),
                         CountSelectedPointerCycleModes()),
                     MacroActionType.PointerModeSet => string.Format(
                         Strings.Instance.MacroAction_PointerModeSet_Format,
@@ -6519,7 +6519,7 @@ namespace PadForge.ViewModels
                     MacroActionType.SetKeyColors => FormatKeyColorsSummary(),
                     MacroActionType.ClearKeyColors => KeyColorTargetCount == 0
                         ? Strings.Instance.MacroAction_ClearKeyColors_All
-                        : string.Format(Strings.Instance.MacroAction_ClearKeyColors_Format, KeyColorTargetCount),
+                        : Strings.Counted(nameof(Strings.MacroAction_ClearKeyColors_Format), KeyColorTargetCount),
                     MacroActionType.TriggerEffectStop => string.Format(
                         Strings.Instance.MacroAction_TriggerEffectStop_Format,
                         TriggerEffectSideName(_triggerEffectSide)),
@@ -6581,8 +6581,8 @@ namespace PadForge.ViewModels
                     MacroActionType.RepeatVcAxisWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
                         _axisTarget.DisplayName(), _axisValue, _intervalMs) + yieldMark + pressureMark,
-                    MacroActionType.ToggleWheel => string.Format(
-                        Strings.Instance.MacroAction_ToggleWheel_Format,
+                    MacroActionType.ToggleWheel => Strings.Counted(
+                        nameof(Strings.MacroAction_ToggleWheel_Format),
                         _axisValue, _intervalMs) + pressureMark,
                     // Discussion #237: the relative add renders its signed
                     // percent of the pull scale, the combo break its type
@@ -6714,22 +6714,21 @@ namespace PadForge.ViewModels
                 : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, triggers, _rumbleHoldMs + _rumbleFadeMs);
         }
 
-        /// <summary>"10 lights #FF0000, counting down over 5000 ms",
-        /// "4 lights #00FF00 until released" (#557).</summary>
+        /// <summary>"10 lights in #FF0000, counting down over 5000 ms",
+        /// "1 light in #00FF00 while held" (#557).</summary>
         private string FormatKeyColorsSummary()
         {
-            var s = Strings.Instance;
             string color = $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}";
             int count = KeyColorTargetCount;
             return _keyColorStyle switch
             {
-                MacroKeyColorStyle.Fade => string.Format(s.MacroAction_SetKeyColors_Fade_Format, count, color, _keyColorMs),
-                MacroKeyColorStyle.Countdown => string.Format(s.MacroAction_SetKeyColors_Countdown_Format, count, color, _keyColorMs),
+                MacroKeyColorStyle.Fade => Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Fade_Format), count, color, _keyColorMs),
+                MacroKeyColorStyle.Countdown => Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Countdown_Format), count, color, _keyColorMs),
                 _ => _keyColorHold switch
                 {
-                    MacroKeyColorHold.UntilRelease => string.Format(s.MacroAction_SetKeyColors_Held_Format, count, color),
-                    MacroKeyColorHold.UntilCleared => string.Format(s.MacroAction_SetKeyColors_Sticky_Format, count, color),
-                    _ => string.Format(s.MacroAction_SetKeyColors_Timed_Format, count, color, _keyColorMs),
+                    MacroKeyColorHold.UntilRelease => Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Held_Format), count, color),
+                    MacroKeyColorHold.UntilCleared => Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Sticky_Format), count, color),
+                    _ => Strings.Counted(nameof(Strings.MacroAction_SetKeyColors_Timed_Format), count, color, _keyColorMs),
                 },
             };
         }

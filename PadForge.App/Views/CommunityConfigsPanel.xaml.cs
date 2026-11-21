@@ -422,7 +422,7 @@ namespace PadForge.Views
                 {
                     var resp = await _workshop.SearchAsync(g.AppId, EPublishedFileQueryType.RankedByVote, 1, 1, null, ct);
                     g.ConfigCount = (int)(resp?.total ?? 0);
-                    g.CountText = string.Format(Strings.Instance.Workshop_ConfigsCount_Format, g.ConfigCount);
+                    g.CountText = Strings.Counted(nameof(Strings.Workshop_ConfigsCount_Format), g.ConfigCount ?? 0);
                 }
                 catch (OperationCanceledException)
                 {
@@ -482,7 +482,7 @@ namespace PadForge.Views
         private void UpdateGameCount(int? configTotal)
         {
             GameCountText.Text = configTotal.HasValue
-                ? string.Format(Strings.Instance.Workshop_ConfigsCount_Format, configTotal.Value)
+                ? Strings.Counted(nameof(Strings.Workshop_ConfigsCount_Format), configTotal.Value)
                 : string.Empty;
         }
 
@@ -910,11 +910,12 @@ namespace PadForge.Views
                 // the number being sorted on. The count is the missing
                 // half, and with it the ranking reads correctly.
                 VotesText = hasVotes
-                    ? string.Format(Strings.Instance.Workshop_Votes_Format, up + down)
+                    ? Strings.Counted(nameof(Strings.Workshop_Votes_Format), up + down)
                     : string.Empty,
                 HasSubs = hasSubs,
                 SubsText = hasSubs
-                    ? string.Format(Strings.Instance.Workshop_Subs_Format, CompactCount(subs))
+                    ? string.Format(Strings.CountFormat(nameof(Strings.Workshop_Subs_Format), (long)Math.Min(subs, (ulong)long.MaxValue)),
+                        CompactCount(subs))
                     : string.Empty,
                 ByLine = string.Format(Strings.Instance.Workshop_ByLine_Format, "…", RelativeTime(d.time_updated)),
                 Tags = tags,
@@ -1509,7 +1510,7 @@ namespace PadForge.Views
                         rows.Add(new WorkshopManifestLayerItem
                         {
                             Name = layer,
-                            CountText = string.Format(Strings.Instance.Workshop_LayerBindings_Format,
+                            CountText = Strings.Counted(nameof(Strings.Workshop_LayerBindings_Format),
                                 perLayer.TryGetValue(layer, out int n) ? n : 0),
                         });
                         lastLayer = layer;
@@ -1836,12 +1837,12 @@ namespace PadForge.Views
         /// <summary>The inline why. Clean rows stay bare (the design's clean
         /// rows carry no reason), and everything not clean explains itself
         /// with its Workshop_Tr_* string.</summary>
-        private static string ReasonText(TranslationEntry entry)
+        internal static string ReasonText(TranslationEntry entry)
         {
             if (string.IsNullOrEmpty(entry.ReasonKey)) return null;
             if (entry.Status == TranslationStatus.Clean) return null;
 
-            string raw = Strings.Get(entry.ReasonKey);
+            string raw = Strings.CountFormat(entry.ReasonKey, entry.ReasonArgs?.FirstOrDefault());
             if (entry.ReasonArgs == null || entry.ReasonArgs.Count == 0) return raw;
             // The localized sentence is prose. The arguments dropped into it
             // are not. For the keys listed in TokenArgReasons those slots

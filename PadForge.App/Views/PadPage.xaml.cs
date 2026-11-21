@@ -177,6 +177,25 @@ namespace PadForge.Views
         /// beside the card's live view.</summary>
         internal const double FirstRowLabelLeast = 96, FirstRowLabelMost = 150, FirstRowRest = 264;
 
+        /// <summary>What the Clone Device 1:1 confirm asks: the device, and
+        /// the layout the slot takes, each kind counted in the Devices page's
+        /// words ("1 axis", "12 buttons").</summary>
+        internal static string CloneConfirmText(string deviceName, int axes, int buttons, int povs)
+            => string.Format(Strings.Instance.Pad_ExtendedClone_Confirm_Format, deviceName,
+                Strings.Counted(nameof(Strings.Devices_Caps_Axes_Format), axes),
+                Strings.Counted(nameof(Strings.Devices_Caps_Buttons_Format), buttons),
+                Strings.Counted(nameof(Strings.Devices_Caps_Povs_Format), povs));
+
+        /// <summary>The paragraph under it when the device has more inputs
+        /// than an Extended controller carries: how many of each kind were
+        /// mapped, out of the device's own count of that kind.</summary>
+        internal static string CloneOverflowText(int axesMapped, int axesAvailable, int buttonsMapped,
+            int buttonsAvailable, int povsMapped, int povsAvailable)
+            => string.Format(Strings.Instance.Pad_ExtendedClone_Overflow_Format,
+                axesMapped, Strings.Counted(nameof(Strings.Devices_Caps_Axes_Format), axesAvailable),
+                buttonsMapped, Strings.Counted(nameof(Strings.Devices_Caps_Buttons_Format), buttonsAvailable),
+                povsMapped, Strings.Counted(nameof(Strings.Devices_Caps_Povs_Format), povsAvailable));
+
         /// <summary>The label column's width for labels of these widths: the
         /// widest and two more, so a label never wraps for the part of a
         /// pixel the text was measured short by, within the two bounds.</summary>
@@ -5621,10 +5640,9 @@ namespace PadForge.Views
                 ? sel.Name
                 : (!string.IsNullOrWhiteSpace(ud.DisplayName) ? ud.DisplayName : ud.ProductName);
 
-            string content = string.Format(Strings.Instance.Pad_ExtendedClone_Confirm_Format,
-                deviceName, clone.LayoutAxes, clone.Buttons, clone.Povs);
+            string content = CloneConfirmText(deviceName, clone.LayoutAxes, clone.Buttons, clone.Povs);
             if (clone.HasOverflow)
-                content += "\n\n" + string.Format(Strings.Instance.Pad_ExtendedClone_Overflow_Format,
+                content += "\n\n" + CloneOverflowText(
                     clone.AxesMapped, clone.AxesAvailable,
                     clone.ButtonsMapped, clone.ButtonsAvailable,
                     clone.PovsMapped, clone.PovsAvailable);

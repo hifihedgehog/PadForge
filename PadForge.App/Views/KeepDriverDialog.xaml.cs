@@ -105,7 +105,7 @@ namespace PadForge.Views
             if (_shown == _remaining) return;
             _shown = _remaining;
 
-            string format = Strings.Instance.Devices_DriverKeepCountdown_Format;
+            string format = Strings.CountFormat(nameof(Strings.Devices_DriverKeepCountdown_Format), _remaining);
             var (before, after) = FormatRuns.Split(format);
             var number = PadForge.Common.TextFaces.Numbers(new Run(_remaining.ToString(CultureInfo.CurrentCulture)));
             CountdownText.Inlines.Clear();

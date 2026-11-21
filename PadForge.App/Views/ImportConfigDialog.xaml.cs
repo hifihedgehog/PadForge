@@ -172,7 +172,7 @@ namespace PadForge.Views
         internal static string ReasonText(TranslationEntry entry)
         {
             if (string.IsNullOrEmpty(entry.ReasonKey)) return null;
-            string raw = Strings.Get(entry.ReasonKey);
+            string raw = Strings.CountFormat(entry.ReasonKey, entry.ReasonArgs?.FirstOrDefault());
             if (entry.ReasonArgs == null || entry.ReasonArgs.Count == 0) return raw;
             try
             {

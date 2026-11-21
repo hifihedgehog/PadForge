@@ -160,8 +160,8 @@ namespace PadForge.ViewModels
             // importing at all.
             cfg.AudioEqPreampDb = preamp;
             cfg.AudioEqEnabled = true;
-            SetEqImportStatus(string.Format(Strings.Instance.Pad_Audio_EqImport_Ok_Format,
-                                            bands.Count, preamp, sourceLabel));
+            SetEqImportStatus(Strings.Counted(nameof(Strings.Pad_Audio_EqImport_Ok_Format),
+                                              bands.Count, preamp, sourceLabel));
         }
 
         /// <summary>Test seam (InternalsVisibleTo PadForge.Tests). Both import

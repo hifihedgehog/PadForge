@@ -6116,8 +6116,7 @@ namespace PadForge.Services
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.Running when row.EventCount == 0 =>
                         s.Settings_GKeysStatus_NoKeysYet,
                     PadForge.Engine.Common.Logitech.LogitechGKeyState.Running =>
-                        string.Format(System.Globalization.CultureInfo.CurrentCulture,
-                                      s.Settings_GKeysStatus_Running_Format, row.EventCount),
+                        Strings.Counted(nameof(Strings.Settings_GKeysStatus_Running_Format), row.EventCount),
                     _ => string.Empty,
                 };
 

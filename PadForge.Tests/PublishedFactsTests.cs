@@ -309,7 +309,9 @@ namespace PadForge.Tests
         /// as LF, the next release's included once it is written. An edit
         /// fails until the recorded value is changed on purpose, which is
         /// right for a correction of a false statement, such as the 4.5.0
-        /// headset bullet, and for a block whose release is not out yet.
+        /// headset bullet, for a link that follows a renamed heading, as the
+        /// 4.5.2 block's did when Windows on ARM (preliminary) became Windows
+        /// on ARM, and for a block whose release is not out yet.
         /// </summary>
         [Fact]
         public void EveryNewInBlockKeepsItsRecordedText()
@@ -336,13 +338,13 @@ namespace PadForge.Tests
 
         private static readonly (string Version, string Sha256)[] RecordedNewInBlocks =
         {
-            ("6.0.0", "a9adf88aab8b19968080a0bfa609b6358718959f4413584787802c701080af43"),
+            ("6.0.0", "dd85e4d0e4133580f478443b0720bb5a04ebe2c17b677c276b897f8073a07972"),
             ("5.3.0", "d91993bdf93bbaaca8ed7e012a5255d7b4f9ebed189a1bfa160ad3c6b0be8ef3"),
             ("5.2.0", "9c5cd026ac4106c58c7ca644d7c0303e160f95e4f3cfd0dd456bc3db86334b00"),
             ("5.1.0", "31f173ae7831da8e37b738510723fbae62f05992a05e89ab3510b2c4ddcd3213"),
             ("5.0.0", "648fbf07c0d29caa18d9fa6e49c33fe8d227e7a9bd20747d4e7ec5bcd5b34714"),
             ("4.5.3", "1daec61e80076738a933bc6f7d22deb7280095ebcc6b27d7c2cbf29f4ffd923d"),
-            ("4.5.2", "e9e77cc8ad05c55996dd277045cc28ed4170be4dcdcddae78ce9ea7ea66f8d77"),
+            ("4.5.2", "c19f36c622e3e08b1ee97eff67ee664b4d2e4e61d400353192a7d74d39a3128d"),
             ("4.5.0", "e952fcdfec04bcde11e888c088342fa91c220487ae6fea908054ac1a1acabc51"),
             ("4.4.0", "9191d9b2a8e7c3fc0ce1eee6645f78341847b32ea6727374439f746a3f0ac8d2"),
             ("4.3.2", "6e41aaf66c1fed39064eab76916d935636d2c8363622abca952f040cf302b410"),

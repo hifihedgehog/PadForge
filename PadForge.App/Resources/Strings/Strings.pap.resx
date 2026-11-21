@@ -787,6 +787,7 @@
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset paleta</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Remplasá e paleta aktual ku e kuater kolornan standard (kòrá, berde, blou, hel).</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalisá</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

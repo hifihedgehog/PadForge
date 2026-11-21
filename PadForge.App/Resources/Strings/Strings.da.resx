@@ -1604,6 +1604,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Holdetid for puls</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Udtoning af puls</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Forudindstilling</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Brugerdefineret</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggere</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV'er</value></data>

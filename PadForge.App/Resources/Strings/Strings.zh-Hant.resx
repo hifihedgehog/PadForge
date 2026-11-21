@@ -1604,6 +1604,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>脈動保持</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>脈動衰減</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>預設集</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>自訂</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>搖桿</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳機</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

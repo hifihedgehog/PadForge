@@ -1604,6 +1604,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>เวลาคงพัลส์</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>เวลาจางพัลส์</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>พรีเซ็ต</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>กำหนดเอง</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>สติ๊ก</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ทริกเกอร์</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

@@ -1409,6 +1409,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Impulso išlaikymas</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulso slopimas</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Šablonas</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pasirinktinis</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Svirtelės</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gaidukai</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV jungikliai</value></data>

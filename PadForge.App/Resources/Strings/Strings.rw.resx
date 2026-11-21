@@ -466,6 +466,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Urumuri</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ongeraho ibara</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Byihariye</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Uduti</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

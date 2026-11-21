@@ -353,6 +353,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Mālamalama</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Hoʻohui i ka waihoʻoluʻu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Hoʻopilikino</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Nā stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Nā trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Nā POV</value></data>

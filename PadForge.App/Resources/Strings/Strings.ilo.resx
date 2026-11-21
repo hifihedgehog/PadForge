@@ -346,6 +346,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Lawag</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Agnayon iti maris</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Bukod</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Dagiti stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Dagiti trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Dagiti POV</value></data>

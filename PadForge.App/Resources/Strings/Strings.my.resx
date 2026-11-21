@@ -1415,6 +1415,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>ပဲလ်စ် ထိန်းချိန်</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>ပဲလ်စ် မှိန်ချိန်</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက်</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>စိတ်ကြိုက်</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>စတစ်များ</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ထရီဂါများ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV များ</value></data>

@@ -1604,6 +1604,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Trvanie impulzu</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Doznievanie impulzu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predvoľba</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Vlastná</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Páčky</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Spúšte</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

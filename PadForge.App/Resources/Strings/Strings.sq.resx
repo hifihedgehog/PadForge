@@ -1414,6 +1414,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Mbajtja e pulsimit</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Zbehja e pulsimit</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Paravendosja</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>E personalizuar</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Levat</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Këmbëzat</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

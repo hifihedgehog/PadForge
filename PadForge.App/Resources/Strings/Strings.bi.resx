@@ -491,6 +491,7 @@
 
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Braet</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kastom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ol triga</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>

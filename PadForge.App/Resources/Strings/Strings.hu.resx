@@ -1604,6 +1604,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Impulzus tartása</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulzus lecsengése</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Előbeállítás</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Egyéni</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Karok</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ravaszok</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-kapcsolók</value></data>

@@ -801,6 +801,7 @@
   <data name="Pad_Sticks" xml:space="preserve"><value>스틱</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>프리셋</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>사용자 정의</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>스틱</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>트리거</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

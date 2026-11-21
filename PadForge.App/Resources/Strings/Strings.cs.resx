@@ -1604,6 +1604,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Výdrž pulzu</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Doznívání pulzu</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Předvolba</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Vlastní</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Páčky</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Spouště</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

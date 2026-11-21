@@ -1604,6 +1604,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulsens hålltid</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulsens avklingning</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Förinställning</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Anpassad</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Spakar</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Avtryckare</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-hattar</value></data>

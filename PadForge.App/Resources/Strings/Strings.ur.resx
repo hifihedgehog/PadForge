@@ -1604,6 +1604,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>پلس کا ٹھہراؤ</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>پلس کا زوال</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>پری سیٹ</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>حسب ضرورت</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>اسٹکس</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ٹرگرز</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

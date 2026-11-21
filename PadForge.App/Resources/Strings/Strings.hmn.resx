@@ -398,6 +398,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Kev ci</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ntxiv xim</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kho tus kheej</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Cov stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Cov trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Cov POV</value></data>

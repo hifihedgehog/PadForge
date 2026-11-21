@@ -1604,6 +1604,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Pulssin kesto</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Pulssin häivytys</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Esiasetus</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Mukautettu</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sauvat</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Liipaisimet</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-hatut</value></data>

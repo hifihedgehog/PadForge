@@ -375,6 +375,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Ukuqaqamba</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Yongeza umbala</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>I-preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Eyakho</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Iintonga</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ii-trigger</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Amaqhosha</value></data>

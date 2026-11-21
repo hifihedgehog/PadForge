@@ -445,6 +445,7 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Bakisa langi</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Zongisa palette</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Préréglage</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personnalisé</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Ba stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ba gâchette</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ba POV</value></data>

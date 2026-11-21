@@ -801,6 +801,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gâchettes</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Prédéfini</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personnalisé</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gâchettes</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

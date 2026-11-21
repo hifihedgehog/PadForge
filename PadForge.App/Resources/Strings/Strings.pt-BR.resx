@@ -801,6 +801,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Analógicos</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predefinição</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalizado</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Analógicos</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>

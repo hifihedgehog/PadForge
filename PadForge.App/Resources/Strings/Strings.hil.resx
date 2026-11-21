@@ -378,6 +378,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Kasanag</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Magdugang sing kolor</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kustom</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>

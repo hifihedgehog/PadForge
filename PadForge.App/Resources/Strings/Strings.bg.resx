@@ -1604,6 +1604,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Задържане на импулса</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Затихване на импулса</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Предварителна настройка</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Персонализирана</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Стикове</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Спусъци</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

@@ -801,6 +801,7 @@
   <data name="Pad_Sticks" xml:space="preserve"><value>摇杆</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>预设</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>自定义</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>摇杆</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

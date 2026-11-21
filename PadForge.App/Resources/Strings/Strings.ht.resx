@@ -1205,6 +1205,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reyinisyalize palèt</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Ranplase palèt aktyèl la ak kat koulè pa defo yo (wouj, vèt, ble, jòn).</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Prereglaj</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pèsonalize</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gachèt</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

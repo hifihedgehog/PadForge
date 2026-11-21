@@ -1414,6 +1414,7 @@
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>ස්පන්දන රඳවා ගැනීම</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>ස්පන්දන ක්ෂය වීම</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>පෙරසැකසුම</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>අභිරුචි</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>ස්ටික්</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ට්‍රිගර</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

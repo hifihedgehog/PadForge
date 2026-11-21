@@ -1604,6 +1604,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Impulsa noturēšana</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulsa izdzišana</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Sagatave</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Pielāgots</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sviras</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mēlītes</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

@@ -1415,6 +1415,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Lighting_InputHold" xml:space="preserve"><value>Impulsi kestus</value></data>
   <data name="Pad_Lighting_InputDecay" xml:space="preserve"><value>Impulsi hääbumine</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Eelseadistus</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Kohandatud</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Kangid</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Päästikud</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-id</value></data>

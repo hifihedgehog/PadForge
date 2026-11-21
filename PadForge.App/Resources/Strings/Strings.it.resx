@@ -801,6 +801,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Sticks" xml:space="preserve"><value>Levette</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Grilletti</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Predefinito</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Personalizzato</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Levette</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Grilletti</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

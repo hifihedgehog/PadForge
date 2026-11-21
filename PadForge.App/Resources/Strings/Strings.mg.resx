@@ -472,6 +472,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Hazavana</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ampio loko</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Manokana</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gâchette</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

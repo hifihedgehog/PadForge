@@ -447,6 +447,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Ifa</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Halluu dabali</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Qindaa'ina dursee</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Dhuunfaa</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Qabduulee</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Baasi…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Haqi</value></data>

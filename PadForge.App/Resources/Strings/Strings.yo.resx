@@ -404,6 +404,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Ìtànná</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ṣàfikún àwọ̀</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preset</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Àdáni</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Àwọn ọ̀pá</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Àwọn tírígà</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Àwọn POV</value></data>

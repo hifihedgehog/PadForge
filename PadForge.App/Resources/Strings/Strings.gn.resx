@@ -313,6 +313,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brillo</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Embojuaju sa'y</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Preajuste</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Ñemomba'epyre</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Palanca kuéra</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatillo kuéra</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>

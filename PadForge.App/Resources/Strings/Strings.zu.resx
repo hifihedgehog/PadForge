@@ -701,6 +701,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Ukukhanya</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Engeza umbala</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Okusethwe ngaphambili</value></data>
+  <data name="Pad_Preset_Custom" xml:space="preserve"><value>Okwezifiso</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Izinduku</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Amathrigha</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ama-POV</value></data>

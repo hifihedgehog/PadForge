@@ -234,8 +234,9 @@ namespace PadForge.ViewModels
 
         private int _onlineDevices;
 
-        /// <summary>Number of currently connected (online) input devices.
-        /// Home's engine card prints it.</summary>
+        /// <summary>The devices connected now, as the Devices page counts
+        /// them (InputService.CountConnectedDevices). Home's engine card
+        /// prints it.</summary>
         public int OnlineDevices
         {
             get => _onlineDevices;

@@ -311,10 +311,20 @@ namespace PadForge.ViewModels
         /// keyboard, which stand for one. Every row stands in the page's
         /// lists by its connection and its kind, whether it counts or
         /// not.</summary>
-        public bool CountsAsDevice => !IsAggregate && DeviceTypeKey != "ConsumerControl"
-            && !(IsInternalVirtual && !_devicePath.StartsWith("midi://", StringComparison.Ordinal)
-                && !_devicePath.StartsWith("falcon://", StringComparison.Ordinal)
-                && !_devicePath.StartsWith("analogkb://", StringComparison.Ordinal));
+        public bool CountsAsDevice => IsCountedDevice(_devicePath, DeviceTypeKey);
+
+        /// <summary>The same rule for a device that has no row built. Home's
+        /// "Devices connected" counts by it
+        /// (InputService.CountConnectedDevices), so Home and this page give
+        /// one number.</summary>
+        internal static bool IsCountedDevice(string devicePath, string deviceTypeKey)
+        {
+            if (IsAggregatePath(devicePath) || deviceTypeKey == "ConsumerControl") return false;
+            if (!IsInternalVirtualPath(devicePath)) return true;
+            return devicePath.StartsWith("midi://", StringComparison.Ordinal)
+                || devicePath.StartsWith("falcon://", StringComparison.Ordinal)
+                || devicePath.StartsWith("analogkb://", StringComparison.Ordinal);
+        }
 
         /// <summary>The group a row stands in, by whether it is connected.</summary>
         internal static DeviceListGroup GroupOf(bool online)
@@ -875,67 +885,75 @@ namespace PadForge.ViewModels
         /// DevicePath (web://, overlay://) instead of a real Windows HID path.
         /// HidHide can't blacklist what isn't a Windows HID device, so the
         /// "Hide from games" toggle hides itself for these sources.</summary>
-        public bool IsInternalVirtual =>
-            !string.IsNullOrEmpty(_devicePath)
-            && (_devicePath.StartsWith("web://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("overlay://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("midi://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("peer://", StringComparison.Ordinal)
+        public bool IsInternalVirtual => IsInternalVirtualPath(_devicePath);
+
+        /// <summary>Whether a path is one of PadForge's own, the rule of
+        /// IsInternalVirtual for a device that has no row built.</summary>
+        internal static bool IsInternalVirtualPath(string devicePath) =>
+            !string.IsNullOrEmpty(devicePath)
+            && (devicePath.StartsWith("web://", StringComparison.Ordinal)
+             || devicePath.StartsWith("overlay://", StringComparison.Ordinal)
+             || devicePath.StartsWith("midi://", StringComparison.Ordinal)
+             || devicePath.StartsWith("peer://", StringComparison.Ordinal)
              // PC/SC readers aren't HID devices either: the checkbox was a
              // silent no-op (fake VID/PID resolves no instance, audit M3).
-             || _devicePath.StartsWith("nfc://", StringComparison.Ordinal)
+             || devicePath.StartsWith("nfc://", StringComparison.Ordinal)
              // Microphone rows are WASAPI endpoints, not HID devices, the
              // same non-applicability as PC/SC readers. Missing from this
              // list, they rendered the Input Hiding section for nothing.
-             || _devicePath.StartsWith("mic://", StringComparison.Ordinal)
+             || devicePath.StartsWith("mic://", StringComparison.Ordinal)
              // The handheld hidden-buttons row and the machine's sensor row
              // (#343) are synthetic too: nothing for HidHide to cloak.
-             || _devicePath.StartsWith("handheld://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("sensor://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("headtrack://", StringComparison.Ordinal)
+             || devicePath.StartsWith("handheld://", StringComparison.Ordinal)
+             || devicePath.StartsWith("sensor://", StringComparison.Ordinal)
+             || devicePath.StartsWith("headtrack://", StringComparison.Ordinal)
              // The OpenXR hand rows and the Logitech G-keys row are the same
              // shape: a runtime or an SDK feeds them, and HidHide has no HID
              // instance to cloak. Missing here, they rendered the Input Hiding
              // section with toggles that could never do anything.
-             || _devicePath.StartsWith("openxr://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("logigkeys://", StringComparison.Ordinal)
+             || devicePath.StartsWith("openxr://", StringComparison.Ordinal)
+             || devicePath.StartsWith("logigkeys://", StringComparison.Ordinal)
              // A keyboard screen's row (#519) gathers the keys its screen
              // engine reads, the G-keys row's case.
-             || _devicePath.StartsWith("keyboardscreen://", StringComparison.Ordinal)
+             || devicePath.StartsWith("keyboardscreen://", StringComparison.Ordinal)
              // A Falcon (#521) is read through Force Dimension's library on
              // its WinUSB driver, so HidHide has no HID instance to cloak.
-             || _devicePath.StartsWith("falcon://", StringComparison.Ordinal)
+             || devicePath.StartsWith("falcon://", StringComparison.Ordinal)
              // The Game Telemetry row (#531) is fed by a game's packets and
              // shared memory, with no HID instance behind it.
-             || _devicePath.StartsWith("telemetry://", StringComparison.Ordinal)
+             || devicePath.StartsWith("telemetry://", StringComparison.Ordinal)
              // The Twitch Chat row (#555) is fed by a channel's chat.
-             || _devicePath.StartsWith("twitch://", StringComparison.Ordinal)
+             || devicePath.StartsWith("twitch://", StringComparison.Ordinal)
              // An analog keyboard row (#468) reads the keyboard's vendor
              // collection. Cloaking it would hide the keyboard's analog
              // interface from its own vendor software, which Razer's needs
              // to make the keyboard report at all.
-             || _devicePath.StartsWith("analogkb://", StringComparison.Ordinal)
+             || devicePath.StartsWith("analogkb://", StringComparison.Ordinal)
              // The Razer Chroma, Logitech LIGHTSYNC, SteelSeries GG and
              // Razer Sensa rows (#494), and the ASUS Aura, MSI Mystic Light
              // and Corsair iCUE rows (#557), stand for a vendor's software,
              // not a HID device, so HidHide has no instance to cloak for them.
-             || _devicePath.StartsWith("razerchroma://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("logilightsync://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("steelseriesgg://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("razersensa://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("asusaura://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("msimysticlight://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("corsairicue://", StringComparison.Ordinal)
+             || devicePath.StartsWith("razerchroma://", StringComparison.Ordinal)
+             || devicePath.StartsWith("logilightsync://", StringComparison.Ordinal)
+             || devicePath.StartsWith("steelseriesgg://", StringComparison.Ordinal)
+             || devicePath.StartsWith("razersensa://", StringComparison.Ordinal)
+             || devicePath.StartsWith("asusaura://", StringComparison.Ordinal)
+             || devicePath.StartsWith("msimysticlight://", StringComparison.Ordinal)
+             || devicePath.StartsWith("corsairicue://", StringComparison.Ordinal)
              // A unit row (#494) stands for one lit device no mouse or
              // keyboard row reaches, under a path of PadForge's own that
              // names no HID instance, and it has no input to hide.
-             || _devicePath.StartsWith("lightunit://", StringComparison.Ordinal));
+             || devicePath.StartsWith("lightunit://", StringComparison.Ordinal));
 
         /// <summary>True for a merged row (All Keyboards, All Mice, All
         /// Touchpads, All Consumer Controls). It stands for every device of
         /// its kind at once and has no HID instance of its own.</summary>
-        public bool IsAggregate =>
-            _devicePath?.StartsWith("aggregate://", StringComparison.Ordinal) == true;
+        public bool IsAggregate => IsAggregatePath(_devicePath);
+
+        /// <summary>Whether a path is a merged row's, the rule of
+        /// IsAggregate for a device that has no row built.</summary>
+        internal static bool IsAggregatePath(string devicePath) =>
+            devicePath?.StartsWith("aggregate://", StringComparison.Ordinal) == true;
 
         /// <summary>Whether "Hide from Games" can do anything for this row.
         /// HidHide cloaks HID instances, and a merged row has none: its path

@@ -145,6 +145,48 @@ namespace PadForge.Tests
         public void ARowCountsWhenItIsADevice(string path, string typeKey, bool counts)
             => Assert.Equal(counts, new DeviceRowViewModel { DevicePath = path, DeviceTypeKey = typeKey, IsOnline = true }.CountsAsDevice);
 
+        /// <summary>Home's "Devices connected" is this page's "N connected":
+        /// the devices a person plugs in, counted once each. Home counted
+        /// every row that was online, so a PC with a keyboard, a touchpad
+        /// and no controller read 13 on Home and 4 here, with the merged
+        /// rows, a keyboard's media keys and the rows PadForge and the
+        /// extras feed in Home's number. Both pages now count by one rule,
+        /// the one above.</summary>
+        [Fact]
+        public void HomesDeviceCount_IsThisPagesCount()
+        {
+            static PadForge.Engine.Data.UserDevice Row(string path, int type, bool online = true)
+                => new PadForge.Engine.Data.UserDevice { DevicePath = path, CapType = type, IsOnline = online };
+            var rows = new[]
+            {
+                Row(@"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000", InputDeviceType.Gamepad),
+                Row(@"\\?\HID#VID_048D&PID_8258#7&1&0&0000", InputDeviceType.Keyboard),
+                Row(@"\\?\HID#VID_048D&PID_8258&Col02#7&1&0&0001", InputDeviceType.ConsumerControl),
+                Row("aggregate://keyboards", InputDeviceType.Keyboard),
+                Row("aggregate://mice", InputDeviceType.Mouse),
+                Row("telemetry://game", InputDeviceType.GameTelemetry),
+                Row("headtrack://opentrack", InputDeviceType.HeadTracker),
+                Row("mic://array", InputDeviceType.Microphone),
+                Row("web://controller/1", InputDeviceType.Gamepad),
+                Row("midi://keys", InputDeviceType.Midi),
+                Row(@"\\?\HID#VID_046D&PID_C24F#8&1&0&0000", InputDeviceType.Driving, online: false),
+                null,
+            };
+            // The pad, the keyboard and the MIDI device. The wheel is away.
+            Assert.Equal(3, PadForge.Services.InputService.CountConnectedDevices(rows));
+            Assert.Equal(0, PadForge.Services.InputService.CountConnectedDevices(null));
+            // Row by row, the count's rule is the row's own.
+            foreach (var row in rows.Where(r => r != null))
+            {
+                string key = PadForge.Common.DeviceTypeGlyph.KeyFor(row.CapType);
+                Assert.Equal(new DeviceRowViewModel { DevicePath = row.DevicePath, DeviceTypeKey = key, IsOnline = true }.CountsAsDevice,
+                    DeviceRowViewModel.IsCountedDevice(row.DevicePath, key));
+            }
+            // The engine card's number is that count.
+            string service = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("dash.OnlineDevices = CountConnectedDevices(deviceSnapshot);", service);
+        }
+
         [Fact]
         public void AListGroupIsRaisedOnlyWhenItChanges()
         {

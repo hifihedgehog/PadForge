@@ -3950,14 +3950,31 @@ namespace PadForge.Services
                 deviceSnapshot = CopyDeviceRows(ud, ref _dashboardRows);
 
                 // The one count the interface prints: Home's engine card.
-                int online = 0;
-                for (int i = 0; i < deviceSnapshot.Length; i++)
-                    if (deviceSnapshot[i] != null && deviceSnapshot[i].IsOnline) online++;
-                dash.OnlineDevices = online;
+                dash.OnlineDevices = CountConnectedDevices(deviceSnapshot);
             }
 
             RefreshSlotSummaryProperties(deviceSnapshot);
             RefreshNavItemConnectedCounts(deviceSnapshot);
+        }
+
+        /// <summary>Home's "Devices connected": the rows that are online and
+        /// count as a device on the Devices page
+        /// (DeviceRowViewModel.CountsAsDevice), so the two pages give one
+        /// number. Home counted every online row, the merged rows, a
+        /// keyboard's media keys and the rows PadForge and the extras feed
+        /// among them, and read 13 on a PC where the Devices page read 4.</summary>
+        internal static int CountConnectedDevices(UserDevice[] rows)
+        {
+            if (rows == null) return 0;
+            int count = 0;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                var row = rows[i];
+                if (row != null && row.IsOnline
+                    && DeviceRowViewModel.IsCountedDevice(row.DevicePath, Common.DeviceTypeGlyph.KeyFor(row.CapType)))
+                    count++;
+            }
+            return count;
         }
 
         /// <summary>The device list copied for one reader on the UI thread,

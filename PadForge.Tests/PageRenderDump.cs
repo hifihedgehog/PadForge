@@ -839,6 +839,14 @@ namespace PadForge.Tests
             Shot("header-second-picked.png", PageWidth, 420, () => vm.SelectedMappedDevice = vm.MappedDevices[1]);
             Shot("header-macros.png", PageWidth, 420, () => vm.SelectedConfigTab = PadViewModel.MacrosTabIndex);
             Shot("header-narrow.png", 640, 520, null);
+            // Six devices, whose pills take two lines: the label heads the
+            // first (pad-forcefeedback-falcon).
+            Shot("header-six-devices.png", PageWidth, 420, () =>
+            {
+                foreach (string name in new[] { "Logitech G502 HERO Gaming Mouse", "Novint Falcon", "SteelSeries Rival 710 Gaming Mouse" })
+                    vm.MappedDevices.Add(Device(name, false, false, -1));
+            });
+            while (vm.MappedDevices.Count > 3) vm.MappedDevices.RemoveAt(vm.MappedDevices.Count - 1);
             Shot("header-waiting.png", PageWidth, 420, () =>
             {
                 slot.IsVirtualControllerConnected = false;

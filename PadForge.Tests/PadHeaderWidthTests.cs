@@ -61,7 +61,7 @@ namespace PadForge.Tests
             Assert.Equal("Horizontal", (string)titleLine.Attribute("Orientation"));
             Assert.Equal("Grid", titleLine.Parent!.Name.LocalName);
             Assert.Null(titleLine.Attribute("Grid.Column"));
-            var deviceLine = Named(page, "DrivenByLabel").Parent!;
+            var deviceLine = Named(page, "DrivenByLabel").Ancestors().First(a => a.Name.LocalName == "WrapPanel");
             Assert.Equal("WrapPanel", deviceLine.Name.LocalName);
             Assert.Equal("Horizontal", (string)deviceLine.Attribute("Orientation"));
             Assert.Equal("StackPanel", deviceLine.Parent!.Name.LocalName);

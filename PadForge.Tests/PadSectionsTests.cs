@@ -776,7 +776,8 @@ namespace PadForge.Tests
             Assert.Equal("{Binding MappedDevices}", (string)pills.Attribute("ItemsSource"));
             Assert.Equal("{Binding SelectedMappedDevice, Mode=TwoWay}", (string)pills.Attribute("SelectedItem"));
             Assert.Equal("{Binding ElementName=DrivenByLabel}", (string)pills.Attribute("AutomationProperties.LabeledBy"));
-            Assert.Same(drivenBy.Parent, pills.Parent);
+            // The label stands in a box one pill line tall, beside the list.
+            Assert.Same(drivenBy.Parent!.Parent, pills.Parent);
             Assert.Equal("{Binding Name, TargetNullValue='', FallbackValue=''}",
                 (string)Assert.Single(pills.Descendants(), e => e.Name.LocalName == "Setter"
                     && (string)e.Attribute("Property") == "AutomationProperties.Name").Attribute("Value"));
@@ -843,7 +844,7 @@ namespace PadForge.Tests
             Assert.Equal("Pad_AddDevice", Id(add));
             Assert.Equal("AddDevice_Click", (string)add.Attribute("Click"));
             Assert.Equal("{Binding Pad_AddDevice, Source={x:Static strings:Strings.Instance}}", (string)add.Attribute("Content"));
-            Assert.Same(drivenBy.Parent, add.Parent);
+            Assert.Same(pills.Parent, add.Parent);
 
             // The stage icons are the Home card's. The page has none, and
             // the one template that draws an icon is still the shared one.

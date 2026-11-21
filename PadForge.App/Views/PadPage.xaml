@@ -2355,9 +2355,15 @@
             <!-- Line 2: the physical device that feeds this controller. -->
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
 
-                <TextBlock x:Name="DrivenByLabel" Text="{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}"
-                           FontSize="13"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                <!-- The label heads the pills' first line: a box as tall as
+                     one line of pills (a pill's 34 and the 4 over and under
+                     it), at the line's top, so with two lines of pills the
+                     label stands at the first and not between them. -->
+                <Grid Height="42" Margin="0,0,12,0" VerticalAlignment="Top">
+                    <TextBlock x:Name="DrivenByLabel" Text="{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                </Grid>
 
                 <!-- The devices that feed this controller, a pill for each,
                      as the header board draws one: a light that is ember

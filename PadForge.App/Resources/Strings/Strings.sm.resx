@@ -1234,7 +1234,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Note ma control change mo polokalame musika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller VR faʻatagata e ala i le SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ina ia sui le ituaiga mulimuli ane, kiliki le chip o le ituaiga i luga o le controller. E tasi lava le kiliki.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E manaʻomia le SteamVR. Faʻapipiʻi mai lona kata i Seti.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E manaʻomia le SteamVR. Faʻapipiʻi mai i Seti, i lalo o Driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ua iai se controller VR. E tasi e faʻagaioia lima uma e lua.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Pair se controller Bluetooth</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Suʻe seti, masini ma profile</value></data>
@@ -1305,4 +1305,6 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Filifili se isi faʻaoga e faʻatali i ai.</value></data>
   <data name="Mapping_SourceCurve" xml:space="preserve"><value>Piʻo</value></data>
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Siʻitia le faitauga a lenei faʻaoga i lenei malosi aʻo leʻi faʻagaioia le taunuʻuga. O le 0 ma le 1 e tuʻu saʻo ai. I luga aʻe o le 1 e telegese latalata i le ogatotonu.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>E taofi e se web pad e te faʻatulagaina le mamao o vaega taʻitasi mai le pito e latalata i ai i se lau e sili atu ona lautele, e pei ona tuʻueseʻese e overlay a RetroArch o latou afa e lua. Na faitau na o se tusi faʻamatalaga, e leai se code GPL e aofia ai.</value></data>
 </root>

@@ -1439,8 +1439,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Manotsi nemaCC emapurogiramu emumhanzi.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontiroura dzeVR dzenhema kuburikidza ne-SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Kuti uchinje rudzi gare gare, dzvanya chip cherudzi pakontiroura. Kunotora kudzvanya kumwe chete.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services hairi kupindura. Ona kadhi rayo muMarongero.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Inoda SteamVR. Iise kubva pakadhi rayo muMarongero.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services hairi kupindura. Tarisa muMarongero, pasi peMadhiraivha.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Inoda SteamVR. Iise kubva muMarongero, pasi peMadhiraivha.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Kune kontiroura yeVR yatovepo. Imwe chete inodzora maoko ese.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Batanidza kontiroura ye-Bluetooth</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bhatiri {0}</value></data>
@@ -1503,4 +1503,6 @@
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Shandisa</value></data>
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mudziyo usingazivikanwe</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pedhi yewebhu yakagadzirwa nemushandisi inochengeta chinhambwe chechikwata chimwe nechimwe kubva kumucheto wechidzitiro uri pedyo nacho pachidzitiro chakafara, sezvinoita ma-overlay e-RetroArch achiparadzanisa hafu dzawo mbiri. Yakaverengwa sezvinyorwa chete, hapana kodhi ye-GPL inotumirwa.</value></data>
 </root>

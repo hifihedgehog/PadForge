@@ -2136,4 +2136,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Hojiirra oolchi</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Paadiin weebii dhuunfaa tokko garee tokkoon tokkoo isaa fageenya qarqara iskiriinii bal’aa isatti dhihaate irraa qabu ni eega, akkuma overlay RetroArch walakkaa isaanii lamaan sochoosan. Sanada qofa ta’ee dubbifame, koodiin GPL tokkollee hin ergamu.</value></data>
 </root>

@@ -1328,8 +1328,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Dagiti nota ken control change para iti software ti musika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtual a controller ti VR babaen ti SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Tapno baliwam ti kita no madamdama, i-click ti chip ti kita iti controller. Maysa laeng nga click.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Saan a sumungsungbat ti Windows MIDI Services. Kitaem ti card-na iti Settings.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Masapul ti SteamVR. Ikabil daytoy manipud iti card-na iti Settings.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Saan a sumungsungbat ti Windows MIDI Services. Kitaem daytoy iti Settings, iti sidong ti Dagiti driver.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Masapul ti SteamVR. Ikabil daytoy manipud iti Settings, iti sidong ti Dagiti driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Adda metten ti controller ti VR. Ti maysa ket mangiturong iti dua nga ima.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>I-pair ti Bluetooth a controller</value></data>
   <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} tapno umakar</value></data>
@@ -1387,4 +1387,6 @@
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Ipakat</value></data>
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Di nailasin a device</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ti custom a web pad ket taginayonenna ti distansia ti tunggal grupo dagiti kontrol manipud iti ad-adda nga asideg a pingir ti ad-adda a nalawa a screen, kas iti panangiyakar dagiti overlay ti RetroArch kadagiti dua a paset-da. Nabasa laeng a kas dokumentasion, awan ti GPL code a mairaman.</value></data>
 </root>

@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>ნოტები და კონტროლის ცვლილებები მუსიკალური პროგრამებისთვის.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>ვირტუალური VR კონტროლერები SteamVR-ით.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>ტიპის მოგვიანებით შესაცვლელად დააწკაპუნეთ კონტროლერის ტიპის ჩიპზე. ამას ერთი დაწკაპუნება სჭირდება.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services არ პასუხობს. იხილეთ მისი ბარათი პარამეტრებში.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>საჭიროებს SteamVR-ს. დააყენეთ ის პარამეტრებში მისი ბარათიდან.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services არ პასუხობს. იხილეთ ის პარამეტრებში, დრაივერების განყოფილებაში.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>საჭიროებს SteamVR-ს. დააყენეთ ის პარამეტრებში, დრაივერების განყოფილებაში.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR კონტროლერი უკვე არსებობს. ერთი ორივე ხელს მართავს.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge-ს {0} კონტროლერი აქვს, ეს მაქსიმუმია. წაშალეთ ერთი, რომ სხვა დაამატოთ.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>პროფილი</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (მაქს. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>გაფართოებული (მაქს. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>კლავიატურა + მაუსი (მაქს. {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (არ მუშაობს, იხილეთ Windows MIDI Services ბარათი პარამეტრებში)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (არ მუშაობს, იხილეთ Windows MIDI Services პარამეტრებში, დრაივერების განყოფილებაში)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (მაქს. {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (საჭიროებს SteamVR-ს)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (მაქს. {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>გაუგზავნეთ კონტროლერის მოძრაობა ემულატორებს, რომლებიც DSU მოძრაობის წყაროს კითხულობენ.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>მიიღეთ ადაპტური ტრიგერისა და განათების ეფექტები DSX-ისთვის დაწერილი თამაშის მოდებიდან.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ჩართეთ თამაშში ტელემეტრიის გამოტანა და მიუთითეთ ეს კომპიუტერი და პორტი.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ემულატორში დაამატეთ მოძრაობის წყარო ამ კომპიუტერის მისამართით და ამ პორტით.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>მოდის ეფექტები აღწევს ყველა კონტროლერს, რომელსაც მათთვის აპარატურა აქვს.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ამ კომპიუტერზე მომუშავე ემულატორში დაამატეთ მოძრაობის წყარო მისამართით 127.0.0.1 და ამ პორტით.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>მოდი აღწევს თითოეულ ვირტუალურ კონტროლერს, რომელსაც დაკავშირებული DualSense ან DualShock 4 აქვს, და მისი ეფექტები ჟღერს იქ ყველა კონტროლერზე, რომელსაც მათთვის აპარატურა აქვს.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>თავის პოზა არის „თავის ტრეკერის“ რიგი გვერდზე [მოწყობილობები]. მიაბით თავის გვერდითი შებრუნება სტიკის ღერძს კონტროლერის მიბმების განყოფილებაში.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>მნიშვნელობები არის „თამაშის ტელემეტრიის“ რიგი გვერდზე [მოწყობილობები]. მიაბით ისინი კონტროლერის მიბმების განყოფილებაში ან გამოიყენეთ მაკროების გასაშვებად.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>მენიუს საკუთარი ადგილი, ზომა და გაუმჭვირვალობა მენიუზე დგინდება, კონტროლერის განყოფილებაში [მაკროები და მენიუები].</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>გაუქმება</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ყველას გაუქმება</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვა</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის, სენსორული ეკრანისთვის ან მაუსისთვის.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის, სენსორული ეკრანისთვის.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვის ჩართვა</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>გაუმჭვირვალობა</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>პოზიციის დაბრუნება</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>კონტროლერის შეყვანა და ჩამოთვლა.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>კლავიატურისა და მაუსის შეყვანა თითოეული მოწყობილობისთვის ცალ-ცალკე</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>მორგებადი ვებ-პედი თითოეული ჯგუფის დისტანციას უახლოესი კიდიდან ინარჩუნებს უფრო განიერ ეკრანზე, ისევე, როგორც RetroArch-ის გადაფარვები ორ ნახევარს გადააადგილებენ. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>ვირტუალური MIDI მოწყობილობის გამოსვლა (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>ბაუერის სტერეოფონულიდან ბინაურალურზე გადასვლის ჯვარედინი მიწოდება ყურსასმენების გამოსვლისთვის.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>წმინდა C# Opus-ის ენკოდერი, რომელიც DualSense-ის დინამიკის აუდიოს Bluetooth-ით ამოძრავებს. ავტორი Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>სამიზნისა და გამადიდებლის წყაროები</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>ჯვარი და მისი წერტილი Skarbo-ს CSGOCrosshair-იდან (ლიცენზია არ არის გამოქვეყნებული), წრე, სურათისა და კონტურული სტილები Crosshair-Overlay-იდან (MIT), ხოლო გამადიდებლის ლინზა და მთელი ეკრანის გადიდება Microsoft-ის Windows-classic-samples-იდან (MIT). მხოლოდ დოკუმენტაცია, კოდი არ შედის.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ს DualSense Bluetooth აუდიოს კვლევა: პაკეტების გადაცემა, რომელზეც კონტროლერის დინამიკის ნაკადი მიდის. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>ერთეულები</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>მგრძნობელობის ერთეულის ჩვენება. მამრავლი არის შიდა × მასშტაბი (1 = საბაზისო). DegPerScreenTurn Steam-ის სტილისაა: კონტროლერის ფიზიკური ბრუნვის გრადუსები ეკრანის ერთ სრულ შემოტრიალებაზე.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>მარტივი დამიზნების ზღვარი</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>მარჯვენა სტიკის გადახრა (0–100%), რომლის ქვემოთაც გიროსკოპის გამოტანა ნულდება. 0 = ყოველთვის ჩართული. Steam-ის „გიროსკოპი დამიზნებისას ჩართულია“ შეგრძნება. გიროსკოპი მუშაობს მხოლოდ მაშინ, როცა მომხმარებელი მარჯვენა სტიკს ზღვარს მიღმა გადახრის.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ჩართვის სტიკის გადახრა (0–100%), რომლის ქვემოთაც გიროსკოპის გამოტანა ნულდება. 0 = ყოველთვის ჩართული. Steam-ის „გიროსკოპი დამიზნებისას ჩართულია“ შეგრძნება. გიროსკოპი მუშაობს მხოლოდ მაშინ, როცა მომხმარებელი ამ სტიკს ზღვარს მიღმა გადახრის.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>გიროსკოპი</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>გიროსკოპი</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>მოარგეთ, როგორ აკონტროლებს ამ კონტროლერის მოძრაობის სენსორი მაუსისა და სტიკის გამოტანას. დაკალიბრეთ ბრტყელ ზედაპირზე უძრაობის დრეიფის ნულირებისთვის, შემდეგ დააყენეთ მგრძნობელობა, გასწორება და ჩართვის წესები თქვენს გემოზე.</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>გასწორების ფანჯარა</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>გასწორების ბუფერის დროის ფანჯრის სიგრძე. დიდი მნიშვნელობები გამკვრივების ზღვარს ქვემოთ უფრო ძლიერად არბილებს. პატარა მნიშვნელობები უფრო მკვეთრია. ნაგულისხმევი 50 მწმ.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>დამიზნების ჩართვის ღილაკი</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ღილაკი, რომელიც გიროსკოპის გამოტანას აკონტროლებს. გიროსკოპი მუშაობს მხოლოდ ამ ღილაკის დაჭერისას. დატოვეთ დაუყენებელი ღილაკის კონტროლის გამოსართავად. თუ ესეც და მარჯვენა სტიკის გადახრაც მითითებულია, გიროსკოპის ამოსაქმედებლად ორივე უნდა იყოს აქტიური.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ღილაკი, რომელიც გიროსკოპის გამოტანას აკონტროლებს. როგორ, ამას ჩართვის რეჟიმი განსაზღვრავს. დატოვეთ დაუყენებელი ღილაკის კონტროლის გამოსართავად. თუ ესეც და ჩართვის სტიკის გადახრაც მითითებულია, გიროსკოპის ამოსაქმედებლად ორივე უნდა იყოს აქტიური.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>ჩართვის რეჟიმი</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>დაჭერილად ყოფნა: გიროსკოპი მუშაობს, სანამ ჩართვის ღილაკი დაჭერილია. გადართვა: ყოველი დაჭერა გიროსკოპს ჩართავს ან გამორთავს, აშვებას კი არაფერი მოსდევს. გადართვა შენარჩუნდება გამოკითხვის ციკლებს შორის და პროფილის შეცვლისას ნულდება.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>დაჭერილად ყოფნა: გიროსკოპი მუშაობს, სანამ ჩართვის ღილაკი დაჭერილია. გადართვა: ყოველი დაჭერა გიროსკოპს ჩართავს ან გამორთავს, აშვებას კი არაფერი მოსდევს. აშვება დასამიზნებლად: გიროსკოპი მუშაობს, სანამ ჩართვის ღილაკი დაჭერილი არ არის. გადართვა შენარჩუნდება გამოკითხვის ციკლებს შორის და პროფილის შეცვლისას ნულდება.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>დაჭერილად ყოფნა</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>გადართვა</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>აშვება დასამიზნებლად</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ზევით (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ჩართვა</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>დამიზნების ჩართვის ღილაკი, ჩართვის რეჟიმი, გიროსკოპის ჩართვა, ცენტრში დაბრუნება, მარტივი დამიზნების ზღვარი</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>არასავალდებულო ბლოკები, რომლებიც ზღუდავენ, როდის არის გიროსკოპი აქტიური. შეგიძლიათ დააყენოთ მარჯვენა სტიკის გადახრაც და დამიზნების ჩართვის ღილაკიც. გიროსკოპი მუშაობს მხოლოდ მაშინ, როცა ყველა დაყენებული ბლოკი აქტიურია.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>არასავალდებულო ბლოკები, რომლებიც ზღუდავენ, როდის არის გიროსკოპი აქტიური. შეგიძლიათ დააყენოთ ჩართვის სტიკის გადახრაც და დამიზნების ჩართვის ღილაკიც. გიროსკოპი მუშაობს მხოლოდ მაშინ, როცა ყველა დაყენებული ბლოკი აქტიურია.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ლოკალური</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>მოთამაშე</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>სამყარო</value></data>
@@ -4250,7 +4254,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ბასის შეიკერები</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>თამაშის ვიბრაციას დაბალი ტონების სახით უკრავს ბასის შეიკერების ან სუბვუფერის მეშვეობით.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>გამოსავლის მოწყობილობა, არხები, გაძლიერება, ტონი თითოეული ძრავისთვის</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>მუშაობს Xbox-ის, DualShock 3-ის, DualShock 4 / DualSense-ისა და Nintendo Switch Pro-ს ვირტუალურ კონტროლერებთან, ასევე ძალისმიერი უკუკავშირის მქონე გაფართოებულ ვირტუალურ კონტროლერებთან, მაგალითად სარბოლო საჭეებთან, და Steam Deck-ის კონტროლერთან (კომპოზიტური). თამაშის უკუკავშირი და ვიბრაციის ტესტი აუდიო გამოსავლით ჟღერს. მაკროს ვიბრაცია კონტროლერზე რჩება.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>მუშაობს Xbox-ის, DualShock 3-ის, DualShock 4 / DualSense-ისა და Nintendo Switch Pro-ს ვირტუალურ კონტროლერებთან, ასევე ძალისმიერი უკუკავშირის მქონე გაფართოებულ ვირტუალურ კონტროლერებთან, მაგალითად სარბოლო საჭეებთან. ის ასევე მუშაობს Steam Deck Controller (Composite)-თან, SInput Gamepad-თან და Joypad-OS Steam Input Gamepad-თან. თამაშის უკუკავშირი და ვიბრაციის ტესტი აუდიო გამოსავლით ჟღერს. მაკროს ვიბრაცია კონტროლერზე რჩება.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ვიბრაციის აუდიოში გადაცემის საწყისზე დაბრუნება</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ვიბრაციის მიმართვა აუდიო გამოსავალზე</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>თამაშისგან მიღებულ ვიბრაციასა და ძალისმიერ უკუკავშირს, რომელსაც ეს ვირტუალური კონტროლერი იღებს, არჩეულ აუდიო გამოსავალზე დაბალი სიხშირის ტონებად უკრავს. გამორთვა ყველა პარამეტრს ინახავს.</value></data>
@@ -4582,7 +4586,7 @@
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup და AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box-ის წყაროები</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB ტრანსპორტი, ავტორი Vadym Hrynchyshyn, HIDMaestro-ს კომპოზიტური USB კონტროლერებისთვის. HIDMaestro-ს თან ახლავს მისი ხელმოწერილი ჰოსტ-კონტროლერის დრაივერი და აყენებს მას კომპოზიტური კონტროლერის პირველად შექმნისას.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB ტრანსპორტი, ავტორი Vadym Hrynchyshyn, HIDMaestro-ს იმ კონტროლერებისთვის, რომლებიც USB მოწყობილობებია: ARM-ზე მომუშავე Windows-ზე ყველა ვირტუალური კონტროლერი, ხოლო x64-ზე კომპოზიტური კონტროლერები, Steam Controller (2026), Xbox One S: Full პროფილი და Joy-Con Charging Grip ფორმები. HIDMaestro-ს თან ახლავს მისი ჰოსტ-კონტროლერის დრაივერი და აყენებს მას ამ კონტროლერებიდან რომელიმეს პირველად შექმნისას.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>აირჩიეთ ამ სლოტის რომელი ნახევრებია აქტიური. ნახევრის გამორთვა მალავს მის რიგებს და აჩერებს გაგზავნას, მიბმებს კი ინარჩუნებს, ამიტომ ხელახლა ჩართვისას ისინი აღდგება.</value>
   </data>
@@ -4767,7 +4771,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ის ადაპტური ტრიგერის პრესეტის მნიშვნელობები, ავტორი Mxater. წაკითხულია მხოლოდ ფაქტებისთვის.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU მოძრაობის ღერძების ნიშნები, გადამოწმებული მისი UDP დეკოდერით. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU მოძრაობის ღერძების ნიშნები, გადამოწმებული მისი UDP დეკოდერით, და მორგებადი ვებ-პედის მართვის ელემენტების ზომები, გაზომილი ეკრანის უფრო მოკლე გვერდის მიმართ, ისევე, როგორც მისი Android-ის გადაფარვა ზომავს. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ის ნაგულისხმევი პრესეტები კოსმოსური სიმულატორის საწყისი პროფილის უკან, ავტორი Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5202,4 +5206,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>პაროლი</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>გამადიდებელი (დაჭერისას)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>აჩვენებს გამადიდებელს, სანამ ეს მაკრო დაჭერილია, სამიზნით დასამიზნებლად. დააყენეთ ის გამადიდებლის გვერდზე.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput-ის წყაროები</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>ანგარიშები SInput-ის პადების მხარდაჭერისა და SInput-ის პერსონისთვის, წაკითხულია Hand Held Legend-ის SINPUT-LIB-HID-იდან (MIT-0) და HOJA-LIB-RP2040-იდან (CC BY-NC-SA 3.0), ასევე OpenPuck-ის SInput რეჟიმიდან (AGPL-3.0). მხოლოდ დოკუმენტაცია, AGPL კოდი არ შედის.</value></data>
 </root>

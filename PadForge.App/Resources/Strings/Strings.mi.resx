@@ -1920,7 +1920,7 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mahere i te tere, ngā pēra me ngā kia e tukuna ana e tētahi kēmu taraiwa, pērā i tētahi atu tāuru.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tangohia ngā pānga trigger urutau me ngā pānga rama i ngā mod kēmu i tuhia mō DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Whakakāhia te tuku telemetry i roto i te kēmu, ka tohu ai ki tēnei PC me tēnei port.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ka tae ngā pānga o tētahi mod ki ia controller kei a ia te pūmārō mō aua pānga.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ka tae tētahi mod ki ia controller mariko kei a ia tētahi DualSense, DualShock 4 rānei kua honoa, ā, ka rere ōna pānga ki ia controller i reira kei a ia te pūmārō mō aua pānga.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko te tū o te māhunga te rārangi Head Tracker i [Ngā pūrere]. Mahere i te huri o te māhunga ki tētahi tuaka stick i te wāhanga Ngā mahere o tētahi controller.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko ngā uara te rārangi Game Telemetry i [Ngā pūrere]. Mahere i a rātou i te wāhanga Ngā mahere o tētahi controller, whakamahia rānei hei whakaoho mākoro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ko te tūnga, te rahi me te pūataata o tētahi tahua ka tautuhia ki te tahua anō, i te wāhanga [Ngā mākoro me ngā tahua] o tētahi controller.</value></data>
@@ -1984,7 +1984,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ngā orotahi me ngā control change mō ngā pūmanawa puoro.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Ngā controller VR mariko mā SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Hei huri i te momo ā muri ake, pāwhiria te tohu momo i runga i te controller. Kotahi noa te pāwhiri.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Me whai SteamVR. Tāutahia mai i tōna kāri i Tautuhinga.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Me whai SteamVR. Tāutahia mai i Tautuhinga, i raro i Ngā taraiwa.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Kua puta kē he controller VR. Kotahi noa e whakahaere ana i ngā ringa e rua.</value></data>
   <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Ka maheretia ngā pātene, ngā stick me ngā trigger 1:1 i te wā e hangaia ana te controller.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Hono i tētahi controller Bluetooth</value></data>
@@ -2087,4 +2087,6 @@
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Pūrere kāore e mōhiotia</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Deadzone o roto</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>I raro i tēnei rahi o te nekehanga ka pānuitia te tāuru kei waenganui.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ka pupuri tētahi papa tukutuku ritenga i te tawhiti o ia kāhui mai i te taha tata ake o tētahi mata whānui ake, pērā i te neke a ngā whakakikorua a RetroArch i ō rātou haurua e rua. I pānuitia hei tuhinga anake, kāore he waehere GPL e tukuna ana.</value></data>
 </root>

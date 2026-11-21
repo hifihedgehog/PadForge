@@ -1477,8 +1477,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Mga nota ngan control change para ha software han musika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Mga virtual nga VR controller pinaagi han SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Para bag-ohon an klase hin urhi, i-click an type chip ha controller. Usa la nga click.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Diri nasabat an Windows MIDI Services. Kitaa an iya card ha Mga setting.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kinahanglan an SteamVR. I-install ini tikang ha iya card ha Mga setting.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Diri nasabat an Windows MIDI Services. Kitaa ini ha Mga setting, ha ilarom han Mga driver.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kinahanglan an SteamVR. I-install ini tikang ha Mga setting, ha ilarom han Mga driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>May-ada na VR controller. Usa an nagkokontrol han duha nga kamot.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>May {0} nga controller an PadForge, an pinakadamo nga mapapadalagan niya. Paraa an usa para makadugang hin iba.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Dugang nga mga klase: [{0}, {1}, {2} ngan {3}]</value></data>
@@ -1573,4 +1573,6 @@
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Gamita</value></data>
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Diri kilala nga device</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>An custom web pad nagpapabilin han distansya han kada cluster tikang ha mas hirani nga ngilit han mas halapad nga screen, sugad han pagbalhin han mga overlay han RetroArch han ira duha nga katunga. Ginbasa la komo dokumentasyon, waray GPL nga code nga iginhahatag.</value></data>
 </root>

@@ -1610,8 +1610,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Música softwarepaq notakuna, control change nisqakunapas.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR nisqawan VR virtual controlkuna.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Qhipaman rikch'ayta tikranapaq, controlpi rikch'ay chipta ñit'iy. Huk ñit'iyllam.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services mana kutichinchu. Allinchaykunapi tarjetanta qhaway.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR munakun. Allinchaykunapi tarjetanmanta instalay.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services mana kutichinchu. Allinchaykunapi, Controladorkuna ukhupi qhaway.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR munakun. Allinchaykunamanta, Controladorkuna ukhumanta instalay.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Huk VR controlqa kachkanña. Hukllam iskaynin makikunata kamachin.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth controlta emparejay</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Wakichisqa perfilmanta qallariy</value></data>
@@ -1669,4 +1669,6 @@
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (hap'iy)</value></data>
   <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (kacharpariy)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (qallarichiy)</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Kikiykichasqa web pad sapa qutu kontrolkunataqa aswan hatun pantallapi aswan qayllan patanmanta kaq karullapi waqaychan, RetroArch-pa overlaykunan iskaynin chawpinkunata kuyuchisqanman hina. Documentación hinallam ñawirisqa, mana ima GPL códigotapas apachinchu.</value></data>
 </root>

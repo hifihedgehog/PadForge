@@ -1863,7 +1863,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Iinowuthi nee-control change zesoftware yomculo.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Izilawuli ze-VR ezibonakalayo nge-SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ukutshintsha uhlobo kamva, cofa itshiphu yohlobo esilawulini. Kuthatha ukucofa okukodwa.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kufuneka i-SteamVR. Yifake kwikhadi layo kwiiSetingi.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kufuneka i-SteamVR. Yifake kwiiSetingi, kwikhadi elithi Iidrayiva.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sele kukho isilawuli se-VR. Esinye siqhuba izandla zombini.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Dibanisa isilawuli se-Bluetooth</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Qala ngeprofayile esele ilungile</value></data>
@@ -1923,4 +1923,6 @@
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Isixhobo esingaziwayo</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>I-deadzone yangaphakathi</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ngaphantsi kobu bungakanani bohambo igalelo lifundwa njengelisembindini.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Iphedi yewebhu eyenziwe ngokwakho igcina umgama weqela ngalinye ukusuka kumda okufutshane wesikrini esibanzi, njengokuba ii-overlay ze-RetroArch zihambisa iinxalenye zazo ezimbini. Ifundwe njengoxwebhu kuphela, akukho khowudi ye-GPL ithunyelwayo.</value></data>
 </root>

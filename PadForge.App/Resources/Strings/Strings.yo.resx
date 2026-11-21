@@ -2055,7 +2055,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Àwọn nóòtì àti control change fún sọ́fítíwía orin.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Àwọn ẹ̀rọ ìdarí VR àfojúinú nípasẹ̀ SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Láti yí irú rẹ̀ padà nígbà mìíràn, tẹ àmì irú lórí ẹ̀rọ ìdarí náà. Títẹ̀ kan ṣoṣo ló gbà.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ó nílò SteamVR. Fi sórí ẹ̀rọ láti káàdì rẹ̀ nínú Ètò.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ó nílò SteamVR. Fi sórí ẹ̀rọ láti inú Ètò, lábẹ́ Àwọn awakọ̀.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ẹ̀rọ ìdarí VR kan ti wà tẹ́lẹ̀. Ọ̀kan ṣoṣo ń darí ọwọ́ méjèèjì.</value></data>
   <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>A ń so àwọn bọ́tìnì, ọ̀pá àti trigger pọ̀ ní 1:1 bí a ti ń ṣẹ̀dá ẹ̀rọ ìdarí náà.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>So ẹ̀rọ ìdarí Bluetooth kan pọ̀</value></data>
@@ -2106,4 +2106,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Lò ó</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pádì wẹ́ẹ̀bù àdáni máa ń pa ìjìnnà ẹgbẹ́ àwọn ìdarí kọ̀ọ̀kan mọ́ sí etí tí ó súnmọ́ ọ jù lọ lórí ìbòjú tí ó fẹ̀ jù, bí àwọn overlay RetroArch ṣe ń sún ìdajì wọn méjèèjì. A kà á gẹ́gẹ́ bí ìwé àlàyé nìkan, kò sí kóòdù GPL kankan tí a fi sínú rẹ̀.</value></data>
 </root>

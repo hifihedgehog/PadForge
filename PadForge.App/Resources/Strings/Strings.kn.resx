@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>ಸಂಗೀತ ಸಾಫ್ಟ್‌ವೇರ್‌ಗಾಗಿ ನೋಟ್‌ಗಳು ಮತ್ತು ಕಂಟ್ರೋಲ್ ಚೇಂಜ್‌ಗಳು.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR ಮೂಲಕ ವರ್ಚುವಲ್ VR ಕಂಟ್ರೋಲರ್‌ಗಳು.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>ಪ್ರಕಾರವನ್ನು ನಂತರ ಬದಲಿಸಲು, ಕಂಟ್ರೋಲರ್‌ನ ಪ್ರಕಾರದ ಚಿಪ್ ಕ್ಲಿಕ್ ಮಾಡಿ. ಒಂದು ಕ್ಲಿಕ್ ಸಾಕು.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ. ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿರುವ ಅದರ ಕಾರ್ಡ್ ನೋಡಿ.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR ಬೇಕು. ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿರುವ ಅದರ ಕಾರ್ಡ್‌ನಿಂದ ಸ್ಥಾಪಿಸಿ.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ. ಅದನ್ನು ಸೆಟ್ಟಿಂಗ್ಸ್‌ನ ಡ್ರೈವರ್‌ಗಳು ವಿಭಾಗದಲ್ಲಿ ನೋಡಿ.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR ಬೇಕು. ಸೆಟ್ಟಿಂಗ್ಸ್‌ನ ಡ್ರೈವರ್‌ಗಳು ವಿಭಾಗದಿಂದ ಸ್ಥಾಪಿಸಿ.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>ಈಗಾಗಲೇ ಒಂದು VR ಕಂಟ್ರೋಲರ್ ಇದೆ. ಒಂದೇ ಎರಡೂ ಕೈಗಳನ್ನು ನಡೆಸುತ್ತದೆ.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ನಲ್ಲಿ {0} ಕಂಟ್ರೋಲರ್‌ಗಳಿವೆ, ಇದು ಚಲಾಯಿಸಬಹುದಾದ ಗರಿಷ್ಠ. ಇನ್ನೊಂದನ್ನು ಸೇರಿಸಲು ಒಂದನ್ನು ಅಳಿಸಿ.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ಗರಿಷ್ಠ {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>ವಿಸ್ತೃತ (ಗರಿಷ್ಠ {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ + ಮೌಸ್ (ಗರಿಷ್ಠ {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ಚಾಲನೆಯಲ್ಲಿಲ್ಲ, ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿರುವ Windows MIDI Services ಕಾರ್ಡ್ ನೋಡಿ)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ಚಾಲನೆಯಲ್ಲಿಲ್ಲ, ಸೆಟ್ಟಿಂಗ್ಸ್‌ನ ಡ್ರೈವರ್‌ಗಳು ವಿಭಾಗದಲ್ಲಿ Windows MIDI Services ನೋಡಿ)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (ಗರಿಷ್ಠ {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR ಅಗತ್ಯ)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (ಗರಿಷ್ಠ {0})</value></data>
@@ -419,8 +419,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU ಮೋಷನ್ ಮೂಲವನ್ನು ಓದುವ ಎಮ್ಯುಲೇಟರ್‌ಗಳಿಗೆ ಕಂಟ್ರೋಲರ್ ಚಲನೆಯನ್ನು ಕಳುಹಿಸಿ.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX ಗಾಗಿ ಬರೆದ ಆಟದ ಮಾಡ್‌ಗಳಿಂದ ಅಡಾಪ್ಟಿವ್ ಟ್ರಿಗರ್ ಮತ್ತು ಲೈಟ್ ಎಫೆಕ್ಟ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ಆಟದಲ್ಲಿ ಟೆಲಿಮೆಟ್ರಿ ಔಟ್‌ಪುಟ್ ಆನ್ ಮಾಡಿ, ಈ PC ಮತ್ತು ಪೋರ್ಟ್‌ಗೆ ಗುರಿಯಿಡಿ.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ಎಮ್ಯುಲೇಟರ್‌ನಲ್ಲಿ ಈ PC ಯ ವಿಳಾಸ ಮತ್ತು ಈ ಪೋರ್ಟ್‌ನೊಂದಿಗೆ ಮೋಷನ್ ಮೂಲ ಸೇರಿಸಿ.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ಮಾಡ್‌ನ ಪರಿಣಾಮಗಳು ಅದಕ್ಕೆ ಬೇಕಾದ ಹಾರ್ಡ್‌ವೇರ್ ಇರುವ ಪ್ರತಿ ಕಂಟ್ರೋಲರ್‌ಗೂ ತಲುಪುತ್ತವೆ.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ಈ PC ಯಲ್ಲಿನ ಎಮ್ಯುಲೇಟರ್‌ನಲ್ಲಿ 127.0.0.1 ವಿಳಾಸ ಮತ್ತು ಈ ಪೋರ್ಟ್‌ನೊಂದಿಗೆ ಮೋಷನ್ ಮೂಲ ಸೇರಿಸಿ.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ಮಾಡ್ ಸಂಪರ್ಕಿತ DualSense ಅಥವಾ DualShock 4 ಇರುವ ಪ್ರತಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗೆ ತಲುಪುತ್ತದೆ, ಮತ್ತು ಅದರ ಪರಿಣಾಮಗಳು ಅಲ್ಲಿ ಅವಕ್ಕೆ ಬೇಕಾದ ಹಾರ್ಡ್‌ವೇರ್ ಇರುವ ಪ್ರತಿ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲಿ ಪ್ಲೇ ಆಗುತ್ತವೆ.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ಹೆಡ್ ಭಂಗಿಯು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಹೆಡ್ ಟ್ರ್ಯಾಕರ್ ಸಾಲು. ಹೆಡ್ ಯಾ ಅನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ಮೌಲ್ಯಗಳು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಸಾಲು. ಅವನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಮ್ಯಾಪ್ ಮಾಡಿ, ಅಥವಾ ಮ್ಯಾಕ್ರೋಗಳನ್ನು ಪ್ರಚೋದಿಸಲು ಬಳಸಿ.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ಮೆನುವಿನ ಸ್ಥಾನ, ಗಾತ್ರ ಮತ್ತು ಅಪಾರದರ್ಶಕತೆಯನ್ನು ಮೆನುವಿನಲ್ಲೇ, ಕಂಟ್ರೋಲರ್‌ನ [ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು] ವಿಭಾಗದಲ್ಲಿ ಹೊಂದಿಸಲಾಗುತ್ತದೆ.</value></data>
@@ -601,7 +601,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ಹಿಂಪಡೆಯಿರಿ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ಹಿಂಪಡೆಯಿರಿ</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಓವರ್‌ಲೇ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation ಟಚ್‌ಪ್ಯಾಡ್ ಆಟಗಳಿಗಾಗಿ ಪರದೆಯ ಮೇಲಿನ ಸ್ಪರ್ಶ ಮೇಲ್ಮೈ, ಟಚ್ ಪರದೆ ಅಥವಾ ಮೌಸ್‌ಗಾಗಿ.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation ಟಚ್‌ಪ್ಯಾಡ್ ಆಟಗಳಿಗಾಗಿ ಪರದೆಯ ಮೇಲಿನ ಸ್ಪರ್ಶ ಮೇಲ್ಮೈ, ಟಚ್ ಪರದೆಗಾಗಿ.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಓವರ್‌ಲೇ ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ಅಪಾರದರ್ಶಕತೆ</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ಸ್ಥಾನವನ್ನು ಮರುಹೊಂದಿಸಿ</value></data>
@@ -808,6 +808,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಇನ್‌ಪುಟ್ ಮತ್ತು ಎಣಿಕೆ.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ಪ್ರತಿ ಸಾಧನದ ಕೀಬೋರ್ಡ್ ಮತ್ತು ಮೌಸ್ ಇನ್‌ಪುಟ್</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>ಕಸ್ಟಮ್ ವೆಬ್ ಪ್ಯಾಡ್ ಅಗಲವಾದ ಪರದೆಯಲ್ಲಿ ಪ್ರತಿ ಗುಂಪಿನ ಹತ್ತಿರದ ಅಂಚಿನಿಂದ ಇರುವ ಅಂತರವನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ, RetroArch ನ ಓವರ್‌ಲೇಗಳು ತಮ್ಮ ಎರಡು ಅರ್ಧಗಳನ್ನು ಸರಿಸುವಂತೆ. ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>ವರ್ಚುವಲ್ MIDI ಸಾಧನ ಔಟ್‌ಪುಟ್ (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -2347,7 +2349,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>ಘಟಕಗಳು</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ ಘಟಕದ ಪ್ರದರ್ಶನ. ಗುಣಕ ಎಂದರೆ ಆಂತರಿಕ × ಅಳತೆ (1 = ಮೂಲ). DegPerScreenTurn Steam ಶೈಲಿಯದು: ಒಂದು ಪೂರ್ಣ ಪರದೆ ತಿರುವಿಗೆ ಕಂಟ್ರೋಲರ್ ಭೌತಿಕವಾಗಿ ತಿರುಗುವ ಡಿಗ್ರಿಗಳು.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>ಸುಲಭ ಗುರಿ ಮಿತಿ</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ಇದಕ್ಕಿಂತ ಕಡಿಮೆ ಬಲ ಸ್ಟಿಕ್ ವಿಚಲನೆಯಲ್ಲಿ (0–100%) ಜೈರೋ ಫಲಿತಾಂಶ ಸೊನ್ನೆಯಾಗುತ್ತದೆ. 0 = ಯಾವಾಗಲೂ ಆನ್. Steam ನ “ಗುರಿ ಹಿಡಿಯುವಾಗ ಜೈರೋ ತೊಡಗುತ್ತದೆ” ಅನುಭವ. ಬಳಕೆದಾರರು ಬಲ ಸ್ಟಿಕ್ ಅನ್ನು ಮಿತಿಯ ಆಚೆಗೆ ತಳ್ಳಿದಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ಇದಕ್ಕಿಂತ ಕಡಿಮೆ ತೊಡಗಿಸುವ ಸ್ಟಿಕ್ ವಿಚಲನೆಯಲ್ಲಿ (0–100%) ಜೈರೋ ಫಲಿತಾಂಶ ಸೊನ್ನೆಯಾಗುತ್ತದೆ. 0 = ಯಾವಾಗಲೂ ಆನ್. Steam ನ “ಗುರಿ ಹಿಡಿಯುವಾಗ ಜೈರೋ ತೊಡಗುತ್ತದೆ” ಅನುಭವ. ಬಳಕೆದಾರರು ಆ ಸ್ಟಿಕ್ ಅನ್ನು ಮಿತಿಯ ಆಚೆಗೆ ತಳ್ಳಿದಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ಜೈರೋ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ಜೈರೋ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ಈ ಪ್ಯಾಡ್ ಚಲನೆ ಸಂವೇದಕವು ಮೌಸ್ ಮತ್ತು ಸ್ಟಿಕ್ ಫಲಿತಾಂಶವನ್ನು ಹೇಗೆ ನಿಯಂತ್ರಿಸುತ್ತದೆ ಎಂದು ಹೊಂದಿಸಿ. ವಿಶ್ರಾಂತಿ ಡ್ರಿಫ್ಟ್ ಸೊನ್ನೆ ಮಾಡಲು ಸಮತಟ್ಟಾದ ಮೇಲ್ಮೈಯಲ್ಲಿ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ, ನಂತರ ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್ ಮತ್ತು ತೊಡಗಿಸುವ ನಿಯಮಗಳನ್ನು ನಿಮ್ಮ ಇಷ್ಟಕ್ಕೆ ತಕ್ಕಂತೆ ಹೊಂದಿಸಿ.</value></data>
@@ -2397,9 +2399,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>ಸ್ಮೂಥಿಂಗ್ ವಿಂಡೋ</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>ಸ್ಮೂಥಿಂಗ್ ಬಫರ್ ಕಾಲ ವಿಂಡೋದ ಉದ್ದ. ದೊಡ್ಡ ಮೌಲ್ಯಗಳು ಬಿಗಿಗೊಳಿಸುವ ಮಿತಿಯ ಕೆಳಗೆ ಹೆಚ್ಚು ಸ್ಮೂತ್ ಮಾಡುತ್ತವೆ. ಚಿಕ್ಕ ಮೌಲ್ಯಗಳು ಚುರುಕಾಗಿ ಅನಿಸುತ್ತವೆ. ಡೀಫಾಲ್ಟ್ 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ಜೈರೋ ಫಲಿತಾಂಶವನ್ನು ನಿಯಂತ್ರಿಸುವ ಬಟನ್. ಈ ಬಟನ್ ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಬಟನ್ ನಿಯಂತ್ರಣವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಹೊಂದಿಸದೆ ಬಿಡಿ. ಇದು ಮತ್ತು ಬಲ ಸ್ಟಿಕ್ ವಿಚಲನೆ ಎರಡೂ ಹೊಂದಿಸಿದ್ದರೆ, ಜೈರೋ ಕೆಲಸ ಮಾಡಲು ಎರಡೂ ಸಕ್ರಿಯವಾಗಿರಬೇಕು.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ಜೈರೋ ಫಲಿತಾಂಶವನ್ನು ನಿಯಂತ್ರಿಸುವ ಬಟನ್. ಹೇಗೆ ಎಂಬುದನ್ನು ತೊಡಗಿಸುವ ಮೋಡ್ ನಿರ್ಧರಿಸುತ್ತದೆ. ಬಟನ್ ನಿಯಂತ್ರಣವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಹೊಂದಿಸದೆ ಬಿಡಿ. ಇದು ಮತ್ತು ತೊಡಗಿಸುವ ಸ್ಟಿಕ್ ವಿಚಲನೆ ಎರಡೂ ಹೊಂದಿಸಿದ್ದರೆ, ಜೈರೋ ಕೆಲಸ ಮಾಡಲು ಎರಡೂ ಸಕ್ರಿಯವಾಗಿರಬೇಕು.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>ತೊಡಗಿಸುವ ಮೋಡ್</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ಒತ್ತಿ ಹಿಡಿ: ತೊಡಗಿಸುವ ಬಟನ್ ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಟಾಗಲ್: ಪ್ರತಿ ಒತ್ತುವಿಕೆ ಜೈರೋವನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡುತ್ತದೆ, ಬಿಡುವುದರಿಂದ ಏನೂ ಆಗುವುದಿಲ್ಲ. ಟಾಗಲ್ ಸ್ಥಿತಿ ಪೋಲಿಂಗ್ ಟಿಕ್‌ಗಳ ನಡುವೆ ಉಳಿಯುತ್ತದೆ ಮತ್ತು ಪ್ರೊಫೈಲ್ ಬದಲಿಸಿದಾಗ ಮರುಹೊಂದುತ್ತದೆ.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ಒತ್ತಿ ಹಿಡಿ: ತೊಡಗಿಸುವ ಬಟನ್ ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಟಾಗಲ್: ಪ್ರತಿ ಒತ್ತುವಿಕೆ ಜೈರೋವನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡುತ್ತದೆ, ಬಿಡುವುದರಿಂದ ಏನೂ ಆಗುವುದಿಲ್ಲ. ಬಿಟ್ಟಾಗ ಗುರಿ: ತೊಡಗಿಸುವ ಬಟನ್ ಒತ್ತಿ ಹಿಡಿಯದಿರುವಾಗ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಟಾಗಲ್ ಸ್ಥಿತಿ ಪೋಲಿಂಗ್ ಟಿಕ್‌ಗಳ ನಡುವೆ ಉಳಿಯುತ್ತದೆ ಮತ್ತು ಪ್ರೊಫೈಲ್ ಬದಲಿಸಿದಾಗ ಮರುಹೊಂದುತ್ತದೆ.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ಒತ್ತಿ ಹಿಡಿ</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>ಟಾಗಲ್</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>ಬಿಟ್ಟಾಗ ಗುರಿ</value></data>
@@ -2419,7 +2421,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ಮೇಲೆ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ತೊಡಗಿಸು</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್, ತೊಡಗಿಸುವ ಮೋಡ್, ಜೈರೋ ಆನ್, ಮರುಕೇಂದ್ರೀಕರಣ, ಸುಲಭ ಗುರಿ ಮಿತಿ</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ಜೈರೋ ಯಾವಾಗ ಸಕ್ರಿಯವಾಗಿರಬೇಕು ಎಂಬುದನ್ನು ಮಿತಿಗೊಳಿಸುವ ಐಚ್ಛಿಕ ಷರತ್ತುಗಳು. ಬಲ ಸ್ಟಿಕ್ ವಿಚಲನೆ ಮತ್ತು ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್ ಇವುಗಳಲ್ಲಿ ಪ್ರತಿಯೊಂದನ್ನೂ ಹೊಂದಿಸಬಹುದು. ಹೊಂದಿಸಿದ ಎಲ್ಲ ಷರತ್ತುಗಳು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ಜೈರೋ ಯಾವಾಗ ಸಕ್ರಿಯವಾಗಿರಬೇಕು ಎಂಬುದನ್ನು ಮಿತಿಗೊಳಿಸುವ ಐಚ್ಛಿಕ ಷರತ್ತುಗಳು. ತೊಡಗಿಸುವ ಸ್ಟಿಕ್‌ನ ವಿಚಲನೆ ಮತ್ತು ಗುರಿ ತೊಡಗಿಸುವ ಬಟನ್ ಇವುಗಳಲ್ಲಿ ಪ್ರತಿಯೊಂದನ್ನೂ ಹೊಂದಿಸಬಹುದು. ಹೊಂದಿಸಿದ ಎಲ್ಲ ಷರತ್ತುಗಳು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಮಾತ್ರ ಜೈರೋ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ಸ್ಥಳೀಯ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ಆಟಗಾರ</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ಜಗತ್ತು</value></data>
@@ -4231,7 +4233,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ಆಟದ ಕಂಪನವನ್ನು ಬಾಸ್ ಶೇಕರ್‌ಗಳು ಅಥವಾ ಸಬ್‌ವೂಫರ್ ಮೂಲಕ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಪ್ಲೇ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್ ಸಾಧನ, ಚಾನೆಲ್‌ಗಳು, ಗೇನ್, ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಒಂದು ಸ್ವರ</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ಮತ್ತು Nintendo Switch Pro ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳೊಂದಿಗೆ, ಜೊತೆಗೆ ರೇಸಿಂಗ್ ವೀಲ್‌ಗಳಂತಹ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ವಿಸ್ತೃತ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳು ಮತ್ತು Steam Deck Controller (Composite) ನೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಆಟದ ಫೀಡ್‌ಬ್ಯಾಕ್ ಮತ್ತು ಕಂಪನ ಪರೀಕ್ಷೆ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮ್ಯಾಕ್ರೋ ಕಂಪನ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ಮತ್ತು Nintendo Switch Pro ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳೊಂದಿಗೆ, ಜೊತೆಗೆ ರೇಸಿಂಗ್ ವೀಲ್‌ಗಳಂತಹ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಇರುವ ವಿಸ್ತೃತ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಇದು Steam Deck Controller (Composite), SInput Gamepad ಮತ್ತು Joypad-OS Steam Input Gamepad ನೊಂದಿಗೆ ಕೂಡ ಕೆಲಸ ಮಾಡುತ್ತದೆ. ಆಟದ ಫೀಡ್‌ಬ್ಯಾಕ್ ಮತ್ತು ಕಂಪನ ಪರೀಕ್ಷೆ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮ್ಯಾಕ್ರೋ ಕಂಪನ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ಕಂಪನ ಆಡಿಯೊಗೆ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ಕಂಪನವನ್ನು ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸಿ</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಪಡೆಯುವ ಆಟದ ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅನ್ನು ಆರಿಸಿದ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ನಲ್ಲಿ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಪ್ಲೇ ಮಾಡುತ್ತದೆ. ಆಫ್ ಮಾಡಿದರೆ ಪ್ರತಿ ಸೆಟ್ಟಿಂಗ್ ಉಳಿಯುತ್ತದೆ.</value></data>
@@ -4555,7 +4557,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   </data>
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR ಉಲ್ಲೇಖಗಳು</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್ ಮತ್ತು ಮೋಷನ್ ಕಂಟ್ರೋಲರ್ ಇನ್‌ಪುಟ್‌ನ ಹಿಂದಿನ ರನ್‌ಟೈಮ್ ಇಂಟರ್ಫೇಸ್, ರಚನೆ ವಿನ್ಯಾಸ ಮತ್ತು ರಿಜಿಸ್ಟ್ರಿ ಕೀಗಳು, Khronos OpenXR-SDK ಹೆಡರ್‌ಗಳಿಂದ (Apache-2.0) ಓದಲಾಗಿದೆ ಮತ್ತು VirtualDesktop-OpenXR (MIT) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. PadForge ನಿಮ್ಮ ಸ್ವಂತ ಸ್ಥಾಪಿತ ರನ್‌ಟೈಮ್‌ನೊಂದಿಗೆ ಮಾತನಾಡುತ್ತದೆ ಮತ್ತು ಯಾವುದೇ Khronos ಕೋಡ್ ಸೇರಿಸಿಲ್ಲ.</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ ಹ್ಯಾಪ್ಟಿಕ್, ಬೆಳಕು, ಜೋಡಣೆ ಮತ್ತು ಬ್ಯಾಟರಿ ಫ್ರೇಮ್‌ಗಳು, Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), OpenLogi ದಾಖಲೆಗಳು, keyleds (GPL-3.0-or-later), g810-led ಮತ್ತು g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ಮತ್ತು g915x-heatmap (MIT) ನಿಂದ ಓದಲಾಗಿದೆ, OpenRGB-Fixed (GPL-2.0-or-later) ಮತ್ತು HaloDaemon-plugins ಟಿಪ್ಪಣಿಗಳೊಂದಿಗೆ. Razer ಉತ್ಪನ್ನ ID ಗಳು ಮತ್ತು ಬೆಳಕಿನ ರಿಪೋರ್ಟ್‌ಗಳು, OpenRazer (GPL-2.0-or-later) ಮತ್ತು OpenRGB (GPL-2.0-or-later) ನಿಂದ ಓದಲಾಗಿದೆ ಮತ್ತು uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ಮತ್ತು razer-life (GPL-2.0-or-later) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ, ಆ ಸಾಧನಗಳು ಹಂಚಿಕೊಳ್ಳುವ ಲಾಕ್ Aurora (MIT) ಮತ್ತು LibreHardwareMonitor (MPL-2.0) ನಿಂದ. SteelSeries ಉತ್ಪನ್ನ ID ಗಳು ಮತ್ತು ಬೆಳಕಿನ ರಿಪೋರ್ಟ್‌ಗಳು, OpenRGB ಮತ್ತು rivalcfg (WTFPL) ನಿಂದ ಓದಲಾಗಿದೆ ಮತ್ತು SignalRGB ಪ್ಲಗಿನ್‌ಗಳು, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ಮತ್ತು Wine (LGPL-2.1-or-later) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. HID LampArray ರಿಪೋರ್ಟ್‌ಗಳು, USB-IF HID Usage Tables, Microsoft ನ Dynamic Lighting ದಾಖಲೆ ಮತ್ತು ಅದರ ಮಾದರಿಗಳಾದ ArduinoHidForWindows ಮತ್ತು RP2040MacropadHidSample (MIT) ನಿಂದ ಓದಲಾಗಿದೆ, ಮತ್ತು lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ಮತ್ತು Apex3TklDynamicLighting (ಎಲ್ಲವೂ MIT), acer-predator-helios-rgb (GPL-2.0-only) ಮತ್ತು crosrgbkblight ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. iFeel ಬಜ್ ರಿಪೋರ್ಟ್, iFeel, Linux iFeel ಡ್ರೈವರ್ (GPL-2.0-or-later) ಮತ್ತು Logitech-iFeel-Vibration-POC ನಿಂದ ಓದಲಾಗಿದೆ, ಡಿಸ್ಕ್ರಿಪ್ಟರ್ ನಿಯಮ Linux ಕರ್ನಲ್ (GPL-2.0-or-later) ನಿಂದ ಮತ್ತು ಶಕ್ತಿ ಮಾಪನ Logitech ನ MouseWare 9.80 ಡ್ರೈವರ್‌ನಿಂದ. ಸ್ಪರ್ಶ ಮತ್ತು ಬಣ್ಣ ಹ್ಯಾಂಡ್ಲರ್‌ಗಳು GameSense SDK ಯಿಂದ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ ಹ್ಯಾಪ್ಟಿಕ್, ಬೆಳಕು, ಜೋಡಣೆ ಮತ್ತು ಬ್ಯಾಟರಿ ಫ್ರೇಮ್‌ಗಳು, Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), OpenLogi ದಾಖಲೆಗಳು, keyleds (GPL-3.0-or-later), g810-led ಮತ್ತು g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ಮತ್ತು g915x-heatmap (MIT) ನಿಂದ ಓದಲಾಗಿದೆ, OpenRGB-Fixed (GPL-2.0-or-later) ಮತ್ತು HaloDaemon-plugins ಟಿಪ್ಪಣಿಗಳೊಂದಿಗೆ. Razer ಉತ್ಪನ್ನ ID ಗಳು ಮತ್ತು ಬೆಳಕಿನ ರಿಪೋರ್ಟ್‌ಗಳು, OpenRazer (GPL-2.0-or-later) ಮತ್ತು OpenRGB (GPL-2.0-or-later) ನಿಂದ ಓದಲಾಗಿದೆ ಮತ್ತು uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, ಓದಿದಾಗ MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ಮತ್ತು razer-life (GPL-2.0-or-later) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ, ಆ ಸಾಧನಗಳು ಹಂಚಿಕೊಳ್ಳುವ ಲಾಕ್ Aurora (MIT) ಮತ್ತು LibreHardwareMonitor (MPL-2.0) ನಿಂದ. SteelSeries ಉತ್ಪನ್ನ ID ಗಳು ಮತ್ತು ಬೆಳಕಿನ ರಿಪೋರ್ಟ್‌ಗಳು, OpenRGB ಮತ್ತು rivalcfg (WTFPL) ನಿಂದ ಓದಲಾಗಿದೆ ಮತ್ತು SignalRGB ಪ್ಲಗಿನ್‌ಗಳು, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ಮತ್ತು Wine (LGPL-2.1-or-later) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. HID LampArray ರಿಪೋರ್ಟ್‌ಗಳು, USB-IF HID Usage Tables, Microsoft ನ Dynamic Lighting ದಾಖಲೆ ಮತ್ತು ಅದರ ಮಾದರಿಗಳಾದ ArduinoHidForWindows ಮತ್ತು RP2040MacropadHidSample (MIT) ನಿಂದ ಓದಲಾಗಿದೆ, ಮತ್ತು lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ಮತ್ತು Apex3TklDynamicLighting (ಎಲ್ಲವೂ MIT), acer-predator-helios-rgb (GPL-2.0-only) ಮತ್ತು crosrgbkblight ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. iFeel ಬಜ್ ರಿಪೋರ್ಟ್, iFeel, Linux iFeel ಡ್ರೈವರ್ (GPL-2.0-or-later) ಮತ್ತು Logitech-iFeel-Vibration-POC ನಿಂದ ಓದಲಾಗಿದೆ, ಡಿಸ್ಕ್ರಿಪ್ಟರ್ ನಿಯಮ Linux ಕರ್ನಲ್ (GPL-2.0-or-later) ನಿಂದ ಮತ್ತು ಶಕ್ತಿ ಮಾಪನ Logitech ನ MouseWare 9.80 ಡ್ರೈವರ್‌ನಿಂದ. ಸ್ಪರ್ಶ ಮತ್ತು ಬಣ್ಣ ಹ್ಯಾಂಡ್ಲರ್‌ಗಳು GameSense SDK ಯಿಂದ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>ಲೆಗಸಿ MIDI API ಹಿಂದಿನ WinMM ಕರೆ ಅನುಕ್ರಮಗಳು: ಪೋರ್ಟ್ ತೆರೆಯುವುದು, ಅದಕ್ಕೆ ಕಳುಹಿಸುವುದು ಮತ್ತು ಮುಚ್ಚುವುದು. PortMidi (MIT, Ross Bencina, Phil Burk ಮತ್ತು Roger B. Dannenberg ಅವರಿಂದ) ಮತ್ತು RtMidi (MIT-ಶೈಲಿಯ RtMidi ಪರವಾನಗಿ, Gary P. Scavone ಅವರಿಂದ) ನಿಂದ ಓದಲಾಗಿದೆ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK ಉಲ್ಲೇಖಗಳು</value></data>
@@ -4565,7 +4567,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box ಉಲ್ಲೇಖಗಳು</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box ಅಡಾಪ್ಟರ್‌ಗಳನ್ನು ಓದುವ ಹಿಂದಿನ Bliss-Box API, Bliss-Box LLC ಯ API Tool (BSD-ಶೈಲಿ, ಉಚಿತ ಮರುವಿತರಣೆ) ಮತ್ತು DeviceBuddy (ಮೂಲ ಲಭ್ಯ, Bliss-Box LLC) ನಿಂದ ಓದಲಾಗಿದೆ, ಬಟನ್ ಹೆಸರುಗಳು SteveFox1620 ರ retroarch-joypad-autoconfig ಫೋರ್ಕ್‌ನ Bliss-Box ಫೈಲ್‌ಗಳಿಂದ, Controller Pak ಚೆಕ್‌ಸಮ್‌ಗಳನ್ನು libdragon (Unlicense) ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ, ಮತ್ತು PlayStation ಪ್ಯಾಡ್ ಉತ್ತರ psx-spx ಮತ್ತು Linux ನ psxpad-spi ಡ್ರೈವರ್ (GPL-2.0-or-later) ನಿಂದ. ಕಂಟ್ರೋಲರ್ ಹೆಸರುಗಳು ಮತ್ತು ಬೆಂಬಲ ಟಿಪ್ಪಣಿಗಳು Bliss-Box LLC ಯ ಹೊಂದಾಣಿಕೆ ಪಟ್ಟಿಯಿಂದಲೂ ಬರುತ್ತವೆ, ಮತ್ತು ಅಡಾಪ್ಟರ್‌ಗಳ ವರ್ತನೆಯನ್ನು ಅವುಗಳ ಫರ್ಮ್‌ವೇರ್ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro ದ ಸಂಯುಕ್ತ USB ಕಂಟ್ರೋಲರ್‌ಗಳಿಗೆ Vadym Hrynchyshyn ಅವರ USB ಸಾರಿಗೆ. HIDMaestro ತನ್ನೊಂದಿಗೆ ಸಹಿ ಮಾಡಿದ ಹೋಸ್ಟ್ ಕಂಟ್ರೋಲರ್ ಡ್ರೈವರ್ ಅನ್ನು ಹೊಂದಿದ್ದು, ಸಂಯುಕ್ತ ಕಂಟ್ರೋಲರ್ ಮೊದಲ ಬಾರಿ ರಚಿಸಿದಾಗ ಅದನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro ನ USB ಸಾಧನಗಳಾಗಿರುವ ಕಂಟ್ರೋಲರ್‌ಗಳಿಗೆ Vadym Hrynchyshyn ಅವರ USB ಸಾರಿಗೆ: Windows on ARM ನಲ್ಲಿನ ಪ್ರತಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್, ಮತ್ತು x64 ನಲ್ಲಿ ಸಂಯುಕ್ತ ಕಂಟ್ರೋಲರ್‌ಗಳು, Steam Controller (2026), Xbox One S: Full ಪ್ರೊಫೈಲ್ ಮತ್ತು Joy-Con Charging Grip ರೂಪಗಳು. HIDMaestro ತನ್ನ ಹೋಸ್ಟ್ ಕಂಟ್ರೋಲರ್ ಡ್ರೈವರ್ ಅನ್ನು ಹೊಂದಿದ್ದು, ಈ ಕಂಟ್ರೋಲರ್‌ಗಳಲ್ಲಿ ಒಂದು ಮೊದಲ ಬಾರಿ ರಚಿಸಿದಾಗ ಅದನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>ಈ ಸ್ಲಾಟ್‌ನ ಯಾವ ಅರ್ಧಗಳು ಸಕ್ರಿಯವೆಂದು ಆರಿಸಿ. ಅರ್ಧವನ್ನು ಆಫ್ ಮಾಡಿದರೆ ಅದರ ಸಾಲುಗಳು ಮರೆಯಾಗುತ್ತವೆ ಮತ್ತು ಕಳುಹಿಸುವುದು ನಿಲ್ಲುತ್ತದೆ, ಆದರೆ ಅದರ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಉಳಿಯುತ್ತವೆ, ಮತ್ತೆ ಆನ್ ಮಾಡಿದಾಗ ಮರಳುತ್ತವೆ.</value>
   </data>
@@ -4750,7 +4752,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube ಅಡಾಪ್ಟಿವ್-ಟ್ರಿಗರ್ ಪ್ರೀಸೆಟ್ ಮೌಲ್ಯಗಳು, Mxater ಅವರಿಂದ. ಸಂಗತಿಗಳಿಗಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU ಚಲನೆ ಅಕ್ಷ ಚಿಹ್ನೆಗಳು, ಅದರ UDP ಡಿಕೋಡರ್ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ. ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU ಚಲನೆ ಅಕ್ಷ ಚಿಹ್ನೆಗಳು, ಅದರ UDP ಡಿಕೋಡರ್ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ, ಮತ್ತು ಕಸ್ಟಮ್ ವೆಬ್ ಪ್ಯಾಡ್‌ನ ನಿಯಂತ್ರಣ ಗಾತ್ರಗಳು, ಪರದೆಯ ಚಿಕ್ಕ ಬದಿಗೆ ಅನುಗುಣವಾಗಿ ಅಳೆಯಲಾಗಿದೆ, ಅದರ Android ಓವರ್‌ಲೇ ಅಳೆಯುವಂತೆ. ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ಸ್ಪೇಸ್ ಸಿಮ್ ಆರಂಭಿಕ ಪ್ರೊಫೈಲ್‌ನ ಹಿಂದಿನ Elite Dangerous ಡೀಫಾಲ್ಟ್ ಪ್ರೀಸೆಟ್‌ಗಳು, Richard Buckle ಅವರಿಂದ.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>

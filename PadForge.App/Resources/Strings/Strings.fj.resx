@@ -793,8 +793,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Na iVakatagi kei na control change me baleta na parokaramu ni sere.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Na controller VR vakaivakarau ena SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Mo veisautaka na mataqali e muri, kiliki ena type chip ena controller. E dua ga na kiliki.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>E sega ni sauma tiko na Windows MIDI Services. Raica na kena kadi ena Settings.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E gadrevi na SteamVR. Install mai na kena kadi ena Settings.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>E sega ni sauma tiko na Windows MIDI Services. Raica ena Settings, ena ruku ni Drivers.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E gadrevi na SteamVR. Install mai na Settings, ena ruku ni Drivers.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sa tu e dua na controller VR. E dua ga e liutaka na liga ruarua.</value></data>
   <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} me toso</value></data>
   <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} me dola</value></data>
@@ -851,4 +851,6 @@
   <data name="Common_Apply" xml:space="preserve"><value>Vakayagataka</value></data>
   <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E vakalevutaka na wiliwili ni curu oqo ki na kaukauwa oqo ni bera ni vakayagataka na output. Na 0 kei na 1 e tiko dodonu kina. Ni sivia na 1 e berabera cake voleka ina loma.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Na web pad e buli vakataki iko e maroroya na yawa ni ilawalawa yadua ni ivakatagi mai na bati e voleka cake ni dua na sikirini e rabailevu cake, me vaka na nodra tosoi tani na rua na tikina ni overlay ni RetroArch. E wiliki ga me ivakamacala, e sega ni dua na code ni GPL e vakauta.</value></data>
 </root>

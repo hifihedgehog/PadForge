@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Музыкалық бағдарламаларға арналған ноталар мен басқару өзгерістері.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR арқылы виртуалды VR контроллерлері.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Түрін кейін өзгерту үшін контроллердегі түр белгісін басыңыз. Ол бір рет басуды ғана қажет етеді.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services жауап бермейді. Параметрлердегі оның карточкасын қараңыз.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR қажет. Оны Параметрлердегі карточкасынан орнатыңыз.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services жауап бермейді. Оны Параметрлерде, Драйверлер бөлімінен қараңыз.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR қажет. Оны Параметрлерде, Драйверлер бөлімінен орнатыңыз.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR контроллері бұрыннан бар. Біреуі екі қолды да басқарады.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge қолдайтын ең көп контроллер саны {0} жетті. Жаңасын қосу үшін біреуін жойыңыз.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профиль</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ең көбі {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Кеңейтілген (ең көбі {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Пернетақта + тінтуір (ең көбі {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (жұмыс істемейді, «Параметрлер» бөліміндегі Windows MIDI Services карточкасын қараңыз)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (жұмыс істемейді, Параметрлерде, Драйверлер бөлімінен Windows MIDI Services қараңыз)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (ең көбі {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR қажет)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (ең көбі {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын DSU қозғалыс көзін оқитын эмуляторларға жіберіңіз.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX үшін жазылған ойын модтарынан бейімделгіш триггер мен жарық әсерлерін алыңыз.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ойында телеметрия шығысын қосып, оны осы компьютер мен портқа бағыттаңыз.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Эмуляторда осы компьютердің мекенжайы мен осы порт бойынша қозғалыс көзін қосыңыз.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Модтың әсерлері оларға арналған жабдығы бар әрбір контроллерге жетеді.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Осы компьютердегі эмуляторда 127.0.0.1 мекенжайы мен осы порт бойынша қозғалыс көзін қосыңыз.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Мод DualSense немесе DualShock 4 қосылған әрбір виртуалды контроллерге жетеді, ал оның әсерлері сол жердегі оларға арналған жабдығы бар әрбір контроллерде ойнатылады.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Бас қалпы [Құрылғылар] бетіндегі Бас трекері жолында көрінеді. Бас бұрылысын контроллердің Тағайындаулар бөлімінде стик осіне сәйкестендіріңіз.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Мәндер [Құрылғылар] бетіндегі Ойын телеметриясы жолында көрінеді. Оларды контроллердің Тағайындаулар бөлімінде сәйкестендіріңіз немесе макростарды іске қосу үшін пайдаланыңыз.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Мәзірдің орны, өлшемі және мөлдірсіздігі мәзірдің өзінде, контроллердің [Макростар және мәзірлер] бөлімінде орнатылады.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Қайтарып алу</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Барлығын қайтарып алу</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейі</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет, сенсорлы экран немесе тінтуір үшін.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет, сенсорлы экран үшін.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Мөлдір еместік</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Орнын қалпына келтіру</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллер кірісі және құрылғыларды санау.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Әр құрылғы бойынша пернетақта мен тінтуір кірісі</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Реттелмелі веб-пэд әр топтың кеңірек экранның жақын жиегінен қашықтығын сақтайды, RetroArch оверлейлері өз екі жартысын жылжытатыны сияқты. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуалды MIDI құрылғысының шығысы (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Құлаққап шығысына арналған Bauer стерео-бинаурал кроссфиді.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense динамигінің дыбысын Bluetooth арқылы беретін таза C# тіліндегі Opus кодтағышы. Авторы Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Прицел және лупа сілтемелері</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Крест және оның нүктесі Skarbo-ның CSGOCrosshair жобасынан (лицензия жарияланбаған), Шеңбер, сурет және контурлы стильдер Crosshair-Overlay жобасынан (MIT), ал лупаның Линза режимі мен толық экранды ұлғайтуы Microsoft-тың Windows-classic-samples жобасынан (MIT). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga жүргізген DualSense Bluetooth дыбысы зерттеуі: контроллер динамигінің ағыны жүретін пакеттік тасымалдау. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Бірліктер</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Сезімталдық бірлігінің көрінісі. «Көбейткіш» ішкі × масштаб (1 = базалық). DegPerScreenTurn Steam стиліндегі бірлік: экрандағы бір толық бұрылысқа келетін физикалық контроллер айналуының градусы.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Жеңіл көздеу шегі</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Оң стик ауытқуы (0–100%) осы мәннен төмен болғанда гироскоп шығысы нөлге теңестіріледі. 0 = әрқашан қосулы. Steam ұсынатын «көздегенде гироскоп қосулы» сезімі. Гироскоп пайдаланушы оң стикті шектен асыра итергенде ғана іске қосылады.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Қосатын стиктің ауытқуы (0–100%) осы мәннен төмен болғанда гироскоп шығысы нөлге теңестіріледі. 0 = әрқашан қосулы. Steam ұсынатын «көздегенде гироскоп қосулы» сезімі. Гироскоп пайдаланушы сол стикті шектен асыра итергенде ғана іске қосылады.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Осы геймпадтың қозғалыс сенсоры тінтуір мен стик шығысын қалай басқаратынын баптаңыз. Тыныштықтағы ауытқуды нөлдеу үшін тегіс бетте калибрлеңіз, содан кейін сезімталдықты, тегістеуді және қосу ережелерін қалауыңызша реттеңіз.</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Тегістеу терезесі</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Тегістеу буферінің уақыт терезесінің ұзындығы. Үлкенірек мәндер қатайту шегінен төмен қаттырақ тегістейді. Кішірек мәндер шапшаңырақ сезіледі. Әдепкі мәні 50 мс.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Көздеуді қосу түймесі</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Гироскоп шығысын шектейтін түйме. Гироскоп осы түйме ұсталып тұрғанда ғана іске қосылады. Түйме шектеуін өшіру үшін орнатпай қалдырыңыз. Мұның да, оң стик ауытқуының да бапталғаны болса, гироскоп іске қосылуы үшін екеуі де белсенді болуы керек.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Гироскоп шығысын шектейтін түйме. Қосу режимі қалай екенін белгілейді. Түйме шектеуін өшіру үшін орнатпай қалдырыңыз. Мұның да, қосатын стик ауытқуының да бапталғаны болса, гироскоп іске қосылуы үшін екеуі де белсенді болуы керек.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Қосу режимі</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Ұстау: қосу түймесі ұсталып тұрғанда гироскоп іске қосылады. Ауыстырғыш: әр басу гироскопты қосады не өшіреді, ал жіберу ештеңе істемейді. «Ауыстырғыш» күйі сұрау циклдері арасында сақталады және профиль ауысқанда қалпына келеді.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Ұстау: қосу түймесі ұсталып тұрғанда гироскоп іске қосылады. Ауыстырғыш: әр басу гироскопты қосады не өшіреді, ал жіберу ештеңе істемейді. Көздеу үшін жіберу: қосу түймесі ұсталмағанда гироскоп іске қосылады. «Ауыстырғыш» күйі сұрау циклдері арасында сақталады және профиль ауысқанда қалпына келеді.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Ұстау</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Ауыстырғыш</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Көздеу үшін жіберу</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Жоғары (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Қосу</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Көздеуді қосу түймесі, Қосу режимі, Гиро қосулы, Орталыққа келтіру, Жеңіл көздеу шегі</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоптың қашан белсенді болатынын шектейтін қосымша шарттар. Оң стик ауытқуын және көздеуді қосу түймесін жеке-жеке баптауға болады. Гироскоп барлық бапталған шарттар белсенді болғанда ғана іске қосылады.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоптың қашан белсенді болатынын шектейтін қосымша шарттар. Қосатын стиктің ауытқуын және көздеуді қосу түймесін жеке-жеке баптауға болады. Гироскоп барлық бапталған шарттар белсенді болғанда ғана іске қосылады.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Жергілікті</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Ойыншы</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Әлем</value></data>
@@ -2521,7 +2525,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Гироскоп еңкейтуі Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Гироскоп еңкейтуі</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Толық еңкейту ауқымы, Еңкейту өлі аймағы</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>«Гироскоп еңкейтуі X» / «Гироскоп еңкейтуі Y» кірістерінің қисығы: еңкейтуді ұстап тұрсаңыз, Steam ұсынатын Joystick Deflection режиміндегідей стик өз ауытқуын ұстайды. Толық ауытқу осы жерде орнатқан ауқымыңызда болады, ал гироскопты қайта орталықтау тыныш ұстау күйін қайта нөлдейді. Бұрылу (контроллерді жатық бұру) гравитацияға көрінбейді және бұл кірістерді қозғамайды.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>«Гироскоп еңкейтуі X» / «Гироскоп еңкейтуі Y» кірістерінің қисығы: еңкейтуді ұстап тұрсаңыз, Steam ұсынатын Joystick Deflection режиміндегідей стик өз ауытқуын ұстайды. Толық ауытқу осы жерде орнатқан ауқымыңызда болады. Гироскопты қайта орталықтау тыныш ұстау күйін қайта нөлдейді. Бұрылу (контроллерді жатық бұру) гравитацияға көрінбейді және бұл кірістерді қозғамайды.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Толық еңкейту ауқымы</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Толық стик ауытқуы деп саналатын, тыныш ұстау күйінен бастап еңкейту градусы. Кішірек болса, сезімталырақ. Steam конфигурацияларында ең жиі кездесетін мән 25°.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Еңкейту өлі аймағы</value></data>
@@ -4249,7 +4253,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ойын дірілін бас шейкерлері немесе сабвуфер арқылы төмен тондар ретінде ойнатады.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Шығыс құрылғысы, арна, күшейту, әр мотор үшін тон</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense және Nintendo Switch Pro виртуалды контроллерлерімен, сондай-ақ рөлдер сияқты күштік кері байланысы бар кеңейтілген виртуалды контроллерлермен және Steam Deck Controller (Composite) құрылғысымен жұмыс істейді. Ойын кері байланысы мен Дірілді сынау дыбыс шығысы арқылы ойнайды. Макростың дірілі контроллерде қалады.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense және Nintendo Switch Pro виртуалды контроллерлерімен, сондай-ақ рөлдер сияқты күштік кері байланысы бар кеңейтілген виртуалды контроллерлермен жұмыс істейді. Сонымен қатар Steam Deck Controller (Composite), SInput Gamepad және Joypad-OS Steam Input Gamepad құрылғыларымен де жұмыс істейді. Ойын кері байланысы мен Дірілді сынау дыбыс шығысы арқылы ойнайды. Макростың дірілі контроллерде қалады.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Дірілді дыбысқа беруді қалпына келтіру</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Дірілді дыбыс шығысына бағыттау</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Осы виртуалды контроллер алатын ойын дірілі мен күштік кері байланысты таңдалған дыбыс шығысында төмен жиілікті тондар ретінде ойнатады. Өшіру барлық параметрлерді сақтайды.</value></data>
@@ -4572,7 +4576,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR сілтемелері</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Гарнитура мен қозғалыс контроллерлерінің кірісінің астарындағы орындалу ортасының интерфейсі, құрылым орналасуы және тізбе кілттері. Khronos OpenXR-SDK тақырыптарынан (Apache-2.0) оқылған және VirtualDesktop-OpenXR (MIT) бойынша тексерілген. PadForge сіздің орнатылған орындалу ортаңызбен байланысады және Khronos кодын жеткізбейді.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Перифериялық шығыс сілтемелері</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ хаптика, жарықтандыру, жұптастыру және батарея кадрлары. Оқылған көздер: Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD және MIT OR Apache-2.0), OpenLogi құжаттамасы, keyleds (GPL-3.0-or-later), g810-led және g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) және g915x-heatmap (MIT). Жазбалар: OpenRGB-Fixed (GPL-2.0-or-later) және HaloDaemon-plugins. Razer өнім идентификаторлары мен жарықтандыру есептері OpenRazer (GPL-2.0-or-later) және OpenRGB (GPL-2.0-or-later) көздерінен оқылған, uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) және razer-life (GPL-2.0-or-later) бойынша тексерілген. Бұл құралдар ортақ қолданатын құлып Aurora (MIT) және LibreHardwareMonitor (MPL-2.0) көздерінен алынған. SteelSeries өнім идентификаторлары мен жарықтандыру есептері OpenRGB және rivalcfg (WTFPL) көздерінен оқылған, SignalRGB плагиндері, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) және Wine (LGPL-2.1-or-later) бойынша тексерілген. HID LampArray есептері USB-IF HID Usage Tables құжатынан, Microsoft-тың Dynamic Lighting құжаттамасынан және оның ArduinoHidForWindows пен RP2040MacropadHidSample (MIT) үлгілерінен оқылған, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq және Apex3TklDynamicLighting (барлығы MIT), acer-predator-helios-rgb (GPL-2.0-only) және crosrgbkblight бойынша тексерілген. iFeel дірілдеу есебі iFeel, Linux iFeel драйвері (GPL-2.0-or-later) және Logitech-iFeel-Vibration-POC көздерінен оқылған, дескриптор ережесі Linux ядросынан (GPL-2.0-or-later), ал күш шкаласы Logitech-тің MouseWare 9.80 драйверінен алынған. Тактильді және түс өңдегіштері GameSense SDK-дан алынған. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ хаптика, жарықтандыру, жұптастыру және батарея кадрлары. Оқылған көздер: Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD және MIT OR Apache-2.0), OpenLogi құжаттамасы, keyleds (GPL-3.0-or-later), g810-led және g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) және g915x-heatmap (MIT). Жазбалар: OpenRGB-Fixed (GPL-2.0-or-later) және HaloDaemon-plugins. Razer өнім идентификаторлары мен жарықтандыру есептері OpenRazer (GPL-2.0-or-later) және OpenRGB (GPL-2.0-or-later) көздерінен оқылған, uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, оқылған кезде MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) және razer-life (GPL-2.0-or-later) бойынша тексерілген. Бұл құралдар ортақ қолданатын құлып Aurora (MIT) және LibreHardwareMonitor (MPL-2.0) көздерінен алынған. SteelSeries өнім идентификаторлары мен жарықтандыру есептері OpenRGB және rivalcfg (WTFPL) көздерінен оқылған, SignalRGB плагиндері, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) және Wine (LGPL-2.1-or-later) бойынша тексерілген. HID LampArray есептері USB-IF HID Usage Tables құжатынан, Microsoft-тың Dynamic Lighting құжаттамасынан және оның ArduinoHidForWindows пен RP2040MacropadHidSample (MIT) үлгілерінен оқылған, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq және Apex3TklDynamicLighting (барлығы MIT), acer-predator-helios-rgb (GPL-2.0-only) және crosrgbkblight бойынша тексерілген. iFeel дірілдеу есебі iFeel, Linux iFeel драйвері (GPL-2.0-or-later) және Logitech-iFeel-Vibration-POC көздерінен оқылған, дескриптор ережесі Linux ядросынан (GPL-2.0-or-later), ал күш шкаласы Logitech-тің MouseWare 9.80 драйверінен алынған. Тактильді және түс өңдегіштері GameSense SDK-дан алынған. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Ескі MIDI API-дің астарындағы WinMM шақыру реттілігі: портты ашу, оған жіберу және жабу. PortMidi (MIT, авторлары Ross Bencina, Phil Burk және Roger B. Dannenberg) және RtMidi (MIT үлгісіндегі RtMidi лицензиясы, автор Gary P. Scavone) көздерінен оқылған. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK сілтемелері</value></data>
@@ -4582,7 +4586,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box сілтемелері</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Read Bliss-Box Adapters функциясының астарындағы Bliss-Box API Bliss-Box LLC-нің API Tool (BSD үлгісінде, тегін тарату) және DeviceBuddy (көзі қолжетімді, Bliss-Box LLC) көздерінен оқылған. Түйме атаулары SteveFox1620-ның retroarch-joypad-autoconfig тармағындағы Bliss-Box файлдарынан алынған, Controller Pak бақылау сомалары libdragon (Unlicense) бойынша тексерілген, ал PlayStation пад жауабы psx-spx пен Linux-тың psxpad-spi драйверінен (GPL-2.0-or-later) алынған. Контроллер атаулары мен қолдау ескертпелері сондай-ақ Bliss-Box LLC-нің үйлесімділік тізімінен алынған, ал адаптерлердің әрекеті олардың микробағдарламасы бойынша тексерілген. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ның құрама USB контроллерлеріне арналған USB тасымалы, автор Vadym Hrynchyshyn. HIDMaestro оның қол қойылған хост-контроллер драйверін өзімен бірге жеткізеді және құрама контроллер бірінші рет жасалғанда орнатады.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn жасаған USB тасымалы, USB құрылғылары болып табылатын HIDMaestro контроллерлеріне арналған: Windows on ARM жүйесіндегі әрбір виртуалды контроллер, ал x64 жүйесінде құрама контроллерлер, Steam Controller (2026), Xbox One S: Full профилі және Joy-Con Charging Grip пішіндері. HIDMaestro өзінің хост-контроллер драйверін өзімен бірге жеткізеді және осы контроллерлердің бірі бірінші рет жасалғанда орнатады.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Осы ұяшықтың қай жартылары белсенді екенін таңдаңыз. Жартыны өшіру оның жолдарын жасырады және жіберуін тоқтатады, ал тағайындауларын сақтайды, сондықтан қайта қосқанда олар қалпына келеді.</value>
   </data>
@@ -4768,7 +4772,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube адаптивті триггерінің дайын мәндері, автор Mxater. Тек деректер үшін оқылған.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU қозғалыс осьтерінің таңбалары, оның UDP декодерімен тексерілген. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU қозғалыс осьтерінің таңбалары, оның UDP декодерімен тексерілген, және реттелмелі веб-пэдтің басқару элементтерінің өлшемдері, экранның қысқа жағына қатысты өлшенген, оның Android оверлейі өлшейтіндей. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Space Sim бастапқы профилінің астарындағы Elite Dangerous әдепкі дайын баптаулары, автор Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4850,6 +4854,8 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL тармағының Switch драйверінің және PadForge оқитын керілу шкаласының астарындағы Ring-Con бастау және тоқтату реттілігі. Оқылған көздер: demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), Yamakaky жазған joy (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) және RingconProtocolDebug (Apache-2.0). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Сериялық контроллер сілтемелері</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Алты осьті контроллерлерге, геймпадтарға, ұшу стиктеріне, RC таратқыштарына, ұшу панельдеріне және эргометрлерге арналған SDL тармағының сериялық драйверлерінің астарындағы протоколдар. Оқылған көздер: Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), John E. Stone жазған libsball (BSD үлгісінде), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) және XPComboTest (MIT). Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput сілтемелері</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput геймпадтарын қолдауының және SInput персонасының астарындағы есептер, Hand Held Legend-тің SINPUT-LIB-HID (MIT-0) және HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) жобаларынан және OpenPuck-тың SInput режимінен (AGPL-3.0) оқылған. Тек құжаттама, AGPL коды жеткізілмейді.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Арнайы USB құрылғы сілтемелері</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Intel Wireless Series базалық станциясына, Xbox 360 Big Button қабылдағышына, CH Products Multi-Function Panel панеліне, Ergodex DX1, TrackIR 2 және 3 құрылғыларына және Tacx тренажер бас блоктарына арналған SDL тармағы драйверлерінің астарындағы протоколдар. Оқылған көздер: antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) және xbox360bb (GPL-2.0-or-later). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Пойыз контроллері сілтемелері</value></data>

@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Noodid ja juhtimismuutused muusikatarkvarale.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtuaalsed VR-kontrollerid SteamVR-i kaudu.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Tüübi hilisemaks muutmiseks klõpsake kontrolleril tüübiikooni. See võtab ühe klõpsu.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ei vasta. Vt selle kaarti Sätetes.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Vajab SteamVR-i. Installige see Sätete kaardilt.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ei vasta. Vt seda Sätetes jaotises Draiverid.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Vajab SteamVR-i. Installige see Sätetes jaotisest Draiverid.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR-kontroller on juba olemas. Üks juhib mõlemat kätt.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge'il on {0} kontrollerit, rohkem ta hallata ei saa. Kustutage üks, et lisada teine.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profiil</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (kuni {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Laiendatud (kuni {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Klaviatuur + hiir (kuni {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ei tööta, vt Sätete lehel kaarti Windows MIDI Services)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ei tööta, vt Windows MIDI Services Sätetes, jaotises Draiverid)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (kuni {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (vajab SteamVR-i)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (kuni {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Saatke kontrolleri liikumisandmed emulaatoritele, mis loevad DSU liikumisallikat.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Võtke DSX-i jaoks tehtud mängumodidelt vastu päästiku- ja valgusefekte.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Lülitage mängus telemeetria väljund sisse ja suunake see sellele arvutile ja pordile.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Lisage emulaatoris liikumisallikas selle arvuti aadressi ja selle pordiga.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Modi efektid jõuavad iga kontrollerini, millel on nende jaoks riistvara.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Lisage selle arvuti emulaatoris liikumisallikas aadressil 127.0.0.1 ja selle pordiga.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mod jõuab iga virtuaalse kontrollerini, millel on ühendatud DualSense või DualShock 4, ja selle efektid mängivad seal igal kontrolleril, millel on nende jaoks riistvara.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pea asend on lehe [Seadmed] rida Peajälgija. Vastendage pea pööre kangi teljele kontrolleri jaotises Vastendused.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Väärtused on lehe [Seadmed] rida Mängu telemeetria. Vastendage need kontrolleri jaotises Vastendused või kasutage makrode käivitamiseks.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Menüü enda asukoht, suurus ja läbipaistmatus määratakse menüüs endas, kontrolleri jaotises [Makrod ja menüüd].</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Tühista</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tühista kõik</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Puuteplaadi ülekate</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadiga mängudele, puuteekraani või hiire jaoks.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadiga mängudele, puuteekraani jaoks.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Luba puuteplaadi ülekate</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Läbipaistmatus</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Lähtesta asukoht</value></data>
@@ -814,6 +814,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Kontrollerite sisend ja loendamine.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Seadmepõhine klaviatuuri- ja hiiresisend</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Kohandatud veebipuldi iga juhtrühm hoiab oma kaugust ekraani lähemast servast laiemal ekraanil, nagu RetroArch-i ülekatted liigutavad oma kaht poolt. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuaalse MIDI-seadme väljund (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Baueri stereo-binauraalne kanalite ristsegamine kõrvaklappide väljundi jaoks.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Puhtalt C#-is kirjutatud Opuse kodeerija, mis edastab DualSense'i kõlari heli Bluetoothi kaudu. Autor Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Sihiku ja suurendi viited</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Rist ja selle punkt Skarbo projektist CSGOCrosshair (litsentsi pole avaldatud), stiilid Ring, pildi- ja kontuurstiil projektist Crosshair-Overlay (MIT) ning suurendi režiimid Luup ja täisekraanisuum Microsofti projektist Windows-classic-samples (MIT). Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense'i Bluetooth-heli uurimus, autor egormanga: pakettedastus, mille kaudu kontrolleri kõlari voog liigub. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Ühikud</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Tundlikkuse ühikute kuva. Kordaja on sisemine ×-skaala (1 = baas). DegPerScreenTurn on Steami stiilis: kontrolleri füüsilise pöörde kraadid ühe täieliku ekraanipöörde kohta.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Lihtsa sihtimise lävi</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Parema kangi kõrvalekalle (0–100%), millest väiksema korral güroskoobi väljund nullitakse. 0 = alati sees. Steami „güroskoop sihtimise ajal sees“ tunnetus. Güroskoop töötab ainult siis, kui kasutaja lükkab parema kangi lävest kaugemale.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Rakenduskangi kõrvalekalle (0–100%), millest väiksema korral güroskoobi väljund nullitakse. 0 = alati sees. Steami „güroskoop sihtimise ajal sees“ tunnetus. Güroskoop töötab ainult siis, kui kasutaja lükkab selle kangi lävest kaugemale.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Güroskoop</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Güroskoop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Häälestage, kuidas selle mängupuldi liikumisandur juhib hiire ja kangi väljundit. Kalibreerige tasasel pinnal, et nullida puhkeoleku triiv, seejärel seadke tundlikkus, silumine ja rakendumisreeglid oma maitse järgi.</value></data>
@@ -2407,9 +2411,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Silumisaken</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Silumispuhvri ajaakna pikkus. Suuremad väärtused siluvad pingutamise lävest allpool tugevamalt. Väiksemad väärtused tunduvad kiiremad. Vaikimisi 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Sihtimise rakendusnupp</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Nupp, mis piirab güroskoobi väljundit. Güroskoop töötab ainult siis, kui seda nuppu hoitakse all. Nupupiirangu keelamiseks jätke määramata. Kui seadistatud on nii see kui ka parema kangi kõrvalekalle, peavad güroskoobi töötamiseks mõlemad olema aktiivsed.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Nupp, mis piirab güroskoobi väljundit. Rakendumisrežiim määrab, kuidas. Nupupiirangu keelamiseks jätke määramata. Kui seadistatud on nii see kui ka rakenduskangi kõrvalekalle, peavad güroskoobi töötamiseks mõlemad olema aktiivsed.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Rakendumisrežiim</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hoidmine: güroskoop töötab, kuni rakendusnuppu hoitakse all. Lülitus: iga vajutus lülitab güroskoobi sisse või välja ja vabastamine ei tee midagi. Lülitus püsib küsitlustsüklite vahel ja lähtestub profiili vahetamisel.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hoidmine: güroskoop töötab, kuni rakendusnuppu hoitakse all. Lülitus: iga vajutus lülitab güroskoobi sisse või välja ja vabastamine ei tee midagi. Sihtimiseks vabasta: güroskoop töötab, kui rakendusnuppu ei hoita all. Lülitus püsib küsitlustsüklite vahel ja lähtestub profiili vahetamisel.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Hoidmine</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Lülitus</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Sihtimiseks vabasta</value></data>
@@ -2429,7 +2433,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Üles (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Rakendumine</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Sihtimise rakendusnupp, Rakendusrežiim, Güroskoop sees, Uuesti keskendamine, Lihtsa sihtimise lävi</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valikulised piirangud, mis määravad, millal güroskoop on aktiivne. Seadistada saab nii parema kangi kõrvalekalde kui ka sihtimise rakendusnupu. Güroskoop töötab ainult siis, kui kõik seadistatud piirangud on aktiivsed.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Valikulised piirangud, mis määravad, millal güroskoop on aktiivne. Seadistada saab nii rakenduskangi kõrvalekalde kui ka sihtimise rakendusnupu. Güroskoop töötab ainult siis, kui kõik seadistatud piirangud on aktiivsed.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Kohalik</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mängija</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Maailm</value></data>
@@ -2521,7 +2525,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Güroskoobi kalle Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Güroskoobi kalle</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Täiskalde vahemik, Kalde surnud tsoon</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Sisendite Güroskoobi kalle X / Güroskoobi kalle Y mähisjoon: hoidke kallet ja kang hoiab oma kõrvalekallet, nagu Steami režiimis Joystick Deflection. Täielik kõrvalekalle saavutatakse siin määratud vahemikus ning toiming Güroskoobi tsentreerimine nullib puhkeasendi haarde. Pööre (kontrolleri pööramine lapiti) on raskusjõule nähtamatu ega liiguta neid sisendeid.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Sisendite Güroskoobi kalle X / Güroskoobi kalle Y mähisjoon: hoidke kallet ja kang hoiab oma kõrvalekallet, nagu Steami režiimis Joystick Deflection. Täielik kõrvalekalle saavutatakse siin määratud vahemikus. Toiming Güroskoobi tsentreerimine nullib puhkeasendi haarde. Pööre (kontrolleri pööramine lapiti) on raskusjõule nähtamatu ega liiguta neid sisendeid.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Täiskalde vahemik</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Kalde kraadid puhkeasendist, mis loetakse kangi täielikuks kõrvalekaldeks. Väiksem = tundlikum. Steami konfiguratsioonides on kõige levinum väärtus 25°.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Kalde surnud tsoon</value></data>
@@ -4253,7 +4257,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Esitab mängu vibratsiooni madalate toonidena bassivibraatorite või subwooferi kaudu.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Väljundseade, kanalid, võimendus, iga mootori toon</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Töötab virtuaalsete kontrolleritega Xbox, DualShock 3, DualShock 4 / DualSense ja Nintendo Switch Pro, samuti jõutagasisidega laiendatud virtuaalsete kontrolleritega, nagu võidusõiduroolid, ning kontrolleriga Steam Deck Controller (Composite). Mängu tagasiside ja testvibratsioon esitatakse heliväljundi kaudu. Makrovibratsioon jääb kontrollerile.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Töötab virtuaalsete kontrolleritega Xbox, DualShock 3, DualShock 4 / DualSense ja Nintendo Switch Pro, samuti jõutagasisidega laiendatud virtuaalsete kontrolleritega, nagu võidusõiduroolid. Samuti töötab see kontrolleritega Steam Deck Controller (Composite), SInput Gamepad ja Joypad-OS Steam Input Gamepad. Mängu tagasiside ja testvibratsioon esitatakse heliväljundi kaudu. Makrovibratsioon jääb kontrollerile.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Lähtesta vibratsioon heliks</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Suuna vibratsioon heliväljundisse</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Esitab selle virtuaalse kontrolleri vastu võetud mängu vibratsiooni ja jõutagasiside valitud heliväljundis madalsageduslike toonidena. Väljalülitamisel säilivad kõik sätted.</value></data>
@@ -4575,7 +4579,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR-i viited</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Käituskeskkonna liides, struktuuride paigutus ja registrivõtmed, millele tugineb peakomplekti ja liikumiskontrolleri sisend, loetud Khronose OpenXR-SDK päisefailidest (Apache-2.0) ja võrreldud projektiga VirtualDesktop-OpenXR (MIT). PadForge suhtleb teie enda installitud käituskeskkonnaga ega tarni Khronose koodi.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Välisseadmete väljundi viited</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitechi HID++ haptika-, valgustus-, sidumis- ja akukaadrid, loetud projektidest Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ja MIT OR Apache-2.0), OpenLogi dokumentatsioon, keyleds (GPL-3.0-or-later), g810-led ja g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ja g915x-heatmap (MIT), koos märkmetega projektidest OpenRGB-Fixed (GPL-2.0-or-later) ja HaloDaemon-plugins. Razeri toote-ID-d ja valgustusaruanded, loetud projektidest OpenRazer (GPL-2.0-or-later) ja OpenRGB (GPL-2.0-or-later) ning võrreldud projektidega uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ja razer-life (GPL-2.0-or-later), koos nende tööriistade ühise lukuga projektidest Aurora (MIT) ja LibreHardwareMonitor (MPL-2.0). SteelSeries toote-ID-d ja valgustusaruanded, loetud projektidest OpenRGB ja rivalcfg (WTFPL) ning võrreldud SignalRGB pistikprogrammide ja projektidega Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ja Wine (LGPL-2.1-or-later). HID LampArray aruanded, loetud USB-IF-i dokumendist HID Usage Tables, Microsofti funktsiooni Dynamic Lighting dokumentatsioonist ja selle näidistest ArduinoHidForWindows ja RP2040MacropadHidSample (MIT) ning võrreldud projektidega lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ja Apex3TklDynamicLighting (kõik MIT), acer-predator-helios-rgb (GPL-2.0-only) ja crosrgbkblight. iFeel surinaaruanne, loetud projektidest iFeel, Linux-tuuma iFeel-draiver (GPL-2.0-or-later) ja Logitech-iFeel-Vibration-POC, koos kirjeldaja reegliga Linux-tuumast (GPL-2.0-or-later) ja tugevusskaalaga Logitechi MouseWare 9.80 draiverist. Taktiilsed ja värvikäsitlejad GameSense SDK-st. Ainult dokumentatsioon, koodi ei levitata.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitechi HID++ haptika-, valgustus-, sidumis- ja akukaadrid, loetud projektidest Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ja MIT OR Apache-2.0), OpenLogi dokumentatsioon, keyleds (GPL-3.0-or-later), g810-led ja g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ja g915x-heatmap (MIT), koos märkmetega projektidest OpenRGB-Fixed (GPL-2.0-or-later) ja HaloDaemon-plugins. Razeri toote-ID-d ja valgustusaruanded, loetud projektidest OpenRazer (GPL-2.0-or-later) ja OpenRGB (GPL-2.0-or-later) ning võrreldud projektidega uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT lugemise ajal), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ja razer-life (GPL-2.0-or-later), koos nende tööriistade ühise lukuga projektidest Aurora (MIT) ja LibreHardwareMonitor (MPL-2.0). SteelSeries toote-ID-d ja valgustusaruanded, loetud projektidest OpenRGB ja rivalcfg (WTFPL) ning võrreldud SignalRGB pistikprogrammide ja projektidega Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ja Wine (LGPL-2.1-or-later). HID LampArray aruanded, loetud USB-IF-i dokumendist HID Usage Tables, Microsofti funktsiooni Dynamic Lighting dokumentatsioonist ja selle näidistest ArduinoHidForWindows ja RP2040MacropadHidSample (MIT) ning võrreldud projektidega lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ja Apex3TklDynamicLighting (kõik MIT), acer-predator-helios-rgb (GPL-2.0-only) ja crosrgbkblight. iFeel surinaaruanne, loetud projektidest iFeel, Linux-tuuma iFeel-draiver (GPL-2.0-or-later) ja Logitech-iFeel-Vibration-POC, koos kirjeldaja reegliga Linux-tuumast (GPL-2.0-or-later) ja tugevusskaalaga Logitechi MouseWare 9.80 draiverist. Taktiilsed ja värvikäsitlejad GameSense SDK-st. Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>WinMM-i kutsejadad, millele tugineb pärand-MIDI API: pordi avamine, sellele saatmine ja selle sulgemine. Loetud projektidest PortMidi (MIT, autorid Ross Bencina, Phil Burk ja Roger B. Dannenberg) ja RtMidi (MIT-tüüpi RtMidi litsents, autor Gary P. Scavone). Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitechi G-key SDK viited</value></data>
@@ -4585,7 +4589,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box-viited</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API, millele tugineb valik Loe Bliss-Box-adaptereid, loetud Bliss-Box LLC tööriistast API Tool (BSD-tüüpi, tasuta edasilevitamine) ja tööriistast DeviceBuddy (lähtekood saadaval, Bliss-Box LLC), nupunimed SteveFox1620 retroarch-joypad-autoconfig haru Bliss-Box-failidest, Controller Paki kontrollsummad võrreldud teegiga libdragon (Unlicense) ning PlayStation-mängupuldi vastus pärineb dokumendist psx-spx ja Linux-tuuma draiverist psxpad-spi (GPL-2.0-or-later). Kontrollerite nimed ja toe märkmed pärinevad ka Bliss-Box LLC ühilduvusloendist ning adapterite käitumist on kontrollitud nende püsivara põhjal. Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-transport HIDMaestro liitkontrollerite jaoks, autor Vadym Hrynchyshyn. HIDMaestro sisaldab selle allkirjastatud hostkontrolleri draiverit ja installib selle esimese liitkontrolleri loomisel.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-transport, autor Vadym Hrynchyshyn, nende HIDMaestro kontrollerite jaoks, mis on USB-seadmed: iga virtuaalne kontroller Windows on ARM keskkonnas ning x64 puhul liitkontrollerid, Steam Controller (2026), Xbox One S: Full profiil ja Joy-Con Charging Grip vormid. HIDMaestro sisaldab selle hostkontrolleri draiverit ja installib selle esimese sellise kontrolleri loomisel.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Valige, millised selle pesa pooled on aktiivsed. Poole väljalülitamine peidab selle read ja peatab saatmise, kuid säilitab vastendused, nii et uuesti sisselülitamine taastab need.</value>
   </data>
@@ -4771,7 +4775,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube'i adaptiivsete päästikute eelseadistuse väärtused, autor Mxater. Kasutatud ainult faktide jaoks.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU liikumistelgede märgid, kontrollitud selle UDP-dekooderi põhjal. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU liikumistelgede märgid, kontrollitud selle UDP-dekooderi põhjal, ning kohandatud veebipuldi juhtelementide suurused, mõõdetud ekraani lühema külje järgi nii, nagu Edeni Androidi ülekate neid mõõdab. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Mängu Elite Dangerous vaikeeelseadistused, millele tugineb algprofiil Kosmosesimulaator, autor Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4853,6 +4857,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Ring-Coni käivitus- ja peatamisjadad, millele tugineb SDL-i haru Switchi draiver, ning PadForge'i loetav pingeskaala, loetud allikatest demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy, autor Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) ja RingconProtocolDebug (Apache-2.0). Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Jadakontrollerite viited</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Protokollid, millele tuginevad SDL-i haru jadadraiverid kuueteljeliste kontrollerite, mängupultide, lennujuhtkangide, RC-saatjate, lennupaneelide ja ergomeetrite jaoks, loetud allikatest Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball, autor John E. Stone (BSD-style), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) ja XPComboTest (MIT). Ainult dokumentatsioon, koodi ei levitata.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInputi viited</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Aruanded, millele tuginevad SInput-kontrollerite tugi ja SInputi persoon, loetud Hand Held Legendi projektidest SINPUT-LIB-HID (MIT-0) ja HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ning OpenPuck-i SInput-režiimist (AGPL-3.0). Ainult dokumentatsioon, AGPL-koodi ei levitata.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Eriotstarbeliste USB-seadmete viited</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Protokollid, millele tuginevad SDL-i haru draiverid Intel Wireless Series tugijaama, Xbox 360 Big Buttoni vastuvõtja, CH Products Multi-Function Paneli, Ergodex DX1, TrackIR 2 ja 3 ning Tacxi trenažööride juhtplokkide jaoks, loetud allikatest antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) ja xbox360bb (GPL-2.0-or-later). Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Rongikontrollerite viited</value></data>

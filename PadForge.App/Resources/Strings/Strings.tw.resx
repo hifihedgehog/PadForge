@@ -771,7 +771,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes ne control changes ma nnwom software.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>VR controllers a ɛnyɛ ankasa denam SteamVR so.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Sɛ wopɛ sɛ wosesa type no akyiri yi a, klik type chip a ɛwɔ controller no so. Ɛhwehwɛ klik biako pɛ.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ɛhwehwɛ SteamVR. Fa ne card a ɛwɔ Nhyehyɛe mu no hyɛ mu.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ɛhwehwɛ SteamVR. Fa hyɛ mu fi Nhyehyɛe mu, wɔ Drivers ase.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR controller bi wɔ hɔ dedaw. Biako di nsa mmienu nyinaa so.</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Hwehwɛ nhyehyɛe, devices ne profiles</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Hwehwɛ</value></data>
@@ -828,4 +828,6 @@
   <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Input a ɛto so abien a source yi nso twɛn no.</value></data>
   <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Sesa input</value></data>
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Paw input foforo a ɛbɛtwɛn no.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad a wo ankasa ayɛ no ma kuw biara kura ne kwan ntam ne screen ano a ɛbɛn no wɔ screen a ɛtrɛw sen no so, sɛnea RetroArch overlays no twe wɔn fã abien no. Yɛkenkan no sɛ nkyerɛkyerɛmu nko ara, GPL code biara nni mu.</value></data>
 </root>

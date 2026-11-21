@@ -1831,7 +1831,7 @@
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Reba hirya no hino ukoresheje head tracker cyangwa VR headset mu gihe ibikumwe byombi bigumye kuri buto.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Akira ingaruka za trigger zihinduka n'iz'amatara ziva muri mod z'imikino zandikiwe DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungura isohoka rya telemetry mu mukino maze uryerekeze kuri iyi PC n'iyi port.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ingaruka za mod zigera kuri buri kontorola ifite ibyuma bizikora.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mod igera kuri buri kontorola y'ikoranabuhanga ifite DualSense cyangwa DualShock 4 ihujwe, kandi ingaruka zayo zikinira kuri buri kontorola iriho ifite ibyuma bizikora.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Imiterere y'umutwe ni umurongo wa Head Tracker kuri [Ibikoresho]. Shyira yaw y'umutwe ku murongo wa stick mu gice cya Amahuza cya kontorola.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Agaciro ni umurongo wa Game Telemetry kuri [Ibikoresho]. Kahuze mu gice cya Amahuza cya kontorola cyangwa ugakoreshe gutangiza macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Aho menu iri, ingano yayo n'ubugaragare bwayo bishyirwaho kuri menu ubwayo, mu gice cya [Macro na Menu] cya kontorola.</value></data>
@@ -1891,7 +1891,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Inota na control change ku porogaramu z'umuziki.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontorola za VR z'ikoranabuhanga binyuze kuri SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Kugira ngo uhindure ubwoko nyuma, kanda ku kimenyetso cy'ubwoko kuri kontorola. Bisaba gukanda rimwe.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Bisaba SteamVR. Yishyiremo uhereye ku ikarita yayo muri Igenamiterere.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Bisaba SteamVR. Yishyiremo uhereye muri Igenamiterere, munsi ya Driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Hari kontorola ya VR isanzweho. Imwe iyobora amaboko yombi.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Huza kontorola ya Bluetooth</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Tangirira ku mwirondoro wateguwe</value></data>
@@ -1955,4 +1955,6 @@
   <data name="Common_Apply" xml:space="preserve"><value>Shyira mu bikorwa</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Deadzone y'imbere</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Munsi y'iki gice cy'urugendo, icyinjiza gisomwa nk'aho kiri hagati.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad yo kuri web yihariye igumana intera iri hagati ya buri tsinda ry'ibigenzura n'uruhande rwa ecran rurirwegereye kuri ecran yagutse kurushaho, nk'uko overlays za RetroArch zitandukanya ibice byazo byombi. Byasomwe nk'inyandiko gusa, nta code ya GPL ishyirwamo.</value></data>
 </root>

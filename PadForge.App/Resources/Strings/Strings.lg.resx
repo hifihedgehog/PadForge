@@ -788,7 +788,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes ne control changes ku pulogulaamu z'ennyimba.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller za VR ez'ekifaananyi nga ziyita mu SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Okukyusa ekika oluvannyuma, nyiga ku kaabonero k'ekika ku controller. Kitwala kunyiga kumu.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Yeetaaga SteamVR. Gissaamu okuva ku kaadi yaayo mu Nsengeka.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Yeetaaga SteamVR. Gissaamu okuva mu Nsengeka, wansi wa Driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Waliwo dda controller ya VR. Emu efuga emikono gyombi.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Gatta controller ya Bluetooth</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bbaatule {0}</value></data>
@@ -841,4 +841,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Kozesa</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad ey'oku mukutu gy'otegese ekuuma buli kibinja ky'ebisumuluzo ku bbanga lye limu okuva ku mabbali agakiri okumpi ku ssirini engazi, nga RetroArch bw'eseetula ebitundu byayo ebibiri eby'ebifuga ebiri ku ssirini. Yasomebwa ng'ebiwandiiko byokka, tewali koodi ya GPL eweerezebwa.</value></data>
 </root>

@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>म्यूज़िक सॉफ़्टवेयर के लिए नोट और कंट्रोल चेंज।</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR के ज़रिए वर्चुअल VR कंट्रोलर।</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>प्रकार बाद में बदलने के लिए कंट्रोलर पर प्रकार चिप पर क्लिक करें। इसमें एक क्लिक लगता है।</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services जवाब नहीं दे रहा। सेटिंग्स में उसका कार्ड देखें।</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR चाहिए। इसे सेटिंग्स में उसके कार्ड से इंस्टॉल करें।</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services जवाब नहीं दे रहा। इसे सेटिंग्स में ड्राइवर के अंतर्गत देखें।</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR चाहिए। इसे सेटिंग्स में ड्राइवर के अंतर्गत जाकर इंस्टॉल करें।</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>एक VR कंट्रोलर पहले से है। वह दोनों हाथों को चलाता है।</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge में {0} कंट्रोलर हैं, जो इसके चलाने की अधिकतम संख्या है। दूसरा जोड़ने के लिए एक हटाएँ।</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>प्रोफ़ाइल</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (अधिकतम {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>विस्तारित (अधिकतम {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>कीबोर्ड + माउस (अधिकतम {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (चल नहीं रहा, सेटिंग्स में Windows MIDI Services कार्ड देखें)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (चल नहीं रहा, सेटिंग्स में ड्राइवर के अंतर्गत Windows MIDI Services देखें)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (अधिकतम {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR आवश्यक)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (अधिकतम {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU मोशन स्रोत पढ़ने वाले एम्यूलेटर को कंट्रोलर की मोशन भेजें।</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX के लिए बने गेम मॉड से एडैप्टिव ट्रिगर और लाइट प्रभाव लें।</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>गेम में टेलीमेट्री आउटपुट चालू करें और उसे इस PC और इस पोर्ट पर भेजें।</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>एम्यूलेटर में इस PC के पते और इस पोर्ट पर एक मोशन स्रोत जोड़ें।</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मॉड के प्रभाव उन सभी कंट्रोलर तक पहुँचते हैं जिनमें इनके लिए हार्डवेयर है।</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>इसी PC पर किसी एम्यूलेटर में 127.0.0.1 और इस पोर्ट पर एक मोशन स्रोत जोड़ें।</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मॉड उस हर वर्चुअल कंट्रोलर तक पहुँचता है जिसमें कोई कनेक्टेड DualSense या DualShock 4 है, और उसके प्रभाव वहाँ के उन सभी कंट्रोलर पर चलते हैं जिनमें इनके लिए हार्डवेयर है।</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज़ [डिवाइस] पर हेड ट्रैकर पंक्ति है। हेड यॉ को किसी कंट्रोलर के मैपिंग सेक्शन में स्टिक अक्ष से मैप करें।</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ये मान [डिवाइस] पर गेम टेलीमेट्री पंक्ति हैं। इन्हें किसी कंट्रोलर के मैपिंग सेक्शन में मैप करें या मैक्रो ट्रिगर करने में उपयोग करें।</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>किसी मेनू की अपनी जगह, आकार और पारदर्शिता मेनू पर ही, किसी कंट्रोलर के [मैक्रो और मेनू] सेक्शन में तय होती है।</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>निरस्त करें</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>सभी निरस्त करें</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>टचपैड ओवरले</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation टचपैड वाले गेम के लिए ऑन-स्क्रीन टच सतह, टच स्क्रीन या माउस के लिए।</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation टचपैड वाले गेम के लिए ऑन-स्क्रीन टच सतह, टच स्क्रीन के लिए।</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>टचपैड ओवरले सक्षम करें</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>अपारदर्शिता</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>स्थिति रीसेट करें</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>कंट्रोलर इनपुट और एन्यूमरेशन।</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>हर डिवाइस के लिए अलग कीबोर्ड और माउस इनपुट</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>एक कस्टम वेब पैड हर समूह की दूरी चौड़ी स्क्रीन के अपने नज़दीकी किनारे से बनाए रखता है, जैसे RetroArch के ओवरले अपने दोनों हिस्सों को खिसकाते हैं। केवल दस्तावेज़ के रूप में पढ़ा गया, कोई GPL कोड साथ नहीं आता।</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>वर्चुअल MIDI डिवाइस आउटपुट (Windows MIDI Services)।</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>हेडफ़ोन आउटपुट के लिए Bauer stereophonic-to-binaural क्रॉसफ़ीड।</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>शुद्ध C# में बना Opus एनकोडर, जो Bluetooth पर DualSense स्पीकर का ऑडियो चलाता है। Logan Stromberg द्वारा।</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>क्रॉसहेयर और मैग्निफ़ायर संदर्भ</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>क्रॉस और उसका बिंदु Skarbo के CSGOCrosshair (कोई लाइसेंस प्रकाशित नहीं) से, गोला, चित्र और रूपरेखा वाली शैलियाँ Crosshair-Overlay (MIT) से, और मैग्निफ़ायर का लेंस तथा फ़ुल स्क्रीन ज़ूम Microsoft के Windows-classic-samples (MIT) से। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga का DualSense Bluetooth ऑडियो शोध: वह पैकेट ट्रांसपोर्ट जिस पर कंट्रोलर स्पीकर की स्ट्रीम चलती है। apps.sdore.me/SAxense।</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>इकाइयाँ</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>संवेदनशीलता की इकाई का प्रदर्शन। गुणक आंतरिक × स्केल है (1 = आधार)। प्रति स्क्रीन चक्कर डिग्री (DegPerScreenTurn) Steam की शैली है: स्क्रीन के एक पूरे चक्कर के लिए कंट्रोलर को भौतिक रूप से कितने डिग्री घुमाना होता है।</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>आसान निशाना थ्रेशोल्ड</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>दाईं स्टिक का वह झुकाव (0–100%) जिससे नीचे जाइरो आउटपुट शून्य कर दिया जाता है। 0 = हमेशा चालू। Steam के "निशाना लगाते समय जाइरो सक्रिय" जैसा एहसास। जाइरो तभी चलता है जब उपयोगकर्ता दाईं स्टिक को थ्रेशोल्ड के पार धकेलता है।</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>सक्रियण स्टिक का वह झुकाव (0–100%) जिससे नीचे जाइरो आउटपुट शून्य कर दिया जाता है। 0 = हमेशा चालू। Steam के "निशाना लगाते समय जाइरो सक्रिय" जैसा एहसास। जाइरो तभी चलता है जब उपयोगकर्ता उस स्टिक को थ्रेशोल्ड के पार धकेलता है।</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>जाइरो</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>जाइरो</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>तय करें कि इस पैड का मोशन सेंसर माउस और स्टिक आउटपुट को कैसे चलाए। स्थिर अवस्था का ड्रिफ़्ट शून्य करने के लिए समतल सतह पर कैलिब्रेट करें, फिर संवेदनशीलता, स्मूदिंग और सक्रियण के नियम अपनी पसंद से सेट करें।</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>स्मूदिंग अवधि</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>स्मूदिंग बफ़र की समय अवधि की लंबाई। बड़े मान कसाव थ्रेशोल्ड के नीचे ज़्यादा स्मूदिंग करते हैं। छोटे मान ज़्यादा चुस्त लगते हैं। डिफ़ॉल्ट 50ms।</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>निशाना सक्रियण बटन</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>वह बटन जो जाइरो आउटपुट को नियंत्रित करता है। जाइरो तभी चलता है जब यह बटन दबा हो। बटन की शर्त हटाने के लिए इसे खाली छोड़ें। जब यह और दाईं स्टिक का झुकाव दोनों कॉन्फ़िगर हों, तो जाइरो के चलने के लिए दोनों का सक्रिय होना ज़रूरी है।</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>वह बटन जो जाइरो आउटपुट को नियंत्रित करता है। कैसे, यह सक्रियण मोड तय करता है। बटन की शर्त हटाने के लिए इसे खाली छोड़ें। जब यह और सक्रियण स्टिक का झुकाव दोनों कॉन्फ़िगर हों, तो जाइरो के चलने के लिए दोनों का सक्रिय होना ज़रूरी है।</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>सक्रियण मोड</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>दबाए रखें: जब तक सक्रियण बटन दबा है, जाइरो चलता है। टॉगल: हर बार दबाने पर जाइरो चालू या बंद होता है, और छोड़ने पर कुछ नहीं होता। टॉगल पोलिंग टिक के पार बना रहता है और प्रोफ़ाइल बदलने पर रीसेट हो जाता है।</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>दबाए रखें: जब तक सक्रियण बटन दबा है, जाइरो चलता है। टॉगल: हर बार दबाने पर जाइरो चालू या बंद होता है, और छोड़ने पर कुछ नहीं होता। छोड़ने पर निशाना: जब तक सक्रियण बटन दबा नहीं है, जाइरो चलता है। टॉगल पोलिंग टिक के पार बना रहता है और प्रोफ़ाइल बदलने पर रीसेट हो जाता है।</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>दबाए रखें</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>टॉगल</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>छोड़ने पर निशाना</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ऊपर (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>सक्रियण</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>निशाना सक्रियण बटन, सक्रियण मोड, जाइरो चालू, फिर से केंद्रित करना, आसान निशाना थ्रेशोल्ड</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>वैकल्पिक शर्तें जो तय करती हैं कि जाइरो कब सक्रिय रहे। दाईं स्टिक का झुकाव और निशाना सक्रियण बटन, दोनों अलग-अलग कॉन्फ़िगर किए जा सकते हैं। जाइरो तभी चलता है जब कॉन्फ़िगर की गई हर शर्त पूरी हो।</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>वैकल्पिक शर्तें जो तय करती हैं कि जाइरो कब सक्रिय रहे। सक्रियण स्टिक का झुकाव और निशाना सक्रियण बटन, दोनों अलग-अलग कॉन्फ़िगर किए जा सकते हैं। जाइरो तभी चलता है जब कॉन्फ़िगर की गई हर शर्त पूरी हो।</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>लोकल</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>प्लेयर</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>वर्ल्ड</value></data>
@@ -2710,7 +2714,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>जाइरो टिल्ट Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>जाइरो टिल्ट</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>पूरे टिल्ट की रेंज, टिल्ट डेडज़ोन</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>जाइरो टिल्ट X / जाइरो टिल्ट Y इनपुट के लिए एनवेलप: टिल्ट बनाए रखें और स्टिक अपना झुकाव बनाए रखती है, Steam के Joystick Deflection मोड की तरह। यहाँ सेट की गई रेंज पर पूरा झुकाव मिलता है; जाइरो रीसेंटर विराम की पकड़ को फिर से शून्य कर देता है। यॉ (कंट्रोलर को समतल रखकर घुमाना) गुरुत्वाकर्षण को नहीं दिखता और इन इनपुट को नहीं हिलाता।</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>जाइरो टिल्ट X / जाइरो टिल्ट Y इनपुट के लिए एनवेलप: टिल्ट बनाए रखें और स्टिक अपना झुकाव बनाए रखती है, Steam के Joystick Deflection मोड की तरह। यहाँ सेट की गई रेंज पर पूरा झुकाव मिलता है। जाइरो रीसेंटर विराम की पकड़ को फिर से शून्य कर देता है। यॉ (कंट्रोलर को समतल रखकर घुमाना) गुरुत्वाकर्षण को नहीं दिखता और इन इनपुट को नहीं हिलाता।</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>पूरे टिल्ट की रेंज</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>विराम की पकड़ से टिल्ट के वे डिग्री जिन्हें स्टिक का पूरा झुकाव गिना जाता है। कम = ज़्यादा संवेदनशील। Steam कॉन्फ़िगरेशन में 25° सबसे आम मान है।</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>टिल्ट डेडज़ोन</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकर</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>गेम रंबल को बेस शेकर या सबवूफ़र के ज़रिए कम आवृत्ति के टोन के रूप में चलाता है।</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट डिवाइस, चैनल, गेन, हर मोटर के लिए एक स्वर</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense और Nintendo Switch Pro वर्चुअल कंट्रोलर के साथ काम करता है, साथ ही फ़ोर्स फ़ीडबैक वाले विस्तारित वर्चुअल कंट्रोलर, जैसे रेसिंग व्हील, और Steam Deck Controller (Composite) के साथ भी। गेम का फ़ीडबैक और “रंबल का परीक्षण करें” ऑडियो आउटपुट से चलते हैं। मैक्रो रंबल कंट्रोलर पर ही रहता है।</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense और Nintendo Switch Pro वर्चुअल कंट्रोलर के साथ काम करता है, साथ ही फ़ोर्स फ़ीडबैक वाले विस्तारित वर्चुअल कंट्रोलर, जैसे रेसिंग व्हील। यह Steam Deck Controller (Composite), SInput Gamepad और Joypad-OS Steam Input Gamepad के साथ भी काम करता है। गेम का फ़ीडबैक और “रंबल का परीक्षण करें” ऑडियो आउटपुट से चलते हैं। मैक्रो रंबल कंट्रोलर पर ही रहता है।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“रंबल से ऑडियो” रीसेट करें</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>रंबल को ऑडियो आउटपुट पर भेजें</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>इस वर्चुअल कंट्रोलर को मिलने वाले गेम रंबल और फ़ोर्स फ़ीडबैक को चुने गए ऑडियो आउटपुट पर कम आवृत्ति के टोन के रूप में चलाता है। इसे बंद करने पर हर सेटिंग बनी रहती है।</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR संदर्भ</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>हेडसेट और मोशन कंट्रोलर इनपुट के पीछे का रनटाइम इंटरफ़ेस, स्ट्रक्चर लेआउट और रजिस्ट्री कुंजियाँ, जो Khronos OpenXR-SDK हेडर (Apache-2.0) से पढ़ी गईं और VirtualDesktop-OpenXR (MIT) से मिलाकर जाँची गईं। PadForge आपके अपने इंस्टॉल किए गए रनटाइम से बात करता है और Khronos का कोई कोड साथ नहीं देता।</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>पेरिफ़ेरल आउटपुट संदर्भ</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ के हैप्टिक, लाइटिंग, पेयरिंग और बैटरी फ़्रेम, जो Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD और MIT OR Apache-2.0), OpenLogi के दस्तावेज़, keyleds (GPL-3.0-or-later), g810-led और g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) और g915x-heatmap (MIT) से पढ़े गए, साथ में OpenRGB-Fixed (GPL-2.0-or-later) और HaloDaemon-plugins के नोट। Razer के प्रोडक्ट ID और लाइटिंग रिपोर्ट, जो OpenRazer (GPL-2.0-or-later) और OpenRGB (GPL-2.0-or-later) से पढ़े गए और uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) और razer-life (GPL-2.0-or-later) से मिलाकर जाँचे गए, साथ में वह लॉक जिसे ये टूल साझा करते हैं, Aurora (MIT) और LibreHardwareMonitor (MPL-2.0) से। SteelSeries के प्रोडक्ट ID और लाइटिंग रिपोर्ट, जो OpenRGB और rivalcfg (WTFPL) से पढ़े गए और SignalRGB के प्लगइन, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) और Wine (LGPL-2.1-or-later) से मिलाकर जाँचे गए। HID LampArray रिपोर्ट, जो USB-IF HID Usage Tables, Microsoft के Dynamic Lighting दस्तावेज़ और उसके नमूनों ArduinoHidForWindows और RP2040MacropadHidSample (MIT) से पढ़ी गईं, और lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq और Apex3TklDynamicLighting (सभी MIT), acer-predator-helios-rgb (GPL-2.0-only) और crosrgbkblight से मिलाकर जाँची गईं। iFeel की थरथराहट रिपोर्ट, जो iFeel, Linux के iFeel ड्राइवर (GPL-2.0-or-later) और Logitech-iFeel-Vibration-POC से पढ़ी गई, साथ में Linux कर्नेल (GPL-2.0-or-later) का एक डिस्क्रिप्टर नियम और Logitech के MouseWare 9.80 ड्राइवर का शक्ति पैमाना। GameSense SDK के टैक्टाइल और कलर हैंडलर। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ के हैप्टिक, लाइटिंग, पेयरिंग और बैटरी फ़्रेम, जो Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD और MIT OR Apache-2.0), OpenLogi के दस्तावेज़, keyleds (GPL-3.0-or-later), g810-led और g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) और g915x-heatmap (MIT) से पढ़े गए, साथ में OpenRGB-Fixed (GPL-2.0-or-later) और HaloDaemon-plugins के नोट। Razer के प्रोडक्ट ID और लाइटिंग रिपोर्ट, जो OpenRazer (GPL-2.0-or-later) और OpenRGB (GPL-2.0-or-later) से पढ़े गए और uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, पढ़ने के समय MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) और razer-life (GPL-2.0-or-later) से मिलाकर जाँचे गए, साथ में वह लॉक जिसे ये टूल साझा करते हैं, Aurora (MIT) और LibreHardwareMonitor (MPL-2.0) से। SteelSeries के प्रोडक्ट ID और लाइटिंग रिपोर्ट, जो OpenRGB और rivalcfg (WTFPL) से पढ़े गए और SignalRGB के प्लगइन, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) और Wine (LGPL-2.1-or-later) से मिलाकर जाँचे गए। HID LampArray रिपोर्ट, जो USB-IF HID Usage Tables, Microsoft के Dynamic Lighting दस्तावेज़ और उसके नमूनों ArduinoHidForWindows और RP2040MacropadHidSample (MIT) से पढ़ी गईं, और lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq और Apex3TklDynamicLighting (सभी MIT), acer-predator-helios-rgb (GPL-2.0-only) और crosrgbkblight से मिलाकर जाँची गईं। iFeel की थरथराहट रिपोर्ट, जो iFeel, Linux के iFeel ड्राइवर (GPL-2.0-or-later) और Logitech-iFeel-Vibration-POC से पढ़ी गई, साथ में Linux कर्नेल (GPL-2.0-or-later) का एक डिस्क्रिप्टर नियम और Logitech के MouseWare 9.80 ड्राइवर का शक्ति पैमाना। GameSense SDK के टैक्टाइल और कलर हैंडलर। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>पुराने MIDI API के पीछे के WinMM कॉल क्रम: पोर्ट खोलना, उस पर भेजना और उसे बंद करना। PortMidi (MIT, Ross Bencina, Phil Burk और Roger B. Dannenberg द्वारा) और RtMidi (MIT-शैली का RtMidi लाइसेंस, Gary P. Scavone द्वारा) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK संदर्भ</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box संदर्भ</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>“Bliss-Box एडैप्टर पढ़ें” के पीछे का Bliss-Box API, जो Bliss-Box LLC के API Tool (BSD-शैली, मुफ़्त पुनर्वितरण) और DeviceBuddy (सोर्स उपलब्ध, Bliss-Box LLC) से पढ़ा गया, साथ में SteveFox1620 के retroarch-joypad-autoconfig फ़ोर्क की Bliss-Box फ़ाइलों से बटन के नाम, libdragon (Unlicense) से मिलाकर जाँचे गए Controller Pak चेकसम, और psx-spx तथा Linux के psxpad-spi ड्राइवर (GPL-2.0-or-later) से PlayStation पैड का जवाब। कंट्रोलर के नाम और सपोर्ट नोट Bliss-Box LLC की संगतता सूची से भी लिए गए हैं, और एडैप्टर के व्यवहार को उनके फ़र्मवेयर से मिलाकर जाँचा गया। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro के कंपोज़िट USB कंट्रोलर के लिए Vadym Hrynchyshyn का USB ट्रांसपोर्ट। HIDMaestro इसका साइन किया हुआ होस्ट कंट्रोलर ड्राइवर अपने साथ रखता है और पहली बार कंपोज़िट कंट्रोलर बनाए जाने पर उसे इंस्टॉल करता है।</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn का USB ट्रांसपोर्ट, उन HIDMaestro कंट्रोलर के लिए जो USB डिवाइस हैं: Windows on ARM पर हर वर्चुअल कंट्रोलर, और x64 पर कंपोज़िट कंट्रोलर, Steam Controller (2026), Xbox One S: Full प्रोफ़ाइल और Joy-Con Charging Grip रूप। HIDMaestro इसका होस्ट कंट्रोलर ड्राइवर अपने साथ रखता है और इनमें से कोई कंट्रोलर पहली बार बनाए जाने पर उसे इंस्टॉल करता है।</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>चुनें कि इस स्लॉट के कौन-से आधे हिस्से चालू रहें। किसी हिस्से को बंद करने पर उसकी पंक्तियाँ छिप जाती हैं और वह भेजना बंद कर देता है, पर उसकी मैपिंग बनी रहती हैं, इसलिए उसे फिर चालू करने पर वे लौट आती हैं।</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube एडैप्टिव-ट्रिगर प्रीसेट के मान, Mxater द्वारा। केवल तथ्यों के लिए पढ़ा गया।</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU मोशन अक्षों के चिह्न, इसके UDP डीकोडर से मिलाकर जाँचे गए। केवल दस्तावेज़ के रूप में पढ़ा गया, कोई GPL कोड साथ नहीं आता।</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU मोशन अक्षों के चिह्न, इसके UDP डीकोडर से मिलाकर जाँचे गए, और एक कस्टम वेब पैड के कंट्रोल का आकार, जो स्क्रीन की छोटी तरफ़ के सापेक्ष मापा गया, जैसे इसका Android ओवरले मापता है। केवल दस्तावेज़ के रूप में पढ़ा गया, कोई GPL कोड साथ नहीं आता।</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>स्पेस सिम शुरुआती प्रोफ़ाइल के पीछे के Elite Dangerous डिफ़ॉल्ट प्रीसेट, Richard Buckle द्वारा।</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL फ़ोर्क के Switch ड्राइवर के पीछे के Ring-Con शुरू और बंद करने के क्रम और वह स्ट्रेन स्केल जो PadForge पढ़ता है, जो demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), Yamakaky के joy (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) और RingconProtocolDebug (Apache-2.0) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>सीरियल कंट्रोलर संदर्भ</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>छह-अक्ष कंट्रोलर, गेमपैड, फ़्लाइट स्टिक, RC ट्रांसमीटर, फ़्लाइट पैनल और एर्गोमीटर के लिए SDL फ़ोर्क के सीरियल ड्राइवर के पीछे के प्रोटोकॉल, जो Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), John E. Stone के libsball (BSD-शैली), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) और XPComboTest (MIT) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput संदर्भ</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput पैड समर्थन और SInput पर्सोना के पीछे की रिपोर्ट, जो Hand Held Legend के SINPUT-LIB-HID (MIT-0) और HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) तथा OpenPuck के SInput मोड (AGPL-3.0) से पढ़ी गईं। केवल दस्तावेज़, कोई AGPL कोड साथ नहीं आता।</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>विशेष USB डिवाइस संदर्भ</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Intel Wireless Series बेस स्टेशन, Xbox 360 Big Button रिसीवर, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 और 3 और Tacx ट्रेनर हेड यूनिट के लिए SDL फ़ोर्क के ड्राइवर के पीछे के प्रोटोकॉल, जो antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) और xbox360bb (GPL-2.0-or-later) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>ट्रेन कंट्रोलर संदर्भ</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 का हैप्टिक PCM फ़ॉर्मेट, 3 kHz पर साइन्ड 16-बिट, जिससे साइन्ड 8-बिट Bluetooth हैप्टिक्स एनकोडिंग तय हुई। केवल दस्तावेज़ के रूप में पढ़ा गया, कोई AGPL कोड साथ नहीं आता।</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX गेम मॉड संदर्भ</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>गेम मॉड के पीछे के UDP निर्देश, जवाब, पोर्ट फ़ाइलें और ट्रिगर इफ़ेक्ट बाइट, जो Paliverse के आधिकारिक DSX v3.1 और DualSenseX v2 मॉड उदाहरणों, DualSenseY के दोनों संस्करणों और DualSense4Rockstar (कोई लाइसेंस प्रकाशित नहीं), DSZ और pydualsense (MIT), तथा Wujek Dualsense API और hbashton के DS4Windows फ़ोर्क के DSX सर्वर (GPL-3.0) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>गेम मॉड के पीछे के UDP निर्देश, जवाब, पोर्ट फ़ाइलें और ट्रिगर इफ़ेक्ट बाइट, जो Paliverse के आधिकारिक DSX v3.1 और DualSenseX v2 मॉड उदाहरणों, DualSenseY और DualSense4Rockstar (कोई लाइसेंस प्रकाशित नहीं), DualSenseY-v2, DSZ और pydualsense (MIT), तथा Wujek Dualsense API और hbashton के DS4Windows फ़ोर्क के DSX सर्वर (GPL-3.0) से पढ़े गए। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 हेडसेट संदर्भ</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ऑडियो के पीछे का हेडफ़ोन और स्पीकर रूटिंग, वॉल्यूम की ऊपरी सीमा, माइक्रोफ़ोन फ़्रेमिंग और रिपोर्ट मोड, जो DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) और hbashton के DS4Windows फ़ोर्क (GPL-3.0) से पढ़े गए, साथ में SBC डिकोडर की सिंथेसिस विंडो Google के libsbc (Apache-2.0) से मिलाकर जाँची गईं, और दूसरे मॉडल तथा Sony के एडैप्टर के USB हेडसेट DJm00n के ControllersInfo डिस्क्रिप्टर डंप (कोई लाइसेंस प्रकाशित नहीं) और linux-hardware.org के LsUSB प्रोब (CC BY 4.0) से पढ़े गए। केबल पर DualShock 4 का स्पीकर रूट Controllers Wiki (CC BY-SA) और mihaits के NFSU2-SplitScreen (MIT) से लिया गया है। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch चैट संदर्भ</value></data>

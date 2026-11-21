@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>نت‌ها و تغییرات کنترل برای نرم‌افزارهای موسیقی.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>کنترلرهای مجازی VR از طریق SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>برای تغییر نوع در آینده، روی نشان نوع کنترلر کلیک کنید. فقط یک کلیک لازم است.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services پاسخ نمی‌دهد. کارت آن را در تنظیمات ببینید.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>به SteamVR نیاز دارد. آن را از کارتش در تنظیمات نصب کنید.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services پاسخ نمی‌دهد. آن را در تنظیمات، زیر درایورها ببینید.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>به SteamVR نیاز دارد. آن را از تنظیمات، زیر درایورها نصب کنید.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>یک کنترلر VR از قبل وجود دارد. یکی هر دو دست را هدایت می‌کند.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge {0} کنترلر دارد که بیشترین تعداد قابل اجراست. برای افزودن کنترلر دیگر، یکی را حذف کنید.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>پروفایل</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (حداکثر {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>گسترش‌یافته (حداکثر {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>صفحه‌کلید + ماوس (حداکثر {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (در حال اجرا نیست، کارت Windows MIDI Services را در تنظیمات ببینید)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (در حال اجرا نیست، Windows MIDI Services را در تنظیمات، زیر درایورها ببینید)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (حداکثر {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (به SteamVR نیاز دارد)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (حداکثر {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>حرکت کنترلر را برای شبیه‌سازهایی که از منبع حرکت DSU می‌خوانند ارسال کنید.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>جلوه‌های ماشه تطبیقی و نور را از مودهای بازی‌ای که برای DSX نوشته شده‌اند بگیرید.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>در بازی خروجی تله‌متری را روشن کنید و آن را به این رایانه و پورت هدایت کنید.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>در شبیه‌ساز، یک منبع حرکت با نشانی این رایانه و این پورت اضافه کنید.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>جلوه‌های هر مود به هر کنترلری که سخت‌افزار لازم را دارد می‌رسد.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>در یک شبیه‌ساز روی این رایانه، یک منبع حرکت با نشانی 127.0.0.1 و این پورت اضافه کنید.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>یک مود به هر کنترلر مجازی می‌رسد که یک DualSense یا DualShock 4 متصل دارد، و جلوه‌های آن روی هر کنترلر آنجا که سخت‌افزار لازم را دارد پخش می‌شود.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضعیت سر همان ردیف ردیاب سر در [دستگاه‌ها] است. چرخش سر را در بخش نگاشت‌های یک کنترلر به یک محور استیک نگاشت کنید.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>مقادیر همان ردیف تله‌متری بازی در [دستگاه‌ها] هستند. آن‌ها را در بخش نگاشت‌های یک کنترلر نگاشت کنید یا برای فعال کردن ماکروها به کار ببرید.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>جای منو، اندازه و شفافیت آن روی خود منو، در بخش [ماکروها و منوها] یک کنترلر تنظیم می‌شود.</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ابطال</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ابطال همه</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>اورلی تاچ‌پد</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>سطح لمسی روی صفحه برای بازی‌های تاچ‌پد PlayStation، برای صفحه لمسی یا ماوس.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>سطح لمسی روی صفحه برای بازی‌های تاچ‌پد PlayStation، برای صفحه لمسی.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>فعال کردن اورلی تاچ‌پد</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ماتی</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>بازنشانی موقعیت</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>ورودی و فهرست‌برداری کنترلرها.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ورودی صفحه‌کلید و ماوس به تفکیک دستگاه</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>یک پد وب سفارشی فاصله هر دسته را از نزدیک‌ترین لبه صفحه عریض‌تر حفظ می‌کند، همان‌طور که پوشش‌های RetroArch دو نیمه خود را جابه‌جا می‌کنند. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>خروجی دستگاه مجازی MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>کراس‌فید استریوفونیک به باینورال Bauer برای خروجی هدفون.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>رمزگذار Opus نوشته‌شده با C# خالص که صدای بلندگوی DualSense را از طریق بلوتوث می‌فرستد. اثر Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>مراجع نشانه‌گیر و ذره‌بین</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>ضربدر و نقطه آن از CSGOCrosshair اثر Skarbo (بدون مجوز منتشرشده)، سبک‌های دایره، تصویر و توخالی از Crosshair-Overlay (MIT)، و عدسی و بزرگ‌نمایی تمام‌صفحه ذره‌بین از Windows-classic-samples اثر Microsoft (MIT). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>پژوهش egormanga درباره صدای بلوتوث DualSense: لایه انتقال بسته‌ای که جریان صدای بلندگوی کنترلر بر آن سوار است. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>واحدها</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>نحوه نمایش واحد حساسیت. «ضریب» همان مقیاس × داخلی است (1 = مبنا). «درجه در هر دور صفحه» (DegPerScreenTurn) به سبک Steam است: درجه چرخش فیزیکی کنترلر برای یک دور کامل صفحه.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>آستانه نشانه‌گیری آسان</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>میزان انحراف استیک راست (0–100%) که پایین‌تر از آن خروجی ژیروسکوپ صفر می‌شود. 0 = همیشه روشن. همان حس «ژیروسکوپ هنگام نشانه‌گیری فعال است» در Steam. ژیروسکوپ فقط وقتی فعال می‌شود که کاربر استیک راست را از آستانه فراتر ببرد.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>میزان انحراف استیک فعال‌سازی (0–100%) که پایین‌تر از آن خروجی ژیروسکوپ صفر می‌شود. 0 = همیشه روشن. همان حس «ژیروسکوپ هنگام نشانه‌گیری فعال است» در Steam. ژیروسکوپ فقط وقتی فعال می‌شود که کاربر آن استیک را از آستانه فراتر ببرد.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>تنظیم کنید حسگر حرکتی این گیم‌پد چگونه خروجی ماوس و استیک را هدایت کند. برای صفر کردن دریفت حالت سکون، روی سطحی صاف کالیبره کنید و سپس حساسیت، هموارسازی و قواعد فعال‌سازی را به دلخواه تنظیم کنید.</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>پنجره هموارسازی</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>طول پنجره زمانی بافر هموارسازی. مقادیر بزرگ‌تر زیر آستانه تثبیت هموارسازی سنگین‌تری می‌کنند. مقادیر کوچک‌تر حس چابک‌تری دارند. پیش‌فرض 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>دکمه فعال‌سازی نشانه‌گیری</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>دکمه‌ای که خروجی ژیروسکوپ را مشروط می‌کند. ژیروسکوپ فقط تا وقتی این دکمه نگه داشته شده فعال است. برای غیرفعال کردن شرط دکمه، آن را تنظیم‌نشده بگذارید. وقتی هم این دکمه و هم انحراف استیک راست پیکربندی شده باشند، برای فعال شدن ژیروسکوپ هر دو باید فعال باشند.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>دکمه‌ای که خروجی ژیروسکوپ را مشروط می‌کند. حالت فعال‌سازی نحوه آن را تعیین می‌کند. برای غیرفعال کردن شرط دکمه، آن را تنظیم‌نشده بگذارید. وقتی هم این دکمه و هم انحراف استیک فعال‌سازی پیکربندی شده باشند، برای فعال شدن ژیروسکوپ هر دو باید فعال باشند.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>حالت فعال‌سازی</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>نگه داشتن: ژیروسکوپ تا وقتی دکمه فعال‌سازی نگه داشته شده فعال است. تغییر وضعیت: هر فشار ژیروسکوپ را روشن یا خاموش می‌کند و رها کردن کاری نمی‌کند. تغییر وضعیت میان چرخه‌های نمونه‌برداری ماندگار است و با تعویض پروفایل بازنشانی می‌شود.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>نگه داشتن: ژیروسکوپ تا وقتی دکمه فعال‌سازی نگه داشته شده فعال است. تغییر وضعیت: هر فشار ژیروسکوپ را روشن یا خاموش می‌کند و رها کردن کاری نمی‌کند. رها کردن برای نشانه‌گیری: ژیروسکوپ تا وقتی دکمه فعال‌سازی نگه داشته نشده فعال است. تغییر وضعیت میان چرخه‌های نمونه‌برداری ماندگار است و با تعویض پروفایل بازنشانی می‌شود.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>نگه داشتن</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>تغییر وضعیت</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>رها کردن برای نشانه‌گیری</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>بالا (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>فعال‌سازی</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>دکمه فعال‌سازی نشانه‌گیری، حالت فعال‌سازی، ژیروسکوپ روشن، مرکزگذاری مجدد، آستانه نشانه‌گیری آسان</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شرط‌های اختیاری که زمان فعال بودن ژیروسکوپ را محدود می‌کنند. انحراف استیک راست و دکمه فعال‌سازی نشانه‌گیری را می‌توان جداگانه پیکربندی کرد. ژیروسکوپ فقط وقتی فعال است که همه شرط‌های پیکربندی‌شده برقرار باشند.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>شرط‌های اختیاری که زمان فعال بودن ژیروسکوپ را محدود می‌کنند. انحراف استیک فعال‌سازی و دکمه فعال‌سازی نشانه‌گیری را می‌توان جداگانه پیکربندی کرد. ژیروسکوپ فقط وقتی فعال است که همه شرط‌های پیکربندی‌شده برقرار باشند.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>محلی</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>بازیکن</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>جهان</value></data>
@@ -2710,7 +2714,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>شیب ژیروسکوپ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>شیب ژیروسکوپ</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>محدوده شیب کامل، ناحیه مرده شیب</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>تنظیمات دامنه برای ورودی‌های «شیب ژیروسکوپ X» / «شیب ژیروسکوپ Y»: شیبی را نگه دارید تا استیک انحراف خود را نگه دارد، مانند حالت Joystick Deflection در Steam. انحراف کامل در محدوده‌ای است که اینجا تنظیم می‌کنید؛ «بازگرداندن ژیروسکوپ به مرکز» حالت سکون دست را دوباره صفر می‌کند. یاو (چرخاندن کنترلر در حالت تخت) از دید گرانش پنهان است و این ورودی‌ها را حرکت نمی‌دهد.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>تنظیمات دامنه برای ورودی‌های «شیب ژیروسکوپ X» / «شیب ژیروسکوپ Y»: شیبی را نگه دارید تا استیک انحراف خود را نگه دارد، مانند حالت Joystick Deflection در Steam. انحراف کامل در محدوده‌ای است که اینجا تنظیم می‌کنید. «بازگرداندن ژیروسکوپ به مرکز» حالت سکون دست را دوباره صفر می‌کند. یاو (چرخاندن کنترلر در حالت تخت) از دید گرانش پنهان است و این ورودی‌ها را حرکت نمی‌دهد.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>محدوده شیب کامل</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>درجه شیب نسبت به حالت سکون دست که انحراف کامل استیک به شمار می‌آید. کوچک‌تر = حساس‌تر. 25° رایج‌ترین مقدار در پیکربندی‌های Steam است.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>ناحیه مرده شیب</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش بازی را به‌صورت تُن‌های بم از طریق لرزاننده‌های بیس یا یک ساب‌ووفر پخش می‌کند.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>دستگاه خروجی، کانال‌ها، بهره، صدای هر موتور</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>با کنترلرهای مجازی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار می‌کند، و نیز با کنترلرهای مجازی گسترش‌یافته دارای فورس فیدبک مانند فرمان‌های مسابقه، و Steam Deck Controller (Composite). بازخورد بازی و «آزمایش لرزش» از خروجی صدا پخش می‌شوند. لرزش ماکرو روی کنترلر می‌ماند.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>با کنترلرهای مجازی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار می‌کند، و نیز با کنترلرهای مجازی گسترش‌یافته دارای فورس فیدبک مانند فرمان‌های مسابقه. همچنین با Steam Deck Controller (Composite)، SInput Gamepad و Joypad-OS Steam Input Gamepad کار می‌کند. بازخورد بازی و «آزمایش لرزش» از خروجی صدا پخش می‌شوند. لرزش ماکرو روی کنترلر می‌ماند.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>بازنشانی لرزش به صدا</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>هدایت لرزش به یک خروجی صدا</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین روی خروجی صدای انتخاب‌شده پخش می‌کند. خاموش کردن آن همه تنظیمات را حفظ می‌کند.</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>مراجع OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>رابط محیط اجرا، چیدمان ساختارها و کلیدهای رجیستری که مبنای ورودی هدست و کنترلر حرکتی هستند، خوانده‌شده از سرآیندهای OpenXR-SDK شرکت Khronos (Apache-2.0) و تطبیق‌داده‌شده با VirtualDesktop-OpenXR (MIT). PadForge با محیط اجرای نصب‌شده خود شما ارتباط می‌گیرد و هیچ کدی از Khronos عرضه نمی‌کند.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>مراجع خروجی لوازم جانبی</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>فریم‌های هپتیک، نورپردازی، جفت‌سازی و باتری HID++ در Logitech، خوانده‌شده از Solaar (GPL-2.0-or-later)، libratbag (MIT)، LiveHaptics، OpenLogi (0BSD و MIT OR Apache-2.0)، مستندات OpenLogi، keyleds (GPL-3.0-or-later)، g810-led و g810-led-resources (GPL-3.0)، rigdeck (GPL-3.0-or-later)، OpenGHub (MIT) و g915x-heatmap (MIT)، همراه با یادداشت‌هایی از OpenRGB-Fixed (GPL-2.0-or-later) و HaloDaemon-plugins. شناسه‌های محصول و گزارش‌های نورپردازی Razer، خوانده‌شده از OpenRazer (GPL-2.0-or-later) و OpenRGB (GPL-2.0-or-later) و تطبیق‌داده‌شده با uncoil (GPL-3.0-or-later)، OpenSynapse (MIT)، openrazer-win (GPL-2.0-or-later)، sanshoku (MIT)، razer_test (GPL-3.0-or-later) و razer-life (GPL-2.0-or-later)، همراه با قفلی که این ابزارها مشترکاً از Aurora (MIT) و LibreHardwareMonitor (MPL-2.0) به کار می‌برند. شناسه‌های محصول و گزارش‌های نورپردازی SteelSeries، خوانده‌شده از OpenRGB و rivalcfg (WTFPL) و تطبیق‌داده‌شده با افزونه‌های SignalRGB، Aerox_5 (MIT)، apex-3-tkl (MIT)، ApexCtl (LGPL-3.0)، SteelSeriesControl (GPL-3.0)، rival310-re (LGPL-3.0)، Cricetus-Imperator (MIT) و Wine (LGPL-2.1-or-later). گزارش‌های HID LampArray، خوانده‌شده از HID Usage Tables سازمان USB-IF، مستندات Dynamic Lighting شرکت Microsoft و نمونه‌های آن ArduinoHidForWindows و RP2040MacropadHidSample (MIT)، و تطبیق‌داده‌شده با lampctl (MIT OR Apache-2.0)، hid-rgb-ctl، keybackcon، mistel-lights، CaYaLight، hp-omen-35l-rgb، mac-dynamic-lighting، aura-loq و Apex3TklDynamicLighting (همگی MIT)، acer-predator-helios-rgb (GPL-2.0-only) و crosrgbkblight. گزارش لرزش iFeel، خوانده‌شده از iFeel، درایور iFeel در Linux (GPL-2.0-or-later) و Logitech-iFeel-Vibration-POC، همراه با یک قاعده توصیفگر از هسته Linux (GPL-2.0-or-later) و مقیاس شدت از درایور MouseWare 9.80 شرکت Logitech. کنترل‌کننده‌های لمسی و رنگ از GameSense SDK. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>فریم‌های هپتیک، نورپردازی، جفت‌سازی و باتری HID++ در Logitech، خوانده‌شده از Solaar (GPL-2.0-or-later)، libratbag (MIT)، LiveHaptics، OpenLogi (0BSD و MIT OR Apache-2.0)، مستندات OpenLogi، keyleds (GPL-3.0-or-later)، g810-led و g810-led-resources (GPL-3.0)، rigdeck (GPL-3.0-or-later)، OpenGHub (MIT) و g915x-heatmap (MIT)، همراه با یادداشت‌هایی از OpenRGB-Fixed (GPL-2.0-or-later) و HaloDaemon-plugins. شناسه‌های محصول و گزارش‌های نورپردازی Razer، خوانده‌شده از OpenRazer (GPL-2.0-or-later) و OpenRGB (GPL-2.0-or-later) و تطبیق‌داده‌شده با uncoil (GPL-3.0-or-later)، OpenSynapse (AGPL-3.0-only، MIT هنگام خواندن)، openrazer-win (GPL-2.0-or-later)، sanshoku (MIT)، razer_test (GPL-3.0-or-later) و razer-life (GPL-2.0-or-later)، همراه با قفلی که این ابزارها مشترکاً از Aurora (MIT) و LibreHardwareMonitor (MPL-2.0) به کار می‌برند. شناسه‌های محصول و گزارش‌های نورپردازی SteelSeries، خوانده‌شده از OpenRGB و rivalcfg (WTFPL) و تطبیق‌داده‌شده با افزونه‌های SignalRGB، Aerox_5 (MIT)، apex-3-tkl (MIT)، ApexCtl (LGPL-3.0)، SteelSeriesControl (GPL-3.0)، rival310-re (LGPL-3.0)، Cricetus-Imperator (MIT) و Wine (LGPL-2.1-or-later). گزارش‌های HID LampArray، خوانده‌شده از HID Usage Tables سازمان USB-IF، مستندات Dynamic Lighting شرکت Microsoft و نمونه‌های آن ArduinoHidForWindows و RP2040MacropadHidSample (MIT)، و تطبیق‌داده‌شده با lampctl (MIT OR Apache-2.0)، hid-rgb-ctl، keybackcon، mistel-lights، CaYaLight، hp-omen-35l-rgb، mac-dynamic-lighting، aura-loq و Apex3TklDynamicLighting (همگی MIT)، acer-predator-helios-rgb (GPL-2.0-only) و crosrgbkblight. گزارش لرزش iFeel، خوانده‌شده از iFeel، درایور iFeel در Linux (GPL-2.0-or-later) و Logitech-iFeel-Vibration-POC، همراه با یک قاعده توصیفگر از هسته Linux (GPL-2.0-or-later) و مقیاس شدت از درایور MouseWare 9.80 شرکت Logitech. کنترل‌کننده‌های لمسی و رنگ از GameSense SDK. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>توالی فراخوانی‌های WinMM که مبنای API قدیمی MIDI است: باز کردن یک پورت، فرستادن به آن و بستن آن. خوانده‌شده از PortMidi (MIT، اثر Ross Bencina، Phil Burk و Roger B. Dannenberg) و RtMidi (مجوز RtMidi به سبک MIT، اثر Gary P. Scavone). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>مراجع Logitech G-key SDK</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>مراجع Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API مربوط به Bliss-Box که مبنای «خواندن آداپتورهای Bliss-Box» است، خوانده‌شده از API Tool شرکت Bliss-Box LLC (به سبک BSD، بازتوزیع رایگان) و DeviceBuddy (کد در دسترس، Bliss-Box LLC)، همراه با نام دکمه‌ها از فایل‌های Bliss-Box در انشعاب retroarch-joypad-autoconfig اثر SteveFox1620، چک‌سام‌های Controller Pak که با libdragon (Unlicense) تطبیق داده شده‌اند، و پاسخ گیم‌پد PlayStation از psx-spx و درایور psxpad-spi در Linux (GPL-2.0-or-later). نام کنترلرها و یادداشت‌های پشتیبانی نیز از فهرست سازگاری Bliss-Box LLC گرفته شده و رفتار آداپتورها با فریم‌ور آن‌ها بررسی شده است. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>لایه انتقال USB اثر Vadym Hrynchyshyn برای کنترلرهای USB ترکیبی HIDMaestro. HIDMaestro درایور کنترلر میزبان امضاشده آن را همراه خود دارد و نخستین بار که یک کنترلر ترکیبی ساخته می‌شود آن را نصب می‌کند.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>لایه انتقال USB اثر Vadym Hrynchyshyn برای کنترلرهای HIDMaestro که دستگاه USB هستند: هر کنترلر مجازی در Windows روی ARM، و در x64 کنترلرهای ترکیبی، Steam Controller (2026)، و شکل‌های Xbox One S: Full و Joy-Con Charging Grip. HIDMaestro درایور کنترلر میزبان آن را همراه خود دارد و نخستین بار که یکی از این کنترلرها ساخته می‌شود آن را نصب می‌کند.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>انتخاب کنید کدام نیمه‌های این اسلات فعال باشند. خاموش کردن یک نیمه، ردیف‌هایش را پنهان و ارسالش را متوقف می‌کند، اما نگاشت‌هایش را نگه می‌دارد تا با روشن کردن دوباره بازگردانده شوند.</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>مقادیر پیش‌تنظیم ماشه تطبیقی GameCube، اثر Mxater. فقط برای آگاهی از جزئیات فنی خوانده شده است.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>علامت‌های محورهای حرکتی DSU که با رمزگشای UDP آن تطبیق داده شده‌اند. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>علامت‌های محورهای حرکتی DSU که با رمزگشای UDP آن تطبیق داده شده‌اند، و اندازه کنترل‌های یک پد وب سفارشی که نسبت به ضلع کوتاه‌تر صفحه سنجیده شده‌اند، همان‌طور که پوشش Android آن می‌سنجد. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>پیش‌تنظیم‌های پیش‌فرض Elite Dangerous که مبنای پروفایل آغازین «شبیه‌ساز فضایی» هستند، اثر Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>توالی‌های شروع و توقف Ring-Con که مبنای درایور Switch در انشعاب SDL و مقیاس کرنشی هستند که PadForge می‌خواند، خوانده‌شده از demo-of-ring-con-with-web-hid، Eden (GPL-3.0-or-later)، joy اثر Yamakaky (MIT)، joy-con-webhid (Apache-2.0)، Nintendo_Switch_Reverse_Engineering، osc-ringcon (MIT)، Ringcon-Driver (MIT) و RingconProtocolDebug (Apache-2.0). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>مراجع کنترلرهای سریال</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>پروتکل‌هایی که مبنای درایورهای سریال انشعاب SDL برای کنترلرهای شش‌محوره، گیم‌پدها، جوی‌استیک‌های پرواز، فرستنده‌های RC، پنل‌های پرواز و ارگومترها هستند، خوانده‌شده از Async.fi، hidsporb، JoypadOS (Apache-2.0)، KettlerBLE (MIT)، kettlerUSB2BLE (MIT)، libsball اثر John E. Stone (به سبک BSD)، linuxconsole (GPL-2.0-or-later)، Linux (GPL-2.0)، spacenavd (GPL-3.0-or-later)، vJoySerialFeeder (GPL-3.0)، VRInsight-Xplane-Interface (MIT)، vrinsight-cdu-ii-msfs-driver (MIT)، VRPN (BSL-1.0)، xf86-input-magellan (MIT/X11)، xf86-input-spaceorb (MIT/X11) و XPComboTest (MIT). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>مراجع SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>گزارش‌هایی که مبنای پشتیبانی از پد SInput و پرسونای SInput هستند، خوانده‌شده از SINPUT-LIB-HID (MIT-0) و HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) اثر Hand Held Legend و حالت SInput در OpenPuck (AGPL-3.0). فقط مستندات، هیچ کد AGPL عرضه نمی‌شود.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>مراجع دستگاه‌های USB تخصصی</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>پروتکل‌هایی که مبنای درایورهای انشعاب SDL برای ایستگاه پایه Intel Wireless Series، گیرنده Xbox 360 Big Button، CH Products Multi-Function Panel، Ergodex DX1، TrackIR 2 و 3 و واحدهای اصلی ترینر Tacx هستند، خوانده‌شده از antifier (MIT)، chmfp (GPL-3.0-or-later)، dx1-studio (GPL-3.0)، ergodex-dx1-linux (GPL-3.0)، fortius_1942 (GPL-2.0-or-later)، FortiusANT (GPL-3.0)، intel-wings (GPL-2.0)، JoypadOS (Apache-2.0)، linuxtrack (MIT)، t19xx_usb (GPL-3.0)، ttyT1941 (GPL-3.0) و xbox360bb (GPL-2.0-or-later). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>مراجع کنترلرهای قطار</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>قالب PCM هپتیک PS5، با 16 بیت علامت‌دار در 3 kHz، که رمزگذاری 8 بیتی علامت‌دار هپتیک بلوتوث را مشخص کرد. فقط به‌عنوان مستندات خوانده شده و هیچ کد AGPL عرضه نمی‌شود.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>مراجع مود بازی DSX</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>دستورها، پاسخ‌ها، فایل‌های پورت و بایت‌های جلوه ماشه در UDP که مبنای «مودهای بازی» هستند، خوانده‌شده از نمونه‌های رسمی مود DSX v3.1 و DualSenseX v2 از Paliverse، هر دو نسخه DualSenseY و DualSense4Rockstar (بدون مجوز منتشرشده)، DSZ و pydualsense (MIT)، و Wujek Dualsense API و سرور DSX در انشعاب DS4Windows اثر hbashton (GPL-3.0). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>دستورها، پاسخ‌ها، فایل‌های پورت و بایت‌های جلوه ماشه در UDP که مبنای «مودهای بازی» هستند، خوانده‌شده از نمونه‌های رسمی مود DSX v3.1 و DualSenseX v2 از Paliverse، DualSenseY و DualSense4Rockstar (بدون مجوز منتشرشده)، DualSenseY-v2، DSZ و pydualsense (MIT)، و Wujek Dualsense API و سرور DSX در انشعاب DS4Windows اثر hbashton (GPL-3.0). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>مراجع هدفون و میکروفون DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>مسیریابی هدفون و بلندگو، سقف میزان صدا، قاب‌بندی میکروفون و حالت گزارش که مبنای صدای Bluetooth در DualShock 4 هستند، خوانده‌شده از DS4-Sound-Link (MIT)، ds4mac (GPL-2.0)، ds4drv (MIT) و انشعاب DS4Windows اثر hbashton (GPL-3.0)، با پنجره‌های سنتز رمزگشای SBC که با libsbc شرکت Google (Apache-2.0) تطبیق داده شده‌اند، و هدست‌های USB مدل دوم و آداپتور Sony، خوانده‌شده از دامپ‌های توصیف‌گر ControllersInfo اثر DJm00n (بدون مجوز منتشرشده) و بررسی‌های LsUSB در linux-hardware.org (CC BY 4.0). مسیر بلندگوی DualShock 4 متصل با کابل از Controllers Wiki (CC BY-SA) و NFSU2-SplitScreen اثر mihaits (MIT) گرفته شده است. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>مراجع چت Twitch</value></data>

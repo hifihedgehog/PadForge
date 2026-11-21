@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>供音樂軟件使用的音符和控制變更。</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>透過 SteamVR 的虛擬 VR 控制器。</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>之後要更改類型，請按一下控制器上的類型標籤。只需按一下。</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services 沒有回應。請參閱「設定」中的卡片。</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>需要 SteamVR。請從「設定」中的卡片安裝。</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services 沒有回應。請到「設定」的「驅動程式」查看。</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>需要 SteamVR。請從「設定」的「驅動程式」安裝。</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>已有一個 VR 控制器。一個就能驅動雙手。</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge 已有 {0} 個控制器，已達上限。請刪除一個才能新增。</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>設定檔</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo（最多 {0} 個）</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>擴充（最多 {0} 個）</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>鍵盤 + 滑鼠（最多 {0} 個）</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI（未執行，請參閱「設定」中的 Windows MIDI Services 卡片）</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI（未執行，請到「設定」的「驅動程式」查看 Windows MIDI Services）</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI（最多 {0} 個）</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR（需要 SteamVR）</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR（最多 {0} 個）</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>把控制器體感傳送給讀取 DSU 體感來源的模擬器。</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>接收為 DSX 編寫的遊戲模組所提供的自適應扳機和燈光效果。</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>在遊戲中開啟遙測輸出，並指向這部電腦和連接埠。</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>在模擬器中，以這部電腦的位址和此連接埠新增體感來源。</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>模組的效果會傳到每個具備相應硬件的控制器。</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>在這部電腦上的模擬器中，以 127.0.0.1 和此連接埠新增體感來源。</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>模組會傳到每個已連接 DualSense 或 DualShock 4 的虛擬控制器，其效果會在該虛擬控制器內每個具備相應硬件的控制器上播放。</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭部姿態就是[裝置]頁上的「頭部追蹤器」列。請在控制器的「對應」區段把頭部偏航對應到搖桿軸。</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>這些數值就是[裝置]頁上的「遊戲遙測」列。請在控制器的「對應」區段對應它們，或用來觸發巨集。</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>選單本身的位置、大小和不透明度，請在控制器的[巨集與選單]區段中的選單上設定。</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>撤銷</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>全部撤銷</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>觸控板重疊介面</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>為 PlayStation 觸控板遊戲提供的熒幕觸控面，可用觸控熒幕或滑鼠操作。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>為 PlayStation 觸控板遊戲提供的熒幕觸控面，可用觸控熒幕操作。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>啟用觸控板重疊介面</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>重設位置</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>控制器輸入和列舉。</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>按裝置區分的鍵盤和滑鼠輸入</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>自訂網頁控制器會讓每組控制項與較近的熒幕邊緣保持距離，就如 RetroArch 的覆疊層把左右兩半分開移動一樣。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>虛擬 MIDI 裝置輸出(Windows MIDI Services)。</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>用於耳機輸出的 Bauer 立體聲轉雙耳交叉饋送。</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>純 C# 的 Opus 編碼器，用於經藍牙驅動 DualSense 喇叭音訊。作者：Logan Stromberg。</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>十字準星和放大鏡參考資料</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>「十字」及其圓點參考自 Skarbo 的 CSGOCrosshair(未公佈授權)，「圓圈」、圖片和輪廓樣式參考自 Crosshair-Overlay(MIT)，放大鏡的「鏡片」和全熒幕放大參考自 Microsoft 的 Windows-classic-samples(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga 的 DualSense 藍牙音訊研究：控制器喇叭串流所依賴的封包傳輸方式。apps.sdore.me/SAxense。</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>單位</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>靈敏度的顯示單位。「倍數」是內部的 × 比例（1 = 基準）。DegPerScreenTurn 是 Steam 的方式：畫面轉動一整圈所需的控制器實際旋轉度數。</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>輕鬆瞄準閾值</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>右搖桿的推動幅度（0–100%）低於此值時，陀螺儀輸出會歸零。0 = 一直開啟。即 Steam「瞄準時啟用陀螺儀」的手感。只有當用戶把右搖桿推過閾值時，陀螺儀才會生效。</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>啟用搖桿的推動幅度（0–100%）低於此值時，陀螺儀輸出會歸零。0 = 一直開啟。即 Steam「瞄準時啟用陀螺儀」的手感。只有當用戶把該搖桿推過閾值時，陀螺儀才會生效。</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>陀螺儀</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>陀螺儀</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>調整此控制器的體感感應器如何驅動滑鼠和搖桿輸出。先在平坦的表面上校準，把靜止時的漂移歸零，然後按喜好調校靈敏度、平滑和啟用規則。</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>平滑時間窗</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>平滑緩衝區的時間窗長度。數值越大，在收緊閾值以下的平滑越強。數值越小，手感越爽快。預設 50 毫秒。</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>瞄準啟用按鈕</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>控制陀螺儀輸出的按鈕。只有按住此按鈕時陀螺儀才會生效。不設定則停用按鈕條件。若同時設定了此按鈕和右搖桿推動幅度，兩者必須同時成立，陀螺儀才會生效。</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>控制陀螺儀輸出的按鈕。作用方式由「啟用模式」決定。不設定則停用按鈕條件。若同時設定了此按鈕和啟用搖桿推動幅度，兩者必須同時成立，陀螺儀才會生效。</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>啟用模式</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>按住：按住啟用按鈕期間陀螺儀生效。切換：每次按下會開啟或關閉陀螺儀，放開則沒有作用。切換狀態會在各輪詢週期之間保留，切換設定檔時重設。</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>按住：按住啟用按鈕期間陀螺儀生效。切換：每次按下會開啟或關閉陀螺儀，放開則沒有作用。放開以瞄準：沒有按住啟用按鈕期間陀螺儀生效。切換狀態會在各輪詢週期之間保留，切換設定檔時重設。</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>按住</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>切換</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>放開以瞄準</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>上（Y+）</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>啟用</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>啟用按鈕、啟用搖桿、陀螺儀啟用、重新置中、輕鬆瞄準閾值</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>用來限制陀螺儀何時生效的選用條件。右搖桿推動幅度和瞄準啟用按鈕可各自設定。只有所有已設定的條件同時成立時，陀螺儀才會生效。</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>用來限制陀螺儀何時生效的選用條件。啟用搖桿的推動幅度和瞄準啟用按鈕可各自設定。只有所有已設定的條件同時成立時，陀螺儀才會生效。</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>玩家</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>世界</value></data>
@@ -2710,7 +2714,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>陀螺儀傾角 Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>陀螺儀傾角</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>最大傾角範圍、傾角死區</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>「陀螺儀傾角 X」/「陀螺儀傾角 Y」輸入的範圍設定：保持傾斜，搖桿便會保持推動幅度，類似 Steam 的「Joystick Deflection」模式。達到你在這裡設定的範圍時即為最大幅度；「陀螺儀重新置中」會把靜止握姿重新歸零。偏航（把控制器平放轉動）不受重力影響，不會移動這些輸入。</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>「陀螺儀傾角 X」/「陀螺儀傾角 Y」輸入的範圍設定：保持傾斜，搖桿便會保持推動幅度，類似 Steam 的「Joystick Deflection」模式。達到你在這裡設定的範圍時即為最大幅度。「陀螺儀重新置中」會把靜止握姿重新歸零。偏航（把控制器平放轉動）不受重力影響，不會移動這些輸入。</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>最大傾角範圍</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>由靜止握姿起計，傾斜多少度算作搖桿的最大推動幅度。數值越小越靈敏。25° 是 Steam 設定中最常見的數值。</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>傾角死區</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音震動器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>透過低音震動器或超低音喇叭，以低頻音調播放遊戲震動。</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>輸出裝置、聲道、增益、各馬達的音調</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>適用於 Xbox、DualShock 3、DualShock 4 / DualSense 和 Nintendo Switch Pro 虛擬控制器，以及具備力回饋的擴充虛擬控制器（例如賽車方向盤）和 Steam Deck Controller (Composite)。遊戲回饋和「測試震動」會經音訊輸出播放。巨集震動則留在控制器上。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>適用於 Xbox、DualShock 3、DualShock 4 / DualSense 和 Nintendo Switch Pro 虛擬控制器，以及具備力回饋的擴充虛擬控制器（例如賽車方向盤）。亦適用於 Steam Deck Controller (Composite)、SInput Gamepad 和 Joypad-OS Steam Input Gamepad。遊戲回饋和「測試震動」會經音訊輸出播放。巨集震動則留在控制器上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重設震動轉音訊</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>把震動轉送到音訊輸出</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虛擬控制器收到的遊戲震動和力回饋，以低頻音調的形式在所選的音訊輸出上播放。關閉後所有設定仍會保留。</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR 參考資料</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>頭戴式裝置和體感控制器輸入所用的執行階段介面、結構配置和登錄機碼，參考自 Khronos OpenXR-SDK 標頭檔(Apache-2.0)，並與 VirtualDesktop-OpenXR(MIT)交叉核對。PadForge 與你自己安裝的執行階段通訊，並無隨附任何 Khronos 程式碼。</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>周邊裝置輸出參考資料</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ 的觸覺回饋、燈光、配對和電池資料幀，參考自 Solaar(GPL-2.0-or-later)、libratbag(MIT)、LiveHaptics、OpenLogi(0BSD 和 MIT OR Apache-2.0)、OpenLogi 說明文件、keyleds(GPL-3.0-or-later)、g810-led 和 g810-led-resources(GPL-3.0)、rigdeck(GPL-3.0-or-later)、OpenGHub(MIT)和 g915x-heatmap(MIT)，並參考了 OpenRGB-Fixed(GPL-2.0-or-later)和 HaloDaemon-plugins 的筆記。Razer 的產品 ID 和燈光報告，參考自 OpenRazer(GPL-2.0-or-later)和 OpenRGB(GPL-2.0-or-later)，並與 uncoil(GPL-3.0-or-later)、OpenSynapse(MIT)、openrazer-win(GPL-2.0-or-later)、sanshoku(MIT)、razer_test(GPL-3.0-or-later)和 razer-life(GPL-2.0-or-later)核對，而這些工具共用的鎖則參考自 Aurora(MIT)和 LibreHardwareMonitor(MPL-2.0)。SteelSeries 的產品 ID 和燈光報告，參考自 OpenRGB 和 rivalcfg(WTFPL)，並與 SignalRGB 的外掛程式、Aerox_5(MIT)、apex-3-tkl(MIT)、ApexCtl(LGPL-3.0)、SteelSeriesControl(GPL-3.0)、rival310-re(LGPL-3.0)、Cricetus-Imperator(MIT)和 Wine(LGPL-2.1-or-later)核對。HID LampArray 報告，參考自 USB-IF 的 HID Usage Tables、Microsoft 的動態燈光效果說明文件及其範例 ArduinoHidForWindows 和 RP2040MacropadHidSample(MIT)，並與 lampctl(MIT OR Apache-2.0)、hid-rgb-ctl、keybackcon、mistel-lights、CaYaLight、hp-omen-35l-rgb、mac-dynamic-lighting、aura-loq 和 Apex3TklDynamicLighting(全部為 MIT)、acer-predator-helios-rgb(GPL-2.0-only)和 crosrgbkblight 核對。iFeel 的嗡鳴報告，參考自 iFeel、Linux 的 iFeel 驅動程式(GPL-2.0-or-later)和 Logitech-iFeel-Vibration-POC，描述元規則取自 Linux 核心(GPL-2.0-or-later)，強度比例則取自 Logitech 的 MouseWare 9.80 驅動程式。觸感和顏色處理常式取自 GameSense SDK。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ 的觸覺回饋、燈光、配對和電池資料幀，參考自 Solaar(GPL-2.0-or-later)、libratbag(MIT)、LiveHaptics、OpenLogi(0BSD 和 MIT OR Apache-2.0)、OpenLogi 說明文件、keyleds(GPL-3.0-or-later)、g810-led 和 g810-led-resources(GPL-3.0)、rigdeck(GPL-3.0-or-later)、OpenGHub(MIT)和 g915x-heatmap(MIT)，並參考了 OpenRGB-Fixed(GPL-2.0-or-later)和 HaloDaemon-plugins 的筆記。Razer 的產品 ID 和燈光報告，參考自 OpenRazer(GPL-2.0-or-later)和 OpenRGB(GPL-2.0-or-later)，並與 uncoil(GPL-3.0-or-later)、OpenSynapse(AGPL-3.0-only，讀取時為 MIT)、openrazer-win(GPL-2.0-or-later)、sanshoku(MIT)、razer_test(GPL-3.0-or-later)和 razer-life(GPL-2.0-or-later)核對，而這些工具共用的鎖則參考自 Aurora(MIT)和 LibreHardwareMonitor(MPL-2.0)。SteelSeries 的產品 ID 和燈光報告，參考自 OpenRGB 和 rivalcfg(WTFPL)，並與 SignalRGB 的外掛程式、Aerox_5(MIT)、apex-3-tkl(MIT)、ApexCtl(LGPL-3.0)、SteelSeriesControl(GPL-3.0)、rival310-re(LGPL-3.0)、Cricetus-Imperator(MIT)和 Wine(LGPL-2.1-or-later)核對。HID LampArray 報告，參考自 USB-IF 的 HID Usage Tables、Microsoft 的動態燈光效果說明文件及其範例 ArduinoHidForWindows 和 RP2040MacropadHidSample(MIT)，並與 lampctl(MIT OR Apache-2.0)、hid-rgb-ctl、keybackcon、mistel-lights、CaYaLight、hp-omen-35l-rgb、mac-dynamic-lighting、aura-loq 和 Apex3TklDynamicLighting(全部為 MIT)、acer-predator-helios-rgb(GPL-2.0-only)和 crosrgbkblight 核對。iFeel 的嗡鳴報告，參考自 iFeel、Linux 的 iFeel 驅動程式(GPL-2.0-or-later)和 Logitech-iFeel-Vibration-POC，描述元規則取自 Linux 核心(GPL-2.0-or-later)，強度比例則取自 Logitech 的 MouseWare 9.80 驅動程式。觸感和顏色處理常式取自 GameSense SDK。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>舊版 MIDI API 所用的 WinMM 呼叫次序：開啟連接埠、向其傳送數據，以及將其關閉。參考自 PortMidi(MIT，由 Ross Bencina、Phil Burk 和 Roger B. Dannenberg 編寫)和 RtMidi(MIT 式的 RtMidi 授權，由 Gary P. Scavone 編寫)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 參考資料</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box 參考資料</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>「讀取 Bliss-Box 轉接器」所用的 Bliss-Box API，參考自 Bliss-Box LLC 的 API Tool(BSD 式授權，可免費再散佈)和 DeviceBuddy(原始碼公開，Bliss-Box LLC)，按鈕名稱取自 SteveFox1620 的 retroarch-joypad-autoconfig 分支內的 Bliss-Box 檔案，Controller Pak 的校驗碼與 libdragon(Unlicense)核對，PlayStation 控制器的回應則取自 psx-spx 和 Linux 的 psxpad-spi 驅動程式(GPL-2.0-or-later)。控制器名稱和支援說明亦來自 Bliss-Box LLC 的相容性清單，而轉接器的行為已對照其韌體核對。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 編寫的 USB 傳輸層，供 HIDMaestro 的複合 USB 控制器使用。HIDMaestro 內含其已簽署的主機控制器驅動程式，並在首次建立複合控制器時安裝。</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 編寫的 USB 傳輸層，供 HIDMaestro 中屬於 USB 裝置的控制器使用：ARM 版 Windows 上的所有虛擬控制器，以及 x64 上的複合控制器、Steam Controller (2026)、Xbox One S: Full 設定檔和 Joy-Con Charging Grip 形式。HIDMaestro 內含其主機控制器驅動程式，並在首次建立其中一個控制器時安裝。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>選擇此插槽的哪一半生效。關閉其中一半會隱藏其列並停止傳送，但會保留其對應，重新開啟後便可還原。</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube 自適應扳機預設集的數值，由 Mxater 提供。只用於查證事實。</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 體感軸的正負號，已對照其 UDP 解碼器核對。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 體感軸的正負號，已對照其 UDP 解碼器核對，以及自訂網頁控制器的控制項大小，已按熒幕較短的一邊來量度，就如其 Android 覆疊層的量度方式。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>「太空模擬」入門設定檔所依據的 Elite Dangerous 預設配置，由 Richard Buckle 編寫。</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL 分支的 Switch 驅動程式所用的 Ring-Con 啟動和停止次序，以及 PadForge 所讀取的應變比例，參考自 demo-of-ring-con-with-web-hid、Eden(GPL-3.0-or-later)、Yamakaky 的 joy(MIT)、joy-con-webhid(Apache-2.0)、Nintendo_Switch_Reverse_Engineering、osc-ringcon(MIT)、Ringcon-Driver(MIT)和 RingconProtocolDebug(Apache-2.0)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>序列埠控制器參考資料</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>SDL 分支中六軸控制器、遊戲控制器、飛行操縱桿、遙控發射器、飛行面板和測功機的序列埠驅動程式所用的協定，參考自 Async.fi、hidsporb、JoypadOS(Apache-2.0)、KettlerBLE(MIT)、kettlerUSB2BLE(MIT)、John E. Stone 的 libsball(BSD 式授權)、linuxconsole(GPL-2.0-or-later)、Linux(GPL-2.0)、spacenavd(GPL-3.0-or-later)、vJoySerialFeeder(GPL-3.0)、VRInsight-Xplane-Interface(MIT)、vrinsight-cdu-ii-msfs-driver(MIT)、VRPN(BSL-1.0)、xf86-input-magellan(MIT/X11)、xf86-input-spaceorb(MIT/X11)和 XPComboTest(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput 參考資料</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput 控制器支援和 SInput 虛擬身分所用的報告，參考自 Hand Held Legend 的 SINPUT-LIB-HID(MIT-0)和 HOJA-LIB-RP2040(CC BY-NC-SA 3.0)，以及 OpenPuck 的 SInput 模式(AGPL-3.0)。只作參考文件，並無隨附任何 AGPL 程式碼。</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>特殊 USB 裝置參考資料</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>SDL 分支中 Intel Wireless Series 基座、Xbox 360 Big Button 接收器、CH Products Multi-Function Panel、Ergodex DX1、TrackIR 2 和 3，以及 Tacx 訓練台主機驅動程式所用的協定，參考自 antifier(MIT)、chmfp(GPL-3.0-or-later)、dx1-studio(GPL-3.0)、ergodex-dx1-linux(GPL-3.0)、fortius_1942(GPL-2.0-or-later)、FortiusANT(GPL-3.0)、intel-wings(GPL-2.0)、JoypadOS(Apache-2.0)、linuxtrack(MIT)、t19xx_usb(GPL-3.0)、ttyT1941(GPL-3.0)和 xbox360bb(GPL-2.0-or-later)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>列車控制器參考資料</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 的觸覺 PCM 格式，即帶正負號的 16 位元、3 kHz，由此確定了帶正負號 8 位元的藍牙觸覺編碼。只作文件閱讀，並無隨附任何 AGPL 程式碼。</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX 遊戲模組參考資料</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>「遊戲模組」所用的 UDP 指令、回覆、連接埠檔案和扳機效果位元組，參考自 Paliverse 官方的 DSX v3.1 和 DualSenseX v2 模組範例、DualSenseY 的兩個版本、DualSense4Rockstar(未公佈授權)、DSZ 和 pydualsense(MIT)，以及 Wujek Dualsense API 和 hbashton 的 DS4Windows 分支內的 DSX 伺服器(GPL-3.0)。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>「遊戲模組」所用的 UDP 指令、回覆、連接埠檔案和扳機效果位元組，參考自 Paliverse 官方的 DSX v3.1 和 DualSenseX v2 模組範例、DualSenseY 和 DualSense4Rockstar(未公佈授權)、DualSenseY-v2、DSZ 和 pydualsense(MIT)，以及 Wujek Dualsense API 和 hbashton 的 DS4Windows 分支內的 DSX 伺服器(GPL-3.0)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 耳機麥克風參考資料</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 藍牙音訊所用的耳機和喇叭路由、音量上限、麥克風影格和報告模式，參考自 DS4-Sound-Link(MIT)、ds4mac(GPL-2.0)、ds4drv(MIT)和 hbashton 的 DS4Windows 分支(GPL-3.0)，而 SBC 解碼器的合成視窗已與 Google 的 libsbc(Apache-2.0)核對，第二代型號和 Sony 轉接器的 USB 耳機麥克風則參考自 DJm00n 的 ControllersInfo 描述元傾印檔(未公佈授權)和 linux-hardware.org 的 LsUSB 探測資料(CC BY 4.0)。以連接線連接的 DualShock 4 的喇叭路由，來自 Controllers Wiki(CC BY-SA)和 mihaits 的 NFSU2-SplitScreen(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch 聊天室參考資料</value></data>

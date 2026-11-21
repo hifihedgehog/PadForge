@@ -1087,7 +1087,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nā note a me nā control change no nā polokalamu mele.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Nā controller VR virtual ma o SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>No ka hoʻololi ʻana i ke ʻano ma hope, kaomi i ka chip ʻano ma ka controller. Hoʻokahi kaomi wale nō.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Pono ʻo SteamVR. E hoʻokomo iā ia mai kāna kāleka ma Hoʻonohonoho.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Pono ʻo SteamVR. E hoʻokomo iā ia mai Hoʻonohonoho, ma lalo o Nā driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Aia he controller VR i kēia manawa. Hoʻokele ka mea hoʻokahi i nā lima ʻelua.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Hoʻopili i kekahi controller Bluetooth</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, pākaukau {0}</value></data>
@@ -1150,4 +1150,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Hoʻohana</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Mālama kēlā me kēia hui pihi o kahi pad pūnaewele i hana ʻia e ka mea hoʻohana i kona mamao mai ka lihi kokoke loa o ka pale ākea aʻe, e like me ka neʻe ʻana o nā ʻāpana ʻelua o nā overlay o RetroArch. Heluhelu ʻia ma ke ʻano palapala kuhikuhi wale nō, ʻaʻohe code GPL i hoʻouna ʻia.</value></data>
 </root>

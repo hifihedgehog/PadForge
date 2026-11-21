@@ -1392,7 +1392,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Note na control change maka software egwu.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller VR mebere site na SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Iji gbanwee ụdị ya ma emechaa, pịa chip ụdị dị na controller ahụ. Ọ na-ewe otu pịa.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ọ chọrọ SteamVR. Wụnye ya site na kaadị ya na Ntọala.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ọ chọrọ SteamVR. Wụnye ya site na Ntọala, n'okpuru Driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Controller VR adịlarị. Otu na-achịkwa aka abụọ.</value></data>
   <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>A na-ahazi bọtịn, stick na trigger 1:1 ozugbo e mere controller ahụ.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Jikọọ controller Bluetooth</value></data>
@@ -1496,4 +1496,6 @@
   <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Ntinye nke abụọ isi iyi a na-echekwa.</value></data>
   <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Gbanwee ntinye</value></data>
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Na-ahọrọ ntinye ọzọ a ga-echere.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad weebụ ahaziri ahazi na-edobe anya dị n'etiti ìgwè njikwa ọ bụla na nsọtụ ihuenyo sara mbara kacha nso ya, dịka ihe njikwa ihuenyo RetroArch si ewepụ ọkara ya abụọ. A gụrụ ya naanị dịka akwụkwọ nkọwa, ọ dịghị koodu GPL a na-ebunye.</value></data>
 </root>

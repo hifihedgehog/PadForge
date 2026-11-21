@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nodau a newidiadau rheoli ar gyfer meddalwedd cerddoriaeth.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Rheolyddion VR rhithwir drwy SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>I newid y math yn nes ymlaen, cliciwch y sglodyn math ar y rheolydd. Mae'n cymryd un clic.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Nid yw Windows MIDI Services yn ymateb. Gweler ei gerdyn yn Gosodiadau.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Angen SteamVR. Gosodwch ef o'i gerdyn yn Gosodiadau.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Nid yw Windows MIDI Services yn ymateb. Gweler ef yn Gosodiadau, o dan Gyrwyr.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Angen SteamVR. Gosodwch ef o Gosodiadau, o dan Gyrwyr.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Mae rheolydd VR yno eisoes. Mae un yn gyrru'r ddwy law.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>Mae PadForge wedi cyrraedd y nifer mwyaf o reolyddion y gall eu rhedeg: {0}. Dilëwch un i ychwanegu un arall.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Proffil</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (uchafswm {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Estynedig (uchafswm {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Bysellfwrdd + Llygoden (uchafswm {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ddim yn rhedeg, gweler y cerdyn Windows MIDI Services yn Gosodiadau)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ddim yn rhedeg, gweler Windows MIDI Services yn Gosodiadau, o dan Gyrwyr)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (uchafswm {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (angen SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (uchafswm {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Anfonwch symudiad rheolydd i efelychwyr sy'n darllen ffynhonnell symudiad DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Cymerwch effeithiau sbardun addasol a goleuo o fodiau gêm a ysgrifennwyd ar gyfer DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Trowch allbwn telemetreg ymlaen yn y gêm a'i bwyntio at y PC hwn a'r porth hwn.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Yn yr efelychydd, ychwanegwch ffynhonnell symudiad yng nghyfeiriad y PC hwn a'r porth hwn.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mae effeithiau mod yn cyrraedd pob rheolydd sydd â'r caledwedd ar eu cyfer.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Mewn efelychydd ar y PC hwn, ychwanegwch ffynhonnell symudiad yn 127.0.0.1 a'r porth hwn.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mae mod yn cyrraedd pob rheolydd rhithwir sydd â DualSense neu DualShock 4 wedi'i gysylltu, ac mae ei effeithiau'n chwarae ar bob rheolydd yno sydd â'r caledwedd ar eu cyfer.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Osgo'r pen yw'r rhes Traciwr Pen ar [Dyfeisiau]. Mapiwch wyro'r pen i echelin ffon yn adran Mapiadau rheolydd.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Y gwerthoedd yw'r rhes Telemetreg Gêm ar [Dyfeisiau]. Mapiwch nhw yn adran Mapiadau rheolydd neu defnyddiwch nhw i sbarduno macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Gosodir lle, maint a thryloywder dewislen ar y ddewislen ei hun, yn adran [Macros a Dewislenni] rheolydd.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Dirymu</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Dirymu Pob Un</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Troshaen Pad Cyffwrdd</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau pad cyffwrdd PlayStation, ar gyfer sgrin gyffwrdd neu'r llygoden.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau pad cyffwrdd PlayStation, ar gyfer sgrin gyffwrdd.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Galluogi Troshaen Pad Cyffwrdd</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Didreiddedd</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Ailosod y Safle</value></data>
@@ -814,6 +814,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Mewnbwn rheolyddion a chyfrif dyfeisiau.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Mewnbwn bysellfwrdd a llygoden fesul dyfais</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Mae pad gwe wedi'i deilwra yn cadw pellter pob clwstwr o'r ymyl agosaf ar sgrin lletach, fel y mae troshaenau RetroArch yn symud eu dau hanner. Wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Allbwn dyfais MIDI rithwir (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -2355,7 +2357,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Unedau</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Dangosiad uned sensitifrwydd. Lluosydd yw'r raddfa fewnol × (1 = llinell sylfaen). DegPerScreenTurn yw arddull Steam: graddau cylchdro ffisegol y rheolydd fesul un tro sgrin llawn.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Trothwy anelu hawdd</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Gwyriad y ffon dde (0–100%) sy'n sero allbwn y gyrosgop pan fydd oddi tano. 0 = bob amser ymlaen. Teimlad “gyrosgop wedi'i ymgysylltu wrth anelu” Steam. Mae'r gyrosgop yn tanio dim ond pan fydd y defnyddiwr yn gwthio'r ffon dde heibio'r trothwy.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Gwyriad y ffon ymgysylltu (0–100%) sy'n sero allbwn y gyrosgop pan fydd oddi tano. 0 = bob amser ymlaen. Teimlad “gyrosgop wedi'i ymgysylltu wrth anelu” Steam. Mae'r gyrosgop yn tanio dim ond pan fydd y defnyddiwr yn gwthio'r ffon honno heibio'r trothwy.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyrosgop</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyrosgop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tiwniwch sut mae synhwyrydd symudiad y pad hwn yn gyrru allbwn llygoden a ffon. Graddnodwch ar arwyneb gwastad i sero drifft gorffwys, yna addaswch sensitifrwydd, llyfnu a rheolau ymgysylltu at eich dant.</value></data>
@@ -2405,9 +2407,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Ffenestr llyfnu</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Hyd ffenestr amser y byffer llyfnu. Mae gwerthoedd mwy yn llyfnu'n drymach o dan y trothwy tynhau. Mae gwerthoedd llai yn teimlo'n sionc. Rhagosodiad 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Botwm ymgysylltu anelu</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Botwm sy'n rheoli allbwn y gyrosgop. Mae'r gyrosgop yn tanio dim ond tra dalir y botwm hwn. Gadewch heb ei osod i ddiffodd giât y botwm. Pan fydd hwn a gwyriad y ffon dde wedi'u ffurfweddu, rhaid i'r ddau fod yn weithredol i'r gyrosgop danio.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Botwm sy'n rheoli allbwn y gyrosgop. Mae'r modd ymgysylltu yn gosod sut. Gadewch heb ei osod i ddiffodd giât y botwm. Pan fydd hwn a gwyriad y ffon ymgysylltu wedi'u ffurfweddu, rhaid i'r ddau fod yn weithredol i'r gyrosgop danio.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Modd ymgysylltu</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Dal: mae'r gyrosgop yn tanio tra dalir y botwm ymgysylltu. Toglo: mae pob gwasgiad yn troi'r gyrosgop ymlaen neu i ffwrdd, ac nid yw rhyddhau yn gwneud dim. Mae toglo'n glynu ar draws y tic pholio ac yn ailosod wrth newid proffil.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Dal: mae'r gyrosgop yn tanio tra dalir y botwm ymgysylltu. Toglo: mae pob gwasgiad yn troi'r gyrosgop ymlaen neu i ffwrdd, ac nid yw rhyddhau yn gwneud dim. Rhyddhau i anelu: mae'r gyrosgop yn tanio tra na ddalir y botwm ymgysylltu. Mae toglo'n glynu ar draws y tic pholio ac yn ailosod wrth newid proffil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Dal</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toglo</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Rhyddhau i anelu</value></data>
@@ -2427,7 +2429,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>I fyny (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Ymgysylltu</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botwm ymgysylltu anelu, modd ymgysylltu, gyrosgop ymlaen, ailganoli, trothwy anelu hawdd</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Gatiau dewisol sy'n cyfyngu pryd mae'r gyrosgop yn weithredol. Gellir ffurfweddu gwyriad y ffon dde a'r botwm ymgysylltu anelu bob un. Mae'r gyrosgop yn tanio dim ond tra bo pob gât wedi'i ffurfweddu yn weithredol.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Gatiau dewisol sy'n cyfyngu pryd mae'r gyrosgop yn weithredol. Gellir ffurfweddu gwyriad y ffon ymgysylltu a'r botwm ymgysylltu anelu bob un. Mae'r gyrosgop yn tanio dim ond tra bo pob gât wedi'i ffurfweddu yn weithredol.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lleol</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Chwaraewr</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Byd</value></data>
@@ -4248,7 +4250,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Yn chwarae dirgryniad y gêm fel tonau isel trwy siglwyr bas neu isseinydd.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dyfais allbwn, sianeli, ennill, tôn i bob modur</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Yn gweithio gyda rheolyddion rhithwir Xbox, DualShock 3, DualShock 4 / DualSense, a Nintendo Switch Pro, ynghyd â rheolyddion rhithwir Estynedig ag adborth grym, fel olwynion llywio rasio, a Rheolydd Steam Deck (Cyfansawdd). Mae adborth y gêm a Phrofi dirgryniad yn chwarae drwy'r allbwn sain. Mae dirgryniad macro yn aros ar y rheolydd.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Yn gweithio gyda rheolyddion rhithwir Xbox, DualShock 3, DualShock 4 / DualSense, a Nintendo Switch Pro, ynghyd â rheolyddion rhithwir Estynedig ag adborth grym, fel olwynion llywio rasio. Mae hefyd yn gweithio gyda'r Steam Deck Controller (Composite), y SInput Gamepad a'r Joypad-OS Steam Input Gamepad. Mae adborth y gêm a Phrofi dirgryniad yn chwarae drwy'r allbwn sain. Mae dirgryniad macro yn aros ar y rheolydd.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ailosod dirgryniad i sain</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Llwybro dirgryniad i allbwn sain</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Yn chwarae dirgryniad ac adborth grym y gêm y mae'r rheolydd rhithwir hwn yn eu derbyn fel tonau amledd isel ar yr allbwn sain a ddewiswyd. Mae ei ddiffodd yn cadw pob gosodiad.</value></data>
@@ -4574,7 +4576,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup, ac AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Cyfeiriadau Bliss-Box</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Cludiant USB gan Vadym Hrynchyshyn ar gyfer rheolyddion USB cyfansawdd HIDMaestro. Mae HIDMaestro yn cario ei yrrwr rheolydd gwesteiwr llofnodedig ac yn ei osod y tro cyntaf y crëir rheolydd cyfansawdd.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Cludiant USB gan Vadym Hrynchyshyn ar gyfer y rheolyddion HIDMaestro sy'n ddyfeisiau USB: pob rheolydd rhithwir ar Windows ar ARM, ac ar x64 y rheolyddion cyfansawdd, y Steam Controller (2026), y proffil Xbox One S: Full a'r ffurfiau Joy-Con Charging Grip. Mae HIDMaestro yn cario ei yrrwr rheolydd gwesteiwr ac yn ei osod y tro cyntaf y crëir un o'r rheolyddion hyn.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Dewiswch pa haneri o'r slot hwn sy'n fyw. Mae diffodd hanner yn cuddio ei resi ac yn ei atal rhag anfon, ac yn cadw ei fapiadau fel bod ei droi ymlaen eto yn eu hadfer.</value>
   </data>
@@ -4757,7 +4759,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Gwerthoedd rhagosodedig sbardun addasol GameCube, gan Mxater. Darllenwyd am ffeithiau yn unig.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Arwyddion echelin symudiad DSU, wedi'u gwirio yn erbyn ei ddatgodiwr UDP. Wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Arwyddion echelin symudiad DSU, wedi'u gwirio yn erbyn ei ddatgodiwr UDP, a meintiau rheolyddion pad gwe wedi'i deilwra, wedi'u mesur yn erbyn ochr fyrraf y sgrin fel y mae ei droshaen Android yn eu mesur. Wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Rhagosodiadau diofyn Elite Dangerous y tu ôl i'r proffil cychwynnol Efelychydd Gofod, gan Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>

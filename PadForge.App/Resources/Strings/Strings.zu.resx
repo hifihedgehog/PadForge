@@ -2630,7 +2630,7 @@
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Ijubane</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Thatha imiphumela yama-adaptive trigger neyokukhanya kuma-mod emidlalo enzelwe i-DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Vula ukukhipha kwe-telemetry emdlalweni bese ukuqondisa kule PC nakule mbobo.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Imiphumela ye-mod ifinyelela kuzo zonke izilawuli ezinehadiwe eyidingayo.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>I-mod ifinyelela kusilawuli ngasinye esibonakalayo esine-DualSense noma i-DualShock 4 exhunyiwe, futhi imiphumela yayo idlala kuzo zonke izilawuli ezikuso ezinehadiwe eyidingayo.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ukuma kwekhanda kungumugqa wesilandeleli sekhanda ku-[Amadivayisi]. Mepha i-yaw yekhanda kwi-eksisi yenduku esigabeni esithi Ukumepha sesilawuli.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amanani angumugqa we-telemetry yemidlalo ku-[Amadivayisi]. Wamephe esigabeni esithi Ukumepha sesilawuli noma uwasebenzise ukuqalisa ama-macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Indawo yemenyu, usayizi nokubonakala kwayo kusethwa kumenyu uqobo, esigabeni sesilawuli esithi [Ama-macro namamenyu].</value></data>
@@ -2699,7 +2699,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Amanothi nama-control change ezinhlelo zomculo.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Izilawuli ze-VR ezibonakalayo nge-SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ukuze ushintshe uhlobo kamuva, chofoza i-chip yohlobo esilawulini. Kudinga ukuchofoza kanye.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Idinga i-SteamVR. Yifake ekhadini layo kuzilungiselelo.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Idinga i-SteamVR. Yifake kuzilungiselelo, ngaphansi kokuthi Abashayeli.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sesikhona isilawuli se-VR. Esisodwa silawula izandla zombili.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>I-PadForge inezilawuli ezingu-{0}, okuyinani eliphezulu engalisebenzisa. Susa esisodwa ukuze wengeze esinye.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Ezinye izinhlobo: [{0}, {1}, {2} no-{3}]</value></data>
@@ -2795,4 +2795,6 @@
   <data name="Common_Apply" xml:space="preserve"><value>Sebenzisa</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Indawo efile yangaphakathi</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ngaphansi kwalobu bungako bokuhamba okufakwayo kufundeka njengokuphakathi nendawo.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Isilawuli sewebhu esenziwe ngokwakho sigcina ibanga leqembu ngalinye lezilawuli ukusuka emaphethelweni aseduze esikrini esibanzi, njengoba izembozo ze-RetroArch zihambisa izingxenye zazo ezimbili. Kufundwe njengemibhalo kuphela, ayikho ikhodi ye-GPL efakiwe.</value></data>
 </root>

@@ -133,8 +133,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Notas i Control Change pa programa di múzika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Komandus VR virtual pa SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Pa muda tipu dipos, klika na chip di tipu na komandu. Ta leva un klik.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ka sta ta responde. Odja si kartãu na Konfigurason.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Presiza di SteamVR. Instala-l di si kartãu na Konfigurason.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ka sta ta responde. Odja-l na Konfigurason, na Drivers.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Presiza di SteamVR. Instala-l di Konfigurason, na Drivers.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Dja ten un komandu VR. Un ta kontrola dos mon.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ten {0} komandu, máximu ki e pode roda. Apaga un pa djunta otu.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
@@ -3058,7 +3058,7 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris ki ta lê un fonti di muvimentu DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Resebe efeitus di gatilhu adaptativu i di lus di mods di jogu skrebedu pa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Liga saída di telemetria na jogu i manda-l pa es PC i pa es porta.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Na emulador, djunta un fonti di muvimentu ku enderesu di es PC i es porta.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Na un emulador na es PC, djunta un fonti di muvimentu na 127.0.0.1 ku es porta.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Avizu na limiti di un stick na modu di volanti</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrason di motoris prinsipal pa gatilhus</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrason di gatilhu di baxu di áudiu di sistema</value></data>
@@ -3202,4 +3202,10 @@
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Aplika</value></data>
   <data name="About_SteeringRefs" xml:space="preserve"><value>Referénsias di sensason di diresãu</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Un komandu web personalizadu ta guarda distánsia di kada grupu di kontrolus pa borda di ekran más pertu na un ekran más largu, sima overlays di RetroArch ta muda ses dós metadi. Lidu só sima dokumentason, nenhun kódigu GPL ka ta bai djuntu.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Referénsias di mira i di lupa</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Krus i si pontu di CSGOCrosshair di Skarbo (sen lisensa publikadu), Sírkulu, stilus di imajen i di kontornu di Crosshair-Overlay (MIT), i Lenti i zoom di ekran interu di lupa di Windows-classic-samples di Microsoft (MIT). Só dokumentason, nenhun kódigu ka ta bai djuntu.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Referénsias di SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Relatórius pa suporti di komandus SInput i pa persona SInput, lidu di SINPUT-LIB-HID (MIT-0) i HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) di Hand Held Legend i di modu SInput di OpenPuck (AGPL-3.0). Só dokumentason, nenhun kódigu AGPL ka ta bai djuntu.</value></data>
 </root>

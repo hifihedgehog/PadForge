@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>โน้ตและ Control Change สำหรับซอฟต์แวร์ดนตรี</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>คอนโทรลเลอร์ VR เสมือนผ่าน SteamVR</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>หากต้องการเปลี่ยนประเภทภายหลัง ให้คลิกชิปประเภทบนคอนโทรลเลอร์ ใช้เพียงหนึ่งคลิก</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ไม่ตอบสนอง ดูการ์ดของมันในการตั้งค่า</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ต้องใช้ SteamVR ติดตั้งได้จากการ์ดของมันในการตั้งค่า</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ไม่ตอบสนอง ดูได้ในการตั้งค่า ภายใต้ไดรเวอร์</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ต้องใช้ SteamVR ติดตั้งได้ในการตั้งค่า ภายใต้ไดรเวอร์</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>มีคอนโทรลเลอร์ VR อยู่แล้ว ตัวเดียวควบคุมได้ทั้งสองมือ</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge มีคอนโทรลเลอร์ {0} ตัว ซึ่งเป็นจำนวนสูงสุดที่รันได้ ลบหนึ่งตัวเพื่อเพิ่มตัวอื่น</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>โปรไฟล์</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (สูงสุด {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>แบบขยาย (สูงสุด {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>คีย์บอร์ด + เมาส์ (สูงสุด {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ไม่ได้ทำงาน ดูการ์ด Windows MIDI Services ในการตั้งค่า)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ไม่ได้ทำงาน ดู Windows MIDI Services ในการตั้งค่า ภายใต้ไดรเวอร์)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (สูงสุด {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (ต้องใช้ SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (สูงสุด {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ส่งการเคลื่อนไหวของคอนโทรลเลอร์ไปยังอีมูเลเตอร์ที่อ่านแหล่งการเคลื่อนไหว DSU</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>รับเอฟเฟกต์ทริกเกอร์แบบปรับได้และเอฟเฟกต์แสงจากม็อดเกมที่เขียนขึ้นสำหรับ DSX</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>เปิดเอาต์พุตเทเลเมทรีในเกม แล้วชี้มาที่พีซีเครื่องนี้และพอร์ตนี้</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ในอีมูเลเตอร์ ให้เพิ่มแหล่งการเคลื่อนไหวที่ที่อยู่ของพีซีเครื่องนี้และพอร์ตนี้</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>เอฟเฟกต์ของม็อดจะไปถึงทุกคอนโทรลเลอร์ที่มีฮาร์ดแวร์รองรับ</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ในอีมูเลเตอร์บนพีซีเครื่องนี้ ให้เพิ่มแหล่งการเคลื่อนไหวที่ 127.0.0.1 และพอร์ตนี้</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ม็อดจะไปถึงคอนโทรลเลอร์เสมือนทุกตัวที่มี DualSense หรือ DualShock 4 เชื่อมต่ออยู่ และเอฟเฟกต์ของม็อดจะเล่นบนทุกคอนโทรลเลอร์ในนั้นที่มีฮาร์ดแวร์รองรับ</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ท่าทางของศีรษะคือแถวตัวติดตามศีรษะใน [อุปกรณ์] แมปการหันศีรษะ (yaw) ไปยังแกนสติ๊กในส่วนการแมปของคอนโทรลเลอร์</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ค่าต่าง ๆ คือแถวเทเลเมทรีเกมใน [อุปกรณ์] แมปค่าเหล่านี้ในส่วนการแมปของคอนโทรลเลอร์ หรือใช้เป็นตัวเรียกแมโคร</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ตำแหน่ง ขนาด และความทึบแสงของเมนูแต่ละอันตั้งได้ที่ตัวเมนูเอง ในส่วน [แมโครและเมนู] ของคอนโทรลเลอร์</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>เพิกถอน</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>เพิกถอนทั้งหมด</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>โอเวอร์เลย์ทัชแพด</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมทัชแพดของ PlayStation ใช้กับหน้าจอสัมผัสหรือเมาส์ได้</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมทัชแพดของ PlayStation ใช้กับหน้าจอสัมผัส</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>เปิดใช้งานโอเวอร์เลย์ทัชแพด</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ความทึบแสง</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>รีเซ็ตตำแหน่ง</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>อินพุตและการแจงนับคอนโทรลเลอร์</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>อินพุตคีย์บอร์ดและเมาส์แยกรายอุปกรณ์</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>แป้นควบคุมเว็บแบบกำหนดเองจะรักษาระยะห่างของแต่ละกลุ่มปุ่มจากขอบที่ใกล้กว่าบนหน้าจอที่กว้างขึ้น เหมือนที่โอเวอร์เลย์ของ RetroArch ขยับสองฝั่งออกจากกัน ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>เอาต์พุตอุปกรณ์ MIDI เสมือน (Windows MIDI Services)</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>ครอสฟีดแปลงสเตอริโอเป็นไบนอรัลแบบ Bauer สำหรับเอาต์พุตหูฟัง</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>ตัวเข้ารหัส Opus ที่เขียนด้วย C# ล้วน ใช้ส่งเสียงออกลำโพง DualSense ผ่าน Bluetooth โดย Logan Stromberg</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>แหล่งอ้างอิงเป้าเล็งและแว่นขยาย</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>กากบาทและจุดตรงกลางจาก CSGOCrosshair ของ Skarbo (ไม่มีการเผยแพร่ใบอนุญาต) รูปแบบวงกลม รูปภาพ และเส้นขอบจาก Crosshair-Overlay (MIT) และโหมดเลนส์กับการซูมเต็มหน้าจอของแว่นขยายจาก Windows-classic-samples ของ Microsoft (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>งานวิจัยเสียง Bluetooth ของ DualSense โดย egormanga: การส่งแพ็กเก็ตที่สตรีมลำโพงของคอนโทรลเลอร์ใช้ apps.sdore.me/SAxense</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>หน่วย</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>การแสดงหน่วยความไว “ตัวคูณ” คือสเกล × ภายใน (1 = ค่าฐาน) DegPerScreenTurn เป็นแบบ Steam: จำนวนองศาที่ต้องหมุนคอนโทรลเลอร์จริงต่อการหมุนหน้าจอครบหนึ่งรอบ</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>ค่าเกณฑ์การเล็งแบบง่าย</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ระยะโยกของสติ๊กขวา (0–100%) ซึ่งหากต่ำกว่านี้เอาต์พุตไจโรจะเป็นศูนย์ 0 = เปิดตลอด ให้ความรู้สึกแบบ "ไจโรทำงานขณะเล็ง" ของ Steam ไจโรจะทำงานเฉพาะเมื่อผู้ใช้โยกสติ๊กขวาเกินค่าเกณฑ์</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ระยะโยกของสติ๊กเปิดใช้ (0–100%) ซึ่งหากต่ำกว่านี้เอาต์พุตไจโรจะเป็นศูนย์ 0 = เปิดตลอด ให้ความรู้สึกแบบ “ไจโรทำงานขณะเล็ง” ของ Steam ไจโรจะทำงานเฉพาะเมื่อผู้ใช้โยกสติ๊กนั้นเกินค่าเกณฑ์</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ไจโร</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ไจโร</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ปรับวิธีที่เซนเซอร์ตรวจจับการเคลื่อนไหวของเกมแพดนี้ควบคุมเอาต์พุตเมาส์และสติ๊ก ปรับเทียบบนพื้นผิวเรียบเพื่อขจัดการดริฟต์ขณะอยู่นิ่ง แล้วปรับความไว การปรับเรียบ และกฎการเปิดใช้ตามชอบ</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>ช่วงเวลาการปรับเรียบ</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>ความยาวของช่วงเวลาบัฟเฟอร์ปรับเรียบ ค่าที่มากขึ้นจะปรับเรียบหนักขึ้นเมื่อต่ำกว่าค่าเกณฑ์การกระชับ ค่าที่น้อยลงให้ความรู้สึกฉับไวกว่า ค่าเริ่มต้น 50ms</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>ปุ่มเปิดใช้การเล็ง</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ปุ่มที่ควบคุมการส่งเอาต์พุตไจโร ไจโรจะทำงานเฉพาะขณะกดปุ่มนี้ค้างไว้ ปล่อยว่างไว้เพื่อปิดการควบคุมด้วยปุ่ม เมื่อกำหนดทั้งปุ่มนี้และระยะโยกของสติ๊กขวา ทั้งสองอย่างต้องทำงานอยู่ไจโรจึงจะทำงาน</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ปุ่มที่ควบคุมการส่งเอาต์พุตไจโร โหมดการเปิดใช้เป็นตัวกำหนดวิธีการ ปล่อยว่างไว้เพื่อปิดการควบคุมด้วยปุ่ม เมื่อกำหนดทั้งปุ่มนี้และระยะโยกของสติ๊กเปิดใช้ ทั้งสองอย่างต้องทำงานอยู่ไจโรจึงจะทำงาน</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>โหมดการเปิดใช้</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>กดค้าง: ไจโรทำงานขณะกดปุ่มเปิดใช้ค้างไว้ สลับเปิด/ปิด: การกดแต่ละครั้งจะสลับไจโรเปิดหรือปิด และการปล่อยไม่มีผล สถานะสลับจะคงอยู่ข้ามรอบการโพล และรีเซ็ตเมื่อสลับโปรไฟล์</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>กดค้าง: ไจโรทำงานขณะกดปุ่มเปิดใช้ค้างไว้ สลับเปิด/ปิด: การกดแต่ละครั้งจะสลับไจโรเปิดหรือปิด และการปล่อยไม่มีผล ปล่อยเพื่อเล็ง: ไจโรทำงานขณะไม่ได้กดปุ่มเปิดใช้ค้างไว้ สถานะสลับจะคงอยู่ข้ามรอบการโพล และรีเซ็ตเมื่อสลับโปรไฟล์</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>กดค้าง</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>สลับเปิด/ปิด</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>ปล่อยเพื่อเล็ง</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ขึ้น (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>การเปิดใช้</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ปุ่มเปิดใช้การเล็ง โหมดเปิดใช้ ไจโรทำงาน จัดกึ่งกลางใหม่ ค่าเกณฑ์การเล็งแบบง่าย</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>เงื่อนไขเสริมที่จำกัดว่าไจโรจะทำงานเมื่อใด กำหนดได้ทั้งระยะโยกของสติ๊กขวาและปุ่มเปิดใช้การเล็ง ไจโรจะทำงานเฉพาะขณะที่ทุกเงื่อนไขที่กำหนดไว้ทำงานอยู่</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>เงื่อนไขเสริมที่จำกัดว่าไจโรจะทำงานเมื่อใด กำหนดได้ทั้งระยะโยกของสติ๊กเปิดใช้และปุ่มเปิดใช้การเล็ง ไจโรจะทำงานเฉพาะขณะที่ทุกเงื่อนไขที่กำหนดไว้ทำงานอยู่</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>โลคัล</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ผู้เล่น</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>โลก</value></data>
@@ -2710,7 +2714,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>ไจโรเอียง Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>ไจโรเอียง</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>ช่วงเอียงเต็ม เดดโซนการเอียง</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ขอบเขตการทำงานของอินพุตไจโรเอียง X / ไจโรเอียง Y: เอียงค้างไว้แล้วสติ๊กจะคงระยะโยกไว้ เหมือนโหมด Joystick Deflection ของ Steam ระยะโยกเต็มอยู่ที่ช่วงที่คุณตั้งไว้ที่นี่; “จัดไจโรกลับกึ่งกลาง” จะตั้งศูนย์ท่าถือขณะพักใหม่ ยอว์ (การหมุนคอนโทรลเลอร์ในแนวราบ) ไม่มีผลต่อแรงโน้มถ่วง จึงไม่ทำให้อินพุตเหล่านี้ขยับ</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ขอบเขตการทำงานของอินพุตไจโรเอียง X / ไจโรเอียง Y: เอียงค้างไว้แล้วสติ๊กจะคงระยะโยกไว้ เหมือนโหมด Joystick Deflection ของ Steam ระยะโยกเต็มอยู่ที่ช่วงที่คุณตั้งไว้ที่นี่ “จัดไจโรกลับกึ่งกลาง” จะตั้งศูนย์ท่าถือขณะพักใหม่ ยอว์ (การหมุนคอนโทรลเลอร์ในแนวราบ) ไม่มีผลต่อแรงโน้มถ่วง จึงไม่ทำให้อินพุตเหล่านี้ขยับ</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>ช่วงเอียงเต็ม</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>องศาการเอียงจากท่าถือขณะพักที่นับเป็นระยะโยกเต็มของสติ๊ก ยิ่งน้อย = ยิ่งไว 25° เป็นค่าที่พบบ่อยที่สุดในคอนฟิกของ Steam</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>เดดโซนการเอียง</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>เบสเชกเกอร์</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>เล่นการสั่นจากเกมเป็นโทนเสียงต่ำผ่านเบสเชกเกอร์หรือซับวูฟเฟอร์</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>อุปกรณ์เอาต์พุต แชนเนล เกน เสียงโทนของมอเตอร์แต่ละตัว</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ใช้ได้กับคอนโทรลเลอร์เสมือนแบบ Xbox, DualShock 3, DualShock 4 / DualSense และ Nintendo Switch Pro รวมถึงคอนโทรลเลอร์เสมือนแบบขยายที่มีฟอร์ซฟีดแบ็ก เช่น พวงมาลัยแข่งรถ และ Steam Deck Controller (Composite) การตอบสนองจากเกมและ “ทดสอบการสั่น” จะเล่นผ่านเอาต์พุตเสียง ส่วนการสั่นจากแมโครยังคงอยู่ที่คอนโทรลเลอร์</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ใช้ได้กับคอนโทรลเลอร์เสมือนแบบ Xbox, DualShock 3, DualShock 4 / DualSense และ Nintendo Switch Pro รวมถึงคอนโทรลเลอร์เสมือนแบบขยายที่มีฟอร์ซฟีดแบ็ก เช่น พวงมาลัยแข่งรถ และใช้ได้กับ Steam Deck Controller (Composite), SInput Gamepad และ Joypad-OS Steam Input Gamepad ด้วย การตอบสนองจากเกมและ “ทดสอบการสั่น” จะเล่นผ่านเอาต์พุตเสียง ส่วนการสั่นจากแมโครยังคงอยู่ที่คอนโทรลเลอร์</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>รีเซ็ตการสั่นเป็นเสียง</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ส่งการสั่นไปยังเอาต์พุตเสียง</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>เล่นการสั่นและฟอร์ซฟีดแบ็กจากเกมที่คอนโทรลเลอร์เสมือนนี้ได้รับเป็นโทนความถี่ต่ำบนเอาต์พุตเสียงที่เลือก การปิดจะยังคงเก็บการตั้งค่าทั้งหมดไว้</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>แหล่งอ้างอิง OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>อินเทอร์เฟซรันไทม์ โครงสร้างข้อมูล และคีย์รีจิสทรีที่อยู่เบื้องหลังอินพุตจากเฮดเซ็ตและคอนโทรลเลอร์ตรวจจับการเคลื่อนไหว อ่านจากไฟล์ส่วนหัวของ Khronos OpenXR-SDK (Apache-2.0) และตรวจสอบเทียบกับ VirtualDesktop-OpenXR (MIT) PadForge สื่อสารกับรันไทม์ที่คุณติดตั้งไว้เอง และไม่มีโค้ดของ Khronos รวมอยู่ในโปรแกรม</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>แหล่งอ้างอิงเอาต์พุตอุปกรณ์ต่อพ่วง</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>เฟรมแฮปติก แสงไฟ การจับคู่ และแบตเตอรี่ของ Logitech HID++ อ่านจาก Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD และ MIT OR Apache-2.0), เอกสารของ OpenLogi, keyleds (GPL-3.0-or-later), g810-led และ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) และ g915x-heatmap (MIT) พร้อมบันทึกจาก OpenRGB-Fixed (GPL-2.0-or-later) และ HaloDaemon-plugins รหัสผลิตภัณฑ์และรายงานแสงไฟของ Razer อ่านจาก OpenRazer (GPL-2.0-or-later) และ OpenRGB (GPL-2.0-or-later) และตรวจสอบเทียบกับ uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) และ razer-life (GPL-2.0-or-later) พร้อมกลไกล็อกที่เครื่องมือเหล่านั้นใช้ร่วมกันจาก Aurora (MIT) และ LibreHardwareMonitor (MPL-2.0) รหัสผลิตภัณฑ์และรายงานแสงไฟของ SteelSeries อ่านจาก OpenRGB และ rivalcfg (WTFPL) และตรวจสอบเทียบกับปลั๊กอินของ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) และ Wine (LGPL-2.1-or-later) รายงาน HID LampArray อ่านจาก HID Usage Tables ของ USB-IF เอกสาร Dynamic Lighting ของ Microsoft และตัวอย่าง ArduinoHidForWindows กับ RP2040MacropadHidSample (MIT) และตรวจสอบเทียบกับ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq และ Apex3TklDynamicLighting (ทั้งหมดเป็น MIT), acer-predator-helios-rgb (GPL-2.0-only) และ crosrgbkblight รายงานการสั่นของ iFeel อ่านจาก iFeel, ไดรเวอร์ iFeel ของ Linux (GPL-2.0-or-later) และ Logitech-iFeel-Vibration-POC พร้อมกฎดิสคริปเตอร์จากเคอร์เนล Linux (GPL-2.0-or-later) และสเกลความแรงจากไดรเวอร์ MouseWare 9.80 ของ Logitech ตัวจัดการระบบสัมผัสและสีจาก GameSense SDK ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>เฟรมแฮปติก แสงไฟ การจับคู่ และแบตเตอรี่ของ Logitech HID++ อ่านจาก Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD และ MIT OR Apache-2.0), เอกสารของ OpenLogi, keyleds (GPL-3.0-or-later), g810-led และ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) และ g915x-heatmap (MIT) พร้อมบันทึกจาก OpenRGB-Fixed (GPL-2.0-or-later) และ HaloDaemon-plugins รหัสผลิตภัณฑ์และรายงานแสงไฟของ Razer อ่านจาก OpenRazer (GPL-2.0-or-later) และ OpenRGB (GPL-2.0-or-later) และตรวจสอบเทียบกับ uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT เมื่ออ่าน), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) และ razer-life (GPL-2.0-or-later) พร้อมกลไกล็อกที่เครื่องมือเหล่านั้นใช้ร่วมกันจาก Aurora (MIT) และ LibreHardwareMonitor (MPL-2.0) รหัสผลิตภัณฑ์และรายงานแสงไฟของ SteelSeries อ่านจาก OpenRGB และ rivalcfg (WTFPL) และตรวจสอบเทียบกับปลั๊กอินของ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) และ Wine (LGPL-2.1-or-later) รายงาน HID LampArray อ่านจาก HID Usage Tables ของ USB-IF เอกสาร Dynamic Lighting ของ Microsoft และตัวอย่าง ArduinoHidForWindows กับ RP2040MacropadHidSample (MIT) และตรวจสอบเทียบกับ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq และ Apex3TklDynamicLighting (ทั้งหมดเป็น MIT), acer-predator-helios-rgb (GPL-2.0-only) และ crosrgbkblight รายงานการสั่นของ iFeel อ่านจาก iFeel, ไดรเวอร์ iFeel ของ Linux (GPL-2.0-or-later) และ Logitech-iFeel-Vibration-POC พร้อมกฎดิสคริปเตอร์จากเคอร์เนล Linux (GPL-2.0-or-later) และสเกลความแรงจากไดรเวอร์ MouseWare 9.80 ของ Logitech ตัวจัดการระบบสัมผัสและสีจาก GameSense SDK ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>ลำดับการเรียก WinMM ที่อยู่เบื้องหลัง MIDI API รุ่นเก่า: การเปิดพอร์ต การส่งข้อมูลไปยังพอร์ต และการปิดพอร์ต อ่านจาก PortMidi (MIT โดย Ross Bencina, Phil Burk และ Roger B. Dannenberg) และ RtMidi (สัญญาอนุญาต RtMidi แบบ MIT โดย Gary P. Scavone) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>แหล่งอ้างอิง Logitech G-key SDK</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>แหล่งอ้างอิง Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API ที่อยู่เบื้องหลัง “อ่านอะแดปเตอร์ Bliss-Box” อ่านจาก API Tool ของ Bliss-Box LLC (แบบ BSD แจกจ่ายต่อได้โดยไม่มีค่าใช้จ่าย) และ DeviceBuddy (ซอร์สเปิดให้ดูได้, Bliss-Box LLC) พร้อมชื่อปุ่มจากไฟล์ Bliss-Box ใน retroarch-joypad-autoconfig ฉบับฟอร์กของ SteveFox1620 เช็กซัมของ Controller Pak ที่ตรวจสอบเทียบกับ libdragon (Unlicense) และการตอบกลับของเกมแพด PlayStation จาก psx-spx และไดรเวอร์ psxpad-spi ของ Linux (GPL-2.0-or-later) ชื่อคอนโทรลเลอร์และหมายเหตุการรองรับยังมาจากรายการความเข้ากันได้ของ Bliss-Box LLC และพฤติกรรมของอะแดปเตอร์ได้รับการตรวจสอบเทียบกับเฟิร์มแวร์ของอะแดปเตอร์ ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>การรับส่งข้อมูล USB โดย Vadym Hrynchyshyn สำหรับคอนโทรลเลอร์ USB แบบคอมโพสิตของ HIDMaestro HIDMaestro มีไดรเวอร์โฮสต์คอนโทรลเลอร์ที่ลงนามแล้วของโครงการนี้ และติดตั้งในครั้งแรกที่สร้างคอนโทรลเลอร์แบบคอมโพสิต</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>การรับส่งข้อมูล USB โดย Vadym Hrynchyshyn สำหรับคอนโทรลเลอร์ HIDMaestro ที่เป็นอุปกรณ์ USB ได้แก่ คอนโทรลเลอร์เสมือนทุกตัวบน Windows on ARM และบน x64 ได้แก่ คอนโทรลเลอร์แบบคอมโพสิต Steam Controller (2026) โปรไฟล์ Xbox One S: Full และรูปแบบ Joy-Con Charging Grip HIDMaestro มีไดรเวอร์โฮสต์คอนโทรลเลอร์ของโครงการนี้ และติดตั้งในครั้งแรกที่สร้างคอนโทรลเลอร์เหล่านี้ตัวใดตัวหนึ่ง</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>เลือกว่าส่วนใดของช่องนี้จะทำงาน การปิดส่วนใดส่วนหนึ่งจะซ่อนแถวของส่วนนั้นและหยุดการส่ง โดยยังเก็บการแมปไว้ เมื่อเปิดกลับมาการแมปจึงกลับคืนมา</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>ค่าพรีเซ็ตอะแดปทีฟทริกเกอร์แบบ GameCube โดย Mxater ใช้อ่านเพื่อข้อเท็จจริงเท่านั้น</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>เครื่องหมายของแกนการเคลื่อนไหว DSU ซึ่งตรวจสอบเทียบกับตัวถอดรหัส UDP ของโครงการนี้ ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>เครื่องหมายของแกนการเคลื่อนไหว DSU ซึ่งตรวจสอบเทียบกับตัวถอดรหัส UDP ของโครงการนี้ และขนาดปุ่มควบคุมของแป้นควบคุมเว็บแบบกำหนดเอง ซึ่งวัดเทียบกับด้านที่สั้นกว่าของหน้าจอ เหมือนที่โอเวอร์เลย์ Android ของโครงการนี้วัด ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>พรีเซ็ตเริ่มต้นของ Elite Dangerous ที่อยู่เบื้องหลังโปรไฟล์ตั้งต้น “จำลองอวกาศ” โดย Richard Buckle</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>ลำดับการเริ่มและหยุด Ring-Con ที่อยู่เบื้องหลังไดรเวอร์ Switch ในฟอร์ก SDL และสเกลค่าสเตรนที่ PadForge อ่าน อ่านจาก demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy โดย Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) และ RingconProtocolDebug (Apache-2.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>แหล่งอ้างอิงคอนโทรลเลอร์แบบอนุกรม</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>โปรโตคอลที่อยู่เบื้องหลังไดรเวอร์แบบอนุกรมในฟอร์ก SDL สำหรับคอนโทรลเลอร์หกแกน เกมแพด จอยสติ๊กการบิน เครื่องส่งสัญญาณ RC แผงควบคุมการบิน และเออร์โกมิเตอร์ อ่านจาก Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball โดย John E. Stone (แบบ BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) และ XPComboTest (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>แหล่งอ้างอิง SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>รายงานที่อยู่เบื้องหลังการรองรับแป้นควบคุม SInput และเพอร์โซนา SInput อ่านจาก SINPUT-LIB-HID (MIT-0) และ HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ของ Hand Held Legend และโหมด SInput ของ OpenPuck (AGPL-3.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด AGPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>แหล่งอ้างอิงอุปกรณ์ USB เฉพาะทาง</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>โปรโตคอลที่อยู่เบื้องหลังไดรเวอร์ในฟอร์ก SDL สำหรับสถานีฐาน Intel Wireless Series, ตัวรับสัญญาณ Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 และ 3 และชุดควบคุมของเทรนเนอร์ Tacx อ่านจาก antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) และ xbox360bb (GPL-2.0-or-later) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>แหล่งอ้างอิงคอนโทรลเลอร์รถไฟ</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>รูปแบบ PCM แฮปติกของ PS5 แบบ 16 บิตมีเครื่องหมายที่ 3 kHz ซึ่งใช้ยืนยันการเข้ารหัสแฮปติก Bluetooth แบบ 8 บิตมีเครื่องหมาย ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด AGPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>แหล่งอ้างอิงม็อดเกม DSX</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>คำสั่ง UDP การตอบกลับ ไฟล์พอร์ต และไบต์เอฟเฟกต์ทริกเกอร์ที่อยู่เบื้องหลังม็อดเกม อ่านจากตัวอย่างม็อด DSX v3.1 และ DualSenseX v2 อย่างเป็นทางการของ Paliverse, DualSenseY ทั้งสองเวอร์ชัน และ DualSense4Rockstar (ไม่มีการเผยแพร่ใบอนุญาต), DSZ และ pydualsense (MIT) รวมถึง Wujek Dualsense API และเซิร์ฟเวอร์ DSX ใน DS4Windows ฉบับฟอร์กของ hbashton (GPL-3.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>คำสั่ง UDP การตอบกลับ ไฟล์พอร์ต และไบต์เอฟเฟกต์ทริกเกอร์ที่อยู่เบื้องหลังม็อดเกม อ่านจากตัวอย่างม็อด DSX v3.1 และ DualSenseX v2 อย่างเป็นทางการของ Paliverse, DualSenseY และ DualSense4Rockstar (ไม่มีการเผยแพร่ใบอนุญาต), DualSenseY-v2, DSZ และ pydualsense (MIT) รวมถึง Wujek Dualsense API และเซิร์ฟเวอร์ DSX ใน DS4Windows ฉบับฟอร์กของ hbashton (GPL-3.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>แหล่งอ้างอิงเฮดเซ็ต DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>การกำหนดเส้นทางเสียงหูฟังและลำโพง เพดานระดับเสียง การจัดเฟรมไมโครโฟน และโหมดรายงานที่อยู่เบื้องหลังเสียง Bluetooth ของ DualShock 4 อ่านจาก DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) และ DS4Windows ฉบับฟอร์กของ hbashton (GPL-3.0) โดยตรวจสอบหน้าต่างการสังเคราะห์ของตัวถอดรหัส SBC เทียบกับ libsbc ของ Google (Apache-2.0) และเฮดเซ็ต USB ของรุ่นที่สองและอะแดปเตอร์ของ Sony อ่านจากไฟล์ดัมพ์ดีสคริปเตอร์ ControllersInfo ของ DJm00n (ไม่มีการเผยแพร่ใบอนุญาต) และการสำรวจ LsUSB ของ linux-hardware.org (CC BY 4.0) ส่วนเส้นทางลำโพงของ DualShock 4 ที่เชื่อมต่อด้วยสายมาจาก Controllers Wiki (CC BY-SA) และ NFSU2-SplitScreen ของ mihaits (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>แหล่งอ้างอิงแชต Twitch</value></data>

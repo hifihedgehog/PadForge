@@ -1601,4 +1601,6 @@
   <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>Output mus txog puv thaum txav mus txog qhov no. 100% yog kaw.</value></data>
   <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Output pib ntawm qhov no thaum input pib txav. 0 yog kaw.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ib lub web pad uas koj kos khaws txhua pawg tswj nws qhov deb ntawm ntug uas ze nws dua ntawm lub vijtsam uas dav dua, ib yam li RetroArch cov overlay txav lawv ob sab sib nrug. Tsuas nyeem ua cov ntaub ntawv qhia xwb, tsis muaj GPL code xa nrog.</value></data>
 </root>

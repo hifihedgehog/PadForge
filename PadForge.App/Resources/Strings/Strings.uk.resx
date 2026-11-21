@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ноти й зміни керування для музичного ПЗ.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Віртуальні VR-контролери через SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Щоб згодом змінити тип, клацніть чип типу на контролері. Це один клік.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не відповідає. Див. його картку в налаштуваннях.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Потрібен SteamVR. Установіть його з його картки в налаштуваннях.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не відповідає. Див. його в налаштуваннях, у картці «Драйвери».</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Потрібен SteamVR. Установіть його в налаштуваннях, у картці «Драйвери».</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR-контролер уже є. Один керує обома руками.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>У PadForge вже {0} контролерів, більше він не підтримує. Видаліть один, щоб додати інший.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профіль</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Розширений (макс. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Клавіатура + миша (макс. {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не працює, див. картку «Windows MIDI Services» у налаштуваннях)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не працює, див. Windows MIDI Services у налаштуваннях, у картці «Драйвери»)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (макс. {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (потрібен SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (макс. {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Надсилайте рух контролера в емулятори, що читають джерело руху DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Беріть ефекти адаптивних тригерів і підсвічування з ігрових модів, написаних для DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Увімкніть вивід телеметрії в грі й вкажіть цей ПК і порт.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>В емуляторі додайте джерело руху за адресою цього ПК і цим портом.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефекти мода доходять до кожного контролера, який має для них апаратну частину.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>В емуляторі на цьому ПК додайте джерело руху за адресою 127.0.0.1 і цим портом.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Мод доходить до кожного віртуального контролера, до якого підключено DualSense або DualShock 4, а його ефекти відтворюються на кожному контролері там, який має для них апаратну частину.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Поза голови відображається як рядок трекера голови на сторінці [Пристрої]. Прив'яжіть поворот голови до осі стіка в розділі «Прив'язки» контролера.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значення відображаються як рядок ігрової телеметрії на сторінці [Пристрої]. Прив'яжіть їх у розділі «Прив'язки» контролера або використайте для запуску макросів.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Місце, розмір і непрозорість меню задаються в самому меню, у розділі [Макроси і меню] контролера.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Відкликати</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Відкликати всі</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Оверлей сенсорної панелі</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation, для сенсорного екрана або миші.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation, для сенсорного екрана.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Увімкнути оверлей сенсорної панелі</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Непрозорість</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Скинути положення</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Введення з контролерів і їх перелічення.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Введення клавіатури й миші окремо для кожного пристрою</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Власний вебпад зберігає відстань кожної групи елементів до ближчого краю ширшого екрана, як оверлеї RetroArch розсувають свої дві половини. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Вихід віртуального пристрою MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Кросфід Bauer stereophonic-to-binaural для виходу на навушники.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Кодувальник Opus на чистому C#, що забезпечує звук динаміка DualSense через Bluetooth. Автор: Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Джерела щодо прицілу та лупи</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Хрест і його точка зі CSGOCrosshair від Skarbo (ліцензію не опубліковано), стилі «Коло», із зображенням і з контуром зі Crosshair-Overlay (MIT), а також «Лінза» і збільшення на весь екран у лупі з Windows-classic-samples від Microsoft (MIT). Лише документація, код не постачається.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>Дослідження звуку DualSense через Bluetooth від egormanga: пакетний транспорт, яким передається потік динаміка контролера. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Одиниці</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Одиниці показу чутливості. «Множник» є внутрішнім масштабом × (1 = базове значення). «Градуси на оберт екрана» (DegPerScreenTurn) працюють як у Steam: градуси фізичного повороту контролера на один повний оберт екрана.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Поріг легкого прицілювання</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Відхилення правого стіка (0–100%), нижче якого вихід гіроскопа обнуляється. 0 = завжди ввімкнено. Відчуття як у Steam: «гіроскоп задіяно під час прицілювання». Гіроскоп працює, лише коли користувач відхиляє правий стік за поріг.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Відхилення стіка задіяння (0–100%), нижче якого вихід гіроскопа обнуляється. 0 = завжди ввімкнено. Відчуття як у Steam: «гіроскоп задіяно під час прицілювання». Гіроскоп працює, лише коли користувач відхиляє цей стік за поріг.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Гіроскоп</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гіроскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Налаштуйте, як датчик руху цього геймпада керує виходом миші та стіка. Відкалібруйте на рівній поверхні, щоб обнулити дрейф у стані спокою, а потім підберіть на свій смак чутливість, згладжування та правила задіяння.</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Вікно згладжування</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Тривалість часового вікна буфера згладжування. Більші значення згладжують сильніше нижче порога повного згладжування. Менші значення дають різкішу реакцію. Типово 50 мс.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Кнопка задіяння прицілювання</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Кнопка, що керує виходом гіроскопа. Гіроскоп працює, лише поки цю кнопку утримують. Залиште незаданою, щоб вимкнути умову кнопки. Якщо налаштовано і цю кнопку, і відхилення правого стіка, для роботи гіроскопа мають бути активні обидві умови.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Кнопка, що керує виходом гіроскопа. Режим задіяння визначає, як саме. Залиште незаданою, щоб вимкнути умову кнопки. Якщо налаштовано і цю кнопку, і відхилення стіка задіяння, для роботи гіроскопа мають бути активні обидві умови.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Режим задіяння</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Утримання: гіроскоп працює, поки утримується кнопка задіяння. Перемикання: кожне натискання вмикає або вимикає гіроскоп, а відпускання нічого не робить. Стан перемикання зберігається між циклами опитування та скидається після перемикання профілю.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Утримання: гіроскоп працює, поки утримується кнопка задіяння. Перемикання: кожне натискання вмикає або вимикає гіроскоп, а відпускання нічого не робить. Відпустити для прицілювання: гіроскоп працює, поки кнопка задіяння не утримується. Стан перемикання зберігається між циклами опитування та скидається після перемикання профілю.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Утримання</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Перемикання</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Відпустити для прицілювання</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Вгору (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Задіяння</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Кнопка задіяння прицілювання, стік задіяння, гіроскоп увімкнено, повторне центрування, поріг легкого прицілювання</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Необов'язкові умови, що обмежують, коли гіроскоп активний. Можна налаштувати і відхилення правого стіка, і кнопку задіяння прицілювання. Гіроскоп працює, лише поки активні всі налаштовані умови.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Необов'язкові умови, що обмежують, коли гіроскоп активний. Можна налаштувати і відхилення стіка задіяння, і кнопку задіяння прицілювання. Гіроскоп працює, лише поки активні всі налаштовані умови.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локальний</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Гравець</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Світ</value></data>
@@ -2521,7 +2525,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Гіроскоп: кут нахилу Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Кут нахилу гіроскопа</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Діапазон повного нахилу, мертва зона нахилу</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Межі для входів «Гіроскоп: кут нахилу X» і «Гіроскоп: кут нахилу Y»: утримуйте нахил, і стік утримує своє відхилення, як у режимі Joystick Deflection у Steam. Повне відхилення досягається на заданому тут діапазоні; «Центрування гіроскопа» заново обнуляє положення спокою. Рискання (поворот контролера в горизонтальній площині) невидиме для гравітації й не рухає ці входи.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Межі для входів «Гіроскоп: кут нахилу X» і «Гіроскоп: кут нахилу Y»: утримуйте нахил, і стік утримує своє відхилення, як у режимі Joystick Deflection у Steam. Повне відхилення досягається на заданому тут діапазоні. «Центрування гіроскопа» заново обнуляє положення спокою. Рискання (поворот контролера в горизонтальній площині) невидиме для гравітації й не рухає ці входи.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Діапазон повного нахилу</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Градуси нахилу від положення спокою, що вважаються повним відхиленням стіка. Менше = чутливіше. 25° є найпоширенішим значенням у конфігураціях Steam.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Мертва зона нахилу</value></data>
@@ -4249,7 +4253,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шейкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Відтворює вібрацію гри у вигляді низьких тонів через бас-шейкери або сабвуфер.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Пристрій виводу, режим каналів, підсилення, тон для кожного мотора</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Працює з віртуальними контролерами Xbox, DualShock 3, DualShock 4 / DualSense і Nintendo Switch Pro, а також із розширеними віртуальними контролерами із силовим зворотним зв'язком, як-от гоночні керма, і Steam Deck Controller (Composite). Відгук від гри та «Перевірити вібрацію» відтворюються через аудіовихід. Вібрація з макросів залишається на контролері.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Працює з віртуальними контролерами Xbox, DualShock 3, DualShock 4 / DualSense і Nintendo Switch Pro, а також із розширеними віртуальними контролерами із силовим зворотним зв'язком, як-от гоночні керма. Також працює зі Steam Deck Controller (Composite), SInput Gamepad і Joypad-OS Steam Input Gamepad. Відгук від гри та «Перевірити вібрацію» відтворюються через аудіовихід. Вібрація з макросів залишається на контролері.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Скинути «Вібрація у звук»</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Спрямовувати вібрацію на аудіовихід</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Відтворює вібрацію від гри та силовий зворотний зв'язок, які отримує цей віртуальний контролер, як низькочастотні тони на вибраному аудіовиході. Вимкнення зберігає всі налаштування.</value></data>
@@ -4573,7 +4577,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>Джерела щодо OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Інтерфейс середовища виконання, структури даних і ключі реєстру для введення з шолома та контролерів руху, вивчені із заголовків Khronos OpenXR-SDK (Apache-2.0) і звірені з VirtualDesktop-OpenXR (MIT). PadForge працює з вашим власним установленим середовищем виконання і не постачає коду Khronos.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Джерела щодо виводу на периферію</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Кадри Logitech HID++ для тактильного відгуку, підсвічування, створення пар і батареї вивчено із Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD і MIT OR Apache-2.0), документації OpenLogi, keyleds (GPL-3.0-or-later), g810-led і g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) і g915x-heatmap (MIT), з нотатками з OpenRGB-Fixed (GPL-2.0-or-later) і HaloDaemon-plugins. Ідентифікатори продуктів і звіти підсвічування Razer вивчено з OpenRazer (GPL-2.0-or-later) та OpenRGB (GPL-2.0-or-later) і звірено з uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) і razer-life (GPL-2.0-or-later), а спільне для цих програм блокування взято з Aurora (MIT) і LibreHardwareMonitor (MPL-2.0). Ідентифікатори продуктів і звіти підсвічування SteelSeries вивчено з OpenRGB і rivalcfg (WTFPL) та звірено з плагінами SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) і Wine (LGPL-2.1-or-later). Звіти HID LampArray вивчено з USB-IF HID Usage Tables, документації Microsoft щодо Dynamic Lighting та її прикладів ArduinoHidForWindows і RP2040MacropadHidSample (MIT) і звірено з lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq і Apex3TklDynamicLighting (усі MIT), acer-predator-helios-rgb (GPL-2.0-only) і crosrgbkblight. Звіт дзижчання iFeel вивчено з iFeel, драйвера iFeel для Linux (GPL-2.0-or-later) і Logitech-iFeel-Vibration-POC, правило дескриптора взято з ядра Linux (GPL-2.0-or-later), а шкалу сили з драйвера Logitech MouseWare 9.80. Тактильний і колірний обробники взято з GameSense SDK. Лише документація, код не постачається.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Кадри Logitech HID++ для тактильного відгуку, підсвічування, створення пар і батареї вивчено із Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD і MIT OR Apache-2.0), документації OpenLogi, keyleds (GPL-3.0-or-later), g810-led і g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) і g915x-heatmap (MIT), з нотатками з OpenRGB-Fixed (GPL-2.0-or-later) і HaloDaemon-plugins. Ідентифікатори продуктів і звіти підсвічування Razer вивчено з OpenRazer (GPL-2.0-or-later) та OpenRGB (GPL-2.0-or-later) і звірено з uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT на момент вивчення), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) і razer-life (GPL-2.0-or-later), а спільне для цих програм блокування взято з Aurora (MIT) і LibreHardwareMonitor (MPL-2.0). Ідентифікатори продуктів і звіти підсвічування SteelSeries вивчено з OpenRGB і rivalcfg (WTFPL) та звірено з плагінами SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) і Wine (LGPL-2.1-or-later). Звіти HID LampArray вивчено з USB-IF HID Usage Tables, документації Microsoft щодо Dynamic Lighting та її прикладів ArduinoHidForWindows і RP2040MacropadHidSample (MIT) і звірено з lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq і Apex3TklDynamicLighting (усі MIT), acer-predator-helios-rgb (GPL-2.0-only) і crosrgbkblight. Звіт дзижчання iFeel вивчено з iFeel, драйвера iFeel для Linux (GPL-2.0-or-later) і Logitech-iFeel-Vibration-POC, правило дескриптора взято з ядра Linux (GPL-2.0-or-later), а шкалу сили з драйвера Logitech MouseWare 9.80. Тактильний і колірний обробники взято з GameSense SDK. Лише документація, код не постачається.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Послідовності викликів WinMM для застарілого MIDI API: відкриття порту, надсилання в нього та закриття. Вивчено з PortMidi (MIT, автори Ross Bencina, Phil Burk і Roger B. Dannenberg) та RtMidi (ліцензія RtMidi у стилі MIT, автор Gary P. Scavone). Лише документація, код не постачається.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Джерела щодо Logitech G-key SDK</value></data>
@@ -4583,7 +4587,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Джерела щодо Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box, на якому працює функція «Зчитувати адаптери Bliss-Box», вивчено з API Tool від Bliss-Box LLC (ліцензія у стилі BSD, безоплатне поширення) і DeviceBuddy (код доступний, Bliss-Box LLC); назви кнопок узято з файлів Bliss-Box у форку retroarch-joypad-autoconfig від SteveFox1620, контрольні суми Controller Pak звірено з libdragon (Unlicense), а відповідь геймпада PlayStation узято з psx-spx і драйвера psxpad-spi для Linux (GPL-2.0-or-later). Назви контролерів і примітки про підтримку також походять зі списку сумісності Bliss-Box LLC, а поведінку адаптерів звірено з їхньою прошивкою. Лише документація, код не постачається.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспорт від Vadym Hrynchyshyn для складених USB-контролерів HIDMaestro. HIDMaestro постачає його підписаний драйвер хост-контролера й установлює його під час першого створення складеного контролера.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспорт від Vadym Hrynchyshyn для контролерів HIDMaestro, що є USB-пристроями: усі віртуальні контролери у Windows on ARM, а на x64 складені контролери, Steam Controller (2026), профіль Xbox One S: Full і форми Joy-Con Charging Grip. HIDMaestro постачає його драйвер хост-контролера й установлює його під час першого створення одного з цих контролерів.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Виберіть, які половини цього слота активні. Вимкнення половини приховує її рядки й зупиняє надсилання, але зберігає її прив'язки, тож після ввімкнення вони відновлюються.</value>
   </data>
@@ -4769,7 +4773,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Значення пресету адаптивних тригерів GameCube, від Mxater. Використано лише заради фактів.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Знаки осей руху DSU, звірені з його декодером UDP. Використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Знаки осей руху DSU, звірені з його декодером UDP, і розміри елементів власного вебпада, виміряні відносно коротшого боку екрана так, як їх вимірює його оверлей для Android. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Типові пресети Elite Dangerous, на яких ґрунтується стартовий профіль «Космічний симулятор», від Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4851,6 +4855,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Послідовності запуску й зупинки Ring-Con для драйвера Switch у форку SDL і шкала навантаження, яку зчитує PadForge, вивчені з demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy від Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) і RingconProtocolDebug (Apache-2.0). Лише документація, код не постачається.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Джерела щодо послідовних контролерів</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Протоколи для послідовних драйверів форку SDL для шестиосьових контролерів, геймпадів, авіаджойстиків, RC-передавачів, авіаційних панелей та ергометрів, вивчені з Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball від John E. Stone (у стилі BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) і XPComboTest (MIT). Лише документація, код не постачається.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Джерела щодо SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Звіти, на яких тримається підтримка геймпадів SInput і персона SInput, вивчені з SINPUT-LIB-HID (MIT-0) та HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) від Hand Held Legend і з режиму SInput в OpenPuck (AGPL-3.0). Лише документація, код AGPL не постачається.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Джерела щодо спеціалізованих пристроїв USB</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Протоколи для драйверів форку SDL для базової станції Intel Wireless Series, приймача Xbox 360 Big Button, панелі CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 і 3 та головних блоків тренажерів Tacx, вивчені з antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) і xbox360bb (GPL-2.0-or-later). Лише документація, код не постачається.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Джерела щодо залізничних контролерів</value></data>

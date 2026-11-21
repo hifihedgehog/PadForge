@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Նոտաներ և Control Change հաղորդագրություններ երաժշտական ծրագրերի համար։</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Վիրտուալ VR կառավարիչներ SteamVR-ով։</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Տեսակը հետո փոխելու համար սեղմեք կառավարչի տեսակի չիպը։ Դա մեկ սեղմում է։</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services-ը չի արձագանքում։ Տես նրա քարտը Կարգավորումներում։</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Պետք է SteamVR։ Տեղադրեք այն Կարգավորումներում նրա քարտից։</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services-ը չի արձագանքում։ Տես այն Կարգավորումներում, Դրայվերներ բաժնում։</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Պետք է SteamVR։ Տեղադրեք այն Կարգավորումներում, Դրայվերներ բաժնից։</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR կառավարիչ արդեն կա։ Մեկը կառավարում է երկու ձեռքերը։</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge-ում կա {0} կառավարիչ՝ առավելագույնը, որ կարող է աշխատել։ Ջնջեք մեկը՝ մյուսն ավելացնելու համար։</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Պրոֆիլ</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (առավելագույնը {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Ընդլայնված (առավելագույնը {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Ստեղնաշար + Մկնիկ (առավելագույնը {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (չի աշխատում, տես Կարգավորումներում Windows MIDI Services քարտը)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (չի աշխատում, տես Windows MIDI Services-ը Կարգավորումներում, Դրայվերներ բաժնում)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (առավելագույնը {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (պահանջում է SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (առավելագույնը {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ուղարկեք կառավարչի շարժումը էմուլյատորներին, որոնք կարդում են DSU շարժման աղբյուր։</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Ստացեք հարմարվող ձգանի և լույսի էֆեկտները DSX-ի համար գրված խաղային մոդերից։</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Միացրեք հեռաչափության ելքը խաղում և ուղղեք այն այս համակարգչին ու պորտին։</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Էմուլյատորում ավելացրեք շարժման աղբյուր այս համակարգչի հասցեով և այս պորտով։</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Մոդի էֆեկտները հասնում են բոլոր կառավարիչներին, որոնք ունեն դրանց համար սարքավորում։</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Այս համակարգչի էմուլյատորում ավելացրեք շարժման աղբյուր 127.0.0.1 հասցեով և այս պորտով։</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Մոդը հասնում է յուրաքանչյուր վիրտուալ կառավարիչի, որն ունի միացված DualSense կամ DualShock 4, և նրա էֆեկտները նվագարկվում են այդ վիրտուալ կառավարիչի բոլոր այն կառավարիչների վրա, որոնք ունեն դրանց համար սարքավորում։</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Գլխի դիրքը [Սարքեր] էջի Head Tracker տողն է։ Գլխի շրջումը կապակցեք ձողի առանցքին կառավարչի Կապակցումներ բաժնում։</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Արժեքները [Սարքեր] էջի Game Telemetry տողն են։ Կապակցեք դրանք կառավարչի Կապակցումներ բաժնում կամ օգտագործեք մակրոներ գործարկելու համար։</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ընտրացանկի սեփական տեղը, չափը և թափանցիկությունը սահմանվում են հենց ընտրացանկում՝ կառավարչի [Մակրոներ և ընտրացանկեր] բաժնում։</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Հետ կանչել</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Հետ կանչել բոլորը</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Հպահարթակի վերադիր</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հպահարթակով խաղերի համար՝ հպէկրանի կամ մկնիկի համար։</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հպահարթակով խաղերի համար՝ հպէկրանի համար։</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Միացնել հպահարթակի վերադիրը</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Անթափանցելիություն</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Վերականգնել դիրքը</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Կառավարիչների մուտք և թվարկում։</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Սարքի առանձին ստեղնաշարի և մկնիկի մուտք</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Հատուկ վեբ պադը պահպանում է յուրաքանչյուր խմբի հեռավորությունը ավելի լայն էկրանի մոտ եզրից, ինչպես RetroArch-ի overlay-ները տեղաշարժում են իրենց երկու կեսերը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Վիրտուալ MIDI սարքի ելք (Windows MIDI Services)։</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Բաուերի ստերեոֆոնիկ-բինաուրալ crossfeed՝ ականջակալների ելքի համար։</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Մաքուր C# Opus կոդավորիչ, որը Bluetooth-ով աշխատեցնում է DualSense-ի բարձրախոսի աուդիոն։ Հեղինակ՝ Logan Stromberg։</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Նշանակետի և խոշորացույցի հղումներ</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Խաչը և նրա կետը Skarbo-ի CSGOCrosshair-ից (լիցենզիա չի հրապարակվել), Շրջանը, նկարային և եզրագծային ոճերը Crosshair-Overlay-ից (MIT), իսկ խոշորացույցի Ոսպնյակը և ամբողջ էկրանի խոշորացումը Microsoft-ի Windows-classic-samples-ից (MIT)։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ի DualSense Bluetooth աուդիոյի հետազոտություն՝ փաթեթների տրանսպորտը, որով գնում է կառավարիչի բարձրախոսի հոսքը։ apps.sdore.me/SAxense։</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Միավորներ</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Զգայունության միավորի ցուցադրում։ «Բազմապատկիչ»-ը ներքին × մասշտաբն է (1 = հիմք)։ DegPerScreenTurn-ը Steam-ի ոճով է. կառավարիչի ֆիզիկական պտույտի աստիճանները էկրանի մեկ լրիվ պտույտի համար։</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Հեշտ նպատակադրման շեմ</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Աջ ձողի շեղումը (0–100%), որից ցածր գիրոյի ելքը զրոյացվում է։ 0 = միշտ միացված։ Steam-ի «գիրոն միացված է նպատակադրելիս» զգացողությունը։ Գիրոն աշխատում է միայն երբ օգտատերը աջ ձողը մղում է շեմից այն կողմ։</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Միացման ձողի շեղումը (0–100%), որից ցածր գիրոյի ելքը զրոյացվում է։ 0 = միշտ միացված։ Steam-ի «գիրոն միացված է նպատակադրելիս» զգացողությունը։ Գիրոն աշխատում է միայն երբ օգտատերը այդ ձողը մղում է շեմից այն կողմ։</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Գիրո</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Գիրո</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Կարգավորեք, թե ինչպես է այս կառավարիչի շարժման սենսորը կառավարում մկնիկի և ձողի ելքը։ Չափաբերեք հարթ մակերևույթի վրա՝ անշարժ վիճակի շեղումը զրոյացնելու համար, ապա ըստ ցանկության կարգավորեք զգայունությունը, հարթեցումը և միացման կանոնները։</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Հարթեցման պատուհան</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Հարթեցման բուֆերի ժամանակային պատուհանի երկարությունը։ Ավելի մեծ արժեքները ամրացման շեմից ցածր ավելի ուժեղ են հարթեցնում։ Ավելի փոքրը ավելի կտրուկ է զգացվում։ Լռելյայն՝ 50 մվ։</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Նպատակադրման միացման կոճակ</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Կոճակ, որը կառավարում է գիրոյի ելքը։ Գիրոն աշխատում է միայն այս կոճակը պահելիս։ Թողեք չսահմանված՝ կոճակի դարպասն անջատելու համար։ Երբ սա և աջ ձողի շեղումը երկուսն էլ կարգավորված են, գիրոյի աշխատելու համար երկուսն էլ պետք է ակտիվ լինեն։</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Կոճակ, որը կառավարում է գիրոյի ելքը։ Ինչպես՝ սահմանում է Միացման ռեժիմը։ Թողեք չսահմանված՝ կոճակի դարպասն անջատելու համար։ Երբ սա և Միացման ձողի շեղումը երկուսն էլ կարգավորված են, գիրոյի աշխատելու համար երկուսն էլ պետք է ակտիվ լինեն։</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Միացման ռեժիմ</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Պահել. գիրոն աշխատում է, մինչև միացման կոճակը պահվում է։ Փոխանջատել. յուրաքանչյուր սեղմում գիրոն միացնում կամ անջատում է, իսկ բաց թողնելը ոչինչ չի անում։ Փոխանջատումը պահպանվում է հարցման տակտերի միջև և զրոյացվում է պրոֆիլը փոխելիս։</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Պահել. գիրոն աշխատում է, մինչև միացման կոճակը պահվում է։ Փոխանջատել. յուրաքանչյուր սեղմում գիրոն միացնում կամ անջատում է, իսկ բաց թողնելը ոչինչ չի անում։ Բաց թողնել՝ նպատակադրելու համար. գիրոն աշխատում է, մինչև միացման կոճակը չի պահվում։ Փոխանջատումը պահպանվում է հարցման տակտերի միջև և զրոյացվում է պրոֆիլը փոխելիս։</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Պահել</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Փոխանջատել</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Բաց թողնել՝ նպատակադրելու համար</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Վերև (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Միացում</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Միացման կոճակ, միացման ռեժիմ, գիրոյի միացում, վերակենտրոնացում, հեշտ նպատակադրման շեմ</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Կամընտիր դարպասներ, որոնք սահմանափակում են, թե երբ է գիրոն ակտիվ։ Աջ ձողի շեղումը և նպատակադրման միացման կոճակը կարող են առանձին կարգավորվել։ Գիրոն աշխատում է միայն երբ բոլոր կարգավորված դարպասները ակտիվ են։</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Կամընտիր դարպասներ, որոնք սահմանափակում են, թե երբ է գիրոն ակտիվ։ Միացման ձողի շեղումը և նպատակադրման միացման կոճակը կարող են առանձին կարգավորվել։ Գիրոն աշխատում է միայն երբ բոլոր կարգավորված դարպասները ակտիվ են։</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Տեղական</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Խաղացող</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Աշխարհ</value></data>
@@ -2521,7 +2525,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Գիրոյի թեքում Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Գիրոյի թեքում</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Լրիվ թեքման տիրույթ, թեքման մեռյալ գոտի</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Գիրոյի թեքում X / Գիրոյի թեքում Y մուտքերի ծրարը. պահեք թեքումը և ձողը պահում է իր շեղումը, ինչպես Steam-ի «Joystick Deflection» ռեժիմում։ Լրիվ շեղում այստեղ սահմանած տիրույթում. «Գիրոյի վերակենտրոնացումը» նորից զրոյացնում է հանգստի բռնելը։ Պտույտը (կառավարիչը հարթ պտտելը) ծանրության համար անտեսանելի է և այս մուտքերը չի շարժում։</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Գիրոյի թեքում X / Գիրոյի թեքում Y մուտքերի ծրարը. պահեք թեքումը և ձողը պահում է իր շեղումը, ինչպես Steam-ի «Joystick Deflection» ռեժիմում։ Լրիվ շեղում այստեղ սահմանած տիրույթում։ «Գիրոյի վերակենտրոնացումը» նորից զրոյացնում է հանգստի բռնելը։ Պտույտը (կառավարիչը հարթ պտտելը) ծանրության համար անտեսանելի է և այս մուտքերը չի շարժում։</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Լրիվ թեքման տիրույթ</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Հանգստի բռնելուց թեքման աստիճանները, որոնք հաշվվում են ձողի լրիվ շեղում։ Փոքրը = ավելի զգայուն։ 25°-ը Steam-ի կարգավորումներում ամենատարածված արժեքն է։</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Թեքման մեռյալ գոտի</value></data>
@@ -4212,7 +4216,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Խաղի թրթռոցը նվագարկում է որպես ցածր տոներ՝ բաս շեյքերների կամ սաբվուֆերի միջոցով։</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ելքային սարք, ալիքներ, ուժեղացում, հնչերանգ յուրաքանչյուր շարժիչի համար</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Աշխատում է Xbox, DualShock 3, DualShock 4 / DualSense և Nintendo Switch Pro վիրտուալ կառավարիչների հետ, ինչպես նաև հետադարձ ուժով Extended վիրտուալ կառավարիչների, օրինակ մրցարշավային ղեկերի, և Steam Deck Controller-ի (Composite) հետ։ Խաղի հետադարձ կապը և «Փորձարկել թրթռոցը» նվագարկվում են աուդիո ելքով։ Մակրոյի թրթռոցը մնում է կառավարիչի վրա։</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Աշխատում է Xbox, DualShock 3, DualShock 4 / DualSense և Nintendo Switch Pro վիրտուալ կառավարիչների հետ, ինչպես նաև հետադարձ ուժով Extended վիրտուալ կառավարիչների, օրինակ մրցարշավային ղեկերի հետ։ Այն աշխատում է նաև հետևյալ կառավարիչների հետ՝ Steam Deck Controller (Composite), SInput Gamepad և Joypad-OS Steam Input Gamepad։ Խաղի հետադարձ կապը և «Փորձարկել թրթռոցը» նվագարկվում են աուդիո ելքով։ Մակրոյի թրթռոցը մնում է կառավարիչի վրա։</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Վերականգնել թրթռոցը դեպի աուդիո</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Ուղղորդել թրթռոցը աուդիո ելքին</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը նվագարկում է որպես ցածր հաճախականության տոներ ընտրված աուդիո ելքով։ Անջատելը պահպանում է բոլոր կարգավորումները։</value></data>
@@ -4537,7 +4541,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR-ի հղումներ</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Կատարման միջավայրի ինտերֆեյսը, կառուցվածքների դասավորությունը և ռեեստրի բանալիները գլխադիրի և շարժման կառավարիչի մուտքի հիմքում, կարդացված Khronos OpenXR-SDK վերնագրերից (Apache-2.0) և ստուգված VirtualDesktop-OpenXR-ով (MIT)։ PadForge-ը խոսում է ձեր սեփական տեղադրված կատարման միջավայրի հետ և Khronos կոդ չի տեղակայում։</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Ծայրամասային սարքերի ելքի հղումներ</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ հապտիկ, լուսավորության, զուգակցման և մարտկոցի շրջանակները, կարդացված Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD և MIT OR Apache-2.0), OpenLogi փաստաթղթեր, keyleds (GPL-3.0-or-later), g810-led և g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) և g915x-heatmap (MIT) նախագծերից, OpenRGB-Fixed (GPL-2.0-or-later) և HaloDaemon-plugins նախագծերի նշումներով։ Razer-ի արտադրանքի ID-ները և լուսավորության ռեպորտները, կարդացված OpenRazer (GPL-2.0-or-later) և OpenRGB (GPL-2.0-or-later) նախագծերից և ստուգված uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) և razer-life (GPL-2.0-or-later) նախագծերով, այն կողպեքով, որը այդ գործիքները կիսում են Aurora (MIT) և LibreHardwareMonitor (MPL-2.0) նախագծերից։ SteelSeries-ի արտադրանքի ID-ները և լուսավորության ռեպորտները, կարդացված OpenRGB-ից և rivalcfg-ից (WTFPL) և ստուգված SignalRGB-ի պլագիններով, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) և Wine (LGPL-2.1-or-later) նախագծերով։ HID LampArray ռեպորտները, կարդացված USB-IF HID Usage Tables-ից, Microsoft-ի Dynamic Lighting փաստաթղթերից և նրա նմուշներից՝ ArduinoHidForWindows և RP2040MacropadHidSample (MIT), և ստուգված lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq և Apex3TklDynamicLighting (բոլորը՝ MIT), acer-predator-helios-rgb (GPL-2.0-only) և crosrgbkblight նախագծերով։ iFeel-ի բզզոցի ռեպորտը, կարդացված iFeel-ից, Linux-ի iFeel դրայվերից (GPL-2.0-or-later) և Logitech-iFeel-Vibration-POC-ից, դեսկրիպտորի կանոնով Linux-ի միջուկից (GPL-2.0-or-later) և ուժգնության սանդղակով Logitech-ի MouseWare 9.80 դրայվերից։ Շոշափելի և գունային մշակիչները GameSense SDK-ից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ հապտիկ, լուսավորության, զուգակցման և մարտկոցի շրջանակները, կարդացված Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD և MIT OR Apache-2.0), OpenLogi փաստաթղթեր, keyleds (GPL-3.0-or-later), g810-led և g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) և g915x-heatmap (MIT) նախագծերից, OpenRGB-Fixed (GPL-2.0-or-later) և HaloDaemon-plugins նախագծերի նշումներով։ Razer-ի արտադրանքի ID-ները և լուսավորության ռեպորտները, կարդացված OpenRazer (GPL-2.0-or-later) և OpenRGB (GPL-2.0-or-later) նախագծերից և ստուգված uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT երբ կարդացվել է), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) և razer-life (GPL-2.0-or-later) նախագծերով, այն կողպեքով, որը այդ գործիքները կիսում են Aurora (MIT) և LibreHardwareMonitor (MPL-2.0) նախագծերից։ SteelSeries-ի արտադրանքի ID-ները և լուսավորության ռեպորտները, կարդացված OpenRGB-ից և rivalcfg-ից (WTFPL) և ստուգված SignalRGB-ի պլագիններով, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) և Wine (LGPL-2.1-or-later) նախագծերով։ HID LampArray ռեպորտները, կարդացված USB-IF HID Usage Tables-ից, Microsoft-ի Dynamic Lighting փաստաթղթերից և նրա նմուշներից՝ ArduinoHidForWindows և RP2040MacropadHidSample (MIT), և ստուգված lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq և Apex3TklDynamicLighting (բոլորը՝ MIT), acer-predator-helios-rgb (GPL-2.0-only) և crosrgbkblight նախագծերով։ iFeel-ի բզզոցի ռեպորտը, կարդացված iFeel-ից, Linux-ի iFeel դրայվերից (GPL-2.0-or-later) և Logitech-iFeel-Vibration-POC-ից, դեսկրիպտորի կանոնով Linux-ի միջուկից (GPL-2.0-or-later) և ուժգնության սանդղակով Logitech-ի MouseWare 9.80 դրայվերից։ Շոշափելի և գունային մշակիչները GameSense SDK-ից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>WinMM-ի կանչերի հաջորդականությունները հին MIDI API-ի հիմքում՝ պորտի բացում, դրան ուղարկում և փակում։ Կարդացված PortMidi-ից (MIT, Ross Bencina, Phil Burk և Roger B. Dannenberg) և RtMidi-ից (MIT-ձևաչափ RtMidi լիցենզիա, Gary P. Scavone)։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-ստեղնի SDK-ի հղումներ</value></data>
@@ -4547,7 +4551,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box-ի հղումներ</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API-ն «Կարդալ Bliss-Box ադապտերները» գործառույթի հիմքում, կարդացված Bliss-Box LLC-ի API Tool-ից (BSD-ձևաչափ, անվճար վերաբաշխում) և DeviceBuddy-ից (կոդը հասանելի, Bliss-Box LLC), կոճակների անուններով SteveFox1620-ի retroarch-joypad-autoconfig fork-ի Bliss-Box ֆայլերից, Controller Pak-ի ստուգիչ գումարները՝ ստուգված libdragon-ով (Unlicense), և PlayStation pad-ի պատասխանը psx-spx-ից և Linux-ի psxpad-spi դրայվերից (GPL-2.0-or-later)։ Կառավարիչների անունները և աջակցության նշումները նաև գալիս են Bliss-Box LLC-ի համատեղելիության ցանկից, իսկ ադապտերների վարքը ստուգվել է նրանց որոնվածքի հետ։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ի կոմպոզիտ USB կառավարիչների USB տրանսպորտը՝ Vadym Hrynchyshyn։ HIDMaestro-ն իր մեջ ներառում է ստորագրված հոսթ կոնտրոլերի դրայվերը և տեղադրում է այն կոմպոզիտ կառավարիչն առաջին անգամ ստեղծելիս։</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn-ի USB տրանսպորտը այն HIDMaestro կառավարիչների համար, որոնք USB սարքեր են՝ Windows on ARM-ի բոլոր վիրտուալ կառավարիչները, իսկ x64-ում՝ կոմպոզիտ կառավարիչները, Steam Controller (2026)-ը, Xbox One S: Full պրոֆիլը և Joy-Con Charging Grip ձևերը։ HIDMaestro-ն իր մեջ ներառում է իր հոսթ կոնտրոլերի դրայվերը և տեղադրում է այն այդ կառավարիչներից որևէ մեկն առաջին անգամ ստեղծելիս։</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Ընտրեք, այս սլոթի որ կեսերն են աշխատում։ Կեսն անջատելը թաքցնում է նրա տողերը և դադարեցնում ուղարկումը, բայց պահում է նրա կապակցումները, որպեսզի նորից միացնելիս դրանք վերականգնվեն։</value>
   </data>
@@ -4733,7 +4737,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ի հարմարվող ձգանի նախադրված արժեքները՝ Mxater։ Կարդացվել է միայն փաստերի համար։</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU շարժման առանցքների նշանները, ստուգված նրա UDP ապակոդավորիչով։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU շարժման առանցքների նշանները, ստուգված նրա UDP ապակոդավորիչով, և հատուկ վեբ պադի կառավարների չափերը, չափված էկրանի կարճ կողմի նկատմամբ, ինչպես չափում է նրա Android overlay-ը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ի լռելյայն նախադրվածները «Տիեզերական սիմուլյատոր» մեկնարկային պրոֆիլի հիմքում՝ Richard Buckle։</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4815,6 +4819,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Ring-Con-ի մեկնարկի և կանգի հաջորդականությունները SDL fork-ի Switch դրայվերի հիմքում և լարվածության սանդղակը, որը կարդում է PadForge-ը, կարդացված demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), Yamakaky-ի joy (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) և RingconProtocolDebug (Apache-2.0) նախագծերից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Սերիական կառավարիչների հղումներ</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>SDL fork-ի սերիական դրայվերների արձանագրությունները վեցառանցք կառավարիչների, գեյմփադերի, թռիչքային ձողերի, RC հաղորդիչների, թռիչքային վահանակների և էրգոմետրերի համար, կարդացված Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), John E. Stone-ի libsball (BSD-ձևաչափ), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) և XPComboTest (MIT) նախագծերից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput-ի հղումներ</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput կառավարիչների աջակցության և SInput պերսոնայի հիմքում ընկած ռեպորտները, կարդացված Hand Held Legend-ի SINPUT-LIB-HID (MIT-0) և HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) նախագծերից և OpenPuck-ի SInput ռեժիմից (AGPL-3.0)։ Միայն փաստաթղթավորում, AGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Հատուկ USB սարքերի հղումներ</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>SDL fork-ի դրայվերների արձանագրությունները Intel Wireless Series բազային կայանի, Xbox 360 Big Button ընդունիչի, CH Products Multi-Function Panel-ի, Ergodex DX1-ի, TrackIR 2-ի և 3-ի և Tacx մարզասարքերի գլխային բլոկների համար, կարդացված antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) և xbox360bb (GPL-2.0-or-later) նախագծերից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Գնացքի կառավարիչների հղումներ</value></data>

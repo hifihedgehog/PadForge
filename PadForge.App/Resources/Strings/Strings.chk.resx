@@ -686,7 +686,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes me control changes fán iten music software.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtual VR controller ren SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ika kopwe siwili ewe sókkun mwirin, click ewe type chip won ewe controller. Eú chok click.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>A namwot SteamVR. Install seni an card lón Settings.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>A namwot SteamVR. Install seni Settings, fán Drivers.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>A fen wor eú VR controller. Eú chok epwe emweni ruupw paw.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge a wor {0} controller, ewe ukukun mi tongeni. Amóeló eú pwe kopwe apachaatá pwal eú.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Pwal ekkóch sókkun: [{0}, {1}, {2} me {3}]</value></data>
@@ -752,4 +752,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Áeá</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Eú custom web pad a isoni ttamen iteiten mwichen button seni ewe kkan mi arap ngeni lón eú screen mi kon lapalap, usun ekkewe overlay an RetroArch ra mwékút ar ruu kinikin. Sia chok álleni usun documentation, esor GPL code a nóm lón.</value></data>
 </root>

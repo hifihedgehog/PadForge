@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota dan perubahan kawalan untuk perisian muzik.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Pengawal VR maya melalui SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Untuk menukar jenis kemudian, klik cip jenis pada pengawal. Ia hanya perlukan satu klik.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services tidak bertindak balas. Lihat kadnya dalam Tetapan.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Memerlukan SteamVR. Pasangkannya daripada kadnya dalam Tetapan.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services tidak bertindak balas. Lihat dalam Tetapan, di bawah Pemacu.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Memerlukan SteamVR. Pasangkannya daripada Tetapan, di bawah Pemacu.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sudah ada pengawal VR. Satu memacu kedua-dua tangan.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge mempunyai {0} pengawal, jumlah paling banyak yang boleh dijalankan. Padam satu untuk menambah yang lain.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Lanjutan (maks {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Papan Kekunci + Tetikus (maks {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (tidak berjalan, lihat kad Windows MIDI Services dalam Tetapan)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (tidak berjalan, lihat Windows MIDI Services dalam Tetapan, di bawah Pemacu)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (maks {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (memerlukan SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (maks {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Hantar gerakan pengawal kepada emulator yang membaca sumber gerakan DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Terima kesan pencetus suai dan lampu daripada mod permainan yang ditulis untuk DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Hidupkan output telemetri dalam permainan dan halakan ke PC dan port ini.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Dalam emulator, tambah sumber gerakan pada alamat PC ini dan port ini.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Kesan sesuatu mod sampai ke setiap pengawal yang mempunyai perkakasan untuknya.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Dalam emulator pada PC ini, tambah sumber gerakan pada 127.0.0.1 dan port ini.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Sesuatu mod sampai ke setiap pengawal maya yang mempunyai DualSense atau DualShock 4 yang disambungkan, dan kesannya dimainkan pada setiap pengawal di sana yang mempunyai perkakasan untuknya.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pose kepala ialah baris Penjejak Kepala pada [Peranti]. Petakan yaw kepala kepada paksi kayu bedik dalam bahagian Pemetaan pengawal.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Nilai itu ialah baris Telemetri Permainan pada [Peranti]. Petakan dalam bahagian Pemetaan pengawal atau gunakannya untuk mencetuskan makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Kedudukan, saiz dan kelegapan sesuatu menu ditetapkan pada menu itu, dalam bahagian [Makro &amp; Menu] pengawal.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Tarik Balik</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tarik Balik Semua</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Tindihan Pad Sentuh</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation, untuk skrin sentuh atau tetikus.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation, untuk skrin sentuh.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Dayakan Tindihan Pad Sentuh</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Kelegapan</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Tetap Semula Kedudukan</value></data>
@@ -814,6 +814,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Input dan penghitungan pengawal.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Input papan kekunci dan tetikus mengikut peranti</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad web tersuai mengekalkan jarak setiap kelompok dari tepi yang lebih dekat pada skrin yang lebih lebar, seperti tindanan RetroArch menggerakkan dua separuhnya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Output peranti MIDI maya (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed stereofonik-ke-binaural Bauer untuk output fon kepala.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Pengekod Opus C# tulen yang memacu audio pembesar suara DualSense melalui Bluetooth. Oleh Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Rujukan garis silang dan pembesar</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Silang dan titiknya daripada CSGOCrosshair oleh Skarbo (tiada lesen diterbitkan), gaya Bulatan, gambar dan berlorek daripada Crosshair-Overlay (MIT), serta Kanta dan zum skrin penuh pembesar daripada Windows-classic-samples oleh Microsoft (MIT). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>Penyelidikan audio Bluetooth DualSense oleh egormanga: pengangkutan paket yang dinaiki aliran pembesar suara pengawal. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Unit</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Paparan unit kepekaan. Pengganda ialah skala × dalaman (1 = asas). DegPerScreenTurn bergaya Steam: darjah putaran fizikal pengawal bagi setiap satu pusingan skrin penuh.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Ambang bidikan mudah</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Pesongan kayu bedik kanan (0–100%) di bawahnya output giro disifarkan. 0 = sentiasa hidup. Rasa "giro dilibatkan semasa membidik" Steam. Giro berfungsi hanya apabila pengguna menolak kayu bedik kanan melepasi ambang.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Pesongan kayu bedik pelibatan (0–100%) di bawahnya output giro disifarkan. 0 = sentiasa hidup. Rasa "giro dilibatkan semasa membidik" Steam. Giro berfungsi hanya apabila pengguna menolak kayu bedik itu melepasi ambang.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Giro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Laraskan cara penderia gerakan pad ini menggerakkan output tetikus dan kayu bedik. Tentukur pada permukaan rata untuk menyifarkan hanyutan pegun, kemudian tetapkan kepekaan, pelicinan dan peraturan pelibatan mengikut selera.</value></data>
@@ -2407,9 +2411,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Tetingkap pelicinan</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Panjang tetingkap masa penimbal pelicinan. Nilai lebih besar melicinkan lebih kuat di bawah ambang pengetatan. Nilai lebih kecil terasa lebih tangkas. Lalai 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Butang pelibatan bidikan</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Butang yang mengawal output giro. Giro berfungsi hanya semasa butang ini ditahan. Biarkan tidak ditetapkan untuk mematikan kawalan butang. Apabila ini dan pesongan kayu bedik kanan kedua-duanya dikonfigurasikan, kedua-duanya mesti aktif untuk giro berfungsi.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Butang yang mengawal output giro. Mod pelibatan menetapkan caranya. Biarkan tidak ditetapkan untuk mematikan kawalan butang. Apabila ini dan pesongan kayu bedik pelibatan kedua-duanya dikonfigurasikan, kedua-duanya mesti aktif untuk giro berfungsi.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Mod pelibatan</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tahan: giro berfungsi semasa butang pelibatan ditahan. Togol: setiap tekanan menghidupkan atau mematikan giro, dan melepas tidak melakukan apa-apa. Togol kekal merentasi detik pengundian dan ditetapkan semula apabila profil ditukar.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Tahan: giro berfungsi semasa butang pelibatan ditahan. Togol: setiap tekanan menghidupkan atau mematikan giro, dan melepas tidak melakukan apa-apa. Lepas untuk membidik: giro berfungsi semasa butang pelibatan tidak ditahan. Togol kekal merentasi detik pengundian dan ditetapkan semula apabila profil ditukar.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Tahan</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Togol</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Lepas untuk membidik</value></data>
@@ -2429,7 +2433,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Atas (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Pelibatan</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Butang pelibatan bidikan, Mod pelibatan, Giro Hidup, Tengahkan Semula, Ambang bidikan mudah</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pintu pilihan yang mengehadkan bila giro aktif. Pesongan kayu bedik kanan dan butang pelibatan bidikan masing-masing boleh dikonfigurasikan. Giro berfungsi hanya apabila setiap pintu yang dikonfigurasikan aktif.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Pintu pilihan yang mengehadkan bila giro aktif. Pesongan kayu bedik pelibatan dan butang pelibatan bidikan masing-masing boleh dikonfigurasikan. Giro berfungsi hanya apabila setiap pintu yang dikonfigurasikan aktif.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Tempatan</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Pemain</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Dunia</value></data>
@@ -4248,7 +4252,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Memainkan getaran permainan sebagai nada rendah melalui bass shaker atau subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Peranti output, saluran, gandaan, nada untuk setiap motor</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Berfungsi dengan pengawal maya Xbox, DualShock 3, DualShock 4 / DualSense dan Nintendo Switch Pro, serta pengawal maya Extended dengan maklum balas daya, seperti roda lumba, dan Steam Deck Controller (Composite). Maklum balas permainan dan Uji Getaran dimainkan melalui output audio. Getaran makro kekal pada pengawal.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Berfungsi dengan pengawal maya Xbox, DualShock 3, DualShock 4 / DualSense dan Nintendo Switch Pro, serta pengawal maya Extended dengan maklum balas daya, seperti roda lumba. Ia juga berfungsi dengan Steam Deck Controller (Composite), SInput Gamepad dan Joypad-OS Steam Input Gamepad. Maklum balas permainan dan Uji Getaran dimainkan melalui output audio. Getaran makro kekal pada pengawal.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Tetap Semula Getaran ke Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Halakan Getaran ke Output Audio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Memainkan getaran dan maklum balas daya permainan yang diterima pengawal maya ini sebagai nada frekuensi rendah pada output audio yang dipilih. Mematikannya mengekalkan setiap tetapan.</value></data>
@@ -4573,7 +4577,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_OpenXrRefs" xml:space="preserve"><value>Rujukan OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Antara muka masa jalan, susun atur struktur dan kunci pendaftaran di sebalik input set kepala dan pengawal gerakan, dibaca daripada pengepala Khronos OpenXR-SDK (Apache-2.0) dan disemak silang dengan VirtualDesktop-OpenXR (MIT). PadForge berkomunikasi dengan masa jalan yang anda pasang sendiri dan tidak menyertakan kod Khronos.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Rujukan output periferal</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Bingkai haptik, pencahayaan, penggandingan dan bateri Logitech HID++, dibaca daripada Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD dan MIT OR Apache-2.0), dokumen OpenLogi, keyleds (GPL-3.0-or-later), g810-led dan g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), dan g915x-heatmap (MIT), dengan nota daripada OpenRGB-Fixed (GPL-2.0-or-later) dan HaloDaemon-plugins. ID produk Razer dan laporan pencahayaan, dibaca daripada OpenRazer (GPL-2.0-or-later) dan OpenRGB (GPL-2.0-or-later) serta disemak berbanding uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), dan razer-life (GPL-2.0-or-later), dengan kunci yang dikongsi alat tersebut daripada Aurora (MIT) dan LibreHardwareMonitor (MPL-2.0). ID produk SteelSeries dan laporan pencahayaan, dibaca daripada OpenRGB dan rivalcfg (WTFPL) serta disemak berbanding pemalam SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), dan Wine (LGPL-2.1-or-later). Laporan HID LampArray, dibaca daripada Jadual Penggunaan HID USB-IF, dokumentasi Dynamic Lighting Microsoft, dan sampelnya ArduinoHidForWindows dan RP2040MacropadHidSample (MIT), serta disemak berbanding lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq dan Apex3TklDynamicLighting (semuanya MIT), acer-predator-helios-rgb (GPL-2.0-only), dan crosrgbkblight. Laporan dengung iFeel, dibaca daripada iFeel, pemacu iFeel Linux (GPL-2.0-or-later), dan Logitech-iFeel-Vibration-POC, dengan peraturan deskriptor daripada kernel Linux (GPL-2.0-or-later) dan skala kekuatan daripada pemacu MouseWare 9.80 Logitech. Pengendali taktil dan warna daripada GameSense SDK. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Bingkai haptik, pencahayaan, penggandingan dan bateri Logitech HID++, dibaca daripada Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD dan MIT OR Apache-2.0), dokumen OpenLogi, keyleds (GPL-3.0-or-later), g810-led dan g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), dan g915x-heatmap (MIT), dengan nota daripada OpenRGB-Fixed (GPL-2.0-or-later) dan HaloDaemon-plugins. ID produk Razer dan laporan pencahayaan, dibaca daripada OpenRazer (GPL-2.0-or-later) dan OpenRGB (GPL-2.0-or-later) serta disemak berbanding uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT semasa dibaca), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), dan razer-life (GPL-2.0-or-later), dengan kunci yang dikongsi alat tersebut daripada Aurora (MIT) dan LibreHardwareMonitor (MPL-2.0). ID produk SteelSeries dan laporan pencahayaan, dibaca daripada OpenRGB dan rivalcfg (WTFPL) serta disemak berbanding pemalam SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), dan Wine (LGPL-2.1-or-later). Laporan HID LampArray, dibaca daripada Jadual Penggunaan HID USB-IF, dokumentasi Dynamic Lighting Microsoft, dan sampelnya ArduinoHidForWindows dan RP2040MacropadHidSample (MIT), serta disemak berbanding lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq dan Apex3TklDynamicLighting (semuanya MIT), acer-predator-helios-rgb (GPL-2.0-only), dan crosrgbkblight. Laporan dengung iFeel, dibaca daripada iFeel, pemacu iFeel Linux (GPL-2.0-or-later), dan Logitech-iFeel-Vibration-POC, dengan peraturan deskriptor daripada kernel Linux (GPL-2.0-or-later) dan skala kekuatan daripada pemacu MouseWare 9.80 Logitech. Pengendali taktil dan warna daripada GameSense SDK. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Urutan panggilan WinMM di sebalik API MIDI warisan: membuka port, menghantar kepadanya, dan menutupnya. Dibaca daripada PortMidi (MIT, oleh Ross Bencina, Phil Burk, dan Roger B. Dannenberg) dan RtMidi (lesen RtMidi gaya MIT, oleh Gary P. Scavone). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Rujukan SDK G-key Logitech</value></data>
@@ -4583,7 +4587,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Rujukan Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box di sebalik Baca Penyesuai Bliss-Box, dibaca daripada API Tool Bliss-Box LLC (gaya BSD, pengedaran percuma) dan DeviceBuddy (sumber tersedia, Bliss-Box LLC), dengan nama butang daripada fail Bliss-Box dalam cabang retroarch-joypad-autoconfig SteveFox1620, checksum Controller Pak disemak berbanding libdragon (Unlicense), dan balasan pad PlayStation daripada psx-spx dan pemacu psxpad-spi Linux (GPL-2.0-or-later). Nama pengawal dan nota sokongan juga datang daripada senarai keserasian Bliss-Box LLC, dan kelakuan penyesuai disemak berbanding perisian tegar mereka. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Pengangkutan USB oleh Vadym Hrynchyshyn untuk pengawal USB komposit HIDMaestro. HIDMaestro membawa pemacu pengawal hosnya yang bertandatangan dan memasangnya kali pertama pengawal komposit dicipta.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Pengangkutan USB oleh Vadym Hrynchyshyn untuk pengawal HIDMaestro yang merupakan peranti USB: setiap pengawal maya pada Windows pada ARM, dan pada x64 pengawal komposit, Steam Controller (2026), profil Xbox One S: Full dan bentuk Joy-Con Charging Grip. HIDMaestro membawa pemacu pengawal hosnya dan memasangnya kali pertama salah satu pengawal ini dicipta.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Pilih separuh mana slot ini yang aktif. Mematikan satu separuh menyembunyikan barisnya dan menghentikannya daripada menghantar, dan mengekalkan pemetaannya supaya menghidupkannya semula memulihkannya.</value>
   </data>
@@ -4769,7 +4773,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Nilai pratetap pencetus suai GameCube, oleh Mxater. Dibaca untuk fakta sahaja.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Tanda paksi gerakan DSU, disemak berbanding penyahkod UDP miliknya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Tanda paksi gerakan DSU, disemak berbanding penyahkod UDP miliknya, dan saiz kawalan pad web tersuai, diukur berbanding sisi skrin yang lebih pendek seperti tindanan Android miliknya mengukurnya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Pratetap lalai Elite Dangerous di sebalik profil permulaan Simulasi Angkasa, oleh Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4851,6 +4855,8 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Urutan mula dan henti Ring-Con di sebalik pemacu Switch cabang SDL dan skala ketegangan yang dibaca PadForge, dibaca daripada demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy oleh Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) dan RingconProtocolDebug (Apache-2.0). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Rujukan pengawal bersiri</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Protokol di sebalik pemacu bersiri cabang SDL untuk pengawal enam paksi, gamepad, kayu bedik penerbangan, pemancar RC, panel penerbangan, dan ergometer, dibaca daripada Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball oleh John E. Stone (gaya BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11), dan XPComboTest (MIT). Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Rujukan SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Laporan di sebalik sokongan pad SInput dan persona SInput, dibaca daripada SINPUT-LIB-HID (MIT-0) dan HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) oleh Hand Held Legend serta mod SInput OpenPuck (AGPL-3.0). Dokumentasi sahaja, tiada kod AGPL disertakan.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Rujukan peranti USB khusus</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Protokol di sebalik pemacu cabang SDL untuk stesen pangkalan Intel Wireless Series, penerima Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 dan 3, dan unit kepala pelatih Tacx, dibaca daripada antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0), dan xbox360bb (GPL-2.0-or-later). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Rujukan pengawal kereta api</value></data>

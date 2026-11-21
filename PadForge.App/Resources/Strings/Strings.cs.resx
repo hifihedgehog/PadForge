@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Noty a kontroléry pro hudební software.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtuální VR ovladače přes SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Typ změníte později kliknutím na štítek typu na ovladači. Stačí jedno kliknutí.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services neodpovídá. Podívejte se na jeho kartu v Nastavení.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Vyžaduje SteamVR. Nainstalujte ho z jeho karty v Nastavení.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services neodpovídá. Najdete ho v Nastavení v části Systémové ovladače.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Vyžaduje SteamVR. Nainstalujte ho v Nastavení v části Systémové ovladače.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR ovladač už existuje. Jeden ovládá obě ruce.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>Dosažen nejvyšší počet ovladačů v programu PadForge: {0}. Odstraňte jeden, abyste mohli přidat další.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Rozšířený (max. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Klávesnice + myš (max. {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (neběží, viz kartu Windows MIDI Services v Nastavení)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (neběží, viz Windows MIDI Services v Nastavení v části Systémové ovladače)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max. {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (vyžaduje SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max. {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Posílejte pohyb ovladače emulátorům, které čtou zdroj pohybu DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Přebírejte efekty adaptivních spouští a světel z herních modů napsaných pro DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Zapněte ve hře výstup telemetrie a nasměrujte ho na tento počítač a port.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>V emulátoru přidejte zdroj pohybu s adresou tohoto počítače a tímto portem.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efekty modu dostanou všechny ovladače, které na ně mají hardware.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>V emulátoru v tomto počítači přidejte zdroj pohybu s adresou 127.0.0.1 a tímto portem.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mod se dostane ke každému virtuálnímu ovladači, který má připojený DualSense nebo DualShock 4, a jeho efekty se tam přehrají na všech ovladačích, které na ně mají hardware.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poloha hlavy je řádek Sledovač hlavy na stránce [Zařízení]. Natočení hlavy do stran namapujte na osu páčky v sekci Mapování ovladače.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Hodnoty tvoří řádek Herní telemetrie na stránce [Zařízení]. Namapujte je v sekci Mapování ovladače nebo jimi spouštějte makra.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Umístění, velikost a neprůhlednost nabídky se nastavují přímo u nabídky, v sekci [Makra a nabídky] ovladače.</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Odvolat</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Odvolat vše</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Překryvný touchpad</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Dotyková plocha na obrazovce pro hry s touchpadem PlayStation, pro dotykovou obrazovku nebo myš.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Dotyková plocha na obrazovce pro hry s touchpadem PlayStation, pro dotykovou obrazovku.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Povolit překryvný touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Neprůhlednost</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Resetovat pozici</value></data>
@@ -827,6 +827,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Vstup z ovladačů a jejich výčet.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Vstup klávesnice a myši podle zařízení</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Vlastní webový pad zachovává vzdálenost každé skupiny ovládacích prvků od bližšího okraje širší obrazovky, stejně jako překryvy RetroArch posouvají své dvě poloviny od sebe. Čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Výstup virtuálního zařízení MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauerův crossfeed ze stereofonního na binaurální zvuk pro výstup do sluchátek.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Kodér Opus napsaný čistě v C#, který zajišťuje zvuk reproduktoru ovladače DualSense přes Bluetooth. Autor: Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Reference k zaměřovači a lupě</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Kříž a jeho tečka z CSGOCrosshair od Skarbo (licence nezveřejněna), styly Kruh, obrázkový a obrysový z Crosshair-Overlay (MIT) a Čočka a celoobrazovkové zvětšení lupy z Windows-classic-samples od společnosti Microsoft (MIT). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>Výzkum zvuku DualSense přes Bluetooth od egormanga: paketový přenos, kterým putuje zvukový proud reproduktoru ovladače. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Jednotky</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Zobrazení jednotek citlivosti. Násobitel je interní měřítko × (1 = základ). Stupně na otáčku obrazovky (DegPerScreenTurn) jsou ve stylu Steamu: stupně fyzického otočení ovladače na jednu celou otáčku obrazovky.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Práh snadného míření</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Výchylka pravé páčky (0–100 %), pod kterou se výstup gyroskopu nuluje. 0 = vždy zapnuto. Chování jako „gyroskop aktivní při míření“ ve Steamu. Gyroskop pracuje, jen když uživatel vychýlí pravou páčku za práh.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Výchylka aktivační páčky (0–100 %), pod kterou se výstup gyroskopu nuluje. 0 = vždy zapnuto. Chování jako „gyroskop aktivní při míření“ ve Steamu. Gyroskop pracuje, jen když uživatel vychýlí tuto páčku za práh.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Vylaďte, jak pohybový senzor tohoto gamepadu řídí výstup myši a páčky. Kalibrací na rovném povrchu vynulujete klidový drift, pak si podle chuti nastavte citlivost, vyhlazování a pravidla aktivace.</value></data>
@@ -2596,9 +2600,9 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Okno vyhlazování</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Délka časového okna vyhlazovacího bufferu. Vyšší hodnoty pod prahem utažení vyhlazují silněji. Nižší hodnoty působí svižněji. Výchozí hodnota je 50 ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Tlačítko aktivace míření</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Tlačítko, které podmiňuje výstup gyroskopu. Gyroskop pracuje, jen dokud je toto tlačítko držené. Nechte nenastavené, pokud podmínku tlačítkem nechcete. Když je nastavené toto tlačítko i výchylka pravé páčky, musí být aktivní obojí, aby gyroskop pracoval.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Tlačítko, které podmiňuje výstup gyroskopu. Režim aktivace určuje jak. Nechte nenastavené, pokud podmínku tlačítkem nechcete. Když je nastavené toto tlačítko i výchylka aktivační páčky, musí být aktivní obojí, aby gyroskop pracoval.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Režim aktivace</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Podržení: gyroskop pracuje, dokud je aktivační tlačítko držené. Přepínač: každý stisk gyroskop zapne nebo vypne, uvolnění nedělá nic. Stav přepínače se mezi cykly dotazování drží a při přepnutí profilu se resetuje.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Podržení: gyroskop pracuje, dokud je aktivační tlačítko držené. Přepínač: každý stisk gyroskop zapne nebo vypne, uvolnění nedělá nic. Uvolněním mířit: gyroskop pracuje, dokud aktivační tlačítko není drženo. Stav přepínače se mezi cykly dotazování drží a při přepnutí profilu se resetuje.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Podržení</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Přepínač</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Uvolněním mířit</value></data>
@@ -2618,7 +2622,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Nahoru (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivace</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aktivační páčka, Směr aktivace, Zapnutí gyroskopu, Vystředění, Práh snadného míření</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Volitelné podmínky, které omezují, kdy je gyroskop aktivní. Nastavit lze výchylku pravé páčky i tlačítko aktivace míření. Gyroskop pracuje, jen dokud jsou splněny všechny nastavené podmínky.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Volitelné podmínky, které omezují, kdy je gyroskop aktivní. Nastavit lze výchylku aktivační páčky i tlačítko aktivace míření. Gyroskop pracuje, jen dokud jsou splněny všechny nastavené podmínky.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Místní</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Hráč</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Svět</value></data>
@@ -2710,7 +2714,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyroskop – sklon Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Sklon gyroskopu</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Rozsah plného sklonu, Mrtvá zóna sklonu</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Obálka pro vstupy Gyroskop – sklon X / Gyroskop – sklon Y: držte sklon a páčka drží svou výchylku, jako režim Joystick Deflection ve Steamu. Plná výchylka nastane při rozsahu, který nastavíte tady; Vystředění gyroskopu znovu vynuluje klidový úchop. Yaw (otáčení ovladače naplocho) gravitace nevidí a tyto vstupy nepohne.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Obálka pro vstupy Gyroskop: sklon X / Gyroskop: sklon Y: držte sklon a páčka drží svou výchylku, jako režim Joystick Deflection ve Steamu. Plná výchylka nastane při rozsahu, který nastavíte tady. Vystředění gyroskopu znovu vynuluje klidový úchop. Yaw (otáčení ovladače naplocho) gravitace nevidí a tyto vstupy nepohne.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Rozsah plného sklonu</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Stupně sklonu od klidového úchopu, které se počítají jako plná výchylka páčky. Menší = citlivější. V konfiguracích Steamu je nejčastější hodnota 25°.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Mrtvá zóna sklonu</value></data>
@@ -4473,7 +4477,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Přehrává vibrace ze hry jako hluboké tóny přes bass shakery nebo subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Výstupní zařízení, režim kanálů, zesílení, tón pro každý motor</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funguje s virtuálními ovladači Xbox, DualShock 3, DualShock 4 / DualSense a Nintendo Switch Pro, dále s rozšířenými virtuálními ovladači se silovou zpětnou vazbou, jako jsou závodní volanty, a s ovladačem Steam Deck Controller (Composite). Odezva ze hry a Otestovat vibrace se přehrávají zvukovým výstupem. Vibrace z maker zůstávají na ovladači.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funguje s virtuálními ovladači Xbox, DualShock 3, DualShock 4 / DualSense a Nintendo Switch Pro, dále s rozšířenými virtuálními ovladači se silovou zpětnou vazbou, jako jsou závodní volanty. Funguje také s ovladači Steam Deck Controller (Composite), SInput Gamepad a Joypad-OS Steam Input Gamepad. Odezva ze hry a Otestovat vibrace se přehrávají zvukovým výstupem. Vibrace z maker zůstávají na ovladači.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetovat vibrace do zvuku</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Směrovat vibrace na zvukový výstup</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Přehrává vibrace a silovou zpětnou vazbu ze hry, které tento virtuální ovladač dostává, jako nízkofrekvenční tóny na vybraném zvukovém výstupu. Vypnutím se žádné nastavení neztratí.</value></data>
@@ -4805,7 +4809,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_OpenXrRefs" xml:space="preserve"><value>Reference k OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Rozhraní běhového prostředí, rozložení struktur a klíče registru, které stojí za vstupem headsetu a pohybových ovladačů, čtené z hlaviček Khronos OpenXR-SDK (Apache-2.0) a křížově ověřené podle VirtualDesktop-OpenXR (MIT). PadForge komunikuje s vaším vlastním nainstalovaným běhovým prostředím a žádný kód Khronos nedodává.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Reference k výstupu periferií</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Rámce Logitech HID++ pro haptiku, osvětlení, párování a baterii, čtené ze Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD a MIT OR Apache-2.0), dokumentace OpenLogi, keyleds (GPL-3.0-or-later), g810-led a g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) a g915x-heatmap (MIT), s poznámkami z OpenRGB-Fixed (GPL-2.0-or-later) a HaloDaemon-plugins. ID produktů a reporty osvětlení Razer, čtené z OpenRazer (GPL-2.0-or-later) a OpenRGB (GPL-2.0-or-later) a ověřené podle uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) a razer-life (GPL-2.0-or-later), se zámkem, který tyto nástroje sdílejí, z Aurora (MIT) a LibreHardwareMonitor (MPL-2.0). ID produktů a reporty osvětlení SteelSeries, čtené z OpenRGB a rivalcfg (WTFPL) a ověřené podle pluginů SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) a Wine (LGPL-2.1-or-later). Reporty HID LampArray, čtené z tabulek USB-IF HID Usage Tables, z dokumentace Dynamic Lighting od Microsoftu a z jejích ukázek ArduinoHidForWindows a RP2040MacropadHidSample (MIT) a ověřené podle lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq a Apex3TklDynamicLighting (všechny MIT), acer-predator-helios-rgb (GPL-2.0-only) a crosrgbkblight. Report bzučení iFeel, čtený z iFeel, ze systémového ovladače iFeel pro Linux (GPL-2.0-or-later) a z Logitech-iFeel-Vibration-POC, s pravidlem deskriptoru z jádra Linux (GPL-2.0-or-later) a stupnicí síly ze systémového ovladače Logitech MouseWare 9.80. Obslužné rutiny hmatové odezvy a barev z GameSense SDK. Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Rámce Logitech HID++ pro haptiku, osvětlení, párování a baterii, čtené ze Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD a MIT OR Apache-2.0), dokumentace OpenLogi, keyleds (GPL-3.0-or-later), g810-led a g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) a g915x-heatmap (MIT), s poznámkami z OpenRGB-Fixed (GPL-2.0-or-later) a HaloDaemon-plugins. ID produktů a reporty osvětlení Razer, čtené z OpenRazer (GPL-2.0-or-later) a OpenRGB (GPL-2.0-or-later) a ověřené podle uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT při čtení), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) a razer-life (GPL-2.0-or-later), se zámkem, který tyto nástroje sdílejí, z Aurora (MIT) a LibreHardwareMonitor (MPL-2.0). ID produktů a reporty osvětlení SteelSeries, čtené z OpenRGB a rivalcfg (WTFPL) a ověřené podle pluginů SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) a Wine (LGPL-2.1-or-later). Reporty HID LampArray, čtené z tabulek USB-IF HID Usage Tables, z dokumentace Dynamic Lighting od Microsoftu a z jejích ukázek ArduinoHidForWindows a RP2040MacropadHidSample (MIT) a ověřené podle lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq a Apex3TklDynamicLighting (všechny MIT), acer-predator-helios-rgb (GPL-2.0-only) a crosrgbkblight. Report bzučení iFeel, čtený z iFeel, ze systémového ovladače iFeel pro Linux (GPL-2.0-or-later) a z Logitech-iFeel-Vibration-POC, s pravidlem deskriptoru z jádra Linux (GPL-2.0-or-later) a stupnicí síly ze systémového ovladače Logitech MouseWare 9.80. Obslužné rutiny hmatové odezvy a barev z GameSense SDK. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Sekvence volání WinMM, které stojí za starším MIDI API: otevření portu, odeslání do něj a jeho zavření. Čteno z PortMidi (MIT, autoři Ross Bencina, Phil Burk a Roger B. Dannenberg) a RtMidi (licence RtMidi ve stylu MIT, autor Gary P. Scavone). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Reference k Logitech G-key SDK</value></data>
@@ -4815,7 +4819,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Reference k Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box, které stojí za volbou Číst adaptéry Bliss-Box, čtené z nástroje API Tool společnosti Bliss-Box LLC (licence ve stylu BSD, bezplatná redistribuce) a z DeviceBuddy (dostupný zdrojový kód, Bliss-Box LLC), s názvy tlačítek ze souborů Bliss-Box ve forku retroarch-joypad-autoconfig od SteveFox1620, s kontrolními součty Controller Pak ověřenými podle libdragon (Unlicense) a s odpovědí ovladače PlayStation z psx-spx a ze systémového ovladače psxpad-spi pro Linux (GPL-2.0-or-later). Názvy ovladačů a poznámky k podpoře pocházejí také ze seznamu kompatibility společnosti Bliss-Box LLC a chování adaptérů bylo ověřeno podle jejich firmwaru. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Přenos USB, autor Vadym Hrynchyshyn, pro kompozitní ovladače USB z HIDMaestro. HIDMaestro obsahuje jeho podepsaný ovladač hostitelského řadiče a nainstaluje ho při prvním vytvoření kompozitního ovladače.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Přenos USB, autor Vadym Hrynchyshyn, pro ovladače HIDMaestro, které jsou zařízeními USB: každý virtuální ovladač ve Windows na ARM a na x64 kompozitní ovladače, Steam Controller (2026), profil Xbox One S: Full a formy Joy-Con Charging Grip. HIDMaestro obsahuje jeho ovladač hostitelského řadiče a nainstaluje ho při prvním vytvoření jednoho z těchto ovladačů.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Zvolte, které poloviny tohoto slotu jsou aktivní. Vypnutí poloviny skryje její řádky a zastaví její odesílání, ale mapování zachová, takže se po opětovném zapnutí obnoví.</value>
   </data>
@@ -5003,7 +5007,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Hodnoty předvolby adaptivních spouští GameCube, autor Mxater. Čteno jen kvůli faktům.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Znaménka os pohybu DSU, ověřená podle jeho dekodéru UDP. Čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Znaménka os pohybu DSU, ověřená podle jeho dekodéru UDP, a velikosti ovládacích prvků vlastního webového padu, měřené vůči kratší straně obrazovky tak, jak je měří jeho překryv pro Android. Čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Výchozí předvolby hry Elite Dangerous, které stojí za startovním profilem Vesmírný simulátor, autor Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Sekvence spuštění a zastavení Ring-Con, které stojí za ovladačem Switch ve forku SDL, a stupnice napětí, kterou PadForge čte, čtené z demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy od Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) a RingconProtocolDebug (Apache-2.0). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Reference k sériovým ovladačům</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Protokoly, které stojí za sériovými ovladači ve forku SDL pro šestiosé ovladače, gamepady, letecké joysticky, RC vysílače, letecké panely a ergometry, čtené z Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball od Johna E. Stonea (licence ve stylu BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) a XPComboTest (MIT). Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Reference k SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Reporty, které stojí za podporou padů SInput a virtuálním ovladačem SInput, čtené z SINPUT-LIB-HID (MIT-0) a HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) od Hand Held Legend a z režimu SInput od OpenPuck (AGPL-3.0). Jen dokumentace, žádný kód AGPL se nedodává.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Reference ke speciálním zařízením USB</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Protokoly, které stojí za ovladači ve forku SDL pro základnovou stanici Intel Wireless Series, přijímač Xbox 360 Big Button, panel CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 a 3 a řídicí jednotky trenažérů Tacx, čtené z antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) a xbox360bb (GPL-2.0-or-later). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Reference k ovladačům vlaků</value></data>
@@ -5113,7 +5119,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Formát haptického PCM ovladače PS5, 16bitový se znaménkem při 3 kHz, podle kterého se ustálilo kódování haptiky přes Bluetooth jako 8bitové se znaménkem. Čteno jen jako dokumentace, žádný kód pod AGPL se nedodává.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>Reference k herním modům DSX</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>Instrukce UDP, odpovědi, soubory portů a bajty efektů spouští, které stojí za Herními mody, čtené z oficiálních příkladů modů od Paliverse pro DSX v3.1 a DualSenseX v2, z obou verzí DualSenseY a DualSense4Rockstar (licence nezveřejněna), z DSZ a pydualsense (MIT) a z Wujek Dualsense API a serveru DSX ve forku DS4Windows od hbashton (GPL-3.0). Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>Instrukce UDP, odpovědi, soubory portů a bajty efektů spouští, které stojí za Herními mody, čtené z oficiálních příkladů modů od Paliverse pro DSX v3.1 a DualSenseX v2, z DualSenseY a DualSense4Rockstar (licence nezveřejněna), z DualSenseY-v2, z DSZ a pydualsense (MIT) a z Wujek Dualsense API a serveru DSX ve forku DS4Windows od hbashton (GPL-3.0). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Reference ke sluchátkům a mikrofonu DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Směrování sluchátek a reproduktoru, stropy hlasitosti, rámování mikrofonu a režim reportů, které stojí za zvukem DualShock 4 přes Bluetooth, čtené z DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) a z forku DS4Windows od hbashton (GPL-3.0), se syntézními okny dekodéru SBC ověřenými podle libsbc od Google (Apache-2.0) a s USB sluchátky druhého modelu a adaptéru Sony čtenými z výpisů deskriptorů ControllersInfo od DJm00n (licence nezveřejněna) a ze sond LsUSB z linux-hardware.org (CC BY 4.0). Směrování reproduktoru DualShock 4 na kabelu pochází z Controllers Wiki (CC BY-SA) a z NFSU2-SplitScreen od mihaits (MIT). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Reference k chatu Twitch</value></data>

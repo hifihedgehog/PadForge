@@ -1445,7 +1445,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ma note ndi ma CC a mapulogalamu a nyimbo.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Makontrola a VR kudzera mu SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Kuti musinthe mtundu pambuyo pake, dinani chizindikiro cha mtundu pa kontrola. Ndi kudina kamodzi kokha.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Pamafunika SteamVR. Iikeni kuchokera pa khadi lake mu Zokonda.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Pamafunika SteamVR. Iikeni kuchokera mu Zokonda, pansi pa Madalaivala.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Pali kale kontrola ya VR. Imodzi imayendetsa manja onse awiri.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Lumikizani kontrola ya Bluetooth</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batire {0}</value></data>
@@ -1529,4 +1529,6 @@
   <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Cholowetsa chachiwiri chomwe gwero ili limadikiriranso.</value></data>
   <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Sinthani cholowetsa</value></data>
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Imasankha cholowetsa china choti idikire.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad yopangidwa nokha imasunga mtunda wa gulu lililonse la mabatani kuchokera ku m'mphepete mwa sikirini wapafupi pa sikirini yotambalala, monga momwe ma overlay a RetroArch amasunthira magawo awo awiri. Zawerengedwa ngati zolemba zokha, palibe khodi ya GPL yomwe imatumizidwa.</value></data>
 </root>

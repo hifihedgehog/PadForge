@@ -171,7 +171,7 @@
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (máksimo {0})</value></data>
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (máksimo {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Teklado + Mouse (máksimo {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (no ta kore, wak e karchi Windows MIDI Services den Konfigurashon)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (no ta kore, wak Windows MIDI Services den Konfigurashon, bou di Driver)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (máksimo {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (mester SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (máksimo {0})</value></data>
@@ -2709,8 +2709,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Manda movementu di kontrol na emuladónan ku ta lesa un fuente di movementu DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tuma efektonan di trigger adaptivo i di lus for di mod di wega skirbí pa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Aktivá salida di telemetria den e wega i pon'é manda na e PC i e pòrt aki.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Den e emuladó, agregá un fuente di movementu ku e adrès di e PC aki i e pòrt aki.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>E efektonan di un mod ta yega na tur kontrol ku tin e hardware pa nan.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Den un emuladó riba e PC aki, agregá un fuente di movementu ku e adrès 127.0.0.1 i e pòrt aki.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Un mod ta yega na kada kontrol virtual ku tin un DualSense of DualShock 4 konektá, i su efektonan ta toka riba tur kontrol einan ku tin e hardware pa nan.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>E posishon di kabes ta e fila di Head Tracker na [Aparatonan]. Asigná yaw di kabes na un eje di stick den e sekshon Asignashonnan di un kontrol.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>E balornan ta e fila di telemetria di wega na [Aparatonan]. Asigná nan den e sekshon Asignashonnan di un kontrol òf usa nan pa aktivá makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>E lugá, tamaño i opasidat di un menu ta wòrdu poné riba e menu mes, den e sekshon [Makro i menu] di un kontrol.</value></data>
@@ -2786,8 +2786,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota i control change pa software di músika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontrolnan VR virtual via SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Pa kambia e tipo despues, klik riba e chip di tipo riba e kontrol. Ta tuma un klik so.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services no ta kontestá. Wak su karchi den Konfigurashon.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Mester di SteamVR. Instal'é for di su karchi den Konfigurashon.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services no ta kontestá. Wak e den Konfigurashon, bou di Driver.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Mester di SteamVR. Instal'é for di Konfigurashon, bou di Driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Tin un kontrol VR kaba. Un so ta manehá tur dos man.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge tin {0} kontrol, e máksimo ku e por kore. Eliminá un pa agregá otro.</value></data>
   <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Konektá</value></data>
@@ -2869,4 +2869,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Aplicá</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Un kontrol web personalisá ta warda e distansia di kada grupo di kontrolnan for di e rant mas serka di un pantaya mas hanchu, manera e overlay-nan di RetroArch ta move nan dos mitar. Lesá solamente komo dokumentashon, no ta distribuí niun kódigo GPL.</value></data>
 </root>

@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>म्युझिक सॉफ्टवेअरसाठी नोट आणि कंट्रोल चेंज.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR द्वारे व्हर्च्युअल VR कंट्रोलर.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>प्रकार नंतर बदलण्यासाठी कंट्रोलरवरील प्रकार चिप क्लिक करा. त्यासाठी एक क्लिक पुरेसा आहे.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services प्रतिसाद देत नाही. सेटिंग्जमधील त्याचे कार्ड पहा.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR आवश्यक आहे. ते सेटिंग्जमधील त्याच्या कार्डवरून इन्स्टॉल करा.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services प्रतिसाद देत नाही. सेटिंग्जमध्ये, ड्रायव्हर अंतर्गत ते पहा.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR आवश्यक आहे. ते सेटिंग्जमध्ये, ड्रायव्हर अंतर्गत इन्स्टॉल करा.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR कंट्रोलर आधीच आहे. एकच दोन्ही हात चालवतो.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge कडे {0} कंट्रोलर आहेत, हे चालवता येणारे कमाल. आणखी जोडण्यासाठी एक हटवा.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>प्रोफाइल</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (कमाल {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>विस्तारित (कमाल {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>कीबोर्ड + माउस (कमाल {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (सुरू नाही, सेटिंग्जमधील Windows MIDI Services कार्ड पहा)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (सुरू नाही, सेटिंग्जमध्ये ड्रायव्हर अंतर्गत Windows MIDI Services पहा)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (कमाल {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR आवश्यक)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (कमाल {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU मोशन स्रोत वाचणाऱ्या एमुलेटरना कंट्रोलरची मोशन पाठवा.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX साठी बनवलेल्या गेम मॉड्समधून अडॅप्टिव्ह ट्रिगर आणि लाइट इफेक्ट घ्या.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>गेममध्ये टेलिमेट्री आउटपुट चालू करा आणि ते या PC व पोर्टकडे वळवा.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>एमुलेटरमध्ये या PC च्या पत्त्यावर आणि या पोर्टवर मोशन स्रोत जोडा.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मॉडचे इफेक्ट त्यासाठी हार्डवेअर असलेल्या प्रत्येक कंट्रोलरपर्यंत पोहोचतात.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>या PC वरील एमुलेटरमध्ये 127.0.0.1 या पत्त्यावर आणि या पोर्टवर मोशन स्रोत जोडा.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मॉड DualSense किंवा DualShock 4 जोडलेला असलेल्या प्रत्येक व्हर्च्युअल कंट्रोलरपर्यंत पोहोचतो आणि त्याचे इफेक्ट तिथल्या त्यासाठी हार्डवेअर असलेल्या प्रत्येक कंट्रोलरवर वाजतात.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज ही [डिव्हाइस] वरील हेड ट्रॅकर रांग आहे. हेड यॉ स्टिक अक्षाला कंट्रोलरच्या मॅपिंग विभागात मॅप करा.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ही मूल्ये [डिव्हाइस] वरील गेम टेलिमेट्री रांग आहेत. ती कंट्रोलरच्या मॅपिंग विभागात मॅप करा किंवा मॅक्रो चालवण्यासाठी वापरा.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>मेनूचे स्थान, आकार आणि अपारदर्शकता मेनूवरच सेट होतात, कंट्रोलरच्या [मॅक्रो आणि मेनू] विभागात.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>अधिकार काढा</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>सर्व अधिकार काढा</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>टचपॅड ओव्हरले</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation टचपॅड गेमसाठी स्क्रीनवरील स्पर्श पृष्ठभाग, टच स्क्रीन किंवा माउससाठी.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation टचपॅड गेमसाठी स्क्रीनवरील स्पर्श पृष्ठभाग, टच स्क्रीनसाठी.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>टचपॅड ओव्हरले सक्षम करा</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>अपारदर्शकता</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>स्थान रीसेट करा</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>कंट्रोलर इनपुट आणि एन्युमरेशन.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>प्रति-डिव्हाइस कीबोर्ड आणि माउस इनपुट</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>कस्टम वेब पॅड प्रत्येक क्लस्टरचे जवळच्या काठापासूनचे अंतर रुंद स्क्रीनवर कायम ठेवतो, जसे RetroArch चे ओव्हरले त्यांचे दोन्ही अर्धे भाग हलवतात. फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>व्हर्च्युअल MIDI डिव्हाइस आउटपुट (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -873,6 +875,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>हेडफोन आउटपुटसाठी Bauer स्टीरिओफोनिक-ते-बायनॉरल क्रॉसफीड.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus एन्कोडर जो Bluetooth वर DualSense स्पीकर ऑडिओ चालवतो. Logan Stromberg यांचे.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>क्रॉसहेअर आणि मॅग्निफायर संदर्भ</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>क्रॉस आणि त्याचा ठिपका Skarbo च्या CSGOCrosshair मधून (परवाना प्रकाशित नाही), वर्तुळ, चित्र आणि बाह्यरेखित शैली Crosshair-Overlay मधून (MIT), आणि मॅग्निफायरचा लेन्स आणि पूर्ण स्क्रीन झूम Microsoft च्या Windows-classic-samples मधून (MIT). फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga यांचे DualSense Bluetooth ऑडिओ संशोधन: कंट्रोलर स्पीकर स्ट्रीम ज्यावर चालतो ते पॅकेट वाहतूक. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2354,7 +2358,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>एकके</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>संवेदनशीलता एकक प्रदर्शन. Multiplier हा अंतर्गत × प्रमाण आहे (1 = पायाभूत). DegPerScreenTurn Steam पद्धतीचे आहे: एका पूर्ण स्क्रीन वळणासाठी प्रत्यक्ष कंट्रोलर फिरवण्याचे अंश.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>इझी एम थ्रेशोल्ड</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>उजव्या स्टिकचे विचलन (0–100%) ज्याखाली जायरो आउटपुट शून्य केले जाते. 0 = नेहमी चालू. Steam चा “लक्ष्य साधताना जायरो सक्रिय” अनुभव. वापरकर्त्याने उजवी स्टिक थ्रेशोल्डपलीकडे ढकलली तरच जायरो सक्रिय होतो.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>एंगेज स्टिकचे विचलन (0–100%) ज्याखाली जायरो आउटपुट शून्य केले जाते. 0 = नेहमी चालू. Steam चा “लक्ष्य साधताना जायरो सक्रिय” अनुभव. वापरकर्त्याने ती स्टिक थ्रेशोल्डपलीकडे ढकलली तरच जायरो सक्रिय होतो.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>जायरो</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>जायरो</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>या पॅडचा मोशन सेन्सर माउस आणि स्टिक आउटपुट कसे चालवतो ते समायोजित करा. स्थिर अवस्थेतील ड्रिफ्ट शून्य करण्यासाठी सपाट पृष्ठभागावर कॅलिब्रेट करा, मग संवेदनशीलता, स्मूदिंग आणि एंगेज नियम आवडीनुसार ठरवा.</value></data>
@@ -2404,9 +2408,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>स्मूदिंग विंडो</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>स्मूदिंग-बफर वेळ विंडोची लांबी. मोठी मूल्ये घट्टपणा थ्रेशोल्डखाली अधिक स्मूदिंग करतात. लहान मूल्ये अधिक चपळ वाटतात. डिफॉल्ट 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>लक्ष्य एंगेज बटण</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>जायरो आउटपुट नियंत्रित करणारे बटण. हे बटण दाबून ठेवले असतानाच जायरो सक्रिय होतो. बटण गेट बंद करण्यासाठी ते सेट न करता सोडा. हे आणि उजव्या स्टिकचे विचलन दोन्ही कॉन्फिगर केले असल्यास जायरो सक्रिय होण्यासाठी दोन्ही सक्रिय असणे आवश्यक आहे.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>जायरो आउटपुट नियंत्रित करणारे बटण. एंगेज मोड कसे ते ठरवतो. बटण गेट बंद करण्यासाठी ते सेट न करता सोडा. हे आणि एंगेज स्टिकचे विचलन दोन्ही कॉन्फिगर केले असल्यास जायरो सक्रिय होण्यासाठी दोन्ही सक्रिय असणे आवश्यक आहे.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>एंगेज मोड</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>दाबून ठेवा: एंगेज बटण दाबून ठेवले असताना जायरो सक्रिय. टॉगल: प्रत्येक दाबाने जायरो चालू किंवा बंद होतो आणि सोडल्यावर काहीही होत नाही. टॉगल पोलिंग टिकवर टिकून राहतो आणि प्रोफाइल बदलल्यावर रीसेट होतो.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>दाबून ठेवा: एंगेज बटण दाबून ठेवले असताना जायरो सक्रिय. टॉगल: प्रत्येक दाबाने जायरो चालू किंवा बंद होतो आणि सोडल्यावर काहीही होत नाही. सोडल्यावर लक्ष्य: एंगेज बटण दाबून ठेवले नसताना जायरो सक्रिय. टॉगल पोलिंग टिकवर टिकून राहतो आणि प्रोफाइल बदलल्यावर रीसेट होतो.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>दाबून ठेवा</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>टॉगल</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>सोडल्यावर लक्ष्य</value></data>
@@ -2426,7 +2430,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>वर (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>एंगेज</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>एंगेज बटण, एंगेज दिशा, जायरो चालू, रीसेंटर, इझी एम थ्रेशोल्ड</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>जायरो कधी सक्रिय असेल ते मर्यादित करणारे पर्यायी गेट. उजव्या स्टिकचे विचलन आणि लक्ष्य एंगेज बटण प्रत्येकी कॉन्फिगर करता येते. कॉन्फिगर केलेले प्रत्येक गेट सक्रिय असतानाच जायरो सक्रिय होतो.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>जायरो कधी सक्रिय असेल ते मर्यादित करणारे पर्यायी गेट. एंगेज स्टिकचे विचलन आणि लक्ष्य एंगेज बटण प्रत्येकी कॉन्फिगर करता येते. कॉन्फिगर केलेले प्रत्येक गेट सक्रिय असतानाच जायरो सक्रिय होतो.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>स्थानिक</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>खेळाडू</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>जग</value></data>
@@ -4242,7 +4246,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बास शेकर</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>गेम कंपन बास शेकर किंवा सबवूफरमधून खालच्या स्वरांत वाजवते.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट डिव्हाइस, चॅनेल, गेन, प्रत्येक मोटरसाठी एक स्वर</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense आणि Nintendo Switch Pro व्हर्च्युअल कंट्रोलरसोबत चालते, तसेच रेसिंग व्हीलसारखे फोर्स फीडबॅक असलेले एक्स्टेंडेड व्हर्च्युअल कंट्रोलर आणि Steam Deck Controller (Composite) सोबतही. गेम फीडबॅक आणि टेस्ट रंबल ऑडिओ आउटपुटवरून वाजतात. मॅक्रो कंपन कंट्रोलरवरच राहते.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense आणि Nintendo Switch Pro व्हर्च्युअल कंट्रोलरसोबत चालते, तसेच रेसिंग व्हीलसारखे फोर्स फीडबॅक असलेले एक्स्टेंडेड व्हर्च्युअल कंट्रोलर. हे Steam Deck Controller (Composite), SInput Gamepad आणि Joypad-OS Steam Input Gamepad सोबतही चालते. गेम फीडबॅक आणि टेस्ट रंबल ऑडिओ आउटपुटवरून वाजतात. मॅक्रो कंपन कंट्रोलरवरच राहते.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>कंपन ते ऑडिओ रीसेट करा</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>कंपन ऑडिओ आउटपुटकडे पाठवा</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>या व्हर्च्युअल कंट्रोलरला मिळणारे गेम कंपन आणि फोर्स फीडबॅक निवडलेल्या ऑडिओ आउटपुटवर कमी-वारंवारतेच्या टोन म्हणून वाजवते. बंद केल्याने प्रत्येक सेटिंग तशीच राहते.</value></data>
@@ -4574,7 +4578,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup आणि AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box संदर्भ</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro च्या संमिश्र USB कंट्रोलरसाठी Vadym Hrynchyshyn यांचे USB ट्रान्सपोर्ट. HIDMaestro त्याचा स्वाक्षरीत होस्ट कंट्रोलर ड्रायव्हर स्वतः सोबत ठेवते आणि संमिश्र कंट्रोलर पहिल्यांदा तयार होताना तो इन्स्टॉल करते.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro च्या USB उपकरण असलेल्या कंट्रोलरसाठी Vadym Hrynchyshyn यांचे USB ट्रान्सपोर्ट: Windows on ARM वरील प्रत्येक व्हर्च्युअल कंट्रोलर, आणि x64 वर संमिश्र कंट्रोलर, Steam Controller (2026), Xbox One S: Full प्रोफाइल आणि Joy-Con Charging Grip रूपे. HIDMaestro त्याचा होस्ट कंट्रोलर ड्रायव्हर स्वतः सोबत ठेवते आणि यांपैकी एखादा कंट्रोलर पहिल्यांदा तयार होताना तो इन्स्टॉल करते.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>या स्लॉटचे कोणते अर्धे चालू आहेत ते निवडा. अर्धा बंद केल्यास त्याच्या ओळी लपतात आणि तो पाठवणे थांबवतो, पण त्याचे मॅपिंग राहतात, त्यामुळे पुन्हा चालू केल्यावर ते परत येतात.</value>
   </data>
@@ -4760,7 +4764,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube अडॅप्टिव्ह-ट्रिगर प्रीसेट मूल्ये, Mxater यांची. फक्त तथ्यांसाठी वाचले.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU मोशन अक्ष चिन्हे, त्याच्या UDP डिकोडरशी पडताळलेली. फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU मोशन अक्ष चिन्हे, त्याच्या UDP डिकोडरशी पडताळलेली, आणि कस्टम वेब पॅडच्या कंट्रोलचे आकार, स्क्रीनच्या लहान बाजूनुसार मोजलेले, जसे त्याचा Android ओव्हरले मोजतो. फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Space Sim सुरुवातीच्या प्रोफाइलमागील Elite Dangerous डिफॉल्ट प्रीसेट, Richard Buckle यांचे.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5201,4 +5205,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>पासवर्ड</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>मॅग्निफायर (दाबून ठेवताना)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>हा मॅक्रो दाबून ठेवला असताना मॅग्निफायर दाखवतो, दृश्यावर नेम धरण्यासाठी. तो मॅग्निफायर पानावर सेट करा.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput संदर्भ</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput पॅड सपोर्ट आणि SInput पर्सोनामागील रिपोर्ट, Hand Held Legend च्या SINPUT-LIB-HID (MIT-0) आणि HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) आणि OpenPuck च्या SInput मोडमधून (AGPL-3.0) वाचले. फक्त दस्तऐवजीकरण, कोणताही AGPL कोड समाविष्ट नाही.</value></data>
 </root>

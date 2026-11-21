@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>ໂນດ ແລະ Control Change ສຳລັບຊອບແວດົນຕີ.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>ຕົວຄວບຄຸມ VR ສະເໝືອນຜ່ານ SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>ເພື່ອປ່ຽນປະເພດພາຍຫຼັງ, ຄລິກຊິບປະເພດຢູ່ເທິງຕົວຄວບຄຸມ. ໃຊ້ພຽງຄລິກດຽວ.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ບໍ່ຕອບສະໜອງ. ເບິ່ງບັດຂອງມັນໃນການຕັ້ງຄ່າ.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ຕ້ອງໃຊ້ SteamVR. ຕິດຕັ້ງມັນຈາກບັດຂອງມັນໃນການຕັ້ງຄ່າ.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ບໍ່ຕອບສະໜອງ. ເບິ່ງມັນໃນການຕັ້ງຄ່າ, ພາຍໃຕ້ໄດຣເວີ.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ຕ້ອງໃຊ້ SteamVR. ຕິດຕັ້ງມັນຈາກການຕັ້ງຄ່າ, ພາຍໃຕ້ໄດຣເວີ.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>ມີຕົວຄວບຄຸມ VR ຢູ່ແລ້ວ. ໜຶ່ງຕົວຂັບເຄື່ອນທັງສອງມື.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ມີຕົວຄວບຄຸມ {0} ຕົວ, ເຊິ່ງເປັນຈຳນວນສູງສຸດທີ່ມັນເຮັດວຽກໄດ້. ລຶບອັນໜຶ່ງເພື່ອເພີ່ມອັນໃໝ່.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ໂປຣໄຟລ໌</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ສູງສຸດ {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>ແບບຂະຫຍາຍ (ສູງສຸດ {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>ແປ້ນພິມ + ເມົ້າ (ສູງສຸດ {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ບໍ່ໄດ້ເຮັດວຽກ, ເບິ່ງບັດ Windows MIDI Services ໃນການຕັ້ງຄ່າ)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ບໍ່ໄດ້ເຮັດວຽກ, ເບິ່ງ Windows MIDI Services ໃນການຕັ້ງຄ່າ, ພາຍໃຕ້ໄດຣເວີ)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (ສູງສຸດ {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (ຕ້ອງໃຊ້ SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (ສູງສຸດ {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ສົ່ງການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມໄປຫາອີມູເລເຕີທີ່ອ່ານແຫຼ່ງການເຄື່ອນໄຫວ DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>ຮັບເອັບເຟັກທຣິກເກີປັບຕົວໄດ້ ແລະ ແສງໄຟຈາກມອດເກມທີ່ຂຽນສຳລັບ DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ເປີດການສົ່ງເທເລເມທຣີໃນເກມ ແລະ ຕັ້ງໃຫ້ສົ່ງມາຫາ PC ນີ້ ແລະ ພອດນີ້.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ໃນອີມູເລເຕີ, ເພີ່ມແຫຼ່ງການເຄື່ອນໄຫວທີ່ທີ່ຢູ່ຂອງ PC ນີ້ ແລະ ພອດນີ້.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ເອັບເຟັກຂອງມອດຈະໄປຮອດທຸກຕົວຄວບຄຸມທີ່ມີຮາດແວຮອງຮັບ.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ໃນອີມູເລເຕີເທິງ PC ນີ້, ເພີ່ມແຫຼ່ງການເຄື່ອນໄຫວທີ່ 127.0.0.1 ແລະ ພອດນີ້.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ມອດຈະໄປຮອດແຕ່ລະຕົວຄວບຄຸມສະເໝືອນທີ່ມີ DualSense ຫຼື DualShock 4 ເຊື່ອມຕໍ່ຢູ່, ແລະ ເອັບເຟັກຂອງມັນຈະຫຼິ້ນໃນທຸກຕົວຄວບຄຸມຢູ່ທີ່ນັ້ນທີ່ມີຮາດແວຮອງຮັບ.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ທ່າຂອງຫົວແມ່ນແຖວ ຕົວຕິດຕາມຫົວ ໃນໜ້າ [ອຸປະກອນ]. ແມັບການຫັນຫົວຊ້າຍຂວາໃສ່ແກນສະຕິກໃນສ່ວນ ການແມັບ ຂອງຕົວຄວບຄຸມ.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ຄ່າເຫຼົ່ານີ້ແມ່ນແຖວ ເທເລເມທຣີເກມ ໃນໜ້າ [ອຸປະກອນ]. ແມັບພວກມັນໃນສ່ວນ ການແມັບ ຂອງຕົວຄວບຄຸມ ຫຼື ໃຊ້ພວກມັນເພື່ອເປີດໃຊ້ມາໂຄຣ.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ຕຳແໜ່ງ, ຂະໜາດ ແລະ ຄວາມທຶບຂອງເມນູແມ່ນຕັ້ງຢູ່ໃນເມນູເອງ, ໃນສ່ວນ [ມາໂຄຣ ແລະ ເມນູ] ຂອງຕົວຄວບຄຸມ.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ຖອນສິດ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ຖອນສິດທັງໝົດ</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ໂອເວີເລທັດແພດ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation, ໃຊ້ກັບໜ້າຈໍສຳຜັດ ຫຼື ເມົ້າ.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation, ໃຊ້ກັບໜ້າຈໍສຳຜັດ.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ເປີດໃຊ້ໂອເວີເລທັດແພດ</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ຄວາມທຶບ</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ຄືນຄ່າຕຳແໜ່ງ</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>ອິນພຸດ ແລະ ການລະບຸລາຍການຕົວຄວບຄຸມ.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ອິນພຸດແປ້ນພິມ ແລະ ເມົ້າແຍກຕາມອຸປະກອນ</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>ໂຄງຮ່າງຕົວຄວບຄຸມເວັບແບບກຳນົດເອງຈະຮັກສາໄລຍະຫ່າງຂອງແຕ່ລະກຸ່ມປຸ່ມຈາກຂອບທີ່ໃກ້ກວ່າຂອງໜ້າຈໍທີ່ກວ້າງກວ່າ ຄືກັບທີ່ໂອເວີເລຂອງ RetroArch ເລື່ອນສອງເຄິ່ງຂອງມັນ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>ເອົາພຸດອຸປະກອນ MIDI ສະເໝືອນ (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>ການປະສົມສຽງຂ້າມຊ່ອງຈາກສະເຕຣິໂອເປັນແບບສອງຫູ ຂອງ Bauer ສຳລັບເອົາພຸດຫູຟັງ.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>ຕົວເຂົ້າລະຫັດ Opus ທີ່ຂຽນດ້ວຍ C# ລ້ວນ ເຊິ່ງສົ່ງສຽງລຳໂພງຂອງ DualSense ຜ່ານ Bluetooth. ໂດຍ Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງເປົ້າເລັງ ແລະ ແວ່ນຂະຫຍາຍ</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>ກາກບາດ ແລະ ຈຸດຂອງມັນຈາກ CSGOCrosshair ຂອງ Skarbo (ບໍ່ໄດ້ເຜີຍແຜ່ໃບອະນຸຍາດ), ຮູບແບບວົງມົນ, ຮູບພາບ ແລະ ເສັ້ນຂອບຈາກ Crosshair-Overlay (MIT) ແລະ ໂໝດເລນ ແລະ ການຊູມເຕັມໜ້າຈໍຂອງແວ່ນຂະຫຍາຍຈາກ Windows-classic-samples ຂອງ Microsoft (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>ການຄົ້ນຄວ້າສຽງ Bluetooth ຂອງ DualSense ໂດຍ egormanga: ການຂົນສົ່ງແພັກເກັດທີ່ສະຕຣີມລຳໂພງຂອງຕົວຄວບຄຸມໃຊ້. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2356,7 +2360,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>ຫົວໜ່ວຍ</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>ຫົວໜ່ວຍສະແດງຄວາມອ່ອນໄຫວ. ຕົວຄູນ ແມ່ນມາດຕາສ່ວນ × ພາຍໃນ (1 = ພື້ນຖານ). DegPerScreenTurn ແມ່ນແບບ Steam: ອົງສາຂອງການໝູນຕົວຄວບຄຸມຕົວຈິງຕໍ່ການຫັນໜ້າຈໍເຕັມໜຶ່ງຮອບ.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>ຄ່າເກນການເລັງງ່າຍ</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ການເບນຂອງສະຕິກຂວາ (0–100%) ທີ່ຕ່ຳກວ່ານັ້ນເອົາພຸດໄຈໂຣຈະເປັນສູນ. 0 = ເປີດຕະຫຼອດ. ຄວາມຮູ້ສຶກ “ໄຈໂຣເຮັດວຽກຂະນະເລັງ” ແບບ Steam. ໄຈໂຣທຳງານສະເພາະເມື່ອຜູ້ໃຊ້ດັນສະຕິກຂວາເກີນຄ່າເກນ.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ການເບນຂອງສະຕິກເປີດໃຊ້ (0–100%) ທີ່ຕ່ຳກວ່ານັ້ນເອົາພຸດໄຈໂຣຈະເປັນສູນ. 0 = ເປີດຕະຫຼອດ. ຄວາມຮູ້ສຶກ “ໄຈໂຣເຮັດວຽກຂະນະເລັງ” ແບບ Steam. ໄຈໂຣທຳງານສະເພາະເມື່ອຜູ້ໃຊ້ດັນສະຕິກນັ້ນເກີນຄ່າເກນ.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ໄຈໂຣ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ໄຈໂຣ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ປັບວິທີທີ່ເຊັນເຊີການເຄື່ອນໄຫວຂອງແພດນີ້ຂັບເອົາພຸດເມົ້າ ແລະ ສະຕິກ. ປັບທຽບເທິງພື້ນຮາບເພື່ອລົບການເລື່ອນຂະນະຢູ່ນິ່ງ, ຈາກນັ້ນປັບຄວາມອ່ອນໄຫວ, ການເຮັດໃຫ້ລື່ນ ແລະ ກົດການເປີດໃຊ້ງານຕາມໃຈມັກ.</value></data>
@@ -2406,9 +2410,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>ຊ່ວງເວລາການເຮັດໃຫ້ລື່ນ</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>ຄວາມຍາວຂອງຊ່ວງເວລາບັບເຟີການເຮັດໃຫ້ລື່ນ. ຄ່າໃຫຍ່ຂຶ້ນຈະເຮັດໃຫ້ລື່ນຫຼາຍຂຶ້ນເມື່ອຕ່ຳກວ່າຄ່າເກນການກະຊັບ. ຄ່ານ້ອຍລົງຮູ້ສຶກວ່ອງໄວກວ່າ. ຄ່າເລີ່ມຕົ້ນ 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>ປຸ່ມເປີດການເລັງ</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ຄວບຄຸມເອົາພຸດໄຈໂຣ. ໄຈໂຣທຳງານສະເພາະຂະນະກົດປຸ່ມນີ້ຄ້າງໄວ້. ປ່ອຍວ່າງໄວ້ເພື່ອປິດເງື່ອນໄຂປຸ່ມ. ເມື່ອຕັ້ງທັງປຸ່ມນີ້ ແລະ ການເບນສະຕິກຂວາ, ທັງສອງຕ້ອງເຮັດວຽກເພື່ອໃຫ້ໄຈໂຣທຳງານ.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ປຸ່ມທີ່ຄວບຄຸມເອົາພຸດໄຈໂຣ. ໂໝດການເປີດໃຊ້ກຳນົດວ່າຄວບຄຸມແນວໃດ. ປ່ອຍວ່າງໄວ້ເພື່ອປິດເງື່ອນໄຂປຸ່ມ. ເມື່ອຕັ້ງທັງປຸ່ມນີ້ ແລະ ການເບນສະຕິກເປີດໃຊ້, ທັງສອງຕ້ອງເຮັດວຽກເພື່ອໃຫ້ໄຈໂຣທຳງານ.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>ໂໝດການເປີດໃຊ້</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ກົດຄ້າງ: ໄຈໂຣທຳງານຂະນະກົດປຸ່ມເປີດໃຊ້ຄ້າງໄວ້. ສະຫຼັບ: ການກົດແຕ່ລະຄັ້ງຈະເປີດ ຫຼື ປິດໄຈໂຣ, ແລະ ການປ່ອຍບໍ່ມີຜົນ. ສະຫຼັບ ຄົງສະຖານະຂ້າມຮອບການອ່ານຂໍ້ມູນ ແລະ ຄືນຄ່າເມື່ອປ່ຽນໂປຣໄຟລ໌.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ກົດຄ້າງ: ໄຈໂຣທຳງານຂະນະກົດປຸ່ມເປີດໃຊ້ຄ້າງໄວ້. ສະຫຼັບ: ການກົດແຕ່ລະຄັ້ງຈະເປີດ ຫຼື ປິດໄຈໂຣ, ແລະ ການປ່ອຍບໍ່ມີຜົນ. ປ່ອຍເພື່ອເລັງ: ໄຈໂຣທຳງານຂະນະບໍ່ໄດ້ກົດປຸ່ມເປີດໃຊ້. ສະຫຼັບ ຄົງສະຖານະຂ້າມຮອບການອ່ານຂໍ້ມູນ ແລະ ຄືນຄ່າເມື່ອປ່ຽນໂປຣໄຟລ໌.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ກົດຄ້າງ</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>ປ່ອຍເພື່ອເລັງ</value></data>
@@ -2428,7 +2432,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ຂຶ້ນ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ການເປີດໃຊ້</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ປຸ່ມເປີດການເລັງ, ໂໝດການເປີດໃຊ້, ເປີດໄຈໂຣ, ຕັ້ງຈຸດກາງໃໝ່, ຄ່າເກນການເລັງງ່າຍ</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ເງື່ອນໄຂທາງເລືອກທີ່ຈຳກັດວ່າໄຈໂຣເຮັດວຽກເມື່ອໃດ. ຕັ້ງຄ່າການເບນສະຕິກຂວາ ແລະ ປຸ່ມເປີດການເລັງໄດ້ແຕ່ລະອັນ. ໄຈໂຣທຳງານສະເພາະເມື່ອທຸກເງື່ອນໄຂທີ່ຕັ້ງໄວ້ເຮັດວຽກ.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ເງື່ອນໄຂທາງເລືອກທີ່ຈຳກັດວ່າໄຈໂຣເຮັດວຽກເມື່ອໃດ. ຕັ້ງຄ່າການເບນຂອງສະຕິກເປີດໃຊ້ ແລະ ປຸ່ມເປີດການເລັງໄດ້ແຕ່ລະອັນ. ໄຈໂຣທຳງານສະເພາະເມື່ອທຸກເງື່ອນໄຂທີ່ຕັ້ງໄວ້ເຮັດວຽກ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ທ້ອງຖິ່ນ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ຜູ້ຫຼິ້ນ</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ໂລກ</value></data>
@@ -4233,7 +4237,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ເບສເຊກເກີ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ຫຼິ້ນການສັ່ນຂອງເກມເປັນສຽງໂທນຕ່ຳຜ່ານເບສເຊກເກີ ຫຼື ຊັບວູຟເຟີ.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ອຸປະກອນເອົາພຸດ, ຊ່ອງສຽງ, ອັດຕາຂະຫຍາຍ, ໂທນສຽງຂອງແຕ່ລະມໍເຕີ</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບຕົວຄວບຄຸມສະເໝືອນ Xbox, DualShock 3, DualShock 4 / DualSense ແລະ Nintendo Switch Pro, ພ້ອມທັງຕົວຄວບຄຸມສະເໝືອນ Extended ທີ່ມີແຮງສະທ້ອນກັບ ເຊັ່ນ ພວງມາໄລແຂ່ງລົດ, ແລະ Steam Deck Controller (Composite). ການຕອບສະໜອງຂອງເກມ ແລະ ທົດສອບການສັ່ນ ຈະຫຼິ້ນຜ່ານເອົາພຸດສຽງ. ການສັ່ນຈາກມາໂຄຣຍັງຢູ່ໃນຕົວຄວບຄຸມ.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບຕົວຄວບຄຸມສະເໝືອນ Xbox, DualShock 3, DualShock 4 / DualSense ແລະ Nintendo Switch Pro, ພ້ອມທັງຕົວຄວບຄຸມສະເໝືອນ Extended ທີ່ມີແຮງສະທ້ອນກັບ ເຊັ່ນ ພວງມາໄລແຂ່ງລົດ. ມັນຍັງໃຊ້ໄດ້ກັບ Steam Deck Controller (Composite), SInput Gamepad ແລະ Joypad-OS Steam Input Gamepad. ການຕອບສະໜອງຂອງເກມ ແລະ ທົດສອບການສັ່ນ ຈະຫຼິ້ນຜ່ານເອົາພຸດສຽງ. ການສັ່ນຈາກມາໂຄຣຍັງຢູ່ໃນຕົວຄວບຄຸມ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ຄືນຄ່າການສັ່ນເປັນສຽງ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ສົ່ງການສັ່ນໄປຫາເອົາພຸດສຽງ</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>ຫຼິ້ນການສັ່ນ ແລະ ແຮງສະທ້ອນກັບຂອງເກມທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ໄດ້ຮັບ ເປັນສຽງໂທນຄວາມຖີ່ຕ່ຳໃນເອົາພຸດສຽງທີ່ເລືອກ. ການປິດມັນຈະເກັບທຸກການຕັ້ງຄ່າໄວ້.</value></data>
@@ -4558,7 +4562,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ອິນເຕີເຟດຣັນທາມ, ໂຄງສ້າງຂໍ້ມູນ ແລະ ຄີຣີຈິສຕຣີ ທີ່ຢູ່ເບື້ອງຫຼັງອິນພຸດຂອງແວ່ນ VR ແລະ ຕົວຄວບຄຸມການເຄື່ອນໄຫວ ອ້າງອີງຈາກເຮດເດີ Khronos OpenXR-SDK (Apache-2.0) ແລະ ກວດທຽບກັບ VirtualDesktop-OpenXR (MIT) PadForge ສື່ສານກັບຣັນທາມທີ່ທ່ານຕິດຕັ້ງເອງ ແລະ ບໍ່ໄດ້ລວມໂຄດ Khronos ໃດໆ</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງການສົ່ງອອກຂອງອຸປະກອນຕໍ່ພ່ວງ</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>ເຟຣມແຮັບຕິກ, ແສງໄຟ, ການຈັບຄູ່ ແລະ ແບັດເຕີຣີຂອງ Logitech HID++ ອ້າງອີງຈາກ Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), ເອກະສານຂອງ OpenLogi, keyleds (GPL-3.0-or-later), g810-led ແລະ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ແລະ g915x-heatmap (MIT) ພ້ອມບັນທຶກຈາກ OpenRGB-Fixed (GPL-2.0-or-later) ແລະ HaloDaemon-plugins ລະຫັດຜະລິດຕະພັນ ແລະ ລາຍງານແສງໄຟຂອງ Razer ອ້າງອີງຈາກ OpenRazer (GPL-2.0-or-later) ແລະ OpenRGB (GPL-2.0-or-later) ແລະ ກວດທຽບກັບ uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ແລະ razer-life (GPL-2.0-or-later) ພ້ອມກົນໄກລັອກທີ່ເຄື່ອງມືເຫຼົ່ານັ້ນໃຊ້ຮ່ວມກັນຈາກ Aurora (MIT) ແລະ LibreHardwareMonitor (MPL-2.0) ລະຫັດຜະລິດຕະພັນ ແລະ ລາຍງານແສງໄຟຂອງ SteelSeries ອ້າງອີງຈາກ OpenRGB ແລະ rivalcfg (WTFPL) ແລະ ກວດທຽບກັບປລັກອິນຂອງ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ແລະ Wine (LGPL-2.1-or-later) ລາຍງານ HID LampArray ອ້າງອີງຈາກ HID Usage Tables ຂອງ USB-IF, ເອກະສານ Dynamic Lighting ຂອງ Microsoft ແລະ ຕົວຢ່າງຂອງມັນ ArduinoHidForWindows ແລະ RP2040MacropadHidSample (MIT) ແລະ ກວດທຽບກັບ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ແລະ Apex3TklDynamicLighting (ທັງໝົດເປັນ MIT), acer-predator-helios-rgb (GPL-2.0-only) ແລະ crosrgbkblight ລາຍງານການສັ່ນຂອງ iFeel ອ້າງອີງຈາກ iFeel, ໄດຣເວີ iFeel ຂອງ Linux (GPL-2.0-or-later) ແລະ Logitech-iFeel-Vibration-POC ພ້ອມກົດຂອງ descriptor ຈາກ Linux kernel (GPL-2.0-or-later) ແລະ ສະເກວຄວາມແຮງຈາກໄດຣເວີ MouseWare 9.80 ຂອງ Logitech ຕົວຈັດການການສຳຜັດ ແລະ ສີຈາກ GameSense SDK ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>ເຟຣມແຮັບຕິກ, ແສງໄຟ, ການຈັບຄູ່ ແລະ ແບັດເຕີຣີຂອງ Logitech HID++ ອ້າງອີງຈາກ Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), ເອກະສານຂອງ OpenLogi, keyleds (GPL-3.0-or-later), g810-led ແລະ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) ແລະ g915x-heatmap (MIT) ພ້ອມບັນທຶກຈາກ OpenRGB-Fixed (GPL-2.0-or-later) ແລະ HaloDaemon-plugins ລະຫັດຜະລິດຕະພັນ ແລະ ລາຍງານແສງໄຟຂອງ Razer ອ້າງອີງຈາກ OpenRazer (GPL-2.0-or-later) ແລະ OpenRGB (GPL-2.0-or-later) ແລະ ກວດທຽບກັບ uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT ຕອນທີ່ອ່ານ), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) ແລະ razer-life (GPL-2.0-or-later) ພ້ອມກົນໄກລັອກທີ່ເຄື່ອງມືເຫຼົ່ານັ້ນໃຊ້ຮ່ວມກັນຈາກ Aurora (MIT) ແລະ LibreHardwareMonitor (MPL-2.0) ລະຫັດຜະລິດຕະພັນ ແລະ ລາຍງານແສງໄຟຂອງ SteelSeries ອ້າງອີງຈາກ OpenRGB ແລະ rivalcfg (WTFPL) ແລະ ກວດທຽບກັບປລັກອິນຂອງ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) ແລະ Wine (LGPL-2.1-or-later) ລາຍງານ HID LampArray ອ້າງອີງຈາກ HID Usage Tables ຂອງ USB-IF, ເອກະສານ Dynamic Lighting ຂອງ Microsoft ແລະ ຕົວຢ່າງຂອງມັນ ArduinoHidForWindows ແລະ RP2040MacropadHidSample (MIT) ແລະ ກວດທຽບກັບ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ແລະ Apex3TklDynamicLighting (ທັງໝົດເປັນ MIT), acer-predator-helios-rgb (GPL-2.0-only) ແລະ crosrgbkblight ລາຍງານການສັ່ນຂອງ iFeel ອ້າງອີງຈາກ iFeel, ໄດຣເວີ iFeel ຂອງ Linux (GPL-2.0-or-later) ແລະ Logitech-iFeel-Vibration-POC ພ້ອມກົດຂອງ descriptor ຈາກ Linux kernel (GPL-2.0-or-later) ແລະ ສະເກວຄວາມແຮງຈາກໄດຣເວີ MouseWare 9.80 ຂອງ Logitech ຕົວຈັດການການສຳຜັດ ແລະ ສີຈາກ GameSense SDK ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>ລຳດັບການເອີ້ນ WinMM ທີ່ຢູ່ເບື້ອງຫຼັງ MIDI API ແບບເກົ່າ: ການເປີດພອດ, ການສົ່ງຂໍ້ມູນໄປຫາມັນ ແລະ ການປິດມັນ ອ້າງອີງຈາກ PortMidi (MIT, ໂດຍ Ross Bencina, Phil Burk ແລະ Roger B. Dannenberg) ແລະ RtMidi (ໃບອະນຸຍາດ RtMidi ແບບ MIT, ໂດຍ Gary P. Scavone) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ Logitech G-key SDK</value></data>
@@ -4568,7 +4572,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API ທີ່ຢູ່ເບື້ອງຫຼັງ “ອ່ານອະແດັບເຕີ Bliss-Box” ອ້າງອີງຈາກ API Tool ຂອງ Bliss-Box LLC (ແບບ BSD, ແຈກຢາຍຕໍ່ໄດ້ໂດຍບໍ່ເສຍຄ່າ) ແລະ DeviceBuddy (ເປີດໃຫ້ເບິ່ງຊອດ, Bliss-Box LLC) ພ້ອມຊື່ປຸ່ມຈາກໄຟລ໌ Bliss-Box ໃນ fork retroarch-joypad-autoconfig ຂອງ SteveFox1620, checksum ຂອງ Controller Pak ທີ່ກວດທຽບກັບ libdragon (Unlicense) ແລະ ການຕອບກັບຂອງແພດ PlayStation ຈາກ psx-spx ແລະ ໄດຣເວີ psxpad-spi ຂອງ Linux (GPL-2.0-or-later) ຊື່ຕົວຄວບຄຸມ ແລະ ບັນທຶກການຮອງຮັບຍັງມາຈາກລາຍການຄວາມເຂົ້າກັນໄດ້ຂອງ Bliss-Box LLC ແລະ ພຶດຕິກຳຂອງອະແດັບເຕີໄດ້ຖືກກວດທຽບກັບເຟີມແວຂອງມັນ ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ການຮັບສົ່ງ USB ໂດຍ Vadym Hrynchyshyn ສຳລັບຕົວຄວບຄຸມ USB ແບບຄອມໂພສິດຂອງ HIDMaestro ໄດຣເວີຕົວຄວບຄຸມໂຮສທີ່ລົງລາຍເຊັນແລ້ວຂອງມັນມາພ້ອມ HIDMaestro ແລະ HIDMaestro ຕິດຕັ້ງມັນໃນຄັ້ງທຳອິດທີ່ສ້າງຕົວຄວບຄຸມແບບຄອມໂພສິດ</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ການຮັບສົ່ງ USB ໂດຍ Vadym Hrynchyshyn ສຳລັບຕົວຄວບຄຸມ HIDMaestro ທີ່ເປັນອຸປະກອນ USB: ຕົວຄວບຄຸມສະເໝືອນທຸກຕົວໃນ Windows on ARM ແລະ ໃນ x64 ແມ່ນຕົວຄວບຄຸມແບບຄອມໂພສິດ, Steam Controller (2026), ໂປຣໄຟລ໌ Xbox One S: Full ແລະ ຮູບແບບ Joy-Con Charging Grip ໄດຣເວີຕົວຄວບຄຸມໂຮສຂອງມັນມາພ້ອມ HIDMaestro ແລະ HIDMaestro ຕິດຕັ້ງມັນໃນຄັ້ງທຳອິດທີ່ສ້າງໜຶ່ງໃນຕົວຄວບຄຸມເຫຼົ່ານີ້</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>ເລືອກວ່າເຄິ່ງໃດຂອງຊ່ອງນີ້ເຮັດວຽກ ການປິດເຄິ່ງໜຶ່ງຈະເຊື່ອງແຖວຂອງມັນ ແລະ ຢຸດບໍ່ໃຫ້ມັນສົ່ງ ແຕ່ຍັງເກັບການແມັບໄວ້ ເມື່ອເປີດຄືນຈະກູ້ຄືນມາ</value>
   </data>
@@ -4753,7 +4757,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>ຄ່າພຣີເຊັດທຣິກເກີປັບຕົວໄດ້ແບບ GameCube ໂດຍ Mxater ອ່ານເພື່ອເອົາຂໍ້ເທັດຈິງເທົ່ານັ້ນ</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>ເຄື່ອງໝາຍບວກລົບຂອງແກນການເຄື່ອນໄຫວ DSU ທີ່ກວດທຽບກັບຕົວຖອດລະຫັດ UDP ຂອງມັນ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>ເຄື່ອງໝາຍບວກລົບຂອງແກນການເຄື່ອນໄຫວ DSU ທີ່ກວດທຽບກັບຕົວຖອດລະຫັດ UDP ຂອງມັນ ແລະ ຂະໜາດປຸ່ມຂອງໂຄງຮ່າງຕົວຄວບຄຸມເວັບແບບກຳນົດເອງ ທີ່ວັດທຽບກັບດ້ານສັ້ນຂອງໜ້າຈໍ ຄືກັບທີ່ໂອເວີເລ Android ຂອງມັນວັດ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ພຣີເຊັດຄ່າເລີ່ມຕົ້ນຂອງ Elite Dangerous ທີ່ຢູ່ເບື້ອງຫຼັງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ຈຳລອງອະວະກາດ” ໂດຍ Richard Buckle</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4835,6 +4839,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>ລຳດັບເລີ່ມ ແລະ ຢຸດ Ring-Con ທີ່ຢູ່ເບື້ອງຫຼັງໄດຣເວີ Switch ຂອງ fork SDL ແລະ ສະເກວແຮງດຶງທີ່ PadForge ອ່ານ ອ້າງອີງຈາກ demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy ໂດຍ Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) ແລະ RingconProtocolDebug (Apache-2.0) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງຕົວຄວບຄຸມແບບອະນຸກົມ</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>ໂປຣໂຕຄອນທີ່ຢູ່ເບື້ອງຫຼັງໄດຣເວີແບບອະນຸກົມຂອງ fork SDL ສຳລັບຕົວຄວບຄຸມຫົກແກນ, ເກມແພດ, ຈອຍສະຕິກການບິນ, ເຄື່ອງສົ່ງສັນຍານ RC, ແຜງຄວບຄຸມການບິນ ແລະ ເຄື່ອງອອກກຳລັງກາຍ ອ້າງອີງຈາກ Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball ໂດຍ John E. Stone (ແບບ BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) ແລະ XPComboTest (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>ລາຍງານທີ່ຢູ່ເບື້ອງຫຼັງການຮອງຮັບເກມແພດ SInput ແລະ ຕົວຄວບຄຸມສະເໝືອນ SInput ອ້າງອີງຈາກ SINPUT-LIB-HID (MIT-0) ແລະ HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ຂອງ Hand Held Legend ແລະ ໂໝດ SInput ຂອງ OpenPuck (AGPL-3.0) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ AGPL ຖືກລວມມາ</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງອຸປະກອນ USB ພິເສດ</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>ໂປຣໂຕຄອນທີ່ຢູ່ເບື້ອງຫຼັງໄດຣເວີຂອງ fork SDL ສຳລັບສະຖານີຖານ Intel Wireless Series, ຕົວຮັບສັນຍານ Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 ແລະ 3 ແລະ ຫົວໜ່ວຍຂອງເຄື່ອງເທຣນເນີ Tacx ອ້າງອີງຈາກ antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) ແລະ xbox360bb (GPL-2.0-or-later) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງຕົວຄວບຄຸມລົດໄຟ</value></data>

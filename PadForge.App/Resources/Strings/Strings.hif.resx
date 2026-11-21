@@ -1089,7 +1089,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Music software ke liye note aur control change.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR se virtual VR controller.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Baad me type badle ke liye, controller pe type chip click karo. Khaali ek click lage.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR chahi. Settings me uske card se install karo.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR chahi. Settings me Driver ke niche se install karo.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ek VR controller pahile se hai. Ek hi dono haath chalaae.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ke paas {0} controller hai, jitna uu chalaae sake. Dusra add kare ke liye ek delete karo.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Aur type: [{0}, {1}, {2} aur {3}]</value></data>
@@ -1179,4 +1179,6 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Lagao</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ek custom web pad chauda screen pe har cluster ke uske nagich wala kinara se same duri pe rakhta hai, jaise RetroArch ke overlay apan dui aadha ke alag karta hai. Khaali documentation ke rakam padha gaya, koi GPL code saath me nai jaata hai.</value></data>
 </root>

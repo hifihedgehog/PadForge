@@ -1852,7 +1852,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Préampli, ba bande, kokotisa</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette adaptative mpe ya mwinda uta na ba mod ya masano oyo ekomamaki mpo na DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungola bobimisi ya télémétrie na lisano mpe tinda yango na PC oyo mpe na port oyo.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ba effet ya mod ekomaka na manette nyonso oyo ezali na matériel mpo na yango.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mod ekomaka na manette virtuelle nyonso oyo ezali na DualSense to DualShock 4 oyo ekangani, mpe ba effet na yango esalemaka kuna na manette nyonso oyo ezali na matériel mpo na yango.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ezalela ya motó ezali molongo Head Tracker na [Ba appareil]. Tia yaw ya motó na axe ya stick na eteni Ba assignation ya manette.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ba motuya ezali molongo Game Telemetry na [Ba appareil]. Tia yango na eteni Ba assignation ya manette to salela yango mpo na kobandisa ba macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Esika, monene mpe opacité ya menu moko moko ebongisamaka na menu yango, na eteni [Ba macro na ba menu] ya manette.</value></data>
@@ -1902,8 +1902,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ba note mpe ba control change mpo na ba logiciel ya miziki.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Ba manette VR ya virtuel na nzela ya SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Mpo na kobongola lolenge sima, fina chip ya lolenge na manette. Esengeli kofina mbala moko.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ezali koyanola te. Tala carte na yango na Paramètres.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Esengeli SteamVR. Tia yango uta na carte na yango na Paramètres.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ezali koyanola te. Tala yango na Paramètres, na nse ya Ba pilote.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Esengeli SteamVR. Tia yango uta na Paramètres, na nse ya Ba pilote.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Manette VR moko ezali kala. Moko etambwisaka maboko mibale.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ezali na ba manette {0}, motango monene oyo ekoki kosalisa. Longola moko mpo na kobakisa mosusu.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Ba lolenge mosusu: [{0}, {1}, {2} mpe {3}]</value></data>
@@ -2032,4 +2032,10 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Ezimi</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Zone morte ya kati</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Na nse ya eteni oyo ya mobembo, input etangami lokola ezali na katikati.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Manette web personnalisée ebatelaka distance ya groupe moko moko na bord ya écran oyo ezali pene na yango, na écran ya monene koleka, ndenge ba overlay ya RetroArch etambwisaka ba ndambo na yango mibale. Etangami lokola documentation kaka, code ya GPL moko te ezali na kati.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Ba référence ya viseur mpe ya loupe</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Croix mpe point na yango euti na CSGOCrosshair ya Skarbo (licence moko te emonisami), ba style Cercle, image mpe contour euti na Crosshair-Overlay (MIT), mpe Lentille mpe zoom ya écran mobimba ya loupe euti na Windows-classic-samples ya Microsoft (MIT). Documentation kaka, code moko te ezali na kati.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Ba référence ya SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ba rapport oyo ezali na nse ya lisungi ya ba manette SInput mpe ya persona SInput, etangami na SINPUT-LIB-HID (MIT-0) mpe HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ya Hand Held Legend mpe na mode SInput ya OpenPuck (AGPL-3.0). Documentation kaka, code ya AGPL moko te ezali na kati.</value></data>
 </root>

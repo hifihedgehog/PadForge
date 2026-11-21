@@ -2179,8 +2179,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota sy CC ho an'ny rindranasa mozika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Contrôleur VR virtoaly amin'ny alalan'ny SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Raha hanova ny karazana any aoriana, tsindrio ny marika karazana eo amin'ny contrôleur. Tsindry iray ihany no ilaina.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Tsy mamaly ny Windows MIDI Services. Jereo ny karatra misy azy ao amin'ny Fikirakirana.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Mila SteamVR. Apetraho avy amin'ny karatra misy azy ao amin'ny Fikirakirana.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Tsy mamaly ny Windows MIDI Services. Jereo ao amin'ny Fikirakirana, ao amin'ny Pilote.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Mila SteamVR. Apetraho avy ao amin'ny Fikirakirana, ao amin'ny Pilote.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Efa misy contrôleur VR. Iray ihany no mitondra ny tanana roa.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Ampifandraiso contrôleur Bluetooth</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Atombohy amin'ny profil efa vonona</value></data>
@@ -2279,4 +2279,6 @@
   <data name="Mapping_SourceDeadZoneShape" xml:space="preserve"><value>Endriky ny deadzone</value></data>
   <data name="Mapping_SourceDeadZoneShape_Tooltip" xml:space="preserve"><value>Ny Tsy miasa dia tsy manova ny vakiana. Ny Axial dia mandrefy ity axe ity irery. Ny Radial dia mandrefy miaraka ny axe roan'ny tsorakazo.</value></data>
   <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Tsy miasa</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ny takelaka web namboarina dia mitazona ny elanelan'ny vondrona tsirairay amin'ny sisiny akaiky indrindra amin'ny efijery malalaka kokoa, toy ny fanalavitan'ny overlay an'ny RetroArch ny tapany roa. Novakiana ho antontan-taratasy fotsiny, tsy misy kaody GPL ampidirina.</value></data>
 </root>

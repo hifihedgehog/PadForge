@@ -151,8 +151,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>음악 소프트웨어용 노트와 컨트롤 체인지입니다.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR을 통한 가상 VR 컨트롤러입니다.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>나중에 유형을 바꾸려면 컨트롤러의 유형 칩을 클릭하세요. 한 번의 클릭이면 됩니다.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services가 응답하지 않습니다. 설정의 해당 카드를 확인하세요.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR이 필요합니다. 설정의 해당 카드에서 설치하세요.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services가 응답하지 않습니다. 설정의 드라이버에서 확인하세요.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR이 필요합니다. 설정의 드라이버에서 설치하세요.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>이미 VR 컨트롤러가 있습니다. 하나로 양손을 모두 처리합니다.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge는 컨트롤러를 최대 {0}개까지 실행할 수 있으며 모두 사용 중입니다. 하나를 삭제하면 추가할 수 있습니다.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>프로필</value></data>
@@ -192,7 +192,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (최대 {0}개)</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extended (최대 {0}개)</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>키보드 + 마우스 (최대 {0}개)</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (실행되지 않음. 설정의 Windows MIDI Services 카드를 확인하세요)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (실행되지 않음. 설정의 드라이버에서 Windows MIDI Services를 확인하세요)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (최대 {0}개)</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR 필요)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (최대 {0}개)</value></data>
@@ -391,7 +391,7 @@
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>휴대폰이나 태블릿을 컨트롤러로 사용합니다. 휴대폰에는 설치할 것이 없습니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>터치 화면이나 마우스로 쓰는, PlayStation 터치패드 게임용 화면 터치 표면입니다.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>터치 화면으로 쓰는, PlayStation 터치패드 게임용 화면 터치 표면입니다.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 활성화</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>불투명도</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>위치 재설정</value></data>
@@ -596,6 +596,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>컨트롤러 입력 및 열거.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>장치별 키보드 및 마우스 입력</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>사용자 지정 웹 패드는 화면이 더 넓어지면 각 컨트롤 그룹과 가까운 쪽 가장자리 사이의 거리를 유지합니다. RetroArch의 오버레이가 좌우 두 절반을 벌리는 방식과 같습니다. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>가상 MIDI 장치 출력 (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -1791,7 +1793,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>단위</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>감도 표시 단위. Multiplier는 내부 × 배율(1 = 기본). DegPerScreenTurn은 Steam 방식: 화면을 한 바퀴 돌리는 데 필요한 컨트롤러의 물리적 회전 각도(도)입니다.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim 임계값</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>오른쪽 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌. 임계값을 넘었을 때만 자이로가 작동합니다.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>활성화 스틱 편향(0–100%)이 이 값 미만이면 자이로 출력을 0으로 만듭니다. 0 = 항상 켜짐. Steam의 “조준할 때만 자이로” 느낌. 해당 스틱을 임계값 넘게 밀었을 때만 자이로가 작동합니다.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 패드의 모션 센서가 마우스나 스틱 출력을 어떻게 움직일지 조정하세요. 먼저 평평한 표면에서 보정해 정지 시 드리프트를 0으로 만든 다음, 감도와 스무딩, 활성화 규칙을 취향대로 다듬으세요.</value></data>
@@ -1841,9 +1843,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>스무딩 윈도우</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>스무딩 버퍼의 시간 창 길이. 클수록 = 타이트닝 임계 미만에서 더 강한 평활화, 작을수록 = 더 즉각적. 기본 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>활성화 버튼</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>자이로 출력을 게이트하는 버튼의 디스크립터. 해당 버튼을 누르고 있는 동안에만 자이로 작동. 비어 있음 = 버튼 게이트 없음. 위 오른쪽 스틱 임계값과 AND 결합.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>자이로 출력을 게이트하는 버튼의 디스크립터. 작동 방식은 활성화 모드가 정함. 비어 있음 = 버튼 게이트 없음. 위 활성화 스틱 임계값과 AND 결합.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>활성화 모드</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>유지: 활성화 버튼을 누르고 있는 동안 자이로가 작동합니다. 토글: 누를 때마다 자이로가 켜지거나 꺼지며, 떼는 동작은 영향을 주지 않습니다. 토글은 폴링 틱 사이에 유지되며 프로필 전환 시 초기화됩니다.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>유지: 활성화 버튼을 누르고 있는 동안 자이로가 작동합니다. 토글: 누를 때마다 자이로가 켜지거나 꺼지며, 떼는 동작은 영향을 주지 않습니다. 놓아서 조준: 활성화 버튼을 누르지 않는 동안 자이로가 작동합니다. 토글은 폴링 틱 사이에 유지되며 프로필 전환 시 초기화됩니다.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>유지</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>토글</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>놓아서 조준</value></data>
@@ -1863,7 +1865,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>위 (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>활성화</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>조준 활성화 버튼, 활성화 모드, 자이로 켜기, 재중심, Easy Aim 임계값</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>자이로 활성 시점을 선택적으로 제한. 오른쪽 스틱 편향과 활성화 버튼 각각이 자이로 출력을 게이트할 수 있음. 둘 다 설정한 경우 둘 다 활성화되어야 자이로가 작동.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>자이로 활성 시점을 선택적으로 제한. 활성화 스틱 편향과 활성화 버튼 각각이 자이로 출력을 게이트할 수 있음. 둘 다 설정한 경우 둘 다 활성화되어야 자이로가 작동.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>로컬</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>플레이어</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>월드</value></data>
@@ -1955,7 +1957,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>자이로 경사 Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>자이로 경사</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>최대 편향 각도, 경사 데드존</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>자이로 경사 X / Y 입력의 엔벨로프: 기울인 상태를 유지하면 스틱도 편향을 유지합니다(Steam의 조이스틱 편향 모드와 같음). 여기서 설정한 범위에서 최대 편향이 되며, 자이로 재정렬이 휴지 자세를 초기화합니다. 요(평평한 회전)는 중력에 보이지 않아 이 입력을 움직이지 않습니다.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>자이로 경사 X / Y 입력의 엔벨로프: 기울인 상태를 유지하면 스틱도 편향을 유지합니다(Steam의 조이스틱 편향 모드와 같음). 여기서 설정한 범위에서 최대 편향이 됩니다. 자이로 재정렬이 휴지 자세를 초기화합니다. 요(평평한 회전)는 중력에 보이지 않아 이 입력을 움직이지 않습니다.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>최대 편향 각도</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>휴지 자세에서 몇 도의 기울기로 최대 편향이 되는지입니다. 작을수록 민감합니다. 25°는 Steam 설정에서 가장 흔한 값입니다.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>경사 데드존</value></data>
@@ -2029,6 +2031,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>헤드폰 출력을 위한 Bauer 스테레오-바이노럴 크로스피드입니다.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth로 DualSense 스피커 오디오를 구동하는 순수 C# Opus 인코더. Logan Stromberg 제작.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>조준선 및 돋보기 참조</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>십자와 그 점은 Skarbo의 CSGOCrosshair(라이선스 미공개)에서, 원, 그림, 윤곽선 스타일은 Crosshair-Overlay(MIT)에서, 돋보기의 렌즈와 전체 화면 확대는 Microsoft의 Windows-classic-samples(MIT)에서 읽었습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga의 DualSense Bluetooth 오디오 연구: 컨트롤러 스피커 스트림이 사용하는 패킷 전송 방식. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -3641,8 +3645,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU 모션 소스를 읽는 에뮬레이터에 컨트롤러 모션을 보냅니다.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX용으로 만든 게임 모드에서 어댑티브 트리거와 조명 효과를 받습니다.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>게임에서 텔레메트리 출력을 켜고 이 PC와 포트로 보내세요.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>에뮬레이터에서 이 PC의 주소와 이 포트로 모션 소스를 추가하세요.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>모드의 효과는 해당 하드웨어가 있는 모든 컨트롤러에 전달됩니다.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>이 PC의 에뮬레이터에서 127.0.0.1과 이 포트로 모션 소스를 추가하세요.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>모드는 연결된 DualSense 또는 DualShock 4가 있는 각 가상 컨트롤러에 전달되며, 효과는 그 가상 컨트롤러의 해당 하드웨어가 있는 모든 컨트롤러에서 재생됩니다.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>머리 자세는 [장치]의 헤드 트래커 행입니다. 컨트롤러의 매핑 섹션에서 머리 요를 스틱 축에 매핑하세요.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>값은 [장치]의 게임 텔레메트리 행입니다. 컨트롤러의 매핑 섹션에서 매핑하거나 매크로를 실행하는 데 사용하세요.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>메뉴의 위치, 크기, 불투명도는 컨트롤러의 [매크로 및 메뉴] 섹션에 있는 해당 메뉴에서 설정합니다.</value></data>
@@ -4417,7 +4421,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>게임 진동을 저주파 톤으로 바꿔 베이스 셰이커나 서브우퍼로 재생합니다.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>출력 장치, 채널, 게인, 모터별 톤</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro, 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러, 그리고 Steam Deck Controller (Composite)에서 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro, 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러에서 동작합니다. Steam Deck Controller (Composite), SInput Gamepad, Joypad-OS Steam Input Gamepad에서도 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>진동을 오디오 출력으로 보내기</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러의 게임 진동과 포스 피드백을 선택한 오디오 출력에서 저주파 톤으로 재생합니다. 꺼도 모든 설정은 유지됩니다.</value></data>
@@ -4760,7 +4764,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR 참조</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>헤드셋과 모션 컨트롤러 입력을 뒷받침하는 런타임 인터페이스, 구조체 레이아웃, 레지스트리 키는 Khronos OpenXR-SDK 헤더(Apache-2.0)에서 읽었고 VirtualDesktop-OpenXR(MIT)와 대조했습니다. PadForge는 사용자 시스템에 설치된 런타임과 통신하며 Khronos 코드를 포함하지 않습니다.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>주변기기 출력 참조</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ 햅틱, 조명, 페어링, 배터리 프레임은 Solaar(GPL-2.0-or-later), libratbag(MIT), LiveHaptics, OpenLogi(0BSD 및 MIT OR Apache-2.0), OpenLogi 문서, keyleds(GPL-3.0-or-later), g810-led와 g810-led-resources(GPL-3.0), rigdeck(GPL-3.0-or-later), OpenGHub(MIT), g915x-heatmap(MIT)에서 읽었고, OpenRGB-Fixed(GPL-2.0-or-later)와 HaloDaemon-plugins의 기록도 참고했습니다. Razer 제품 ID와 조명 리포트는 OpenRazer(GPL-2.0-or-later)와 OpenRGB(GPL-2.0-or-later)에서 읽고 uncoil(GPL-3.0-or-later), OpenSynapse(MIT), openrazer-win(GPL-2.0-or-later), sanshoku(MIT), razer_test(GPL-3.0-or-later), razer-life(GPL-2.0-or-later)와 대조했습니다. 이 도구들이 공유하는 잠금은 Aurora(MIT)와 LibreHardwareMonitor(MPL-2.0)에서 읽었습니다. SteelSeries 제품 ID와 조명 리포트는 OpenRGB와 rivalcfg(WTFPL)에서 읽고 SignalRGB 플러그인, Aerox_5(MIT), apex-3-tkl(MIT), ApexCtl(LGPL-3.0), SteelSeriesControl(GPL-3.0), rival310-re(LGPL-3.0), Cricetus-Imperator(MIT), Wine(LGPL-2.1-or-later)과 대조했습니다. HID LampArray 리포트는 USB-IF의 HID Usage Tables, Microsoft의 동적 조명 문서와 그 샘플 ArduinoHidForWindows 및 RP2040MacropadHidSample(MIT)에서 읽고 lampctl(MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq, Apex3TklDynamicLighting(모두 MIT), acer-predator-helios-rgb(GPL-2.0-only), crosrgbkblight와 대조했습니다. iFeel 진동 리포트는 iFeel, Linux용 iFeel 드라이버(GPL-2.0-or-later), Logitech-iFeel-Vibration-POC에서 읽었고, 디스크립터 규칙은 Linux 커널(GPL-2.0-or-later)에서, 세기 단계는 Logitech의 MouseWare 9.80 드라이버에서 읽었습니다. 촉각 및 색상 핸들러는 GameSense SDK에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ 햅틱, 조명, 페어링, 배터리 프레임은 Solaar(GPL-2.0-or-later), libratbag(MIT), LiveHaptics, OpenLogi(0BSD 및 MIT OR Apache-2.0), OpenLogi 문서, keyleds(GPL-3.0-or-later), g810-led와 g810-led-resources(GPL-3.0), rigdeck(GPL-3.0-or-later), OpenGHub(MIT), g915x-heatmap(MIT)에서 읽었고, OpenRGB-Fixed(GPL-2.0-or-later)와 HaloDaemon-plugins의 기록도 참고했습니다. Razer 제품 ID와 조명 리포트는 OpenRazer(GPL-2.0-or-later)와 OpenRGB(GPL-2.0-or-later)에서 읽고 uncoil(GPL-3.0-or-later), OpenSynapse(AGPL-3.0-only, 읽은 시점 MIT), openrazer-win(GPL-2.0-or-later), sanshoku(MIT), razer_test(GPL-3.0-or-later), razer-life(GPL-2.0-or-later)와 대조했습니다. 이 도구들이 공유하는 잠금은 Aurora(MIT)와 LibreHardwareMonitor(MPL-2.0)에서 읽었습니다. SteelSeries 제품 ID와 조명 리포트는 OpenRGB와 rivalcfg(WTFPL)에서 읽고 SignalRGB 플러그인, Aerox_5(MIT), apex-3-tkl(MIT), ApexCtl(LGPL-3.0), SteelSeriesControl(GPL-3.0), rival310-re(LGPL-3.0), Cricetus-Imperator(MIT), Wine(LGPL-2.1-or-later)과 대조했습니다. HID LampArray 리포트는 USB-IF의 HID Usage Tables, Microsoft의 동적 조명 문서와 그 샘플 ArduinoHidForWindows 및 RP2040MacropadHidSample(MIT)에서 읽고 lampctl(MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq, Apex3TklDynamicLighting(모두 MIT), acer-predator-helios-rgb(GPL-2.0-only), crosrgbkblight와 대조했습니다. iFeel 진동 리포트는 iFeel, Linux용 iFeel 드라이버(GPL-2.0-or-later), Logitech-iFeel-Vibration-POC에서 읽었고, 디스크립터 규칙은 Linux 커널(GPL-2.0-or-later)에서, 세기 단계는 Logitech의 MouseWare 9.80 드라이버에서 읽었습니다. 촉각 및 색상 핸들러는 GameSense SDK에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>레거시 MIDI API를 뒷받침하는 WinMM 호출 순서(포트 열기, 포트로 보내기, 포트 닫기). PortMidi(MIT, Ross Bencina, Phil Burk, Roger B. Dannenberg 제작)와 RtMidi(MIT 계열의 RtMidi 라이선스, Gary P. Scavone 제작)에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 참조</value></data>
@@ -4770,7 +4774,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box 참조</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>‘Bliss-Box 어댑터 읽기’의 Bliss-Box API는 Bliss-Box LLC의 API Tool(BSD 계열, 무상 재배포)과 DeviceBuddy(소스 공개, Bliss-Box LLC)에서 읽었으며, 버튼 이름은 SteveFox1620의 retroarch-joypad-autoconfig 포크에 있는 Bliss-Box 파일에서, 컨트롤러 팩 체크섬은 libdragon(Unlicense)과 대조했고, PlayStation 컨트롤러 응답은 psx-spx와 Linux psxpad-spi 드라이버(GPL-2.0-or-later)에서 가져왔습니다. 컨트롤러 이름 일부와 지원 관련 참고 사항은 Bliss-Box LLC의 호환성 목록에서 가져왔으며, 어댑터 동작은 해당 펌웨어로 확인했습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro의 복합 USB 컨트롤러를 위한 USB 전송 계층입니다 (Vadym Hrynchyshyn 제작). HIDMaestro가 서명된 호스트 컨트롤러 드라이버를 포함하고 있으며 복합 컨트롤러를 처음 만들 때 설치합니다.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB 장치인 HIDMaestro 컨트롤러를 위한 USB 전송 계층입니다 (Vadym Hrynchyshyn 제작). 대상은 ARM용 Windows의 모든 가상 컨트롤러, 그리고 x64에서는 복합 컨트롤러, Steam Controller (2026), Xbox One S: Full 프로필, Joy-Con Charging Grip 형태입니다. HIDMaestro가 호스트 컨트롤러 드라이버를 포함하고 있으며 이 컨트롤러 중 하나를 처음 만들 때 설치합니다.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>이 슬롯에서 사용할 면을 선택합니다. 끈 쪽은 행이 숨겨지고 전송도 멈추지만 매핑은 그대로 남아 다시 켜면 복원됩니다.</value>
   </data>
@@ -4958,7 +4962,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>어댑티브 트리거용 GameCube 프리셋 값. Mxater 제작. 사실 확인용으로만 참조.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 모션 축의 부호. 해당 프로젝트의 UDP 디코더로 확인. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 모션 축의 부호. 해당 프로젝트의 UDP 디코더로 확인. 사용자 지정 웹 패드의 컨트롤 크기. Android 오버레이가 화면의 짧은 쪽을 기준으로 재는 방식대로 측정. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>우주 시뮬레이션 시작 프로필의 바탕이 된 Elite Dangerous 기본 프리셋. Richard Buckle 제작.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5047,6 +5051,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL 포크 Switch 드라이버의 링콘 시작·정지 시퀀스와 PadForge가 읽는 변형 배율로, demo-of-ring-con-with-web-hid, Eden(GPL-3.0-or-later), Yamakaky의 joy(MIT), joy-con-webhid(Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon(MIT), Ringcon-Driver(MIT), RingconProtocolDebug(Apache-2.0)에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>시리얼 컨트롤러 참조</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>6축 컨트롤러, 게임패드, 비행 스틱, RC 송신기, 비행 패널, 에르고미터용 SDL 포크 시리얼 드라이버의 프로토콜로, Async.fi, hidsporb, JoypadOS(Apache-2.0), KettlerBLE(MIT), kettlerUSB2BLE(MIT), John E. Stone의 libsball(BSD-style), linuxconsole(GPL-2.0-or-later), Linux(GPL-2.0), spacenavd(GPL-3.0-or-later), vJoySerialFeeder(GPL-3.0), VRInsight-Xplane-Interface(MIT), vrinsight-cdu-ii-msfs-driver(MIT), VRPN(BSL-1.0), xf86-input-magellan(MIT/X11), xf86-input-spaceorb(MIT/X11), XPComboTest(MIT)에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput 참조</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput 패드 지원과 SInput 페르소나의 리포트로, Hand Held Legend의 SINPUT-LIB-HID(MIT-0)와 HOJA-LIB-RP2040(CC BY-NC-SA 3.0), OpenPuck의 SInput 모드(AGPL-3.0)에서 읽었습니다. 문서만 참고했으며 AGPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>특수 USB 장치 참조</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Intel Wireless Series 베이스 스테이션, Xbox 360 빅 버튼 수신기, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2·3, Tacx 트레이너 헤드 유닛용 SDL 포크 드라이버의 프로토콜로, antifier(MIT), chmfp(GPL-3.0-or-later), dx1-studio(GPL-3.0), ergodex-dx1-linux(GPL-3.0), fortius_1942(GPL-2.0-or-later), FortiusANT(GPL-3.0), intel-wings(GPL-2.0), JoypadOS(Apache-2.0), linuxtrack(MIT), t19xx_usb(GPL-3.0), ttyT1941(GPL-3.0), xbox360bb(GPL-2.0-or-later)에서 읽었습니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>열차 컨트롤러 참조</value></data>
@@ -5068,7 +5074,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 햅틱 PCM 형식(부호 있는 16비트, 3 kHz)으로, Bluetooth 햅틱의 부호 있는 8비트 인코딩을 확정했습니다. 문서로만 참고했으며 AGPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX 게임 모드 참조</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>게임 모드를 뒷받침하는 UDP 명령, 응답, 포트 파일, 트리거 효과 바이트로, Paliverse의 공식 DSX v3.1 및 DualSenseX v2 모드 예제, DualSenseY 두 버전과 DualSense4Rockstar(라이선스 미공개), DSZ와 pydualsense(MIT), Wujek Dualsense API와 hbashton의 DS4Windows 포크에 있는 DSX 서버(GPL-3.0)에서 읽었습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>게임 모드를 뒷받침하는 UDP 명령, 응답, 포트 파일, 트리거 효과 바이트로, Paliverse의 공식 DSX v3.1 및 DualSenseX v2 모드 예제, DualSenseY와 DualSense4Rockstar(라이선스 미공개), DualSenseY-v2, DSZ와 pydualsense(MIT), Wujek Dualsense API와 hbashton의 DS4Windows 포크에 있는 DSX 서버(GPL-3.0)에서 읽었습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 헤드셋 참조</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 Bluetooth 오디오를 뒷받침하는 헤드폰 및 스피커 라우팅, 볼륨 상한, 마이크 프레이밍, 리포트 모드는 DS4-Sound-Link(MIT), ds4mac(GPL-2.0), ds4drv(MIT), hbashton의 DS4Windows 포크(GPL-3.0)에서 읽었으며, SBC 디코더의 합성 윈도는 Google의 libsbc(Apache-2.0)와 대조했고, 2세대 모델과 Sony 어댑터의 USB 헤드셋은 DJm00n의 ControllersInfo 디스크립터 덤프(라이선스 미공개)와 linux-hardware.org의 LsUSB 프로브(CC BY 4.0)에서 읽었습니다. 케이블로 연결한 DualShock 4의 스피커 경로는 Controllers Wiki(CC BY-SA)와 mihaits의 NFSU2-SplitScreen(MIT)에서 가져왔습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch 채팅 참조</value></data>

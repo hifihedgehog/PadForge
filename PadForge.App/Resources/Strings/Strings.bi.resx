@@ -1693,7 +1693,7 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tekem ol efek blong adaptive triga mo laet long ol mod blong gem we oli raetem blong DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Statem telemetry autput long gem mo talem long hem blong sendem i kam long PC ia mo pot ia.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ol efek blong wan mod oli kasem evri kontrola we i gat hadwea blong olgeta.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Wan mod i kasem evri virtual kontrola we i gat wan DualSense o DualShock 4 we i konek, mo ol efek blong hem oli plei long evri kontrola long ples ia we i gat hadwea blong olgeta.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pos blong hed i stap long lain Head Tracker long [Ol divaes]. Mapem yaw blong hed i go long wan aksis blong stik long seksen Ol mapping blong wan kontrola.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol valiu oli stap long lain Game Telemetry long [Ol divaes]. Mapem olgeta long seksen Ol mapping blong wan kontrola o yusum olgeta blong statem ol makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ples, saes mo klia blong wan menu oli stap long menu ia, long seksen [Makro mo menu] blong wan kontrola.</value></data>
@@ -1754,7 +1754,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ol not mo ol control change blong ol program blong miusik.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Ol virtual VR kontrola tru long SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Blong jenisim kaen afta, klik long jip blong kaen long kontrola. I tekem wan klik nomo.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>I nidim SteamVR. Instolem long kad blong hem long Seting.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>I nidim SteamVR. Instolem long Seting, anda long Ol draeva.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Wan VR kontrola i stap finis. Wan i save wokem tu han.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge i gat {0} kontrola, hemia nao moa we hem i save ronem. Rabemaot wan blong putum wan narafala.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Moa kaen: [{0}, {1}, {2} mo {3}]</value></data>
@@ -1839,4 +1839,10 @@
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="Common_Apply" xml:space="preserve"><value>Yusum</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Wan web ped we yu mekem i holem distens blong evri grup blong ol kontrol long saed blong skrin we i moa klosap long hem, long wan skrin we i moa waed, olsem ol ovalei blong RetroArch oli muvum tu haf blong olgeta. Ridim olsem dokumentesen nomo, i no gat kod blong GPL i stap insaed.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Ol referens blong krosea mo magnifaea</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Kros mo dot blong hem i kam long CSGOCrosshair blong Skarbo (i no gat laesens we oli soemaot), ol stael Sakel, pikja mo aotlaen i kam long Crosshair-Overlay (MIT), mo Lens mo zum blong fulskrin blong magnifaea i kam long Windows-classic-samples blong Microsoft (MIT). Dokumentesen nomo, i no gat kod i stap insaed.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Ol referens blong SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ol ripot biaen long sapot blong SInput ped mo SInput persona, we PadForge i ridim long SINPUT-LIB-HID (MIT-0) mo HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) blong Hand Held Legend mo SInput mod blong OpenPuck (AGPL-3.0). Dokumentesen nomo, i no gat kod blong AGPL i stap insaed.</value></data>
 </root>

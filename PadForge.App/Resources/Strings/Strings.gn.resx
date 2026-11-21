@@ -1231,8 +1231,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota ha control change música softwarepe g̃uarã.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Mando VR virtual SteamVR rupive.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Emoambue hag̃ua tipo upéi, ejopy tipo chip mando ári. Peteĩ jejopyntevoi.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ndombohováiri. Ehecha ikuadro Ñembohekópe.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Oikotevẽ SteamVR. Emoĩ ikuadro Ñembohekópe guive.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ndombohováiri. Ehecha Ñembohekópe, Driverkuéra guýpe.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Oikotevẽ SteamVR. Emoĩ Ñemboheko guive, Driverkuéra guýpe.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Oĩma peteĩ mando VR. Peteĩnte omboguata mokõive po.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Embojoaju peteĩ mando Bluetooth</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batería {0}</value></data>
@@ -1316,4 +1316,6 @@
   <data name="Workshop_HoldMacroName_Format" xml:space="preserve"><value>{0} (ñeñapytĩ)</value></data>
   <data name="Workshop_ReleaseMacroName_Format" xml:space="preserve"><value>{0} (ñemosãso)</value></data>
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ñepyrũ)</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Peteĩ web pad ojejapo porãva omoĩ peteĩteĩ aty mombyrykue pe tembe'y hi'aguĩvévagui pantalla ipe'ãvévape, RetroArch overlay-kuéra omongu'e háicha ijykere mokõivéva. Oñemoñe'ẽ documentación ramónte, ndaipóri código GPL oñemondóva.</value></data>
 </root>

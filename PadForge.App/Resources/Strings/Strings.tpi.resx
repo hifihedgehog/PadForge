@@ -2008,8 +2008,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ol not na control change bilong ol program bilong musik.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Ol virtual VR kontrola long SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Bilong senisim kain bihain, klik long saen bilong kain long kontrola. Wanpela klik tasol.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services i no bekim. Lukim kad bilong en long Ol seting.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>I mas gat SteamVR. Instolim long kad bilong en long Ol seting.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services i no bekim. Lukim en long Ol seting, aninit long Ol draiva.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>I mas gat SteamVR. Instolim long Ol seting, aninit long Ol draiva.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Wanpela VR kontrola i stap pinis. Wanpela i ronim tupela han.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge i gat {0} kontrola, em inap pinis. Rausim wanpela bilong putim narapela.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Moa kain: [{0}, {1}, {2} na {3}]</value></data>
@@ -2141,4 +2141,6 @@
   <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Aut i stat long dispela hap taim input i muv. 0 em i of.</value></data>
   <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge i nogat rot i go long spika bilong masin yu makim long dispela konek. Ol nois bilong makro bilong dispela kontrola i pilai long default bilong sistem.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Wanpela web pad yu yet i wokim i save holim wan wan grup longwe long sait i klostu long en long wanpela skrin i bikpela moa, olsem ol overlay bilong RetroArch i save muvim tupela hap bilong ol. Ol i ritim olsem dokumen tasol, i no gat GPL kod i kam wantaim.</value></data>
 </root>

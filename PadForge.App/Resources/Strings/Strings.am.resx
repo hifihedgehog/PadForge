@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>ለሙዚቃ ሶፍትዌር ኖታዎች እና የመቆጣጠሪያ ለውጦች (CC)።</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>በSteamVR በኩል ምናባዊ VR መቆጣጠሪያዎች።</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>ዓይነቱን በኋላ ለመቀየር በመቆጣጠሪያው ላይ ያለውን የዓይነት ቺፕ ጠቅ ያድርጉ። አንድ ጠቅታ ብቻ ይወስዳል።</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ምላሽ እየሰጠ አይደለም። በቅንብሮች ውስጥ ካርዱን ይመልከቱ።</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR ያስፈልገዋል። በቅንብሮች ውስጥ ካለው ካርዱ ይጫኑት።</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ምላሽ እየሰጠ አይደለም። በቅንብሮች ውስጥ በአሽከርካሪዎች ስር ይመልከቱት።</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR ያስፈልገዋል። ከቅንብሮች ውስጥ በአሽከርካሪዎች ስር ይጫኑት።</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR መቆጣጠሪያ አስቀድሞ አለ። አንዱ ሁለቱንም እጆች ይቆጣጠራል።</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge {0} መቆጣጠሪያዎች አሉት፣ ሊያሄድ የሚችለው ከፍተኛው ይህ ነው። ሌላ ለማከል አንዱን ይሰርዙ።</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>መገለጫ</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (ቢበዛ {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>የተራዘመ (ቢበዛ {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>የቁልፍ ሰሌዳ + መዳፊት (ቢበዛ {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (እየሄደ አይደለም፣ በቅንብሮች ውስጥ የWindows MIDI Services ካርዱን ይመልከቱ)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (እየሄደ አይደለም፣ በቅንብሮች ውስጥ በአሽከርካሪዎች ስር Windows MIDI Services ይመልከቱ)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (ቢበዛ {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR ያስፈልገዋል)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (ቢበዛ {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>የDSU እንቅስቃሴ ምንጭ ለሚያነቡ ኢምዩሌተሮች የመቆጣጠሪያ እንቅስቃሴን ይላኩ።</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>ለDSX ከተጻፉ የጨዋታ ሞዶች ተለማማጅ የትሪገር እና የብርሃን ኢፌክቶችን ይቀበሉ።</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>በጨዋታው ውስጥ የቴሌሜትሪ ውጽዓትን ያብሩ እና ወደዚህ ፒሲ እና ወደብ ያመልክቱት።</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>በኢምዩሌተሩ ውስጥ በዚህ ፒሲ አድራሻ እና በዚህ ወደብ የእንቅስቃሴ ምንጭ ያክሉ።</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>የሞድ ኢፌክቶች ለእነሱ የሚሆን ሃርድዌር ያለውን እያንዳንዱን መቆጣጠሪያ ይደርሳሉ።</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>በዚህ ፒሲ ላይ ባለ ኢምዩሌተር ውስጥ በ127.0.0.1 እና በዚህ ወደብ የእንቅስቃሴ ምንጭ ያክሉ።</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ሞድ የተገናኘ DualSense ወይም DualShock 4 ያለውን እያንዳንዱን ምናባዊ መቆጣጠሪያ ይደርሳል፣ ኢፌክቶቹም እዚያ ለእነሱ የሚሆን ሃርድዌር ባለው እያንዳንዱ መቆጣጠሪያ ላይ ይጫወታሉ።</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>የራስ አቀማመጡ በ[መሣሪያዎች] ላይ ያለው የራስ መከታተያ ረድፍ ነው። የራስ ያውን በመቆጣጠሪያ የማዛመጃዎች ክፍል ውስጥ ከስቲክ ዘንግ ጋር ያዛምዱ።</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>እሴቶቹ በ[መሣሪያዎች] ላይ ያለው የጨዋታ ቴሌሜትሪ ረድፍ ናቸው። በመቆጣጠሪያ የማዛመጃዎች ክፍል ውስጥ ያዛምዷቸው ወይም ማክሮዎችን ለማስነሳት ይጠቀሙባቸው።</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>የአንድ ምናሌ የራሱ ቦታ፣ መጠን እና ግልጽነት በምናሌው ላይ፣ በመቆጣጠሪያ የ[ማክሮዎች እና ምናሌዎች] ክፍል ውስጥ ይዘጋጃሉ።</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ሻር</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ሁሉንም ሻር</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ለPlayStation መዳሰሻ ሰሌዳ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ፣ ለንክኪ ማያ ገጽ ወይም ለመዳፊት።</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ለPlayStation መዳሰሻ ሰሌዳ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ፣ ለንክኪ ማያ ገጽ።</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢን አንቃ</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ቦታውን ዳግም አስጀምር</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>ለመጎተት በቀኝ ጠቅ ያድርጉና ይያዙ</value></data>
@@ -813,6 +813,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>የመቆጣጠሪያ ግብዓት እና መዘርዘር።</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>በየመሣሪያው የቁልፍ ሰሌዳ እና የመዳፊት ግብዓት</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>ብጁ የድር ፓድ በሰፊ ማያ ገጽ ላይ እያንዳንዱ የመቆጣጠሪያ ቡድን ከቅርቡ ጠርዝ ያለውን ርቀት ይጠብቃል፣ የRetroArch ተደራቢዎች ሁለቱን ግማሾቻቸውን እንደሚያንቀሳቅሱት። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>ምናባዊ የMIDI መሣሪያ ውጽዓት (Windows MIDI Services)።</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -875,6 +877,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>ለጆሮ ማዳመጫ ውጽዓት የBauer ስቴሪዮ-ወደ-ባይኖራል ክሮስፊድ።</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>በብሉቱዝ የDualSense ድምጽ ማጉያ ድምጽን የሚያንቀሳቅስ ንጹህ C# Opus ኢንኮደር። በLogan Stromberg የተዘጋጀ።</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>የማነጣጠሪያ እና የማጉያ ማጣቀሻዎች</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>መስቀሉ እና ነጥቡ ከSkarbo CSGOCrosshair (ምንም ፈቃድ አልታተመም)፣ የክብ፣ የምስል እና የጠርዝ መስመር ቅጦች ከCrosshair-Overlay (MIT)፣ እንዲሁም የማጉያው ሌንስ እና ሙሉ ማያ ገጽ ማጉላት ከMicrosoft Windows-classic-samples (MIT)። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>የDualSense ብሉቱዝ ድምጽ ጥናት በegormanga፦ የመቆጣጠሪያው ድምጽ ማጉያ ዥረት የሚጓዝበት የፓኬት ማጓጓዣ። apps.sdore.me/SAxense።</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2356,7 +2360,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>አሃዶች</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>የትብነት አሃድ ማሳያ። ማባዣ ውስጣዊው × መለኪያ ነው (1 = መነሻ)። DegPerScreenTurn የ Steam ዓይነት ነው፦ ለአንድ ሙሉ የማያ ገጽ ዙር የአካላዊ መቆጣጠሪያ ማሽከርከር ዲግሪዎች።</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>የቀላል አላማ ገደብ</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ከዚህ በታች የጋይሮ ውጤት ዜሮ የሚደረግበት የቀኝ ስቲክ ማፈንገጥ (0–100%)። 0 = ሁልጊዜ በርቷል። Steam ላይ ያለው «ሲያነጣጥሩ ጋይሮ ይነቃል» ስሜት። ተጠቃሚው የቀኝ ስቲኩን ከገደቡ በላይ ሲገፋ ብቻ ጋይሮ ይሠራል።</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>ከዚህ በታች የጋይሮ ውጤት ዜሮ የሚደረግበት የማንቂያ ስቲክ ማፈንገጥ (0–100%)። 0 = ሁልጊዜ በርቷል። Steam ላይ ያለው «ሲያነጣጥሩ ጋይሮ ይነቃል» ስሜት። ተጠቃሚው ያንን ስቲክ ከገደቡ በላይ ሲገፋ ብቻ ጋይሮ ይሠራል።</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ጋይሮ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ጋይሮ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>የዚህ መቆጣጠሪያ የእንቅስቃሴ ዳሳሽ የመዳፊት እና የስቲክ ውጤትን እንዴት እንደሚመራ አስተካክል። የእረፍት መንሸራተትን ለማጥፋት በጠፍጣፋ ገጽ ላይ አስተካክል፣ ከዚያ ትብነትን፣ ማለስለስን እና የማንቃት ደንቦችን እንደፍላጎትህ አዘጋጅ።</value></data>
@@ -2406,9 +2410,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>የማለስለስ መስኮት</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>የማለስለሻ ቋቱ የጊዜ መስኮት ርዝመት። ትላልቅ እሴቶች ከማጥበቅ ገደቡ በታች የበለጠ ያለሰልሳሉ። ትናንሽ እሴቶች ፈጣን ምላሽ ይሰጣሉ። ነባሪ 50ms።</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>የአላማ ማንቂያ አዝራር</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>የጋይሮ ውጤትን የሚቆጣጠር አዝራር። ጋይሮ የሚሠራው ይህ አዝራር ተጭኖ ሲያዝ ብቻ ነው። የአዝራሩን ቁጥጥር ለማሰናከል ሳይዘጋጅ ተወው። ይህም ሆነ የቀኝ ስቲክ ማፈንገጥ ሁለቱም ከተዋቀሩ ጋይሮ እንዲሠራ ሁለቱም ንቁ መሆን አለባቸው።</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>የጋይሮ ውጤትን የሚቆጣጠር አዝራር። እንዴት እንደሆነ የማንቃት ሁነታ ያዘጋጃል። የአዝራሩን ቁጥጥር ለማሰናከል ሳይዘጋጅ ተወው። ይህም ሆነ የማንቂያ ስቲክ ማፈንገጥ ሁለቱም ከተዋቀሩ ጋይሮ እንዲሠራ ሁለቱም ንቁ መሆን አለባቸው።</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>የማንቃት ሁነታ</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ተጭኖ መያዝ፦ የማንቂያ አዝራሩ ተጭኖ እስከተያዘ ድረስ ጋይሮ ይሠራል። ቀያይር፦ እያንዳንዱ መጫን ጋይሮን ያበራል ወይም ያጠፋል፣ መልቀቅ ምንም አያደርግም። ቀያይር ሁኔታውን በንባብ ዑደቶች መካከል ይይዛል፣ መገለጫ ሲቀየርም ዳግም ይጀመራል።</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ተጭኖ መያዝ፦ የማንቂያ አዝራሩ ተጭኖ እስከተያዘ ድረስ ጋይሮ ይሠራል። ቀያይር፦ እያንዳንዱ መጫን ጋይሮን ያበራል ወይም ያጠፋል፣ መልቀቅ ምንም አያደርግም። ለማነጣጠር ልቀቅ፦ የማንቂያ አዝራሩ ተጭኖ ካልተያዘ ጋይሮ ይሠራል። ቀያይር ሁኔታውን በንባብ ዑደቶች መካከል ይይዛል፣ መገለጫ ሲቀየርም ዳግም ይጀመራል።</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ተጭኖ መያዝ</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>ቀያይር</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>ለማነጣጠር ልቀቅ</value></data>
@@ -2428,7 +2432,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ላይ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ማንቃት</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>የአላማ ማንቂያ አዝራር፣ የማንቂያ ሁነታ፣ ጋይሮ ማብራት፣ ዳግም መሃል ማድረግ፣ የቀላል አላማ ገደብ</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ጋይሮ መቼ ንቁ እንደሚሆን የሚገድቡ አማራጭ ሁኔታዎች። የቀኝ ስቲክ ማፈንገጥ እና የአላማ ማንቂያ አዝራር እያንዳንዳቸው ሊዋቀሩ ይችላሉ። ጋይሮ የሚሠራው እያንዳንዱ የተዋቀረ ሁኔታ ንቁ ሲሆን ብቻ ነው።</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ጋይሮ መቼ ንቁ እንደሚሆን የሚገድቡ አማራጭ ሁኔታዎች። የማንቂያ ስቲክ ማፈንገጥ እና የአላማ ማንቂያ አዝራር እያንዳንዳቸው ሊዋቀሩ ይችላሉ። ጋይሮ የሚሠራው እያንዳንዱ የተዋቀረ ሁኔታ ንቁ ሲሆን ብቻ ነው።</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>አካባቢያዊ</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ተጫዋች</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ዓለም</value></data>
@@ -2520,7 +2524,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>የጋይሮ ማዘንበል Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>የጋይሮ ማዘንበል</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>ሙሉ የማዘንበል ክልል፣ የማዘንበል የሞተ ቀጠና</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ለጋይሮ ማዘንበል X / የጋይሮ ማዘንበል Y ግብዓቶች ወሰን፦ ማዘንበሉን ያዝ፣ ስቲኩም ማፈንገጡን ይይዛል፣ ልክ እንደ Steam ውስጥ ያለው Joystick Deflection ሁነታ። እዚህ ባዘጋጀኸው ክልል ሙሉ ማፈንገጥ ይደርሳል፤ ጋይሮን ወደ መሃል መመለስ የእረፍት አያያዙን ወደ ዜሮ ይመልሳል። ያው (መቆጣጠሪያውን ተኝቶ ማዞር) በስበት አይታይም እና እነዚህን ግብዓቶች አያንቀሳቅስም።</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ለጋይሮ ማዘንበል X / የጋይሮ ማዘንበል Y ግብዓቶች ወሰን፦ ማዘንበሉን ያዝ፣ ስቲኩም ማፈንገጡን ይይዛል፣ ልክ እንደ Steam ውስጥ ያለው Joystick Deflection ሁነታ። እዚህ ባዘጋጀኸው ክልል ሙሉ ማፈንገጥ ይደርሳል። ጋይሮን ወደ መሃል መመለስ የእረፍት አያያዙን ወደ ዜሮ ይመልሳል። ያው (መቆጣጠሪያውን ተኝቶ ማዞር) በስበት አይታይም እና እነዚህን ግብዓቶች አያንቀሳቅስም።</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>ሙሉ የማዘንበል ክልል</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>እንደ ሙሉ የስቲክ ማፈንገጥ የሚቆጠሩ ከእረፍት አያያዝ የማዘንበል ዲግሪዎች። ያነሰ = ይበልጥ ትብ። 25° በ Steam ውቅሮች ውስጥ በጣም የተለመደው እሴት ነው።</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>የማዘንበል የሞተ ቀጠና</value></data>
@@ -4215,7 +4219,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ባስ ሼከሮች</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>የጨዋታ ንዝረትን በባስ ሼከሮች ወይም በሰብዉፈር እንደ ዝቅተኛ ድምፀቶች ያጫውታል።</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>የውፅዓት መሣሪያ፣ ቻናሎች፣ ማጉላት፣ ለእያንዳንዱ ሞተር ድምፀት</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ከXbox፣ DualShock 3፣ DualShock 4 / DualSense እና Nintendo Switch Pro ምናባዊ መቆጣጠሪያዎች፣ የኃይል ግብረመልስ ካላቸው የተራዘሙ ምናባዊ መቆጣጠሪያዎች (እንደ የእሽቅድምድም መሪዎች) እና ከSteam Deck Controller (Composite) ጋር ይሠራል። የጨዋታ ግብረመልስ እና የሙከራ ንዝረት በድምጽ ውፅዓቱ ይጫወታሉ። የማክሮ ንዝረት በመቆጣጠሪያው ላይ ይቆያል።</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ከXbox፣ DualShock 3፣ DualShock 4 / DualSense እና Nintendo Switch Pro ምናባዊ መቆጣጠሪያዎች እና የኃይል ግብረመልስ ካላቸው የተራዘሙ ምናባዊ መቆጣጠሪያዎች (እንደ የእሽቅድምድም መሪዎች) ጋር ይሠራል። ከSteam Deck Controller (Composite)፣ ከSInput Gamepad እና ከJoypad-OS Steam Input Gamepad ጋርም ይሠራል። የጨዋታ ግብረመልስ እና የሙከራ ንዝረት በድምጽ ውፅዓቱ ይጫወታሉ። የማክሮ ንዝረት በመቆጣጠሪያው ላይ ይቆያል።</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ ዳግም አስጀምር</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ንዝረትን ወደ ድምጽ ውፅዓት ላክ</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ የሚቀበለውን የጨዋታ ንዝረትና የኃይል ግብረመልስ በተመረጠው የድምጽ ውፅዓት ላይ እንደ ዝቅተኛ ድግግሞሽ ድምጾች ያጫውታል። ማጥፋቱ እያንዳንዱን ቅንብር ይጠብቃል።</value></data>
@@ -4540,7 +4544,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_OpenXrRefs" xml:space="preserve"><value>የOpenXR ማጣቀሻዎች</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ከሄድሴት እና የእንቅስቃሴ መቆጣጠሪያ ግብዓት በስተጀርባ ያሉት የሩንታይም በይነገጽ፣ የመዋቅር አቀማመጥ እና የመዝገብ ቁልፎች፣ ከKhronos OpenXR-SDK ራስጌዎች (Apache-2.0) የተነበቡ እና ከVirtualDesktop-OpenXR (MIT) ጋር የተረጋገጡ። PadForge ከእርስዎ የተጫነ ሩንታይም ጋር ይገናኛል እና ምንም የKhronos ኮድ አያካትትም።</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>የተጓዳኝ መሣሪያ ውጤት ማጣቀሻዎች</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>የLogitech HID++ የሃፕቲክ፣ የመብራት፣ የማጣመር እና የባትሪ ፍሬሞች፣ ከSolaar (GPL-2.0-or-later)፣ libratbag (MIT)፣ LiveHaptics፣ OpenLogi (0BSD and MIT OR Apache-2.0)፣ ከOpenLogi ሰነዶች፣ keyleds (GPL-3.0-or-later)፣ g810-led እና g810-led-resources (GPL-3.0)፣ rigdeck (GPL-3.0-or-later)፣ OpenGHub (MIT) እና g915x-heatmap (MIT) የተነበቡ፣ ከOpenRGB-Fixed (GPL-2.0-or-later) እና HaloDaemon-plugins ማስታወሻዎች ጋር። የRazer ምርት መለያዎች እና የመብራት ሪፖርቶች፣ ከOpenRazer (GPL-2.0-or-later) እና OpenRGB (GPL-2.0-or-later) የተነበቡ እና ከuncoil (GPL-3.0-or-later)፣ OpenSynapse (MIT)፣ openrazer-win (GPL-2.0-or-later)፣ sanshoku (MIT)፣ razer_test (GPL-3.0-or-later) እና razer-life (GPL-2.0-or-later) ጋር የተረጋገጡ፣ እነዚህ መሣሪያዎች የሚጋሩት መቆለፊያ ደግሞ ከAurora (MIT) እና LibreHardwareMonitor (MPL-2.0)። የSteelSeries ምርት መለያዎች እና የመብራት ሪፖርቶች፣ ከOpenRGB እና rivalcfg (WTFPL) የተነበቡ እና ከSignalRGB ተሰኪዎች፣ Aerox_5 (MIT)፣ apex-3-tkl (MIT)፣ ApexCtl (LGPL-3.0)፣ SteelSeriesControl (GPL-3.0)፣ rival310-re (LGPL-3.0)፣ Cricetus-Imperator (MIT) እና Wine (LGPL-2.1-or-later) ጋር የተረጋገጡ። የHID LampArray ሪፖርቶች፣ ከUSB-IF HID Usage Tables፣ ከMicrosoft Dynamic Lighting ሰነዶች እና ከናሙናዎቹ ArduinoHidForWindows እና RP2040MacropadHidSample (MIT) የተነበቡ፣ እና ከlampctl (MIT OR Apache-2.0)፣ hid-rgb-ctl፣ keybackcon፣ mistel-lights፣ CaYaLight፣ hp-omen-35l-rgb፣ mac-dynamic-lighting፣ aura-loq እና Apex3TklDynamicLighting (ሁሉም MIT)፣ acer-predator-helios-rgb (GPL-2.0-only) እና crosrgbkblight ጋር የተረጋገጡ። የiFeel የንዝረት ሪፖርት፣ ከiFeel፣ ከLinux iFeel አሽከርካሪ (GPL-2.0-or-later) እና ከLogitech-iFeel-Vibration-POC የተነበበ፣ ከLinux ከርነል (GPL-2.0-or-later) በተገኘ የመግለጫ ሕግ እና ከLogitech MouseWare 9.80 አሽከርካሪ በተገኘ የጥንካሬ መለኪያ። ከGameSense SDK የተገኙት የመዳሰስ እና የቀለም ተቆጣጣሪዎች። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>የLogitech HID++ የሃፕቲክ፣ የመብራት፣ የማጣመር እና የባትሪ ፍሬሞች፣ ከSolaar (GPL-2.0-or-later)፣ libratbag (MIT)፣ LiveHaptics፣ OpenLogi (0BSD and MIT OR Apache-2.0)፣ ከOpenLogi ሰነዶች፣ keyleds (GPL-3.0-or-later)፣ g810-led እና g810-led-resources (GPL-3.0)፣ rigdeck (GPL-3.0-or-later)፣ OpenGHub (MIT) እና g915x-heatmap (MIT) የተነበቡ፣ ከOpenRGB-Fixed (GPL-2.0-or-later) እና HaloDaemon-plugins ማስታወሻዎች ጋር። የRazer ምርት መለያዎች እና የመብራት ሪፖርቶች፣ ከOpenRazer (GPL-2.0-or-later) እና OpenRGB (GPL-2.0-or-later) የተነበቡ እና ከuncoil (GPL-3.0-or-later)፣ OpenSynapse (AGPL-3.0-only፣ ሲነበብ MIT)፣ openrazer-win (GPL-2.0-or-later)፣ sanshoku (MIT)፣ razer_test (GPL-3.0-or-later) እና razer-life (GPL-2.0-or-later) ጋር የተረጋገጡ፣ እነዚህ መሣሪያዎች የሚጋሩት መቆለፊያ ደግሞ ከAurora (MIT) እና LibreHardwareMonitor (MPL-2.0)። የSteelSeries ምርት መለያዎች እና የመብራት ሪፖርቶች፣ ከOpenRGB እና rivalcfg (WTFPL) የተነበቡ እና ከSignalRGB ተሰኪዎች፣ Aerox_5 (MIT)፣ apex-3-tkl (MIT)፣ ApexCtl (LGPL-3.0)፣ SteelSeriesControl (GPL-3.0)፣ rival310-re (LGPL-3.0)፣ Cricetus-Imperator (MIT) እና Wine (LGPL-2.1-or-later) ጋር የተረጋገጡ። የHID LampArray ሪፖርቶች፣ ከUSB-IF HID Usage Tables፣ ከMicrosoft Dynamic Lighting ሰነዶች እና ከናሙናዎቹ ArduinoHidForWindows እና RP2040MacropadHidSample (MIT) የተነበቡ፣ እና ከlampctl (MIT OR Apache-2.0)፣ hid-rgb-ctl፣ keybackcon፣ mistel-lights፣ CaYaLight፣ hp-omen-35l-rgb፣ mac-dynamic-lighting፣ aura-loq እና Apex3TklDynamicLighting (ሁሉም MIT)፣ acer-predator-helios-rgb (GPL-2.0-only) እና crosrgbkblight ጋር የተረጋገጡ። የiFeel የንዝረት ሪፖርት፣ ከiFeel፣ ከLinux iFeel አሽከርካሪ (GPL-2.0-or-later) እና ከLogitech-iFeel-Vibration-POC የተነበበ፣ ከLinux ከርነል (GPL-2.0-or-later) በተገኘ የመግለጫ ሕግ እና ከLogitech MouseWare 9.80 አሽከርካሪ በተገኘ የጥንካሬ መለኪያ። ከGameSense SDK የተገኙት የመዳሰስ እና የቀለም ተቆጣጣሪዎች። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>ከቆየው MIDI API በስተጀርባ ያሉት የWinMM የጥሪ ቅደም ተከተሎች: ወደብ መክፈት፣ ወደሱ መላክ እና መዝጋት። ከPortMidi (MIT፣ በRoss Bencina፣ Phil Burk እና Roger B. Dannenberg) እና RtMidi (የMIT ዓይነት RtMidi ፈቃድ፣ በGary P. Scavone) የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>የLogitech G-key SDK ማጣቀሻዎች</value></data>
@@ -4550,7 +4554,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>የBliss-Box ማጣቀሻዎች</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>ከ«Bliss-Box አስማሚዎችን አንብብ» በስተጀርባ ያለው Bliss-Box API፣ ከBliss-Box LLC API Tool (የBSD ዓይነት፣ በነፃ እንደገና ማሰራጨት የሚፈቀድ) እና DeviceBuddy (ምንጩ የሚገኝ፣ Bliss-Box LLC) የተነበበ። የአዝራር ስሞች በSteveFox1620 retroarch-joypad-autoconfig ቅርንጫፍ ውስጥ ካሉት የBliss-Box ፋይሎች፣ የController Pak ቼክሰሞች ከlibdragon (Unlicense) ጋር የተረጋገጡ፣ እና የPlayStation መቆጣጠሪያ ምላሽ ከpsx-spx እና ከLinux psxpad-spi አሽከርካሪ (GPL-2.0-or-later) የመጡ ናቸው። የመቆጣጠሪያ ስሞች እና የድጋፍ ማስታወሻዎች ከBliss-Box LLC የተኳሃኝነት ዝርዝርም ይመጣሉ፣ እና የአስማሚዎቹ ባህሪ ከፈርምዌራቸው ጋር ተረጋግጧል። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ለHIDMaestro የተቀናጁ USB መቆጣጠሪያዎች የUSB ማጓጓዣ፣ በVadym Hrynchyshyn። HIDMaestro የተፈረመውን የአስተናጋጅ መቆጣጠሪያ አሽከርካሪውን ይዞ ይመጣል እና የተቀናጀ መቆጣጠሪያ ለመጀመሪያ ጊዜ ሲፈጠር ይጭነዋል።</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB መሣሪያ ለሆኑት የHIDMaestro መቆጣጠሪያዎች የUSB ማጓጓዣ፣ በVadym Hrynchyshyn፦ በWindows on ARM ላይ ያለ እያንዳንዱ ምናባዊ መቆጣጠሪያ፣ በx64 ላይ ደግሞ የተቀናጁ መቆጣጠሪያዎች፣ Steam Controller (2026)፣ የXbox One S: Full መገለጫ እና የJoy-Con Charging Grip ቅርጾች። HIDMaestro የአስተናጋጅ መቆጣጠሪያ አሽከርካሪውን ይዞ ይመጣል እና ከእነዚህ መቆጣጠሪያዎች አንዱ ለመጀመሪያ ጊዜ ሲፈጠር ይጭነዋል።</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>የዚህ ቦታ የትኞቹ ግማሾች እንደሚሠሩ ይምረጡ። አንድን ግማሽ ማጥፋት ረድፎቹን ይደብቃል እና መላኩን ያቆማል፣ ማዛመጃዎቹን ግን ያቆያል፣ ስለዚህ መልሶ ማብራት ይመልሳቸዋል።</value>
   </data>
@@ -4736,7 +4740,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>የGameCube ተለማማጅ-ትሪገር ቅድመ-ቅንብር እሴቶች፣ በMxater። ለእውነታዎች ብቻ ተነቧል።</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>የDSU እንቅስቃሴ ዘንግ ምልክቶች፣ ከUDP ዲኮደሩ ጋር የተረጋገጡ። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>የDSU እንቅስቃሴ ዘንግ ምልክቶች፣ ከUDP ዲኮደሩ ጋር የተረጋገጡ፣ እና የብጁ የድር ፓድ የመቆጣጠሪያ መጠኖች፣ የAndroid ተደራቢው እንደሚለካቸው ከማያ ገጹ አጭር ጎን አንጻር የተለኩ። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ከ«የጠፈር ሲሙሌተር» የመነሻ መገለጫ በስተጀርባ ያሉት የElite Dangerous ነባሪ ቅድመ-ቅንብሮች፣ በRichard Buckle።</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4818,6 +4822,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>ከSDL ቅርንጫፉ የSwitch አሽከርካሪ እና PadForge ከሚያነበው የውጥረት መለኪያ በስተጀርባ ያሉት የRing-Con የመጀመሪያ እና የማቆሚያ ቅደም ተከተሎች፣ ከdemo-of-ring-con-with-web-hid፣ Eden (GPL-3.0-or-later)፣ joy በYamakaky (MIT)፣ joy-con-webhid (Apache-2.0)፣ Nintendo_Switch_Reverse_Engineering፣ osc-ringcon (MIT)፣ Ringcon-Driver (MIT) እና RingconProtocolDebug (Apache-2.0) የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>የሲሪያል መቆጣጠሪያ ማጣቀሻዎች</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>ለስድስት ዘንግ መቆጣጠሪያዎች፣ ጌምፓዶች፣ የበረራ ስቲኮች፣ የRC አስተላላፊዎች፣ የበረራ ፓነሎች እና ኤርጎሜትሮች ከSDL ቅርንጫፉ የሲሪያል አሽከርካሪዎች በስተጀርባ ያሉት ፕሮቶኮሎች፣ ከAsync.fi፣ hidsporb፣ JoypadOS (Apache-2.0)፣ KettlerBLE (MIT)፣ kettlerUSB2BLE (MIT)፣ libsball በJohn E. Stone (የBSD ዓይነት)፣ linuxconsole (GPL-2.0-or-later)፣ Linux (GPL-2.0)፣ spacenavd (GPL-3.0-or-later)፣ vJoySerialFeeder (GPL-3.0)፣ VRInsight-Xplane-Interface (MIT)፣ vrinsight-cdu-ii-msfs-driver (MIT)፣ VRPN (BSL-1.0)፣ xf86-input-magellan (MIT/X11)፣ xf86-input-spaceorb (MIT/X11) እና XPComboTest (MIT) የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>የSInput ማጣቀሻዎች</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>ከSInput ፓድ ድጋፍ እና ከSInput ፐርሶና በስተጀርባ ያሉት ሪፖርቶች፣ ከHand Held Legend SINPUT-LIB-HID (MIT-0) እና HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) እንዲሁም ከOpenPuck SInput ሁነታ (AGPL-3.0) የተነበቡ። ሰነድ ብቻ፣ ምንም የAGPL ኮድ አይካተትም።</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>የልዩ USB መሣሪያ ማጣቀሻዎች</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>ለIntel Wireless Series መሠረት ጣቢያ፣ ለXbox 360 Big Button ተቀባይ፣ ለCH Products Multi-Function Panel፣ ለErgodex DX1፣ ለTrackIR 2 እና 3 እና ለTacx አሰልጣኝ ራስ ክፍሎች ከSDL ቅርንጫፉ አሽከርካሪዎች በስተጀርባ ያሉት ፕሮቶኮሎች፣ ከantifier (MIT)፣ chmfp (GPL-3.0-or-later)፣ dx1-studio (GPL-3.0)፣ ergodex-dx1-linux (GPL-3.0)፣ fortius_1942 (GPL-2.0-or-later)፣ FortiusANT (GPL-3.0)፣ intel-wings (GPL-2.0)፣ JoypadOS (Apache-2.0)፣ linuxtrack (MIT)፣ t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) እና xbox360bb (GPL-2.0-or-later) የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>የባቡር መቆጣጠሪያ ማጣቀሻዎች</value></data>
@@ -4839,7 +4845,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>የPS5 ሃፕቲክ PCM ቅርጸት፣ ባለ 16-ቢት ምልክት ያለው በ3 kHz፣ ይህም ባለ 8-ቢት ምልክት ያለውን የBluetooth ሃፕቲክስ ኢንኮዲንግ ወስኗል። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የAGPL ኮድ አይካተትም።</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>የDSX የጨዋታ ሞድ ማጣቀሻዎች</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>ከጨዋታ ሞዶች በስተጀርባ ያሉት የUDP መመሪያዎች፣ ምላሾች፣ የወደብ ፋይሎች እና የትሪገር ተፅዕኖ ባይቶች፣ ከPaliverse ይፋዊ የDSX v3.1 እና DualSenseX v2 የሞድ ምሳሌዎች፣ ከሁለቱም የDualSenseY ስሪቶች እና ከDualSense4Rockstar (ምንም ፈቃድ አልታተመም)፣ ከDSZ እና pydualsense (MIT)፣ እንዲሁም ከWujek Dualsense API እና በhbashton DS4Windows ቅርንጫፍ (GPL-3.0) ውስጥ ካለው የDSX አገልጋይ የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>ከጨዋታ ሞዶች በስተጀርባ ያሉት የUDP መመሪያዎች፣ ምላሾች፣ የወደብ ፋይሎች እና የትሪገር ተፅዕኖ ባይቶች፣ ከPaliverse ይፋዊ የDSX v3.1 እና DualSenseX v2 የሞድ ምሳሌዎች፣ ከDualSenseY እና ከDualSense4Rockstar (ምንም ፈቃድ አልታተመም)፣ ከDualSenseY-v2፣ DSZ እና pydualsense (MIT)፣ እንዲሁም ከWujek Dualsense API እና በhbashton DS4Windows ቅርንጫፍ (GPL-3.0) ውስጥ ካለው የDSX አገልጋይ የተነበቡ። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>የDualShock 4 ሄድሴት ማጣቀሻዎች</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጽ ማጣቀሻዎች</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>ከቁልፍ ሰሌዳ ማያ ገጾች በስተጀርባ ያሉት ቤተ-መጻሕፍት፣ ፍሬሞች እና ቁልፎች፣ ከLogitech LCD እና Arx Control SDKs እና ከMad Catz S.T.R.I.K.E. 7 SDK የተነበቡ፣ እና ከlogitech-lcd (MIT ወይም Apache-2.0)፣ dcspy (MIT)፣ foo_logitech_lcd (LGPL-2.1)፣ LogitechStuff እና ArxWidgetManager (ምንም ፈቃድ አልታተመም)፣ የLinux hid-lg-g15 አሽከርካሪ (GPL-2.0-or-later)፣ libg15፣ G15Interface እና lcdproc (GPL-2.0)፣ gnome15 (GPL-3.0) እና G19USB (Apache-2.0) ጋር የተረጋገጡ። PadForge የLogitech Gaming Software ቤተ-መጻሕፍትን እና እርስዎ የሚያወርዱትን ወይም የሚመርጡትን Strike7API.dll ይጭናል፣ እና ከአንዳቸውም ምንም ኮድ አያካትትም።</value></data>

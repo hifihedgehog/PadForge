@@ -1139,8 +1139,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Dinoto le control change bakeng sa software ya mmino.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Di-controller tsa VR tsa virtual ka SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ho fetola mofuta hamorao, tobetsa chip ya mofuta ho controller. Ho nka click e le nngwe feela.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ha e arabe. Bona karete ya yona ho Disetting.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E hloka SteamVR. E kenye ho tswa kareteng ya yona ho Disetting.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ha e arabe. E bone ho Disetting, tlasa Di-driver.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E hloka SteamVR. E kenye ho tswa ho Disetting, tlasa Di-driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ho se ho na le controller ya VR. E le nngwe e kganna matsoho ka bobedi.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Hokahanya controller ya Bluetooth</value></data>
   <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} ho tsamaya</value></data>
@@ -1206,4 +1206,6 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>E kgetha kenyo e nngwe e tla emelwa.</value></data>
   <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E phahamisa palo ya kenyo ena ho matla ana pele e kganna sephetho. 0 le 1 di e tlohela e otlolohile. Ka hodimo ho 1 e lieha haufi le bohareng.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad e iketselitsweng e boloka sehlopha ka seng bohole ba sona ho tswa moeling o haufi wa skrine se sephara, jwalo ka ha di-overlay tsa RetroArch di arohanya dihalofo tsa tsona tse pedi. E badilwe e le ditokomane feela, ha ho khoutu ya GPL e romelwang.</value></data>
 </root>

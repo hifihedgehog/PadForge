@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>සංගීත මෘදුකාංග සඳහා ස්වර සහ පාලන වෙනස්කම් (CC).</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR හරහා අතථ්‍ය VR පාලක.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>පසුව වර්ගය වෙනස් කිරීමට, පාලකය මත ඇති වර්ග චිපය ක්ලික් කරන්න. එයට එක් ක්ලික් එකක් පමණක් ගතවේ.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ප්‍රතිචාර නොදක්වයි. සැකසීම් හි එහි කාඩ්පත බලන්න.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR අවශ්‍යයි. සැකසීම් හි එහි කාඩ්පතෙන් එය ස්ථාපනය කරන්න.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ප්‍රතිචාර නොදක්වයි. සැකසීම් හි ධාවක යටතේ එය බලන්න.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR අවශ්‍යයි. සැකසීම් හි ධාවක යටතේ සිට එය ස්ථාපනය කරන්න.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR පාලකයක් දැනටමත් ඇත. එකක් අත් දෙකම පාලනය කරයි.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge සතුව පාලක {0}ක් ඇත, එය ධාවනය කළ හැකි උපරිමයයි. තවත් එකක් එක් කිරීමට එකක් මකන්න.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>පැතිකඩ</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (උපරිම {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>විස්තෘත (උපරිම {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය (උපරිම {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ධාවනය නොවේ, සැකසීම් හි Windows MIDI Services කාඩ්පත බලන්න)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ධාවනය නොවේ, සැකසීම් හි ධාවක යටතේ Windows MIDI Services බලන්න)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (උපරිම {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR අවශ්‍යයි)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (උපරිම {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU චලන මූලාශ්‍රයක් කියවන ඉමියුලේටර වෙත පාලක චලනය යවන්න.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX සඳහා ලියූ ක්‍රීඩා මොඩ් වලින් අනුවර්තී ට්‍රිගර සහ ආලෝක ප්‍රයෝග ලබා ගන්න.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ක්‍රීඩාවේ ටෙලිමෙට්‍රි ප්‍රතිදානය ක්‍රියාත්මක කර එය මෙම පරිගණකයට සහ තොටට යොමු කරන්න.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ඉමියුලේටරය තුළ, මෙම පරිගණකයේ ලිපිනයෙන් සහ මෙම තොටෙන් චලන මූලාශ්‍රයක් එක් කරන්න.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>මොඩ් එකක ප්‍රයෝග, ඒ සඳහා දෘඪාංග ඇති සෑම පාලකයකටම ළඟා වේ.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>මෙම පරිගණකයේ ඇති ඉමියුලේටරයක් තුළ, 127.0.0.1 සහ මෙම තොටෙන් චලන මූලාශ්‍රයක් එක් කරන්න.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>මොඩ් එකක් සම්බන්ධිත DualSense හෝ DualShock 4 ඇති සෑම අතථ්‍ය පාලකයකටම ළඟා වන අතර, එහි ප්‍රයෝග ඒ සඳහා දෘඪාංග ඇති එහි සෑම පාලකයකම වාදනය වේ.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>හිස් ඉරියව්ව [උපාංග] පිටුවේ ඇති හිස් ට්‍රැකර පේළියයි. පාලකයක සිතියම්ගත කිරීම් කොටසේදී හිස් යෝ අගය ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>අගයන් [උපාංග] පිටුවේ ඇති ක්‍රීඩා ටෙලිමෙට්‍රි පේළියයි. පාලකයක සිතියම්ගත කිරීම් කොටසේදී ඒවා සිතියම්ගත කරන්න, නැතහොත් මැක්‍රෝ ක්‍රියාත්මක කිරීමට ඒවා භාවිත කරන්න.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>මෙනුවක ස්ථානය, ප්‍රමාණය සහ පාරාන්ධතාව සකසන්නේ එම මෙනුවේමය, පාලකයක [මැක්‍රෝ සහ මෙනු] කොටසේදී.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>අහෝසි කරන්න</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>සියල්ල අහෝසි කරන්න</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ස්පර්ශ තිරයක් හෝ මූසිකය සමඟ භාවිත කිරීමට, PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ස්පර්ශ තිරයක් සමඟ භාවිත කිරීමට, PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ සබල කරන්න</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>පාරාන්ධතාව</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ස්ථානය යළි සකසන්න</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>පාලක ආදානය සහ ගණනය කිරීම.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>උපාංගයකට අනුව යතුරුපුවරු සහ මූසික ආදානය</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>RetroArch හි උඩැතිරි ඒවායේ භාග දෙක චලනය කරන ආකාරයටම, අභිරුචි වෙබ් පෑඩ් එකක් පුළුල් තිරයක සෑම පාලක කාණ්ඩයකම ළඟම ඇති දාරයේ සිට දුර රඳවා තබයි. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>අතථ්‍ය MIDI උපාංග ප්‍රතිදානය (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -875,6 +877,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>හෙඩ්ෆෝන් ප්‍රතිදානය සඳහා Bauer ස්ටීරියෝ-සිට-බයිනෝරල් ක්‍රොස්ෆීඩ්.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth හරහා DualSense ස්පීකර ශ්‍රව්‍ය ධාවනය කරන පිරිසිදු C# Opus කේතකය. Logan Stromberg විසින්.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>ක්‍රොස්හෙයාර් සහ විශාලක මූලාශ්‍ර</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>හරස් ලකුණ සහ එහි තිත Skarbo හි CSGOCrosshair (බලපත්‍රයක් ප්‍රකාශ කර නැත) වෙතින්, කවය, රූප සහ දළ රේඛා සහිත ශෛලීන් Crosshair-Overlay (MIT) වෙතින්, සහ විශාලකයේ කාචය සහ සම්පූර්ණ තිර විශාලනය Microsoft හි Windows-classic-samples (MIT) වෙතින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga විසින් කළ DualSense Bluetooth ශ්‍රව්‍ය පර්යේෂණය: පාලක ස්පීකර ප්‍රවාහය ගමන් කරන පැකට් ප්‍රවාහනය. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2356,7 +2360,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>ඒකක</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>සංවේදීතා ඒකක සංදර්ශකය. ගුණකය යනු අභ්‍යන්තර × පරිමාණයයි (1 = මූලික අගය). DegPerScreenTurn යනු Steam ශෛලියයි: සම්පූර්ණ තිර හැරීමක් සඳහා භෞතික පාලක භ්‍රමණයේ අංශක.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>පහසු ඉලක්ක සීමා අගය</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>මෙයට අඩු දකුණු ස්ටික් අපගමනයකදී (0–100%) ගයිරෝ ප්‍රතිදානය ශුන්‍ය කෙරේ. 0 = සැමවිටම සක්‍රිය. Steam හි “ඉලක්ක කරන අතරතුර ගයිරෝ සක්‍රිය” හැඟීම. පරිශීලකයා දකුණු ස්ටික් එක සීමා අගය ඉක්මවා තල්ලු කළ විට පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>මෙයට අඩු සක්‍රිය කිරීමේ ස්ටික් අපගමනයකදී (0–100%) ගයිරෝ ප්‍රතිදානය ශුන්‍ය කෙරේ. 0 = සැමවිටම සක්‍රිය. Steam හි “ඉලක්ක කරන අතරතුර ගයිරෝ සක්‍රිය” හැඟීම. පරිශීලකයා එම ස්ටික් එක සීමා අගය ඉක්මවා තල්ලු කළ විට පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ගයිරෝ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ගයිරෝ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>මෙම පෑඩයේ චලන සංවේදකය මූසික සහ ස්ටික් ප්‍රතිදානය පාලනය කරන ආකාරය සුසර කරන්න. නිශ්චල ඇදීම ශුන්‍ය කිරීමට සමතල පෘෂ්ඨයක් මත ක්‍රමාංකනය කරන්න, ඉන්පසු සංවේදීතාව, සුමට කිරීම සහ සක්‍රිය කිරීමේ නීති ඔබේ රුචියට සකසන්න.</value></data>
@@ -2406,9 +2410,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>සුමට කිරීමේ කවුළුව</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>සුමට කිරීමේ බෆරයේ කාල කවුළුවේ දිග. විශාල අගයන් තද කිරීමේ සීමා අගයට පහළින් වඩාත් සුමට කරයි. කුඩා අගයන් වඩා ඉක්මන් ප්‍රතිචාරයක් දෙයි. පෙරනිමිය 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ගයිරෝ ප්‍රතිදානය පාලනය කරන බොත්තම. මෙම බොත්තම ඔබාගෙන සිටින අතරතුර පමණක් ගයිරෝ ක්‍රියාත්මක වේ. බොත්තම් කොන්දේසිය අක්‍රිය කිරීමට එය සකසා නොතබන්න. මෙය සහ දකුණු ස්ටික් අපගමනය යන දෙකම වින්‍යාස කර ඇති විට, ගයිරෝ ක්‍රියාත්මක වීමට දෙකම සක්‍රිය විය යුතුය.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ගයිරෝ ප්‍රතිදානය පාලනය කරන බොත්තම. එය කෙසේදැයි සක්‍රිය කිරීමේ ප්‍රකාරය තීරණය කරයි. බොත්තම් කොන්දේසිය අක්‍රිය කිරීමට එය සකසා නොතබන්න. මෙය සහ සක්‍රිය කිරීමේ ස්ටික් අපගමනය යන දෙකම වින්‍යාස කර ඇති විට, ගයිරෝ ක්‍රියාත්මක වීමට දෙකම සක්‍රිය විය යුතුය.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>සක්‍රිය කිරීමේ ප්‍රකාරය</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ඔබාගෙන සිටීම: සක්‍රිය කිරීමේ බොත්තම ඔබාගෙන සිටින අතරතුර ගයිරෝ ක්‍රියාත්මක වේ. ටොගල්: සෑම එබීමක්ම ගයිරෝ සක්‍රිය හෝ අක්‍රිය කරයි, මුදා හැරීම කිසිවක් නොකරයි. ටොගල් තත්ත්වය විමසුම් චක්‍ර හරහා පවතින අතර පැතිකඩ මාරු කිරීමේදී යළි සැකසේ.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ඔබාගෙන සිටීම: සක්‍රිය කිරීමේ බොත්තම ඔබාගෙන සිටින අතරතුර ගයිරෝ ක්‍රියාත්මක වේ. ටොගල්: සෑම එබීමක්ම ගයිරෝ සක්‍රිය හෝ අක්‍රිය කරයි, මුදා හැරීම කිසිවක් නොකරයි. ඉලක්ක කිරීමට මුදා හරින්න: සක්‍රිය කිරීමේ බොත්තම ඔබාගෙන නොසිටින අතරතුර ගයිරෝ ක්‍රියාත්මක වේ. ටොගල් තත්ත්වය විමසුම් චක්‍ර හරහා පවතින අතර පැතිකඩ මාරු කිරීමේදී යළි සැකසේ.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ඔබාගෙන සිටීම</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>ටොගල්</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>ඉලක්ක කිරීමට මුදා හරින්න</value></data>
@@ -2428,7 +2432,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ඉහළ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>සක්‍රිය කිරීම</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ඉලක්ක සක්‍රිය කිරීමේ බොත්තම, සක්‍රිය කිරීමේ ප්‍රකාරය, ගයිරෝ සක්‍රිය, නැවත මධ්‍යගත කිරීම, පහසු ඉලක්ක සීමා අගය</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන කාලය සීමා කරන විකල්ප කොන්දේසි. දකුණු ස්ටික් අපගමනය සහ ඉලක්ක සක්‍රිය කිරීමේ බොත්තම එක එකක් වෙන වෙනම වින්‍යාස කළ හැක. වින්‍යාස කළ සෑම කොන්දේසියක්ම සක්‍රිය වන අතරතුර පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>ගයිරෝ සක්‍රිය වන කාලය සීමා කරන විකල්ප කොන්දේසි. සක්‍රිය කිරීමේ ස්ටික් එකේ අපගමනය සහ ඉලක්ක සක්‍රිය කිරීමේ බොත්තම එක එකක් වෙන වෙනම වින්‍යාස කළ හැක. වින්‍යාස කළ සෑම කොන්දේසියක්ම සක්‍රිය වන අතරතුර පමණක් ගයිරෝ ක්‍රියාත්මක වේ.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ස්ථානීය</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>ක්‍රීඩකයා</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ලෝකය</value></data>
@@ -4212,7 +4216,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ක්‍රීඩා කම්පනය බාස් ෂේකර් හෝ සබ්වූෆරයක් හරහා අඩු සංඛ්‍යාත නාද ලෙස වාදනය කරයි.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ප්‍රතිදාන උපාංගය, නාලිකා, ලාභය, එක් එක් මෝටරයට නාදයක්</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, සහ Nintendo Switch Pro අතථ්‍ය පාලක සමඟත්, ධාවන සුක්කානම් වැනි බල ප්‍රතිපෝෂණය සහිත Extended අතථ්‍ය පාලක සහ Steam Deck Controller (Composite) සමඟත් ක්‍රියා කරයි. ක්‍රීඩා ප්‍රතිපෝෂණය සහ කම්පන පරීක්ෂණය ශ්‍රව්‍ය ප්‍රතිදානය හරහා වාදනය වේ. මැක්‍රෝ කම්පනය පාලකය මතම පවතී.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, සහ Nintendo Switch Pro අතථ්‍ය පාලක සමඟත්, ධාවන සුක්කානම් වැනි බල ප්‍රතිපෝෂණය සහිත Extended අතථ්‍ය පාලක සමඟත් ක්‍රියා කරයි. එය Steam Deck Controller (Composite), SInput Gamepad සහ Joypad-OS Steam Input Gamepad සමඟද ක්‍රියා කරයි. ක්‍රීඩා ප්‍රතිපෝෂණය සහ කම්පන පරීක්ෂණය ශ්‍රව්‍ය ප්‍රතිදානය හරහා වාදනය වේ. මැක්‍රෝ කම්පනය පාලකය මතම පවතී.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට යළි සකසන්න</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරන්න</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය තෝරාගත් ශ්‍රව්‍ය ප්‍රතිදානය මත අඩු සංඛ්‍යාත නාද ලෙස වාදනය කරයි. එය අක්‍රිය කළද සෑම සැකසුමක්ම රඳවා ගනී.</value></data>
@@ -4533,7 +4537,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR මූලාශ්‍ර</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>හෙඩ්සෙට් සහ චලන පාලක ආදානය පිටුපස ඇති ධාවන පරිසර අතුරුමුහුණත, ව්‍යුහ පිරිසැලසුම, සහ රෙජිස්ට්‍රි යතුරු, Khronos OpenXR-SDK ශීර්ෂ ගොනු (Apache-2.0) වෙතින් කියවා VirtualDesktop-OpenXR (MIT) සමඟ හරස් පරීක්ෂා කරන ලදී. PadForge ඔබ විසින්ම ස්ථාපනය කළ ධාවන පරිසරය සමඟ සන්නිවේදනය කරන අතර කිසිදු Khronos කේතයක් ඇතුළත් නොකරයි.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>පර්යන්ත ප්‍රතිදාන මූලාශ්‍ර</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ හැප්ටික්, ආලෝකකරණ, යුගල කිරීම් සහ බැටරි රාමු, Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), OpenLogi ලේඛන, keyleds (GPL-3.0-or-later), g810-led සහ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), සහ g915x-heatmap (MIT) වෙතින් කියවා, OpenRGB-Fixed (GPL-2.0-or-later) සහ HaloDaemon-plugins වෙතින් සටහන් සමඟ. Razer නිෂ්පාදන ID සහ ආලෝකකරණ වාර්තා, OpenRazer (GPL-2.0-or-later) සහ OpenRGB (GPL-2.0-or-later) වෙතින් කියවා uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), සහ razer-life (GPL-2.0-or-later) සමඟ පරීක්ෂා කරන ලදී, එම මෙවලම් බෙදාගන්නා අගුල Aurora (MIT) සහ LibreHardwareMonitor (MPL-2.0) වෙතින් ගන්නා ලදී. SteelSeries නිෂ්පාදන ID සහ ආලෝකකරණ වාර්තා, OpenRGB සහ rivalcfg (WTFPL) වෙතින් කියවා SignalRGB හි ප්ලගින, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), සහ Wine (LGPL-2.1-or-later) සමඟ පරීක්ෂා කරන ලදී. HID LampArray වාර්තා, USB-IF HID Usage Tables, Microsoft හි Dynamic Lighting ලේඛන, සහ එහි නියැදි ArduinoHidForWindows සහ RP2040MacropadHidSample (MIT) වෙතින් කියවා, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq සහ Apex3TklDynamicLighting (සියල්ල MIT), acer-predator-helios-rgb (GPL-2.0-only), සහ crosrgbkblight සමඟ පරීක්ෂා කරන ලදී. iFeel කම්පන වාර්තාව, iFeel, Linux iFeel ධාවකය (GPL-2.0-or-later), සහ Logitech-iFeel-Vibration-POC වෙතින් කියවා, Linux කර්නලයේ (GPL-2.0-or-later) විස්තරක නීතියක් සහ Logitech හි MouseWare 9.80 ධාවකයේ ප්‍රබලතා පරිමාණය සමඟ. GameSense SDK වෙතින් ස්පර්ශ සහ වර්ණ හසුරුවන්නන්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ හැප්ටික්, ආලෝකකරණ, යුගල කිරීම් සහ බැටරි රාමු, Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), OpenLogi ලේඛන, keyleds (GPL-3.0-or-later), g810-led සහ g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), සහ g915x-heatmap (MIT) වෙතින් කියවා, OpenRGB-Fixed (GPL-2.0-or-later) සහ HaloDaemon-plugins වෙතින් සටහන් සමඟ. Razer නිෂ්පාදන ID සහ ආලෝකකරණ වාර්තා, OpenRazer (GPL-2.0-or-later) සහ OpenRGB (GPL-2.0-or-later) වෙතින් කියවා uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, කියවන විට MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), සහ razer-life (GPL-2.0-or-later) සමඟ පරීක්ෂා කරන ලදී, එම මෙවලම් බෙදාගන්නා අගුල Aurora (MIT) සහ LibreHardwareMonitor (MPL-2.0) වෙතින් ගන්නා ලදී. SteelSeries නිෂ්පාදන ID සහ ආලෝකකරණ වාර්තා, OpenRGB සහ rivalcfg (WTFPL) වෙතින් කියවා SignalRGB හි ප්ලගින, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), සහ Wine (LGPL-2.1-or-later) සමඟ පරීක්ෂා කරන ලදී. HID LampArray වාර්තා, USB-IF HID Usage Tables, Microsoft හි Dynamic Lighting ලේඛන, සහ එහි නියැදි ArduinoHidForWindows සහ RP2040MacropadHidSample (MIT) වෙතින් කියවා, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq සහ Apex3TklDynamicLighting (සියල්ල MIT), acer-predator-helios-rgb (GPL-2.0-only), සහ crosrgbkblight සමඟ පරීක්ෂා කරන ලදී. iFeel කම්පන වාර්තාව, iFeel, Linux iFeel ධාවකය (GPL-2.0-or-later), සහ Logitech-iFeel-Vibration-POC වෙතින් කියවා, Linux කර්නලයේ (GPL-2.0-or-later) විස්තරක නීතියක් සහ Logitech හි MouseWare 9.80 ධාවකයේ ප්‍රබලතා පරිමාණය සමඟ. GameSense SDK වෙතින් ස්පර්ශ සහ වර්ණ හසුරුවන්නන්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>පැරණි MIDI API පිටුපස ඇති WinMM ඇමතුම් අනුපිළිවෙළ: තොටක් විවෘත කිරීම, එයට යැවීම, සහ එය වැසීම. PortMidi (MIT, Ross Bencina, Phil Burk, සහ Roger B. Dannenberg විසින්) සහ RtMidi (MIT ආකාරයේ RtMidi බලපත්‍රය, Gary P. Scavone විසින්) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK මූලාශ්‍ර</value></data>
@@ -4543,7 +4547,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box මූලාශ්‍ර</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>"Bliss-Box ඇඩැප්ටර කියවන්න" පිටුපස ඇති Bliss-Box API, Bliss-Box LLC හි API Tool (BSD ආකාරයේ, ගාස්තුවකින් තොරව නැවත බෙදාහැරීම) සහ DeviceBuddy (මූලාශ්‍ර කේතය ලබා ගත හැක, Bliss-Box LLC) වෙතින් කියවන ලදී. බොත්තම් නාම SteveFox1620 හි retroarch-joypad-autoconfig ෆෝක් එකේ Bliss-Box ගොනුවලින්ද, Controller Pak චෙක්සම් libdragon (Unlicense) සමඟ පරීක්ෂා කිරීමෙන්ද, PlayStation පාලක පිළිතුර psx-spx සහ Linux හි psxpad-spi ධාවකයෙන් (GPL-2.0-or-later)ද ගන්නා ලදී. පාලක නාම සහ සහාය සටහන්ද Bliss-Box LLC හි ගැළපුම් ලැයිස්තුවෙන් පැමිණෙන අතර, ඇඩැප්ටරවල හැසිරීම ඒවායේ ස්ථිරාංග සමඟ පරීක්ෂා කරන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro හි සංයුක්ත USB පාලක සඳහා Vadym Hrynchyshyn විසින් USB ප්‍රවාහනය. HIDMaestro එහි අත්සන් කළ ධාරක පාලක ධාවකය රැගෙන යන අතර සංයුක්ත පාලකයක් පළමු වරට නිර්මාණය කරන විට එය ස්ථාපනය කරයි.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB උපාංග වන HIDMaestro පාලක සඳහා Vadym Hrynchyshyn විසින් USB ප්‍රවාහනය: ARM මත ධාවනය වන Windows හි සෑම අතථ්‍ය පාලකයක්ම, සහ x64 මත සංයුක්ත පාලක, Steam Controller (2026), Xbox One S: Full පැතිකඩ සහ Joy-Con Charging Grip ආකාර. HIDMaestro එහි ධාරක පාලක ධාවකය රැගෙන යන අතර මෙම පාලකවලින් එකක් පළමු වරට නිර්මාණය කරන විට එය ස්ථාපනය කරයි.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>මෙම ස්ලොට් එකේ ක්‍රියාත්මක වන්නේ කුමන අර්ධදැයි තෝරන්න. අර්ධයක් අක්‍රිය කිරීමෙන් එහි පේළි සැඟවී එය යැවීම නවතී, නමුත් එහි සිතියම්ගත කිරීම් තබා ගන්නා බැවින් නැවත සක්‍රිය කළ විට ඒවා ප්‍රතිසාධනය වේ.</value>
   </data>
@@ -4729,7 +4733,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube අනුවර්තී ට්‍රිගර පෙරසැකසුම් අගයන්, Mxater විසින්. කරුණු සඳහා පමණක් කියවන ලදී.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU චලන අක්ෂ ලකුණු, එහි UDP විකේතකය සමඟ පරීක්ෂා කරන ලදී. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU චලන අක්ෂ ලකුණු, එහි UDP විකේතකය සමඟ පරීක්ෂා කරන ලදී, සහ අභිරුචි වෙබ් පෑඩ් එකක පාලන ප්‍රමාණ, එහි Android උඩැතිරිය මනින ආකාරයටම තිරයේ කෙටි පැත්තට සාපේක්ෂව මනින ලදී. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>"අභ්‍යවකාශ සිමියුලේෂන්" ආරම්භක පැතිකඩ පිටුපස ඇති Elite Dangerous පෙරනිමි පෙරසැකසුම්, Richard Buckle විසින්.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4811,6 +4815,8 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ Switch ධාවකය පිටුපස ඇති Ring-Con ආරම්භ සහ නැවතුම් අනුපිළිවෙළ සහ PadForge කියවන ආතති පරිමාණය, demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), Yamakaky විසින් joy (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) සහ RingconProtocolDebug (Apache-2.0) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>අනුක්‍රමික පාලක මූලාශ්‍ර</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>අක්ෂ හයේ පාලක, ගේම්පෑඩ්, ගුවන් ජොයිස්ටික්, RC සම්ප්‍රේෂක, ගුවන් පැනල, සහ අර්ගෝමීටර සඳහා SDL ෆෝක් එකේ අනුක්‍රමික ධාවක පිටුපස ඇති ප්‍රොටෝකෝල, Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), John E. Stone විසින් libsball (BSD ආකාරයේ), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11), සහ XPComboTest (MIT) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput මූලාශ්‍ර</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput පෑඩ් සහාය සහ SInput පෞරුෂය පිටුපස ඇති වාර්තා, Hand Held Legend හි SINPUT-LIB-HID (MIT-0) සහ HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) සහ OpenPuck හි SInput ප්‍රකාරය (AGPL-3.0) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු AGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>විශේෂිත USB උපාංග මූලාශ්‍ර</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Intel Wireless Series පාදක ස්ථානය, Xbox 360 Big Button ග්‍රාහකය, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 සහ 3, සහ Tacx පුහුණුකාරක ප්‍රධාන ඒකක සඳහා SDL ෆෝක් එකේ ධාවක පිටුපස ඇති ප්‍රොටෝකෝල, antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0), සහ xbox360bb (GPL-2.0-or-later) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>දුම්රිය පාලක මූලාශ්‍ර</value></data>

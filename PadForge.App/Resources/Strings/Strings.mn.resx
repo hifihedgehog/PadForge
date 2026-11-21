@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Хөгжмийн программд зориулсан нот ба CC мессежүүд.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR дамжуулан виртуал VR контроллерүүд.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Төрлийг дараа солихын тулд контроллер дээрх төрлийн тэмдгийг дарна уу. Нэг дарахад болно.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services хариу өгөхгүй байна. Тохиргоо доторх түүний картыг үзнэ үү.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR шаардлагатай. Тохиргоо доторх түүний картаас суулгана уу.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services хариу өгөхгүй байна. Тохиргоо доторх Драйверууд хэсгээс үзнэ үү.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR шаардлагатай. Тохиргоо доторх Драйверууд хэсгээс суулгана уу.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR контроллер аль хэдийн байна. Нэг нь хоёр гарыг хоёуланг нь удирдана.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge хамгийн ихдээ {0} контроллер ажиллуулдаг бөгөөд бүгд ашиглагдаж байна. Өөр нэг нэмэхийн тулд нэгийг устгана уу.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профайл</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (дээд тал нь {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Өргөтгөсөн (дээд тал нь {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Гар + хулгана (дээд тал нь {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ажиллахгүй байна, Тохиргоо доторх Windows MIDI Services картыг үзнэ үү)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (ажиллахгүй байна, Тохиргоо доторх Драйверууд хэсгийн Windows MIDI Services-ийг үзнэ үү)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (дээд тал нь {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (SteamVR шаардлагатай)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (дээд тал нь {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU хөдөлгөөний эх үүсвэр уншдаг эмуляторуудад контроллерын хөдөлгөөнийг илгээнэ.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX-д зориулсан тоглоомын модуудаас дасан зохицох гохын болон гэрлийн эффектийг авна.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Тоглоомд телеметрийн гаралтыг асааж, энэ компьютер болон портыг зааж өгнө үү.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Эмулятор дотор энэ компьютерын хаяг, энэ порттой хөдөлгөөний эх үүсвэр нэмнэ үү.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Модын эффект нь түүнд тохирох техник хангамжтай бүх контроллерт хүрнэ.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Энэ компьютер дээрх эмулятор дотор 127.0.0.1 хаяг, энэ порттой хөдөлгөөний эх үүсвэр нэмнэ үү.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Мод нь холбогдсон DualSense эсвэл DualShock 4 бүхий виртуал контроллер бүрт хүрэх бөгөөд түүний эффектүүд тэнд байгаа, тохирох техник хангамжтай бүх контроллерт тоглогдоно.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Толгойн байрлал нь [Төхөөрөмжүүд] хуудсан дахь Толгой хянагч мөр юм. Толгойн хажуу тийш эргэлтийг контроллерын Оноолт хэсэгт стикийн тэнхлэгт онооно уу.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Утгууд нь [Төхөөрөмжүүд] хуудсан дахь Тоглоомын телеметр мөр юм. Тэдгээрийг контроллерын Оноолт хэсэгт онооно уу, эсвэл макро ажиллуулахад ашиглана уу.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Цэсний өөрийн байрлал, хэмжээ, тунгалаг бус байдлыг контроллерын [Макро ба цэсүүд] хэсэгт цэс дээр нь тохируулна.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Хүчингүй болгох</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Бүгдийг хүчингүй болгох</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлей</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан, мэдрэгч дэлгэц эсвэл хулганаар ашиглах дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан, мэдрэгч дэлгэцээр ашиглах дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлейг идэвхжүүлэх</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Тунгалаг бус байдал</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Байрлалыг дахин тохируулах</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллерийн оролт ба илрүүлэлт.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Төхөөрөмж тус бүрийн гар ба хулганы оролт</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Захиалгат веб пад илүү өргөн дэлгэц дээр бүлэг бүрийн ойрын ирмэгээс зайг хадгална, RetroArch-ийн оверлейнүүд хоёр хагасаа зөөдөгтэй адил. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуал MIDI төхөөрөмжийн гаралт (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Чихэвчний гаралтад зориулсан Bauer стерео-бинаурал хөндлөн холилт (crossfeed).</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense-ийн чанга яригчийн аудиог Bluetooth-ээр дамжуулдаг цэвэр C# Opus кодлогч. Зохиогч: Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Онилгоо ба томруулагчийн эх сурвалжууд</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Загалмай болон түүний цэгийг Skarbo-ийн CSGOCrosshair (лиценз нийтлээгүй)-оос, Дугуй, зураг болон хүрээтэй хэв маягуудыг Crosshair-Overlay (MIT)-оос, томруулагчийн Линз ба бүтэн дэлгэцийн томруулалтыг Microsoft-ийн Windows-classic-samples (MIT)-оос авсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-гийн DualSense Bluetooth аудио судалгаа: контроллерийн чанга яригчийн урсгал дамждаг пакет тээвэрлэлт. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Нэгж</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Мэдрэмжийн нэгжийн харагдац. Үржүүлэгч нь дотоод × масштаб (1 = суурь). DegPerScreenTurn нь Steam маягийн нэгж: дэлгэцийн нэг бүтэн эргэлтэд ногдох контроллерийн физик эргэлтийн градус.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Хялбар онилгын босго</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Үүнээс доош бол гироскопын гаралтыг тэглэх баруун стикийн хазайлт (0–100%). 0 = үргэлж асаалттай. Steam-ийн “онилж байх үед гироскоп идэвхтэй” мэдрэмж. Хэрэглэгч баруун стикийг босгоос цааш түлхсэн үед л гироскоп ажиллана.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Үүнээс доош бол гироскопын гаралтыг тэглэх Идэвхжүүлэх стикийн хазайлт (0–100%). 0 = үргэлж асаалттай. Steam-ийн “онилж байх үед гироскоп идэвхтэй” мэдрэмж. Хэрэглэгч тэр стикийг босгоос цааш түлхсэн үед л гироскоп ажиллана.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Энэ геймпадын хөдөлгөөний мэдрэгч хулгана болон стикийн гаралтыг хэрхэн удирдахыг тохируулна. Тайван үеийн шилжилтийг тэглэхийн тулд тэгш гадаргуу дээр калибровк хийгээд, дараа нь мэдрэмж, зөөллөлт, идэвхжүүлэх дүрмийг дуртайгаараа тохируулна уу.</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Зөөллөлтийн цонх</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Зөөллөх буферийн хугацааны цонхны урт. Их утга чангалалтын босгоос доош илүү хүчтэй зөөллөнө. Бага утга илүү шуурхай мэдрэгдэнэ. Үндсэн утга 50 мс.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Онилго идэвхжүүлэх товч</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Гироскопын гаралтыг хаалт болгон хянах товч. Гироскоп зөвхөн энэ товчийг дарж барих үед ажиллана. Товчны хаалтыг унтраах бол тохируулахгүй орхино уу. Энэ болон баруун стикийн хазайлт хоёулаа тохируулагдсан бол гироскоп ажиллахын тулд хоёулаа идэвхтэй байх ёстой.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Гироскопын гаралтыг хаалт болгон хянах товч. Хэрхэн хянахыг Идэвхжүүлэх горим тогтооно. Товчны хаалтыг унтраах бол тохируулахгүй орхино уу. Энэ болон Идэвхжүүлэх стикийн хазайлт хоёулаа тохируулагдсан бол гироскоп ажиллахын тулд хоёулаа идэвхтэй байх ёстой.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Идэвхжүүлэх горим</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Дарж барих: идэвхжүүлэх товчийг дарж барих үед гироскоп ажиллана. Сэлгэх: дарах бүр гироскопыг асааж эсвэл унтраах бөгөөд суллахад юу ч болохгүй. Сэлгэх төлөв уншилтын мөчлөгүүдийн турш хадгалагдаж, профайл солиход анхны байдалд орно.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Дарж барих: идэвхжүүлэх товчийг дарж барих үед гироскоп ажиллана. Сэлгэх: дарах бүр гироскопыг асааж эсвэл унтраах бөгөөд суллахад юу ч болохгүй. Суллахад онилох: идэвхжүүлэх товчийг дарж барихгүй үед гироскоп ажиллана. Сэлгэх төлөв уншилтын мөчлөгүүдийн турш хадгалагдаж, профайл солиход анхны байдалд орно.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Дарж барих</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Сэлгэх</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Суллахад онилох</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Дээш (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Идэвхжүүлэх</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Онилго идэвхжүүлэх товч, Идэвхжүүлэх горим, Гироскоп асах, Дахин төвлөрүүлэх, Хялбар онилгын босго</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоп хэзээ идэвхтэй байхыг хязгаарлах нэмэлт хаалтууд. Баруун стикийн хазайлт болон онилго идэвхжүүлэх товчийг тус тусад нь тохируулж болно. Гироскоп зөвхөн тохируулсан бүх хаалт идэвхтэй үед ажиллана.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Гироскоп хэзээ идэвхтэй байхыг хязгаарлах нэмэлт хаалтууд. Идэвхжүүлэх стикийн хазайлт болон онилго идэвхжүүлэх товчийг тус тусад нь тохируулж болно. Гироскоп зөвхөн тохируулсан бүх хаалт идэвхтэй үед ажиллана.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локал</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Тоглогч</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Ертөнц</value></data>
@@ -2521,7 +2525,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Гироскопын хэвийлт Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Гироскопын хэвийлт</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Бүтэн хэвийлтийн муж, Хэвийлтийн үхсэн бүс</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Гироскопын хэвийлт X / Гироскопын хэвийлт Y оролтуудын тохиргоо: Steam-ийн Joystick Deflection горимын адил хэвийлтийг барихад стик хазайлтаа барина. Энд тохируулсан мужид бүтэн хазайлт гарна; гироскопыг төвлөрүүлэх нь тайван барилтыг дахин тэглэнэ. Зүүн-баруун эргэлт (контроллерийг хэвтээгээр эргүүлэх) таталцалд үл мэдрэгдэх тул эдгээр оролтыг хөдөлгөхгүй.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Гироскопын хэвийлт X / Гироскопын хэвийлт Y оролтуудын тохиргоо: Steam-ийн Joystick Deflection горимын адил хэвийлтийг барихад стик хазайлтаа барина. Энд тохируулсан мужид бүтэн хазайлт гарна. Гироскопыг төвлөрүүлэх нь тайван барилтыг дахин тэглэнэ. Зүүн-баруун эргэлт (контроллерийг хэвтээгээр эргүүлэх) таталцалд үл мэдрэгдэх тул эдгээр оролтыг хөдөлгөхгүй.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Бүтэн хэвийлтийн муж</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Стикийн бүтэн хазайлт гэж тооцогдох, тайван барилтаас хэвийх градус. Бага = илүү мэдрэмтгий. Steam тохиргоонуудад хамгийн түгээмэл утга нь 25°.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Хэвийлтийн үхсэн бүс</value></data>
@@ -4560,7 +4564,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR эх сурвалжууд</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>VR шил ба хөдөлгөөний контроллерын оролтын ард байгаа ажиллах орчны интерфейс, бүтцийн зохион байгуулалт, бүртгэлийн түлхүүрүүдийг Khronos OpenXR-SDK толгой файлуудаас (Apache-2.0) уншиж, VirtualDesktop-OpenXR (MIT)-тэй тулган шалгасан. PadForge нь таны суулгасан ажиллах орчинтой харилцдаг бөгөөд Khronos-ийн код агуулаагүй.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Захын төхөөрөмжийн гаралтын эх сурвалжууд</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ хаптик, гэрэлтүүлэг, хослуулалт, батерейн фреймүүдийг Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ба MIT OR Apache-2.0), OpenLogi-ийн баримт бичиг, keyleds (GPL-3.0-or-later), g810-led ба g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), g915x-heatmap (MIT)-ээс уншиж, OpenRGB-Fixed (GPL-2.0-or-later) ба HaloDaemon-plugins-ийн тэмдэглэлийг ашигласан. Razer-ийн бүтээгдэхүүний ID ба гэрэлтүүлгийн тайлангуудыг OpenRazer (GPL-2.0-or-later) ба OpenRGB (GPL-2.0-or-later)-ээс уншиж, uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), razer-life (GPL-2.0-or-later)-тэй тулган шалгасан бөгөөд эдгээр хэрэгслийн хуваалцдаг түгжээг Aurora (MIT) ба LibreHardwareMonitor (MPL-2.0)-оос авсан. SteelSeries-ийн бүтээгдэхүүний ID ба гэрэлтүүлгийн тайлангуудыг OpenRGB ба rivalcfg (WTFPL)-ээс уншиж, SignalRGB-ийн плагинууд, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), Wine (LGPL-2.1-or-later)-тэй тулган шалгасан. HID LampArray тайлангуудыг USB-IF HID Usage Tables, Microsoft-ийн Dynamic Lighting баримт бичиг болон түүний жишээ ArduinoHidForWindows ба RP2040MacropadHidSample (MIT)-ээс уншиж, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ба Apex3TklDynamicLighting (бүгд MIT), acer-predator-helios-rgb (GPL-2.0-only), crosrgbkblight-тэй тулган шалгасан. iFeel-ийн чичиргээний тайланг iFeel, Linux-ийн iFeel драйвер (GPL-2.0-or-later), Logitech-iFeel-Vibration-POC-оос уншиж, дескрипторын дүрмийг Linux цөм (GPL-2.0-or-later)-өөс, хүчний хуваарийг Logitech-ийн MouseWare 9.80 драйвераас авсан. Мэдрэхүйн болон өнгөний боловсруулагчдыг GameSense SDK-ээс авсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ хаптик, гэрэлтүүлэг, хослуулалт, батерейн фреймүүдийг Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ба MIT OR Apache-2.0), OpenLogi-ийн баримт бичиг, keyleds (GPL-3.0-or-later), g810-led ба g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), g915x-heatmap (MIT)-ээс уншиж, OpenRGB-Fixed (GPL-2.0-or-later) ба HaloDaemon-plugins-ийн тэмдэглэлийг ашигласан. Razer-ийн бүтээгдэхүүний ID ба гэрэлтүүлгийн тайлангуудыг OpenRazer (GPL-2.0-or-later) ба OpenRGB (GPL-2.0-or-later)-ээс уншиж, uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, уншсан үедээ MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), razer-life (GPL-2.0-or-later)-тэй тулган шалгасан бөгөөд эдгээр хэрэгслийн хуваалцдаг түгжээг Aurora (MIT) ба LibreHardwareMonitor (MPL-2.0)-оос авсан. SteelSeries-ийн бүтээгдэхүүний ID ба гэрэлтүүлгийн тайлангуудыг OpenRGB ба rivalcfg (WTFPL)-ээс уншиж, SignalRGB-ийн плагинууд, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), Wine (LGPL-2.1-or-later)-тэй тулган шалгасан. HID LampArray тайлангуудыг USB-IF HID Usage Tables, Microsoft-ийн Dynamic Lighting баримт бичиг болон түүний жишээ ArduinoHidForWindows ба RP2040MacropadHidSample (MIT)-ээс уншиж, lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ба Apex3TklDynamicLighting (бүгд MIT), acer-predator-helios-rgb (GPL-2.0-only), crosrgbkblight-тэй тулган шалгасан. iFeel-ийн чичиргээний тайланг iFeel, Linux-ийн iFeel драйвер (GPL-2.0-or-later), Logitech-iFeel-Vibration-POC-оос уншиж, дескрипторын дүрмийг Linux цөм (GPL-2.0-or-later)-өөс, хүчний хуваарийг Logitech-ийн MouseWare 9.80 драйвераас авсан. Мэдрэхүйн болон өнгөний боловсруулагчдыг GameSense SDK-ээс авсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Хуучин MIDI API-ийн ард байгаа WinMM дуудлагын дараалал: порт нээх, түүн рүү илгээх, хаах. PortMidi (MIT, Ross Bencina, Phil Burk, Roger B. Dannenberg нар) ба RtMidi (MIT маягийн RtMidi лиценз, Gary P. Scavone)-ээс уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK эх сурвалжууд</value></data>
@@ -4570,7 +4574,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box эх сурвалжууд</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box адаптеруудыг унших функцийн ард байгаа Bliss-Box API-г Bliss-Box LLC-ийн API Tool (BSD маягийн, үнэ төлбөргүй дахин түгээх) болон DeviceBuddy (эх код нийтэд нээлттэй, Bliss-Box LLC)-ээс уншсан. Товчны нэрсийг SteveFox1620-ийн retroarch-joypad-autoconfig салаан дахь Bliss-Box файлуудаас авч, Controller Pak-ийн шалгах нийлбэрийг libdragon (Unlicense)-тэй тулган шалгаж, PlayStation контроллерын хариуг psx-spx ба Linux-ийн psxpad-spi драйвер (GPL-2.0-or-later)-ээс авсан. Контроллерын нэрс ба дэмжлэгийн тэмдэглэлийг мөн Bliss-Box LLC-ийн нийцлийн жагсаалтаас авч, адаптеруудын ажиллагааг тэдгээрийн фирмвэртэй тулган шалгасан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ийн нийлмэл USB контроллеруудад зориулсан USB дамжуулалт, Vadym Hrynchyshyn-ийн бүтээл. HIDMaestro нь түүний гарын үсэгтэй хост контроллерийн драйверийг агуулдаг бөгөөд нийлмэл контроллер анх үүсэх үед суулгана.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB төхөөрөмж болох HIDMaestro контроллеруудад зориулсан USB дамжуулалт, Vadym Hrynchyshyn-ийн бүтээл: ARM дээрх Windows-ийн бүх виртуал контроллер, мөн x64 дээр нийлмэл контроллерууд, Steam Controller (2026), Xbox One S: Full профайл болон Joy-Con Charging Grip хэлбэрүүд. HIDMaestro нь түүний хост контроллерийн драйверийг агуулдаг бөгөөд эдгээр контроллерын аль нэг нь анх үүсэх үед суулгана.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Энэ слотын аль хагасууд идэвхтэй байхыг сонгоно уу. Хагасыг унтраавал мөрүүд нь нуугдаж, илгээхээ болино. Оноолтууд нь хадгалагдах тул дахин асаахад сэргэнэ.</value>
   </data>
@@ -4755,7 +4759,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ийн дасан зохицох гохын бэлэн тохиргооны утгууд, Mxater-ийн бүтээл. Зөвхөн баримтын хувьд уншсан.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU хөдөлгөөний тэнхлэгийн тэмдэгүүд, түүний UDP декодлогчтой тулган шалгасан. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU хөдөлгөөний тэнхлэгийн тэмдэгүүд, түүний UDP декодлогчтой тулган шалгасан, мөн захиалгат веб падын удирдлагын хэмжээсүүд, түүний Android оверлейн хэмждэгийн адил дэлгэцийн богино талтай харьцуулан хэмжсэн. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Сансрын симулятор эхлэлийн профайлын ард байгаа Elite Dangerous-ийн үндсэн бэлэн тохиргоонууд, Richard Buckle-ийн бүтээл.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4837,6 +4841,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>SDL салааны Switch драйвер дахь Ring-Con эхлүүлэх ба зогсоох дараалал, PadForge-ийн уншдаг суналтын хуваарийг demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), Yamakaky-ийн joy (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT), RingconProtocolDebug (Apache-2.0)-оос уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Цуваа контроллерын эх сурвалжууд</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Зургаан тэнхлэгт контроллер, геймпад, нислэгийн жойстик, RC дамжуулагч, нислэгийн самбар, эргометрт зориулсан SDL салааны цуваа драйверуудын ард байгаа протоколуудыг Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), John E. Stone-ийн libsball (BSD маягийн), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11), XPComboTest (MIT)-оос уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput-ийн эх сурвалжууд</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput пад дэмжлэг болон SInput персонагийн ард байгаа тайлангуудыг Hand Held Legend-ийн SINPUT-LIB-HID (MIT-0) ба HOJA-LIB-RP2040 (CC BY-NC-SA 3.0), OpenPuck-ийн SInput горим (AGPL-3.0)-оос уншсан. Зөвхөн баримт бичиг, AGPL код багтаагүй.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Тусгай USB төхөөрөмжийн эх сурвалжууд</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Intel Wireless Series суурь станц, Xbox 360 Big Button хүлээн авагч, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 ба 3, Tacx дасгалжуулагчийн толгой төхөөрөмжүүдэд зориулсан SDL салааны драйверуудын ард байгаа протоколуудыг antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0), xbox360bb (GPL-2.0-or-later)-оос уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Галт тэрэгний контроллерын эх сурвалжууд</value></data>

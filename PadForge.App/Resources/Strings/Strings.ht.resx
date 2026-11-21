@@ -143,8 +143,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Nòt ak mesaj CC pou lojisyèl mizik.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontwolè VR vityèl atravè SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Pou chanje tip la pita, klike sou chip tip la sou kontwolè a. Sa pran yon sèl klik.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services pa reponn. Gade kat li nan Paramèt.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Bezwen SteamVR. Enstale l nan kat li nan Paramèt.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services pa reponn. Gade l nan Paramèt, anba Pilòt.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Bezwen SteamVR. Enstale l nan Paramèt, anba Pilòt.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Gen yon kontwolè VR deja. Youn kontwole de men yo.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge gen {0} kontwolè, maksimòm li ka fè mache. Efase youn pou ajoute yon lòt.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Pwofil</value></data>
@@ -181,7 +181,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (maks {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Elaji (maks {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Klavye + Sourit (maks {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (pa ap mache, gade kat Windows MIDI Services la nan Paramèt)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (pa ap mache, gade Windows MIDI Services nan Paramèt, anba Pilòt)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (maks {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (bezwen SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (maks {0})</value></data>
@@ -411,8 +411,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Voye mouvman kontwolè a bay emilatè ki li yon sous mouvman DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Resevwa efè gachèt adaptatif ak limyè mod jwèt ki ekri pou DSX voye.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Aktive sòti telemetri nan jwèt la epi dirije l sou PC sa a ak pò sa a.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Nan emilatè a, ajoute yon sous mouvman ak adrès PC sa a ak pò sa a.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efè yon mod rive sou chak kontwolè ki gen materyèl pou yo.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Nan yon emilatè sou PC sa a, ajoute yon sous mouvman ak adrès 127.0.0.1 ak pò sa a.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Yon mod rive sou chak kontwolè vityèl ki gen yon DualSense oswa yon DualShock 4 konekte, epi efè li yo mache sou chak kontwolè ladan l ki gen materyèl pou yo.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozisyon tèt la se ranje Swivi tèt la sou [Aparèy]. Asiyen yaw tèt la sou yon aks stick nan seksyon Asiyasyon yon kontwolè.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valè yo se ranje Telemetri jwèt la sou [Aparèy]. Asiyen yo nan seksyon Asiyasyon yon kontwolè oswa sèvi ak yo pou deklanche makwo.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Kote, gwosè ak opasite yon meni regle sou meni an menm, nan seksyon [Makwo ak meni] yon kontwolè.</value></data>
@@ -673,6 +673,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Antre ak deteksyon kontwolè.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Antre klavye ak sourit pou chak aparèy</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Yon manèt web pèsonalize kenbe distans chak gwoup ak bò ki pi pre a sou yon ekran ki pi laj, menm jan kouvèti RetroArch yo deplase de mwatye yo. Li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Sòti aparèy MIDI vityèl (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -699,6 +701,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Ankodè Opus ekri an C# sèlman ki fè odyo opalè DualSense la mache sou Bluetooth. Pa Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Referans viz ak loup</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Kwa a ak pwen li soti nan CSGOCrosshair Skarbo (okenn lisans pa pibliye), Sèk la, estil imaj ak estil ak kontou yo soti nan Crosshair-Overlay (MIT), epi Lantiy loup la ak zoom plen ekran li soti nan Windows-classic-samples Microsoft (MIT). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
@@ -2067,9 +2071,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Kalibrasyon monn reyèl</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Degre nan jwèt la pou chak degre wotasyon fizik kontwolè a. 0 etenn sa. 1.0 vle di yon wotasyon ponyèt 90° bay yon wotasyon kamera 90°. Kalibre yon fwa pou chak jwèt: vire kontwolè a yon tou konplè epi ajiste jiskaske kamera nan jwèt la fè yon tou konplè tou.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Bouton pou aktive vize</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Bouton ki kontwole soti jiwoskòp la. Jiwoskòp la mache sèlman pandan ou kenbe bouton sa a. Kite l vid pou pa sèvi ak bouton an. Lè ni bouton sa a ni deplasman stick dwat la konfigire, tou de dwe aktif pou jiwoskòp la mache.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Bouton ki kontwole soti jiwoskòp la. Mòd aktivasyon deside kijan. Kite l vid pou pa sèvi ak bouton an. Lè ni bouton sa a ni deplasman Stick aktivasyon an konfigire, tou de dwe aktif pou jiwoskòp la mache.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Mòd aktivasyon</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Kenbe: jiwoskòp la mache pandan ou kenbe bouton aktivasyon an. Limen/etenn: chak fwa ou peze, jiwoskòp la limen oswa etenn, epi lage pa fè anyen. Limen/etenn rete aktif de yon sik lekti a yon lòt epi li reyinisyalize lè ou chanje pwofil.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Kenbe: jiwoskòp la mache pandan ou kenbe bouton aktivasyon an. Limen/etenn: chak fwa ou peze, jiwoskòp la limen oswa etenn, epi lage pa fè anyen. Lage pou vize: jiwoskòp la mache pandan ou pa kenbe bouton aktivasyon an. Limen/etenn rete aktif de yon sik lekti a yon lòt epi li reyinisyalize lè ou chanje pwofil.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Kenbe</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Limen/etenn</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Lage pou vize</value></data>
@@ -2089,7 +2093,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Anwo (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Aktivasyon</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Bouton aktivasyon vize, Mòd aktivasyon, Jiwoskòp aktif, Resantre, Papòt Easy Aim</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Kondisyon opsyonèl ki limite lè jiwoskòp la aktif. Ou ka konfigire deplasman stick dwat la ak bouton aktivasyon vize a chak apa. Jiwoskòp la mache sèlman lè tout kondisyon ki konfigire yo aktif.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Kondisyon opsyonèl ki limite lè jiwoskòp la aktif. Ou ka konfigire deplasman Stick aktivasyon an ak bouton aktivasyon vize a chak apa. Jiwoskòp la mache sèlman lè tout kondisyon ki konfigire yo aktif.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jwè</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mond</value></data>
@@ -3774,7 +3778,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_OpenXrRefs" xml:space="preserve"><value>Referans OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Entèfas runtime la, dispozisyon estrikti yo, ak kle rejis ki dèyè antre kask VR ak kontwolè mouvman yo, li nan antèt Khronos OpenXR-SDK yo (Apache-2.0) epi verifye ak VirtualDesktop-OpenXR (MIT). PadForge pale ak pwòp runtime ou enstale a e li pa enkli okenn kòd Khronos.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Referans sòti periferik</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Pakè HID++ Logitech pou aptik, limyè, asosyasyon, ak batri, li nan Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ak MIT OR Apache-2.0), dokimantasyon OpenLogi a, keyleds (GPL-3.0-or-later), g810-led ak g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), ak g915x-heatmap (MIT), ak nòt ki soti nan OpenRGB-Fixed (GPL-2.0-or-later) ak HaloDaemon-plugins. ID pwodwi Razer yo ak rapò limyè yo, li nan OpenRazer (GPL-2.0-or-later) ak OpenRGB (GPL-2.0-or-later) epi verifye ak uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), ak razer-life (GPL-2.0-or-later), ak kadna zouti sa yo pataje, ki soti nan Aurora (MIT) ak LibreHardwareMonitor (MPL-2.0). ID pwodwi SteelSeries yo ak rapò limyè yo, li nan OpenRGB ak rivalcfg (WTFPL) epi verifye ak plugin SignalRGB yo, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), ak Wine (LGPL-2.1-or-later). Rapò HID LampArray yo, li nan HID Usage Tables USB-IF la, dokimantasyon Microsoft sou Dynamic Lighting, ak egzanp li yo ArduinoHidForWindows ak RP2040MacropadHidSample (MIT), epi verifye ak lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ak Apex3TklDynamicLighting (tout MIT), acer-predator-helios-rgb (GPL-2.0-only), ak crosrgbkblight. Rapò vibrasyon iFeel la, li nan iFeel, pilòt iFeel Linux (GPL-2.0-or-later), ak Logitech-iFeel-Vibration-POC, ak yon règ deskriptè ki soti nan nwayo Linux (GPL-2.0-or-later) ak echèl fòs la ki soti nan pilòt MouseWare 9.80 Logitech la. Jesyonè manyen ak koulè yo ki soti nan GameSense SDK la. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Pakè HID++ Logitech pou aptik, limyè, asosyasyon, ak batri, li nan Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD ak MIT OR Apache-2.0), dokimantasyon OpenLogi a, keyleds (GPL-3.0-or-later), g810-led ak g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), ak g915x-heatmap (MIT), ak nòt ki soti nan OpenRGB-Fixed (GPL-2.0-or-later) ak HaloDaemon-plugins. ID pwodwi Razer yo ak rapò limyè yo, li nan OpenRazer (GPL-2.0-or-later) ak OpenRGB (GPL-2.0-or-later) epi verifye ak uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT lè yo te li l), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), ak razer-life (GPL-2.0-or-later), ak kadna zouti sa yo pataje, ki soti nan Aurora (MIT) ak LibreHardwareMonitor (MPL-2.0). ID pwodwi SteelSeries yo ak rapò limyè yo, li nan OpenRGB ak rivalcfg (WTFPL) epi verifye ak plugin SignalRGB yo, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), ak Wine (LGPL-2.1-or-later). Rapò HID LampArray yo, li nan HID Usage Tables USB-IF la, dokimantasyon Microsoft sou Dynamic Lighting, ak egzanp li yo ArduinoHidForWindows ak RP2040MacropadHidSample (MIT), epi verifye ak lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq ak Apex3TklDynamicLighting (tout MIT), acer-predator-helios-rgb (GPL-2.0-only), ak crosrgbkblight. Rapò vibrasyon iFeel la, li nan iFeel, pilòt iFeel Linux (GPL-2.0-or-later), ak Logitech-iFeel-Vibration-POC, ak yon règ deskriptè ki soti nan nwayo Linux (GPL-2.0-or-later) ak echèl fòs la ki soti nan pilòt MouseWare 9.80 Logitech la. Jesyonè manyen ak koulè yo ki soti nan GameSense SDK la. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Sekans apèl WinMM ki dèyè ansyen API MIDI a: louvri yon pò, voye ba li, epi fèmen l. Li nan PortMidi (MIT, pa Ross Bencina, Phil Burk, ak Roger B. Dannenberg) ak RtMidi (lisans RtMidi ki sanble MIT, pa Gary P. Scavone). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referans SDK G-key Logitech</value></data>
@@ -3784,7 +3788,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Referans Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box ki dèyè Li adaptatè Bliss-Box yo, li nan API Tool Bliss-Box LLC (estil BSD, redistribisyon gratis) ak DeviceBuddy (sous disponib, Bliss-Box LLC), ak non bouton ki soti nan fichye Bliss-Box nan fork retroarch-joypad-autoconfig SteveFox1620 a, checksum Controller Pak yo verifye ak libdragon (Unlicense), ak repons manèt PlayStation la ki soti nan psx-spx ak pilòt psxpad-spi Linux (GPL-2.0-or-later). Non kontwolè yo ak nòt sipò yo soti tou nan lis konpatibilite Bliss-Box LLC, e yo verifye konpòtman adaptatè yo ak firmware yo. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transpò USB pa Vadym Hrynchyshyn pou kontwolè USB konpoze HIDMaestro yo. HIDMaestro gen pilòt kontwolè host siyen li a ladan l, epi li enstale l premye fwa yo kreye yon kontwolè konpoze.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transpò USB pa Vadym Hrynchyshyn pou kontwolè HIDMaestro ki se aparèy USB yo: tout kontwolè vityèl sou Windows on ARM, epi sou x64 kontwolè konpoze yo, Steam Controller (2026), pwofil Xbox One S: Full la ak fòm Joy-Con Charging Grip yo. HIDMaestro gen pilòt kontwolè host li a ladan l, epi li enstale l premye fwa yo kreye youn nan kontwolè sa yo.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Chwazi ki mwatye nan plas sa a ki aktif. Lè w etenn yon mwatye, liy li yo kache epi li sispann voye, men asiyasyon li yo rete, kidonk lè w limen l ankò yo retounen.</value>
   </data>
@@ -3969,7 +3973,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Valè prereglaj GameCube pou gachèt adaptatif yo, pa Mxater. Li pou enfòmasyon sèlman.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Siy aks mouvman DSU, verifye ak dekodè UDP li a. Li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Siy aks mouvman DSU, verifye ak dekodè UDP li a, ak gwosè kontwòl yon manèt web pèsonalize, mezire dapre bò ki pi kout ekran an jan kouvèti Android li a mezire yo. Li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Prereglaj pa defo Elite Dangerous ki dèyè pwofil pou kòmanse Similasyon espas la, pa Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4051,6 +4055,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Sekans kòmanse ak sispann Ring-Con ki dèyè pilòt Switch fork SDL la ak echèl flechisman PadForge li, li nan demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy pa Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) ak RingconProtocolDebug (Apache-2.0). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Referans kontwolè seri</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Pwotokòl ki dèyè pilòt seri fork SDL la pou kontwolè sis aks, manèt, joystick vòl, emetè RC, panno vòl, ak ègomèt, li nan Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball pa John E. Stone (BSD-style), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11), ak XPComboTest (MIT). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Referans SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Rapò ki dèyè sipò manèt SInput ak pèsona SInput la, li nan SINPUT-LIB-HID (MIT-0) ak HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) Hand Held Legend ak mòd SInput OpenPuck (AGPL-3.0). Dokimantasyon sèlman, okenn kòd AGPL pa enkli.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Referans aparèy USB espesyal</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Pwotokòl ki dèyè pilòt fork SDL la pou estasyon baz Intel Wireless Series, resepteur Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 ak 3, ak inite kontwòl bisiklèt antrennman Tacx, li nan antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0), ak xbox360bb (GPL-2.0-or-later). Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Referans kontwolè tren</value></data>

@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>نۆت و گۆڕانکاریی کۆنترۆڵ (CC) بۆ نەرمەکاڵای مۆسیقا.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>کۆنترۆڵەرە مەجازییەکانی VR لە ڕێگەی SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>بۆ گۆڕینی جۆر دواتر، کرتە لە چیپی جۆر لەسەر کۆنترۆڵەرەکە بکە. تەنها یەک کرتەی دەوێت.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services وەڵام ناداتەوە. کارتەکەی لە ڕێکخستنەکان ببینە.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>پێویستی بە SteamVR هەیە. لە کارتەکەی لە ڕێکخستنەکان دایبمەزرێنە.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services وەڵام ناداتەوە. لە ڕێکخستنەکان، لە ژێر درایڤەرەکان، بیبینە.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>پێویستی بە SteamVR هەیە. لە ڕێکخستنەکان، لە ژێر درایڤەرەکان، دایبمەزرێنە.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>کۆنترۆڵەرێکی VR هەیە. یەک کۆنترۆڵەر هەردوو دەست دەجووڵێنێت.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge {0} کۆنترۆڵەری هەیە، کە زۆرترینە دەتوانێت کاری پێبکات. یەکێک بسڕەوە بۆ زیادکردنی یەکێکی تر.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>پرۆفایل</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (زۆرترین {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>پەرەپێدراو (زۆرترین {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>تەختەکلیل + ماوس (زۆرترین {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (کارناکات، کارتی Windows MIDI Services لە ڕێکخستنەکان ببینە)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (کارناکات، Windows MIDI Services لە ڕێکخستنەکان، لە ژێر درایڤەرەکان ببینە)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (زۆرترین {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (پێویستی بە SteamVR هەیە)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (زۆرترین {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>جووڵەی کۆنترۆڵەر بنێرە بۆ ئەو ئیمولەیتەرانەی سەرچاوەی جووڵەی DSU دەخوێننەوە.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>کاریگەرییەکانی تریگەری گونجاو و ڕووناکی لەو مۆدانەی یاری وەربگرە کە بۆ DSX نووسراون.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>دەرچوونی تێلێمەتری لە یارییەکەدا هەڵبکە و ئاڕاستەی بکە بۆ ئەم کۆمپیوتەرە و ئەم پۆرتە.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>لە ئیمولەیتەرەکەدا، سەرچاوەیەکی جووڵە بە ناونیشانی ئەم کۆمپیوتەرە و ئەم پۆرتە زیاد بکە.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>کاریگەرییەکانی مۆدێک دەگاتە هەر کۆنترۆڵەرێک کە ڕەقەکاڵای بۆیان هەبێت.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>لە ئیمولەیتەرێکدا لەسەر ئەم کۆمپیوتەرە، سەرچاوەیەکی جووڵە بە ناونیشانی 127.0.0.1 و ئەم پۆرتە زیاد بکە.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>مۆدێک دەگاتە هەر کۆنترۆڵەرێکی مەجازی کە DualSense یان DualShock 4 ی پەیوەستکراوی تێدایە، و کاریگەرییەکانی لەسەر هەر کۆنترۆڵەرێکی ئەوێ لێدەدرێن کە ڕەقەکاڵای بۆیان هەبێت.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>هەڵوێستی سەر ڕیزی شوێنپێهەڵگری سەرە لە [ئامێرەکان]. سووڕانەوەی ئاسۆیی سەر بە تەوەرێکی ستیک ببەستەوە لە بەشی بەستنەوەکانی کۆنترۆڵەرێکدا.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>بەهاکان ڕیزی تێلێمەتریی یارین لە [ئامێرەکان]. لە بەشی بەستنەوەکانی کۆنترۆڵەرێکدا بیانبەستەوە یان بۆ دەستپێکردنی ماکرۆکان بەکاریان بهێنە.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>شوێن، قەبارە و ڕوونیی تایبەتی مێنیوێک لەسەر خودی مێنیوەکە دادەنرێن، لە بەشی [ماکرۆکان و مێنیوەکان] لە کۆنترۆڵەرێکدا.</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>کێشانەوە</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>کێشانەوەی هەموو</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ئۆڤەرلەی تاچپاد</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ڕووکاری دەستلێدان لەسەر شاشە بۆ یارییەکانی تاچپادی PlayStation، بۆ شاشەی دەستلێدان یان ماوس.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ڕووکاری دەستلێدان لەسەر شاشە بۆ یارییەکانی تاچپادی PlayStation، بۆ شاشەی دەستلێدان.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>چالاککردنی ئۆڤەرلەی تاچپاد</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ناڕوونی</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ڕێکخستنەوەی جێگا</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>تێخستن و ژماردنی کۆنترۆڵەرەکان.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>تێخستنی تەختەکلیل و ماوس بۆ هەر ئامێرێک</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>پادێکی وێبی تایبەت دووریی هەر کۆمەڵەیەک لە لێواری نزیکتری شاشەیەکی پانتر دەپارێزێت، وەک ئەوەی داپۆشەرەکانی RetroArch دوو نیوەکەیان دەجووڵێنن. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>دەرچوونی ئامێری MIDI ی مەجازی (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -873,6 +875,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>تێکەڵکردنی دەنگی ستیریۆ بۆ بایناوراڵی Bauer بۆ دەرچوونی هێدفۆن.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>ئینکۆدەری Opus بە C# ی پەتی کە دەنگی بڵندگۆی DualSense لە ڕێگەی Bluetooth ەوە دەبات. لەلایەن Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>سەرچاوەکانی نیشانە و گەورەکەر</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>خاچ و خاڵەکەی لە CSGOCrosshair ی Skarbo (هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، شێوازەکانی بازنە، وێنە و لێوارکێشراو لە Crosshair-Overlay (MIT)، و هاوێنە و زوومی شاشەی تەواوی گەورەکەر لە Windows-classic-samples ی Microsoft (MIT). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>توێژینەوەی دەنگی Bluetooth ی DualSense لەلایەن egormanga: ئەو گواستنەوەی پاکێتەی کە ستریمی بڵندگۆی کۆنترۆڵەرەکە لەسەری دەڕوات. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2354,7 +2358,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>یەکەکان</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>یەکەی پیشاندانی هەستیاری. لێکدەر ڕێژەی × ی ناوخۆییە (1 = بنچینە). DegPerScreenTurn شێوازی Steam ە: پلەکانی سووڕانەوەی فیزیکی کۆنترۆڵەر بۆ یەک سووڕانەوەی تەواوی شاشە.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>سنووری نیشانگرتنی ئاسان</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>لادانی ستیکی ڕاست (0–100%) کە لە خوارەوەیدا دەرچووی جایرۆ سفر دەکرێت. 0 = هەمیشە چالاک. هەستی «جایرۆ لە کاتی نیشانگرتندا چالاکە»ی Steam. جایرۆ تەنها کاتێک کار دەکات کە بەکارهێنەر ستیکی ڕاست لە سنوورەکە تێدەپەڕێنێت.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>لادانی «ستیکی چالاککردن» (0–100%) کە لە خوارەوەیدا دەرچووی جایرۆ سفر دەکرێت. 0 = هەمیشە چالاک. هەستی «جایرۆ لە کاتی نیشانگرتندا چالاکە»ی Steam. جایرۆ تەنها کاتێک کار دەکات کە بەکارهێنەر ئەو ستیکە لە سنوورەکە تێدەپەڕێنێت.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>جایرۆ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>جایرۆ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ڕێکی بخە کە هەستەوەری جووڵەی ئەم کۆنترۆڵەرە چۆن دەرچووی ماوس و ستیک دەجووڵێنێت. لەسەر ڕووبەرێکی تەخت کالیبرە بکە بۆ سفرکردنی خلیسکانی کاتی وەستان، پاشان هەستیاری، نەرمکردن و مەرجەکانی چالاککردن بەپێی ئارەزووی خۆت ڕێک بخە.</value></data>
@@ -2404,9 +2408,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>ماوەی نەرمکردن</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>درێژی ماوەی کاتی بافەری نەرمکردن. بەهای گەورەتر لە خوار سنووری توندکردنەوەدا زیاتر نەرم دەکات. بەهای بچووکتر وەڵامدانەوەی خێراتری هەیە. بنەڕەت 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>دوگمەی چالاککردنی نیشانگرتن</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ئەو دوگمەیەی دەرچووی جایرۆ کۆنترۆڵ دەکات. جایرۆ تەنها کاتێک کار دەکات کە ئەم دوگمەیە ڕاگیراوە. بە دیارینەکراوی جێی بهێڵە بۆ ناچالاککردنی مەرجی دوگمە. کاتێک هەم ئەمە و هەم لادانی ستیکی ڕاست ڕێکخراون، دەبێت هەردووکیان چالاک بن بۆ ئەوەی جایرۆ کار بکات.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ئەو دوگمەیەی دەرچووی جایرۆ کۆنترۆڵ دەکات. «دۆخی چالاککردن» دیاری دەکات چۆن. بە دیارینەکراوی جێی بهێڵە بۆ ناچالاککردنی مەرجی دوگمە. کاتێک هەم ئەمە و هەم لادانی «ستیکی چالاککردن» ڕێکخراون، دەبێت هەردووکیان چالاک بن بۆ ئەوەی جایرۆ کار بکات.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>دۆخی چالاککردن</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ڕاگرتن: جایرۆ کار دەکات تا دوگمەی چالاککردن ڕاگیراوە. گۆڕین: هەر داگرتنێک جایرۆ هەڵدەکات یان دەکوژێنێتەوە، و بەردان هیچ ناکات. گۆڕین لە نێوان خولەکانی پشکنیندا دەمێنێتەوە و لە کاتی گۆڕینی پرۆفایل دەگەڕێتەوە بۆ سەرەتا.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>ڕاگرتن: جایرۆ کار دەکات تا دوگمەی چالاککردن ڕاگیراوە. گۆڕین: هەر داگرتنێک جایرۆ هەڵدەکات یان دەکوژێنێتەوە، و بەردان هیچ ناکات. بەردان بۆ نیشانگرتن: جایرۆ کار دەکات کاتێک دوگمەی چالاککردن ڕانەگیراوە. گۆڕین لە نێوان خولەکانی پشکنیندا دەمێنێتەوە و لە کاتی گۆڕینی پرۆفایل دەگەڕێتەوە بۆ سەرەتا.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>ڕاگرتن</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>گۆڕین</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>بەردان بۆ نیشانگرتن</value></data>
@@ -2426,7 +2430,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>سەرەوە (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>چالاککردن</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>دوگمەی چالاککردنی نیشانگرتن، دۆخی چالاککردن، جایرۆ چالاک، ناوەندکردنەوە، سنووری نیشانگرتنی ئاسان</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>مەرجی ئارەزوومەندانە کە دیاری دەکەن جایرۆ کەی چالاکە. لادانی ستیکی ڕاست و دوگمەی چالاککردنی نیشانگرتن هەر یەکەیان دەتوانرێت ڕێک بخرێت. جایرۆ تەنها کاتێک کار دەکات کە هەموو مەرجە ڕێکخراوەکان چالاک بن.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>مەرجی ئارەزوومەندانە کە دیاری دەکەن جایرۆ کەی چالاکە. لادانی «ستیکی چالاککردن» و دوگمەی چالاککردنی نیشانگرتن هەر یەکەیان دەتوانرێت ڕێک بخرێت. جایرۆ تەنها کاتێک کار دەکات کە هەموو مەرجە ڕێکخراوەکان چالاک بن.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ناوخۆیی</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>یاریزان</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>جیهان</value></data>
@@ -2518,7 +2522,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>لاری جایرۆ Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>لاری جایرۆ</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>مەودای لاری تەواو، ناوچەی مردووی لاری</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>چوارچێوەی تێخراوەکانی لاری جایرۆ X / لاری جایرۆ Y: لارییەک ڕابگرە و ستیکەکە لادانەکەی ڕادەگرێت، وەک دۆخی Joystick Deflection ی Steam. لادانی تەواو لەو مەودایەدایە کە لێرە دایدەنێیت؛ «ناوەندکردنەوەی جایرۆ» شێوەی گرتنی ئاسایی دووبارە سفر دەکاتەوە. یاو (سووڕاندنی کۆنترۆڵەر بە تەختی) بۆ کێشکردنی زەوی نادیارە و ئەم تێخراوانە ناجووڵێنێت.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>چوارچێوەی تێخراوەکانی لاری جایرۆ X / لاری جایرۆ Y: لارییەک ڕابگرە و ستیکەکە لادانەکەی ڕادەگرێت، وەک دۆخی Joystick Deflection ی Steam. لادانی تەواو لەو مەودایەدایە کە لێرە دایدەنێیت. «ناوەندکردنەوەی جایرۆ» شێوەی گرتنی ئاسایی دووبارە سفر دەکاتەوە. یاو (سووڕاندنی کۆنترۆڵەر بە تەختی) بۆ کێشکردنی زەوی نادیارە و ئەم تێخراوانە ناجووڵێنێت.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>مەودای لاری تەواو</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>پلەکانی لاری لە شێوەی گرتنی ئاساییەوە کە وەک لادانی تەواوی ستیک هەژمار دەکرێن. بچووکتر = هەستیارتر. 25° باوترین بەهایە لە ڕێکخستنەکانی Steam دا.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>ناوچەی مردووی لاری</value></data>
@@ -4238,7 +4242,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لەرزێنەرەکانی باس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لەرزینی یاری وەک تۆنی نزم لە ڕێگەی لەرزێنەرەکانی باس یان سەبوۆفەرێکەوە لێدەدات.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ئامێری دەرچوو، کەناڵەکان، بەهێزکردن، تۆنێک بۆ هەر مۆتۆرێک</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>لەگەڵ کۆنترۆڵەرە مەجازییەکانی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار دەکات، هەروەها کۆنترۆڵەرە مەجازییە Extendedەکان کە فیدباکی هێزیان هەیە، وەک سوکانی پێشبڕکێ، و Steam Deck Controller (Composite). فیدباکی یاری و «تاقیکردنەوەی لەرزین» لە ڕێگەی دەرچووی دەنگەوە لێدەدرێن. لەرزینی ماکرۆ لەسەر کۆنترۆڵەرەکە دەمێنێتەوە.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>لەگەڵ کۆنترۆڵەرە مەجازییەکانی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار دەکات، هەروەها کۆنترۆڵەرە مەجازییە Extendedەکان کە فیدباکی هێزیان هەیە، وەک سوکانی پێشبڕکێ. هەروەها لەگەڵ Steam Deck Controller (Composite)، SInput Gamepad و Joypad-OS Steam Input Gamepad کار دەکات. فیدباکی یاری و «تاقیکردنەوەی لەرزین» لە ڕێگەی دەرچووی دەنگەوە لێدەدرێن. لەرزینی ماکرۆ لەسەر کۆنترۆڵەرەکە دەمێنێتەوە.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>گەڕاندنەوەی لەرزین بۆ دەنگ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>ناردنی لەرزین بۆ دەرچوویەکی دەنگ</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>لەرزین و فیدباکی هێزی یاری کە ئەم کۆنترۆڵەری مەجازییە وەریدەگرێت وەک تۆنی لەرەلەری نزم لەسەر دەرچووی دەنگی هەڵبژێردراو لێدەدات. کوژاندنەوەی هەموو ڕێکخستنێک دەپارێزێت.</value></data>
@@ -4563,7 +4567,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>سەرچاوەکانی OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ڕووکاری ڕەنتایم، ڕیزبەندیی پێکهاتەکان و کلیلەکانی ڕێجیستری لە پشت تێخراوی هێدسێت و کۆنترۆڵەری جووڵە، خوێندراوە لە سەرپەڕەکانی OpenXR-SDK ی Khronos (Apache-2.0) و بەراورد کراوە لەگەڵ VirtualDesktop-OpenXR (MIT). PadForge لەگەڵ ئەو ڕەنتایمەی خۆت دامەزراندووە قسە دەکات و هیچ کۆدێکی Khronos لەگەڵ خۆیدا نییە.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>سەرچاوەکانی دەرچووی ئامێرە دەرەکییەکان</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>چوارچێوەکانی هاپتیک، ڕووناککردنەوە، جووتکردن و پاتریی HID++ ی Logitech، خوێندراوە لە Solaar (GPL-2.0-or-later)، libratbag (MIT)، LiveHaptics، OpenLogi (0BSD و MIT OR Apache-2.0)، بەڵگەنامەکانی OpenLogi، keyleds (GPL-3.0-or-later)، g810-led و g810-led-resources (GPL-3.0)، rigdeck (GPL-3.0-or-later)، OpenGHub (MIT) و g915x-heatmap (MIT)، لەگەڵ تێبینی لە OpenRGB-Fixed (GPL-2.0-or-later) و HaloDaemon-plugins. ناسنامەکانی بەرهەم و ڕاپۆرتەکانی ڕووناککردنەوەی Razer، خوێندراوە لە OpenRazer (GPL-2.0-or-later) و OpenRGB (GPL-2.0-or-later) و پشکنراوە لەگەڵ uncoil (GPL-3.0-or-later)، OpenSynapse (MIT)، openrazer-win (GPL-2.0-or-later)، sanshoku (MIT)، razer_test (GPL-3.0-or-later) و razer-life (GPL-2.0-or-later)، لەگەڵ ئەو قوفڵەی ئەو ئامرازانە لە Aurora (MIT) و LibreHardwareMonitor (MPL-2.0) هاوبەشی دەکەن. ناسنامەکانی بەرهەم و ڕاپۆرتەکانی ڕووناککردنەوەی SteelSeries، خوێندراوە لە OpenRGB و rivalcfg (WTFPL) و پشکنراوە لەگەڵ پێوەکراوەکانی SignalRGB، Aerox_5 (MIT)، apex-3-tkl (MIT)، ApexCtl (LGPL-3.0)، SteelSeriesControl (GPL-3.0)، rival310-re (LGPL-3.0)، Cricetus-Imperator (MIT) و Wine (LGPL-2.1-or-later). ڕاپۆرتەکانی HID LampArray، خوێندراوە لە HID Usage Tables ی USB-IF، بەڵگەنامەکانی Dynamic Lighting ی Microsoft و نموونەکانی ArduinoHidForWindows و RP2040MacropadHidSample (MIT)، و پشکنراوە لەگەڵ lampctl (MIT OR Apache-2.0)، hid-rgb-ctl، keybackcon، mistel-lights، CaYaLight، hp-omen-35l-rgb، mac-dynamic-lighting، aura-loq و Apex3TklDynamicLighting (هەموویان MIT)، acer-predator-helios-rgb (GPL-2.0-only) و crosrgbkblight. ڕاپۆرتی لەرزینی iFeel، خوێندراوە لە iFeel، درایڤەری iFeel ی Linux (GPL-2.0-or-later) و Logitech-iFeel-Vibration-POC، لەگەڵ یاسایەکی وەسفکەر لە کێرنێڵی Linux (GPL-2.0-or-later) و پێوەری هێز لە درایڤەری MouseWare 9.80 ی Logitech. چارەسەرکەرەکانی هەستکردن و ڕەنگ لە GameSense SDK. تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>چوارچێوەکانی هاپتیک، ڕووناککردنەوە، جووتکردن و پاتریی HID++ ی Logitech، خوێندراوە لە Solaar (GPL-2.0-or-later)، libratbag (MIT)، LiveHaptics، OpenLogi (0BSD و MIT OR Apache-2.0)، بەڵگەنامەکانی OpenLogi، keyleds (GPL-3.0-or-later)، g810-led و g810-led-resources (GPL-3.0)، rigdeck (GPL-3.0-or-later)، OpenGHub (MIT) و g915x-heatmap (MIT)، لەگەڵ تێبینی لە OpenRGB-Fixed (GPL-2.0-or-later) و HaloDaemon-plugins. ناسنامەکانی بەرهەم و ڕاپۆرتەکانی ڕووناککردنەوەی Razer، خوێندراوە لە OpenRazer (GPL-2.0-or-later) و OpenRGB (GPL-2.0-or-later) و پشکنراوە لەگەڵ uncoil (GPL-3.0-or-later)، OpenSynapse (AGPL-3.0-only، MIT لە کاتی خوێندنەوەدا)، openrazer-win (GPL-2.0-or-later)، sanshoku (MIT)، razer_test (GPL-3.0-or-later) و razer-life (GPL-2.0-or-later)، لەگەڵ ئەو قوفڵەی ئەو ئامرازانە لە Aurora (MIT) و LibreHardwareMonitor (MPL-2.0) هاوبەشی دەکەن. ناسنامەکانی بەرهەم و ڕاپۆرتەکانی ڕووناککردنەوەی SteelSeries، خوێندراوە لە OpenRGB و rivalcfg (WTFPL) و پشکنراوە لەگەڵ پێوەکراوەکانی SignalRGB، Aerox_5 (MIT)، apex-3-tkl (MIT)، ApexCtl (LGPL-3.0)، SteelSeriesControl (GPL-3.0)، rival310-re (LGPL-3.0)، Cricetus-Imperator (MIT) و Wine (LGPL-2.1-or-later). ڕاپۆرتەکانی HID LampArray، خوێندراوە لە HID Usage Tables ی USB-IF، بەڵگەنامەکانی Dynamic Lighting ی Microsoft و نموونەکانی ArduinoHidForWindows و RP2040MacropadHidSample (MIT)، و پشکنراوە لەگەڵ lampctl (MIT OR Apache-2.0)، hid-rgb-ctl، keybackcon، mistel-lights، CaYaLight، hp-omen-35l-rgb، mac-dynamic-lighting، aura-loq و Apex3TklDynamicLighting (هەموویان MIT)، acer-predator-helios-rgb (GPL-2.0-only) و crosrgbkblight. ڕاپۆرتی لەرزینی iFeel، خوێندراوە لە iFeel، درایڤەری iFeel ی Linux (GPL-2.0-or-later) و Logitech-iFeel-Vibration-POC، لەگەڵ یاسایەکی وەسفکەر لە کێرنێڵی Linux (GPL-2.0-or-later) و پێوەری هێز لە درایڤەری MouseWare 9.80 ی Logitech. چارەسەرکەرەکانی هەستکردن و ڕەنگ لە GameSense SDK. تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>زنجیرە بانگکردنەکانی WinMM لە پشت API ی کۆنی MIDI: کردنەوەی پۆرتێک، ناردن بۆی و داخستنی. خوێندراوە لە PortMidi (MIT، لەلایەن Ross Bencina، Phil Burk و Roger B. Dannenberg) و RtMidi (مۆڵەتی RtMidi لە شێوەی MIT، لەلایەن Gary P. Scavone). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>سەرچاوەکانی SDK ی G-key ی Logitech</value></data>
@@ -4573,7 +4577,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>سەرچاوەکانی Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API ی Bliss-Box لە پشت خوێندنەوەی ئەداپتەرەکانی Bliss-Box، خوێندراوە لە API Tool ی Bliss-Box LLC (لە شێوەی BSD، دابەشکردنەوەی بێبەرامبەر) و DeviceBuddy (سەرچاوە بەردەستە، Bliss-Box LLC)، لەگەڵ ناوی دوگمەکان لە فایلەکانی Bliss-Box لە لقی retroarch-joypad-autoconfig ی SteveFox1620، چێکسەمەکانی Controller Pak کە لەگەڵ libdragon (Unlicense) بەراورد کراون، و وەڵامی گەیمپادی PlayStation لە psx-spx و درایڤەری psxpad-spi ی Linux (GPL-2.0-or-later). ناوی کۆنترۆڵەرەکان و تێبینییەکانی پشتگیری هەروەها لە لیستی گونجاندنی Bliss-Box LLC هاتوون، و ڕەفتاری ئەداپتەرەکان لەگەڵ فێرموێرەکەیان پشکنراوە. تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>گواستنەوەی USB لەلایەن Vadym Hrynchyshyn بۆ کۆنترۆڵەرە USB ییە پێکهاتەکانی HIDMaestro. HIDMaestro درایڤەری واژۆکراوی کۆنترۆڵەری هۆستی ئەو لەگەڵ خۆیدا هەڵدەگرێت و یەکەم جار کە کۆنترۆڵەرێکی پێکهاتە دروست دەکرێت دایدەمەزرێنێت.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>گواستنەوەی USB لەلایەن Vadym Hrynchyshyn بۆ ئەو کۆنترۆڵەرانەی HIDMaestro کە ئامێری USB ن: هەموو کۆنترۆڵەرێکی مەجازی لەسەر Windows on ARM، و لەسەر x64 کۆنترۆڵەرە پێکهاتەکان، Steam Controller (2026)، پرۆفایلی Xbox One S: Full و شێوەکانی Joy-Con Charging Grip. HIDMaestro درایڤەری کۆنترۆڵەری هۆستی ئەو لەگەڵ خۆیدا هەڵدەگرێت و یەکەم جار کە یەکێک لەم کۆنترۆڵەرانە دروست دەکرێت دایدەمەزرێنێت.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>هەڵبژێرە کام نیوەی ئەم شوێنە چالاک بن. کوژاندنەوەی نیوەیەک ڕیزەکانی دەشارێتەوە و ناردنی دەوەستێنێت، و بەستنەوەکانی دەهێڵێتەوە بۆ ئەوەی کاتێک دووبارە دەیکەیتەوە بگەڕێنەوە.</value>
   </data>
@@ -4759,7 +4763,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>بەهاکانی ڕێکخستنی ئامادەی تریگەری گونجاو بۆ GameCube، لەلایەن Mxater. تەنها بۆ ڕاستییەکان خوێندراوەتەوە.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>نیشانەکانی تەوەرەکانی جووڵەی DSU، پشکنراو لەگەڵ دیکۆدەری UDP ی ئەم پرۆژەیە. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>نیشانەکانی تەوەرەکانی جووڵەی DSU، پشکنراو لەگەڵ دیکۆدەری UDP ی ئەم پرۆژەیە، و قەبارەی کۆنترۆڵەکانی پادێکی وێبی تایبەت، پێوراو بەرامبەر لای کورتتری شاشە وەک داپۆشەری Android ی ئەم پرۆژەیە دەیانپێوێت. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ڕێکخستنە ئامادە بنەڕەتییەکانی Elite Dangerous لە پشت پرۆفایلی سەرەتایی سیمولەیتەری بۆشایی، لەلایەن Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4841,6 +4845,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>زنجیرەکانی دەستپێکردن و وەستاندنی Ring-Con لە پشت درایڤەری Switch ی لقی SDL و ئەو پێوەری کشانەی PadForge دەیخوێنێتەوە، خوێندراوە لە demo-of-ring-con-with-web-hid، Eden (GPL-3.0-or-later)، joy لەلایەن Yamakaky (MIT)، joy-con-webhid (Apache-2.0)، Nintendo_Switch_Reverse_Engineering، osc-ringcon (MIT)، Ringcon-Driver (MIT) و RingconProtocolDebug (Apache-2.0). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>سەرچاوەکانی کۆنترۆڵەری سیریاڵ</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>پرۆتۆکۆلەکانی پشت درایڤەرە سیریاڵەکانی لقی SDL بۆ کۆنترۆڵەرە شەش تەوەرییەکان، گەیمپادەکان، جۆیستیکەکانی فڕین، ناردەرەکانی RC، پانێڵەکانی فڕین و ئێرگۆمیتەرەکان، خوێندراوە لە Async.fi، hidsporb، JoypadOS (Apache-2.0)، KettlerBLE (MIT)، kettlerUSB2BLE (MIT)، libsball لەلایەن John E. Stone (لە شێوەی BSD)، linuxconsole (GPL-2.0-or-later)، Linux (GPL-2.0)، spacenavd (GPL-3.0-or-later)، vJoySerialFeeder (GPL-3.0)، VRInsight-Xplane-Interface (MIT)، vrinsight-cdu-ii-msfs-driver (MIT)، VRPN (BSL-1.0)، xf86-input-magellan (MIT/X11)، xf86-input-spaceorb (MIT/X11) و XPComboTest (MIT). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>سەرچاوەکانی SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>ڕاپۆرتەکانی پشت پشتگیریی پادی SInput و کەسایەتیی SInput، خوێندراوە لە SINPUT-LIB-HID (MIT-0) و HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ی Hand Held Legend و دۆخی SInput ی OpenPuck (AGPL-3.0). تەنها بەڵگەنامە، هیچ کۆدێکی AGPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>سەرچاوەکانی ئامێری USB ی تایبەت</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>پرۆتۆکۆلەکانی پشت درایڤەرەکانی لقی SDL بۆ وێستگەی بنکەی Intel Wireless Series، وەرگری Xbox 360 Big Button، CH Products Multi-Function Panel، Ergodex DX1، TrackIR 2 و 3، و یەکەکانی سەری ڕاهێنەری Tacx، خوێندراوە لە antifier (MIT)، chmfp (GPL-3.0-or-later)، dx1-studio (GPL-3.0)، ergodex-dx1-linux (GPL-3.0)، fortius_1942 (GPL-2.0-or-later)، FortiusANT (GPL-3.0)، intel-wings (GPL-2.0)، JoypadOS (Apache-2.0)، linuxtrack (MIT)، t19xx_usb (GPL-3.0)، ttyT1941 (GPL-3.0) و xbox360bb (GPL-2.0-or-later). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>سەرچاوەکانی کۆنترۆڵەری شەمەندەفەر</value></data>
@@ -4862,7 +4868,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>شێوازی PCM ی هاپتیکی PS5، 16-بیتی نیشانەدار بە 3 kHz، کە کۆدکردنی هاپتیکی Bluetooth ی 8-بیتی نیشانەداری یەکلا کردەوە. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی AGPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>سەرچاوەکانی مۆدی یاریی DSX</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>فەرمانەکانی UDP، وەڵامەکان، فایلەکانی پۆرت و بایتەکانی کاریگەریی تریگەر لە پشت مۆدەکانی یاری، خوێندراوە لە نموونە فەرمییەکانی مۆدی DSX v3.1 و DualSenseX v2 ی Paliverse، هەردوو وەشانی DualSenseY و DualSense4Rockstar (هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، DSZ و pydualsense (MIT)، و Wujek Dualsense API و ڕاژەکاری DSX لە لقی DS4Windows ی hbashton (GPL-3.0). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>فەرمانەکانی UDP، وەڵامەکان، فایلەکانی پۆرت و بایتەکانی کاریگەریی تریگەر لە پشت مۆدەکانی یاری، خوێندراوە لە نموونە فەرمییەکانی مۆدی DSX v3.1 و DualSenseX v2 ی Paliverse، DualSenseY و DualSense4Rockstar (هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، DualSenseY-v2، DSZ و pydualsense (MIT)، و Wujek Dualsense API و ڕاژەکاری DSX لە لقی DS4Windows ی hbashton (GPL-3.0). تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>سەرچاوەکانی هێدسێتی DualShock 4</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>سەرچاوەکانی شاشەی تەختەکلیل</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>کتێبخانەکان، فرەیمەکان و کلیلەکان لە پشت شاشەکانی تەختەکلیل، خوێندراوە لە SDKەکانی LCD و Arx Control ی Logitech و SDK ی S.T.R.I.K.E. 7 ی Mad Catz، بەراورد کراوە لەگەڵ logitech-lcd (MIT یان Apache-2.0)، dcspy (MIT)، foo_logitech_lcd (LGPL-2.1)، LogitechStuff و ArxWidgetManager (هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، درایڤەری hid-lg-g15 ی Linux (GPL-2.0-or-later)، libg15، G15Interface و lcdproc (GPL-2.0)، gnome15 (GPL-3.0) و G19USB (Apache-2.0). PadForge کتێبخانەکانی Logitech Gaming Software و ئەو Strike7API.dll ەی کە دایدەگریت یان هەڵیدەبژێریت بار دەکات، و هیچ کۆدێک لە هیچ کامیان لەگەڵ خۆیدا نییە.</value></data>

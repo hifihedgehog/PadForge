@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ноты і змены кіравання для музычных праграм.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Віртуальныя VR-кантролеры праз SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Каб змяніць тып пазней, націсніце чып тыпу на кантролеры. Гэта адзін націск.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не адказвае. Гл. яго картку ў наладах.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Патрэбны SteamVR. Усталюйце яго з яго карткі ў наладах.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не адказвае. Гл. яго ў наладах, у картцы «Драйверы».</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Патрэбны SteamVR. Усталюйце яго ў наладах, у картцы «Драйверы».</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR-кантролер ужо ёсць. Адзін кіруе абедзвюма рукамі.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge дасягнуў максімуму кантролераў: {0}. Выдаліце адзін, каб дадаць іншы.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профіль</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Пашыраны (макс. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Клавіятура + мыш (макс. {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не працуе, гл. картку Windows MIDI Services у наладах)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не працуе, гл. Windows MIDI Services у наладах, у картцы «Драйверы»)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (макс. {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (патрабуецца SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (макс. {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Адпраўляйце рух кантролера ў эмулятары, якія чытаюць крыніцу руху DSU.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Бярыце эфекты адаптыўных куркоў і падсветкі з модаў гульняў, напісаных для DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Уключыце вывад тэлеметрыі ў гульні і ўкажыце гэты ПК і порт.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У эмулятары дадайце крыніцу руху з адрасам гэтага ПК і гэтым портам.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Эфекты мода трапляюць на кожны кантролер, у якім ёсць для іх апаратная частка.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У эмулятары на гэтым ПК дадайце крыніцу руху з адрасам 127.0.0.1 і гэтым портам.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Мод трапляе на кожны віртуальны кантролер з падключаным DualSense або DualShock 4, а яго эфекты іграюцца на кожным кантролеры ў ім, у якім ёсць для іх апаратная частка.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Становішча галавы гэта радок «Трэкер галавы» на старонцы [Прылады]. Прызначце рысканне галавы на вось стыка ў раздзеле «Прызначэнні» кантролера.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значэнні гэта радок «Гульнявая тэлеметрыя» на старонцы [Прылады]. Прызначайце іх у раздзеле «Прызначэнні» кантролера або выкарыстоўвайце, каб запускаць макрасы.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Месца, памер і непразрыстасць меню задаюцца на самім меню, у раздзеле [Макрасы і меню] кантролера.</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Адклікаць</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Адклікаць усе</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Накладка сэнсарнай панэлі</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Экранная сэнсарная паверхня для гульняў з сэнсарнай панэллю PlayStation, для сэнсарнага экрана або мышы.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Экранная сэнсарная паверхня для гульняў з сэнсарнай панэллю PlayStation, для сэнсарнага экрана.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Уключыць накладку сэнсарнай панэлі</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Непразрыстасць</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Скінуць пазіцыю</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Увод з кантролераў і іх пералік.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Увод клавіятуры і мышы з кожнай прылады асобна</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Уласны вэб-пульт захоўвае адлегласць кожнай групы кнопак ад бліжэйшага краю шырэйшага экрана, як накладкі RetroArch раздвігаюць свае дзве паловы. Чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Вывад на віртуальныя MIDI-прылады (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Змешванне каналаў па метадзе Bauer для пераўтварэння стэрэа ў бінаўральны гук на навушніках.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Кадавальнік Opus цалкам на C#, які перадае гук на дынамік DualSense па Bluetooth. Аўтар: Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Матэрыялы па прыцэле і лупе</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Крыж і яго кропка з CSGOCrosshair ад Skarbo (ліцэнзія не апублікавана), стылі Кола, малюнак і кантур з Crosshair-Overlay (MIT), а таксама рэжымы Лінза і поўны экран у лупе з Windows-classic-samples ад Microsoft (MIT). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>Даследаванне гуку DualSense па Bluetooth ад egormanga: пакетны транспарт, па якім ідзе паток на дынамік кантролера. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Адзінкі</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Адзінкі адлюстравання адчувальнасці. «Множнік» паказвае ўнутраны маштаб × (1 = база). DegPerScreenTurn (у стылі Steam) паказвае градусы фізічнага павароту кантролера на адзін поўны паварот экрана.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Парог лёгкага прыцэльвання</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Адхіленне правага стыка (0–100%), ніжэй за якое выхад гіраскопа абнуляецца. 0 = заўсёды ўключана. Адчуванне, як у Steam з «гіраскопам падчас прыцэльвання». Гіраскоп працуе, толькі калі правы стык адхілены далей за парог.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Адхіленне стыка актывацыі (0–100%), ніжэй за якое выхад гіраскопа абнуляецца. 0 = заўсёды ўключана. Адчуванне, як у Steam з «гіраскопам падчас прыцэльвання». Гіраскоп працуе, толькі калі гэты стык адхілены далей за парог.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Гіраскоп</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гіраскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Наладжвайце, як датчык руху гэтага геймпада кіруе выхадам мышы і стыка. Адкалібруйце на роўнай паверхні, каб абнуліць дрэйф у спакоі, потым падбярыце адчувальнасць, згладжванне і правілы актывацыі на свой густ.</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Акно згладжвання</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Даўжыня часавага акна буфера згладжвання. Большыя значэнні згладжваюць мацней ніжэй за парог ушчыльнення. Меншыя даюць хутчэйшы водгук. Па змаўчанні 50 мс.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Кнопка актывацыі прыцэльвання</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Кнопка, якая ўключае выхад гіраскопа. Гіраскоп працуе, толькі пакуль гэтая кнопка ўтрымліваецца. Не задавайце яе, каб адключыць умову па кнопцы. Калі зададзены і кнопка, і адхіленне правага стыка, для працы гіраскопа павінны выконвацца абедзве ўмовы.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Кнопка, якая ўключае выхад гіраскопа. Рэжым актывацыі вызначае, як. Не задавайце яе, каб адключыць умову па кнопцы. Калі зададзены і кнопка, і адхіленне стыка актывацыі, для працы гіраскопа павінны выконвацца абедзве ўмовы.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Рэжым актывацыі</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Утрыманне: гіраскоп працуе, пакуль утрымліваецца кнопка актывацыі. Пераключэнне: кожны націск уключае або выключае гіраскоп, а адпусканне нічога не робіць. Стан пераключэння захоўваецца паміж цыкламі апытання і скідаецца пры змене профілю.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Утрыманне: гіраскоп працуе, пакуль утрымліваецца кнопка актывацыі. Пераключэнне: кожны націск уключае або выключае гіраскоп, а адпусканне нічога не робіць. Адпусціць для прыцэльвання: гіраскоп працуе, пакуль кнопка актывацыі не ўтрымліваецца. Стан пераключэння захоўваецца паміж цыкламі апытання і скідаецца пры змене профілю.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Утрыманне</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Пераключэнне</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Адпусціць для прыцэльвання</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Уверх (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Актывацыя</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Кнопка актывацыі прыцэльвання, рэжым актывацыі, гіраскоп уключаны, перацэнтраванне, парог лёгкага прыцэльвання</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Неабавязковыя ўмовы, якія абмяжоўваюць, калі гіраскоп актыўны. Можна наладзіць адхіленне правага стыка і кнопку актывацыі прыцэльвання. Гіраскоп працуе, толькі калі выконваюцца ўсе зададзеныя ўмовы.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Неабавязковыя ўмовы, якія абмяжоўваюць, калі гіраскоп актыўны. Можна наладзіць адхіленне стыка актывацыі і кнопку актывацыі прыцэльвання. Гіраскоп працуе, толькі калі выконваюцца ўсе зададзеныя ўмовы.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Лакальная</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Адносна гульца</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Сусветная</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басавыя шэйкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Прайграе вібрацыю гульні нізкімі тонамі праз басавыя шэйкеры або сабвуфер.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Прылада вываду, каналы, узмацненне, тон для кожнага матора</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Працуе з віртуальнымі кантролерамі Xbox, DualShock 3, DualShock 4 / DualSense і Nintendo Switch Pro, а таксама з пашыранымі віртуальнымі кантролерамі з сілавой зваротнай сувяззю, такімі як гоначныя рулі, і са Steam Deck Controller (Composite). Зваротная сувязь гульні і тэставая вібрацыя іграюць праз аўдыявыхад. Вібрацыя макрасаў застаецца на кантролеры.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Працуе з віртуальнымі кантролерамі Xbox, DualShock 3, DualShock 4 / DualSense і Nintendo Switch Pro, а таксама з пашыранымі віртуальнымі кантролерамі з сілавой зваротнай сувяззю, такімі як гоначныя рулі. Таксама працуе са Steam Deck Controller (Composite), SInput Gamepad і Joypad-OS Steam Input Gamepad. Зваротная сувязь гульні і тэставая вібрацыя іграюць праз аўдыявыхад. Вібрацыя макрасаў застаецца на кантролеры.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Скінуць вібрацыю ў гук</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Накіроўваць вібрацыю на аўдыявыхад</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Прайграе вібрацыю гульні і сілавую зваротную сувязь, якія атрымлівае гэты віртуальны кантролер, нізкачашчыннымі тонамі на абраным аўдыявыхадзе. Выключэнне захоўвае ўсе налады.</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>Матэрыялы па OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Інтэрфейс асяроддзя выканання, раскладка структур і ключы рэестра для ўводу з VR-шлема і кантролераў руху, прачытаныя з загалоўкаў Khronos OpenXR-SDK (Apache-2.0) і звераныя з VirtualDesktop-OpenXR (MIT). PadForge звяртаецца да ўсталяванага ў вас асяроддзя выканання і не пастаўляе кода Khronos.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Матэрыялы па вывадзе перыферыі</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Кадры Logitech HID++ для тактыльнай аддачы, падсветкі, спалучэння і акумулятара, прачытаныя з Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD і MIT OR Apache-2.0), дакументацыі OpenLogi, keyleds (GPL-3.0-or-later), g810-led і g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) і g915x-heatmap (MIT), з заўвагамі з OpenRGB-Fixed (GPL-2.0-or-later) і HaloDaemon-plugins. Ідэнтыфікатары прадуктаў Razer і справаздачы падсветкі, прачытаныя з OpenRazer (GPL-2.0-or-later) і OpenRGB (GPL-2.0-or-later) і звераныя з uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) і razer-life (GPL-2.0-or-later), з блакіроўкай, агульнай для гэтых інструментаў, з Aurora (MIT) і LibreHardwareMonitor (MPL-2.0). Ідэнтыфікатары прадуктаў SteelSeries і справаздачы падсветкі, прачытаныя з OpenRGB і rivalcfg (WTFPL) і звераныя з убудоў SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) і Wine (LGPL-2.1-or-later). Справаздачы HID LampArray, прачытаныя з USB-IF HID Usage Tables, дакументацыі Microsoft Dynamic Lighting і яе ўзораў ArduinoHidForWindows і RP2040MacropadHidSample (MIT), і звераныя з lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq і Apex3TklDynamicLighting (усе MIT), acer-predator-helios-rgb (GPL-2.0-only) і crosrgbkblight. Справаздача iFeel buzz, прачытаная з iFeel, драйвера Linux iFeel (GPL-2.0-or-later) і Logitech-iFeel-Vibration-POC, з правілам дэскрыптара з ядра Linux (GPL-2.0-or-later) і шкалой сілы з драйвера Logitech MouseWare 9.80. Тактыльныя і каляровыя апрацоўшчыкі з GameSense SDK. Толькі дакументацыя, код не пастаўляецца.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Кадры Logitech HID++ для тактыльнай аддачы, падсветкі, спалучэння і акумулятара, прачытаныя з Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD і MIT OR Apache-2.0), дакументацыі OpenLogi, keyleds (GPL-3.0-or-later), g810-led і g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) і g915x-heatmap (MIT), з заўвагамі з OpenRGB-Fixed (GPL-2.0-or-later) і HaloDaemon-plugins. Ідэнтыфікатары прадуктаў Razer і справаздачы падсветкі, прачытаныя з OpenRazer (GPL-2.0-or-later) і OpenRGB (GPL-2.0-or-later) і звераныя з uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT на момант чытання), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) і razer-life (GPL-2.0-or-later), з блакіроўкай, агульнай для гэтых інструментаў, з Aurora (MIT) і LibreHardwareMonitor (MPL-2.0). Ідэнтыфікатары прадуктаў SteelSeries і справаздачы падсветкі, прачытаныя з OpenRGB і rivalcfg (WTFPL) і звераныя з убудоў SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) і Wine (LGPL-2.1-or-later). Справаздачы HID LampArray, прачытаныя з USB-IF HID Usage Tables, дакументацыі Microsoft Dynamic Lighting і яе ўзораў ArduinoHidForWindows і RP2040MacropadHidSample (MIT), і звераныя з lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq і Apex3TklDynamicLighting (усе MIT), acer-predator-helios-rgb (GPL-2.0-only) і crosrgbkblight. Справаздача iFeel buzz, прачытаная з iFeel, драйвера Linux iFeel (GPL-2.0-or-later) і Logitech-iFeel-Vibration-POC, з правілам дэскрыптара з ядра Linux (GPL-2.0-or-later) і шкалой сілы з драйвера Logitech MouseWare 9.80. Тактыльныя і каляровыя апрацоўшчыкі з GameSense SDK. Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Паслядоўнасці выклікаў WinMM для састарэлага MIDI API: адкрыццё порта, адпраўка ў яго і закрыццё. Прачытаны з PortMidi (MIT, аўтары Ross Bencina, Phil Burk і Roger B. Dannenberg) і RtMidi (ліцэнзія RtMidi ў стылі MIT, аўтар Gary P. Scavone). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Матэрыялы па Logitech G-key SDK</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Матэрыялы па Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API, на якім трымаецца чытанне адаптараў Bliss-Box, прачытаны з API Tool ад Bliss-Box LLC (у стылі BSD, бясплатнае распаўсюджванне) і DeviceBuddy (адкрыты зыходны код, Bliss-Box LLC), з назвамі кнопак з файлаў Bliss-Box у форку retroarch-joypad-autoconfig ад SteveFox1620, кантрольнымі сумамі Controller Pak, звераныя з libdragon (Unlicense), і адказ PlayStation pad з psx-spx і драйвера psxpad-spi з Linux (GPL-2.0-or-later). Назвы кантролераў і заўвагі пра падтрымку бяруцца таксама са спісу сумяшчальнасці Bliss-Box LLC, а паводзіны адаптараў правераны па іх прашыўцы. Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспарт ад Vadym Hrynchyshyn для састаўных USB-кантролераў HIDMaestro. HIDMaestro нясе яго падпісаны драйвер хост-кантролера і ўсталёўвае яго пры першым стварэнні састаўнога кантролера.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспарт ад Vadym Hrynchyshyn для кантролераў HIDMaestro, якія з’яўляюцца USB-прыладамі: усе віртуальныя кантролеры ў Windows на ARM, а на x64 састаўныя кантролеры, Steam Controller (2026) і формы профіляў Xbox One S: Full і Joy-Con Charging Grip. HIDMaestro нясе яго драйвер хост-кантролера і ўсталёўвае яго пры першым стварэнні аднаго з гэтых кантролераў.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Выберыце, якія паловы гэтага слота актыўныя. Выключэнне паловы хавае яе радкі і спыняе адпраўку, але захоўвае яе прызначэнні, таму пры ўключэнні яны вяртаюцца.</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Значэнні прэсэтаў адаптыўных куркоў GameCube, аўтар Mxater. Чытаецца толькі дзеля фактаў.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Знакі восяў руху DSU, звераныя з яго дэкодарам UDP. Чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Знакі восяў руху DSU, звераныя з яго дэкодарам UDP, і памеры элементаў кіравання ўласнага вэб-пульта, якія вымяраюцца па карацейшым баку экрана, як гэта робіць яго накладка для Android. Чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Прэсэты Elite Dangerous па змаўчанні, на якіх заснаваны стартавы профіль Space Sim, аўтар Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Паслядоўнасці запуску і спынення Ring-Con, на якіх трымаецца драйвер Switch форка SDL, і шкала націску, якую чытае PadForge, прачытаныя з demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy ад Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) і RingconProtocolDebug (Apache-2.0). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Матэрыялы па паслядоўных кантролерах</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Пратаколы, на якіх трымаюцца паслядоўныя драйверы форка SDL для шасцівосевых кантролераў, геймпадаў, пілотажных джойсцікаў, перадатчыкаў RC, пілотажных панэляў і эргаметраў, прачытаныя з Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball ад John E. Stone (у стылі BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) і XPComboTest (MIT). Толькі дакументацыя, код не пастаўляецца.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Матэрыялы па SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Справаздачы, на якіх трымаюцца падтрымка кантролераў SInput і віртуальны кантролер SInput, прачытаныя з SINPUT-LIB-HID (MIT-0) і HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ад Hand Held Legend і з рэжыму SInput у OpenPuck (AGPL-3.0). Толькі дакументацыя, код AGPL не пастаўляецца.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Матэрыялы па спецыяльных USB-прыладах</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Пратаколы, на якіх трымаюцца драйверы форка SDL для базавай станцыі Intel Wireless Series, прыёмніка Xbox 360 Big Button, панэлі CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 і 3 і галоўных блокаў трэнажораў Tacx, прачытаныя з antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) і xbox360bb (GPL-2.0-or-later). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Матэрыялы па кантролерах цягнікоў</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Фармат PCM тактыльнай аддачы PS5, 16-бітны са знакам, 3 kHz, які вырашыў пытанне аб кадзіраванні тактыльнай аддачы Bluetooth у 8-бітным фармаце са знакам. Чытаецца толькі як дакументацыя, код AGPL не пастаўляецца.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>Матэрыялы па модах гульняў DSX</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>Інструкцыі UDP, адказы, файлы партоў і байты эфектаў курка, на якіх трымаюцца Моды гульняў, прачытаныя з афіцыйных прыкладаў модаў DSX v3.1 і DualSenseX v2 ад Paliverse, абедзвюх версій DualSenseY і DualSense4Rockstar (ліцэнзія не апублікавана), DSZ і pydualsense (MIT), а таксама з Wujek Dualsense API і сервера DSX у форку DS4Windows ад hbashton (GPL-3.0). Толькі дакументацыя, код не пастаўляецца.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>Інструкцыі UDP, адказы, файлы партоў і байты эфектаў курка, на якіх трымаюцца Моды гульняў, прачытаныя з афіцыйных прыкладаў модаў DSX v3.1 і DualSenseX v2 ад Paliverse, DualSenseY і DualSense4Rockstar (ліцэнзія не апублікавана), DualSenseY-v2, DSZ і pydualsense (MIT), а таксама з Wujek Dualsense API і сервера DSX у форку DS4Windows ад hbashton (GPL-3.0). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Матэрыялы па гарнітуры DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Маршрутызацыя гуку ў навушнікі і дынамік, верхнія межы гучнасці, кадраванне мікрафона і рэжым справаздач, на якіх трымаецца гук DualShock 4 праз Bluetooth, прачытаныя з DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) і форка DS4Windows ад hbashton (GPL-3.0), а вокны сінтэзу дэкодэра SBC звераны з libsbc ад Google (Apache-2.0), і USB-гарнітуры другой мадэлі і адаптара Sony, прачытаныя з дампаў дэскрыптараў ControllersInfo ад DJm00n (ліцэнзія не апублікавана) і зондаў LsUSB з linux-hardware.org (CC BY 4.0). Маршрут гуку ў дынамік для DualShock 4 на кабелі ўзяты з Controllers Wiki (CC BY-SA) і NFSU2-SplitScreen ад mihaits (MIT). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Матэрыялы па чаце Twitch</value></data>

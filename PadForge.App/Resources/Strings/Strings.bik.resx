@@ -1321,8 +1321,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Mga nota asin control change para sa music software.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Mga virtual VR controller paagi sa SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Tanganing baguhon an klase sa huri, pindoton an type chip sa controller. Saro sanang pindot.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Dai nagsisimbag an Windows MIDI Services. Hilingon an card kaini sa Settings.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kaipuhan an SteamVR. I-install ini hale sa card kaini sa Settings.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Dai nagsisimbag an Windows MIDI Services. Hilingon ini sa Settings, sa irarom kan Mga driver.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kaipuhan an SteamVR. I-install ini hale sa Settings, sa irarom kan Mga driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Igwa na nin sarong VR controller. An saro nagpapaandar sa duwang kamot.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Mag-pair nin Bluetooth controller</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Magpuon sa sarong andam nang profile</value></data>
@@ -1392,4 +1392,6 @@
   <data name="Mapping_SourceOuterRange_Tooltip" xml:space="preserve"><value>An output nag-aabot sa kabilugan sa kaini kadakol kan paglakaw. An 100% nangangahulugan na patay ini.</value></data>
   <data name="Mapping_SourceAntiDeadzone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>An output nagpopoon sa kaini kadakol pagkagalaw kan input. An 0 nangangahulugan na patay ini.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>An custom web pad nagtatagal kan distansya kan lambang grupo kan mga kontrol hale sa mas harani na gilid kan mas halapad na screen, siring kan paghiwalay kan mga overlay kan RetroArch sa saindang duwang kabanga. Binasa sana bilang dokumentasyon, mayong GPL code na kaiba.</value></data>
 </root>

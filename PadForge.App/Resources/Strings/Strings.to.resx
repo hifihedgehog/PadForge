@@ -779,8 +779,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ngaahi nota mo e control change ki he polokalama faiva.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Ngaahi controller VR ʻi he SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Ke liliu ʻa e faʻahinga ʻamui ange, lomi ʻa e chip faʻahinga ʻi he controller. Ko e lomi pē ʻe taha.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>ʻOku ʻikai tali mai ʻa e Windows MIDI Services. Sio ki hono kaati ʻi he Ngaahi fokotuʻutuʻu.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ʻOku fiemaʻu ʻa e SteamVR. Fokotuʻu ia mei hono kaati ʻi he Ngaahi fokotuʻutuʻu.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>ʻOku ʻikai tali mai ʻa e Windows MIDI Services. Sio ki ai ʻi he Ngaahi fokotuʻutuʻu, ʻi lalo ʻi he Ngaahi draiva.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ʻOku fiemaʻu ʻa e SteamVR. Fokotuʻu ia mei he Ngaahi fokotuʻutuʻu, ʻi lalo ʻi he Ngaahi draiva.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>ʻOku ʻi ai ha controller VR kuo ʻosi. ʻOku fakaleleʻi ʻe he taha ʻa e nima fakatouʻosi.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Fakahoko ha controller Bluetooth</value></data>
   <data name="Search_Placeholder" xml:space="preserve"><value>Kumi fokotuʻutuʻu, naunau mo e profile</value></data>
@@ -831,4 +831,6 @@
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>ʻOku tauhi ʻe ha pad uepi kuo ke fakafōtunga ʻa e mamaʻo ʻo e kulupu taki taha mei he kauʻā ʻoku ofi taha ki ai ʻi ha sikilini ʻoku fālahi ange, ʻo hangē ko e founga ʻoku hiki ai ʻe he ngaahi overlay ʻa e RetroArch honau konga ʻe ua. Naʻe lau pē ko ha fakamatala, ʻoku ʻikai ha kouti GPL ʻe kau mai.</value></data>
 </root>

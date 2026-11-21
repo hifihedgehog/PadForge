@@ -1621,7 +1621,7 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ang tulin, mga pedal kag gear nga ginapadala sang driving game, pareho sang bisan ano nga input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa ang adaptive trigger kag mga epekto sang suga halin sa mga game mod nga ginhimo para sa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>I-on ang telemetry output sa game kag itudlo ini sa sini nga PC kag port.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mga epekto sang mod makaabot sa tagsa ka controller nga may hardware para sa ila.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mod makaabot sa tagsa ka virtual controller nga may naka-connect nga DualSense ukon DualShock 4, kag ang iya mga epekto magaguwa sa tagsa ka controller didto nga may hardware para sa ila.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang head pose amo ang Head Tracker nga row sa [Mga device]. I-map ang head yaw sa axis sang stick sa Mga mapping nga seksyon sang controller.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga balor amo ang Game Telemetry nga row sa [Mga device]. I-map sila sa Mga mapping nga seksyon sang controller ukon gamita sila sa pagpasugod sang mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang kaugalingon nga lugar, kadakuon kag opacity sang menu ginabutang sa menu mismo, sa [Mga macro kag menu] nga seksyon sang controller.</value></data>
@@ -1669,7 +1669,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Mga nota kag control change para sa software sang musika.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Mga virtual VR controller paagi sa SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Para islan ang klase sa ulihi, i-click ang type chip sa controller. Isa lang ka click.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kinahanglan ang SteamVR. I-install ini halin sa iya card sa Mga Setting.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kinahanglan ang SteamVR. I-install ini halin sa Mga Setting, sa idalom sang Mga driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>May VR controller na. Isa lang ang nagapadalagan sang duha ka kamot.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>May {0} ka controller ang PadForge, ang pinakadamo nga mapadalagan sini. Panasa ang isa para makadugang sang iban.</value></data>
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Dugang nga mga klase: [{0}, {1}, {2} kag {3}]</value></data>
@@ -1761,4 +1761,6 @@
   <data name="Mapping_SourceCurve" xml:space="preserve"><value>Curve</value></data>
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Ginapataas ang reading sang sini nga input sa sini nga power antes ini magpadalagan sang output. Ang 0 kag 1 nagabilin sini nga tadlong. Kon labaw sa 1, mas mahinay malapit sa tunga.</value></data>
   <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Wala sang dalanon ang PadForge pakadto sa speaker sang napili nga device sa sini nga koneksyon. Ang mga macro sound sang sini nga pad magatunog sa default output sang sistema.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Ang custom web pad nagatipig sang distansya sang tagsa ka cluster halin sa mas malapit nga kilid sang mas malapad nga screen, pareho sang paghulag sang mga overlay sang RetroArch sang ila duha ka bahin. Ginbasa bilang dokumentasyon lamang, wala sing GPL nga code nga ginaupod.</value></data>
 </root>

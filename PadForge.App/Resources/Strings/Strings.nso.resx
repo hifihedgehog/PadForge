@@ -1271,7 +1271,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Dinoutu le di control change bakeng sa softwere ya mmino.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Dikhontroulara tša VR tša virtual ka SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Go fetoša mohuta ka morago, kgotla chip ya mohuta go khontroulara. Go nyaka kgotlo e tee fela.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Go nyakega SteamVR. E tsenye go tšwa karateng ya yona go Dipeakanyo.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Go nyakega SteamVR. E tsenye go tšwa go Dipeakanyo, ka fase ga Didraebara.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Kopanya khontroulara ya Bluetooth</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Thoma ka profaele ye e šetšego e lokišitšwe</value></data>
   <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, beteri {0}</value></data>
@@ -1357,4 +1357,6 @@
   <data name="Common_Apply" xml:space="preserve"><value>Diriša</value></data>
   <data name="Mapping_SourceCurve" xml:space="preserve"><value>Kgokolo</value></data>
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E godiša palo ya tsenyo ye ka maatla a pele e laola setšweletšwa. 0 le 1 di e tlogela e otlologile. Godimo ga 1 e nanya kgauswi le bogare.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Phedi ya wepe yeo e itirilwego e boloka sehlopha se sengwe le se sengwe sa ditaolo kgole yeo e swanago le ntlha ya kgauswi ya sekirini se se phatlalletšego, bjalo ka ge di-overlay tša RetroArch di šuthiša dikarolo tša tšona tše pedi. E badilwe bjalo ka ditokumente fela, ga go khoutu ya GPL yeo e romelwago.</value></data>
 </root>

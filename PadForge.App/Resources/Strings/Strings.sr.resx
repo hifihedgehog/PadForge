@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Ноте и промене контроле за музички софтвер.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Виртуелни VR контролери преко SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Да касније промените тип, кликните на ознаку типа на контролеру. Довољан је један клик.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не одговара. Погледајте његову картицу у Подешавањима.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Потребан је SteamVR. Инсталирајте га са његове картице у Подешавањима.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не одговара. Погледајте га у Подешавањима, у одељку Драјвери.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Потребан је SteamVR. Инсталирајте га у Подешавањима, у одељку Драјвери.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR контролер већ постоји. Један покреће обе руке.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge има {0} контролера, највише колико може да покреће. Избришите један да бисте додали други.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профил</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (макс. {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Проширени (макс. {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Тастатура + миш (макс. {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не ради, погледајте картицу Windows MIDI Services у Подешавањима)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (не ради, погледајте Windows MIDI Services у Подешавањима, у одељку Драјвери)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (макс. {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (захтева SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (макс. {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Шаљите покрете контролера емулаторима који читају DSU извор покрета.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Примајте ефекте адаптивних окидача и светла из модова за игре направљених за DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Укључите излаз телеметрије у игри и усмерите га на овај рачунар и порт.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У емулатору додајте извор покрета на адреси овог рачунара и на овом порту.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефекти мода стижу до сваког контролера који има хардвер за њих.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У емулатору на овом рачунару додајте извор покрета на адреси 127.0.0.1 и овом порту.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Мод стиже до сваког виртуелног контролера који има повезан DualSense или DualShock 4, а његови ефекти се репродукују на сваком његовом контролеру који има хардвер за њих.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Поза главе је ред Праћење главе на страници [Уређаји]. Мапирајте скретање главе на осу палице у одељку Мапирања на страници контролера.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Вредности су ред Телеметрија игре на страници [Уређаји]. Мапирајте их у одељку Мапирања на страници контролера или их користите за покретање макроа.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Место, величину и провидност менија подешавате на самом менију, у одељку [Макрои и менији] на страници контролера.</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Опозови</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Опозови све</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Оверлеј тачпеда</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Додирна површина на екрану за PlayStation игре са тачпедом, за екран осетљив на додир или миш.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Додирна површина на екрану за PlayStation игре са тачпедом, за екран осетљив на додир.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Омогући оверлеј тачпеда</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Непрозирност</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Ресетуј положај</value></data>
@@ -827,6 +827,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>Улаз и набрајање контролера.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Улаз тастатуре и миша по уређају</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Прилагођени веб пад задржава растојање сваке групе од ближе ивице ширег екрана, као што преклопи у RetroArch-у померају своје две половине. Коришћено само као документација, не испоручује се GPL код.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Излаз виртуелног MIDI уређаја (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer унакрсно мешање канала, из стереофонског у бинаурални звук, за излаз на слушалице.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Opus енкодер у чистом C# коду који шаље звук на звучник DualSense контролера преко Bluetooth везе. Аутор: Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Референце за нишан и лупу</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Крст и његова тачка из CSGOCrosshair аутора Skarbo (лиценца није објављена), стилови Круг, слика и контура из Crosshair-Overlay (MIT), и Сочиво и зумирање преко целог екрана за лупу из Windows-classic-samples компаније Microsoft (MIT). Само документација, не испоручује се код.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>Истраживање DualSense Bluetooth звука, аутор egormanga: пакетни пренос којим путује ток звука за звучник контролера. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2546,7 +2550,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Јединице</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Приказ јединица осетљивости. „Множилац“ је унутрашња × скала (1 = основна вредност). DegPerScreenTurn је у Steam стилу: степени физичког окретања контролера за један пун окрет на екрану.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Праг лаког нишањења</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Отклон десне палице (0–100%) испод којег је излаз жироскопа нула. 0 = увек укључено. Осећај као Steam опција „жироскоп активан током нишањења“. Жироскоп ради само када корисник помери десну палицу преко прага.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Отклон палице за активирање (0–100%) испод којег је излаз жироскопа нула. 0 = увек укључено. Осећај као Steam опција „жироскоп активан током нишањења“. Жироскоп ради само када корисник помери ту палицу преко прага.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Подесите како сензор покрета овог контролера управља излазом миша и палице. Калибришите на равној површини да бисте поништили клизање у мировању, затим по жељи подесите осетљивост, изглађивање и правила активирања.</value></data>
@@ -2596,9 +2600,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Прозор изглађивања</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Дужина временског прозора бафера за изглађивање. Веће вредности јаче изглађују испод прага затезања. Мање вредности делују брже. Подразумевано 50 мс.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Дугме за активирање нишањења</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Дугме које условљава излаз жироскопа. Жироскоп ради само док се ово дугме држи. Оставите неподешено да бисте искључили услов дугмета. Када су подешени и ово дугме и отклон десне палице, оба морају бити активна да би жироскоп радио.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Дугме које условљава излаз жироскопа. Режим активирања одређује како. Оставите неподешено да бисте искључили услов дугмета. Када су подешени и ово дугме и отклон палице за активирање, оба морају бити активна да би жироскоп радио.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Режим активирања</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Држање: жироскоп ради док се држи дугме за активирање. Прекидач: сваки притисак укључује или искључује жироскоп, а отпуштање не ради ништа. Стање прекидача се задржава између циклуса очитавања и ресетује при промени профила.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Држање: жироскоп ради док се држи дугме за активирање. Прекидач: сваки притисак укључује или искључује жироскоп, а отпуштање не ради ништа. Отпусти за нишањење: жироскоп ради док се дугме за активирање не држи. Стање прекидача се задржава између циклуса очитавања и ресетује при промени профила.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Држање</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Прекидач</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Отпусти за нишањење</value></data>
@@ -2618,7 +2622,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Горе (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Активирање</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Дугме за активирање нишањења, Смер активирања, Жироскоп укључен, Поновно центрирање, Праг лаког нишањења</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Опциони услови који ограничавају када је жироскоп активан. Могу се подесити отклон десне палице и дугме за активирање нишањења. Жироскоп ради само док је сваки подешени услов активан.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Опциони услови који ограничавају када је жироскоп активан. Могу се подесити отклон палице за активирање и дугме за активирање нишањења. Жироскоп ради само док је сваки подешени услов активан.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Локални</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Играч</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Свет</value></data>
@@ -2710,7 +2714,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Жироскоп: нагнутост Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Нагнутост жироскопа</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Опсег пуне нагнутости, Мртва зона нагнутости</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Опсег за улазе „Жироскоп: нагнутост X“ / „Жироскоп: нагнутост Y“: задржите нагнутост и палица задржава отклон, као у Steam режиму Joystick Deflection. Пун отклон је при опсегу који овде подесите; „Центрирање жироскопа“ поново нулира положај мировања. Скретање (окретање контролера у равни) гравитација не види, па не помера ове улазе.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Опсег за улазе „Жироскоп: нагнутост X“ / „Жироскоп: нагнутост Y“: задржите нагнутост и палица задржава отклон, као у Steam режиму Joystick Deflection. Пун отклон је при опсегу који овде подесите. „Центрирање жироскопа“ поново нулира положај мировања. Скретање (окретање контролера у равни) гравитација не види, па не помера ове улазе.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Опсег пуне нагнутости</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Степени нагнутости од положаја мировања који се рачунају као пун отклон палице. Мање = осетљивије. 25° је најчешћа вредност у Steam конфигурацијама.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Мртва зона нагнутости</value></data>
@@ -4473,7 +4477,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Репродукује вибрацију игре као ниске тонове преко бас шејкера или сабвуфера.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Излазни уређај, канали, појачање, тон за сваки мотор</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Ради са Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro виртуелним контролерима, као и са проширеним виртуелним контролерима са повратном силом, као што су тркачки волани, и са Steam Deck Controller (Composite). Повратна информација игре и „Тестирај вибрацију“ репродукују се преко аудио излаза. Вибрација из макроа остаје на контролеру.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Ради са Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro виртуелним контролерима, као и са проширеним виртуелним контролерима са повратном силом, као што су тркачки волани. Ради и са Steam Deck Controller (Composite), SInput Gamepad и Joypad-OS Steam Input Gamepad. Повратна информација игре и „Тестирај вибрацију“ репродукују се преко аудио излаза. Вибрација из макроа остаје на контролеру.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ресетуј вибрацију у звук</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Усмери вибрацију на аудио излаз</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Репродукује вибрацију игре и повратну силу које овај виртуелни контролер прима као тонове ниске фреквенције на изабраном аудио излазу. Искључивање задржава сва подешавања.</value></data>
@@ -4805,7 +4809,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR референце</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Интерфејс извршног окружења, распоред структура и кључеви регистра за улаз VR наочара и контролера покрета, преузети из Khronos OpenXR-SDK заглавља (Apache-2.0) и упоређени са VirtualDesktop-OpenXR (MIT). PadForge комуницира са вашим инсталираним извршним окружењем и не испоручује Khronos код.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Референце за излаз периферних уређаја</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ оквири за хаптику, осветљење, упаривање и батерију, преузети из Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD и MIT OR Apache-2.0), документације за OpenLogi, keyleds (GPL-3.0-or-later), g810-led и g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) и g915x-heatmap (MIT), уз белешке из OpenRGB-Fixed (GPL-2.0-or-later) и HaloDaemon-plugins. Razer идентификатори производа и извештаји осветљења, преузети из OpenRazer (GPL-2.0-or-later) и OpenRGB (GPL-2.0-or-later) и упоређени са uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) и razer-life (GPL-2.0-or-later), уз закључавање које те алатке деле, из Aurora (MIT) и LibreHardwareMonitor (MPL-2.0). SteelSeries идентификатори производа и извештаји осветљења, преузети из OpenRGB и rivalcfg (WTFPL) и упоређени са SignalRGB додацима, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) и Wine (LGPL-2.1-or-later). HID LampArray извештаји, преузети из USB-IF HID Usage Tables, Microsoft документације за Dynamic Lighting и њених примера ArduinoHidForWindows и RP2040MacropadHidSample (MIT), и упоређени са lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq и Apex3TklDynamicLighting (сви MIT), acer-predator-helios-rgb (GPL-2.0-only) и crosrgbkblight. iFeel извештај зујања, преузет из iFeel, Linux iFeel драјвера (GPL-2.0-or-later) и Logitech-iFeel-Vibration-POC, уз правило дескриптора из Linux језгра (GPL-2.0-or-later) и скалу јачине из Logitech драјвера MouseWare 9.80. Тактилни руковаоци и руковаоци бојом из GameSense SDK. Само документација, не испоручује се код.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>Logitech HID++ оквири за хаптику, осветљење, упаривање и батерију, преузети из Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD и MIT OR Apache-2.0), документације за OpenLogi, keyleds (GPL-3.0-or-later), g810-led и g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) и g915x-heatmap (MIT), уз белешке из OpenRGB-Fixed (GPL-2.0-or-later) и HaloDaemon-plugins. Razer идентификатори производа и извештаји осветљења, преузети из OpenRazer (GPL-2.0-or-later) и OpenRGB (GPL-2.0-or-later) и упоређени са uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT у прочитаној верзији), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) и razer-life (GPL-2.0-or-later), уз закључавање које те алатке деле, из Aurora (MIT) и LibreHardwareMonitor (MPL-2.0). SteelSeries идентификатори производа и извештаји осветљења, преузети из OpenRGB и rivalcfg (WTFPL) и упоређени са SignalRGB додацима, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) и Wine (LGPL-2.1-or-later). HID LampArray извештаји, преузети из USB-IF HID Usage Tables, Microsoft документације за Dynamic Lighting и њених примера ArduinoHidForWindows и RP2040MacropadHidSample (MIT), и упоређени са lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq и Apex3TklDynamicLighting (сви MIT), acer-predator-helios-rgb (GPL-2.0-only) и crosrgbkblight. iFeel извештај зујања, преузет из iFeel, Linux iFeel драјвера (GPL-2.0-or-later) и Logitech-iFeel-Vibration-POC, уз правило дескриптора из Linux језгра (GPL-2.0-or-later) и скалу јачине из Logitech драјвера MouseWare 9.80. Тактилни руковаоци и руковаоци бојом из GameSense SDK. Само документација, не испоручује се код.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>WinMM редоследи позива за стари MIDI API: отварање порта, слање на њега и његово затварање. Преузето из PortMidi (MIT, аутори Ross Bencina, Phil Burk и Roger B. Dannenberg) и RtMidi (RtMidi лиценца у стилу MIT лиценце, аутор Gary P. Scavone). Само документација, не испоручује се код.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Референце за Logitech G-key SDK</value></data>
@@ -4815,7 +4819,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box референце</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API за „Очитавање Bliss-Box адаптера“, преузет из API Tool компаније Bliss-Box LLC (у стилу BSD, бесплатна редистрибуција) и DeviceBuddy (доступан изворни код, Bliss-Box LLC), са називима дугмади из Bliss-Box датотека у огранку retroarch-joypad-autoconfig аутора SteveFox1620, контролним збировима за Controller Pak упоређеним са libdragon (Unlicense) и одговором PlayStation контролера из psx-spx и Linux драјвера psxpad-spi (GPL-2.0-or-later). Називи контролера и белешке о подршци потичу и са листе компатибилности компаније Bliss-Box LLC, а понашање адаптера проверено је према њиховом фирмверу. Само документација, не испоручује се код.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB пренос за HIDMaestro композитне USB контролере, аутор Vadym Hrynchyshyn. HIDMaestro садржи његов потписани драјвер хост контролера и инсталира га први пут када се направи композитни контролер.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB пренос аутора Vadym Hrynchyshyn за оне HIDMaestro контролере који су USB уређаји: сваки виртуелни контролер на Windows-у на ARM-у, а на x64 композитни контролери, Steam Controller (2026), профил Xbox One S: Full и облици Joy-Con Charging Grip. HIDMaestro садржи његов драјвер хост контролера и инсталира га први пут када се направи један од ових контролера.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Изаберите које половине овог слота су активне. Искључивање половине скрива њене редове и зауставља њено слање, али чува њена мапирања, па их поновно укључивање враћа.</value>
   </data>
@@ -5003,7 +5007,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Вредности шаблона адаптивних окидача за GameCube, аутор Mxater. Коришћено само за чињенице.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Знаци оса покрета за DSU, проверени према његовом UDP декодеру. Коришћено само као документација, не испоручује се GPL код.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Знаци оса покрета за DSU, проверени према његовом UDP декодеру, и величине контрола прилагођеног веб пада, мерене у односу на краћу страну екрана као што их мери његов преклоп за Android. Коришћено само као документација, не испоручује се GPL код.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Подразумевани шаблони за Elite Dangerous на којима се заснива почетни профил „Свемирски симулатор“, аутор Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5092,6 +5096,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>Ring-Con редоследи покретања и заустављања на којима се заснивају Switch драјвер SDL огранка и скала напрезања коју PadForge чита, преузети из demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy аутора Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) и RingconProtocolDebug (Apache-2.0). Само документација, не испоручује се код.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Референце за серијске контролере</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>Протоколи на којима се заснивају серијски драјвери SDL огранка за контролере са шест оса, гејмпеде, џојстике за летење, RC предајнике, панеле за летење и ергометре, преузети из Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball аутора John E. Stone (у стилу BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) и XPComboTest (MIT). Само документација, не испоручује се код.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>Референце за SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>Извештаји на којима се заснивају подршка за SInput контролере и SInput персона, преузети из SINPUT-LIB-HID (MIT-0) и HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) компаније Hand Held Legend и из SInput режима пројекта OpenPuck (AGPL-3.0). Само документација, не испоручује се AGPL код.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Референце за специјализоване USB уређаје</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>Протоколи на којима се заснивају драјвери SDL огранка за базну станицу Intel Wireless Series, пријемник Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 и 3 и контролне јединице Tacx тренажера, преузети из antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) и xbox360bb (GPL-2.0-or-later). Само документација, не испоручује се код.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Референце за контролере возова</value></data>
@@ -5113,7 +5119,7 @@
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 формат хаптичког PCM звука, 16-битни са знаком на 3 kHz, који је разјаснио 8-битно кодирање Bluetooth хаптике са знаком. Коришћено само као документација, не испоручује се AGPL код.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>Референце за DSX модове за игре</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP упутства, одговори, датотеке портова и бајтови ефеката окидача за Модове за игре, преузети из званичних DSX v3.1 и DualSenseX v2 примера модова аутора Paliverse, обе верзије DualSenseY и DualSense4Rockstar (лиценца није објављена), DSZ и pydualsense (MIT), као и Wujek Dualsense API и DSX сервера у огранку DS4Windows аутора hbashton (GPL-3.0). Само документација, не испоручује се код.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>UDP упутства, одговори, датотеке портова и бајтови ефеката окидача за Модове за игре, преузети из званичних DSX v3.1 и DualSenseX v2 примера модова аутора Paliverse, DualSenseY и DualSense4Rockstar (лиценца није објављена), DualSenseY-v2, DSZ и pydualsense (MIT), као и Wujek Dualsense API и DSX сервера у огранку DS4Windows аутора hbashton (GPL-3.0). Само документација, не испоручује се код.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Референце за слушалице уређаја DualShock 4</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>Усмеравање слушалица и звучника, ограничења јачине звука, уоквиравање микрофона и режим извештаја за Bluetooth звук уређаја DualShock 4, преузети из DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) и огранка DS4Windows аутора hbashton (GPL-3.0), а прозори синтезе SBC декодера упоређени су са библиотеком libsbc компаније Google (Apache-2.0), и USB слушалице другог модела и Sony адаптера прочитане су из дампова дескриптора ControllersInfo аутора DJm00n (лиценца није објављена) и LsUSB сонди сајта linux-hardware.org (CC BY 4.0). Усмеравање звучника уређаја DualShock 4 на каблу потиче са Controllers Wiki (CC BY-SA) и из NFSU2-SplitScreen аутора mihaits (MIT). Само документација, не испоручује се код.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Референце за Twitch чет</value></data>

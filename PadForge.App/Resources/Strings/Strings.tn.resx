@@ -1142,7 +1142,7 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Dinoto le ditaolo tsa software ya mmino.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Di-controller tsa VR tsa sekgantshwane ka SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>Go fetola mofuta moragonyana, tobetsa chip ya mofuta mo controller. Go tsaya go tobetsa ga le gongwe fela.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Go tlhokega SteamVR. E tsenye go tswa mo kareteng ya yone mo Dithulaganyong.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Go tlhokega SteamVR. E tsenye go tswa mo Dithulaganyong, ka fa tlase ga Di-driver.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Go setse go na le controller ya VR. E le nngwe e laola diatla tsoopedi.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Golaganya controller ya Bluetooth</value></data>
   <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Simolola ka porofaele e e setseng e baakantswe</value></data>
@@ -1192,4 +1192,6 @@
   <data name="Mapping_Gate2_Tooltip" xml:space="preserve"><value>Tsenyo ya bobedi e motswedi o le one o e emetseng.</value></data>
   <data name="Mapping_Gate_Pick" xml:space="preserve"><value>Fetola tsenyo</value></data>
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>E tlhopha tsenyo e nngwe e e emelwang.</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad e o e itiretseng e boloka sekgala sa setlhopha sengwe le sengwe go tswa mo moseleng o o gaufi wa sekirini se se atlhameng go feta, jaaka di-overlay tsa RetroArch di tsamaisa dikarolo tsa tsone tse pedi. E badilwe fela jaaka tshedimosetso, ga go na khoutu ya GPL e e romelwang.</value></data>
 </root>

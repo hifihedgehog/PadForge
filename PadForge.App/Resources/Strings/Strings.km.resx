@@ -145,8 +145,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>ណោត និងការផ្លាស់ប្ដូរការគ្រប់គ្រង (CC) សម្រាប់កម្មវិធីតន្ត្រី។</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>ឧបករណ៍បញ្ជា VR និម្មិតតាមរយៈ SteamVR។</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>ដើម្បីប្ដូរប្រភេទនៅពេលក្រោយ ចុចបន្ទះប្រភេទនៅលើឧបករណ៍បញ្ជា។ វាត្រូវការតែមួយចុច។</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services មិនឆ្លើយតប។ សូមមើលកាតរបស់វាក្នុងការកំណត់។</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ត្រូវការ SteamVR។ ដំឡើងវាពីកាតរបស់វាក្នុងការកំណត់។</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services មិនឆ្លើយតប។ សូមមើលវាក្នុងការកំណត់ នៅក្រោមកម្មវិធីបញ្ជា។</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ត្រូវការ SteamVR។ ដំឡើងវាពីការកំណត់ នៅក្រោមកម្មវិធីបញ្ជា។</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>មានឧបករណ៍បញ្ជា VR រួចហើយ។ មួយគ្រប់គ្រងដៃទាំងពីរ។</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge មានឧបករណ៍បញ្ជា {0} ដែលជាចំនួនច្រើនបំផុតដែលវាអាចដំណើរការ។ លុបមួយ ដើម្បីបន្ថែមមួយទៀត។</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ប្រូហ្វាល់</value></data>
@@ -183,7 +183,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (អតិបរមា {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>ពង្រីក (អតិបរមា {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>ក្ដារចុច + កណ្ដុរ (អតិបរមា {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (មិនដំណើរការ សូមមើលកាត Windows MIDI Services ក្នុងការកំណត់)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (មិនដំណើរការ សូមមើល Windows MIDI Services ក្នុងការកំណត់ នៅក្រោមកម្មវិធីបញ្ជា)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (អតិបរមា {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (ត្រូវការ SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (អតិបរមា {0})</value></data>
@@ -425,8 +425,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ផ្ញើចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាមដែលអានប្រភពចលនា DSU។</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>ទទួលយកបែបផែនទ្រីហ្គឺបន្សាំ និងភ្លើង ពីម៉ូដហ្គេមដែលបង្កើតសម្រាប់ DSX។</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>បើកលទ្ធផលតេឡេម៉ែត្រនៅក្នុងហ្គេម ហើយតម្រង់វាទៅកុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>នៅក្នុងកម្មវិធីត្រាប់តាម បន្ថែមប្រភពចលនាមួយនៅអាសយដ្ឋានរបស់កុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>បែបផែនរបស់ម៉ូដទៅដល់ឧបករណ៍បញ្ជាគ្រប់ឧបករណ៍ដែលមានផ្នែករឹងសម្រាប់វា។</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>នៅក្នុងកម្មវិធីត្រាប់តាមលើកុំព្យូទ័រនេះ បន្ថែមប្រភពចលនាមួយនៅ 127.0.0.1 និងច្រកនេះ។</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ម៉ូដមួយទៅដល់ឧបករណ៍បញ្ជានិម្មិតនីមួយៗដែលមាន DualSense ឬ DualShock 4 ភ្ជាប់ ហើយបែបផែនរបស់វាលេងលើឧបករណ៍បញ្ជាគ្រប់ឧបករណ៍នៅទីនោះដែលមានផ្នែករឹងសម្រាប់វា។</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ទីតាំងក្បាលគឺជាជួរឧបករណ៍តាមដានក្បាលនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបការងាកក្បាលទៅអ័ក្សដងបញ្ជា នៅក្នុងផ្នែកការម៉ាបរបស់ឧបករណ៍បញ្ជា។</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>តម្លៃទាំងនេះគឺជាជួរតេឡេម៉ែត្រហ្គេមនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបវានៅក្នុងផ្នែកការម៉ាបរបស់ឧបករណ៍បញ្ជា ឬប្រើវាដើម្បីចាប់ផ្ដើមម៉ាក្រូ។</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ទីតាំង ទំហំ និងភាពស្រអាប់ផ្ទាល់របស់ម៉ឺនុយ ត្រូវកំណត់នៅលើម៉ឺនុយ ក្នុងផ្នែក [ម៉ាក្រូ និងម៉ឺនុយ] របស់ឧបករណ៍បញ្ជា។</value></data>
@@ -607,7 +607,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ដកសិទ្ធិ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ដកសិទ្ធិទាំងអស់</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation សម្រាប់អេក្រង់ប៉ះ ឬកណ្ដុរ។</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation សម្រាប់អេក្រង់ប៉ះ។</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>បើកផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ភាពស្រអាប់</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>កំណត់ទីតាំងឡើងវិញ</value></data>
@@ -814,6 +814,8 @@
   <data name="About_SDL3Desc" xml:space="preserve"><value>ការបញ្ចូល និងការរាប់បញ្ចូលឧបករណ៍បញ្ជា។</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ការបញ្ចូលក្ដារចុច និងកណ្ដុរតាមឧបករណ៍នីមួយៗ</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>ហ្គេមផេតបណ្ដាញផ្ទាល់ខ្លួនរក្សាចម្ងាយរបស់ក្រុមនីមួយៗពីគែមដែលនៅជិតជាងនៃអេក្រង់ធំជាង ដូចដែលស្រទាប់លើអេក្រង់របស់ RetroArch ផ្លាស់ទីពាក់កណ្ដាលទាំងពីររបស់វា។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>លទ្ធផលឧបករណ៍ MIDI និម្មិត (Windows MIDI Services)។</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -876,6 +878,8 @@
   <data name="About_Bs2bDesc" xml:space="preserve"><value>ការឆ្លងសំឡេងពីស្តេរ៉េអូទៅប៊ីណូរ៉ាល់របស់ Bauer សម្រាប់លទ្ធផលកាសស្ដាប់។</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ Opus ជា C# សុទ្ធ ដែលបញ្ជូនសំឡេងទៅឧបករណ៍បំពងសំឡេង DualSense តាម Bluetooth។ ដោយ Logan Stromberg។</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>ឯកសារយោងសញ្ញាតម្រង់ និងកែវពង្រីក</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>«កាកបាទ» និងចំណុចរបស់វាពី CSGOCrosshair របស់ Skarbo (មិនបានបោះពុម្ពអាជ្ញាប័ណ្ណ) រចនាប័ទ្ម «រង្វង់» រូបភាព និងគែមពី Crosshair-Overlay (MIT) ហើយ «កែវ» និងការពង្រីកពេញអេក្រង់របស់កែវពង្រីកពី Windows-classic-samples របស់ Microsoft (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>ការស្រាវជ្រាវសំឡេង Bluetooth របស់ DualSense ដោយ egormanga៖ ការដឹកជញ្ជូនកញ្ចប់ដែលស្ទ្រីមឧបករណ៍បំពងសំឡេងរបស់ឧបករណ៍បញ្ជាប្រើ។ apps.sdore.me/SAxense។</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2357,7 +2361,7 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>ឯកតា</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>ការបង្ហាញឯកតាភាពរសើប។ «មេគុណ» គឺមាត្រដ្ឋាន × ខាងក្នុង (1 = មូលដ្ឋាន)។ DegPerScreenTurn ជារបៀប Steam៖ ដឺក្រេនៃការបង្វិលឧបករណ៍បញ្ជាពិត ក្នុងមួយជុំអេក្រង់ពេញ។</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួល</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>កម្រិតរុញដងបញ្ជាស្ដាំ (0–100%) ដែលក្រោមនោះ ទិន្នផលហ្ស៊ីរ៉ូត្រូវដាក់ជាសូន្យ។ 0 = បើកជានិច្ច។ អារម្មណ៍ «ហ្ស៊ីរ៉ូដំណើរការពេលតម្រង់» របស់ Steam។ ហ្ស៊ីរ៉ូដំណើរការតែពេលអ្នកប្រើរុញដងបញ្ជាស្ដាំលើសកម្រិតចាប់ផ្ដើម។</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>កម្រិតរុញរបស់ «ដងបញ្ជាបើក» (0–100%) ដែលក្រោមនោះ ទិន្នផលហ្ស៊ីរ៉ូត្រូវដាក់ជាសូន្យ។ 0 = បើកជានិច្ច។ អារម្មណ៍ «ហ្ស៊ីរ៉ូដំណើរការពេលតម្រង់» របស់ Steam។ ហ្ស៊ីរ៉ូដំណើរការតែពេលអ្នកប្រើរុញដងបញ្ជានោះលើសកម្រិតចាប់ផ្ដើម។</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>កែរបៀបដែលឧបករណ៍ចាប់ចលនារបស់ឧបករណ៍បញ្ជានេះ បញ្ជាទិន្នផលកណ្ដុរ និងដងបញ្ជា។ ក្រិតលើផ្ទៃរាបស្មើ ដើម្បីលុបការរំកិលពេលនៅស្ងៀម បន្ទាប់មកកែភាពរសើប ការធ្វើឲ្យរលូន និងច្បាប់បើកដំណើរការ តាមចិត្ត។</value></data>
@@ -2407,9 +2411,9 @@
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>ចន្លោះពេលធ្វើឲ្យរលូន</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>ប្រវែងចន្លោះពេលនៃសតិបណ្ដោះអាសន្នធ្វើឲ្យរលូន។ តម្លៃធំជាងធ្វើឲ្យរលូនខ្លាំងជាង ក្រោមកម្រិតរឹតបន្តឹង។ តម្លៃតូចជាងមានអារម្មណ៍រហ័សជាង។ លំនាំដើម 50ms។</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>ប៊ូតុងបើកការតម្រង់</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ប៊ូតុងដែលគ្រប់គ្រងទិន្នផលហ្ស៊ីរ៉ូ។ ហ្ស៊ីរ៉ូដំណើរការតែពេលសង្កត់ប៊ូតុងនេះជាប់។ ទុកឲ្យទទេ ដើម្បីបិទលក្ខខណ្ឌប៊ូតុង។ ពេលកំណត់ទាំងប៊ូតុងនេះ និងកម្រិតរុញដងបញ្ជាស្ដាំ លក្ខខណ្ឌទាំងពីរត្រូវតែសកម្ម ទើបហ្ស៊ីរ៉ូដំណើរការ។</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>ប៊ូតុងដែលគ្រប់គ្រងទិន្នផលហ្ស៊ីរ៉ូ។ «របៀបបើក» កំណត់របៀប។ ទុកឲ្យទទេ ដើម្បីបិទលក្ខខណ្ឌប៊ូតុង។ ពេលកំណត់ទាំងប៊ូតុងនេះ និងកម្រិតរុញរបស់ «ដងបញ្ជាបើក» លក្ខខណ្ឌទាំងពីរត្រូវតែសកម្ម ទើបហ្ស៊ីរ៉ូដំណើរការ។</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>របៀបបើក</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>«សង្កត់ជាប់»៖ ហ្ស៊ីរ៉ូដំណើរការពេលសង្កត់ប៊ូតុងបើកជាប់។ «បិទ/បើក»៖ ការចុចនីមួយៗបិទ ឬបើកហ្ស៊ីរ៉ូ ហើយការលែងមិនធ្វើអ្វីទេ។ «បិទ/បើក» រក្សាស្ថានភាពឆ្លងវដ្តស្ទង់ ហើយកំណត់ឡើងវិញពេលប្ដូរប្រូហ្វាល់។</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>«សង្កត់ជាប់»៖ ហ្ស៊ីរ៉ូដំណើរការពេលសង្កត់ប៊ូតុងបើកជាប់។ «បិទ/បើក»៖ ការចុចនីមួយៗបិទ ឬបើកហ្ស៊ីរ៉ូ ហើយការលែងមិនធ្វើអ្វីទេ។ «លែងដើម្បីតម្រង់»៖ ហ្ស៊ីរ៉ូដំណើរការពេលមិនសង្កត់ប៊ូតុងបើក។ «បិទ/បើក» រក្សាស្ថានភាពឆ្លងវដ្តស្ទង់ ហើយកំណត់ឡើងវិញពេលប្ដូរប្រូហ្វាល់។</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>សង្កត់ជាប់</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>បិទ/បើក</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>លែងដើម្បីតម្រង់</value></data>
@@ -2429,7 +2433,7 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>ឡើងលើ (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>ការបើក</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>ប៊ូតុងបើកការតម្រង់, របៀបបើក, បើកហ្ស៊ីរ៉ូ, តម្រង់កណ្ដាលវិញ, កម្រិតចាប់ផ្ដើមការតម្រង់ងាយស្រួល</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>លក្ខខណ្ឌជាជម្រើស ដែលកំណត់ពេលហ្ស៊ីរ៉ូសកម្ម។ កម្រិតរុញដងបញ្ជាស្ដាំ និងប៊ូតុងបើកការតម្រង់ អាចកំណត់បានម្នាក់ៗ។ ហ្ស៊ីរ៉ូដំណើរការតែពេលលក្ខខណ្ឌដែលបានកំណត់ទាំងអស់សកម្ម។</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>លក្ខខណ្ឌជាជម្រើស ដែលកំណត់ពេលហ្ស៊ីរ៉ូសកម្ម។ កម្រិតរុញរបស់ «ដងបញ្ជាបើក» និងប៊ូតុងបើកការតម្រង់ អាចកំណត់បានម្នាក់ៗ។ ហ្ស៊ីរ៉ូដំណើរការតែពេលលក្ខខណ្ឌដែលបានកំណត់ទាំងអស់សកម្ម។</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>មូលដ្ឋាន</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>អ្នកលេង</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ពិភពលោក</value></data>
@@ -4248,7 +4252,7 @@
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ចាក់ការញ័រពីហ្គេមជាសំឡេងទាប តាមឧបករណ៍រំញ័របាស ឬសាប់វូហ្វឺរ។</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ឧបករណ៍លទ្ធផល, ឆានែល, កម្រិតពង្រីក, សំឡេងសម្រាប់ម៉ូទ័រនីមួយៗ</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ដំណើរការជាមួយឧបករណ៍បញ្ជានិម្មិត Xbox, DualShock 3, DualShock 4 / DualSense និង Nintendo Switch Pro ព្រមទាំងឧបករណ៍បញ្ជានិម្មិត Extended ដែលមានកម្លាំងតប ដូចជាចង្កូតប្រណាំង និង Steam Deck Controller (Composite)។ មតិតបពីហ្គេម និង «សាកល្បងការញ័រ» លេងតាមលទ្ធផលសំឡេង។ ការញ័រពីម៉ាក្រូនៅតែនៅលើឧបករណ៍បញ្ជា។</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ដំណើរការជាមួយឧបករណ៍បញ្ជានិម្មិត Xbox, DualShock 3, DualShock 4 / DualSense និង Nintendo Switch Pro ព្រមទាំងឧបករណ៍បញ្ជានិម្មិត Extended ដែលមានកម្លាំងតប ដូចជាចង្កូតប្រណាំង។ វាក៏ដំណើរការជាមួយ Steam Deck Controller (Composite), SInput Gamepad និង Joypad-OS Steam Input Gamepad ផងដែរ។ មតិតបពីហ្គេម និង «សាកល្បងការញ័រ» លេងតាមលទ្ធផលសំឡេង។ ការញ័រពីម៉ាក្រូនៅតែនៅលើឧបករណ៍បញ្ជា។</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>កំណត់ការញ័រទៅសំឡេងឡើងវិញ</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>បញ្ជូនការញ័រទៅលទ្ធផលសំឡេង</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>លេងការញ័រ និងកម្លាំងតបពីហ្គេមដែលឧបករណ៍បញ្ជានិម្មិតនេះទទួល ជាសំឡេងប្រេកង់ទាបនៅលើលទ្ធផលសំឡេងដែលបានជ្រើស។ ការបិទវារក្សាការកំណត់ទាំងអស់។</value></data>
@@ -4572,7 +4576,7 @@
   <data name="About_OpenXrRefs" xml:space="preserve"><value>ឯកសារយោង OpenXR</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ចំណុចប្រទាក់កម្មវិធីដំណើរការ ប្លង់រចនាសម្ព័ន្ធ និងគន្លឹះបញ្ជីឈ្មោះ នៅពីក្រោយការបញ្ចូលពីកាសពាក់ក្បាល និងឧបករណ៍បញ្ជាចលនា ដែលអានពីឯកសារក្បាល Khronos OpenXR-SDK (Apache-2.0) ហើយផ្ទៀងផ្ទាត់ជាមួយ VirtualDesktop-OpenXR (MIT)។ PadForge ទាក់ទងជាមួយកម្មវិធីដំណើរការដែលអ្នកបានដំឡើងផ្ទាល់ ហើយមិនដាក់បញ្ចូលកូដ Khronos ណាមួយទេ។</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>ឯកសារយោងលទ្ធផលឧបករណ៍ភ្ជាប់</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>ស៊ុមការញ័រលម្អិត ពន្លឺ ការផ្គូផ្គង និងថ្ម Logitech HID++ ដែលអានពី Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), ឯកសារ OpenLogi, keyleds (GPL-3.0-or-later), g810-led និង g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) និង g915x-heatmap (MIT) ជាមួយកំណត់ចំណាំពី OpenRGB-Fixed (GPL-2.0-or-later) និង HaloDaemon-plugins។ លេខសម្គាល់ផលិតផល និងរបាយការណ៍ពន្លឺ Razer ដែលអានពី OpenRazer (GPL-2.0-or-later) និង OpenRGB (GPL-2.0-or-later) ហើយផ្ទៀងផ្ទាត់ជាមួយ uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) និង razer-life (GPL-2.0-or-later) ជាមួយការចាក់សោដែលឧបករណ៍ទាំងនោះប្រើរួមគ្នាពី Aurora (MIT) និង LibreHardwareMonitor (MPL-2.0)។ លេខសម្គាល់ផលិតផល និងរបាយការណ៍ពន្លឺ SteelSeries ដែលអានពី OpenRGB និង rivalcfg (WTFPL) ហើយផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីជំនួយរបស់ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) និង Wine (LGPL-2.1-or-later)។ របាយការណ៍ HID LampArray ដែលអានពី HID Usage Tables របស់ USB-IF ឯកសារ Dynamic Lighting របស់ Microsoft និងគំរូរបស់វា ArduinoHidForWindows និង RP2040MacropadHidSample (MIT) ហើយផ្ទៀងផ្ទាត់ជាមួយ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq និង Apex3TklDynamicLighting (ទាំងអស់ MIT), acer-predator-helios-rgb (GPL-2.0-only) និង crosrgbkblight។ របាយការណ៍ញ័ររបស់ iFeel ដែលអានពី iFeel ដ្រាយវ័រ iFeel របស់ Linux (GPL-2.0-or-later) និង Logitech-iFeel-Vibration-POC ជាមួយច្បាប់ descriptor ពីខឺណែល Linux (GPL-2.0-or-later) និងមាត្រដ្ឋានកម្លាំងពីដ្រាយវ័រ MouseWare 9.80 របស់ Logitech។ កម្មវិធីដោះស្រាយការប៉ះ និងពណ៌ពី GameSense SDK។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>ស៊ុមការញ័រលម្អិត ពន្លឺ ការផ្គូផ្គង និងថ្ម Logitech HID++ ដែលអានពី Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), ឯកសារ OpenLogi, keyleds (GPL-3.0-or-later), g810-led និង g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT) និង g915x-heatmap (MIT) ជាមួយកំណត់ចំណាំពី OpenRGB-Fixed (GPL-2.0-or-later) និង HaloDaemon-plugins។ លេខសម្គាល់ផលិតផល និងរបាយការណ៍ពន្លឺ Razer ដែលអានពី OpenRazer (GPL-2.0-or-later) និង OpenRGB (GPL-2.0-or-later) ហើយផ្ទៀងផ្ទាត់ជាមួយ uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT ពេលអាន), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later) និង razer-life (GPL-2.0-or-later) ជាមួយការចាក់សោដែលឧបករណ៍ទាំងនោះប្រើរួមគ្នាពី Aurora (MIT) និង LibreHardwareMonitor (MPL-2.0)។ លេខសម្គាល់ផលិតផល និងរបាយការណ៍ពន្លឺ SteelSeries ដែលអានពី OpenRGB និង rivalcfg (WTFPL) ហើយផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីជំនួយរបស់ SignalRGB, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT) និង Wine (LGPL-2.1-or-later)។ របាយការណ៍ HID LampArray ដែលអានពី HID Usage Tables របស់ USB-IF ឯកសារ Dynamic Lighting របស់ Microsoft និងគំរូរបស់វា ArduinoHidForWindows និង RP2040MacropadHidSample (MIT) ហើយផ្ទៀងផ្ទាត់ជាមួយ lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq និង Apex3TklDynamicLighting (ទាំងអស់ MIT), acer-predator-helios-rgb (GPL-2.0-only) និង crosrgbkblight។ របាយការណ៍ញ័ររបស់ iFeel ដែលអានពី iFeel ដ្រាយវ័រ iFeel របស់ Linux (GPL-2.0-or-later) និង Logitech-iFeel-Vibration-POC ជាមួយច្បាប់ descriptor ពីខឺណែល Linux (GPL-2.0-or-later) និងមាត្រដ្ឋានកម្លាំងពីដ្រាយវ័រ MouseWare 9.80 របស់ Logitech។ កម្មវិធីដោះស្រាយការប៉ះ និងពណ៌ពី GameSense SDK។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>លំដាប់ការហៅ WinMM នៅពីក្រោយ MIDI API ចាស់៖ ការបើកច្រក ការផ្ញើទៅវា និងការបិទវា។ អានពី PortMidi (MIT, ដោយ Ross Bencina, Phil Burk និង Roger B. Dannenberg) និង RtMidi (អាជ្ញាប័ណ្ណ RtMidi បែប MIT, ដោយ Gary P. Scavone)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>ឯកសារយោង Logitech G-key SDK</value></data>
@@ -4582,7 +4586,7 @@
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>ឯកសារយោង Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API នៅពីក្រោយ «អានអាដាប់ទ័រ Bliss-Box» ដែលអានពី API Tool របស់ Bliss-Box LLC (បែប BSD ចែកចាយឡើងវិញដោយឥតគិតថ្លៃ) និង DeviceBuddy (មានកូដប្រភព, Bliss-Box LLC) ជាមួយឈ្មោះប៊ូតុងពីឯកសារ Bliss-Box ក្នុងកំណែបំបែក retroarch-joypad-autoconfig របស់ SteveFox1620, checksum Controller Pak ដែលផ្ទៀងផ្ទាត់ជាមួយ libdragon (Unlicense) និងការឆ្លើយតបរបស់ហ្គេមផេត PlayStation ពី psx-spx និងដ្រាយវ័រ psxpad-spi របស់ Linux (GPL-2.0-or-later)។ ឈ្មោះឧបករណ៍បញ្ជា និងកំណត់ចំណាំការគាំទ្រក៏មកពីបញ្ជីភាពត្រូវគ្នារបស់ Bliss-Box LLC ហើយឥរិយាបថរបស់អាដាប់ទ័រត្រូវបានផ្ទៀងផ្ទាត់ជាមួយហ្វឺមវែររបស់វា។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ការដឹកជញ្ជូន USB ដោយ Vadym Hrynchyshyn សម្រាប់ឧបករណ៍បញ្ជា USB សមាសធាតុរបស់ HIDMaestro។ HIDMaestro មានភ្ជាប់មកជាមួយនូវដ្រាយវ័រឧបករណ៍បញ្ជាម៉ាស៊ីនមេដែលមានហត្ថលេខារបស់វា ហើយដំឡើងវានៅលើកដំបូងដែលឧបករណ៍បញ្ជាសមាសធាតុត្រូវបានបង្កើត។</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ការដឹកជញ្ជូន USB ដោយ Vadym Hrynchyshyn សម្រាប់ឧបករណ៍បញ្ជា HIDMaestro ដែលជាឧបករណ៍ USB៖ ឧបករណ៍បញ្ជានិម្មិតទាំងអស់លើ Windows on ARM ហើយលើ x64 គឺឧបករណ៍បញ្ជាសមាសធាតុ Steam Controller (2026) ប្រូហ្វាល់ Xbox One S: Full និងទម្រង់ Joy-Con Charging Grip។ HIDMaestro មានភ្ជាប់មកជាមួយនូវដ្រាយវ័រឧបករណ៍បញ្ជាម៉ាស៊ីនមេរបស់វា ហើយដំឡើងវានៅលើកដំបូងដែលឧបករណ៍បញ្ជាណាមួយក្នុងចំណោមទាំងនេះត្រូវបានបង្កើត។</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>ជ្រើសរើសពាក់កណ្ដាលនៃរន្ធនេះដែលដំណើរការ។ ការបិទពាក់កណ្ដាលមួយ លាក់ជួររបស់វា ហើយបញ្ឈប់វាពីការផ្ញើ ប៉ុន្តែរក្សាការម៉ាបរបស់វា ដូច្នេះការបើកវាវិញនឹងស្ដារពួកវាឡើងវិញ។</value>
   </data>
@@ -4768,7 +4772,7 @@
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>តម្លៃការកំណត់ស្រាប់ទ្រីហ្គឺបត់បែន GameCube ដោយ Mxater។ អានសម្រាប់តែការពិតប៉ុណ្ណោះ។</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>សញ្ញាអ័ក្សចលនា DSU ដែលផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីឌិកូដ UDP របស់វា។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>សញ្ញាអ័ក្សចលនា DSU ដែលផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីឌិកូដ UDP របស់វា និងទំហំការបញ្ជារបស់ហ្គេមផេតបណ្ដាញផ្ទាល់ខ្លួន ដែលវាស់ធៀបនឹងជ្រុងខ្លីជាងរបស់អេក្រង់ ដូចដែលស្រទាប់ Android របស់វាវាស់។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ការកំណត់ស្រាប់លំនាំដើមរបស់ Elite Dangerous នៅពីក្រោយប្រូហ្វាល់ចាប់ផ្ដើម «ការក្លែងធ្វើអវកាស» ដោយ Richard Buckle។</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -4850,6 +4854,8 @@
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>លំដាប់ចាប់ផ្ដើម និងបញ្ឈប់ Ring-Con នៅពីក្រោយដ្រាយវ័រ Switch របស់កំណែបំបែក SDL និងមាត្រដ្ឋានកម្លាំងទាញដែល PadForge អាន ដែលអានពី demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy ដោយ Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) និង RingconProtocolDebug (Apache-2.0)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>ឯកសារយោងឧបករណ៍បញ្ជាសៀរៀល</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>ពិធីការនៅពីក្រោយដ្រាយវ័រសៀរៀលរបស់កំណែបំបែក SDL សម្រាប់ឧបករណ៍បញ្ជាប្រាំមួយអ័ក្ស ហ្គេមផេត យ៉យស្ទីកហោះហើរ ឧបករណ៍បញ្ជូន RC បន្ទះហោះហើរ និងម៉ាស៊ីនហាត់ប្រាណ ដែលអានពី Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball ដោយ John E. Stone (បែប BSD), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11) និង XPComboTest (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>ឯកសារយោង SInput</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>របាយការណ៍នៅពីក្រោយការគាំទ្រហ្គេមផេត SInput និងបុគ្គលិកលក្ខណៈ SInput ដែលអានពី SINPUT-LIB-HID (MIT-0) និង HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) របស់ Hand Held Legend និងរបៀប SInput របស់ OpenPuck (AGPL-3.0)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ AGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>ឯកសារយោងឧបករណ៍ USB ពិសេស</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>ពិធីការនៅពីក្រោយដ្រាយវ័ររបស់កំណែបំបែក SDL សម្រាប់ស្ថានីយមូលដ្ឋាន Intel Wireless Series, ឧបករណ៍ទទួល Xbox 360 Big Button, CH Products Multi-Function Panel, Ergodex DX1, TrackIR 2 និង 3 និងក្បាលម៉ាស៊ីនហាត់ Tacx ដែលអានពី antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0) និង xbox360bb (GPL-2.0-or-later)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>ឯកសារយោងឧបករណ៍បញ្ជារថភ្លើង</value></data>

@@ -1472,11 +1472,18 @@ namespace PadForge.Tests
             // run alone. A dialog left open spoiled them in the 6.0.0 run,
             // and a retake could not reach them. Each is a recipe now, which
             // the full run and the focused pass both call.
-            foreach (string recipe in new[] { "Capture-ExtendedSlot", "Capture-KbmSlot", "Capture-MidiSlot", "Capture-VrSlot", "Capture-ForegroundReadout", "Capture-Workshop" })
+            foreach (string recipe in new[] { "Capture-ExtendedSlot", "Capture-KbmSlot", "Capture-MidiSlot", "Capture-VrSlot", "Capture-ForegroundReadout", "Capture-Workshop", "Capture-Ds3Shots" })
             {
                 Assert.Equal(2, Regex.Matches(script, @"^\s*" + Regex.Escape(recipe) + "$", RegexOptions.Multiline).Count);
                 Assert.Contains("Refuse-Shots", Body(recipe), StringComparison.Ordinal);
             }
+            // The 6.0.0 retakes found four frames a focused run could not
+            // reach: the DualShock 3's two (the recipe above), Trigger
+            // Routing on the Xbox slot's tour and the touchpad's Momentum
+            // knobs on the PlayStation slot.
+            Assert.Contains("\"pad-trigger-routing\", \"pad-lighting-guide-led\"", script, StringComparison.Ordinal);
+            Assert.Contains("@{ Shot = \"pad-touchpad-momentum\"; Tab = \"Touchpad\"; Anchor = $true }", script, StringComparison.Ordinal);
+            Assert.Contains("if ($audioTab -and (Tab $t.Tab))", script, StringComparison.Ordinal);
             // The Clone Device 1:1 confirm is found among the process's
             // windows and closed there, and a confirm that stays up stops
             // the PadForge shots behind it.
@@ -1487,7 +1494,7 @@ namespace PadForge.Tests
             Assert.True(confirm >= 0 && closed > confirm && back > closed, "the Clone Device 1:1 confirm is not closed and checked after its frame");
             // The Extended slot keeps its Custom preset by name, never by
             // its place in the Preset list.
-            Assert.Contains("$customPreset = \"padforge-custom (Custom)\"", extended, StringComparison.Ordinal);
+            Assert.Contains("$customPreset = \"Custom\"", extended, StringComparison.Ordinal);
             Assert.Contains("Select-ComboItem $profileCombo $customPreset", extended, StringComparison.Ordinal);
             Assert.DoesNotContain("$items[2]", script, StringComparison.Ordinal);
 

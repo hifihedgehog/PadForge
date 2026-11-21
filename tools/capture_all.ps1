@@ -6408,9 +6408,9 @@ function Capture-ExtendedSlot {
     # Custom once and is Amazon Luna Controller now, and a pick by place put
     # that name on the slot in the 6.0.0 run. A slot found on another preset
     # gets Custom by its name.
-    # The picker reads a preset as its id and then its name, so Custom
-    # reads "padforge-custom (Custom)".
-    $customPreset = "padforge-custom (Custom)"
+    # The picker reads a preset by the name it shows (PadViewModel.
+    # PresetChoices), so Custom reads "Custom" in the English run.
+    $customPreset = "Custom"
     $presetNow = Get-PresetText
     if ("$presetNow" -ne $customPreset) {
         $profileCombo = Find-UIA -Parent $padPage -Aid "HMaestroProfileCombo"
@@ -6908,6 +6908,57 @@ function Capture-GyroEngage {
         Write-Host "  !! Gyro On did not go back to Always On" -ForegroundColor Red
     }
     Set-PadScroll "MotionSectionScroll"
+}
+
+# The DualShock 3's Gyro card, its Devices row and its Details card (v4). The
+# DS3 rides slot 1 ALONE for these shots, so the Xbox pad, the wheel and the
+# anchoring DualSense come off the slot first (the Gyro group and the Details
+# card follow the selected device either way, but a solo slot makes the
+# selection deterministic). A device already off the slot stays off, so the
+# tail, whose source pickers took the Xbox pad and the wheel off before it,
+# and the focused pass, which calls it last because it changes the slot, run
+# the same steps.
+$script:Ds3Shots = @("pad-ds3-gyro", "devices-ds3", "devices-dossier")
+function Capture-Ds3Shots {
+    if (@($script:Ds3Shots | Where-Object { Want $_ }).Count -eq 0) { return }
+    Nav "Devices"; Start-Sleep -Milliseconds 600
+    foreach ($other in @("Xbox Series X GIP", "Logitech G29", "DualSense Wireless Controller")) {
+        Assert-Staged (Assign-DeviceToSlot -DeviceNamePart $other -SlotNumberLabel "1" -Unassign) "unassigning $other from slot 1" | Out-Null
+    }
+    Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualShock 3" -SlotNumberLabel "1") "assigning DualShock 3 to slot 1" | Out-Null
+    Start-Sleep -Milliseconds 800
+    if (Want "pad-ds3-gyro") {
+        if (Open-SlotPage -Type 0 -Label "Xbox slot (DS3)") {
+            Select-MappedDevice "DualShock 3" | Out-Null
+            if (Tab "Gyro") { Start-Sleep -Milliseconds 700; Cap "pad-ds3-gyro" }
+            else { Refuse-Shots @("pad-ds3-gyro") "the Gyro tab is not on the DS3's page" }
+        } else { Refuse-Shots @("pad-ds3-gyro") "the Xbox slot's page did not open" }
+    }
+    Nav "Devices"; Start-Sleep -Milliseconds 700
+    if (Select-DeviceByName36 "DualShock 3") {
+        Cap "devices-ds3"
+        # The Details card (Devices.md): the DS3's is a rich example, a bridged
+        # Bluetooth path with the Link and Serial Number rows. Details folds to a
+        # line at the foot of the panel (#574), so it is opened and brought into
+        # view for the frame, and closed after.
+        if (Want "devices-dossier") {
+            $details = Find-UIA -Aid "Devices_Details"
+            $opened = $false
+            try {
+                $details.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+                $opened = $true
+                Start-Sleep -Milliseconds 500
+            } catch {}
+            if ($opened -and (Scroll-PaneToAnchor -Anchor "Copy Details")) { Cap "devices-dossier" }
+            else { Refuse-Shots @("devices-dossier") "the Details card never opened in view" }
+            if ($opened) { try { $details.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
+        }
+        ScrollPane -Clicks 40
+    } else {
+        Refuse-Shots @(@("devices-ds3", "devices-dossier") | Where-Object { Want $_ }) "the DualShock 3's row was not found"
+    }
+    Close-DeviceFolds
+    Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualShock 3" -SlotNumberLabel "1" -Unassign) "unassigning DualShock 3 from slot 1" | Out-Null
 }
 
 # The interface in 109 languages (#505): the Language list open on the
@@ -8759,7 +8810,10 @@ if ($Only.Count -gt 0) {
     $psTabTargets = @(
         @{ Shot = "pad-audio";     Tab = "Audio" },
         # Framed from the first card of the DSP chain (the anchor table).
-        @{ Shot = "pad-audio-dsp"; Tab = "Audio"; Anchor = $true }
+        @{ Shot = "pad-audio-dsp"; Tab = "Audio"; Anchor = $true },
+        # The touchpad's Momentum knobs under its mouse output's More row,
+        # with the Gyro card's Aim Engage Button beside them.
+        @{ Shot = "pad-touchpad-momentum"; Tab = "Touchpad"; Anchor = $true }
     )
     $psWanted = @($psTabTargets | Where-Object { Want $_.Shot })
     if ($psWanted.Count -gt 0) {
@@ -8786,9 +8840,10 @@ if ($Only.Count -gt 0) {
                 Write-Host "  !! The Audio group never appeared. Sections seen: $names" -ForegroundColor Red
             }
             foreach ($t in $psWanted) {
-                # Each shot starts from the group's top: the one before it
-                # may have scrolled the column.
-                if ($audioTab -and (Tab "Audio")) {
+                # Each shot starts from its group's top: the one before it
+                # may have scrolled the column. The Audio group's arrival
+                # says the DualSense's groups are on the page.
+                if ($audioTab -and (Tab $t.Tab)) {
                     Start-Sleep -Milliseconds 900
                     if ($t.ContainsKey("Anchor") -and -not (Show-PadAnchor $t.Shot)) {
                         Refuse-Shots @($t.Shot) "its card did not come into view"
@@ -8986,7 +9041,7 @@ if ($Only.Count -gt 0) {
     # the Xbox pad selected, and Bass Shakers right after it, the pad still
     # selected. Without -StageAll the Xbox pad is written onto the slot here.
     $xboxTourShots = @("pad-controller-3d", "pad-config-tabs", "pad-mapping-annotations", "3d-model-annotation-overlay",
-                       "pad-lighting-guide-led", "pad-bass-shakers")
+                       "pad-trigger-routing", "pad-lighting-guide-led", "pad-bass-shakers")
     $xboxTourWanted = @($xboxTourShots | Where-Object { Want $_ })
     if ($xboxTourWanted.Count -gt 0) {
         Write-Host "[focused] Xbox slot tour: $($xboxTourWanted -join ', ')"
@@ -9013,6 +9068,12 @@ if ($Only.Count -gt 0) {
                 Capture-AnnotationOverlay -Aid "AnnotationToggle" -Label "Annotation toggle (3D)" `
                     -Shots @("pad-mapping-annotations", "3d-model-annotation-overlay") `
                     -FallbackPoint { param($p, $s) @([int]($p.Right - 113 * $s), [int]($p.Top + 22 * $s)) }
+            }
+            # The Audio Rumble card with Trigger Routing under it, before
+            # the Xbox pad is picked, as the full run takes it.
+            if (Want "pad-trigger-routing") {
+                if ((Tab "Force Feedback") -and (Show-PadAnchor "pad-trigger-routing")) { Start-Sleep -Milliseconds 400; Cap "pad-trigger-routing" }
+                else { Refuse-Shots @("pad-trigger-routing") "the Audio Rumble card did not come into view" }
             }
             if ($needXboxPad) {
                 if (Select-MappedDevice "Xbox Series X GIP") {
@@ -9224,6 +9285,10 @@ if ($Only.Count -gt 0) {
     Capture-FalconPadShots
     Capture-LanguageShots
     Capture-Colorways
+
+    # Last of all: the DualShock 3's frames take every other device off
+    # slot 1, as the tail does.
+    Capture-Ds3Shots
 
     # Missed means this run did not write it. Existence alone passed the four
     # picker shots of the 5.0.0 prep's first targeted run, which no focused
@@ -10008,40 +10073,8 @@ Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "Logitech G29"      -SlotNumb
 Capture-SourcePickerSet $script:SourcePickerTargets
 
 # --- DualShock 3 (v4): motion tab + the Devices page's Details card ---
-# The DS3 rides slot 1 ALONE for these shots, so unassign the anchoring
-# DualSense first (the Gyro group and the Details card follow the selected
-# device either way, but a solo slot makes the selection deterministic).
 Write-Host "[3c] DualShock 3"
-Nav "Devices"; Start-Sleep -Milliseconds 600
-Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controller" -SlotNumberLabel "1" -Unassign) "unassigning DualSense Wireless Controller from slot 1" | Out-Null
-Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualShock 3" -SlotNumberLabel "1") "assigning DualShock 3 to slot 1" | Out-Null
-Start-Sleep -Milliseconds 800
-if (Open-SlotPage -Type 0 -Label "Xbox slot (DS3)") {
-    Select-MappedDevice "DualShock 3" | Out-Null
-    if (Tab "Gyro") { Start-Sleep -Milliseconds 700; Cap "pad-ds3-gyro" }
-    else { Write-Host "  !! Gyro tab not found for the DS3" -ForegroundColor Yellow }
-} else { Refuse-Shots @("pad-ds3-gyro") "the Xbox slot's page did not open" }
-Nav "Devices"; Start-Sleep -Milliseconds 700
-if (Select-DeviceByName36 "DualShock 3") {
-    Cap "devices-ds3"
-    # The Details card (Devices.md): the DS3's is a rich example, a bridged
-    # Bluetooth path with the Link and Serial Number rows. Details folds to a
-    # line at the foot of the panel (#574), so it is opened and brought into
-    # view for the frame, and closed after.
-    $details = Find-UIA -Aid "Devices_Details"
-    $opened = $false
-    try {
-        $details.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
-        $opened = $true
-        Start-Sleep -Milliseconds 500
-    } catch {}
-    if ($opened -and (Scroll-PaneToAnchor -Anchor "Copy Details")) { Cap "devices-dossier" }
-    else { Write-Host "  !! the Details card never opened in view -- SKIPPED devices-dossier" -ForegroundColor Red }
-    if ($opened) { try { $details.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
-    ScrollPane -Clicks 40
-}
-Close-DeviceFolds
-Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualShock 3" -SlotNumberLabel "1" -Unassign) "unassigning DualShock 3 from slot 1" | Out-Null
+Capture-Ds3Shots
 
 # --- Haptic-tone audio controls (Controller-Audio.md) ---
 # The "Play mirrored audio" + "High tones" groups render in the Audio group only

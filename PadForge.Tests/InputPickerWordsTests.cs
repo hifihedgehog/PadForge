@@ -87,6 +87,22 @@ namespace PadForge.Tests
                     Assert.True(Shows(picker), "control: the Aim Engage Button picker does not show");
                     var box = On(page, picker);
 
+                    // The row is drawn as Engage Stick's over it is: the box
+                    // starts where that picker does, and the label's middle is
+                    // the box's middle, as that row's label is its box's. The
+                    // labels stood above their box's middle and the trigger
+                    // Activators' boxes 12 left of their column (seen in the
+                    // 6.0.0 screenshots).
+                    var stick = pickers.Single(c =>
+                        System.Windows.Data.BindingOperations.GetBinding(c, System.Windows.Controls.Primitives.Selector.SelectedValueProperty)?.Path?.Path == "GyroEngageStickSide");
+                    var stickBox = On(page, stick);
+                    double Middle(Rect r) => r.Top + r.Height / 2;
+                    Rect LabelOf(string words) => On(page, Drawn(page, words).Single());
+                    Assert.True(Math.Abs(box.Left - stickBox.Left) < 0.5, $"the box starts at {box.Left}, Engage Stick's at {stickBox.Left}");
+                    double stickOff = Middle(LabelOf(Strings.Instance.Settings_GyroEngageStickSide)) - Middle(stickBox);
+                    double off = Middle(LabelOf(Strings.Instance.Settings_GyroAimEngageButton)) - Middle(box);
+                    Assert.True(Math.Abs(off - stickOff) < 0.5, $"the label's middle is {off} from its box's, Engage Stick's {stickOff}");
+
                     // Nothing saved: the box reads Unassigned, and no line
                     // under it says so again.
                     var said = Drawn(page, unassigned).Where(t => Math.Abs(On(page, t).Top - box.Top) < 120).ToList();

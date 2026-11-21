@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Xunit;
@@ -81,6 +82,54 @@ namespace PadForge.Tests
 
             var recenter = rows.Single(r => LabelOf(r).StartsWith("{Binding Pad_GyroRecenterOnEngage,", System.StringComparison.Ordinal));
             Assert.Equal("{StaticResource EndsLabel}", (string)recenter.Elements().First().Attribute("Style"));
+        }
+
+        /// <summary>Where a row's control starts in the section that holds
+        /// <paramref name="at"/>: its label column and the room after it.</summary>
+        private static double ControlColumn(XElement at)
+        {
+            var label = at.Ancestors()
+                .SelectMany(a => a.Elements().Where(r => r.Name.LocalName.EndsWith(".Resources", System.StringComparison.Ordinal)))
+                .SelectMany(r => r.Elements())
+                .First(s => s.Name.LocalName == "Style" && (string)s.Attribute(X + "Key") == "DzLabel");
+            string Setter(string property) => (string)label.Elements().Single(s => (string)s.Attribute("Property") == property).Attribute("Value");
+            return double.Parse(Setter("Width"), CultureInfo.InvariantCulture)
+                + double.Parse(Setter("Margin").Split(',')[2], CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>A picker of one input is a row like the page's other
+        /// pickers: its label at the row's middle in the label column, its box
+        /// where the row's control starts, and its record and reset buttons
+        /// beside the box. The line that names a picked input's device stands
+        /// under the row from where the control starts, as the gyro's
+        /// calibration line does. The labels stood 4 from the row's top, above
+        /// the box's middle, and the trigger Activators' own margin dropped the
+        /// 12 after the label column, so their boxes started 12 left of the
+        /// pickers over and under them (seen in the 6.0.0 screenshots).</summary>
+        [Fact]
+        public void AnInputPickerRowIsARowLikeItsNeighbors()
+        {
+            var page = Page();
+            var pickers = page.Descendants().Where(e => e.Name.LocalName == "ComboBox"
+                && (string)e.Attribute("ItemsSource") == "{Binding SlotAvailableInputsView}").ToList();
+            Assert.Equal(5, pickers.Count);
+            foreach (var picker in pickers)
+            {
+                string input = ((string)picker.Attribute("SelectedItem")).Split(' ', ',')[1];
+                var row = picker.Ancestors().First(a => a.Name.LocalName == "SettingRow");
+                var parts = row.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList();
+                Assert.Equal("TextBlock", parts[0].Name.LocalName);
+                Assert.Null(parts[0].Attribute("VerticalAlignment"));
+                Assert.Null(parts[0].Attribute("Margin"));
+                // The box and the words in it are the row's control, at its middle.
+                Assert.Same(picker.Parent, parts[1]);
+                Assert.Equal("Center", (string)parts[1].Attribute("VerticalAlignment"));
+                Assert.All(parts.Skip(2), p => Assert.Null(p.Attribute("VerticalAlignment")));
+                // The picked input's device, under the row.
+                var line = page.Descendants().Single(e => (string)e.Attribute("Text") == "{Binding " + input + ".DeviceLabel}");
+                Assert.Same(row, line.ElementsBeforeSelf().Last());
+                Assert.Equal(ControlColumn(row), double.Parse(((string)line.Attribute("Margin")).Split(',')[0], CultureInfo.InvariantCulture));
+            }
         }
     }
 }

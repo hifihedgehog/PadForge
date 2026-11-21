@@ -266,7 +266,7 @@ Drivers that install into Windows follow the machine. HIDMaestro 2.3.0 and BthPS
 
 Of the Visual C++ runtime, both builds bundle `vcruntime140.dll` and `msvcp140.dll`. `SDL3.dll` imports `msvcp140.dll` for the Elite paddle reader, which is C++. Neither item carries an `Exists` condition, so a missing file stops the build and names it. `vcruntime140_1.dll` is x64 only. It holds an exception handler that exists for the x64 ABI alone, and the copy in Microsoft's ARM64 redist folder is an x64 image. `BundledSdlRuntimeImportsTests` reads each bundled `SDL3.dll` for the runtime DLLs it names and fails when one is not in that architecture's `Resources/VisualCpp` folder. It did exactly that when the ARM64 `SDL3.dll` first arrived with the paddle reader in it.
 
-Virtual controllers work on Windows 11 on ARM64 from PadForge 6.0. Earlier HIDMaestro releases ran only the composite controllers there, so the ARM64 build's virtual controllers did not work. HIDMaestro 2.3.0 runs every one of its profiles there, and PadForge was tested on a Surface Pro with a Snapdragon X2 Plus: a DualSense over Bluetooth drove an Xbox virtual controller, hidden through HidHide. The DualShock 3 Bluetooth driver, the Vosk voice engine and the Elite paddle reader have not run on an ARM64 PC.
+Virtual controllers work on Windows 11 on ARM64 from PadForge 6.0. Before HIDMaestro 2.3.0 the ARM64 build's virtual controllers did not work there. HIDMaestro 2.3.0 runs every one of its profiles there, and PadForge was tested on a Surface Pro with a Snapdragon X2 Plus: a DualSense over Bluetooth drove an Xbox virtual controller, hidden through HidHide. The DualShock 3 Bluetooth driver, the Vosk voice engine and the Elite paddle reader have not run on an ARM64 PC.
 
 ## Runtime Requirements
 

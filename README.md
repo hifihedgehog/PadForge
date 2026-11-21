@@ -1169,7 +1169,7 @@ Windows 10 or 11 on x64, or Windows 11 on ARM64 ([Windows on ARM](#windows-on-ar
 
 ### Windows on ARM
 
-The `win-arm64` download is a native build for Windows 11 on ARM64. It works as the x64 build does: virtual controllers, HidHide, the DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles all run there. HidHide and the DualShock 3 Bluetooth driver install their ARM64 versions. A virtual controller there is a USB device on usbip-win2's host controller, which HIDMaestro installs, and Windows' own drivers bind it.
+The `win-arm64` download is a native build for Windows 11 on ARM64. It works as the x64 build does: virtual controllers and HidHide run there, and the DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles are built for it. HidHide and the DualShock 3 Bluetooth driver install their ARM64 versions. A virtual controller there is a USB device on usbip-win2's host controller, which HIDMaestro installs, and Windows' own drivers bind it.
 
 A few features wait on their vendors, because an ARM64 program can load ARM64 libraries only:
 

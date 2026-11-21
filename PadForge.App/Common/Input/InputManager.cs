@@ -575,10 +575,12 @@ namespace PadForge.Common.Input
         /// Per-slot post-processed vibration. Each motor is the max
         /// across every device mapped to the slot, with each device's
         /// own PadSetting applied (gain/balance/swap, audio rumble,
-        /// constant force). Drives the motor meter of Buttons'
-        /// picture. That meter answers "is anything rumbling right now?"
-        /// so it is intentionally device-filter-independent. The SDL
-        /// physical-rumble path and the DS5/DS4 dispatcher each compute
+        /// constant force). It answers "is anything rumbling right now?"
+        /// for the slot as a whole, whichever device is selected, and the
+        /// combined Joy-Con pair's tone sink reads it for that
+        /// (HapticToneService.SlotRumbleActiveProvider). No meter reads it:
+        /// the meter shows <see cref="SelectedDeviceVibrationStates"/>. The
+        /// SDL physical-rumble path and the DS5/DS4 dispatcher each compute
         /// their own per-device scaled rumble from each device's own
         /// PadSetting, so they do NOT read this array.
         /// </summary>

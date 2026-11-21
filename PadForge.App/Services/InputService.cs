@@ -2225,7 +2225,7 @@ namespace PadForge.Services
 
             // Discussion #223: motor-side audio routing for the combined
             // Joy-Con pair's dual-coil tone sink. Reads the per-slot merged
-            // rumble snapshot the meter of Buttons' picture uses (FinalVibrationStates:
+            // rumble snapshot (FinalVibrationStates:
             // game + macro rumble + per-device gain/swap/trigger routing,
             // recomputed every poll tick by ComputeFinalVibrationStates).
             // Plain field reads on preallocated Vibration objects, no locks,
@@ -3007,9 +3007,7 @@ namespace PadForge.Services
             // Multi-finger path: pull the full TouchpadInputState snapshot
             // from the overlay (slots 0..OverlayMaxFingers-1, contact IDs
             // mapped from WPF TouchDevice.Id) and forward to the engine
-            // device via UpdateStateMulti. The 2-finger UpdateState(...)
-            // overload is still available for callers that only need the
-            // DS4-shape struct (e.g. virtual-output sites).
+            // device via UpdateStateMulti.
             if (_touchpadOverlay?.IsVisible == true && _touchpadOverlayDevice != null)
             {
                 var snap = _touchpadOverlay.GetMultiFingerState(out bool click);

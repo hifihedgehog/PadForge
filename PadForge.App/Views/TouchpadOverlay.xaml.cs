@@ -31,11 +31,9 @@ namespace PadForge.Views
 
         // Touch tracking: first touch = finger 0, second = finger 1
         private readonly object _stateLock = new();
-        // Overlay supports up to OverlayMaxFingers per-slot tracking. The
-        // first two slots feed the legacy DS4-shape TouchpadState struct
-        // (consumed by the virtual-output side); all slots feed the new
-        // TouchpadInputState the gesture engine reads. Slots get
-        // allocated dynamically by TouchDevice.Id on TouchDown; freed on
+        // The overlay tracks up to OverlayMaxFingers touches, one a slot,
+        // and every slot feeds the TouchpadInputState the engine reads. A
+        // slot is taken by TouchDevice.Id on TouchDown and freed on
         // TouchUp. The mouse makes no touch: its right drag moves the
         // window, and its left button presses the click bar.
         private const int OverlaySlotCount = Engine.TouchpadOverlayDevice.OverlayMaxFingers;
@@ -46,12 +44,8 @@ namespace PadForge.Views
         private readonly int[] _slotContactIds = new int[OverlaySlotCount]; // -1 when empty
         private int _slotContactIdNext = 1;
 
-        // Legacy two-finger shortcuts — kept as ref-projections into the
-        // first two slots so the existing 2-finger-shaped UI code
-        // (finger dots, click bar pulse, GetTouchpadState DS4 struct)
-        // keeps reading the same place. Indexers can't return ref to
-        // value-typed array elements in property form, so wrappers use
-        // helper methods where needed.
+        // The first two slots by name, for the two finger dots the
+        // surface draws.
         private float _x0 { get => _slotX[0]; set => _slotX[0] = value; }
         private float _y0 { get => _slotY[0]; set => _slotY[0] = value; }
         private float _x1 { get => _slotX[1]; set => _slotX[1] = value; }
@@ -522,33 +516,6 @@ namespace PadForge.Views
                 }
             }
             UpdateFingerDots();
-        }
-
-        /// <summary>Reads current overlay touchpad state in the legacy
-        /// 2-finger <see cref="TouchpadState"/> struct shape. Click is
-        /// true while the dedicated click bar is held OR during a single-
-        /// frame pulse from the surface double-tap gesture. The held
-        /// branch supports click-and-hold (drag, hold-to-context); the
-        /// pulse branch preserves the double-tap-to-click muscle memory.
-        /// Used by the DS4-output side; the gesture engine uses
-        /// <see cref="GetMultiFingerState"/> instead.</summary>
-        public TouchpadState GetTouchpadState()
-        {
-            lock (_stateLock)
-            {
-                var tp = new TouchpadState
-                {
-                    X0 = Math.Clamp(_x0, 0f, 1f),
-                    Y0 = Math.Clamp(_y0, 0f, 1f),
-                    X1 = Math.Clamp(_x1, 0f, 1f),
-                    Y1 = Math.Clamp(_y1, 0f, 1f),
-                    Down0 = _down0,
-                    Down1 = _down1,
-                    Click = _clickBarHeld || _clickPulse
-                };
-                _clickPulse = false;
-                return tp;
-            }
         }
 
         /// <summary>Reads current overlay touchpad state as a full

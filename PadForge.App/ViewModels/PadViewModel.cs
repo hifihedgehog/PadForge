@@ -3700,8 +3700,8 @@ namespace PadForge.ViewModels
         };
 
         private double _gyroEasyAimStickThreshold;
-        /// <summary>Right-stick deflection threshold (0-100%) below which
-        /// gyro output is zeroed. 0 = always on (default).</summary>
+        /// <summary>Deflection threshold of the Engage Stick (0-100%) below
+        /// which gyro output is zeroed. 0 = always on (default).</summary>
         public double GyroEasyAimStickThreshold
         {
             get => _gyroEasyAimStickThreshold;
@@ -4887,7 +4887,7 @@ namespace PadForge.ViewModels
         // Gated on at least one assigned device exposing
         // SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN. Settings round-trip
         // through PadSetting.ImpulseLeftStrength / ImpulseRightStrength /
-        // ImpulseSwapTriggers; meter bars feed from FinalVibrationStates +
+        // ImpulseSwapTriggers. Meter bars feed from
         // SelectedDeviceVibrationStates (trigger-motor fields populated by
         // ComputeFinalVibrationStates).
 

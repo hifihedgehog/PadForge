@@ -6,7 +6,7 @@ namespace PadForge.Engine
     /// Virtual input device representing the touchpad overlay window.
     /// Reads touchpad state from a callback and exposes it through the
     /// standard <see cref="ISdlInputDevice"/> pipeline so it appears
-    /// in the Devices page and can be assigned to PlayStation slots.
+    /// in the Devices page and can be assigned to a controller.
     /// </summary>
     public class TouchpadOverlayDevice : ISdlInputDevice
     {
@@ -66,50 +66,8 @@ namespace PadForge.Engine
         /// exposes. Matches the Windows Precision Touchpad spec ceiling
         /// so a touch-capable display drawing through the overlay can
         /// drive multi-finger gestures (pinch, rotate, 3/4/5-finger
-        /// swipes / taps) end-to-end. The mouse-drag fallback uses
-        /// slot 0 only.</summary>
+        /// swipes / taps) end-to-end.</summary>
         public const int OverlayMaxFingers = 5;
-
-        /// <summary>
-        /// Mouse-drag fallback path. Two-finger snapshot from the legacy
-        /// <see cref="TouchpadState"/> struct (DS4-shape). Used by the
-        /// overlay window when a touch device isn't available; mouse-
-        /// drag drives slot 0 only and slot 1's fields here are vestigial
-        /// since a mouse cursor has no second contact. Higher slots
-        /// (2..4) stay inert. For real multi-touch from a touch-capable
-        /// display, use the <see cref="UpdateStateMulti"/> overload.
-        /// </summary>
-        public void UpdateState(TouchpadState tp)
-        {
-            lock (_stateLock)
-            {
-                var s = new CustomInputState();
-                s.Touchpads = new[] { new TouchpadInputState(OverlayMaxFingers) };
-                var pad = s.Touchpads[0];
-                pad.FingerX[0] = tp.X0;
-                pad.FingerY[0] = tp.Y0;
-                pad.FingerPressure[0] = tp.Down0 ? 1f : 0f;
-                pad.FingerDown[0] = tp.Down0;
-                pad.FingerX[1] = tp.X1;
-                pad.FingerY[1] = tp.Y1;
-                pad.FingerPressure[1] = tp.Down1 ? 1f : 0f;
-                pad.FingerDown[1] = tp.Down1;
-                // Slots 2..4 default-init to 0 / false / -1.
-
-                // Contact-ID synthesis: walk both slots, allocate on
-                // rising edges, clear on falling, carry the prior ID
-                // when steady. Generalized form so adding higher slots
-                // doesn't repeat the pattern.
-                CarryContactIds(pad, prevPad: _currentState?.Touchpads?.Length > 0 ? _currentState.Touchpads[0] : null);
-
-                pad.Clicked = tp.Click;
-                // Touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
-                // canonical PadForge slot). The "Touchpad 0 Click" descriptor
-                // reads from this index — same path as a physical DS4/DualSense.
-                s.Buttons[16] = tp.Click;
-                _currentState = s;
-            }
-        }
 
         /// <summary>
         /// Multi-finger touch path. Caller (overlay window's WPF
@@ -152,28 +110,6 @@ namespace PadForge.Engine
                 s.Touchpads = new[] { pad };
                 if (s.Buttons.Length > 16) s.Buttons[16] = click;
                 _currentState = s;
-            }
-        }
-
-        /// <summary>Walks every slot on the newly-built pad, carries
-        /// the prior frame's contact ID forward on a steady down,
-        /// allocates a fresh ID from <see cref="_overlayContactIdNext"/>
-        /// on a rising edge, and clears to -1 on a falling edge.
-        /// Shared by both UpdateState overloads.</summary>
-        private void CarryContactIds(TouchpadInputState pad, TouchpadInputState prevPad)
-        {
-            int n = pad.MaxFingers;
-            for (int i = 0; i < n; i++)
-            {
-                bool prevDown = prevPad != null
-                    && i < prevPad.MaxFingers
-                    && prevPad.FingerDown[i];
-                int prevId = prevPad != null && i < prevPad.MaxFingers
-                    ? prevPad.FingerContactId[i] : -1;
-                if (pad.FingerDown[i])
-                    pad.FingerContactId[i] = prevDown ? prevId : _overlayContactIdNext++;
-                else
-                    pad.FingerContactId[i] = -1;
             }
         }
 

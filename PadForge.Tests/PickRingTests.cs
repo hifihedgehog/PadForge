@@ -1016,7 +1016,9 @@ namespace PadForge.Tests
             string code = CodeBehind();
             Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.PickedRow\)\s*\|\| e\.PropertyName == nameof\(PadViewModel\.CurrentRecordingTarget\)\)\s*\{[^}]*QueuePickRingSync\(\);\s*\}", code);
             Assert.Matches(@"ResubscribeSelectedDeviceInfo\(\);\s*// Another slot has another pick, or none\.\s*QueuePickRingSync\(\);", code);
-            Assert.Matches(@"SyncTabVisibility\(\);\s*BindActiveModelView\(\);[^}]*QueuePickRingSync\(\);\s*\}", code);
+            // Search binds the page to each controller in turn to read it, and
+            // leaves the picture on the controller it shows while it reads.
+            Assert.Matches(@"SyncTabVisibility\(\);\s*(?://[^\n]*\n\s*)*if \(ReadingForSearch\) return;\s*BindActiveModelView\(\);[^}]*QueuePickRingSync\(\);\s*\}", code);
             Assert.Contains("private void PictureHost_SizeChanged(object sender, SizeChangedEventArgs e) => QueuePickRingSync();", code);
             Assert.Contains("private void OnPickBoundsChanged(object sender, EventArgs e) => QueuePickRingSync();", code);
             Assert.Matches(@"foreach \(var picture in PicturesWithPick\(\)\)\s*picture\.PickBoundsChanged \+= OnPickBoundsChanged;", code);

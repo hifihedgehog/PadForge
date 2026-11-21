@@ -23,7 +23,10 @@ namespace PadForge.Common
     /// <para>Text with no right-to-left letter that the window's direction
     /// would draw differently takes the direction of its first strong
     /// letter, left to right, as HTML's dir="auto" and Android's first-strong
-    /// text direction do. Its alignment and padding are mirrored with it, so
+    /// text direction do. A block that trims its text is drawn differently
+    /// too, since the ellipsis goes at the line's end, and so is a number
+    /// label such as "#1", which has no letter but reads left to right.
+    /// Its alignment and padding are mirrored with it, so
     /// it stays where the layout put it. This sets FlowDirection, TextAlignment
     /// and Padding only, never the text.</para>
     ///
@@ -123,8 +126,9 @@ namespace PadForge.Common
 
         /// <summary>False for text this class has nothing to do with, such as
         /// a readout of digits that changes many times a second, so it costs
-        /// no dispatcher work: no letter, or letters with no bracket that the
-        /// window's direction draws as they are. A block this class changed is
+        /// no dispatcher work: no letter and no number sign, or letters with
+        /// no bracket that the window's direction draws as they are, in a
+        /// block that does not trim. A block this class changed is
         /// always looked at again.</summary>
         private static bool Interesting(TextBlock block, string text)
         {
@@ -136,7 +140,8 @@ namespace PadForge.Common
             {
                 if (char.IsLetter(c)) { letter = true; break; }
             }
-            return letter && (text.IndexOfAny(Brackets) >= 0 || NeedsLeftToRight(text));
+            return (letter || HasNumberSign(text))
+                && (text.IndexOfAny(Brackets) >= 0 || NeedsLeftToRight(block, text));
         }
 
         /// <summary>Applies once the change under way has finished, ahead of
@@ -176,7 +181,7 @@ namespace PadForge.Common
                 else if (char.IsLetter(c)) leftToRight = true;
             }
 
-            if (!rightToLeft && leftToRight && NeedsLeftToRight(text))
+            if (!rightToLeft && (leftToRight || HasNumberSign(text)) && NeedsLeftToRight(block, text))
             {
                 Flip(block, state);
                 return;
@@ -200,6 +205,43 @@ namespace PadForge.Common
             if (t.Length == 0) return false;
             if (t.IndexOfAny(Brackets) >= 0) return true;
             return !char.IsLetter(t[0]) || !char.IsLetterOrDigit(t[t.Length - 1]);
+        }
+
+        /// <summary><see cref="NeedsLeftToRight(string)"/>, or a block that
+        /// cuts its text with an ellipsis. A right-to-left line puts the
+        /// ellipsis at its own end, the left, before a Latin name's first
+        /// letter ("…Nintendo Switch"), where a left-to-right line puts it
+        /// after the last letter shown. A block that fits draws the same
+        /// either way.</summary>
+        internal static bool NeedsLeftToRight(TextBlock block, string text)
+            => NeedsLeftToRight(text)
+            || (block.TextTrimming != TextTrimming.None && (text ?? string.Empty).Trim().Length > 0);
+
+        /// <summary>True for text with a number sign before a digit, such as a
+        /// slot's "#1". Unicode makes the sign part of its number, and WPF
+        /// draws it after the number in a right-to-left line ("1#"). A number
+        /// label reads left to right, as the number does.</summary>
+        internal static bool HasNumberSign(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return false;
+            for (int i = 0; i + 1 < text.Length; i++)
+            {
+                if (text[i] == '#' && char.IsDigit(text[i + 1])) return true;
+            }
+            return false;
+        }
+
+        /// <summary>The direction of the text's first letter: right to left
+        /// for a Hebrew or Arabic-script letter, left to right for any other,
+        /// null for text without a letter.</summary>
+        internal static FlowDirection? FirstStrongDirection(string text)
+        {
+            foreach (char c in text ?? string.Empty)
+            {
+                if (!char.IsLetter(c)) continue;
+                return IsRightToLeftLetter(c) ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+            }
+            return null;
         }
 
         private static readonly char[] Brackets = { '(', ')', '[', ']', '{', '}' };

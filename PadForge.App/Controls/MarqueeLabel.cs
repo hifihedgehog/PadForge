@@ -82,6 +82,14 @@ namespace PadForge.Controls
             string text = e.NewValue as string ?? string.Empty;
             label._rest.Text = text;
             label._run.Text = text;
+            // The moving copy stands where its text starts, a Latin name at
+            // the left edge and an Arabic or Hebrew one at the right, in a
+            // window of either direction, so the slide shows the name from
+            // its start toward its end.
+            if (Common.TextDirection.FirstStrongDirection(text) is FlowDirection own)
+                label._track.FlowDirection = own;
+            else
+                label._track.ClearValue(FlowDirectionProperty);
             label.ToolTip = text.Length > 0 ? text : null;
             if (label.Active) label.Restart();
         }

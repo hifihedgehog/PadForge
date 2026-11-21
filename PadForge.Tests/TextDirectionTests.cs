@@ -347,6 +347,172 @@ namespace PadForge.Tests
             });
         }
 
+        // ─────────────────────────────────────────────
+        //  The sidebar's slot pills (6.0.0 prep, settings-language-rtl)
+        // ─────────────────────────────────────────────
+
+        private const string LongName = "Nintendo Switch Pro Controller";
+
+        /// <summary>The pill's instance label: "#1" keeps its sign before its
+        /// number, as Unicode's rule for a number sign has it. Unwatched, WPF
+        /// drew "1#" in the Arabic frame.</summary>
+        [Fact]
+        public void ANumberSignStaysBeforeItsNumber()
+        {
+            RunSta(() =>
+            {
+                var watched = new TextBlock { Text = "#1", Width = 22, FontSize = 12 };
+                var plain = new TextBlock { Text = "#1", Width = 22, FontSize = 12 };
+                Window window = Show(watched, watch: true), control = Show(plain, watch: false);
+                try
+                {
+                    Assert.True(X(plain, control, 0) > X(plain, control, 1),
+                        "unwatched, WPF draws the sign before the number now: the positive control is gone");
+                    Assert.True(X(watched, window, 0) < X(watched, window, 1),
+                        $"# at {X(watched, window, 0)}, 1 at {X(watched, window, 1)}");
+                    // It keeps its place: the start side of its box, the right.
+                    Assert.Equal(TextAlignment.Right, watched.TextAlignment);
+                }
+                finally { window.Close(); control.Close(); }
+            });
+        }
+
+        /// <summary>A Latin name too long for its box is cut at its end with
+        /// the ellipsis on the right, its first letter at the box's left edge.
+        /// A right-to-left line put the ellipsis on the left, before the
+        /// name's first letter ("…Nintendo Switch").</summary>
+        [Fact]
+        public void ATrimmedLatinNameIsCutAtItsEnd()
+        {
+            RunSta(() =>
+            {
+                TextBlock Cut() => new TextBlock
+                {
+                    Text = LongName, Width = 120, FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                };
+                TextBlock watched = Cut(), plain = Cut();
+                Window window = Show(watched, watch: true), control = Show(plain, watch: false);
+                try
+                {
+                    Rect plainBox = plain.TransformToAncestor(control).TransformBounds(new Rect(plain.RenderSize));
+                    double plainStart = X(plain, control, 0);
+                    // Unwatched, the ellipsis stands before the name's first
+                    // letter, on the left.
+                    Assert.True(plainStart > plainBox.Left + 1,
+                        $"unwatched, the name starts at {plainStart} in a box from {plainBox.Left}: the positive control is gone");
+                    Rect box = watched.TransformToAncestor(window).TransformBounds(new Rect(watched.RenderSize));
+                    Assert.InRange(X(watched, window, 0), box.Left - 0.5, box.Left + 0.5);
+                }
+                finally { window.Close(); control.Close(); }
+            });
+        }
+
+        /// <summary>The pill's Preset name scrolls under the pointer from its
+        /// start: a Latin name's moving copy stands with its first letter at
+        /// the label's left edge, and slides left from there.</summary>
+        [Fact]
+        public void AMarqueeLabelStartsALatinNameAtItsStart()
+        {
+            RunSta(() =>
+            {
+                var label = new PadForge.Controls.MarqueeLabel { Text = LongName, Width = 120, Height = 20 };
+                Window window = Show(label, watch: true);
+                try
+                {
+                    var track = (Canvas)VisualTreeHelper.GetChild(label, 1);
+                    var run = (TextBlock)VisualTreeHelper.GetChild(track, 0);
+                    Rect box = label.TransformToAncestor(window).TransformBounds(new Rect(label.RenderSize));
+                    Assert.True(run.ActualWidth > box.Width, "the name fits: the checks below prove nothing");
+                    Assert.InRange(X(run, window, 0), box.Left - 0.5, box.Left + 0.5);
+
+                    // An Arabic name starts at the right edge.
+                    label.Text = "وحدة تحكم طويلة الاسم جدا للاختبار هنا";
+                    Drain(window);
+                    Assert.True(run.ActualWidth > box.Width, "the Arabic name fits: the check below proves nothing");
+                    Assert.InRange(X(run, window, 0), box.Right - 0.5, box.Right + 0.5);
+                }
+                finally { window.Close(); }
+            });
+        }
+
+        /// <summary>Pictures the sidebar pills' text in a right-to-left
+        /// window: each slot's number, its "#1" label as MainWindow builds it
+        /// (UpdateControllerNavItemContent) and its Preset name in a
+        /// MarqueeLabel, at rest and with the moving copy shown at its first
+        /// frame. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder.
+        /// The pill's buttons, chip and outline are left out: this pictures
+        /// the text, which is all TextDirection changes.</summary>
+        [Fact]
+        public void DrawTheSidebarPillText()
+        {
+            string dir = Environment.GetEnvironmentVariable("PADFORGE_PAGE_RENDER_DIR");
+            if (string.IsNullOrEmpty(dir)) return;
+            RunSta(() =>
+            {
+                string[] names =
+                {
+                    "Xbox Series X|S Controller (Bluetooth)", "DualSense (PS5): Full Features", LongName,
+                    "Custom", "لوحة مفاتيح + ماوس", "MIDI", "الواقع الافتراضي",
+                };
+                var face = new FontFamily("Segoe UI Variable Text");
+                var column = new StackPanel { Background = new SolidColorBrush(Color.FromRgb(0x0B, 0x10, 0x18)), Width = 264 };
+                var moving = new System.Collections.Generic.List<PadForge.Controls.MarqueeLabel>();
+                for (int i = 0; i < names.Length * 2; i++)
+                {
+                    var row = new DockPanel { Margin = new Thickness(8, 6, 8, 6), Height = 26 };
+                    var number = new TextBlock { Text = (i % names.Length + 1).ToString(), Width = 16, FontSize = 12, TextAlignment = TextAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                    var chip = new Border { Width = 20, Height = 20, Margin = new Thickness(5, 0, 0, 0), Background = Brushes.DimGray, CornerRadius = new CornerRadius(4) };
+                    var instance = new TextBlock { Text = "#1", FontSize = 12, Width = 22, Margin = new Thickness(6, 0, 0, 0), TextAlignment = TextAlignment.Left, VerticalAlignment = VerticalAlignment.Center };
+                    var preset = new PadForge.Controls.MarqueeLabel { Text = names[i % names.Length], Margin = new Thickness(6, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
+                    TextElement.SetFontSize(preset, 13.0);
+                    if (i >= names.Length) moving.Add(preset);
+                    foreach (var part in new UIElement[] { number, chip, instance, preset }) row.Children.Add(part);
+                    column.Children.Add(row);
+                }
+                TextElement.SetFontFamily(column, face);
+                TextElement.SetForeground(column, Brushes.White);
+                // A right-to-left ground inside a left-to-right frame, so the
+                // picture of the frame holds the ground's mirroring.
+                column.FlowDirection = FlowDirection.RightToLeft;
+                column.Language = XmlLanguage.GetLanguage("ar");
+                var frame = new Border { Child = column, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
+                TextDirection.Start();
+                var window = new Window
+                {
+                    Content = frame, Width = 400, Height = 900, ShowActivated = false, ShowInTaskbar = false,
+                    Left = -10000, Top = -10000,
+                };
+                window.Show();
+                window.FlowDirection = FlowDirection.LeftToRight;
+                TextDirection.SetWatch(window, true);
+                Drain(window);
+                try
+                {
+                    // The lower seven: the moving copy at its first frame,
+                    // as a hover shows it before it slides.
+                    foreach (var label in moving)
+                    {
+                        VisualTreeHelper.GetChild(label, 0).SetValue(UIElement.VisibilityProperty, Visibility.Hidden);
+                        VisualTreeHelper.GetChild(label, 1).SetValue(UIElement.VisibilityProperty, Visibility.Visible);
+                    }
+                    Drain(window);
+                    frame.UpdateLayout();
+                    const double scale = 1.5;
+                    var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                        (int)Math.Ceiling(frame.ActualWidth * scale), (int)Math.Ceiling(frame.ActualHeight * scale),
+                        96 * scale, 96 * scale, PixelFormats.Pbgra32);
+                    bitmap.Render(frame);
+                    var png = new System.Windows.Media.Imaging.PngBitmapEncoder();
+                    png.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));
+                    System.IO.Directory.CreateDirectory(dir);
+                    using var stream = System.IO.File.Create(System.IO.Path.Combine(dir, "sidebar-pill-text-rtl.png"));
+                    png.Save(stream);
+                }
+                finally { window.Close(); }
+            });
+        }
+
         [Fact]
         public void TheLanguageWatchesOnlyARightToLeftWindow()
         {

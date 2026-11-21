@@ -139,9 +139,10 @@ namespace PadForge.Tests
         /// Gestures' Flick Distance and Cooldown stood 10 right of the Custom
         /// Activation Input picker between them (seen in the 6.0.0
         /// screenshots). The Extras page's crosshair Picture Size kept its
-        /// style's 8 the same way.</summary>
+        /// style's 8 the same way, and a trigger's raw Anti-Deadzone its
+        /// style's 6 under the trigger's Range.</summary>
         [Theory]
-        [InlineData("PadPage.xaml", 18)]
+        [InlineData("PadPage.xaml", 19)]
         [InlineData("ExtrasPage.xaml", 1)]
         public void ANumberBoxThatOpensARowStartsAtItsColumn(string file, int boxes)
         {
@@ -149,7 +150,7 @@ namespace PadForge.Tests
             var first = page.Descendants().Where(e => e.Name.LocalName == "SettingRow" && !IsEndsRow(e))
                 .Select(r => r.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList())
                 .Where(parts => parts.Count > 1 && parts[0].Name.LocalName == "TextBlock" && parts[1].Name.LocalName == "TextBox"
-                    && (string)parts[1].Attribute("Style") is "{StaticResource DzValueEdit}" or "{StaticResource FieldValueEdit}")
+                    && (string)parts[1].Attribute("Style") is "{StaticResource DzValueEdit}" or "{StaticResource FieldValueEdit}" or "{StaticResource DzDigitEdit}")
                 .Select(parts => (Label: (string)parts[0].Attribute("Text"), Margin: (string)parts[1].Attribute("Margin")))
                 .ToList();
             Assert.Equal(boxes, first.Count);

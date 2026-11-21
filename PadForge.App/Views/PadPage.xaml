@@ -6162,7 +6162,7 @@
                                             <controls:SettingRow Grow="True" MinHeight="44">
                                                 <TextBlock Text="{Binding Pad_AntiDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                         Style="{StaticResource DzDigitEdit}" Margin="0"/>
                                             </controls:SettingRow>
                                         </StackPanel>
                                     </controls:MoreRow>

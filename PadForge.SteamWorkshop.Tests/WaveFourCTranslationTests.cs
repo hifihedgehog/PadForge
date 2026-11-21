@@ -100,8 +100,6 @@ namespace PadForge.SteamWorkshop.Tests
 
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MenuEmitted && e.Status == TranslationStatus.Clean);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.RadialMenuNeedsOverlay);
             Assert.Equal(1, p.Report.MenuCount);
             Assert.Contains(" menus:1 ", p.Report.ToSummaryString());
         }
@@ -191,8 +189,6 @@ namespace PadForge.SteamWorkshop.Tests
                 r.Sources.Any(s => s.Descriptor.Contains("TouchLeft") || s.Descriptor.Contains("TouchRight")));
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TouchMenuNeedsOverlay);
         }
 
         [Fact]

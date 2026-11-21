@@ -3380,7 +3380,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>aksyon kliyan Steam {0}, pa gen ekivalan</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>aksyon kontwolè {0} pa sipòte</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>touch {0} enkoni</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>touch {0} pa gen ekivalan nan Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>bouton sourit {0} enkoni</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>bouton XInput {0} enkoni</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mòd gwoup {0} enkoni</value></data>

@@ -156,8 +156,7 @@ namespace PadForge.SteamWorkshop.Tests
 
             // Release and Long_Press ride the AxisHold channel since v15.
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported
-                || e.ReasonKey == TranslationReasons.LongPressNotSupported);
+                e.ReasonKey == TranslationReasons.LongPressNotSupported);
             // v18: the toggle and turbo variants latch / pulse the axis
             // via macros instead of keeping momentary rows.
             Assert.Empty(p.XboxMappingSet.Rows);

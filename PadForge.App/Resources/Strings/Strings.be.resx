@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Захаваць і ўжыць</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Прызначэнні</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Імпартаваны «{0}»: чыста: {1}, часткова: {2}, прапушчана: {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Прызначэнняў, якія пакрывае аўтаматычнае прызначэнне па змаўчанні: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>перакладзена</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>перакладзена як макрас</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>слой: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>налада сэнсарнай панэлі дзейнічае для ўсёй панэлі, а не для асобнага радка</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>парог курка набліжаны</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>для гэтага ўводу няма курка, незалежнага ад прылады</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>Гульнявых дзеянняў: {0}, толькі ў Steam, без хука на баку гульні</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Дзеянне кліента Steam {0}, адпаведніка няма</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>дзеянне кантролера {0} не падтрымліваецца</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>невядомы тып прызначэння {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>невядомая клавіша {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>у клавішы {0} няма адпаведніка ў Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>невядомая кнопка мышы {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>невядомая кнопка XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>невядомы ўвод {1} на {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Сэнсарны элемент Steam Link {1}: ні на якім з падтрымліваных кантролераў няма фізічнага ўводу</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>невядомы рэжым групы {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>накладка сэнсарнага меню адкінута (ячэек: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>накладка радыяльнага меню адкінута (сектараў: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>абмежаванне вобласці курсора не падтрымліваецца</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>актыватар адпускання тут не падтрымліваецца</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>актыватар доўгага націску тут не падтрымліваецца</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>невядомы актыватар {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>у актыватара камбінацыі не зададзена кнопка камбінацыі (запусціць яго немагчыма)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>гэты ўвод не можа кіраваць актыватарам слоя</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>перавышана абмежаванне радкоў для слота {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ніводнае прызначэнне не пераключае на шаблон {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>аўтаматычнае прызначэнне прылады па-ранейшаму накіроўвае {0} на {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>пераключэнне слоя адкінута ({0} ператварылася ў нішто)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>абсалютнае пазіцыянаванне ўказальніка набліжана адноснымі рухамі мышы</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>налады крывой водгуку і дыяпазону адкінуты ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>налада гіраскопа {0}={1} адкінута (за гэтым значэннем няма кнопкі, якую можна прачытаць)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>змена нумара гульца: дзеянне кліента Steam, адпаведніка няма</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>пераключэнне Lizard mode: унутранае ў Steam, адпаведніка няма</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>націск пераключэння фіксуе {0} да наступнага націску</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>доўгі націск націскае {0} на парозе (Steam утрымлівае яго да адпускання)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>скід камеры набліжаны паўторным цэнтраваннем гіраскопа</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>вобласць мышы набліжана цэнтраваным абмежаваннем курсора ({0}% экрана, цэнтр вобласці {1}%, {2}%), пакуль паверхня ўтрымліваецца</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>налады ўключэння і адпускання вобласці мышы адкінуты ({0})</value></data>

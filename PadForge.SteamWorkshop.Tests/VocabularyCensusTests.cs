@@ -42,7 +42,6 @@ namespace PadForge.SteamWorkshop.Tests
         {
             TranslationReasons.UnknownBindingType,
             TranslationReasons.UnknownKey,
-            TranslationReasons.UnsupportedKey,
             TranslationReasons.UnknownMouseButton,
             TranslationReasons.UnknownXInputButton,
             TranslationReasons.UnknownGroupMode,

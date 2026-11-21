@@ -4032,28 +4032,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>حفظ وتطبيق</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>الارتباطات</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>تم استيراد «{0}»: سليم {1}، جزئي {2}، متخطى {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>ارتباطات يغطيها التعيين التلقائي الافتراضي: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>تم التحويل</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>تم التحويل إلى ماكرو</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>الطبقة: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>توليف لوحة اللمس يسري لكل لوحة، لا لكل صف</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>تم تقريب عتبة الزناد</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>لا يوجد مدخل تشغيل مستقل عن الجهاز لهذا المدخل</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>إجراءات داخل اللعبة: {0}، خاصة بخدمة Steam فقط، بلا خطاف من جهة اللعبة</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>إجراء عميل Steam {0}، بلا مقابل</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>إجراء وحدة التحكم {0} غير مدعوم</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>نوع ارتباط غير معروف {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>مفتاح غير معروف {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>المفتاح {0} ليس له مقابل في Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>زر ماوس غير معروف {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>زر XInput غير معروف {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>مدخل غير معروف {1} على {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>عنصر التحكم على الشاشة في Steam Link {1}: لا يوجد مدخل فعلي في أي وحدة تحكم مدعومة</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>وضع مجموعة غير معروف {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>تم إسقاط تراكب قائمة اللمس (الخلايا: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>تم إسقاط تراكب القائمة الشعاعية (القطاعات: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>قيد منطقة المؤشر غير مدعوم</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>مدخل التفعيل عند التحرير غير مدعوم هنا</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>مدخل التفعيل بالضغطة المطولة غير مدعوم هنا</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>مدخل تفعيل غير معروف {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>مدخل تفعيل التركيبة ليس له زر تركيبة محدد (لا شيء يستطيع إطلاقه)</value></data>
@@ -4065,15 +4057,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>هذا المدخل لا يستطيع تشغيل مدخل تفعيل طبقة</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>تم تجاوز الحد الأقصى للصفوف في خانة {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>لا يوجد ارتباط يبدّل إلى الإعداد المسبق {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>التعيين التلقائي للجهاز ما زال يوجه {0} إلى {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>تم إسقاط تبديل الطبقة (تحويل {0} لم ينتج شيئا)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>تم تقريب تحديد موضع المؤشر المطلق إلى حركة ماوس نسبية</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>تم إسقاط إعدادات منحنى الاستجابة والنطاق ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>تم إسقاط إعداد الجيروسكوب {0}={1} (لا يوجد زر قابل للقراءة وراء هذه القيمة)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>تغيير رقم اللاعب إجراء خاص بعميل Steam، بلا مقابل</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>تبديل وضع lizard داخلي في Steam، بلا مقابل</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ضغطة التبديل تثبت {0} حتى الضغطة التالية</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>الضغطة المطولة تضغط {0} ضغطة قصيرة عند العتبة (Steam يبقيه مضغوطا حتى التحرير)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>تم تقريب إعادة ضبط الكاميرا إلى إعادة توسيط الجيروسكوب</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>تم تقريب منطقة الماوس إلى حصر للمؤشر في المنتصف ({0}% من الشاشة، مركز المنطقة {1}%، {2}%) ما دام السطح مضغوطا</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>تم إسقاط إعدادات تفعيل/تحرير منطقة الماوس ({0})</value></data>

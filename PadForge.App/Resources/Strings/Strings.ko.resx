@@ -4073,28 +4073,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>저장 후 적용</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>바인딩</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' 가져옴: 완전 {1}, 부분 {2}, 건너뜀 {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>바인딩 {0}개는 기본 자동 매핑으로 처리됨</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>변환됨</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>매크로로 변환됨</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>레이어: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>터치패드 조정은 행이 아니라 패드 단위로 적용됩니다</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>트리거 임계값 근사</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>이 입력에는 장치 독립 트리거가 없습니다</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>게임 내 동작 {0}개, Steam 전용, 게임 측 후크 없음</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 클라이언트 동작 {0}, 대응 없음</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>컨트롤러 동작 {0} 미지원</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>알 수 없는 바인딩 유형 {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>알 수 없는 키 {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>키 {0}에 해당하는 Windows 키 없음</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>알 수 없는 마우스 버튼 {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>알 수 없는 XInput 버튼 {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0}의 알 수 없는 입력 {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link 화면 컨트롤 {1}: 지원되는 컨트롤러에 물리적 입력이 없습니다</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>알 수 없는 그룹 모드 {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>터치 메뉴 오버레이 제외({0}개 셀)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>방사형 메뉴 오버레이 제외({0}개 섹터)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>커서 영역 제한 미지원</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>놓기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>길게 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>알 수 없는 활성화 방식 {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>코드 활성기에 코드 버튼이 설정되지 않았습니다 (작동할 수 없음)</value></data>
@@ -4106,9 +4098,7 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>이 입력은 레이어 활성화에 사용할 수 없습니다</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 슬롯의 행 제한 초과</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>프리셋 {0}(으)로 전환하는 바인딩이 없습니다</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>장치의 자동 매핑이 여전히 {0}을(를) {1}(으)로 연결합니다</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>레이어 전환 제거됨({0}에 변환 결과 없음)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>포인터 절대 위치 지정을 상대 마우스 이동으로 근사</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>업데이트를 확인하려면 커뮤니티 구성을 사용하도록 설정하십시오</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Steam 창작마당에서 가져온 프로필이 아직 없습니다</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam 창작마당 업데이트 확인 중…</value></data>
@@ -4245,7 +4235,6 @@
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>플레이어 번호 변경은 Steam 클라이언트 동작으로, 대응 없음</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>리저드 모드 전환은 Steam 내부 기능으로, 대응 없음</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>토글 누름은 다음 누름까지 {0}을(를) 유지</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>길게 누르기는 임계값에서 {0}을(를) 탭(Steam은 뗄 때까지 유지)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>카메라 리셋을 자이로 재중심으로 근사</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>마우스 영역을 중앙 기준 커서 제한으로 근사(화면의 {0}%, 영역 중심 {1}%, {2}%), 표면을 누르는 동안 적용</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>마우스 영역 활성화/해제 설정 제외됨({0})</value></data>

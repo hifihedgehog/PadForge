@@ -4028,28 +4028,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Зберегти й застосувати</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Прив'язки</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Імпортовано «{0}»: чисто {1}, частково {2}, пропущено {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Прив'язок, які покриває типова автоприв'язка: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>перетворено</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>перетворено на макрос</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>шар: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>налаштування сенсорної панелі діють на панель, а не на рядок</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>поріг тригера наближено</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>для цього входу немає запуску, незалежного від пристрою</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>Ігрових дій: {0}; лише для Steam, з боку гри немає точки підключення</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>дія клієнта Steam {0}, відповідника немає</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>дія контролера {0} не підтримується</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>невідомий тип прив'язки {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>невідома клавіша {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>клавіша {0} не має відповідника у Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>невідома кнопка миші {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>невідома кнопка XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>невідомий вхід {1} на {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>екранний елемент керування Steam Link {1}: немає фізичного входу на жодному підтримуваному контролері</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>невідомий режим групи {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>оверлей сенсорного меню відкинуто (комірок: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>оверлей радіального меню відкинуто (секторів: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>обмеження області курсора не підтримується</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>активатор відпускання тут не підтримується</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>активатор довгого натискання тут не підтримується</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>невідомий активатор {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>для активатора акорду не задано кнопку акорду (ніщо не може його запустити)</value></data>
@@ -4061,15 +4053,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>цей вхід не може керувати активатором шару</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>перевищено ліміт рядків для слота {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>жодна прив'язка не перемикає на пресет {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>автоприв'язка пристрою й далі спрямовує {0} на {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>перемикання шару відкинуто ({0} нічого не дало після перетворення)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>абсолютне позиціювання вказівника наближено відносним рухом миші</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>налаштування кривої реакції та діапазону відкинуто ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>налаштування гіроскопа {0}={1} відкинуто (за цим значенням немає кнопки, яку можна прочитати)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>зміна номера гравця є дією клієнта Steam, відповідника немає</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>перемикання режиму lizard є внутрішнім для Steam, відповідника немає</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>натискання-перемикач фіксує {0} до наступного натискання</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>довге натискання коротко натискає {0} на порозі (Steam утримує до відпускання)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>скидання камери наближено центруванням гіроскопа</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>область миші наближено центрованим обмеженням курсора ({0}% екрана, центр області {1}%, {2}%), поки поверхню утримують</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>налаштування ввімкнення й відпускання області миші відкинуто ({0})</value></data>

@@ -4017,28 +4017,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>پاشەکەوتکردن و جێبەجێکردن</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>گرێدانەکان</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» هاوردەکرا: {1} تەواو، {2} بەشەکی، {3} تێپەڕێنراو</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} گرێدان بە بەستنەوەی خۆکاری بنەڕەت داپۆشراون</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>وەرگێڕدرا</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>وەک ماکرۆ وەرگێڕدرا</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>چین: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ڕێکخستنی وردی تاچپاد بۆ هەر گەیمپادێک کار دەکات، نەک بۆ هەر ڕیزێک</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>سنووری تریگەر بە نزیکەیی دانرا</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>هیچ تریگەرێکی سەربەخۆ لە ئامێر بۆ ئەم تێخراوە نییە</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} کرداری ناو یاری، تەنها بۆ Steam، هیچ پەیوەندییەک لەلای یارییەوە نییە</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>کرداری کلاینتی Steam {0}، هیچ هاوتایەکی نییە</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>کرداری کۆنترۆڵەر {0} پشتگیری ناکرێت</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>جۆری گرێدانی نەناسراو {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>کلیلی نەناسراو {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>کلیلی {0} هیچ هاوتایەکی لە Windows دا نییە</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>دوگمەی ماوسی نەناسراو {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>دوگمەی نەناسراوی XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>تێخراوی نەناسراو {1} لەسەر {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>کۆنترۆڵی سەر شاشەی Steam Link {1}: هیچ تێخراوێکی فیزیکی لەسەر هیچ کۆنترۆڵەرێکی پشتگیریکراو نییە</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>دۆخی گرووپی نەناسراو {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ئۆڤەرلەی مێنیوی دەستلێدان لابرا ({0} خانە)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ئۆڤەرلەی مێنیوی بازنەیی لابرا ({0} بەش)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>سنووردارکردنی ناوچەی نیشاندەر پشتگیری ناکرێت</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>چالاککەری بەردان لێرە پشتگیری ناکرێت</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>چالاککەری داگرتنی درێژ لێرە پشتگیری ناکرێت</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>چالاککەری نەناسراو {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>چالاککەری پێکەوەداگرتن هیچ دوگمەیەکی هاوبەشی بۆ دانەنراوە (هیچ شتێک ناتوانێت جێبەجێی بکات)</value></data>
@@ -4050,15 +4042,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ئەم تێخراوە ناتوانێت چالاککەری چین بەڕێوە ببات</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>سنووری ڕیز بۆ شوێنی {0} تێپەڕێنرا</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>هیچ گرێدانێک ناگوازێتەوە بۆ ڕێکخستنی ئامادەی {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>بەستنەوەی خۆکاری ئامێرەکە هێشتا {0} دەنێرێت بۆ {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>گواستنەوەی چین لابرا ({0} وەرگێڕدرا بۆ هیچ)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>شوێندانانی ڕەهای نیشاندەر بە نزیکەیی وەک جووڵەی ڕێژەیی ماوس دانرا</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ڕێکخستنەکانی چەماوەی وەڵام و مەودا لابران ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ڕێکخستنی جایرۆ {0}={1} لابرا (هیچ دوگمەیەکی خوێندراوە لە پشت ئەم بەهایەوە نییە)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>گۆڕینی ژمارەی یاریزان کردارێکی کلاینتی Steamە، هیچ هاوتایەکی نییە</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>گۆڕینی دۆخی Lizard تایبەتە بە ناوخۆی Steam، هیچ هاوتایەکی نییە</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>داگرتنی گۆڕین {0} دەچەسپێنێت تا داگرتنی داهاتوو</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>داگرتنی درێژ لە سنووردا لێدانێک لە {0} دەدات (Steam تا بەردان ڕایدەگرێت)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ڕێکخستنەوەی کامێرا بە نزیکەیی وەک ناوەندکردنەوەی جایرۆ دانرا</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ناوچەی ماوس بە نزیکەیی وەک سنووردارکردنێکی ناوەندیی نیشاندەر دانرا ({0}%ی شاشە، ناوەندی ناوچە {1}%، {2}%) لە کاتێکدا ڕووەکە ڕاگیراوە</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ڕێکخستنەکانی دەستپێکردن/بەردانی ناوچەی ماوس لابران ({0})</value></data>

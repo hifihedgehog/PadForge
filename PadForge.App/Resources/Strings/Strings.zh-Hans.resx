@@ -4073,28 +4073,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>保存并应用</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>绑定</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>已导入“{0}”：完整 {1}、部分 {2}、跳过 {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 条绑定已由默认自动映射覆盖</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>已转换</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>已转换为宏</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>层：{0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>触控板调节按整块触控板生效，而非按行</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳机阈值已近似处理</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此输入没有可用的无设备触发器</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 客户端动作 {0}，无对应项</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>不支持控制器动作 {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>未知绑定类型 {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>未知按键 {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>按键 {0} 没有对应的 Windows 按键</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>未知鼠标按钮 {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>未知 XInput 按钮 {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上的未知输入 {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link 屏幕控件 {1}：所有受支持的控制器上均无对应物理输入</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>未知分组模式 {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已丢弃触摸菜单叠加层（{0} 个单元格）</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已丢弃径向菜单叠加层（{0} 个扇区）</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>不支持光标区域限制</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>组合键激活器未设置组合按钮（无法触发）</value></data>
@@ -4106,9 +4098,7 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>此输入无法用于激活层</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 槽位的行数已超出上限</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>没有绑定切换到预设 {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>设备的自动映射仍会将 {0} 路由到 {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>层切换已丢弃（{0} 未产生任何转换）</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>指针绝对定位近似为相对鼠标移动</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>请先启用社区配置再检查更新</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>尚未从 Steam 创意工坊导入任何配置文件</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>正在检查 Steam 创意工坊更新…</value></data>
@@ -4245,7 +4235,6 @@
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>更改玩家编号是 Steam 客户端动作，无对应项</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式切换是 Steam 内部功能，无对应项</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切换按压将保持 {0} 直到下次按压</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>长按在达到阈值时点按 {0}（Steam 会按住直到松开）</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>摄像机重置近似为陀螺仪重新居中</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>鼠标区域近似为居中的光标限制（屏幕的 {0}%，区域中心 {1}%、{2}%），在按住该表面期间生效</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已丢弃鼠标区域的激活/释放设置（{0}）</value></data>

@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>सहेजें और लागू करें</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>बाइंडिंग</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' आयात किया गया: {1} पूर्ण, {2} आंशिक, {3} छोड़े गए</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} बाइंडिंग डिफ़ॉल्ट ऑटोमैप में शामिल हैं</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>रूपांतरित</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>मैक्रो के रूप में रूपांतरित</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>लेयर: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>टचपैड ट्यूनिंग हर पैड पर लागू होती है, हर पंक्ति पर नहीं</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ट्रिगर थ्रेशोल्ड का लगभग मान लिया गया</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>इस इनपुट के लिए डिवाइस से स्वतंत्र कोई ट्रिगर नहीं</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} इन-गेम क्रियाएँ, केवल Steam के लिए, गेम की ओर कोई हुक नहीं</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam क्लाइंट की क्रिया {0}, कोई समतुल्य नहीं</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>कंट्रोलर क्रिया {0} समर्थित नहीं</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>अज्ञात बाइंडिंग प्रकार {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>अज्ञात कुंजी {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>कुंजी {0} का Windows में कोई समतुल्य नहीं</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>अज्ञात माउस बटन {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>अज्ञात XInput बटन {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} पर अज्ञात इनपुट {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link का ऑन-स्क्रीन नियंत्रण {1}: किसी भी समर्थित कंट्रोलर पर कोई भौतिक इनपुट नहीं</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>अज्ञात ग्रुप मोड {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>टच-मेनू ओवरले हटा दिया गया ({0} सेल)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>रेडियल-मेनू ओवरले हटा दिया गया ({0} सेक्टर)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>कर्सर क्षेत्र की सीमा समर्थित नहीं</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>छोड़ने वाला एक्टिवेटर यहाँ समर्थित नहीं</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>देर तक दबाने वाला एक्टिवेटर यहाँ समर्थित नहीं</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>अज्ञात एक्टिवेटर {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>कॉर्ड एक्टिवेटर में कोई कॉर्ड बटन सेट नहीं है (इसे कुछ भी नहीं चला सकता)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>यह इनपुट लेयर एक्टिवेटर नहीं चला सकता</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} स्लॉट के लिए पंक्तियों की सीमा पार हो गई</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>कोई बाइंडिंग प्रीसेट {0} पर नहीं ले जाती</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>डिवाइस ऑटोमैप अब भी {0} को {1} पर भेजता है</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>लेयर बदलाव हटा दिया गया ({0} का रूपांतरण खाली रहा)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>एब्सोल्यूट पॉइंटर स्थिति को सापेक्ष माउस मूवमेंट के रूप में लगभग लागू किया गया</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>रिस्पॉन्स वक्र और रेंज की सेटिंग्स हटा दी गईं ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>जाइरो सेटिंग {0}={1} हटा दी गई (इस मान के पीछे पढ़ने लायक कोई बटन नहीं)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>प्लेयर नंबर बदलना Steam क्लाइंट की क्रिया है, कोई समतुल्य नहीं</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>लिज़र्ड-मोड टॉगल Steam का आंतरिक है, कोई समतुल्य नहीं</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>टॉगल दबाने पर {0} अगली बार दबाने तक लैच रहता है</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>देर तक दबाने पर थ्रेशोल्ड पर {0} टैप होता है (Steam इसे छोड़ने तक दबाए रखता है)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>कैमरा रीसेट को जाइरो रीसेंटर के रूप में लगभग लागू किया गया</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>सतह दबी रहने तक माउस क्षेत्र को केंद्रित कर्सर सीमा के रूप में लगभग लागू किया गया (स्क्रीन का {0}%, क्षेत्र का केंद्र {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>माउस क्षेत्र की सक्रियण/छोड़ने की सेटिंग्स हटा दी गईं ({0})</value></data>

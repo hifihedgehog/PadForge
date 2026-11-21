@@ -4029,28 +4029,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>შენახვა და გამოყენება</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>მიბმები</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>იმპორტირებულია '{0}': {1} სუფთა, {2} ნაწილობრივი, {3} გამოტოვებული</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} მიბმას ნაგულისხმევი ავტომიბმა ფარავს</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>გადათარგმნილია</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>გადათარგმნილია მაკროდ</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>შრე: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ტაჩპედის რეგულირება ეხება მთლიან კონტროლერს და არა ცალკე რიგს</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ტრიგერის ზღვარი მიახლოებითია</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ამ შეყვანისთვის მოწყობილობაზე დამოუკიდებელი გამშვები არ არსებობს</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} თამაშში მოქმედება, მხოლოდ Steam-ისთვის, თამაშის მხარეს კაუჭი არ არის</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-კლიენტის მოქმედება {0}, ანალოგი არ არსებობს</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>კონტროლერის მოქმედება {0} მხარდაჭერილი არ არის</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>უცნობი მიბმის ტიპი {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>უცნობი კლავიში {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>კლავიშს {0} Windows-ში ექვივალენტი არ აქვს</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>უცნობი მაუსის ღილაკი {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>უცნობი XInput ღილაკი {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>უცნობი შეყვანა {1} მოწყობილობაზე {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-ის ეკრანული მართვა {1}: არცერთ მხარდაჭერილ კონტროლერზე ფიზიკური შეყვანა არ არის</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>უცნობი ჯგუფის რეჟიმი {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>შეხების მენიუს გადაფარვა გამოტოვებულია ({0} უჯრა)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>რადიალური მენიუს გადაფარვა გამოტოვებულია ({0} სექტორი)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>კურსორის არეალის შეზღუდვა მხარდაჭერილი არ არის</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>აშვების გამშვები აქ მხარდაჭერილი არ არის</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ხანგრძლივი დაჭერის გამშვები აქ მხარდაჭერილი არ არის</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>უცნობი გამშვები {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>კომბინაციის გამშვებს კომბინაციის ღილაკი არ აქვს მითითებული (ვერაფერი გაუშვებს)</value></data>
@@ -4062,15 +4054,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ამ შეყვანას შრის გამშვების ამოძრავება არ შეუძლია</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} სლოტისთვის რიგების ლიმიტი გადაჭარბებულია</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>არცერთი მიბმა პრესეტზე {0} არ გადართავს</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>მოწყობილობის ავტომიბმა კვლავ მიმართავს {0}-ს {1}-ზე</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>შრის გადართვა გამოტოვებულია ({0} არაფრად გადაითარგმნა)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>აბსოლუტური მაჩვენებლის პოზიციონირება მიახლოებით შეიცვალა ფარდობითი მაუსის მოძრაობით</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>რეაქციის მრუდისა და დიაპაზონის პარამეტრები გამოტოვებულია ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>გიროსკოპის პარამეტრი {0}={1} გამოტოვებულია (ამ მნიშვნელობის უკან წაკითხვადი ღილაკი არ არის)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>მოთამაშის ნომრის შეცვლა Steam-კლიენტის მოქმედებაა, ანალოგი არ არსებობს</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-რეჟიმის გადართვა Steam-ის შიდა ფუნქციაა, ანალოგი არ არსებობს</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>გადართვის დაჭერა {0}-ს ინარჩუნებს მომდევნო დაჭერამდე</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ხანგრძლივი დაჭერა ზღვარზე {0}-ს ერთხელ აჭერს (Steam მას აშვებამდე აჭერს)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>კამერის საწყისზე დაბრუნება მიახლოებით გიროსკოპის ცენტრირებით შეიცვალა</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>მაუსის არე მიახლოებით შეიცვალა ცენტრირებული კურსორის შეზღუდვით (ეკრანის {0}%, არეს ცენტრი {1}%, {2}%), სანამ ზედაპირი დაჭერილია</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>მაუსის არეს ჩართვის/აშვების პარამეტრები გამოტოვებულია ({0})</value></data>

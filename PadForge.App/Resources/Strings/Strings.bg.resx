@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Запиши и приложи</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Присвоявания</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Импортирано „{0}“: точни – {1}, частични – {2}, пропуснати – {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Присвоявания, покрити от автоматичното съпоставяне по подразбиране: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>преобразувано</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>преобразувано като макрос</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>слой: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>настройките на тъчпада се прилагат за целия тъчпад, а не за отделен ред</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>прагът на спусъка е приблизителен</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>за този вход няма задействане, независимо от устройството</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>Действия в играта: {0}, само за Steam, без връзка от страната на играта</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Действие на клиента на Steam {0}, няма еквивалент</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>действието на контролера {0} не се поддържа</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>неизвестен тип присвояване {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>неизвестен клавиш {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>клавишът {0} няма еквивалент в Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>неизвестен бутон на мишката {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>неизвестен бутон на XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>неизвестен вход {1} на {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Екранна контрола на Steam Link {1}: няма физически вход на нито един поддържан контролер</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>неизвестен режим на група {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>наслагването със сензорно меню е пропуснато (клетки: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>наслагването с радиално меню е пропуснато (сектори: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ограничаването на курсора в област не се поддържа</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>активаторът при отпускане не се поддържа тук</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>активаторът при продължително натискане не се поддържа тук</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>неизвестен активатор {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>активаторът за акорд няма зададен бутон за акорд (нищо не може да го задейства)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>този вход не може да управлява активатор на слой</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>надвишен е максималният брой редове за слота {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>няма присвояване, което превключва към предварителна настройка {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>автоматичното съпоставяне на устройството все още насочва {0} към {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>смяната на слой е пропусната ({0} не се преобразува в нищо)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>абсолютното позициониране на показалеца е приблизено като относително движение на мишката</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>настройките на кривата на реакция и обхвата са пропуснати ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>настройката на жироскопа {0}={1} е пропусната (зад тази стойност няма четим бутон)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>смяната на номера на играча е действие на клиента на Steam, няма еквивалент</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>превключването на lizard mode е вътрешно за Steam, няма еквивалент</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>натискането за превключване фиксира {0} до следващото натискане</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>продължителното натискане натиска {0} веднъж при прага (Steam го задържа до отпускане)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>нулирането на камерата е приблизено като повторно центриране на жироскопа</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>областта на мишката е приблизена като центрирано ограничаване на курсора ({0}% от екрана, център на областта {1}%, {2}%), докато повърхността е задържана</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>настройките за активиране/отпускане на областта на мишката са пропуснати ({0})</value></data>

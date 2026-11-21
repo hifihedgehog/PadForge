@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Зачувај и примени</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Поврзувања</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Увезено „{0}“: {1} чисти, {2} делумни, {3} прескокнати</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Поврзувања покриени со стандардното автоматско мапирање: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>преведено</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>преведено како макро</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>слој: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>подесувањето на допирната табла важи за целата табла, не по ред</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>прагот на тригерот е приближен</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>нема активирање независно од уредот за овој влез</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} дејства во играта, само за Steam, без кука на страната на играта</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>дејство на клиентот Steam {0}, нема еквивалент</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>дејството на контролерот {0} не е поддржано</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>непознат тип на поврзување {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>непознат тастер {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>тастерот {0} нема еквивалент во Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>непознато копче на глушецот {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>непознато XInput-копче {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>непознат влез {1} на {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>контрола на екранот на Steam Link {1}: нема физички влез на ниту еден поддржан контролер</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>непознат режим на група {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>оверлејот на менито на допир е испуштен (ќелии: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>оверлејот на радијалното мени е испуштен (сектори: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ограничувањето на подрачјето на курсорот не е поддржано</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>активаторот при пуштање не е поддржан тука</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>активаторот за долг притисок не е поддржан тука</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>непознат активатор {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>акордниот активатор нема поставено копче за акорд (ништо не може да го активира)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>овој влез не може да управува со активатор на слој</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>надминат е максималниот број редови за слотот {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ниту едно поврзување не префрла на готовата поставка {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>автоматското мапирање на уредот сѐ уште го насочува {0} кон {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>префрлувањето на слој е испуштено ({0} преведено во ништо)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>апсолутното позиционирање на покажувачот е приближено како релативно движење на глушецот</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>поставките за кривата на одзив и опсегот се испуштени ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>поставката на жироскопот {0}={1} е испуштена (зад оваа вредност нема копче што може да се прочита)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>промената на бројот на играчот е дејство на клиентот Steam, нема еквивалент</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>префрлувањето на lizard-режимот е внатрешно за Steam, нема еквивалент</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>притисокот за префрлување го заклучува {0} до следниот притисок</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>долгиот притисок накратко го притиска {0} на прагот (Steam го држи до пуштањето)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ресетирањето на камерата е приближено како повторно центрирање на жироскопот</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>подрачјето на глушецот е приближено како центрирано ограничување на курсорот ({0}% од екранот, центар на подрачјето {1}%, {2}%) додека се држи површината</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>поставките за вклучување/исклучување на подрачјето на глушецот се испуштени ({0})</value></data>

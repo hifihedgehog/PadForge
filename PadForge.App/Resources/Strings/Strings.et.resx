@@ -4032,28 +4032,20 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Salvesta ja rakenda</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Sidumised</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Imporditud „{0}“: puhtaid {1}, osalisi {2}, vahele jäetud {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Vaikimisi automaatvastendus katab sidumisi: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>teisendatud</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>teisendatud makroks</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>kiht: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>puuteplaadi häälestus kehtib plaadi, mitte rea kohta</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>päästiku lävi on ligikaudne</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>selle sisendi jaoks pole seadmest sõltumatut käivitajat</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>mängusiseseid toiminguid: {0}, ainult Steamis, mängupoolne liides puudub</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steami kliendi toiming {0}, vaste puudub</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrolleri toimingut {0} ei toetata</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tundmatu sidumistüüp {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tundmatu klahv {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>klahvil {0} pole Windowsis vastet</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>tundmatu hiirenupp {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>tundmatu XInput-nupp {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>tundmatu sisend {1} seadmel {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Linki ekraanijuhtelement {1}: ühelgi toetatud kontrolleril pole füüsilist sisendit</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>tundmatu rühmarežiim {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>puutemenüü ülekate jäeti välja ({0} lahtrit)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaalmenüü ülekate jäeti välja ({0} sektorit)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>kursori alapiirangut ei toetata</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>vabastusaktivaatorit siin ei toetata</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>pika vajutuse aktivaatorit siin ei toetata</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>tundmatu aktivaator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akordiaktivaatoril pole akordinuppu määratud (miski ei saa seda käivitada)</value></data>
@@ -4065,15 +4057,12 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>see sisend ei saa kihi aktivaatorit juhtida</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>pesa {0} ridade ülempiir ületati</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ükski sidumine ei lülitu eelseadistusele {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>seadme automaatvastendus suunab endiselt {0} sihile {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>kihivahetus jäeti välja ({0} ei teisendunud millekski)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absoluutne osuti paigutus teisendati ligikaudselt suhteliseks hiire liikumiseks</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>reageerimiskõvera ja vahemiku sätted jäeti välja ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>güroskoobi säte {0}={1} jäeti välja (selle väärtuse taga pole loetavat nuppu)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>mängija numbri muutmine on Steami kliendi toiming, vaste puudub</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard Mode'i lülitus on Steami sisene, vaste puudub</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>lülitusvajutus lukustab {0} kuni järgmise vajutuseni</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>pikk vajutus vajutab läve juures korraks {0} (Steam hoiab seda kuni vabastamiseni)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kaamera lähtestamine teisendati ligikaudselt güroskoobi tsentreerimiseks</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>hiire ala teisendati ligikaudselt tsentreeritud kursori piiranguks ({0}% ekraanist, ala keskpunkt {1}%, {2}%), kuni pinda hoitakse</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>hiire ala rakendumise/vabastuse sätted jäeti välja ({0})</value></data>

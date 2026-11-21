@@ -4252,28 +4252,20 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Gem og anvend</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindinger</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importerede ”{0}”: {1} rene, {2} delvise, {3} sprunget over</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} bindinger dækket af den automatiske standardtildeling</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>oversat</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>oversat som en makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lag: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpadjustering gælder pr. pad, ikke pr. række</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggertærskel tilnærmet</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ingen enhedsuafhængig udløser til dette input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} handlinger i spillet, kun i Steam, ingen kobling på spilsiden</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-klienthandling {0}, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controllerhandling {0} understøttes ikke</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ukendt bindingstype {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>ukendt tast {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tasten {0} har ingen tilsvarende i Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ukendt museknap {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ukendt XInput-knap {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ukendt input {1} på {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Kontrolelement på skærmen i Steam Link {1}: intet fysisk input på nogen understøttet controller</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>ukendt gruppetilstand {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay til berøringsmenu udeladt ({0} celler)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay til radial menu udeladt ({0} sektorer)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>begrænsning af markørområde understøttes ikke</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivator ved slip understøttes ikke her</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivator ved langt tryk understøttes ikke her</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ukendt aktivator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>kombinationsaktivatoren har ingen kombinationsknap angivet (intet kan udløse den)</value></data>
@@ -4285,15 +4277,12 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>dette input kan ikke styre en lagaktivator</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>grænsen for antal rækker er overskredet for pladsen {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ingen binding skifter til forudindstillingen {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>enhedens automatiske tildeling sender stadig {0} til {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>lagskift udeladt ({0} blev ikke oversat til noget)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolut markørplacering tilnærmet som relativ musebevægelse</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>indstillinger for responskurve og område udeladt ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyroindstillingen {0}={1} udeladt (ingen læsbar knap bag denne værdi)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ændring af spillernummer er en Steam-klienthandling, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>skift af lizard mode er internt i Steam, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>et skiftetryk låser {0} indtil næste tryk</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>langt tryk giver et kort tryk på {0} ved tærsklen (Steam holder den, indtil der slippes)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>nulstilling af kamera tilnærmet som en gyrocentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>museområde tilnærmet som en centreret begrænsning af markøren ({0}% af skærmen, områdets midte {1}%, {2}%), mens fladen holdes</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>indstillinger for aktivering/slip af museområde udeladt ({0})</value></data>

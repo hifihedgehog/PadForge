@@ -1833,16 +1833,13 @@ namespace PadForge.Views
             return segments[segments.Length - 1];
         }
 
-        /// <summary>The inline why. Clean mechanical rows stay bare (the
-        /// design's clean rows carry no reason); the automap-passthrough
-        /// aggregate keeps its note, and everything not clean explains
-        /// itself via its Workshop_Tr_* resource.</summary>
+        /// <summary>The inline why. Clean rows stay bare (the design's clean
+        /// rows carry no reason), and everything not clean explains itself
+        /// with its Workshop_Tr_* string.</summary>
         private static string ReasonText(TranslationEntry entry)
         {
             if (string.IsNullOrEmpty(entry.ReasonKey)) return null;
-            if (entry.Status == TranslationStatus.Clean &&
-                entry.ReasonKey != TranslationReasons.DefaultAutomapPassthrough)
-                return null;
+            if (entry.Status == TranslationStatus.Clean) return null;
 
             string raw = Strings.Get(entry.ReasonKey);
             if (entry.ReasonArgs == null || entry.ReasonArgs.Count == 0) return raw;
@@ -1879,8 +1876,6 @@ namespace PadForge.Views
             TranslationReasons.LayerReleaseEdgeApproximated,
             TranslationReasons.UnknownBindingType,
             TranslationReasons.UnknownKey,
-            TranslationReasons.UnsupportedKey,
-            TranslationReasons.LongPressKeyTap,
             TranslationReasons.UnknownMouseButton,
             TranslationReasons.UnknownXInputButton,
             TranslationReasons.UnknownPhysicalInput,

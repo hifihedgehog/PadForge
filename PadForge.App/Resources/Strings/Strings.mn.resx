@@ -4033,28 +4033,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Хадгалаад хэрэглэх</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Холбоосууд</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» импортоллоо: {1} бүрэн, {2} хэсэгчилсэн, {3} алгассан</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} холбоосыг үндсэн автомат оноолт хамарсан</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>хөрвүүлсэн</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>макро болгон хөрвүүлсэн</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>давхарга: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>мэдрэгч самбарын тохируулга мөр бүрээр биш, контроллер бүрээр үйлчилнэ</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>гохын босгыг ойролцоогоор тооцсон</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>энэ оролтод төхөөрөмжөөс хамаарахгүй өдөөгч байхгүй</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>тоглоом доторх {0} үйлдэл, зөвхөн Steam-д ажилладаг, тоглоомын талд холболт байхгүй</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam клиентийн үйлдэл {0}, дүйцэх зүйл байхгүй</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>контроллерын үйлдэл {0} дэмжигдээгүй</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>үл мэдэгдэх холбоосын төрөл {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>үл мэдэгдэх товчлуур {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} товчлуурт Windows-д дүйцэх товчлуур байхгүй</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>үл мэдэгдэх хулганы товч {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>үл мэдэгдэх XInput товч {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} дээрх үл мэдэгдэх оролт {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-ийн дэлгэц дээрх удирдлага {1}: дэмжигдсэн ямар ч контроллерт физик оролт байхгүй</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>үл мэдэгдэх бүлгийн горим {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>мэдрэгч цэсний оверлейг хассан ({0} нүд)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>радиал цэсний оверлейг хассан ({0} сектор)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>курсорын бүсийн хязгаарлалт дэмжигдээгүй</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>суллах идэвхжүүлэгч энд дэмжигдээгүй</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>удаан дарах идэвхжүүлэгч энд дэмжигдээгүй</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>үл мэдэгдэх идэвхжүүлэгч {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>хослолын идэвхжүүлэгчид хослолын товч тохируулаагүй (юу ч үүнийг идэвхжүүлж чадахгүй)</value></data>
@@ -4066,15 +4058,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>энэ оролт давхаргын идэвхжүүлэгчийг удирдаж чадахгүй</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} слотын мөрийн хязгаар хэтэрсэн</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>{0} бэлэн тохиргоо руу шилжүүлэх холбоос алга</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>төхөөрөмжийн автомат оноолт {0} оролтыг {1} руу чиглүүлсээр байна</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>давхарга сэлгэлтийг хассан ({0} хоосон болж хөрвүүлэгдсэн)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>үнэмлэхүй заагчийн байршлыг хулганы харьцангуй хөдөлгөөнөөр ойролцоолсон</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>хариу урвалын муруй болон мужийн тохиргоог хассан ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>гироскопын {0}={1} тохиргоог хассан (энэ утгын ард уншигдах товч байхгүй)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>тоглогчийн дугаар солих нь Steam клиентийн үйлдэл, дүйцэх зүйл байхгүй</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>гүрвэлийн горимын сэлгэлт нь Steam-ийн дотоод үйлдэл, дүйцэх зүйл байхгүй</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>сэлгэх дарах үйлдэл {0}-г дараагийн дарах хүртэл түгжинэ</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>удаан дарахад босгон дээр {0}-г нэг товшино (Steam үүнийг суллах хүртэл барьдаг)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>камерын дахин тохируулгыг гироскопыг төвд буцаах үйлдлээр ойролцоолсон</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>хулганы бүсийг гадаргууг барьж байх үед төвлөрсөн курсорын хязгаарлалтаар ойролцоолсон (дэлгэцийн {0}%, бүсийн төв {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>хулганы бүсийн идэвхжих/суллах тохиргоог хассан ({0})</value></data>

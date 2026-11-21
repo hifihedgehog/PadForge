@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Αποθήκευση και εφαρμογή</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Αντιστοιχίσεις</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Εισήχθη το «{0}»: {1} καθαρές, {2} μερικές, {3} παραλείφθηκαν</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} αντιστοιχίσεις καλύπτονται από την προεπιλεγμένη αυτόματη αντιστοίχιση</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>μετατράπηκε</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>μετατράπηκε σε μακροεντολή</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>επίπεδο: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>η ρύθμιση της επιφάνειας αφής ισχύει ανά επιφάνεια, όχι ανά γραμμή</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>το κατώφλι σκανδάλης αποδόθηκε κατά προσέγγιση</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>δεν υπάρχει έναυσμα ανεξάρτητο από συσκευή για αυτή την είσοδο</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ενέργειες εντός παιχνιδιού, μόνο για Steam, χωρίς σύνδεση από την πλευρά του παιχνιδιού</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>ενέργεια του προγράμματος-πελάτη Steam {0}, χωρίς αντίστοιχο</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>η ενέργεια χειριστηρίου {0} δεν υποστηρίζεται</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>άγνωστος τύπος αντιστοίχισης {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>άγνωστο πλήκτρο {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>το πλήκτρο {0} δεν έχει αντίστοιχο στα Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>άγνωστο κουμπί ποντικιού {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>άγνωστο κουμπί XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>άγνωστη είσοδος {1} στο {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>στοιχείο ελέγχου οθόνης του Steam Link {1}: καμία φυσική είσοδος σε κανένα υποστηριζόμενο χειριστήριο</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>άγνωστη λειτουργία ομάδας {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>η επικάλυψη μενού αφής παραλείφθηκε ({0} κελιά)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>η επικάλυψη ακτινικού μενού παραλείφθηκε ({0} τομείς)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ο περιορισμός περιοχής δείκτη δεν υποστηρίζεται</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ο ενεργοποιητής απελευθέρωσης δεν υποστηρίζεται εδώ</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ο ενεργοποιητής παρατεταμένου πατήματος δεν υποστηρίζεται εδώ</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>άγνωστος ενεργοποιητής {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>ο ενεργοποιητής συνδυασμού δεν έχει ορισμένο κουμπί συνδυασμού (τίποτα δεν μπορεί να τον ενεργοποιήσει)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>αυτή η είσοδος δεν μπορεί να οδηγήσει ενεργοποιητή επιπέδου</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>ξεπεράστηκε το όριο γραμμών για την υποδοχή {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>καμία αντιστοίχιση δεν μεταβαίνει στην προρύθμιση {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>η αυτόματη αντιστοίχιση της συσκευής εξακολουθεί να δρομολογεί το {0} στο {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>η αλλαγή επιπέδου παραλείφθηκε (το {0} δεν μετατράπηκε σε τίποτα)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>η απόλυτη τοποθέτηση δείκτη αποδόθηκε κατά προσέγγιση ως σχετική κίνηση ποντικιού</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>οι ρυθμίσεις καμπύλης απόκρισης και εύρους παραλείφθηκαν ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>η ρύθμιση γυροσκοπίου {0}={1} παραλείφθηκε (δεν υπάρχει αναγνώσιμο κουμπί πίσω από αυτή την τιμή)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>η αλλαγή αριθμού παίκτη είναι ενέργεια του προγράμματος-πελάτη Steam, χωρίς αντίστοιχο</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>η εναλλαγή του lizard mode είναι εσωτερική του Steam, χωρίς αντίστοιχο</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>το πάτημα εναλλαγής κλειδώνει το {0} μέχρι το επόμενο πάτημα</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>το παρατεταμένο πάτημα πατά στιγμιαία το {0} στο κατώφλι (το Steam το κρατά μέχρι την απελευθέρωση)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>η επαναφορά κάμερας αποδόθηκε κατά προσέγγιση ως επανακεντράρισμα γυροσκοπίου</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>η περιοχή ποντικιού αποδόθηκε κατά προσέγγιση ως κεντραρισμένος περιορισμός δείκτη ({0}% της οθόνης, κέντρο περιοχής {1}%, {2}%) όσο κρατιέται η επιφάνεια</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>οι ρυθμίσεις ενεργοποίησης/αποδέσμευσης της περιοχής ποντικιού παραλείφθηκαν ({0})</value></data>

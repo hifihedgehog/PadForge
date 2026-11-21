@@ -3991,28 +3991,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>සුරකින්න සහ යොදන්න</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>බැඳීම්</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>“{0}” ආනයනය කළා: පිරිසිදු {1}, අර්ධ {2}, මඟ හැරුණු {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>පෙරනිමි ස්වයං සිතියම්ගත කිරීම මගින් ආවරණය වන බැඳීම් {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>පරිවර්තනය කළා</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>මැක්‍රෝවක් ලෙස පරිවර්තනය කළා</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ස්ථරය: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ටච්පෑඩ් සුසර කිරීම අදාළ වන්නේ පේළියකට නොව පෑඩ් එකකටය</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ට්‍රිගර සීමා අගය ආසන්න කළා</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>මෙම ආදානය සඳහා උපාංගයෙන් ස්වාධීන ට්‍රිගරයක් නැත</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>ක්‍රීඩාව තුළ ක්‍රියා {0}, Steam සඳහා පමණි, ක්‍රීඩා පැත්තේ සම්බන්ධකයක් නැත</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam සේවාලාභී ක්‍රියාව {0}, සමාන එකක් නැත</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>පාලක ක්‍රියාව {0} සඳහා සහාය නැත</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>නොදන්නා බැඳීම් වර්ගය {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>නොදන්නා යතුර {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>යතුර {0} ට Windows සමාන එකක් නැත</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>නොදන්නා මූසික බොත්තම {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>නොදන්නා XInput බොත්තම {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} මත නොදන්නා ආදානය {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link තිරය මත පාලනය {1}: සහාය දක්වන කිසිදු පාලකයක භෞතික ආදානයක් නැත</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>නොදන්නා කණ්ඩායම් ප්‍රකාරය {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ස්පර්ශ මෙනු ඕවර්ලේ ඉවත් කළා (කොටු {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>රේඩියල් මෙනු ඕවර්ලේ ඉවත් කළා (ඛණ්ඩ {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>කර්සර කලාප සීමාව සඳහා සහාය නැත</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>මුදා හැරීමේ සක්‍රියකාරකය සඳහා මෙහි සහාය නැත</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>දිගු එබීමේ සක්‍රියකාරකය සඳහා මෙහි සහාය නැත</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>නොදන්නා සක්‍රියකාරකය {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>සංයෝජන සක්‍රියකාරකයට සංයෝජන බොත්තමක් සකසා නැත (කිසිවකට එය ක්‍රියාත්මක කළ නොහැක)</value></data>
@@ -4024,15 +4016,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>මෙම ආදානයට ස්ථර සක්‍රියකාරකයක් මෙහෙයවිය නොහැක</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} ස්ලොට් එක සඳහා පේළි සීමාව ඉක්මවා ඇත</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>කිසිදු බැඳීමක් පෙරසැකසුම {0} වෙත මාරු නොකරයි</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>උපාංග ස්වයං සිතියම්ගත කිරීම තවමත් {0} යන්න {1} වෙත යොමු කරයි</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>ස්ථර මාරුව ඉවත් කළා ({0} කිසිවක් නොවන ලෙස පරිවර්තනය විය)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>නිරපේක්ෂ දර්ශක ස්ථානගත කිරීම සාපේක්ෂ මූසික චලනයක් ලෙස ආසන්න කළා</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ප්‍රතිචාර වක්‍රය සහ පරාස සැකසීම් ඉවත් කළා ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ගයිරෝ සැකසුම {0}={1} ඉවත් කළා (මෙම අගය පිටුපස කියවිය හැකි බොත්තමක් නැත)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ක්‍රීඩක අංකය වෙනස් කිරීම Steam සේවාලාභී ක්‍රියාවකි, සමාන එකක් නැත</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard mode ටොගල් එක Steam හි අභ්‍යන්තර ක්‍රියාවකි, සමාන එකක් නැත</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ටොගල් එබීම ඊළඟ එබීම තෙක් {0} රඳවා තබයි</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>දිගු එබීම සීමා අගයේදී {0} තට්ටු කරයි (Steam එය මුදා හරින තෙක් රඳවා තබයි)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>කැමරා යළි සැකසීම ගයිරෝ යළි කේන්ද්‍රගත කිරීමක් ලෙස ආසන්න කළා</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>පෘෂ්ඨය ඔබාගෙන සිටින අතරතුර, මූසික කලාපය මධ්‍යගත කර්සර සීමාවක් ලෙස ආසන්න කළා (තිරයෙන් {0}%, කලාප මධ්‍යය {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>මූසික කලාප සක්‍රිය කිරීමේ/මුදා හැරීමේ සැකසීම් ඉවත් කළා ({0})</value></data>

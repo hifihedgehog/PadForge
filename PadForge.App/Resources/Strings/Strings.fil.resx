@@ -3831,28 +3831,20 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>I-save at Ilapat</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Mga Binding</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Na-import ang '{0}': {1} malinis, {2} bahagya, {3} nilaktawan</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} binding ang sakop ng default na automap</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>naisalin</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>naisalin bilang macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>layer: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ang touchpad tuning ay nalalapat sa bawat pad, hindi sa bawat row</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>tinatantiya ang trigger threshold</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>walang device-free na trigger para sa input na ito</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game na aksyon, Steam lamang, walang game-side hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>aksyon ng Steam client na {0}, walang katumbas</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>hindi sinusuportahan ang controller action na {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>hindi kilalang uri ng binding na {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>hindi kilalang key na {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>walang katumbas sa Windows ang key na {0}</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>hindi kilalang mouse button na {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>hindi kilalang XInput button na {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>hindi kilalang input na {1} sa {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>on-screen control ng Steam Link na {1}: walang pisikal na input sa anumang sinusuportahang controller</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>hindi kilalang group mode na {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>inalis ang touch-menu overlay ({0} cell)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>inalis ang radial-menu overlay ({0} sector)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>hindi sinusuportahan ang cursor region constraint</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>hindi sinusuportahan dito ang release activator</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>hindi sinusuportahan dito ang long-press activator</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>hindi kilalang activator na {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>walang itinakdang chord button ang chord activator (walang makakapagpagana nito)</value></data>
@@ -3864,15 +3856,12 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>hindi mapapagana ng input na ito ang layer activator</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>lampas na sa row cap para sa {0} slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>walang binding na lumilipat sa preset na {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>ruruta pa rin ng device automap ang {0} sa {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>inalis ang layer switch (naging wala ang {0} nang isalin)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>tinatantiya ang absolute pointer positioning bilang relative na galaw ng mouse</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>inalis ang response curve at range settings ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>inalis ang gyro setting na {0}={1} (walang nababasang button sa likod ng value na ito)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ang pagpapalit ng player-number ay aksyon ng Steam client, walang katumbas</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>ang lizard-mode toggle ay panloob sa Steam, walang katumbas</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ang toggle press ay nag-la-latch ng {0} hanggang sa susunod na pindot</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ang long press ay nagta-tap ng {0} sa threshold (hawak ito ng Steam hanggang bitawan)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>tinatantiya ang camera reset bilang gyro recenter</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>tinatantiya ang mouse region bilang naka-center na cursor clamp ({0}% ng screen, region center {1}%, {2}%) habang hawak ang surface</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>inalis ang mouse region engage/release settings ({0})</value></data>

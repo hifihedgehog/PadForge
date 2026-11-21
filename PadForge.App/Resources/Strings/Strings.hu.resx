@@ -4252,28 +4252,20 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Mentés és alkalmazás</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Hozzárendelések</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>„{0}” importálva: {1} hibátlan, {2} részleges, {3} kihagyva</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} hozzárendelést lefed az alapértelmezett automatikus hozzárendelés</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>átalakítva</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>makróként átalakítva</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>réteg: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>az érintőpad hangolása padonként érvényes, nem soronként</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>a ravaszküszöb közelítve</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ehhez a bemenethez nincs eszközfüggetlen kiváltó</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} játékon belüli művelet, csak Steam, nincs játékoldali csatlakozási pont</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>{0} Steam-kliens művelet, nincs megfelelője</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>a(z) {0} kontrollerművelet nem támogatott</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ismeretlen hozzárendelési típus: {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>ismeretlen billentyű: {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>a(z) {0} billentyűnek nincs Windows-megfelelője</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ismeretlen egérgomb: {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ismeretlen XInput-gomb: {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ismeretlen bemenet: {1}, itt: {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link képernyős vezérlő ({1}): egyetlen támogatott kontrolleren sincs hozzá fizikai bemenet</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>ismeretlen csoportmód: {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>érintőmenü-átfedés elhagyva ({0} cella)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiálismenü-átfedés elhagyva ({0} cikk)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>az egérmutató területkorlátozása nem támogatott</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>a felengedési aktivátor itt nem támogatott</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>a hosszú lenyomásos aktivátor itt nem támogatott</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ismeretlen aktivátor: {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>a kombinációs aktivátorhoz nincs kombinációs gomb beállítva (semmi sem tudja kiváltani)</value></data>
@@ -4285,15 +4277,12 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ez a bemenet nem tud rétegaktivátort vezérelni</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>a sorok maximális száma túllépve a(z) {0} foglalatnál</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>egyetlen hozzárendelés sem vált erre az előbeállításra: {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>az eszköz automatikus hozzárendelése továbbra is így irányít: {0} → {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>rétegváltás elhagyva ({0} semmivé alakult)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>az abszolút mutatópozicionálás relatív egérmozgásként közelítve</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>a válaszgörbe és a tartomány beállításai elhagyva ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>a(z) {0}={1} giroszkóp-beállítás elhagyva (ehhez az értékhez nem tartozik olvasható gomb)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>a játékosszám módosítása Steam-kliens művelet, nincs megfelelője</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>a lizard mode kapcsolója Steam-belső, nincs megfelelője</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>a kapcsoló lenyomása a következő lenyomásig bereteszeli ezt: {0}</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>a hosszú lenyomás a küszöbnél egyszer leüti ezt: {0} (a Steam felengedésig nyomva tartja)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>a kamera visszaállítása a giroszkóp középre igazításaként közelítve</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>az egérterület középre igazított egérmutató-korlátozásként közelítve (a képernyő {0}%-a, a terület közepe {1}%, {2}%), amíg a felület le van nyomva</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>az egérterület aktiválási/felengedési beállításai elhagyva ({0})</value></data>

@@ -4003,28 +4003,20 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Späicheren an uwenden</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Belegungen</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>„{0}“ importéiert: {1} propper, {2} deelweis, {3} iwwersprong</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} Belegunge vun der automatescher Standardzouuerdnung ofgedeckt</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>iwwersat</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>als Makro iwwersat</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>Schicht: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>Touchpad-Astellung gëllt pro Controller, net pro Zeil</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>Trigger-Schwell approximéiert</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>keen Ausléiser ouni Apparat fir dës Agab</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} Aktiounen am Spill, nëmme Steam, keen Hook um Spill</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-Client-Aktioun {0}, keng Entspriechung</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>Controller-Aktioun {0} net ënnerstëtzt</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekannte Belegungstyp {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>onbekannt Tast {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>Tast {0} huet keng Windows-Entspriechung</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>onbekannte Mausknäppchen {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>onbekannten XInput-Knäppchen {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>onbekannt Agab {1} op {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam-Link-Steierelement um Bildschierm {1}: keng physesch Agab op engem ënnerstëtzte Controller</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>onbekannte Gruppemodus {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>Touch-Menü-Overlay ewechgelooss ({0} Zellen)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>Radialmenü-Overlay ewechgelooss ({0} Sekteren)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>Begrenzung vum Mauszeigerberäich net ënnerstëtzt</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Lassloossen-Aktivator hei net ënnerstëtzt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Aktivator fir laangen Drock hei net ënnerstëtzt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekannten Aktivator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>Chord-Aktivator huet keen Chord-Knäppchen (näischt kann en ausléisen)</value></data>
@@ -4036,15 +4028,12 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>dës Agab kann kee Schicht-Aktivator ustéieren</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>Zeilelimit fir den {0}-Slot iwwerschratt</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>keng Belegung wiesselt op d'Virastellung {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>d'automatesch Zouuerdnung vum Apparat leet {0} nach ëmmer op {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>Schichtwiessel ewechgelooss ({0} gouf zu näischt iwwersat)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolut Zeigerpositionéierung als relativ Mausbeweegung approximéiert</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>Astellunge fir Äntwertkurv a Beräich ewechgelooss ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Astellung {0}={1} ewechgelooss (kee liesbare Knäppchen hannert dësem Wäert)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spillernummer-Wiessel ass eng Steam-Client-Aktioun, keng Entspriechung</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Ëmschalten ass Steam-intern, keng Entspriechung</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Ëmschalt-Drock hält {0} bis zum nächsten Drock</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>laangen Drock tippt {0} bei der Schwell (Steam hält en bis zum Lassloossen)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>Kamera-Reset als Gyro-Zentréierung approximéiert</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>Mausberäich als zentréiert Mauszeigerbegrenzung approximéiert ({0}% vum Bildschierm, Mëtt vum Beräich {1}%, {2}%), soulaang d'Fläch gehale gëtt</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivéierungs-/Lassloossen-Astellunge vum Mausberäich ewechgelooss ({0})</value></data>

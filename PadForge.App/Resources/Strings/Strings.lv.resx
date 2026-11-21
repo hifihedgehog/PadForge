@@ -4252,28 +4252,20 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Saglabāt un lietot</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Piesaistes</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importēts '{0}': tīri {1}, daļēji {2}, izlaisti {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Noklusējuma automātiskā piesaiste aptver piesaistes: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>pārveidots</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>pārveidots par makrosu</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>slānis: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>skārienpaliktņa regulēšana attiecas uz katru paliktni, nevis katru rindu</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>mēlītes slieksnis pielāgots aptuveni</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>šai ievadei nav no ierīces neatkarīga trigera</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>spēles darbības: {0}, tikai Steam, nav pieejamas spēles pusē</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam klienta darbība {0}, nav ekvivalenta</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrollera darbība {0} netiek atbalstīta</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>nezināms piesaistes tips {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>nezināms taustiņš {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>taustiņam {0} nav Windows ekvivalenta</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>nezināma peles poga {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>nezināma XInput poga {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>nezināma ievade {1} ierīcē {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link ekrāna vadīkla {1}: nevienā atbalstītajā kontrollerī nav fiziskas ievades</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>nezināms grupas režīms {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>skāriena izvēlnes pārklājums izmests (šūnas: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiālās izvēlnes pārklājums izmests (sektori: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>kursora apgabala ierobežojums netiek atbalstīts</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>atlaišanas aktivators šeit netiek atbalstīts</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ilgā nospiediena aktivators šeit netiek atbalstīts</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>nezināms aktivators {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akorda aktivatoram nav iestatīta akorda poga (nekas to nevar aktivizēt)</value></data>
@@ -4285,15 +4277,12 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>šī ievade nevar vadīt slāņa aktivatoru</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>pārsniegts rindu ierobežojums slotam {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>neviena piesaiste nepārslēdz uz sagatavi {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>ierīces automātiskā piesaiste joprojām novirza {0} uz {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>slāņa pārslēgšana izmesta ({0} netika pārveidots ne par ko)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolūtā rādītāja pozicionēšana aptuveni atveidota kā relatīva peles kustība</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>reakcijas līknes un diapazona iestatījumi izmesti ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>žiroskopa iestatījums {0}={1} izmests (aiz šīs vērtības nav nolasāmas pogas)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>spēlētāja numura maiņa ir Steam klienta darbība, nav ekvivalenta</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>ķirzakas režīma (lizard mode) pārslēgšana ir Steam iekšēja funkcija, nav ekvivalenta</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>pārslēgšanas nospiešana fiksē {0} līdz nākamajai nospiešanai</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ilgs nospiediens sliekšņa brīdī īsi nospiež {0} (Steam to tur līdz atlaišanai)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kameras atiestatīšana aptuveni atveidota kā žiroskopa centrēšana</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>peles apgabals aptuveni atveidots kā centrēts kursora ierobežojums ({0}% no ekrāna, apgabala centrs {1}%, {2}%), kamēr virsma tiek turēta</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>peles apgabala aktivizēšanas/atlaišanas iestatījumi izmesti ({0})</value></data>

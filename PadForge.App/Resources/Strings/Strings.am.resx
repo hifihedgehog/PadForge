@@ -3994,28 +3994,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>አስቀምጥና ተግብር</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>ማሰሪያዎች</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» ገብቷል፦ {1} ንጹህ፣ {2} ከፊል፣ {3} የተዘለሉ</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} ማሰሪያዎች በነባሪው ራስ-ሰር ማዛመጃ ተሸፍነዋል</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>ተተርጉሟል</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>እንደ ማክሮ ተተርጉሟል</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ንብርብር፦ {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ማመቻቸት በየፓዱ ይሠራል፣ በየረድፉ አይደለም</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>የትሪገር ገደብ በግምት ተወስዷል</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ለዚህ ግብዓት ከመሣሪያ ነፃ የሆነ ማስጀመሪያ የለም</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} የጨዋታ ውስጥ ተግባራት፣ የSteam ብቻ፣ በጨዋታው በኩል ምንም መንጠቆ የለም</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>የSteam ደንበኛ ተግባር {0}፣ አቻ የለውም</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>የመቆጣጠሪያ ተግባር {0} አይደገፍም</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ያልታወቀ የማሰሪያ ዓይነት {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>ያልታወቀ ቁልፍ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>ቁልፍ {0} የWindows አቻ የለውም</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ያልታወቀ የመዳፊት አዝራር {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ያልታወቀ የXInput አዝራር {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>በ{0} ላይ ያልታወቀ ግብዓት {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>የSteam Link የማያ ላይ መቆጣጠሪያ {1}፦ በማንኛውም የሚደገፍ መቆጣጠሪያ ላይ አካላዊ ግብዓት የለም</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>ያልታወቀ የቡድን ሁነታ {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>የመንካት ምናሌ ተደራቢ ተጥሏል ({0} ሕዋሶች)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>የክብ ምናሌ ተደራቢ ተጥሏል ({0} ክፍሎች)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>የጠቋሚ አካባቢ ገደብ አይደገፍም</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>የመልቀቅ አንቂ እዚህ አይደገፍም</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>የረጅም መጫን አንቂ እዚህ አይደገፍም</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ያልታወቀ አንቂ {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>የጥምር አንቂው ምንም የጥምር አዝራር አልተዘጋጀለትም (ምንም ሊያስነሳው አይችልም)</value></data>
@@ -4027,15 +4019,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ይህ ግብዓት የንብርብር አንቂን ማስኬድ አይችልም</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>ለ{0} ቦታ የረድፍ ገደብ ታልፏል</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ወደ ቅድመ-ቅንብር {0} የሚቀይር ማሰሪያ የለም</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>የመሣሪያው ራስ-ሰር ማዛመጃ አሁንም {0}ን ወደ {1} ይልካል</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>የንብርብር መቀየሪያ ተጥሏል ({0} ወደ ምንም ተተርጉሟል)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ፍጹም የጠቋሚ አቀማመጥ እንደ አንጻራዊ የመዳፊት እንቅስቃሴ በግምት ተወስዷል</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>የምላሽ ኩርባ እና የክልል ቅንብሮች ተጥለዋል ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>የጋይሮ ቅንብር {0}={1} ተጥሏል (ከዚህ እሴት በስተጀርባ የሚነበብ አዝራር የለም)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>የተጫዋች ቁጥር መቀየር የSteam ደንበኛ ተግባር ነው፣ አቻ የለውም</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>የሊዛርድ ሁነታ መቀያየሪያ የSteam ውስጣዊ ነው፣ አቻ የለውም</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>የቀያይር መጫን {0}ን እስከ ቀጣዩ መጫን ድረስ ይቆልፋል</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ረጅም መጫን {0}ን በገደቡ ላይ መታ ያደርጋል (Steam እስኪለቀቅ ድረስ ይይዘዋል)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>የካሜራ ዳግም ማስጀመር እንደ ጋይሮ ዳግም ማማከል በግምት ተወስዷል</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>የመዳፊት አካባቢ ወለሉ ተይዞ እያለ እንደ መሃል ላይ ያለ የጠቋሚ ገደብ በግምት ተወስዷል (የማያው {0}%፣ የአካባቢው መሃል {1}%፣ {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>የመዳፊት አካባቢ የመያዝ/የመልቀቅ ቅንብሮች ተጥለዋል ({0})</value></data>

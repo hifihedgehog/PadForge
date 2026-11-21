@@ -3996,28 +3996,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>സേവ് ചെയ്ത് പ്രയോഗിക്കുക</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>ബൈൻഡിംഗുകൾ</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' ഇമ്പോർട്ട് ചെയ്തു: {1} വൃത്തിയുള്ളത്, {2} ഭാഗികം, {3} ഒഴിവാക്കി</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>സ്ഥിര ഓട്ടോമാപ്പ് ഉൾക്കൊള്ളുന്ന {0} ബൈൻഡിംഗുകൾ</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>വിവർത്തനം ചെയ്തു</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>മാക്രോ ആയി വിവർത്തനം ചെയ്തു</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ലെയർ: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ടച്ച്പാഡ് ട്യൂണിംഗ് ഓരോ പാഡിനുമാണ് ബാധകം, ഓരോ വരിക്കുമല്ല</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ട്രിഗർ ത്രെഷോൾഡ് ഏകദേശമാക്കി</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ഈ ഇൻപുട്ടിന് ഉപകരണരഹിത ട്രിഗർ ഇല്ല</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ഗെയിമിലെ പ്രവർത്തനങ്ങൾ, Steam-ൽ മാത്രം, ഗെയിം വശത്ത് ഹുക്ക് ഇല്ല</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-ക്ലയന്റ് പ്രവർത്തനം {0}, തത്തുല്യമായത് ഇല്ല</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>കൺട്രോളർ പ്രവർത്തനം {0} പിന്തുണയ്ക്കുന്നില്ല</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>അജ്ഞാത ബൈൻഡിംഗ് തരം {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>അജ്ഞാത കീ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} കീക്ക് Windows-ൽ തത്തുല്യമായത് ഇല്ല</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>അജ്ഞാത മൗസ് ബട്ടൺ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>അജ്ഞാത XInput ബട്ടൺ {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0}-ലെ അജ്ഞാത ഇൻപുട്ട് {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link ഓൺ-സ്ക്രീൻ നിയന്ത്രണം {1}: പിന്തുണയ്ക്കുന്ന ഒരു കൺട്രോളറിലും ഫിസിക്കൽ ഇൻപുട്ട് ഇല്ല</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>അജ്ഞാത ഗ്രൂപ്പ് മോഡ് {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ടച്ച്-മെനു ഓവർലേ ഒഴിവാക്കി ({0} സെല്ലുകൾ)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>റേഡിയൽ-മെനു ഓവർലേ ഒഴിവാക്കി ({0} സെക്ടറുകൾ)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>കഴ്സർ മേഖലാ നിയന്ത്രണം പിന്തുണയ്ക്കുന്നില്ല</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>റിലീസ് ആക്ടിവേറ്റർ ഇവിടെ പിന്തുണയ്ക്കുന്നില്ല</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ദീർഘമായി അമർത്തൽ ആക്ടിവേറ്റർ ഇവിടെ പിന്തുണയ്ക്കുന്നില്ല</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>അജ്ഞാത ആക്ടിവേറ്റർ {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>കോർഡ് ആക്ടിവേറ്ററിന് കോർഡ് ബട്ടൺ സജ്ജമാക്കിയിട്ടില്ല (ഒന്നിനും ഇത് പ്രവർത്തിപ്പിക്കാനാകില്ല)</value></data>
@@ -4029,15 +4021,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ഈ ഇൻപുട്ടിന് ലെയർ ആക്ടിവേറ്റർ പ്രവർത്തിപ്പിക്കാനാകില്ല</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} സ്ലോട്ടിന് വരി പരിധി കവിഞ്ഞു</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>പ്രീസെറ്റ് {0}-ലേക്ക് മാറുന്ന ബൈൻഡിംഗ് ഇല്ല</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>ഉപകരണ ഓട്ടോമാപ്പ് ഇപ്പോഴും {0} എന്നതിനെ {1}-ലേക്ക് റൂട്ട് ചെയ്യുന്നു</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>ലെയർ സ്വിച്ച് ഒഴിവാക്കി ({0} ഒന്നുമില്ലാത്തതായി വിവർത്തനം ചെയ്യപ്പെട്ടു)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>കേവല പോയിന്റർ സ്ഥാനനിർണയം ആപേക്ഷിക മൗസ് ചലനമായി ഏകദേശമാക്കി</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>റെസ്പോൺസ് കർവ്, പരിധി ക്രമീകരണങ്ങൾ ഒഴിവാക്കി ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ഗൈറോ ക്രമീകരണം {0}={1} ഒഴിവാക്കി (ഈ മൂല്യത്തിന് പിന്നിൽ വായിക്കാവുന്ന ബട്ടൺ ഇല്ല)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>പ്ലെയർ-നമ്പർ മാറ്റം ഒരു Steam-ക്ലയന്റ് പ്രവർത്തനമാണ്, തത്തുല്യമായത് ഇല്ല</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>ലിസാർഡ്-മോഡ് ടോഗിൾ Steam-ന്റെ ആന്തരികമാണ്, തത്തുല്യമായത് ഇല്ല</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ടോഗിൾ അമർത്തൽ {0} അടുത്ത അമർത്തൽ വരെ ലാച്ച് ചെയ്യുന്നു</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ദീർഘമായി അമർത്തൽ ത്രെഷോൾഡിൽ {0} ടാപ്പ് ചെയ്യുന്നു (Steam വിടുന്നതുവരെ പിടിക്കുന്നു)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ക്യാമറ റീസെറ്റ് ഒരു ഗൈറോ റീസെന്റർ ആയി ഏകദേശമാക്കി</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>മൗസ് മേഖല ഉപരിതലം പിടിച്ചിരിക്കുമ്പോൾ കേന്ദ്രീകൃത കഴ്സർ ക്ലാമ്പ് ആയി ഏകദേശമാക്കി (സ്ക്രീനിന്റെ {0}%, മേഖലാ കേന്ദ്രം {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>മൗസ് മേഖല ഇടപഴകൽ/വിടൽ ക്രമീകരണങ്ങൾ ഒഴിവാക്കി ({0})</value></data>

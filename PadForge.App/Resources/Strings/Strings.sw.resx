@@ -3968,28 +3968,20 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Hifadhi na Utumie</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Ramani</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' imeletwa: safi {1}, sehemu {2}, zilizorukwa {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>ramani {0} zimefunikwa na automap chaguomsingi</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>imetafsiriwa</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>imetafsiriwa kama makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>tabaka: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>urekebishaji wa touchpad hutumika kwa kila kidhibiti, si kwa kila safu</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>kizingiti cha kichochezi kimekadiriwa</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>hakuna kichochezi kisichotegemea kifaa kwa ingizo hili</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>vitendo {0} vya ndani ya mchezo, vya Steam pekee, hakuna ndoano upande wa mchezo</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>kitendo cha mteja wa Steam {0}, hakuna kinacholingana</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kitendo cha kidhibiti {0} hakitumiki</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>aina ya ramani isiyojulikana {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>kitufe kisichojulikana {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>kitufe {0} hakina kinacholingana kwenye Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>kitufe cha kipanya kisichojulikana {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>kitufe cha XInput kisichojulikana {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ingizo lisilojulikana {1} kwenye {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>kidhibiti cha skrini cha Steam Link {1}: hakuna ingizo halisi kwenye kidhibiti chochote kinachotumika</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>hali ya kikundi isiyojulikana {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay ya menyu ya mguso imeachwa (seli {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay ya menyu ya mviringo imeachwa (sekta {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>kizuizi cha eneo la kielekezi hakitumiki</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>kianzishi cha kuachilia hakitumiki hapa</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>kianzishi cha kubonyeza kwa muda mrefu hakitumiki hapa</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>kianzishi kisichojulikana {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>kianzishi cha chord hakina kitufe cha chord kilichowekwa (hakuna kinachoweza kukiwasha)</value></data>
@@ -4001,15 +3993,12 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ingizo hili haliwezi kuendesha kianzishi cha tabaka</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>kikomo cha safu kimezidiwa kwa nafasi ya {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>hakuna ramani inayohamia mipangilio iliyowekwa tayari {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>automap ya kifaa bado inaelekeza {0} kwenye {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>ubadilishaji wa tabaka umeachwa ({0} ilitafsiriwa kuwa hakuna)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>uwekaji nafasi kamili wa kielekezi umekadiriwa kama mwendo wa kipanya wa kulinganisha</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>mkunjo wa mwitikio na mipangilio ya masafa vimeachwa ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>mpangilio wa gyro {0}={1} umeachwa (hakuna kitufe kinachoweza kusomwa nyuma ya thamani hii)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>kubadilisha nambari ya mchezaji ni kitendo cha mteja wa Steam, hakuna kinacholingana</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>kugeuza lizard mode ni ya ndani ya Steam, hakuna kinacholingana</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>mbonyezo wa toggle hushikilia {0} hadi mbonyezo unaofuata</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>kubonyeza kwa muda mrefu hugusa {0} kwenye kizingiti (Steam huishikilia hadi kuachilia)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kuweka upya kamera kumekadiriwa kama kuweka gyro katikati</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>eneo la kipanya limekadiriwa kama kikomo cha kielekezi kilicho katikati ({0}% ya skrini, kituo cha eneo {1}%, {2}%) wakati uso unashikiliwa</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>mipangilio ya kuanza/kuachilia ya eneo la kipanya imeachwa ({0})</value></data>

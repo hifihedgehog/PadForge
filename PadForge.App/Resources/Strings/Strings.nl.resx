@@ -4093,28 +4093,20 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Opslaan en toepassen</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindingen</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' geïmporteerd: {1} schoon, {2} gedeeltelijk, {3} overgeslagen</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} bindingen gedekt door de standaard automatische toewijzing</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>vertaald</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>vertaald als macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad-afstelling geldt per pad, niet per rij</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggerdrempel benaderd</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen apparaatvrije trigger voor deze invoer</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game acties, alleen Steam, geen koppeling aan spelzijde</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-clientactie {0}, geen equivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controlleractie {0} niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekend bindingstype {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>onbekende toets {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>toets {0} heeft geen Windows-equivalent</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>onbekende muisknop {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>onbekende XInput-knop {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>onbekende invoer {1} op {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-schermbediening {1}: geen fysieke invoer op ondersteunde controllers</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>onbekende groepsmodus {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu-overlay vervallen ({0} cellen)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaal-menu-overlay vervallen ({0} sectoren)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursorgebiedbeperking niet ondersteund</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>chord-activator zonder ingestelde chord-knop (kan nooit afgaan)</value></data>
@@ -4126,9 +4118,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>deze invoer kan geen laag-activator aansturen</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rijlimiet overschreden voor het {0}-slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>geen binding schakelt naar preset {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>de automatische toewijzing van het apparaat stuurt {0} nog steeds naar {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>laagwissel vervallen ({0} leverde geen vertalingen op)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute aanwijzerpositionering benaderd als relatieve muisbeweging</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Schakel communityconfiguraties in om op updates te controleren</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Nog geen profielen geïmporteerd van de Steam Workshop</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop controleren op updates…</value></data>
@@ -4265,7 +4255,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>wijziging van spelernummer is een Steam-clientactie, geen equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-modus-schakeling is Steam-intern, geen equivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>schakel-druk houdt {0} vast tot de volgende druk</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>lang indrukken tikt {0} aan bij de drempel (Steam houdt hem vast tot loslaten)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camerareset benaderd als een gyro-hercentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>muisgebied benaderd als een gecentreerde cursorbegrenzing ({0}% van het scherm, gebiedscentrum {1}%, {2}%) zolang het oppervlak wordt vastgehouden</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>activerings-/loslaatinstellingen van het muisgebied vervallen ({0})</value></data>

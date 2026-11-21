@@ -642,8 +642,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(PadForge.Engine.Gamepad.A, m.TriggerXboxButtons);
             Assert.Equal(0x46, m.VirtualKey); // VK_F
             Assert.False(m.ConsumeTrigger); // the OnRelease twin reads the same trigger
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.LongPressKeyTap);
         }
 
         [Fact]

@@ -3968,28 +3968,20 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Salva u applika</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Rabtiet</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importat “{0}”: {1} nodfa, {2} parzjali, {3} maqbuża</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} rabtiet koperti mill-mappjar awtomatiku default</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>tradotta</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>tradotta bħala makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>saff: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>l-irfinar tat-touchpad japplika għal kull pad, mhux għal kull ringiela</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>il-limitu tat-trigger approssimat</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>l-ebda attivatur indipendenti mill-apparat għal dan l-input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} azzjonijiet fil-logħba, ta' Steam biss, l-ebda ganċ min-naħa tal-logħba</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>azzjoni tal-klijent ta' Steam {0}, l-ebda ekwivalenti</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>l-azzjoni tal-kontrollur {0} mhix appoġġata</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tip ta' rabta mhux magħruf {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tast mhux magħruf {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>it-tast {0} m'għandux ekwivalenti f'Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>buttuna tal-maws mhux magħrufa {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>buttuna XInput mhux magħrufa {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>input mhux magħruf {1} fuq {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>kontroll fuq l-iskrin ta' Steam Link {1}: l-ebda input fiżiku fuq ebda kontrollur appoġġat</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>modalità tal-grupp mhux magħrufa {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay tal-menu tal-mess tneħħa ({0} ċelloli)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay tal-menu radjali tneħħa ({0} setturi)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ir-restrizzjoni tar-reġjun tal-kursur mhix appoġġata</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>attivatur tal-ħelsien mhux appoġġat hawn</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>attivatur ta' għafsa twila mhux appoġġat hawn</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>attivatur mhux magħruf {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>l-attivatur tal-kombinazzjoni m'għandux buttuna tal-kombinazzjoni issettjata (xejn ma jista' jattivah)</value></data>
@@ -4001,15 +3993,12 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>dan l-input ma jistax imexxi attivatur ta' saff</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>il-limitu tar-ringieli nqabeż għas-slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>l-ebda rabta ma taqleb għall-preset {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>il-mappjar awtomatiku tal-apparat għadu jibgħat {0} lil {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>il-qlib tas-saff tneħħa ({0} ġie tradott f'xejn)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>il-pożizzjonament assolut tal-pointer approssimat bħala moviment relattiv tal-maws</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>l-issettjar tal-kurva tar-rispons u tal-firxa tneħħa ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>l-issettjar tal-ġiroskopju {0}={1} tneħħa (l-ebda buttuna li tinqara wara dan il-valur)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>il-bidla tan-numru tal-plejer hija azzjoni tal-klijent ta' Steam, l-ebda ekwivalenti</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>it-toggle tal-lizard mode huwa intern għal Steam, l-ebda ekwivalenti</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>għafsa toggle iżżomm {0} sal-għafsa li jmiss</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>għafsa twila tagħmel tap ta' {0} fil-limitu (Steam iżommu sakemm tħalli)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ir-reset tal-kamera approssimat bħala ċentrar mill-ġdid tal-ġiroskopju</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ir-reġjun tal-maws approssimat bħala limitu ċentrat tal-kursur ({0}% tal-iskrin, ċentru tar-reġjun {1}%, {2}%) waqt li s-superfiċje tinżamm</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>l-issettjar tal-attivazzjoni u l-ħelsien tar-reġjun tal-maws tneħħa ({0})</value></data>

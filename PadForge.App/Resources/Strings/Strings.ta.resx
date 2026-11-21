@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>சேமித்துப் பயன்படுத்து</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>பிணைப்புகள்</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' இறக்குமதி செய்யப்பட்டது: {1} முழுமையானவை, {2} பகுதியானவை, {3} தவிர்க்கப்பட்டவை</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} பிணைப்புகள் இயல்புநிலை தானியங்கி மேப்பிங்கில் அடங்கும்</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>மாற்றப்பட்டது</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>மேக்ரோவாக மாற்றப்பட்டது</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>அடுக்கு: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>டச்பேட் சரிசெய்தல் ஒவ்வொரு பேடுக்கும் பொருந்தும், ஒவ்வொரு வரிசைக்கும் அல்ல</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>டிரிகர் வரம்பு தோராயமாக்கப்பட்டது</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>இந்த உள்ளீட்டுக்குச் சாதனம் சாராத தூண்டி இல்லை</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} கேம்-உள் செயல்கள், Steam-க்கு மட்டுமானவை, கேம் பக்க ஹூக் இல்லை</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam கிளையன்ட் செயல் {0}, இணையான செயல் இல்லை</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>கட்டுப்படுத்திச் செயல் {0} ஆதரிக்கப்படவில்லை</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>அறியப்படாத பிணைப்பு வகை {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>அறியப்படாத விசை {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>விசை {0}-க்கு Windows-இல் இணையான விசை இல்லை</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>அறியப்படாத சுட்டிப் பொத்தான் {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>அறியப்படாத XInput பொத்தான் {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0}-இல் அறியப்படாத உள்ளீடு {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link திரைக் கட்டுப்பாடு {1}: ஆதரிக்கப்படும் எந்தக் கட்டுப்படுத்தியிலும் இயற்பியல் உள்ளீடு இல்லை</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>அறியப்படாத குழுப் பயன்முறை {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>தொடு-மெனு மேலடுக்கு கைவிடப்பட்டது ({0} கலங்கள்)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ஆரவழி-மெனு மேலடுக்கு கைவிடப்பட்டது ({0} பிரிவுகள்)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>சுட்டிக்குறிப் பகுதிக் கட்டுப்பாடு ஆதரிக்கப்படவில்லை</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>விடுவிப்புச் செயல்படுத்தி இங்கே ஆதரிக்கப்படவில்லை</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>நீண்ட அழுத்தச் செயல்படுத்தி இங்கே ஆதரிக்கப்படவில்லை</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>அறியப்படாத செயல்படுத்தி {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>சேர்க்கைச் செயல்படுத்திக்குச் சேர்க்கைப் பொத்தான் அமைக்கப்படவில்லை (எதனாலும் அதைத் தூண்ட முடியாது)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>இந்த உள்ளீட்டால் அடுக்குச் செயல்படுத்தியை இயக்க முடியாது</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} ஸ்லாட்டுக்கான வரிசை வரம்பு மீறப்பட்டது</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>முன்னமைவு {0}-க்கு எந்தப் பிணைப்பும் மாற்றாது</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>சாதனத்தின் தானியங்கி மேப்பிங், {0}-ஐ இன்னும் {1}-க்கு அனுப்புகிறது</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>அடுக்கு மாற்றம் கைவிடப்பட்டது ({0} எதுவாகவும் மாற்றப்படவில்லை)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>முழுமையான சுட்டிக்குறி நிலையமைப்பு, சார்பு சுட்டி நகர்வாகத் தோராயமாக்கப்பட்டது</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>துலங்கல் வளைவு மற்றும் வீச்சு அமைப்புகள் கைவிடப்பட்டன ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>கைரோ அமைப்பு {0}={1} கைவிடப்பட்டது (இந்த மதிப்புக்குப் பின்னால் படிக்கக்கூடிய பொத்தான் இல்லை)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>பிளேயர் எண் மாற்றம் Steam கிளையன்ட் செயல், இணையான செயல் இல்லை</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>லிசர்ட் பயன்முறை நிலைமாற்றம் Steam-இன் உள் செயல், இணையான செயல் இல்லை</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>நிலைமாற்று அழுத்தம், அடுத்த அழுத்தம் வரை {0}-ஐத் தாழிட்டு வைக்கும்</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>நீண்ட அழுத்தம் வரம்பில் {0}-ஐ ஒருமுறை தட்டும் (Steam அதை விடும் வரை பிடித்து வைக்கும்)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>கேமரா மீட்டமைப்பு, கைரோ மறுமையப்படுத்தலாகத் தோராயமாக்கப்பட்டது</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>பரப்பு பிடிக்கப்பட்டிருக்கும்போது, சுட்டிப் பகுதி மையப்படுத்திய சுட்டிக்குறி வரம்பாகத் தோராயமாக்கப்பட்டது (திரையின் {0}%, பகுதி மையம் {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>சுட்டிப் பகுதியின் செயல்படுத்தல்/விடுவிப்பு அமைப்புகள் கைவிடப்பட்டன ({0})</value></data>

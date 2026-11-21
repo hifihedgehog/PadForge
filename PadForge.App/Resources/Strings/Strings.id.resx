@@ -4252,28 +4252,20 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Simpan dan terapkan</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Ikatan</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' diimpor: {1} bersih, {2} sebagian, {3} dilewati</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} ikatan tercakup oleh pemetaan otomatis default</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>diterjemahkan</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>diterjemahkan sebagai makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lapisan: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>penyetelan panel sentuh berlaku per panel, bukan per baris</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ambang batas pelatuk didekati</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>tidak ada pemicu bebas perangkat untuk input ini</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} tindakan dalam game, khusus Steam, tanpa hook di sisi game</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>tindakan klien Steam {0}, tidak ada padanannya</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>tindakan kontroler {0} tidak didukung</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>jenis ikatan tidak dikenal {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tombol tidak dikenal {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tombol {0} tidak memiliki padanan di Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>tombol mouse tidak dikenal {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>tombol XInput tidak dikenal {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>input tidak dikenal {1} pada {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Kontrol di layar Steam Link {1}: tidak ada input fisik pada kontroler mana pun yang didukung</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mode grup tidak dikenal {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay menu sentuh dibuang ({0} sel)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay menu radial dibuang ({0} sektor)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>pembatasan wilayah kursor tidak didukung</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivator lepas tidak didukung di sini</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivator tekan lama tidak didukung di sini</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>aktivator tidak dikenal {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>aktivator kombinasi tidak memiliki tombol kombinasi yang diatur (tidak ada yang dapat memicunya)</value></data>
@@ -4285,15 +4277,12 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>input ini tidak dapat menggerakkan aktivator lapisan</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>batas baris terlampaui untuk slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>tidak ada ikatan yang beralih ke preset {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>pemetaan otomatis perangkat masih merutekan {0} ke {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>pergantian lapisan dibuang ({0} tidak menghasilkan terjemahan apa pun)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>pemosisian penunjuk absolut didekati sebagai gerakan mouse relatif</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>pengaturan kurva respons dan rentang dibuang ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>pengaturan giroskop {0}={1} dibuang (tidak ada tombol terbaca di balik nilai ini)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>perubahan nomor pemain adalah tindakan klien Steam, tidak ada padanannya</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>pengalihan lizard mode bersifat internal Steam, tidak ada padanannya</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>penekanan alih mengunci {0} sampai penekanan berikutnya</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>tekan lama mengetuk {0} di ambang batas (Steam menahannya sampai dilepas)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>pengaturan ulang kamera didekati sebagai pemusatan ulang giroskop</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>wilayah mouse didekati sebagai pembatasan kursor terpusat ({0}% layar, tengah wilayah {1}%, {2}%) selama permukaan ditahan</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>pengaturan aktivasi/pelepasan wilayah mouse dibuang ({0})</value></data>

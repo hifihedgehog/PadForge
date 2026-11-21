@@ -9,8 +9,7 @@ namespace PadForge.SteamWorkshop.Tests
     /// Mouse") moves the cursor RELATIVELY (trackball/friction settings
     /// vocabulary, the Steam Input API's delta delivery, sc-controller's
     /// importer, Valve's mobile-touch template naming), so the relative
-    /// rows are faithful and the old AbsoluteMouseApproximated Partial is
-    /// retired. The 1:1 pad-to-screen construct is mouse_region
+    /// rows are faithful and report Clean. The 1:1 pad-to-screen construct is mouse_region
     /// ("touching a particular place on the pad will always put the
     /// cursor in the same place on the screen", Steamworks Input Source
     /// Modes doc): trackpad-hosted regions now emit Clean absolute
@@ -70,8 +69,6 @@ namespace PadForge.SteamWorkshop.Tests
             var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
             Assert.Equal("Touchpad 0 Finger 0 X Right", Assert.Single(x.Sources).Descriptor);
             // Verified semantics: no positioning-approximation Partial.
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.AbsoluteMouseApproximated);
             Assert.Equal(0, p.Report.PartialCount);
         }
 
@@ -85,8 +82,7 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
             Assert.Equal("Gyro Yaw", Assert.Single(x.Sources).Descriptor);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.AbsoluteMouseApproximated);
+            Assert.Equal(0, p.Report.PartialCount);
         }
 
         // ─── mouse_region on trackpads: the real absolute pointer ───────

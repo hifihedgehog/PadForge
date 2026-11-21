@@ -4025,28 +4025,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>သိမ်းဆည်းပြီး အသုံးချရန်</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>ဘိုင်းဒင်းများ</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' ကို တင်သွင်းပြီး- ပြည့်စုံ {1}၊ တစ်စိတ်တစ်ပိုင်း {2}၊ ကျော်ထား {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>မူလ အလိုအလျောက်မက်ပင်းက ဖုံးလွှမ်းထားသော ဘိုင်းဒင်း {0} ခု</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>ဘာသာပြန်ပြီး</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>မက်ခရိုအဖြစ် ဘာသာပြန်ပြီး</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>အလွှာ- {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>တာ့ချ်ပက် ညှိမှုများသည် အတန်းအလိုက် မဟုတ်ဘဲ ပက်အလိုက် သက်ရောက်သည်</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ထရီဂါ စတင်တန်ဖိုးကို ခန့်မှန်းထားသည်</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ဤအဝင်အတွက် စက်ပစ္စည်းမပါသော အစပျိုးခလုတ် မရှိပါ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>ဂိမ်းအတွင်း လုပ်ဆောင်ချက် {0} ခု၊ Steam တွင်သာ ရှိပြီး ဂိမ်းဘက် ချိတ်ဆက်မှု မရှိ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam ကလိုင်းယင့် လုပ်ဆောင်ချက် {0}၊ တူညီသည့်အရာ မရှိ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ကွန်ထရိုလာ လုပ်ဆောင်ချက် {0} ကို မပံ့ပိုးပါ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>မသိသော ဘိုင်းဒင်း အမျိုးအစား {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>မသိသော ကီး {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>ကီး {0} နှင့် တူညီသည့် Windows ကီး မရှိပါ</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>မသိသော မောက်စ်ခလုတ် {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>မသိသော XInput ခလုတ် {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} ပေါ်ရှိ မသိသော အဝင် {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link ဖန်သားပြင်ပေါ်ရှိ ထိန်းချုပ်ကွက် {1}- ပံ့ပိုးထားသော မည်သည့် ကွန်ထရိုလာတွင်မျှ ရုပ်ပိုင်းဆိုင်ရာ အဝင် မရှိ</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>မသိသော အုပ်စု မုဒ် {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ထိ မီနူး အုပ်ထပ်ပြကွက်ကို ဖယ်ထားသည် (အကွက် {0} ခု)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>စက်ဝိုင်း မီနူး အုပ်ထပ်ပြကွက်ကို ဖယ်ထားသည် (ကဏ္ဍ {0} ခု)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ကာဆာ ဧရိယာ ကန့်သတ်ချက်ကို မပံ့ပိုးပါ</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>လွှတ်ခြင်း အသက်သွင်းခလုတ်ကို ဤနေရာတွင် မပံ့ပိုးပါ</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ကြာကြာနှိပ်ခြင်း အသက်သွင်းခလုတ်ကို ဤနေရာတွင် မပံ့ပိုးပါ</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>မသိသော အသက်သွင်းခလုတ် {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>တွဲနှိပ် အသက်သွင်းခလုတ်တွင် တွဲနှိပ်ခလုတ် သတ်မှတ်မထားပါ (မည်သည့်အရာကမျှ ၎င်းကို အလုပ်လုပ်စေ၍ မရပါ)</value></data>
@@ -4058,15 +4050,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ဤအဝင်သည် အလွှာ အသက်သွင်းခလုတ်ကို မထိန်းချုပ်နိုင်ပါ</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} ဆလော့အတွက် အတန်း အကန့်အသတ်ကို ကျော်လွန်သွားသည်</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက် {0} သို့ မည်သည့် ဘိုင်းဒင်းကမျှ မပြောင်းပါ</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>စက်ပစ္စည်း အလိုအလျောက်မက်ပင်းက {0} ကို {1} သို့ ဆက်ပို့နေဆဲ ဖြစ်သည်</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>အလွှာပြောင်းခြင်းကို ဖယ်ထားသည် ({0} သည် ဘာမှမရှိအဖြစ် ဘာသာပြန်သွားသည်)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ပကတိ ညွှန်ပြကိရိယာ နေရာချထားမှုကို နှိုင်းရ မောက်စ် ရွေ့လျားမှုအဖြစ် ခန့်မှန်းထားသည်</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>တုံ့ပြန်မှု မျဉ်းကွေးနှင့် အပိုင်းအခြား ဆက်တင်များကို ဖယ်ထားသည် ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ဂိုင်ရို ဆက်တင် {0}={1} ကို ဖယ်ထားသည် (ဤတန်ဖိုး၏ နောက်တွင် ဖတ်နိုင်သော ခလုတ် မရှိ)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ကစားသမား နံပါတ် ပြောင်းခြင်းသည် Steam ကလိုင်းယင့် လုပ်ဆောင်ချက် ဖြစ်ပြီး တူညီသည့်အရာ မရှိ</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>လီဇာ့ဒ် မုဒ် အဖွင့်အပိတ်သည် Steam အတွင်းပိုင်းသာ ဖြစ်ပြီး တူညီသည့်အရာ မရှိ</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>အဖွင့်အပိတ် နှိပ်ခြင်းသည် နောက်တစ်ကြိမ် နှိပ်သည်အထိ {0} ကို ချိတ်ထားသည်</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ကြာကြာနှိပ်ခြင်းသည် စတင်တန်ဖိုးတွင် {0} ကို တစ်ချက်နှိပ်သည် (Steam သည် လွှတ်သည်အထိ ဖိထားသည်)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ကင်မရာ ပြန်လည်သတ်မှတ်ခြင်းကို ဂိုင်ရို ဗဟိုပြန်ထားခြင်းအဖြစ် ခန့်မှန်းထားသည်</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ထိန်းချုပ်မျက်နှာပြင်ကို ဖိထားစဉ် မောက်စ် ဧရိယာကို ဗဟိုချထားသော ကာဆာ ကန့်သတ်ချက်အဖြစ် ခန့်မှန်းထားသည် (ဖန်သားပြင်၏ {0}%၊ ဧရိယာ ဗဟို {1}%၊ {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>မောက်စ် ဧရိယာ ဝင်/ထွက် ဆက်တင်များကို ဖယ်ထားသည် ({0})</value></data>

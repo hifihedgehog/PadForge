@@ -4252,28 +4252,20 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Lưu và áp dụng</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Phép gán</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Đã nhập '{0}': {1} trọn vẹn, {2} một phần, {3} bỏ qua</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} phép gán đã được ánh xạ tự động mặc định bao phủ</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>đã chuyển đổi</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>đã chuyển đổi thành macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lớp: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>tinh chỉnh bàn cảm ứng áp dụng theo từng bàn cảm ứng, không theo từng hàng</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ngưỡng cò đã được lấy xấp xỉ</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>không có bộ kích hoạt không phụ thuộc thiết bị cho đầu vào này</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} hành động trong game, chỉ có trên Steam, không có hook phía trò chơi</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>hành động của ứng dụng Steam {0}, không có tương đương</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>không hỗ trợ hành động tay cầm {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>loại phép gán không xác định {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>phím không xác định {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>phím {0} không có tương đương trên Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>nút chuột không xác định {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>nút XInput không xác định {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>đầu vào không xác định {1} trên {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Điều khiển trên màn hình của Steam Link {1}: không có đầu vào vật lý nào trên bất kỳ tay cầm được hỗ trợ nào</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>chế độ nhóm không xác định {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>đã bỏ lớp phủ menu cảm ứng ({0} ô)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>đã bỏ lớp phủ menu vòng tròn ({0} múi)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>không hỗ trợ giới hạn vùng con trỏ</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>không hỗ trợ bộ kích hoạt khi thả ở đây</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>không hỗ trợ bộ kích hoạt nhấn lâu ở đây</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>bộ kích hoạt không xác định {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>bộ kích hoạt tổ hợp chưa đặt nút tổ hợp (không gì có thể kích hoạt nó)</value></data>
@@ -4285,15 +4277,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>đầu vào này không thể điều khiển bộ kích hoạt lớp</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>vượt quá giới hạn số hàng của khe {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>không phép gán nào chuyển sang thiết lập sẵn {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>ánh xạ tự động của thiết bị vẫn định tuyến {0} đến {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>đã bỏ thao tác chuyển lớp ({0} không chuyển đổi được thành gì)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>định vị con trỏ tuyệt đối được xấp xỉ bằng di chuyển chuột tương đối</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>đã bỏ các thiết lập đường cong đáp ứng và phạm vi ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>đã bỏ thiết lập con quay hồi chuyển {0}={1} (không có nút đọc được nào ứng với giá trị này)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>đổi số thứ tự người chơi là hành động của ứng dụng Steam, không có tương đương</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>bật/tắt lizard mode là tính năng nội bộ của Steam, không có tương đương</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>lần nhấn bật/tắt chốt {0} cho đến lần nhấn kế tiếp</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>nhấn lâu sẽ nhấn nhanh {0} tại ngưỡng (Steam giữ nó cho đến khi thả)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>đặt lại camera được xấp xỉ bằng thao tác đưa con quay hồi chuyển về giữa</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>vùng chuột được xấp xỉ bằng một giới hạn con trỏ căn giữa ({0}% màn hình, tâm vùng {1}%, {2}%) trong khi bề mặt được giữ</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>đã bỏ các thiết lập kích hoạt/thả của vùng chuột ({0})</value></data>

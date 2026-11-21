@@ -3977,28 +3977,20 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Ruaj dhe zbato</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Lidhje</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>U importua „{0}“: {1} të pastra, {2} të pjesshme, {3} të anashkaluara</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} caktime të mbuluara nga hartëzimi automatik i parazgjedhur</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>u përkthye</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>u përkthye si makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>shtresa: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>rregullimi i touchpad-it zbatohet për çdo kontrollues, jo për çdo rresht</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>pragu i këmbëzës u përafrua</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nuk ka nxitës të pavarur nga pajisja për këtë hyrje</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} veprime brenda lojës, vetëm për Steam, pa mekanizëm në anën e lojës</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>veprim {0} i klientit Steam, pa ekuivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>veprimi i kontrolluesit {0} nuk mbështetet</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>lloj caktimi i panjohur {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tast i panjohur {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tasti {0} nuk ka ekuivalent në Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>buton i panjohur i mausit {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>buton XInput i panjohur {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>hyrje e panjohur {1} në {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>kontroll në ekran i Steam Link {1}: asnjë hyrje fizike në asnjë kontrollues të mbështetur</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>modalitet grupi i panjohur {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>mbivendosja e menysë me prekje u hoq ({0} qeliza)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>mbivendosja e menysë radiale u hoq ({0} sektorë)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>kufizimi i rajonit të kursorit nuk mbështetet</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivizuesi i lëshimit nuk mbështetet këtu</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivizuesi i shtypjes së gjatë nuk mbështetet këtu</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>aktivizues i panjohur {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>aktivizuesi i akordit nuk ka buton akordi të caktuar (asgjë nuk mund ta nisë)</value></data>
@@ -4010,15 +4002,12 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>kjo hyrje nuk mund të drejtojë një aktivizues shtrese</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>u tejkalua kufiri i rreshtave për slotin {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>asnjë caktim nuk kalon te paravendosja {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>hartëzimi automatik i pajisjes ende e drejton {0} te {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>ndërrimi i shtresës u hoq ({0} u përkthye në asgjë)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>pozicionimi absolut i treguesit u përafrua si lëvizje relative e mausit</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>cilësimet e kurbës së përgjigjes dhe të diapazonit u hoqën ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>cilësimi i xhiros {0}={1} u hoq (asnjë buton i lexueshëm pas kësaj vlere)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ndryshimi i numrit të lojtarit është veprim i klientit Steam, pa ekuivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>ndërrimi i modalitetit „lizard“ është i brendshëm për Steam, pa ekuivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>shtypja e ndërrimit e mban të kyçur {0} deri në shtypjen tjetër</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>shtypja e gjatë e shtyp shkurt {0} në prag (Steam e mban shtypur deri në lëshim)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>rivendosja e kamerës u përafrua si riqendërzim i xhiros</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>rajoni i mausit u përafrua si kufizim i kursorit rreth qendrës ({0}% e ekranit, qendra e rajonit {1}%, {2}%) ndërsa sipërfaqja mbahet</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>cilësimet e angazhimit/lëshimit të rajonit të mausit u hoqën ({0})</value></data>

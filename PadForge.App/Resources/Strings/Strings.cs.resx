@@ -4252,28 +4252,20 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Uložit a použít</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Vazby</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importováno „{0}“: čistě {1}, částečně {2}, přeskočeno {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>vazby pokryté výchozím automatickým mapováním: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>převedeno</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>převedeno jako makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>vrstva: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ladění touchpadu platí pro celý touchpad, ne pro řádek</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>práh spouště je přibližný</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>pro tento vstup neexistuje spouštěč nezávislý na zařízení</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>herní akce: {0}, jen pro Steam, bez napojení na straně hry</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>akce klienta Steam {0}, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>akce ovladače {0} není podporována</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>neznámý typ vazby {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>neznámá klávesa {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>klávesa {0} nemá ve Windows ekvivalent</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>neznámé tlačítko myši {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>neznámé tlačítko XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>neznámý vstup {1} na {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>ovládací prvek Steam Link na obrazovce {1}: žádný podporovaný ovladač nemá odpovídající fyzický vstup</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>neznámý režim skupiny {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>překrytí dotykové nabídky vynecháno (buňky: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>překrytí radiální nabídky vynecháno (sektory: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>omezení kurzoru na oblast není podporováno</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivátor při uvolnění tu není podporován</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivátor dlouhým stiskem tu není podporován</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>neznámý aktivátor {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>aktivátor akordu nemá nastavené tlačítko akordu (nic ho nemůže spustit)</value></data>
@@ -4285,15 +4277,12 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>tento vstup nemůže ovládat aktivátor vrstvy</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>překročen limit řádků pro slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>na předvolbu {0} nepřepíná žádná vazba</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>automatické mapování zařízení dál směruje {0} na {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>přepnutí vrstvy vynecháno ({0} se nepřevedlo na nic)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolutní polohování ukazatele nahrazeno přibližně relativním pohybem myši</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>nastavení křivky odezvy a rozsahu vynecháno ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>nastavení gyroskopu {0}={1} vynecháno (za touto hodnotou není čitelné tlačítko)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>změna čísla hráče je akce klienta Steam, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>přepnutí režimu lizard je interní funkce Steamu, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>přepínací stisk zajistí {0} do dalšího stisku</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>dlouhý stisk krátce stiskne {0} na prahu (Steam ho drží do uvolnění)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reset kamery nahrazen přibližně vystředěním gyroskopu</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>oblast myši nahrazena přibližně vystředěným omezením kurzoru ({0} % obrazovky, střed oblasti {1} %, {2} %), dokud je plocha držená</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>nastavení aktivace/uvolnění oblasti myši vynecháno ({0})</value></data>

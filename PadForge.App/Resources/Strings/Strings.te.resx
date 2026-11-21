@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>సేవ్ చేసి వర్తింపజేయి</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>బైండింగ్లు</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>‘{0}’ దిగుమతి అయింది: {1} శుభ్రం, {2} పాక్షికం, {3} వదిలినవి</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} బైండింగ్లు డిఫాల్ట్ ఆటోమ్యాప్తో కవర్ అయ్యాయి</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>అనువదించబడింది</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>మాక్రోగా అనువదించబడింది</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>లేయర్: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>టచ్ ప్యాడ్ ట్యూనింగ్ ప్రతి ప్యాడ్కు వర్తిస్తుంది, ప్రతి వరుసకు కాదు</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ట్రిగ్గర్ థ్రెషోల్డ్ సుమారుగా సెట్ చేయబడింది</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ఈ ఇన్పుట్కు పరికరరహిత ట్రిగ్గర్ లేదు</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} గేమ్లోని చర్యలు, Steam మాత్రమే, గేమ్ వైపు హుక్ లేదు</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam క్లయింట్ చర్య {0}, సమానమైనది లేదు</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>కంట్రోలర్ చర్య {0} కు మద్దతు లేదు</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>తెలియని బైండింగ్ రకం {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>తెలియని కీ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>కీ {0} కు Windows సమానం లేదు</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>తెలియని మౌస్ బటన్ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>తెలియని XInput బటన్ {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} లో తెలియని ఇన్పుట్ {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link ఆన్-స్క్రీన్ నియంత్రణ {1}: మద్దతు ఉన్న ఏ కంట్రోలర్లోనూ భౌతిక ఇన్పుట్ లేదు</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>తెలియని గ్రూప్ మోడ్ {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>టచ్-మెను ఓవర్లే వదిలేయబడింది ({0} సెల్లు)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>రేడియల్-మెను ఓవర్లే వదిలేయబడింది ({0} సెక్టార్లు)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>కర్సర్ ప్రాంత పరిమితికి మద్దతు లేదు</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>విడుదల యాక్టివేటర్కు ఇక్కడ మద్దతు లేదు</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ఎక్కువసేపు నొక్కే యాక్టివేటర్కు ఇక్కడ మద్దతు లేదు</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>తెలియని యాక్టివేటర్ {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>కాంబో యాక్టివేటర్కు కాంబో బటన్ సెట్ చేయలేదు (దీన్ని ఏదీ ప్రేరేపించలేదు)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ఈ ఇన్పుట్ లేయర్ యాక్టివేటర్ను నడపలేదు</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} స్లాట్కు వరుస పరిమితి మించిపోయింది</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ఏ బైండింగ్ ప్రీసెట్ {0} కు మారదు</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>పరికర ఆటోమ్యాప్ ఇప్పటికీ {0} ను {1} కు రూట్ చేస్తోంది</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>లేయర్ మార్పు వదిలేయబడింది ({0} ఏమీ లేనిదానికి అనువదించబడింది)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>సంపూర్ణ పాయింటర్ స్థానం సాపేక్ష మౌస్ కదలికగా సుమారుగా మార్చబడింది</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ప్రతిస్పందన వక్రరేఖ, పరిధి సెట్టింగులు వదిలేయబడ్డాయి ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>గైరో సెట్టింగ్ {0}={1} వదిలేయబడింది (ఈ విలువ వెనుక చదవదగిన బటన్ లేదు)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ప్లేయర్ నంబర్ మార్పు Steam క్లయింట్ చర్య, సమానమైనది లేదు</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>లిజర్డ్ మోడ్ టోగుల్ Steam అంతర్గతం, సమానమైనది లేదు</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>టోగుల్ నొక్కు తదుపరి నొక్కు వరకు {0} ను లాచ్ చేస్తుంది</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ఎక్కువసేపు నొక్కడం థ్రెషోల్డ్ వద్ద {0} ను ట్యాప్ చేస్తుంది (Steam విడిచే వరకు పట్టుకుంటుంది)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>కెమెరా రీసెట్ గైరో రీసెంటర్గా సుమారుగా మార్చబడింది</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>మౌస్ ప్రాంతం, ఉపరితలాన్ని పట్టుకున్నప్పుడు, మధ్యలో ఉన్న కర్సర్ పరిమితిగా సుమారుగా మార్చబడింది (స్క్రీన్లో {0}%, ప్రాంత కేంద్రం {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>మౌస్ ప్రాంతం ఎంగేజ్/విడుదల సెట్టింగులు వదిలేయబడ్డాయి ({0})</value></data>

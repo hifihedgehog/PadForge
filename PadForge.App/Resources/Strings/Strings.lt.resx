@@ -4022,28 +4022,20 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Išsaugoti ir taikyti</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Priskyrimai</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importuota „{0}“: visiškai {1}, iš dalies {2}, praleista {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Numatytasis automatinis priskyrimas apima priskyrimų: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>konvertuota</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>konvertuota į makrokomandą</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>sluoksnis: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>jutiklinio skydelio nustatymai taikomi visam skydeliui, o ne atskirai eilutei</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>gaiduko slenkstis apytikslis</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>šiai įvesčiai nėra nuo įrenginio nepriklausančio paleidiklio</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>žaidimo veiksmų: {0} (tik „Steam“, žaidime nėra prieigos)</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>„Steam“ kliento veiksmas {0}, atitikmens nėra</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>valdiklio veiksmas {0} nepalaikomas</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>nežinomas priskyrimo tipas {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>nežinomas klavišas {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>klavišas {0} neturi „Windows“ atitikmens</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>nežinomas pelės mygtukas {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>nežinomas XInput mygtukas {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>nežinoma įvestis {1} įrenginyje {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>„Steam Link“ ekrano valdymo elementas {1}: jokiame palaikomame valdiklyje nėra fizinės įvesties</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>nežinomas grupės režimas {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>lietimo meniu perdanga atmesta (langelių: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radialinio meniu perdanga atmesta (sektorių: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>žymeklio srities apribojimas nepalaikomas</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>atleidimo aktyviklis čia nepalaikomas</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ilgo paspaudimo aktyviklis čia nepalaikomas</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>nežinomas aktyviklis {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akordo aktyvikliui nenustatytas akordo mygtukas (niekas negali jo suveikdinti)</value></data>
@@ -4055,15 +4047,12 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ši įvestis negali valdyti sluoksnio aktyviklio</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>viršytas lizdo {0} eilučių limitas</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>joks priskyrimas neperjungia į šabloną {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>įrenginio automatinis priskyrimas vis dar nukreipia {0} į {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>sluoksnio perjungimas atmestas ({0} neturi rezultato)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absoliutus žymeklio padėties nustatymas pakeistas apytiksliu santykiniu pelės judesiu</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>atsako kreivės ir diapazono nustatymai atmesti ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>giroskopo nustatymas {0}={1} atmestas (už šios reikšmės nėra nuskaitomo mygtuko)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>žaidėjo numerio keitimas yra „Steam“ kliento veiksmas, atitikmens nėra</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>„lizard mode“ perjungimas yra vidinis „Steam“ veiksmas, atitikmens nėra</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>perjungimo paspaudimas užfiksuoja {0} iki kito paspaudimo</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ilgas paspaudimas pasiekus slenkstį bakstelėja {0} („Steam“ jį laiko iki atleidimo)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kameros grąžinimas pakeistas apytiksliu giroskopo centravimu</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>pelės sritis pakeista apytiksliu centruotu žymeklio apribojimu ({0}% ekrano, srities centras {1}%, {2}%), kol laikomas paviršius</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>pelės srities įjungimo / atleidimo nustatymai atmesti ({0})</value></data>

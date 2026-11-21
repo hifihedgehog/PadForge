@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>محفوظ کر کے لاگو کریں</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>بائنڈنگز</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' درآمد ہو گیا: {1} مکمل، {2} جزوی، {3} چھوڑی گئیں</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} بائنڈنگز ڈیفالٹ آٹو میپ میں شامل ہیں</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>تبدیل ہو گئی</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>میکرو کے طور پر تبدیل ہو گئی</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>لیئر: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ٹچ پیڈ ٹیوننگ ہر پیڈ پر لاگو ہوتی ہے، ہر قطار پر نہیں</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ٹرگر تھریشولڈ اندازاً لگایا گیا</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>اس ان پٹ کے لیے آلے سے آزاد کوئی محرک نہیں</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ان گیم ایکشنز، صرف Steam کے لیے، گیم کی طرف کوئی ہک نہیں</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam کلائنٹ کا ایکشن {0}، کوئی متبادل نہیں</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>کنٹرولر ایکشن {0} تعاون یافتہ نہیں</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>بائنڈنگ کی نامعلوم قسم {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>نامعلوم کلید {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>کلید {0} کا Windows میں کوئی متبادل نہیں</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>نامعلوم ماؤس بٹن {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>نامعلوم XInput بٹن {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} پر نامعلوم ان پٹ {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link کا آن اسکرین کنٹرول {1}: کسی بھی تعاون یافتہ کنٹرولر پر کوئی فزیکل ان پٹ نہیں</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>گروپ کا نامعلوم موڈ {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ٹچ مینو اوورلے چھوڑ دیا گیا ({0} خانے)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ریڈیل مینو اوورلے چھوڑ دیا گیا ({0} سیکٹر)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>کرسر کے علاقے کی پابندی تعاون یافتہ نہیں</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>چھوڑنے والا ایکٹیویٹر یہاں تعاون یافتہ نہیں</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>دیر تک دبانے والا ایکٹیویٹر یہاں تعاون یافتہ نہیں</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>نامعلوم ایکٹیویٹر {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>کورڈ ایکٹیویٹر کا کوئی کورڈ بٹن سیٹ نہیں (اسے کوئی چیز نہیں چلا سکتی)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>یہ ان پٹ لیئر ایکٹیویٹر نہیں چلا سکتا</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} سلاٹ کے لیے قطاروں کی حد سے تجاوز ہو گیا</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>کوئی بائنڈنگ پری سیٹ {0} پر نہیں لے جاتی</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>آلے کا آٹو میپ اب بھی {0} کو {1} پر بھیجتا ہے</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>لیئر کی تبدیلی چھوڑ دی گئی ({0} کسی چیز میں تبدیل نہیں ہوا)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>مطلق پوائنٹر پوزیشننگ کو اندازاً نسبتی ماؤس حرکت کے طور پر لیا گیا</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ردعمل کے خم اور رینج کی ترتیبات چھوڑ دی گئیں ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>جائرو ترتیب {0}={1} چھوڑ دی گئی (اس قدر کے پیچھے کوئی قابل مطالعہ بٹن نہیں)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>پلیئر نمبر کی تبدیلی Steam کلائنٹ کا ایکشن ہے، کوئی متبادل نہیں</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>لیزرڈ موڈ ٹوگل Steam کا اندرونی معاملہ ہے، کوئی متبادل نہیں</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ٹوگل دبانے سے {0} اگلی بار دبانے تک لیچ رہتا ہے</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>دیر تک دبانے پر تھریشولڈ پر {0} ٹیپ ہوتا ہے (Steam اسے چھوڑنے تک دبائے رکھتا ہے)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>کیمرا ری سیٹ کو اندازاً جائرو ری سینٹر کے طور پر لیا گیا</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ماؤس ریجن کو اندازاً مرکز والی کرسر پابندی کے طور پر لیا گیا (اسکرین کا {0}%، علاقے کا مرکز {1}%، {2}%) جب تک سطح دبی رہے</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ماؤس ریجن کی فعال ہونے/چھوڑنے کی ترتیبات چھوڑ دی گئیں ({0})</value></data>

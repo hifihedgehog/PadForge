@@ -48,8 +48,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("OnRelease", m.TriggerMode);
             Assert.Equal(1, m.WheelTicks);
             Assert.False(m.WheelHorizontal);
-            Assert.DoesNotContain(t.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 
         [Fact]
@@ -61,8 +59,6 @@ namespace PadForge.SteamWorkshop.Tests
 
             var rows = t.XboxMappingSet.Rows.Concat(t.KbmMappingSet.Rows).ToList();
             Assert.Contains(rows, r => r.Target == "KbmScroll");
-            Assert.DoesNotContain(t.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 
         [Fact]
@@ -76,8 +72,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.MouseButtonTap, m.Action);
             Assert.Equal("OnRelease", m.TriggerMode);
             Assert.Equal(0, m.MouseButtonIndex);
-            Assert.DoesNotContain(t.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
     }
 }

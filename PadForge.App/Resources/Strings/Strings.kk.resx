@@ -4028,28 +4028,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Сақтау және қолдану</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Байланыстырулар</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» импортталды: {1} таза, {2} ішінара, {3} өткізілді</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} байланыстыру әдепкі автотағайындаумен қамтылған</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>түрлендірілді</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>макрос ретінде түрлендірілді</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>қабат: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>сенсорлық тақта баптаулары жолға емес, тақтаға қолданылады</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>триггер шегі шамамен берілді</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>бұл кіріс үшін құрылғыға байланбаған іске қосқыш жоқ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ойын ішіндегі әрекет, тек Steam үшін, ойын жағында ілмек жоқ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam клиентінің {0} әрекеті, баламасы жоқ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>{0} контроллер әрекетіне қолдау жоқ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>белгісіз байланыстыру түрі {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>белгісіз перне {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} пернесінің Windows жүйесінде баламасы жоқ</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>белгісіз тінтуір түймесі {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>белгісіз XInput түймесі {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} құрылғысындағы белгісіз кіріс {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link экрандағы басқару элементі {1}: қолдау көрсетілетін ешбір контроллерде физикалық кіріс жоқ</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>белгісіз топ режимі {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>сенсорлық мәзір оверлейі алынып тасталды ({0} торкөз)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>радиалды мәзір оверлейі алынып тасталды ({0} сектор)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>меңзер аймағын шектеуге қолдау жоқ</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>жіберу белсендіргішіне мұнда қолдау жоқ</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ұзақ басу белсендіргішіне мұнда қолдау жоқ</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>белгісіз белсендіргіш {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>аккорд белсендіргішінде аккорд түймесі орнатылмаған (оны ештеңе іске қоса алмайды)</value></data>
@@ -4061,15 +4053,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>бұл кіріс қабат белсендіргішін басқара алмайды</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} ұяшығы үшін жолдар шегі асып кетті</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ешбір байланыстыру {0} дайын баптауына ауыстырмайды</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>құрылғының автотағайындауы әлі де {0} кірісін {1} шығысына бағыттайды</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>қабатты ауыстыру алынып тасталды ({0} ештеңеге түрлендірілмеді)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>абсолютті меңзер орналастыруы салыстырмалы тінтуір қозғалысы ретінде шамамен берілді</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>жауап қисығы мен ауқым параметрлері алынып тасталды ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>{0}={1} гироскоп параметрі алынып тасталды (бұл мәннің артында оқылатын түйме жоқ)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ойыншы нөмірін өзгерту Steam клиентінің әрекеті, баламасы жоқ</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-mode ауыстырғышы Steam ішкі мүмкіндігі, баламасы жоқ</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ауыстырғыш басу келесі басуға дейін {0} бекітеді</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ұзақ басу шекте {0} түртеді (Steam оны жібергенше ұстайды)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>камераны қалпына келтіру гироскопты қайта орталықтау ретінде шамамен берілді</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>тінтуір аймағы бет ұсталып тұрғанда ортаға қойылған меңзер шектеуі ретінде шамамен берілді (экранның {0}%, аймақ орталығы {1}%, {2}%)</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>тінтуір аймағын қосу/жіберу параметрлері алынып тасталды ({0})</value></data>

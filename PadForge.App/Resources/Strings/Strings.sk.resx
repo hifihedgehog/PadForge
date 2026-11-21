@@ -4252,28 +4252,20 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Uložiť a použiť</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Väzby</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importované „{0}“: čisté {1}, čiastočné {2}, vynechané {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Väzby pokryté predvoleným automatickým mapovaním: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>prevedené</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>prevedené ako makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>vrstva: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ladenie touchpadu platí pre celý touchpad, nie pre riadok</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>prah spúšte aproximovaný</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>pre tento vstup neexistuje spúšťač nezávislý od zariadenia</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>akcie v hre: {0}, iba pre Steam, bez napojenia na strane hry</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>akcia klienta Steam {0}, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>akcia ovládača {0} nie je podporovaná</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>neznámy typ väzby {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>neznámy kláves {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>kláves {0} nemá ekvivalent vo Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>neznáme tlačidlo myši {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>neznáme tlačidlo XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>neznámy vstup {1} na {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>ovládací prvok Steam Link na obrazovke {1}: žiadny fyzický vstup na žiadnom podporovanom ovládači</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>neznámy režim skupiny {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>prekrytie dotykovej ponuky vynechané (bunky: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>prekrytie kruhovej ponuky vynechané (sektory: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>obmedzenie oblasti kurzora nie je podporované</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivátor pri uvoľnení tu nie je podporovaný</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivátor dlhého stlačenia tu nie je podporovaný</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>neznámy aktivátor {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>aktivátor akordu nemá nastavené tlačidlo akordu (nič ho nemôže spustiť)</value></data>
@@ -4285,15 +4277,12 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>tento vstup nemôže ovládať aktivátor vrstvy</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>prekročený limit riadkov pre slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>žiadna väzba neprepína na predvoľbu {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>automatické mapovanie zariadenia stále smeruje {0} na {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>prepnutie vrstvy vynechané ({0} sa nepreviedlo na nič)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolútne umiestnenie ukazovateľa aproximované ako relatívny pohyb myši</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>nastavenia krivky odozvy a rozsahu vynechané ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>nastavenie gyroskopu {0}={1} vynechané (za touto hodnotou nie je čitateľné tlačidlo)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>zmena čísla hráča je akcia klienta Steam, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>prepínanie režimu lizard je interná funkcia Steamu, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>prepínacie stlačenie zaistí {0} až do ďalšieho stlačenia</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>dlhé stlačenie ťukne {0} pri prahu (Steam ho drží až do uvoľnenia)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reset kamery aproximovaný ako vycentrovanie gyroskopu</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>oblasť myši aproximovaná ako vycentrované obmedzenie kurzora ({0} % obrazovky, stred oblasti {1} %, {2} %), kým je plocha podržaná</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>nastavenia aktivácie a uvoľnenia oblasti myši vynechané ({0})</value></data>

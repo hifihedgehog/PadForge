@@ -4073,28 +4073,20 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Enregistrer et appliquer</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Assignations</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>« {0} » importé : {1} propres, {2} partielles, {3} ignorées</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} assignations couvertes par le mappage automatique par défaut</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduite</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduite en macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>couche : {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>le réglage du pavé tactile s'applique par pavé, pas par ligne</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>seuil de gâchette approximé</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>aucun déclencheur sans périphérique pour cette entrée</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} actions en jeu, réservées à Steam, sans point d'accroche côté jeu</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>action du client Steam {0}, sans équivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>action de manette {0} non prise en charge</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>type d'assignation inconnu {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>touche inconnue {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>la touche {0} n'a pas d'équivalent Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>bouton de souris inconnu {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>bouton XInput inconnu {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrée inconnue {1} sur {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Commande à l&apos;écran Steam Link {1} : aucune entrée physique sur les manettes prises en charge</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mode de groupe inconnu {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu tactile abandonnée ({0} cases)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu radial abandonnée ({0} secteurs)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>contrainte de zone du curseur non prise en charge</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activateur au relâchement non pris en charge ici</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activateur d'appui long non pris en charge ici</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activateur inconnu {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>activateur d&apos;accord sans bouton d&apos;accord défini (ne peut pas se déclencher)</value></data>
@@ -4106,9 +4098,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>cette entrée ne peut pas piloter un activateur de couche</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>plafond de lignes dépassé pour l'emplacement {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>aucune assignation ne bascule vers le préréglage {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>le mappage automatique de l'appareil dirige toujours {0} vers {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>bascule de couche abandonnée ({0} n'a produit aucune traduction)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>positionnement absolu du pointeur approximé en mouvement relatif de la souris</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Activez les configurations de la communauté pour vérifier les mises à jour</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Aucun profil importé depuis le Steam Workshop pour l'instant</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Vérification des mises à jour sur le Steam Workshop…</value></data>
@@ -4245,7 +4235,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>le changement de numéro de joueur est une action du client Steam, sans équivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la bascule du mode lizard est interne à Steam, sans équivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>l'appui à bascule maintient {0} jusqu'au prochain appui</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>l'appui long tape {0} au seuil (Steam le maintient jusqu'au relâchement)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>réinitialisation de caméra approximée comme un recentrage du gyroscope</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>zone de souris approximée comme une limitation centrée du curseur ({0}% de l'écran, centre de la zone {1}%, {2}%) tant que la surface est maintenue</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>réglages d'activation/relâchement de la zone de souris abandonnés ({0})</value></data>

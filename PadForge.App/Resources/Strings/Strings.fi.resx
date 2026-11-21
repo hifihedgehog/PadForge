@@ -4252,28 +4252,20 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Tallenna ja ota käyttöön</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Sidonnat</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Tuotu ”{0}”: puhtaita {1}, osittaisia {2}, ohitettuja {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Oletusarvoisen automaattisen määrityksen kattamia sidontoja: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>muunnettu</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>muunnettu makroksi</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>kerros: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>kosketuslevyn säädöt koskevat levyä, eivät riviä</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>liipaisimen kynnys arvioitu likimäärin</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>tälle syötteelle ei ole laitteesta riippumatonta laukaisinta</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0}: pelin sisäiset toiminnot, vain Steamissa, ei pelin puoleista koukkua</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-asiakasohjelman toiminto {0}, ei vastinetta</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ohjaintoimintoa {0} ei tueta</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tuntematon sidontatyyppi {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tuntematon näppäin {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>näppäimellä {0} ei ole Windows-vastinetta</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>tuntematon hiiren painike {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>tuntematon XInput-painike {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>tuntematon syöte {1} kohteessa {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Linkin näyttöohjain {1}: ei fyysistä syötettä missään tuetussa ohjaimessa</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>tuntematon ryhmätila {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>kosketusvalikon peittokuva jätetty pois (soluja: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>säteittäisen valikon peittokuva jätetty pois (sektoreita: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>osoittimen aluerajoitusta ei tueta</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>vapautusaktivoijaa ei tueta tässä</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>pitkän painalluksen aktivoijaa ei tueta tässä</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>tuntematon aktivoija {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>yhdistelmäaktivoijalle ei ole asetettu yhdistelmäpainiketta (mikään ei voi laukaista sitä)</value></data>
@@ -4285,15 +4277,12 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>tämä syöte ei voi ohjata kerroksen aktivoijaa</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>paikan {0} rivien enimmäismäärä ylitetty</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>mikään sidonta ei vaihda esiasetukseen {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>laitteen automaattinen määritys reitittää edelleen kohteen {0} kohteeseen {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>kerroksen vaihto jätetty pois ({0} ei muuntunut miksikään)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absoluuttinen osoittimen sijoittelu arvioitu suhteellisena hiiren liikkeenä</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>vastekäyrä- ja vaihteluväliasetukset jätetty pois ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyroasetus {0}={1} jätetty pois (tämän arvon takana ei ole luettavaa painiketta)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>pelaajanumeron vaihto on Steam-asiakasohjelman toiminto, ei vastinetta</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-tilan vaihto on Steamin sisäinen, ei vastinetta</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>vaihtopainallus lukitsee kohteen {0} seuraavaan painallukseen asti</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>pitkä painallus napauttaa kohdetta {0} kynnyksen kohdalla (Steam pitää sen pohjassa vapautukseen asti)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kameran nollaus arvioitu gyron keskitykseksi</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>hiiren alue arvioitu keskitetyksi osoittimen rajaukseksi ({0} % näytöstä, alueen keskikohta {1} %, {2} %), kun pintaa pidetään painettuna</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>hiiren alueen kytkentä- ja vapautusasetukset jätetty pois ({0})</value></data>

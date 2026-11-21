@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Kaydet ve uygula</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Atamalar</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' içe aktarıldı: {1} temiz, {2} kısmi, {3} atlandı</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} atama varsayılan otomatik eşlemenin kapsamında</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>çevrildi</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>makro olarak çevrildi</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>katman: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>dokunmatik yüzey ayarı satır başına değil, yüzey başına uygulanır</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>tetik eşiği yaklaşık olarak uygulandı</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>bu giriş için cihazdan bağımsız tetikleyici yok</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} oyun içi eylem, yalnızca Steam, oyun tarafında kanca yok</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam istemcisi eylemi {0}, karşılığı yok</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrolcü eylemi {0} desteklenmiyor</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>bilinmeyen atama türü {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>bilinmeyen tuş {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} tuşunun Windows karşılığı yok</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>bilinmeyen fare düğmesi {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>bilinmeyen XInput düğmesi {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} üzerinde bilinmeyen giriş {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link ekran denetimi {1}: desteklenen hiçbir kontrolcüde fiziksel giriş yok</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>bilinmeyen grup modu {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>dokunmatik menü kaplaması çıkarıldı ({0} hücre)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>dairesel menü kaplaması çıkarıldı ({0} dilim)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>imleç bölgesi kısıtlaması desteklenmiyor</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>bırakma etkinleştiricisi burada desteklenmiyor</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>uzun basma etkinleştiricisi burada desteklenmiyor</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>bilinmeyen etkinleştirici {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>kombinasyon etkinleştiricisinde kombinasyon düğmesi ayarlı değil (hiçbir şey onu tetikleyemez)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>bu giriş bir katman etkinleştiricisini süremez</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} yuvası için satır sınırı aşıldı</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>hiçbir atama {0} ön ayarına geçmiyor</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>cihaz otomatik eşlemesi {0} girişini hâlâ {1} hedefine yönlendiriyor</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>katman geçişi çıkarıldı ({0} hiçbir şeye çevrilmedi)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>mutlak işaretçi konumlandırması göreli fare hareketi olarak yaklaşık uygulandı</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>tepki eğrisi ve aralık ayarları çıkarıldı ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>jiroskop ayarı {0}={1} çıkarıldı (bu değerin arkasında okunabilir bir düğme yok)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>oyuncu numarası değişikliği bir Steam istemcisi eylemidir, karşılığı yok</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard modu aç/kapat işlemi Steam'e özeldir, karşılığı yok</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>aç/kapat basışı {0} girişini sonraki basışa kadar kilitler</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>uzun basma, eşikte {0} tuşuna kısa basar (Steam bırakılana kadar basılı tutar)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kamera sıfırlama, jiroskopu yeniden ortalama olarak yaklaşık uygulandı</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>fare bölgesi, yüzey basılı tutulurken ortalanmış bir imleç sınırlaması olarak yaklaşık uygulandı (ekranın %{0} kadarı, bölge merkezi %{1}, %{2})</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>fare bölgesi devreye alma/bırakma ayarları çıkarıldı ({0})</value></data>

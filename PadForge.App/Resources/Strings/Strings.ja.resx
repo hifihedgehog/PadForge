@@ -4073,28 +4073,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>保存して適用</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>バインド</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>「{0}」をインポートしました: 完全 {1}、部分 {2}、スキップ {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 件のバインドは既定の自動マッピングでカバーされています</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>変換済み</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>マクロとして変換</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>レイヤー: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>タッチパッドの調整は行ごとではなくパッドごとに適用されます</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>トリガーしきい値を近似</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>この入力にはデバイス非依存のトリガーがありません</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam クライアントアクション {0}、対応するものがありません</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>コントローラーアクション {0} は未対応</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>不明なバインドタイプ {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>不明なキー {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>キー {0} には Windows の対応キーがありません</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>不明なマウスボタン {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>不明な XInput ボタン {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上の不明な入力 {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link の画面上コントロール {1}: 対応コントローラーに物理入力はありません</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>不明なグループモード {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>タッチメニューオーバーレイを破棄 ({0} セル)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ラジアルメニューオーバーレイを破棄 ({0} セクター)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>カーソル領域の制限は未対応</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>コードアクティベーターにコードボタンが未設定です (発動できません)</value></data>
@@ -4106,9 +4098,7 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>この入力ではレイヤーアクティベーターを駆動できません</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>デバイスの自動マッピングは引き続き {0} を {1} に割り当てます</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>レイヤー切り替えを破棄（{0} に変換結果がありません）</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ポインターの絶対位置指定は相対的なマウス移動として近似</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>更新を確認するにはコミュニティコンフィグを有効にしてください</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Steam ワークショップからインポートしたプロファイルはまだありません</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam ワークショップの更新を確認しています…</value></data>
@@ -4245,7 +4235,6 @@
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>プレイヤー番号の変更は Steam クライアントアクションのため、対応するものがありません</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>リザードモード切替は Steam 内部のため、対応するものがありません</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>トグル押下は次の押下まで {0} を保持</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>長押しはしきい値で {0} をタップ (Steam は離すまで保持)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>カメラリセットはジャイロの再センタリングとして近似</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>マウス領域は中央基準のカーソル制限として近似 (画面の {0}%、領域中心 {1}%, {2}%)、サーフェスを押している間有効</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>

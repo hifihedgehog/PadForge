@@ -150,8 +150,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.HoldKey, m.Action);
             Assert.Equal("OnPress", m.TriggerMode);
             Assert.Equal(0x7C, m.VirtualKey); // VK_F13
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.UnsupportedKey);
         }
 
         [Fact]
@@ -242,8 +240,6 @@ namespace PadForge.SteamWorkshop.Tests
                 Assert.Equal(TranslationStatus.Clean, e.Status);
                 Assert.Equal(TranslationReasons.RowEmitted, e.ReasonKey);
             });
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.DefaultAutomapPassthrough);
         }
 
         [Fact]
@@ -279,11 +275,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("ButtonB", row.Target);
             Assert.Equal(new[] { "Gamepad ButtonA", "Gamepad ButtonB" },
                 row.Sources.Select(s => s.Descriptor).ToArray());
-            // ButtonA's automap default no longer fires at all on an
-            // authoritative imported set, so the old "automap also active"
-            // warning would be false and must not appear.
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.AutomapAlsoActive);
         }
 
         // ─── Nintendo-labeled diamond (Switch family) ───────────────────

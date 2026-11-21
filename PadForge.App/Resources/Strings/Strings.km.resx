@@ -4027,28 +4027,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>រក្សាទុក និងអនុវត្ត</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>ការភ្ជាប់</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>បាននាំចូល «{0}»៖ ស្អាត {1} មួយផ្នែក {2} បានរំលង {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>ការភ្ជាប់ {0} ដែលគ្របដណ្ដប់ដោយការម៉ាបស្វ័យប្រវត្តិលំនាំដើម</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>បានបកប្រែ</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>បានបកប្រែជាម៉ាក្រូ</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ស្រទាប់៖ {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ការលៃតម្រូវផ្ទាំងប៉ះអនុវត្តតាមផេដនីមួយៗ មិនមែនតាមជួរនីមួយៗទេ</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>កម្រិតចាប់ផ្ដើមទ្រីហ្គឺត្រូវបានប៉ាន់ស្មាន</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>គ្មានការបញ្ចូលបង្កដែលមិនភ្ជាប់នឹងឧបករណ៍សម្រាប់ការបញ្ចូលនេះទេ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>សកម្មភាពក្នុងហ្គេម {0} សម្រាប់តែ Steam ប៉ុណ្ណោះ គ្មានចំណុចភ្ជាប់ខាងហ្គេម</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>សកម្មភាពកម្មវិធី Steam {0} គ្មានសមមូល</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>សកម្មភាពឧបករណ៍បញ្ជា {0} មិនត្រូវបានគាំទ្រ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ប្រភេទការភ្ជាប់មិនស្គាល់ {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>គ្រាប់ចុចមិនស្គាល់ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>គ្រាប់ចុច {0} គ្មានសមមូលនៅក្នុង Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ប៊ូតុងកណ្ដុរមិនស្គាល់ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ប៊ូតុង XInput មិនស្គាល់ {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ការបញ្ចូលមិនស្គាល់ {1} នៅលើ {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>ការបញ្ជានៅលើអេក្រង់ Steam Link {1}៖ គ្មានការបញ្ចូលរូបវន្តនៅលើឧបករណ៍បញ្ជាដែលគាំទ្រណាមួយទេ</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>របៀបក្រុមមិនស្គាល់ {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>បានទម្លាក់ផ្ទាំងត្រួតម៉ឺនុយប៉ះ (ក្រឡា {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>បានទម្លាក់ផ្ទាំងត្រួតម៉ឺនុយរង្វង់ (ផ្នែក {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ការដាក់កម្រិតតំបន់ទ្រនិចកណ្ដុរមិនត្រូវបានគាំទ្រ</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ការបញ្ចូលបើកពេលលែងមិនត្រូវបានគាំទ្រនៅទីនេះទេ</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ការបញ្ចូលបើកពេលចុចយូរមិនត្រូវបានគាំទ្រនៅទីនេះទេ</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ការបញ្ចូលបើកមិនស្គាល់ {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>ការបញ្ចូលបើកបន្សំគ្មានប៊ូតុងបន្សំកំណត់ទេ (គ្មានអ្វីអាចបង្កវាបានទេ)</value></data>
@@ -4060,15 +4052,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ការបញ្ចូលនេះមិនអាចបញ្ជាការបញ្ចូលបើកស្រទាប់បានទេ</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>លើសចំនួនជួរអតិបរមាសម្រាប់រន្ធ {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>គ្មានការភ្ជាប់ណាប្ដូរទៅការកំណត់ស្រាប់ {0} ទេ</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>ការម៉ាបស្វ័យប្រវត្តិរបស់ឧបករណ៍នៅតែបញ្ជូន {0} ទៅ {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>បានទម្លាក់ការប្ដូរស្រទាប់ ({0} ត្រូវបានបកប្រែទៅជាគ្មានអ្វី)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ការកំណត់ទីតាំងទ្រនិចដាច់ខាតត្រូវបានប៉ាន់ស្មានជាចលនាកណ្ដុរដែលទាក់ទង</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>បានទម្លាក់ការកំណត់ខ្សែកោងឆ្លើយតប និងជួរ ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>បានទម្លាក់ការកំណត់ហ្ស៊ីរ៉ូ {0}={1} (គ្មានប៊ូតុងដែលអាចអានបាននៅពីក្រោយតម្លៃនេះ)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>ការប្ដូរលេខអ្នកលេងជាសកម្មភាពកម្មវិធី Steam គ្មានសមមូល</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>ការបិទ/បើករបៀប lizard ជាមុខងារខាងក្នុងរបស់ Steam គ្មានសមមូល</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>ការចុចបិទ/បើកចាក់សោ {0} រហូតដល់ការចុចបន្ទាប់</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>ការចុចយូរប៉ះ {0} នៅកម្រិតចាប់ផ្ដើម (Steam សង្កត់វារហូតដល់លែង)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ការកំណត់កាមេរ៉ាឡើងវិញត្រូវបានប៉ាន់ស្មានជាការកំណត់កណ្ដាលហ្ស៊ីរ៉ូឡើងវិញ</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>តំបន់កណ្ដុរត្រូវបានប៉ាន់ស្មានជាការដាក់កម្រិតទ្រនិចនៅកណ្ដាល ({0}% នៃអេក្រង់ កណ្ដាលតំបន់ {1}%, {2}%) ខណៈផ្ទៃត្រូវបានសង្កត់</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>បានទម្លាក់ការកំណត់ចាប់ផ្ដើម/លែងតំបន់កណ្ដុរ ({0})</value></data>

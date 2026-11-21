@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>บันทึกและนำไปใช้</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>การผูก</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>นำเข้า '{0}' แล้ว: สมบูรณ์ {1}, บางส่วน {2}, ข้าม {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>การผูก {0} รายการครอบคลุมโดยการแมปอัตโนมัติเริ่มต้นแล้ว</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>แปลงแล้ว</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>แปลงเป็นแมโครแล้ว</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>เลเยอร์: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>การปรับแต่งทัชแพดมีผลรายแพด ไม่ใช่รายแถว</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ค่าเกณฑ์ทริกเกอร์เป็นค่าประมาณ</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ไม่มีตัวเรียกใช้ที่ไม่ผูกกับอุปกรณ์สำหรับอินพุตนี้</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>แอ็กชันในเกม {0} รายการ ใช้ได้เฉพาะ Steam ไม่มีฮุกฝั่งเกม</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>แอ็กชันของไคลเอ็นต์ Steam {0} ไม่มีสิ่งเทียบเท่า</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ไม่รองรับแอ็กชันคอนโทรลเลอร์ {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ไม่รู้จักประเภทการผูก {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>ไม่รู้จักคีย์ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>คีย์ {0} ไม่มีสิ่งเทียบเท่าใน Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ไม่รู้จักปุ่มเมาส์ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ไม่รู้จักปุ่ม XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ไม่รู้จักอินพุต {1} บน {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>ตัวควบคุมบนหน้าจอของ Steam Link {1}: ไม่มีอินพุตจริงบนคอนโทรลเลอร์ที่รองรับตัวใดเลย</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>ไม่รู้จักโหมดกลุ่ม {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ตัดโอเวอร์เลย์เมนูสัมผัสออก ({0} เซลล์)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ตัดโอเวอร์เลย์เมนูวงแหวนออก ({0} ส่วน)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ไม่รองรับการจำกัดพื้นที่เคอร์เซอร์</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ไม่รองรับตัวเปิดใช้งานแบบปล่อยที่นี่</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ไม่รองรับตัวเปิดใช้งานแบบกดค้างนานที่นี่</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ไม่รู้จักตัวเปิดใช้งาน {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>ตัวเปิดใช้งานแบบกดร่วมไม่ได้ตั้งปุ่มกดร่วมไว้ (ไม่มีอะไรสั่งให้ทำงานได้)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>อินพุตนี้ใช้ขับตัวเปิดใช้งานเลเยอร์ไม่ได้</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>เกินจำนวนแถวสูงสุดสำหรับช่อง {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ไม่มีการผูกใดสลับไปยังพรีเซ็ต {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>การแมปอัตโนมัติของอุปกรณ์ยังคงส่ง {0} ไปยัง {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>ตัดการสลับเลเยอร์ออก ({0} แปลงแล้วไม่เหลืออะไร)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ประมาณการกำหนดตำแหน่งตัวชี้แบบสัมบูรณ์เป็นการเคลื่อนที่ของเมาส์แบบสัมพัทธ์</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ตัดการตั้งค่าเส้นโค้งการตอบสนองและช่วงออก ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ตัดการตั้งค่าไจโร {0}={1} ออก (ไม่มีปุ่มที่อ่านได้อยู่เบื้องหลังค่านี้)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>การเปลี่ยนหมายเลขผู้เล่นเป็นแอ็กชันของไคลเอ็นต์ Steam ไม่มีสิ่งเทียบเท่า</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>การสลับโหมด lizard เป็นการทำงานภายในของ Steam ไม่มีสิ่งเทียบเท่า</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>การกดแบบสลับจะแลตช์ {0} ไว้จนกว่าจะกดครั้งถัดไป</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>การกดค้างนานจะแตะ {0} เมื่อถึงค่าเกณฑ์ (Steam จะกดค้างไว้จนกว่าจะปล่อย)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ประมาณการรีเซ็ตกล้องเป็นการจัดไจโรกลับกึ่งกลาง</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ประมาณพื้นที่เมาส์เป็นการจำกัดเคอร์เซอร์แบบอยู่กึ่งกลาง ({0}% ของหน้าจอ กึ่งกลางพื้นที่ {1}%, {2}%) ขณะที่สัมผัสพื้นผิวค้างไว้</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ตัดการตั้งค่าการเปิดใช้/การปล่อยของพื้นที่เมาส์ออก ({0})</value></data>

@@ -4023,28 +4023,20 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Gorde eta aplikatu</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Esleipenak</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» inportatu da: {1} garbi, {2} partzial, {3} saltatu</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>esleipen automatiko lehenetsiak estalitako {0} esleipen</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>itzulia</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>makro gisa itzulia</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>geruza: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>ukipen-panelaren doikuntza panel bakoitzeko aplikatzen da, ez errenkada bakoitzeko</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>katuaren atalasea gutxi gorabehera</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ez dago gailurik gabeko abiarazlerik sarrera honetarako</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} jokoko ekintza, Steam-ekoak soilik, jokoaren aldeko loturarik gabe</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>{0} Steam bezeroaren ekintza, baliokiderik gabe</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>{0} kontrolagailu-ekintza ez da onartzen</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>esleipen mota ezezaguna: {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tekla ezezaguna: {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} teklak ez du Windows-en baliokiderik</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>sagu-botoi ezezaguna: {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>XInput botoi ezezaguna: {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>sarrera ezezaguna: {1} ({0})</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link pantailako {1} kontrola: ez dago sarrera fisikorik onartutako kontrolagailuetan</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>talde-modu ezezaguna: {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>ukipen-menuaren gainjartzea baztertu da ({0} gelaxka)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>menu erradialaren gainjartzea baztertu da ({0} sektore)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>kurtsorearen eremu-murriztapena ez da onartzen</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>askatze-aktibatzailea ez da onartzen hemen</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>sakatze luzeko aktibatzailea ez da onartzen hemen</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>aktibatzaile ezezaguna: {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akorde-aktibatzaileak ez du akorde-botoirik ezarrita (ezerk ezin du abiarazi)</value></data>
@@ -4056,15 +4048,12 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>sarrera honek ezin du geruza-aktibatzaile bat eragin</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>errenkada-muga gainditu da {0} zirrikiturako</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>esleipen batek ere ez du {0} aurrezarpenera aldatzen</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>gailuaren esleipen automatikoak oraindik {0} bideratzen du hona: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>geruza-aldaketa baztertu da ({0}: ez da ezer itzuli)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>erakuslearen kokapen absolutua saguaren mugimendu erlatibo gisa hurbildu da</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>erantzun-kurbaren eta heinaren ezarpenak baztertu dira ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>{0}={1} giroskopio-ezarpena baztertu da (ez dago balio honen atzean botoi irakurgarririk)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>jokalari-zenbakiaren aldaketa Steam bezeroaren ekintza da, baliokiderik gabe</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard moduaren txandakatzea Steam-en barnekoa da, baliokiderik gabe</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>txandakatze-sakatzeak {0} finkatzen du hurrengo sakatzera arte</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>sakatze luzeak {0} sakatzen du atalasean (Steam-ek askatu arte eusten dio)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kameraren berrezartzea giroskopioaren zentratze berri gisa hurbildu da</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>saguaren eremua kurtsore-muga zentratu gisa hurbildu da (pantailaren %{0}, eremuaren erdigunea %{1}, %{2}) azalera ukitzen den bitartean</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>saguaren eremuaren aktibatze/askatze ezarpenak baztertu dira ({0})</value></data>

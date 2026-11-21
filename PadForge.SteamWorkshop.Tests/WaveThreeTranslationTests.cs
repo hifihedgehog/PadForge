@@ -142,16 +142,8 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
             Assert.Equal(2.0, Assert.Single(x.Sources).Sensitivity, 3);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TouchpadTuningNotPerRow);
             Assert.All(p.Report.Entries.Where(e => e.ReasonKey == TranslationReasons.RowEmitted),
                 e => Assert.Equal(TranslationStatus.Clean, e.Status));
-            // v6 (#9 B-15 verification): trackpad absolute_mouse IS
-            // relative cursor movement in Steam, so the relative rows are
-            // faithful and the old AbsoluteMouseApproximated Partial no
-            // longer fires anywhere.
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.AbsoluteMouseApproximated);
         }
 
         [Fact]

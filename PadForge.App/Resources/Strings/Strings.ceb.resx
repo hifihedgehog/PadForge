@@ -2853,7 +2853,6 @@
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>dili suportado ang aksyon sa controller {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>wala mailhi nga klase sa binding {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>wala mailhi nga key {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>ang key {0} walay katumbas sa Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>wala mailhi nga button sa mouse {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>wala mailhi nga XInput button {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>wala mailhi nga input {1} sa {0}</value></data>

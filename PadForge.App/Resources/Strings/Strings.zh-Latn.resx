@@ -4004,28 +4004,20 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Bǎocún bìng yìngyòng</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Yìngshè</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Yǐ dǎorù “{0}”: wánzhěng {1}, bùfen {2}, tiàoguò {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} tiáo yìngshè yǐ yóu mòrèn zìdòng yìngshè fùgài</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>yǐ zhuǎnhuàn</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>yǐ zhuǎnhuàn wéi hóng</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>céng: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>chùkòngbǎn tiáojié àn zhěng kuài chùkòngbǎn shēngxiào, ér fēi àn háng</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>bānjī yùzhí yǐ jìnsì chǔlǐ</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>cǐ shūrù méiyǒu kěyòng de bù yīlài shèbèi de chùfāqì</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} gè yóuxì nèi dòngzuò, jǐn xiàn Steam, wú yóuxì cè guàgōu</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam kèhùduān dòngzuò {0}, wú duìyìng xiàng</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>bù zhīchí kòngzhìqì dòngzuò {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>wèizhī yìngshè lèixíng {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>wèizhī jiàn {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>jiàn {0} méiyǒu duìyìng de Windows jiàn</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>wèizhī shǔbiāo ànniǔ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>wèizhī XInput ànniǔ {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} shàng de wèizhī shūrù {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link píngmù kòngjiàn {1}: suǒyǒu shòu zhīchí de kòngzhìqì shàng jūn wú duìyìng wùlǐ shūrù</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>wèizhī fēnzǔ móshì {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>yǐ diūqì chùmō càidān diéjiācéng ({0} gè dānyuángé)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>yǐ diūqì jìngxiàng càidān diéjiācéng ({0} gè shànqū)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>bù zhīchí guāngbiāo qūyù xiànzhì</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>cǐ chù bù zhīchí sōngkāi jīhuó fāngshì</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>cǐ chù bù zhīchí chángàn jīhuó fāngshì</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>wèizhī jīhuó fāngshì {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>zǔhéjiàn chùfāqì wèi shèzhì zǔhé ànniǔ (wúfǎ chùfā)</value></data>
@@ -4037,15 +4029,12 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>cǐ shūrù wúfǎ yòng yú jīhuó céng</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} cáowèi de hángshù yǐ chāochū shàngxiàn</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>méiyǒu yìngshè qiēhuàn dào yùshè {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>shèbèi de zìdòng yìngshè réng huì jiāng {0} lùyóu dào {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>céng qiēhuàn yǐ diūqì ({0} wèi chǎnshēng rènhé zhuǎnhuàn)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>zhǐzhēn juéduì dìngwèi jìnsì wéi xiāngduì shǔbiāo yídòng</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>yǐ diūqì xiǎngyìng qūxiàn hé fànwéi shèzhì ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>yǐ diūqì tuóluóyí shèzhì {0}={1} (gāi zhí méiyǒu kě dúqǔ de ànniǔ)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>gēnggǎi wánjiā biānhào shì Steam kèhùduān dòngzuò, wú duìyìng xiàng</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>xīyì móshì qiēhuàn shì Steam nèibù gōngnéng, wú duìyìng xiàng</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>qiēhuàn ànxià jiāng bǎochí {0} zhídào xià cì ànxià</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>chángàn zài dádào yùzhí shí diǎn àn {0} (Steam huì àn zhù zhídào sōngkāi)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>shèxiàngjī chóngzhì jìnsì wéi tuóluóyí chóngxīn jūzhōng</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>shǔbiāo qūyù jìnsì wéi jūzhōng de guāngbiāo xiànzhì (píngmù de {0}%, qūyù zhōngxīn {1}%, {2}%), zài àn zhù gāi biǎomiàn qījiān shēngxiào</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>yǐ diūqì shǔbiāo qūyù de jīhuó/sōngkāi shèzhì ({0})</value></data>

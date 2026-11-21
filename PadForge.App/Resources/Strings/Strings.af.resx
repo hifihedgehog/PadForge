@@ -3907,28 +3907,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Stoor en pas toe</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Toewysings</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' ingevoer: {1} skoon, {2} gedeeltelik, {3} oorgeslaan</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} toewysings gedek deur die verstek-outomatiese toewysing</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>vertaal</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>vertaal as ’n makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>raakplaat-afstemming geld per pad, nie per ry nie</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>snellerdrempel benader</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen toestelvrye sneller vir hierdie invoer nie</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-spel-aksies, net Steam, geen haak aan die spelkant nie</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-kliëntaksie {0}, geen ekwivalent nie</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controlleraksie {0} word nie ondersteun nie</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekende toewysingstipe {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>onbekende sleutel {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>sleutel {0} het geen Windows-ekwivalent nie</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>onbekende muisknoppie {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>onbekende XInput-knoppie {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>onbekende invoer {1} op {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-skermbeheer {1}: geen fisiese invoer op enige ondersteunde controller nie</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>onbekende groepmodus {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>raak-kieslys-overlay weggelaat ({0} selle)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiale-kieslys-overlay weggelaat ({0} sektore)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>wyserstreekbeperking word nie ondersteun nie</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>los-aktiveerder word hier nie ondersteun nie</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-druk-aktiveerder word hier nie ondersteun nie</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende aktiveerder {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akkoord-aktiveerder het geen akkoordknoppie gestel nie (niks kan dit vuur nie)</value></data>
@@ -3940,15 +3932,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>hierdie invoer kan nie ’n laag-aktiveerder aandryf nie</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rylimiet oorskry vir die {0}-gleuf</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>geen toewysing skakel oor na voorinstelling {0} nie</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>die toestel se outomatiese toewysing stuur steeds {0} na {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>laagwissel weggelaat ({0} is na niks vertaal)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute wyserposisionering benader as relatiewe muisbeweging</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>responskurwe- en reeksinstellings weggelaat ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>giro-instelling {0}={1} weggelaat (geen leesbare knoppie agter hierdie waarde nie)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>spelernommerverandering is ’n Steam-kliëntaksie, geen ekwivalent nie</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>akkedismodus-wissel is Steam-intern, geen ekwivalent nie</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>wisseldruk hou {0} vas tot die volgende druk</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>lang druk tik {0} by die drempel (Steam hou dit tot los)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kamerastelterug benader as ’n giro-hersentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>muisstreek benader as ’n gesentreerde wyserbeperking ({0}% van die skerm, streeksmiddel {1}%, {2}%) solank die oppervlak vasgehou word</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>muisstreek-aktiverings-/loslaatinstellings weggelaat ({0})</value></data>

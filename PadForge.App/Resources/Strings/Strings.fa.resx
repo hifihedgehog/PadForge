@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>ذخیره و اعمال</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>نگاشت‌ها</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>«{0}» وارد شد: {1} کامل، {2} جزئی، {3} ردشده</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} نگاشت که نگاشت خودکار پیش‌فرض آن‌ها را پوشش می‌دهد</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>تبدیل شد</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>به‌صورت ماکرو تبدیل شد</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>لایه: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>تنظیمات تاچ‌پد برای هر تاچ‌پد اعمال می‌شود، نه برای هر ردیف</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>آستانه ماشه به‌طور تقریبی اعمال شد</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>برای این ورودی راه‌انداز مستقل از دستگاه وجود ندارد</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} کنش درون بازی، مخصوص Steam، بدون هوک در سمت بازی</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>کنش کلاینت Steam {0}، بدون معادل</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>کنش کنترلر {0} پشتیبانی نمی‌شود</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>نوع نگاشت ناشناخته {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>کلید ناشناخته {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>کلید {0} معادلی در Windows ندارد</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>دکمه ماوس ناشناخته {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>دکمه XInput ناشناخته {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ورودی ناشناخته {1} در {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>کنترل روی صفحه {1} در Steam Link: در هیچ کنترلر پشتیبانی‌شده‌ای ورودی فیزیکی ندارد</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>حالت گروه ناشناخته {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>اورلی منوی لمسی کنار گذاشته شد ({0} خانه)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>اورلی منوی شعاعی کنار گذاشته شد ({0} بخش)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>محدودیت ناحیه نشانگر پشتیبانی نمی‌شود</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>فعال‌ساز رها کردن در اینجا پشتیبانی نمی‌شود</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>فعال‌ساز فشار طولانی در اینجا پشتیبانی نمی‌شود</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>فعال‌ساز ناشناخته {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>برای فعال‌ساز ترکیبی دکمه ترکیب تنظیم نشده است (هیچ چیز نمی‌تواند آن را اجرا کند)</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>این ورودی نمی‌تواند فعال‌ساز لایه را به کار اندازد</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>سقف تعداد ردیف‌ها برای اسلات {0} رد شد</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>هیچ نگاشتی به پیش‌تنظیم {0} تعویض نمی‌کند</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>نگاشت خودکار دستگاه همچنان {0} را به {1} هدایت می‌کند</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>تعویض لایه کنار گذاشته شد ({0} به چیزی تبدیل نشد)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>جای‌گذاری مطلق نشانگر به‌طور تقریبی به‌صورت حرکت نسبی ماوس تبدیل شد</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>تنظیمات منحنی پاسخ و محدوده کنار گذاشته شد ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>تنظیم ژیروسکوپ {0}={1} کنار گذاشته شد (هیچ دکمه خوانایی پشت این مقدار نیست)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>تغییر شماره بازیکن یک کنش کلاینت Steam است، بدون معادل</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>تغییر وضعیت حالت Lizard مربوط به درون Steam است، بدون معادل</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>فشار تغییر وضعیت، {0} را تا فشار بعدی قفل می‌کند</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>فشار طولانی در آستانه یک بار {0} را می‌زند (Steam آن را تا رها کردن نگه می‌دارد)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>بازنشانی دوربین به‌طور تقریبی به‌صورت بازگرداندن ژیروسکوپ به مرکز تبدیل شد</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>ناحیه ماوس به‌طور تقریبی به‌صورت محدودیت نشانگر در مرکز تبدیل شد ({0}% صفحه، مرکز ناحیه {1}%، {2}%) تا وقتی سطح نگه داشته شده است</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>تنظیمات فعال‌سازی/رهاسازی ناحیه ماوس کنار گذاشته شد ({0})</value></data>

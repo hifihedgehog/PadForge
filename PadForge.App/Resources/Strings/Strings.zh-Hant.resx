@@ -4252,28 +4252,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>儲存並套用</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>繫結</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>已匯入「{0}」：{1} 個完整、{2} 個部分、{3} 個略過</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 個繫結已由預設自動對應涵蓋</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>已轉換</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>已轉換為巨集</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>層：{0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>觸控板調校是依觸控板套用，而非依列</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳機臨界值為近似值</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此輸入沒有不限定裝置的觸發條件</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 個遊戲內動作，僅限 Steam，沒有遊戲端的掛鉤</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 用戶端動作 {0}，沒有對應功能</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>不支援控制器動作 {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>未知的繫結類型 {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>未知的按鍵 {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>按鍵 {0} 沒有對應的 Windows 按鍵</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>未知的滑鼠按鈕 {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>未知的 XInput 按鈕 {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上有未知的輸入 {1}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link 螢幕控制項 {1}：任何支援的控制器上都沒有對應的實體輸入</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>未知的群組模式 {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已捨棄觸控選單重疊介面（{0} 個格子）</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已捨棄環形選單重疊介面（{0} 個扇形區）</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>不支援游標區域限制</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此處不支援放開啟動鍵</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此處不支援長按啟動鍵</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知的啟動鍵 {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>組合鍵啟動鍵未設定組合按鈕（沒有任何輸入能觸發它）</value></data>
@@ -4285,15 +4277,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>此輸入無法驅動層啟動鍵</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>已超過 {0} 插槽的列數上限</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>沒有任何繫結會切換到預設集 {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>裝置的自動對應仍會將 {0} 導向 {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>已捨棄層切換（{0} 未轉換出任何內容）</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>絕對游標定位已近似為相對滑鼠移動</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>已捨棄反應曲線和範圍設定（{0}）</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>已捨棄陀螺儀設定 {0}={1}（此數值背後沒有可讀取的按鈕）</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>變更玩家編號是 Steam 用戶端動作，沒有對應功能</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式（lizard mode）切換是 Steam 內部功能，沒有對應功能</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切換式按壓會鎖定 {0}，直到下次按下為止</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>長按會在達到臨界值時短按一下 {0}（Steam 則會按住直到放開）</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>鏡頭重設已近似為陀螺儀回中</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>滑鼠區域已近似為按住該表面期間的置中游標限制（螢幕的 {0}%，區域中心 {1}%、{2}%）</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已捨棄滑鼠區域的啟用/放開設定（{0}）</value></data>

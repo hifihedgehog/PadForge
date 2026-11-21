@@ -4252,28 +4252,20 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Lagre og bruk</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindinger</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importerte «{0}»: {1} rene, {2} delvise, {3} hoppet over</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} bindinger dekkes av standard autotilordning</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>oversatt</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>oversatt som en makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lag: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>justering av berøringsplaten gjelder per plate, ikke per rad</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>avtrekkerterskelen er tilnærmet</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ingen enhetsuavhengig utløser for denne inndatakilden</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} handlinger i spillet, bare for Steam, ingen kobling på spillsiden</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>handling {0} i Steam-klienten, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrollerhandlingen {0} støttes ikke</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ukjent bindingstype {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>ukjent tast {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tasten {0} har ingen tilsvarende i Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>ukjent museknapp {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>ukjent XInput-knapp {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>ukjent inndata {1} på {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Skjermkontroll {1} i Steam Link: ingen fysisk inndata på noen støttet kontroller</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>ukjent gruppemodus {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlegg for berøringsmeny utelatt ({0} celler)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlegg for radiell meny utelatt ({0} sektorer)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>begrensning av pekerområde støttes ikke</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>slippaktivator støttes ikke her</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivator for langt trykk støttes ikke her</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ukjent aktivator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>akkordaktivatoren har ingen akkordknapp angitt (ingenting kan utløse den)</value></data>
@@ -4285,15 +4277,12 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>denne inndatakilden kan ikke styre en lagaktivator</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>radgrensen er overskredet for sporet {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ingen binding bytter til forhåndsinnstillingen {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>autotilordningen for enheten ruter fortsatt {0} til {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>lagbytte utelatt ({0} ble ikke oversatt til noe)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolutt pekerplassering tilnærmet som relativ musebevegelse</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>innstillinger for responskurve og område utelatt ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyroinnstillingen {0}={1} utelatt (ingen lesbar knapp bak denne verdien)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>endring av spillernummer er en handling i Steam-klienten, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>veksling av lizard mode er intern i Steam, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>et vekslingstrykk låser {0} til neste trykk</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>langt trykk trykker {0} kort ved terskelen (Steam holder den til slipp)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>tilbakestilling av kamera tilnærmet som sentrering av gyro</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>museområde tilnærmet som en sentrert pekerbegrensning ({0} % av skjermen, områdets midtpunkt {1} %, {2} %) mens flaten holdes</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>innstillinger for aktivering/slipp av museområde utelatt ({0})</value></data>

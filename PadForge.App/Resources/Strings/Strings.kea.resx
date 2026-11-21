@@ -2465,7 +2465,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduzidu komu makru</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>kamada: {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tékla diskonxedu {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tékla {0} ka ten ekivalenti na Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>botãu di mouse diskonxedu {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>botãu XInput diskonxedu {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrada diskonxedu {1} na {0}</value></data>

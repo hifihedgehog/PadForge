@@ -260,8 +260,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.VcButtonTap, m.Action);
             Assert.Equal("OnRelease", m.TriggerMode);
             Assert.Equal(Gamepad.B, m.TargetXboxButtons);
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 
         [Fact]
@@ -278,8 +276,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.VcAxisTap, m.Action);
             Assert.Equal("OnRelease", m.TriggerMode);
             Assert.Equal("LeftTrigger", m.TargetAxis);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 
         // ─── G7: SCREENSHOT / SHOW_KEYBOARD ─────────────────────────────
@@ -457,8 +453,6 @@ namespace PadForge.SteamWorkshop.Tests
             var m = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
             Assert.Equal(0x90, m.VirtualKey); // VK_NUMLOCK
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.UnsupportedKey);
         }
 
         [Fact]

@@ -555,17 +555,17 @@ namespace PadForge.SteamWorkshop.Translation
     }
 
     /// <summary>
-    /// The <c>Workshop_Tr_*</c> reason-key vocabulary. English resx strings
-    /// land with the Phase C/D localization pass; the keys are fixed now so
-    /// reports serialized before that pass stay renderable.
+    /// The <c>Workshop_Tr_*</c> reason-key vocabulary, one string in
+    /// Strings.resx for each key. A report lives only as long as the import
+    /// that made it: the profile keeps <see cref="TranslationReport.ToSummaryString"/>,
+    /// which names no key. So a key no translator version emits is deleted
+    /// with its locale strings.
     /// </summary>
     public static class TranslationReasons
     {
-        // Legacy-render-only: no longer emitted (identity bindings now
-        // materialize as explicit rows) but kept, with its resx strings,
-        // because the vocabulary is fixed and reports serialized by older
-        // translator versions must stay renderable.
-        public const string DefaultAutomapPassthrough = "Workshop_Tr_DefaultAutomapPassthrough"; // {0} bindings
+        // DefaultAutomapPassthrough retired in the v1 cycle: identity
+        // bindings materialize as explicit rows. The key plus its locale
+        // strings were deleted.
         public const string RowEmitted = "Workshop_Tr_RowEmitted";
         public const string MacroEmitted = "Workshop_Tr_MacroEmitted";
         public const string ShiftLayerEmitted = "Workshop_Tr_ShiftLayerEmitted";                 // {0} layer name
@@ -573,26 +573,23 @@ namespace PadForge.SteamWorkshop.Translation
         // Authoritative and the engine auto-arms every referenced gesture
         // family at apply (TouchpadGestureAutoArm), so no note remains and
         // the key plus its locale strings were deleted.
-        // Legacy-render-only since translator v4: touchpad mouse rows carry
-        // the per-row Sensitivity now (#9 B-13 widened the knob to the
-        // finger reads), so nothing is dropped. Kept, with its resx
-        // strings, for reports serialized by older translator versions.
-        public const string TouchpadTuningNotPerRow = "Workshop_Tr_TouchpadTuningNotPerRow";
+        // TouchpadTuningNotPerRow retired in v4: touchpad mouse rows carry
+        // the per-row Sensitivity (#9 B-13 widened the knob to the finger
+        // reads), so nothing is dropped. The key plus its locale strings
+        // were deleted.
         // SoftPressApproximated retired in v17: "Soft_Press approximated
         // as a press threshold" described exactly what a soft press is,
         // so the note was noise, not a fidelity loss. Soft rows report
         // Clean now (the trigger-pull threshold lowering stays in
         // BuildSource) and the key plus its locale strings were deleted.
-        // Legacy-render-only since translator v6: the v2-v5 Partial was a
+        // AbsoluteMouseApproximated retired in v6: the v2-v5 Partial was a
         // false alarm. Trackpad/gyro absolute_mouse IS relative cursor
         // movement in Steam (trackball/friction settings vocabulary, the
         // Steam Input API's delta delivery, sc-controller's importer, and
         // Valve's mobile-touch template naming all agree; see the
         // absolute_mouse case in ConfigTranslator), so the relative rows
-        // are faithful and Clean. Kept, with its resx strings, for reports
-        // serialized by older translator versions.
-        public const string AbsoluteMouseApproximated = "Workshop_Tr_AbsoluteMouseApproximated";
-        public const string TriggerThresholdApproximated = "Workshop_Tr_TriggerThresholdApproximated";
+        // are faithful and Clean. TriggerThresholdApproximated was never
+        // emitted. Both keys plus their locale strings were deleted.
         // MacroTriggerViaXboxOutput retired in v15: it narrated the trigger's
         // combined-output plumbing on a WORKING macro, not a fidelity loss,
         // so those emissions are silent Clean now and the key plus its
@@ -603,11 +600,9 @@ namespace PadForge.SteamWorkshop.Translation
         public const string UnsupportedControllerAction = "Workshop_Tr_UnsupportedControllerAction"; // {0} action
         public const string UnknownBindingType = "Workshop_Tr_UnknownBindingType";               // {0} type
         public const string UnknownKey = "Workshop_Tr_UnknownKey";                               // {0} key
-        // Legacy-render-only since translator v10 (G11): VKs outside the
-        // KbM row engine's closed list ride SendInput HoldKey macros now,
-        // so nothing is unsupported. Kept, with its resx strings, for
-        // reports serialized by older translator versions.
-        public const string UnsupportedKey = "Workshop_Tr_UnsupportedKey";                       // {0} key
+        // UnsupportedKey retired in v10 (G11): VKs outside the KbM row
+        // engine's closed list ride SendInput HoldKey macros, so nothing is
+        // unsupported. The key plus its locale strings were deleted.
         public const string UnknownMouseButton = "Workshop_Tr_UnknownMouseButton";               // {0} name
         public const string UnknownXInputButton = "Workshop_Tr_UnknownXInputButton";             // {0} name
         public const string UnknownPhysicalInput = "Workshop_Tr_UnknownPhysicalInput";           // {0} slot {1} input
@@ -621,13 +616,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// drive exposes them. {0} = the slot, {1} = the input token.</summary>
         public const string MobileTouchSurfaceOnly = "Workshop_Tr_MobileTouchSurfaceOnly";       // {0} slot {1} input
         public const string UnknownGroupMode = "Workshop_Tr_UnknownGroupMode";                   // {0} mode
-        // Legacy-render-only since translator v7 (#9 B-17): menus are
-        // first-class now, so nothing needs an overlay it doesn't have.
-        // Kept, with their resx strings, for reports serialized by older
-        // translator versions.
-        public const string TouchMenuNeedsOverlay = "Workshop_Tr_TouchMenuNeedsOverlay";         // {0} cell count
-        public const string RadialMenuNeedsOverlay = "Workshop_Tr_RadialMenuNeedsOverlay";       // {0} cell count
-        public const string MouseRegionNotSupported = "Workshop_Tr_MouseRegionNotSupported";
+        // TouchMenuNeedsOverlay and RadialMenuNeedsOverlay retired in v7
+        // (#9 B-17): menus are first-class, so nothing needs an overlay it
+        // does not have. MouseRegionNotSupported retired in v6: mouse
+        // regions route to pointer rows, clamp macros or the
+        // NoDeviceFreeTrigger residual. The keys plus their locale strings
+        // were deleted.
         // ScrollWheelModeNotSupported retired in v16: scroll_wheel_list
         // items lower to the CycleTapList macro, and the surfaceless-host
         // arm is unreachable in Steam's grammar (the mode hosts on
@@ -639,7 +633,10 @@ namespace PadForge.SteamWorkshop.Translation
         // (geometry named via MouseRegionTuningDropped), and the census
         // guard pins edge members to trigger / trackpad / stick hosts.
         // The key plus its locale strings were deleted.
-        public const string ReleaseActivatorNotSupported = "Workshop_Tr_ReleaseActivatorNotSupported";
+        // ReleaseActivatorNotSupported retired in v15: release activators
+        // build tap macros on mouse and pad buttons (v10) and on trigger
+        // pulls, stick directions and wheel detents (v15). The key plus its
+        // locale strings were deleted.
         public const string LongPressNotSupported = "Workshop_Tr_LongPressNotSupported";
         // DoublePressNotSupported retired in v17: button-hosted (and every
         // other non-trackpad) Double_Press lowers to macros on the
@@ -692,10 +689,9 @@ namespace PadForge.SteamWorkshop.Translation
         public const string RowCapExceeded = "Workshop_Tr_RowCapExceeded";                       // {0} slot class
         public const string PresetHasNoActivator = "Workshop_Tr_PresetHasNoActivator";           // {0} preset name
         public const string ShiftLayerEmpty = "Workshop_Tr_ShiftLayerEmpty";                     // {0} layer name
-        // Legacy-render-only: no longer emitted (authoritative imported sets
-        // stop the automap from asserting, so there is nothing to warn
-        // about) but kept, with its resx strings, for old serialized reports.
-        public const string AutomapAlsoActive = "Workshop_Tr_AutomapAlsoActive";                 // {0} source {1} target
+        // AutomapAlsoActive retired in the v1 cycle: authoritative imported
+        // sets stop the automap from asserting, so there is nothing to warn
+        // about. The key plus its locale strings were deleted.
 
         // ── Translator v2 (Wave 1a) vocabulary ──
         // ScrollGestureModeNotSupported retired in v14 (split into per-arm
@@ -809,11 +805,9 @@ namespace PadForge.SteamWorkshop.Translation
         // (ToggleMouseButton / ToggleWheel / ToggleVcAxis beside the
         // wave-2A key and VC-button latches). The key plus its locale
         // strings were deleted.
-        /// <summary>Legacy-render-only since translator v10 (G10): a
-        /// Long_Press key rides the HoldKey pair now (down at threshold,
-        /// up on release), so nothing taps. Kept, with its resx strings,
-        /// for reports serialized by older translator versions.</summary>
-        public const string LongPressKeyTap = "Workshop_Tr_LongPressKeyTap";                       // {0} key
+        // LongPressKeyTap retired in v10 (G10): a Long_Press key rides the
+        // HoldKey pair (down at threshold, up on release), so nothing taps.
+        // The key plus its locale strings were deleted.
         /// <summary>camera_reset re-levels the camera by unwinding STEAM'S
         /// OWN ledger of emitted camera motion (the numeric args bound the
         /// yaw / pitch sweep and speed), a best-effort even there: no

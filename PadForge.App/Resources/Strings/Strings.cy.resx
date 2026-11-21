@@ -4025,28 +4025,20 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Cadw a chymhwyso</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Rhwymiadau</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Mewnforiwyd '{0}': {1} glân, {2} rhannol, {3} wedi'u hepgor</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} rhwymiad wedi'u cwmpasu gan y mapio awtomatig rhagosodedig</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>wedi'i gyfieithu</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>wedi'i gyfieithu fel macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>haen: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>mae tiwnio'r pad cyffwrdd yn berthnasol fesul pad, nid fesul rhes</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>amcangyfrifwyd trothwy'r sbardun</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>dim sbardun heb ddyfais ar gyfer y mewnbwn hwn</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} gweithred yn y gêm, Steam yn unig, dim bachyn ochr gêm</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>gweithred cleient Steam {0}, dim cywerth</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ni chefnogir gweithred y rheolydd {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>math rhwymiad anhysbys {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>bysell anhysbys {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>nid oes gan fysell {0} gywerth Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>botwm llygoden anhysbys {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>botwm XInput anhysbys {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>mewnbwn anhysbys {1} ar {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>rheolydd ar y sgrin Steam Link {1}: dim mewnbwn ffisegol ar unrhyw reolydd a gefnogir</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>modd grŵp anhysbys {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>gollyngwyd troshaen y ddewislen gyffwrdd ({0} cell)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>gollyngwyd troshaen y ddewislen radial ({0} sector)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>ni chefnogir cyfyngiad rhanbarth y cyrchwr</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ni chefnogir ysgogydd rhyddhau yma</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ni chefnogir ysgogydd gwasgiad hir yma</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ysgogydd anhysbys {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>nid oes botwm cord wedi'i osod ar yr ysgogydd cord (ni all dim ei danio)</value></data>
@@ -4058,15 +4050,12 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ni all y mewnbwn hwn yrru ysgogydd haen</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rhagorwyd ar derfyn rhesi ar gyfer y slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nid oes rhwymiad yn newid i ragosodiad {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>mae mapio awtomatig y ddyfais yn dal i lwybro {0} i {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>gollyngwyd newid haen (cyfieithwyd {0} i ddim)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>amcangyfrifwyd lleoli pwyntydd absoliwt fel symudiad llygoden cymharol</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>gollyngwyd gosodiadau cromlin ymateb ac amrediad ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gollyngwyd gosodiad gyrosgop {0}={1} (dim botwm darllenadwy y tu ôl i'r gwerth hwn)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>gweithred cleient Steam yw newid rhif chwaraewr, dim cywerth</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>mae togl modd lizard yn fewnol i Steam, dim cywerth</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>mae toglo gwasgiad yn clicedu {0} hyd at y wasg nesaf</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>mae gwasgiad hir yn tapio {0} wrth y trothwy (mae Steam yn ei ddal nes rhyddhau)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>amcangyfrifwyd ailosod camera fel ailganoli gyrosgop</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>amcangyfrifwyd rhanbarth y llygoden fel clamp cyrchwr canolog ({0}% o'r sgrin, canol y rhanbarth {1}%, {2}%) tra bo'r arwyneb yn cael ei ddal</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>gollyngwyd gosodiadau ymgysylltu/rhyddhau rhanbarth y llygoden ({0})</value></data>

@@ -4252,28 +4252,20 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Shrani in uporabi</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Povezave</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Uvoženo „{0}“: čisto {1}, delno {2}, preskočeno {3}</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>Povezave, ki jih pokriva privzeta samodejna preslikava: {0}</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>pretvorjeno</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>pretvorjeno kot makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>plast: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>nastavitve sledilne ploščice veljajo za ploščico, ne za vrstico</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>prag sprožilca približan</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>za ta vnos ni sprožilca, neodvisnega od naprave</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>dejanja v igri: {0}, samo za Steam, brez kljuke na strani igre</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>dejanje odjemalca Steam {0}, brez ustreznice</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>dejanje krmilnika {0} ni podprto</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>neznana vrsta povezave {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>neznana tipka {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tipka {0} nima ustreznice v sistemu Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>neznan gumb miške {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>neznan gumb XInput {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>neznan vnos {1} na {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>zaslonski kontrolnik Steam Link {1}: na nobenem podprtem krmilniku ni fizičnega vnosa</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>neznan način skupine {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>prekrivni prikaz menija na dotik izpuščen (celice: {0})</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>prekrivni prikaz radialnega menija izpuščen (izseki: {0})</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>omejitev kazalca na območje ni podprta</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aktivator ob spustu tu ni podprt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktivator z dolgim pritiskom tu ni podprt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>neznan aktivator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>aktivator kombinacije nima nastavljenega gumba kombinacije (ničesar ga ne more sprožiti)</value></data>
@@ -4285,15 +4277,12 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>ta vnos ne more upravljati aktivatorja plasti</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>presežena omejitev vrstic za režo {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nobena povezava ne preklopi na prednastavitev {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>samodejna preslikava naprave še vedno usmerja {0} na {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>preklop plasti izpuščen (iz {0} ni nastalo nič)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolutno postavljanje kazalca približano z relativnim premikanjem miške</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>nastavitve krivulje odziva in obsega izpuščene ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>nastavitev žiroskopa {0}={1} izpuščena (za to vrednostjo ni berljivega gumba)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>sprememba številke igralca je dejanje odjemalca Steam, brez ustreznice</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>preklop načina lizard je notranja funkcija Steama, brez ustreznice</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>preklopni pritisk zaskoči {0} do naslednjega pritiska</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>dolg pritisk na pragu na kratko pritisne {0} (Steam ga drži do spusta)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>ponastavitev kamere približana s ponovnim središčenjem žiroskopa</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>območje miške približano z omejitvijo kazalca na sredini ({0}% zaslona, središče območja {1}%, {2}%), dokler je površina pridržana</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>nastavitve vklopa/sprostitve območja miške izpuščene ({0})</value></data>

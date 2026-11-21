@@ -4252,28 +4252,20 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Spara och tillämpa</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindningar</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Importerade ”{0}”: {1} fullständiga, {2} delvisa, {3} överhoppade</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} bindningar täcks av den automatiska standardmappningen</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>översatt</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>översatt som ett makro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lager: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>styrplattejustering gäller per platta, inte per rad</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>avtryckartröskel approximerad</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ingen enhetsoberoende utlösare för den här inmatningen</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} åtgärder i spelet, endast Steam, ingen koppling på spelsidan</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-klientåtgärden {0}, ingen motsvarighet</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>handkontrollsåtgärden {0} stöds inte</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>okänd bindningstyp {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>okänd tangent {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tangenten {0} har ingen motsvarighet i Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>okänd musknapp {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>okänd XInput-knapp {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>okänd inmatning {1} på {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-skärmkontrollen {1}: ingen fysisk inmatning på någon handkontroll som stöds</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>okänt gruppläge {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>överlägg för pekmeny utelämnat ({0} celler)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>överlägg för radiell meny utelämnat ({0} sektorer)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>områdesbegränsning för muspekaren stöds inte</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>släppaktiverare stöds inte här</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aktiverare för långt tryck stöds inte här</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>okänd aktiverare {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>ackordaktiveraren har ingen ackordknapp angiven (ingenting kan utlösa den)</value></data>
@@ -4285,15 +4277,12 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>den här inmatningen kan inte styra en lageraktiverare</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>radgränsen har överskridits för platsen {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ingen bindning byter till förinställningen {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>enhetens automatiska mappning dirigerar fortfarande {0} till {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>lagerbytet utelämnat ({0} översattes till ingenting)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolut pekarpositionering approximerad som relativ musrörelse</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>inställningar för responskurva och omfång utelämnade ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyroinställningen {0}={1} utelämnad (ingen läsbar knapp bakom det här värdet)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>byte av spelarnummer är en Steam-klientåtgärd, ingen motsvarighet</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>växling av lizard mode är internt för Steam, ingen motsvarighet</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>växlingstryck låser {0} till nästa tryck</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>långt tryck trycker kort på {0} vid tröskelvärdet (Steam håller den tills släpp)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>kameraåterställning approximerad som en gyrocentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>musområde approximerat som en centrerad pekarbegränsning ({0} % av skärmen, områdets mitt {1} %, {2} %) medan ytan hålls</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>inställningar för aktivering/släpp av musområde utelämnade ({0})</value></data>

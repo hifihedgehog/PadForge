@@ -4073,28 +4073,20 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Speichern und anwenden</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindungen</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' importiert: {1} sauber, {2} teilweise, {3} übersprungen</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} Bindungen durch die automatische Standardzuordnung abgedeckt</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>übersetzt</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>als Makro übersetzt</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>Ebene: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>Touchpad-Feinabstimmung gilt pro Pad, nicht pro Zeile</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>Trigger-Schwelle angenähert</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>kein gerätefreier Auslöser für diese Eingabe</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} Ingame-Aktionen, nur Steam, kein spielseitiger Hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-Client-Aktion {0}, keine Entsprechung</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>Controller-Aktion {0} nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>unbekannter Bindungstyp {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>unbekannte Taste {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>Taste {0} hat keine Windows-Entsprechung</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>unbekannte Maustaste {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>unbekannte XInput-Taste {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>unbekannte Eingabe {1} auf {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam-Link-Bildschirmsteuerung {1}: keine physische Eingabe auf unterstützten Controllern</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>unbekannter Gruppenmodus {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>Touch-Menü-Overlay verworfen ({0} Felder)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>Radialmenü-Overlay verworfen ({0} Sektoren)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>Cursor-Bereichsbegrenzung nicht unterstützt</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Loslass-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Langdruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>Chord-Aktivator ohne festgelegte Chord-Taste (kann nie auslösen)</value></data>
@@ -4106,9 +4098,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>diese Eingabe kann keinen Ebenen-Aktivator ansteuern</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>Zeilenlimit für den {0}-Slot überschritten</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>keine Bindung wechselt zu Preset {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>die automatische Zuordnung des Geräts leitet {0} weiterhin auf {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>Ebenenwechsel verworfen ({0} ergab keine Übersetzung)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute Zeigerpositionierung als relative Mausbewegung angenähert</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Aktivieren Sie Community-Konfigurationen, um auf Updates zu prüfen</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Noch keine Profile aus dem Steam Workshop importiert</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop wird auf Updates geprüft…</value></data>
@@ -4245,7 +4235,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spielernummer-Wechsel ist eine Steam-Client-Aktion, keine Entsprechung</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Umschaltung ist Steam-intern, keine Entsprechung</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Umschalt-Druck hält {0} bis zum nächsten Druck</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>Langdruck tippt {0} an der Schwelle an (Steam hält bis zum Loslassen)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>Kamera-Reset als Gyro-Zentrierung angenähert</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>Mausbereich als zentrierte Cursor-Begrenzung angenähert ({0}% des Bildschirms, Bereichsmitte {1}%, {2}%), solange die Oberfläche gehalten wird</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivierungs-/Loslass-Einstellungen des Mausbereichs verworfen ({0})</value></data>

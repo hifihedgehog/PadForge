@@ -3995,28 +3995,20 @@
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Պահել եւ կիրառել</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Կապեր</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Ներածուեցաւ «{0}»՝ {1} մաքուր, {2} մասնակի, {3} բաց թողուած</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} կապ ծածկուած է լռելեայն ինքնահամապատասխանեցումով</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>թարգմանուած</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>թարգմանուած է որպէս մաքրօ</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>շերտ՝ {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>հպման վահանակի նրբակարգաւորումը կը գործէ ըստ կառավարիչի, ոչ թէ ըստ տողի</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>ձգանի սեմը մօտաւորուած է</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>այս մուտքին համար սարքէ անկախ գործարկիչ չկայ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} խաղային գործողութիւն, միայն Steam-ի համար, խաղի կողմէ կապ չկայ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam ծրագրի գործողութիւն {0}, համարժէք չկայ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>կառավարիչի {0} գործողութիւնը չի աջակցուիր</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>կապի անծանօթ տեսակ՝ {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>անծանօթ ստեղն՝ {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>{0} ստեղնը Windows-ի մէջ համարժէք չունի</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>մուկի անծանօթ կոճակ՝ {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>XInput-ի անծանօթ կոճակ՝ {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>անծանօթ մուտք՝ {1}, {0}-ին վրայ</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-ի պաստառի կառավարում {1}՝ աջակցուող ոչ մէկ կառավարիչի վրայ ֆիզիքական մուտք չկայ</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>խումբի անծանօթ կերպ՝ {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>հպման ցանկի վերադիրը հեռացուած է ({0} բջիջ)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>շրջանաձեւ ցանկի վերադիրը հեռացուած է ({0} հատուած)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>նշորդի շրջանի սահմանափակումը չի աջակցուիր</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ազատման գործարկիչը հոս չի աջակցուիր</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>երկար սեղմումի գործարկիչը հոս չի աջակցուիր</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>անծանօթ գործարկիչ՝ {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>համակցութեան գործարկիչը համակցութեան կոճակ սահմանուած չունի (ոչինչ չի կրնար զայն գործարկել)</value></data>
@@ -4028,15 +4020,12 @@
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>այս մուտքը չի կրնար շերտի գործարկիչ կառավարել</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} խցիկի տողերու սահմանը գերազանցուած է</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ոչ մէկ կապ կը փոխէ {0} նախադրուածին</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>սարքի ինքնահամապատասխանեցումը տակաւին {0}-ը կ'ուղղէ {1}-ին</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>շերտի փոխումը հեռացուած է ({0}-ը ոչինչի թարգմանուեցաւ)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>բացարձակ ցուցիչի դիրքաւորումը մօտաւորուած է որպէս մուկի յարաբերական շարժում</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>արձագանգի կորի եւ միջակայքի կարգաւորումները հեռացուած են ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ժիրոսքոփի {0}={1} կարգաւորումը հեռացուած է (այս արժէքին ետեւ կարդալի կոճակ չկայ)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>խաղացողի համարի փոխումը Steam ծրագրի գործողութիւն է, համարժէք չկայ</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>մողէսի կերպի փոխարկումը Steam-ի ներքին գործառոյթ է, համարժէք չկայ</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>փոխարկման սեղմումը {0}-ը կ'ամրացնէ մինչեւ յաջորդ սեղմումը</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>երկար սեղմումը սեմին վրայ մէկ անգամ կը սեղմէ {0}-ը (Steam զայն կը պահէ մինչեւ ազատում)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>տեսախցիկի վերակայումը մօտաւորուած է որպէս ժիրոսքոփի վերակեդրոնացում</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>մուկի շրջանը մօտաւորուած է որպէս նշորդի կեդրոնացած սահմանափակում (պաստառի {0}%-ը, շրջանի կեդրոն՝ {1}%, {2}%), մինչ մակերեսը կը պահուի</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>մուկի շրջանի միացման/ազատման կարգաւորումները հեռացուած են ({0})</value></data>

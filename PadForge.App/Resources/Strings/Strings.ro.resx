@@ -4252,28 +4252,20 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Salvare și aplicare</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Legături</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>„{0}” importat: {1} complete, {2} parțiale, {3} omise</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} legături acoperite de maparea automată implicită</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>convertit</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>convertit ca macrocomandă</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>strat: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>reglajele touchpadului se aplică pe touchpad, nu pe rând</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>prag de trăgaci aproximat</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nu există un declanșator independent de dispozitiv pentru această intrare</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} acțiuni din joc, doar pentru Steam, fără interceptare în joc</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>acțiune a clientului Steam {0}, fără echivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>acțiunea de controler {0} nu este acceptată</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tip de legătură necunoscut {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tastă necunoscută {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>tasta {0} nu are echivalent în Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>buton de mouse necunoscut {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>buton XInput necunoscut {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>intrare necunoscută {1} pe {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>control pe ecran Steam Link {1}: nicio intrare fizică pe vreun controler acceptat</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mod de grup necunoscut {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>suprapunere meniu tactil omisă ({0} celule)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>suprapunere meniu radial omisă ({0} sectoare)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>limitarea regiunii cursorului nu este acceptată</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activatorul la eliberare nu este acceptat aici</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activatorul cu apăsare lungă nu este acceptat aici</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activator necunoscut {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>activatorul de combinație nu are setat butonul de combinație (nimic nu îl poate declanșa)</value></data>
@@ -4285,15 +4277,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>această intrare nu poate comanda un activator de strat</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>limita de rânduri a fost depășită pentru slotul {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nicio legătură nu comută la presetarea {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>maparea automată a dispozitivului direcționează în continuare {0} către {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>comutare de strat omisă ({0} nu a fost convertit în nimic)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>poziționarea absolută a indicatorului aproximată ca mișcare relativă a mouse-ului</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>setările curbei de răspuns și ale intervalului au fost omise ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>setarea giroscopului {0}={1} a fost omisă (niciun buton care poate fi citit în spatele acestei valori)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>schimbarea numărului de jucător este o acțiune a clientului Steam, fără echivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>comutarea modului lizard este internă Steam, fără echivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>apăsarea de comutare menține {0} până la următoarea apăsare</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>apăsarea lungă apasă scurt {0} la prag (Steam îl ține apăsat până la eliberare)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>resetarea camerei aproximată ca recentrare a giroscopului</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>regiunea mouse-ului aproximată ca limitare centrată a cursorului ({0}% din ecran, centrul regiunii {1}%, {2}%) cât timp suprafața este ținută</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>setările de activare/eliberare ale regiunii mouse-ului au fost omise ({0})</value></data>

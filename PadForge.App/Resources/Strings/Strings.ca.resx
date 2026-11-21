@@ -4027,28 +4027,20 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Desa i aplica</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Vinculacions</value></data>
   <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>S'ha importat «{0}»: {1} netes, {2} parcials, {3} omeses</value></data>
-  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} vinculacions cobertes per l'assignació automàtica per defecte</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduïda</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduïda com a macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>capa: {0}</value></data>
-  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>l'ajust del panell tàctil s'aplica per panell, no per fila</value></data>
-  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>llindar del gallet aproximat</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no hi ha cap activador independent del dispositiu per a aquesta entrada</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} accions dins del joc, exclusives de Steam, sense cap ganxo al joc</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>acció del client de Steam {0}, sense equivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>acció de comandament {0} no admesa</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tipus de vinculació desconegut {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tecla desconeguda {0}</value></data>
-  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>la tecla {0} no té equivalent a Windows</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>botó del ratolí desconegut {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>botó XInput desconegut {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrada desconeguda {1} a {0}</value></data>
   <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Control en pantalla de Steam Link {1}: cap entrada física en cap comandament compatible</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>mode de grup desconegut {0}</value></data>
-  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposició de menú tàctil descartada ({0} cel·les)</value></data>
-  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposició de menú radial descartada ({0} sectors)</value></data>
-  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>no s'admet la limitació del cursor a una regió</value></data>
-  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>aquí no s'admet l'activador en deixar anar</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>aquí no s'admet l'activador de pulsació llarga</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activador desconegut {0}</value></data>
   <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>l'activador d'acord no té cap botó d'acord definit (res no el pot activar)</value></data>
@@ -4060,15 +4052,12 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>aquesta entrada no pot controlar un activador de capa</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>s'ha superat el límit de files per a la ranura {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>cap vinculació no canvia al predefinit {0}</value></data>
-  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>l'assignació automàtica del dispositiu continua enviant {0} a {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>canvi de capa descartat ({0} no s'ha traduït en res)</value></data>
-  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>posicionament absolut del punter aproximat com a moviment relatiu del ratolí</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>configuració de corba de resposta i de rang descartada ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>opció del giroscopi {0}={1} descartada (no hi ha cap botó llegible darrere d'aquest valor)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>el canvi de número de jugador és una acció del client de Steam, sense equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la commutació del mode lizard és interna de Steam, sense equivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>la pulsació de commutació manté {0} fins a la pulsació següent</value></data>
-  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>la pulsació llarga toca {0} en arribar al llindar (Steam el manté fins que es deixa anar)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>restabliment de la càmera aproximat com a recentratge del giroscopi</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>regió del ratolí aproximada com a limitació centrada del cursor ({0}% de la pantalla, centre de la regió {1}%, {2}%) mentre es manté premuda la superfície</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>configuració d'activació/alliberament de la regió del ratolí descartada ({0})</value></data>

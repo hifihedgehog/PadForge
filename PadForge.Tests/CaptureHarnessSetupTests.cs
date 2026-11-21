@@ -1484,6 +1484,14 @@ namespace PadForge.Tests
             Assert.Contains("\"pad-trigger-routing\", \"pad-lighting-guide-led\"", script, StringComparison.Ordinal);
             Assert.Contains("@{ Shot = \"pad-touchpad-momentum\"; Tab = \"Touchpad\"; Anchor = $true }", script, StringComparison.Ordinal);
             Assert.Contains("if ($audioTab -and (Tab $t.Tab))", script, StringComparison.Ordinal);
+            // A second round of retakes found four more: the trigger cards,
+            // their Sensitivity picker and their RAW bar on the Xbox slot's
+            // tour, and Gyro Tilt on the PlayStation slot. Each is taken as
+            // the full run takes it.
+            Assert.Contains("\"pad-triggers\", \"pad-triggers-sensitivity-dropdown\", \"pad-trigger-instrument\",", script, StringComparison.Ordinal);
+            Assert.Contains("@{ Shot = \"pad-gyro-tilt\"; Tab = \"Gyro\"; Anchor = $true }", script, StringComparison.Ordinal);
+            foreach (string shot in new[] { "pad-triggers", "pad-triggers-sensitivity-dropdown", "pad-trigger-instrument" })
+                Assert.Equal(2, Regex.Matches(script, @"Cap """ + Regex.Escape(shot) + @"""").Count);
             // The Clone Device 1:1 confirm is found among the process's
             // windows and closed there, and a confirm that stays up stops
             // the PadForge shots behind it.

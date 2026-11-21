@@ -8813,7 +8813,10 @@ if ($Only.Count -gt 0) {
         @{ Shot = "pad-audio-dsp"; Tab = "Audio"; Anchor = $true },
         # The touchpad's Momentum knobs under its mouse output's More row,
         # with the Gyro card's Aim Engage Button beside them.
-        @{ Shot = "pad-touchpad-momentum"; Tab = "Touchpad"; Anchor = $true }
+        @{ Shot = "pad-touchpad-momentum"; Tab = "Touchpad"; Anchor = $true },
+        # The Gyro Tilt line, framed from its card (the anchor table), as the
+        # full run takes it on the same slot.
+        @{ Shot = "pad-gyro-tilt"; Tab = "Gyro"; Anchor = $true }
     )
     $psWanted = @($psTabTargets | Where-Object { Want $_.Shot })
     if ($psWanted.Count -gt 0) {
@@ -9041,6 +9044,7 @@ if ($Only.Count -gt 0) {
     # the Xbox pad selected, and Bass Shakers right after it, the pad still
     # selected. Without -StageAll the Xbox pad is written onto the slot here.
     $xboxTourShots = @("pad-controller-3d", "pad-config-tabs", "pad-mapping-annotations", "3d-model-annotation-overlay",
+                       "pad-triggers", "pad-triggers-sensitivity-dropdown", "pad-trigger-instrument",
                        "pad-trigger-routing", "pad-lighting-guide-led", "pad-bass-shakers")
     $xboxTourWanted = @($xboxTourShots | Where-Object { Want $_ })
     if ($xboxTourWanted.Count -gt 0) {
@@ -9068,6 +9072,21 @@ if ($Only.Count -gt 0) {
                 Capture-AnnotationOverlay -Aid "AnnotationToggle" -Label "Annotation toggle (3D)" `
                     -Shots @("pad-mapping-annotations", "3d-model-annotation-overlay") `
                     -FallbackPoint { param($p, $s) @([int]($p.Right - 113 * $s), [int]($p.Top + 22 * $s)) }
+            }
+            # The trigger cards, their Sensitivity picker open, and their RAW
+            # and OUT bars, as the full run takes them after the sticks.
+            if (Want "pad-triggers") {
+                if (Tab "Triggers") { Start-Sleep -Milliseconds 500; Cap "pad-triggers" }
+                else { Refuse-Shots @("pad-triggers") "the Triggers part did not open" }
+            }
+            if (Want "pad-triggers-sensitivity-dropdown") {
+                $open = if ((Tab "Triggers") -and (Show-PadAnchor "pad-triggers-sensitivity-dropdown")) { Open-PadPicker -Aid "TriggerPresetCombo" } else { $null }
+                if ($open) { Cap "pad-triggers-sensitivity-dropdown"; Close-PadPicker $open }
+                else { Refuse-Shots @("pad-triggers-sensitivity-dropdown") "the trigger's Sensitivity picker did not open" }
+            }
+            if (Want "pad-trigger-instrument") {
+                if ((Tab "Triggers") -and (Show-PadAnchor "pad-trigger-instrument")) { Start-Sleep -Milliseconds 400; Cap "pad-trigger-instrument" }
+                else { Refuse-Shots @("pad-trigger-instrument") "the trigger's RAW bar did not come into view" }
             }
             # The Audio Rumble card with Trigger Routing under it, before
             # the Xbox pad is picked, as the full run takes it.

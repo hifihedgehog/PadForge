@@ -6,6 +6,7 @@ using System.Windows;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Search;
+using PadForge.Services;
 using PadForge.ViewModels;
 using PadForge.Views;
 using Xunit;
@@ -37,8 +38,10 @@ namespace PadForge.Tests
 
         /// <summary>Five controllers of five kinds, each made, the controller
         /// page bound to <paramref name="bound"/> (or to none), and Search
-        /// over them, opened as the window opens it.</summary>
-        private void WithControllers(int bound, Action<MainViewModel, PadPage, SearchService, List<string>> body)
+        /// over them, opened as the window opens it. <paramref name="bindPad"/>
+        /// makes Search's bind step, as the window passes BindPadPage.</summary>
+        private void WithControllers(int bound, Action<MainViewModel, PadPage, SearchService, List<string>> body,
+            Func<MainViewModel, PadPage, Action<PadViewModel>> bindPad = null)
         {
             var lines = new List<string>();
             try
@@ -57,7 +60,7 @@ namespace PadForge.Tests
                         page.Arrange(new Rect(0, 0, 1456, 985));
                         page.UpdateLayout();
                         PageRenderDump.Settle(dispatcher);
-                        var service = new SearchService(main, p => p == SearchPage.Pad ? page : null);
+                        var service = new SearchService(main, p => p == SearchPage.Pad ? page : null, bindPad?.Invoke(main, page));
                         service.SetIndex(SearchIndexBuilder.Build(SearchSources.Load()));
                         var clock = Stopwatch.StartNew();
                         service.RefreshAvailability();
@@ -203,6 +206,81 @@ namespace PadForge.Tests
                 // And the other controllers were read: the MIDI one's
                 // settings are offered.
                 Assert.Contains(service.Query("channel"), r => ReferenceEquals(r.Pad, main.Pads[MidiPad]));
+            });
+        }
+
+        /// <summary>Another controller's view model rows can be stale against
+        /// its stored rows, which a visit to its page mirrors in. Search binds
+        /// another controller the way a visit does, so a row option the stored
+        /// rows have is offered: here a second source on the Xbox controller's
+        /// right trigger row, which the Combine option needs.</summary>
+        [Fact]
+        public void AnotherControllersStoredRows_AreMirroredBeforeTheyAreRead()
+        {
+            var mirrored = new List<PadViewModel>();
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                // The Xbox controller's Buttons section shows the list, whose
+                // table holds every row (under the picture it holds only the
+                // picked control's).
+                main.Pads[XboxPad].SelectedConfigTab = PadViewModel.MappingsTabIndex;
+                service.RefreshAvailability();
+                var search = Search(service, PadForge.Resources.Strings.Strings.Instance.Pad_Combine_Label, lines);
+                Assert.Contains(search.Results, r => r.Entry is { RowOptions: true, Label.Key: "Pad_Combine_Label" }
+                                                     && ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                // The bound controller was not mirrored: Search did not
+                // refresh it, and binds it back by its data alone.
+                Assert.DoesNotContain(main.Pads[VrPad], mirrored);
+                Assert.Same(main.Pads[VrPad], page.DataContext);
+            }, (main, page) => pad =>
+            {
+                mirrored.Add(pad);
+                if (ReferenceEquals(pad, main.Pads[XboxPad]) && !pad.Mappings.Any(m => m.ExtraSources.Count > 0))
+                {
+                    var device = Guid.NewGuid();
+                    string id = device.ToString("D");
+                    pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = device, Name = "Pad", TypeKey = "Gamepad", IsOnline = true });
+                    var row = pad.Mappings.First(m => m.TargetSettingName == "RightTrigger");
+                    row.PrimarySourceDeviceGuid = id;
+                    row.PrimarySourceDeviceLabel = "Pad";
+                    row.LoadDescriptor("Axis 5");
+                    row.ExtraSources.Add(new MappingSourceItem { Kind = "Direct", DeviceGuid = id, DeviceLabel = "Pad", Descriptor = "Axis 2" });
+                }
+                page.DataContext = pad;
+            });
+        }
+
+        /// <summary>The read's time with the window's own bind step: the
+        /// stored rows mirrored in under MirrorOnly, the selected device's
+        /// inputs refreshed, then the page's data. Cold is the first read
+        /// on a new page, warm the reads after it.</summary>
+        [Fact]
+        public void TheReadsTime_WithTheVisitsBindStep()
+        {
+            SettingsService settings = null;
+            InputService input = null;
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    var clock = Stopwatch.StartNew();
+                    service.RefreshAvailability();
+                    lines.Add("warm read " + k + ": " + clock.ElapsedMilliseconds + " ms");
+                }
+                Assert.Contains(Search(service, "deadzone", lines).Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                input.Dispose();
+            }, (main, page) =>
+            {
+                settings = new SettingsService(main);
+                input = new InputService(main) { SettingsService = settings };
+                return pad =>
+                {
+                    settings.MirrorOnly(() => InputService.RefreshMappingsToViewModel(pad));
+                    var selected = pad.SelectedMappedDevice;
+                    if (selected != null && selected.InstanceGuid != Guid.Empty)
+                        input.RefreshAvailableInputsForSlot(pad);
+                    page.DataContext = pad;
+                };
             });
         }
 

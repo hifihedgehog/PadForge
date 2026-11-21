@@ -5898,7 +5898,7 @@ namespace PadForge
         /// built once the window has loaded and is idle.</summary>
         private void WireSearch()
         {
-            _searchService = new PadForge.Search.SearchService(_viewModel, SearchPageOf);
+            _searchService = new PadForge.Search.SearchService(_viewModel, SearchPageOf, BindPadPage);
             _searchVm = new SearchViewModel(_searchService.Query);
             _searchNavigator = new PadForge.Search.SearchNavigator(_searchService, SearchPageOf, _viewModel,
                 tag => SelectNavItemByTag(tag), NavigateToSlot, () => OpenAddController(Guid.Empty, TitleSearchBox));
@@ -6767,8 +6767,9 @@ namespace PadForge
         }
 
         /// <summary>Binds the controller page to a controller: navigation's
-        /// step, and Search's when it opens on a page that is no
-        /// controller's.</summary>
+        /// step, Search's when it opens on a page that is no controller's,
+        /// and Search's as it reads each other controller's page in
+        /// turn.</summary>
         private void BindPadPage(PadViewModel padVm)
         {
             if (padVm == null) return;

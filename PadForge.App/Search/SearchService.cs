@@ -25,6 +25,7 @@ namespace PadForge.Search
     {
         private readonly MainViewModel _vm;
         private readonly Func<SearchPage, FrameworkElement> _pageOf;
+        private readonly Action<PadViewModel> _bindPad;
         private readonly SearchLocator _locator;
         private IReadOnlyList<SearchEntry> _index = Array.Empty<SearchEntry>();
         private readonly List<Available> _available = new();
@@ -43,10 +44,16 @@ namespace PadForge.Search
         /// sits in, by its name, for the entry's second line.</summary>
         private readonly Dictionary<SearchEntry, string> _settingsGroup = new();
 
-        internal SearchService(MainViewModel vm, Func<SearchPage, FrameworkElement> pageOf)
+        /// <param name="bindPad">Binds the controller page to a controller as
+        /// a visit to its page does (MainWindow.BindPadPage: the stored
+        /// mapping rows mirrored into the view model, the selected device's
+        /// inputs refreshed, then the page's data). Null sets the page's data
+        /// alone.</param>
+        internal SearchService(MainViewModel vm, Func<SearchPage, FrameworkElement> pageOf, Action<PadViewModel> bindPad = null)
         {
             _vm = vm;
             _pageOf = pageOf;
+            _bindPad = bindPad;
             _locator = new SearchLocator(pageOf);
         }
 
@@ -128,8 +135,10 @@ namespace PadForge.Search
         /// as it shows each. An entry that shows on more than one controller
         /// is kept for the first of them: a setting the bound controller has
         /// stays that controller's, and a setting it lacks is offered on the
-        /// first controller that has it. The page is bound back to its
-        /// controller at the end, before anything is drawn.</para></summary>
+        /// first controller that has it. Each other controller is bound the
+        /// way a visit to its page binds it (the bind step the window
+        /// passes). The page is bound back to its controller at the end,
+        /// before anything is drawn.</para></summary>
         internal void RefreshAvailability()
         {
             _available.Clear();
@@ -157,7 +166,12 @@ namespace PadForge.Search
                 {
                     if (!ReferenceEquals(page.DataContext, pad))
                     {
-                        page.DataContext = pad;
+                        // Another controller is bound as a visit to its page
+                        // binds it, so its rows are the stored ones. The
+                        // bound controller was not refreshed by Search, and
+                        // is bound back by its data alone.
+                        if (_bindPad != null) _bindPad(pad);
+                        else page.DataContext = pad;
                         _locator.Reset();
                     }
                     ReadEntries(e => e.Page == SearchPage.Pad, pad, taken, readValues: !ReferenceEquals(pad, bound));

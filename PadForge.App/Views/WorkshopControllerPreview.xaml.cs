@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using PadForge.Models2D;
 
 namespace PadForge.Views
@@ -27,14 +28,17 @@ namespace PadForge.Views
     /// instead of stacking text on itself.</para></summary>
     public partial class WorkshopControllerPreview : UserControl
     {
-        // Art-space units. The whole canvas is scaled by the Viewbox, so
-        // these are chosen against the pack's ~1543x956 bodies.
-        private const double Gutter = 430;
-        private const double LabelFont = 30;
-        private const double RowPitch = 52;
+        // The callouts, in the frame's own units. Their words are 12, the
+        // least text PadForge draws, one line each, at any size the pad is
+        // drawn at. They were drawn inside the scaled art at 30 of its
+        // pixels, which the 200-tall frame brought to about 5.
+        private const double CalloutFont = 12;
+        private const double CalloutPitch = 16;
+        // The level run of a leader, from beside its words to the pad.
+        private const double LeaderRun = 14;
+        private const double TickSize = 5;
 
         private static readonly Brush Ember = Frozen(0xE8, 0x7A, 0x2E);
-        private static readonly Brush LabelText = Frozen(0xEC, 0xEF, 0xF3);
         private static readonly Brush Leader = Frozen(0x6E, 0x7A, 0x88);
 
         private static Brush Frozen(byte r, byte g, byte b)
@@ -44,7 +48,18 @@ namespace PadForge.Views
             return br;
         }
 
-        public WorkshopControllerPreview() => InitializeComponent();
+        /// <summary>The controls with a binding and what each does, in the
+        /// order the pad draws them.</summary>
+        private readonly List<(OverlayElement Element, string Text)> _callouts = new();
+
+        public WorkshopControllerPreview()
+        {
+            InitializeComponent();
+            // The callouts follow the pad: a new size of the frame or of the
+            // pad lays them out again.
+            CalloutCanvas.SizeChanged += (s, e) => LayoutCallouts();
+            ArtBox.SizeChanged += (s, e) => LayoutCallouts();
+        }
 
         /// <summary>One callout: the art element it is DRAWN ON (the
         /// physical control the config binds) and the text describing what
@@ -54,6 +69,7 @@ namespace PadForge.Views
         public void Render(string controllerTag, IEnumerable<Callout> callouts)
         {
             ModelCanvas.Children.Clear();
+            _callouts.Clear();
             var wanted = (callouts ?? Enumerable.Empty<Callout>())
                 .Where(c => !string.IsNullOrWhiteSpace(c.ArtAnchor))
                 .GroupBy(c => c.ArtAnchor, StringComparer.OrdinalIgnoreCase)
@@ -63,11 +79,10 @@ namespace PadForge.Views
 
             var (bodyW, bodyH, basePath, overlays, folder) = LayoutFor(controllerTag);
             FoldTouchpadAnchors(wanted, overlays);
-            double canvasW = bodyW + Gutter * 2;
-            ModelCanvas.Width = canvasW;
+            ModelCanvas.Width = bodyW;
             ModelCanvas.Height = bodyH;
 
-            var body = Load(basePath, Gutter, 0, bodyW, bodyH);
+            var body = Load(basePath, 0, 0, bodyW, bodyH);
             if (body != null)
             {
                 body.Opacity = 0.5;
@@ -75,9 +90,8 @@ namespace PadForge.Views
                 ModelCanvas.Children.Add(body);
             }
 
-            // Elements that actually have a binding, split by which gutter
-            // they are nearest and ordered top-down so the leaders do not
-            // cross each other.
+            // Elements that actually have a binding, ordered top-down so the
+            // leaders on each side do not cross each other.
             var hits = overlays
                 .Where(o => wanted.ContainsKey(o.TargetName))
                 .GroupBy(o => o.TargetName, StringComparer.OrdinalIgnoreCase)
@@ -87,74 +101,101 @@ namespace PadForge.Views
 
             foreach (var ov in hits)
             {
-                var lit = LoadTinted($"2DModels/{folder}/{ov.ImageFile}",
-                                     Gutter + ov.X, ov.Y, ov.Width, ov.Height);
+                _callouts.Add((ov, wanted[ov.TargetName]));
+                var lit = LoadTinted($"2DModels/{folder}/{ov.ImageFile}", ov.X, ov.Y, ov.Width, ov.Height);
                 if (lit == null) continue;
                 Panel.SetZIndex(lit, 5);
                 ModelCanvas.Children.Add(lit);
             }
 
-            double leftNext = 0, rightNext = 0;
-            foreach (var ov in hits)
-            {
-                double cx = Gutter + ov.X + ov.Width / 2;
-                double cy = ov.Y + ov.Height / 2;
-                bool left = cx < Gutter + bodyW / 2;
-
-                // Walk the label down its gutter until it clears the last
-                // one on that side, then keep it inside the canvas.
-                double y = left ? Math.Max(cy, leftNext) : Math.Max(cy, rightNext);
-                y = Math.Min(y, bodyH - RowPitch * 0.6);
-                if (left) leftNext = y + RowPitch; else rightNext = y + RowPitch;
-
-                var text = new TextBlock
-                {
-                    Text = wanted[ov.TargetName],
-                    FontSize = LabelFont,
-                    Foreground = LabelText,
-                    TextTrimming = TextTrimming.CharacterEllipsis,
-                    MaxWidth = Gutter - 40,
-                    TextAlignment = left ? TextAlignment.Right : TextAlignment.Left,
-                };
-                text.Measure(new Size(Gutter - 40, double.PositiveInfinity));
-                double tw = Math.Min(text.DesiredSize.Width, Gutter - 40);
-
-                double tx = left ? Gutter - 34 - tw : Gutter + bodyW + 34;
-                Canvas.SetLeft(text, tx);
-                Canvas.SetTop(text, y - LabelFont * 0.72);
-                Panel.SetZIndex(text, 20);
-                ModelCanvas.Children.Add(text);
-
-                // Leader: label edge to the element edge, with a small
-                // ember tick at the button so the eye lands on the part.
-                double lx = left ? Gutter - 26 : Gutter + bodyW + 26;
-                double ex = left ? Gutter + ov.X : Gutter + ov.X + ov.Width;
-                var poly = new System.Windows.Shapes.Polyline
-                {
-                    Stroke = Leader,
-                    StrokeThickness = 2.5,
-                    Points = new PointCollection { new(lx, y), new((lx + ex) / 2, y), new(ex, cy) },
-                    IsHitTestVisible = false,
-                };
-                // UNDER the lit controls (z 5), over the body (z 1). The
-                // Deck's paddle tiles sit in the left and right margins,
-                // which is the corridor every leader has to cross to reach
-                // the body, so a leader drawn on top scribbles over them.
-                Panel.SetZIndex(poly, 3);
-                ModelCanvas.Children.Add(poly);
-
-                var tick = new System.Windows.Shapes.Ellipse
-                {
-                    Width = 12, Height = 12, Fill = Ember, IsHitTestVisible = false,
-                };
-                Canvas.SetLeft(tick, ex - 6);
-                Canvas.SetTop(tick, cy - 6);
-                Panel.SetZIndex(tick, 16);
-                ModelCanvas.Children.Add(tick);
-            }
-
             // Nothing anchored means nothing worth drawing.
             Visibility = hits.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+
+            // A pad of another size is laid out before its callouts can be.
+            LayoutCallouts();
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(LayoutCallouts));
+        }
+
+        /// <summary>Draws each callout beside the pad, on the side its
+        /// control is nearest: its words at 12, and a leader from beside the
+        /// words to the control's edge, with a small ember tick there so the
+        /// eye lands on the part. Each line starts level with its control
+        /// and walks down to clear the one above it, and a column too long
+        /// for the frame is pulled up to end inside it. Words too long for
+        /// the room beside the pad end in an ellipsis.</summary>
+        internal void LayoutCallouts()
+        {
+            CalloutCanvas.Children.Clear();
+            double width = CalloutCanvas.ActualWidth, height = CalloutCanvas.ActualHeight;
+            if (_callouts.Count == 0 || !(width > 0) || !(height > 0) || !(ArtBox.ActualWidth > 0)) return;
+
+            GeneralTransform toCallouts = ModelCanvas.TransformToVisual(CalloutCanvas);
+            Rect pad = toCallouts.TransformBounds(new Rect(0, 0, ModelCanvas.Width, ModelCanvas.Height));
+            double middle = pad.Left + pad.Width / 2;
+            var places = _callouts
+                .Select(c => (c.Text, At: toCallouts.TransformBounds(new Rect(c.Element.X, c.Element.Y, c.Element.Width, c.Element.Height))))
+                .ToList();
+
+            foreach (bool left in new[] { true, false })
+            {
+                var side = places
+                    .Where(p => (p.At.Left + p.At.Width / 2 < middle) == left)
+                    .OrderBy(p => p.At.Top + p.At.Height / 2)
+                    .ToList();
+                if (side.Count == 0) continue;
+
+                double half = CalloutPitch / 2;
+                var rows = new double[side.Count];
+                for (int i = 0; i < side.Count; i++)
+                    rows[i] = Math.Max(side[i].At.Top + side[i].At.Height / 2, i == 0 ? half : rows[i - 1] + CalloutPitch);
+                for (int i = side.Count - 1; i >= 0; i--)
+                    rows[i] = Math.Max(half, Math.Min(rows[i], i == side.Count - 1 ? height - half : rows[i + 1] - CalloutPitch));
+
+                double edge = left ? pad.Left : pad.Right;
+                double room = (left ? edge : width - edge) - LeaderRun;
+                if (room <= 0) continue;
+
+                for (int i = 0; i < side.Count; i++)
+                {
+                    var text = PadForge.Common.TextFaces.Body(new TextBlock
+                    {
+                        Text = side[i].Text,
+                        FontSize = CalloutFont,
+                        TextTrimming = TextTrimming.CharacterEllipsis,
+                        MaxWidth = room,
+                        TextAlignment = left ? TextAlignment.Right : TextAlignment.Left,
+                    });
+                    text.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+                    text.Measure(new Size(room, double.PositiveInfinity));
+                    double tw = Math.Min(text.DesiredSize.Width, room);
+                    Canvas.SetLeft(text, left ? edge - LeaderRun - tw : edge + LeaderRun);
+                    Canvas.SetTop(text, rows[i] - text.DesiredSize.Height / 2);
+                    CalloutCanvas.Children.Add(text);
+
+                    Rect at = side[i].At;
+                    double cy = at.Top + at.Height / 2;
+                    double ex = left ? at.Left : at.Right;
+                    CalloutCanvas.Children.Add(new System.Windows.Shapes.Polyline
+                    {
+                        Stroke = Leader,
+                        StrokeThickness = 1,
+                        Points = new PointCollection
+                        {
+                            new(left ? edge - LeaderRun + 4 : edge + LeaderRun - 4, rows[i]),
+                            new(edge, rows[i]),
+                            new(ex, cy),
+                        },
+                        IsHitTestVisible = false,
+                    });
+                    var tick = new System.Windows.Shapes.Ellipse
+                    {
+                        Width = TickSize, Height = TickSize, Fill = Ember, IsHitTestVisible = false,
+                    };
+                    Canvas.SetLeft(tick, ex - TickSize / 2);
+                    Canvas.SetTop(tick, cy - TickSize / 2);
+                    CalloutCanvas.Children.Add(tick);
+                }
+            }
         }
 
         /// <summary>Draws a pack element in EMBER instead of its own paint.

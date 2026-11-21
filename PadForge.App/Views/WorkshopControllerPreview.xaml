@@ -1,10 +1,18 @@
 <UserControl x:Class="PadForge.Views.WorkshopControllerPreview"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Viewbox so the pad scales to whatever width the dossier gives it
-         while the layout keeps working in the art's own pixel space, which
-         is what ControllerOverlayLayout's coordinates are expressed in. -->
-    <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Margin="0,4,0,8">
-        <Canvas FlowDirection="LeftToRight" x:Name="ModelCanvas" Background="Transparent"/>
-    </Viewbox>
+    <Grid>
+        <!-- Viewbox so the pad scales to whatever room the dossier gives it
+             while the layout keeps working in the art's own pixel space,
+             which is what ControllerOverlayLayout's coordinates are
+             expressed in. Its side margins keep at least 150 beside the
+             pad for the callouts' words: in a narrow frame the pad gives
+             way, never the words. -->
+        <Viewbox x:Name="ArtBox" Stretch="Uniform" StretchDirection="DownOnly" Margin="150,4,150,8">
+            <Canvas FlowDirection="LeftToRight" x:Name="ModelCanvas" Background="Transparent"/>
+        </Viewbox>
+        <!-- The callouts, outside the Viewbox so their words stay 12 and
+             their leaders 1 wide at any size the pad is drawn at. -->
+        <Canvas FlowDirection="LeftToRight" x:Name="CalloutCanvas" IsHitTestVisible="False" ClipToBounds="True"/>
+    </Grid>
 </UserControl>

@@ -111,7 +111,16 @@ namespace PadForge.Tests
             int repeat = settings.IndexOf("BatteryNotifyRepeatMinutes, Mode=TwoWay", StringComparison.Ordinal);
             Assert.True(repeat > 0);
             Assert.Contains("Common_MinutesZeroNever", settings.Substring(repeat, 900));
-            Assert.Contains("Common_MinutesZeroNever", Text("PadForge.App", "Views", "DevicesPage.xaml"));
+
+            // The Devices board writes the meaning under Idle Disconnect's
+            // label and the unit beside its box.
+            Assert.Equal("0 means never", English("Devices_IdleDisconnectNever"));
+            Assert.Equal("min", English("Common_Min"));
+            string devices = Text("PadForge.App", "Views", "DevicesPage.xaml");
+            int idle = devices.IndexOf("SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay", StringComparison.Ordinal);
+            Assert.True(idle > 600);
+            Assert.Contains("Devices_IdleDisconnectNever", devices.Substring(idle - 600, 600));
+            Assert.Contains("Common_Min,", devices.Substring(idle, 600));
         }
 
         // X6-7 ---------------------------------------------------------

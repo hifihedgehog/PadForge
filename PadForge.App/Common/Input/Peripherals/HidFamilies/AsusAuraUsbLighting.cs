@@ -24,15 +24,19 @@ namespace PadForge.Common.Input.Peripherals
     /// (AsusAuraMonitorController), mainboards, addressable controllers, the
     /// AURA Terminal and the Strix LC III (AsusAuraUSBController), the Ryuo
     /// and Ryujin coolers (AsusAuraRyuoAIOController), the Strix LC cooler
-    /// (AsusROGStrixLCController) and the ROG Ally (AsusROGAllyController).</para>
+    /// (AsusROGStrixLCController) and the ROG Ally (AsusROGAllyController).
+    /// The keyboards no OpenRGB file names that only G-Helper lights go as
+    /// G-Helper's AsusKeyboard sends them (<see cref="GHelperKeyboardModel"/>).</para>
     ///
     /// <para>What each write does to the device's stored state. Every frame
     /// PadForge sends is one of OpenRGB's Direct modes, or for a device with
-    /// none, the mode OpenRGB lights per LED with, and none of them is
-    /// followed by the save frame OpenRGB sends only from DeviceSaveMode
-    /// (50 55 for keyboards and headset stands, 50 03 for mice and mousemats,
-    /// EC 3F 55 for mainboards, 5A B4 for the Ally, UpdateProfile for the
-    /// first ROG mice). So nothing is written to the device's memory, and a
+    /// none, the mode OpenRGB lights per LED with, or G-Helper's C0 81 for a
+    /// keyboard only G-Helper lights, and none of them is followed by the save
+    /// frame OpenRGB sends only from DeviceSaveMode and G-Helper only behind a
+    /// change in its settings window or a mode it copies from the laptop's
+    /// keyboard (50 55 for keyboards and headset stands, 50 03 for mice
+    /// and mousemats, EC 3F 55 for mainboards, 5A B4 for the Ally, UpdateProfile
+    /// for the first ROG mice). So nothing is written to the device's memory, and a
     /// replug brings back what the device stored. A device goes back while it
     /// stays plugged in where a reference reads what it shows or it has a
     /// command for that: the mice and the Balteus answer 12 03 in G-Helper
@@ -42,7 +46,9 @@ namespace PadForge.Common.Input.Peripherals
     /// AllowRemoteControl(0), the frame OpenRGB ends every mode change of the
     /// Claymore with (RGBController_AsusAuraKeyboard.cpp:657-662). Every other
     /// device keeps the last colors PadForge sent until it is replugged or
-    /// Armoury Crate lights it, since no reference reads its mode. SignalRGB's plugins for these devices end on a
+    /// Armoury Crate lights it, since no reference reads its mode, or more of
+    /// it than which effect a keyboard renders (G-Helper's ReadProfile,
+    /// AsusKeyboard.cs:815-835). SignalRGB's plugins for these devices end on a
     /// shutdown color or a rainbow mode they save
     /// (signal-plugins Plugins/Asus/ASUS_ROG_Strix_Scope.js:41-45), and
     /// return none of them to its own lighting either. The devices with such
@@ -109,6 +115,8 @@ namespace PadForge.Common.Input.Peripherals
         public HidLightingModel Match(HidCollectionInfo collection)
         {
             if (collection == null || collection.VendorId != VendorId) return null;
+            var keyboard = GHelperKeyboardOf(collection.ProductId);
+            if (keyboard != null) return GHelperKeyboardModel(collection, keyboard);
             bool other = GHelperProducts.TryGetValue(collection.ProductId, out var same);
             ushort product = other ? same.Product : collection.ProductId;
             var found = OpenRgbRegistrations.Match(OpenRgbFamily, other ? collection with { ProductId = product } : collection);
@@ -166,7 +174,8 @@ namespace PadForge.Common.Input.Peripherals
         /// repaint interval.</summary>
         private HidLightingModel Model(string name, int productId, LightMap map,
             Func<IHidReportChannel, Action<int>, HidLightingSession> begin,
-            Func<IHidReportChannel, bool> handBack = null)
+            Func<IHidReportChannel, bool> handBack = null,
+            Func<HidCollectionInfo, HidCollectionInfo, bool> outranks = null)
             => new()
             {
                 Family = this,
@@ -175,6 +184,7 @@ namespace PadForge.Common.Input.Peripherals
                 Programs = new[] { VendorPrograms.ArmouryCrate },
                 RepaintMs = HidppBackend.PaintMs,
                 Begin = begin,
+                Outranks = outranks,
                 Owed = handBack == null ? null : path => OwedHandBack(KeyboardProfileBackups.DeviceKey(ProductKey(productId), path)),
                 Repair = handBack == null ? null : (io, _) => RepairHandBack(KeyboardProfileBackups.DeviceKey(ProductKey(productId), io?.Path), io, handBack),
             };

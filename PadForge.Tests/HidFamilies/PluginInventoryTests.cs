@@ -72,7 +72,8 @@ namespace PadForge.Tests
             {
                 case AsusLaptopAura.VendorId:
                     return product == AsusLaptopAura.RearLightProduct || AsusLaptopAura.Products.Contains(product)
-                        || AsusAuraUsbLighting.GHelperProducts.ContainsKey(product);
+                        || AsusAuraUsbLighting.GHelperProducts.ContainsKey(product)
+                        || AsusAuraUsbLighting.GHelperKeyboardOf(product) != null;
                 case RoccatKoneEmpLighting.VendorId when product == RoccatKoneEmpLighting.ProductId:
                     return true;
                 case 0x048D:
@@ -169,9 +170,6 @@ namespace PadForge.Tests
             [(0x048D, 0xC693)] = "A LampArray, which the LampArray family lights.",
             // An external disk's light, through SCSI (asusctl rog-scsi).
             [(0x0B05, 0x1932)] = "ROG Strix Arion, an external disk lit through SCSI commands.",
-            // G-Helper a2bd94e. No OpenRGB family or SignalRGB plugin names the product.
-            [(0x0B05, 0x1C7D)] = "ROG Falchion Ace 75 HE: only G-Helper drives it, through its own keyboard "
-                + "classes (FalchionAce75HE, Falchion.cs:98-118, and AsusKeyboard.cs), which no family ports.",
         };
 
         private const string LegacyTransfers = "Lit through vendor control transfers, which need a driver swap.";
@@ -302,6 +300,8 @@ namespace PadForge.Tests
                 Add(CorsairLights.VendorId, product, name, "OpenRGB CorsairPeripheralController");
             foreach (var (product, (_, name)) in AsusAuraUsbLighting.GHelperProducts)
                 Add(AsusLaptopAura.VendorId, product, name, "G-Helper");
+            foreach (var keyboard in GHelperKeyboardTables.Keyboards)
+                Add(AsusLaptopAura.VendorId, keyboard.ProductId, "ASUS " + keyboard.Name, "G-Helper " + keyboard.Source);
             // G-Helper's MAIN_AURA_PIDS and REAR_LIGHT_PIDS name no model, and a laptop of any of
             // them carries the keyboard (AsusLaptopAura.Products).
             foreach (ushort product in AsusLaptopAura.Products.Append(AsusLaptopAura.RearLightProduct))

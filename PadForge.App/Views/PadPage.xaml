@@ -8305,7 +8305,7 @@
 
                                     <!-- The four fixed tones (low, high, trigger left, trigger
                                          right), as the board draws one: the tone's row is its
-                                         switch with its name, its carrier frequency, Test, and
+                                         check box with its name, its carrier frequency, Test, and
                                          the tone's reset, which resets the tone whole. Its gain
                                          is a row of its own set in under it, as a setting that
                                          belongs to the row above is, with the tone's live meter

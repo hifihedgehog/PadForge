@@ -1246,6 +1246,34 @@ namespace PadForge.Tests
                 ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = true;
             });
             ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = false;
+            // A head tracker's six named axes (#355) in Test Inputs, at
+            // rest, and an analog keyboard's keys with the longest names.
+            Shot("devices-1280-headtracker.png", PageWidth, 1300, () =>
+            {
+                Pick(keyboard);
+                vm.RebuildRawStateCollections(Enumerable.Range(0, 6).ToArray(), Array.Empty<int>(), 0, isHeadTracker: true);
+                vm.HasRawData = true;
+                vm.HasGyroData = vm.HasAccelData = vm.HasTouchpadData = false;
+                foreach (var axis in vm.RawAxes)
+                {
+                    axis.RawValue = 32768;
+                    axis.NormalizedValue = 0.5;
+                }
+            });
+            Shot("devices-1280-analogkeys.png", PageWidth, 1300, () =>
+            {
+                int[] keys = { 0x2A, 0xE5, 0x58, 0x46, 0x88, 0x04 };
+                vm.RebuildRawStateCollections(Array.Empty<int>(), Array.Empty<int>(), 0, analogKeyOrder: keys);
+                foreach (int code in keys)
+                    vm.AnalogKeys.Add(new AnalogKeyDisplayItem
+                    {
+                        Code = code, Rank = vm.AnalogKeys.Count,
+                        Name = PadForge.Common.MappingDisplayResolver.AnalogKeyDisplayName(code), Depth = 0.62,
+                    });
+                vm.HasAnalogKeys = true;
+                vm.HasRawData = true;
+            });
+            vm.ClearRawState();
             // The Not Connected segment: the devices PadForge remembers, in
             // the list in parts by kind.
             Shot("devices-1280-notconnected.png", PageWidth, 1088, () => vm.Connection = DeviceConnection.NotConnected);

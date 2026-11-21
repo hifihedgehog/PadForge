@@ -162,8 +162,8 @@ namespace PadForge.Tests
         /// where the row's control does. The library's check box sets its box
         /// 11 in from its edge, so the Gesture Buttons' first box stood 11
         /// right of the Custom Activation Input picker under it (seen in the
-        /// 6.0.0 screenshots). A list's check boxes stand inside the list's
-        /// own frame and keep the inset.</summary>
+        /// 6.0.0 screenshots). The Gyro On Buttons list's check boxes start
+        /// at the column too, held by GyroOnButtonsListTests.</summary>
         [Fact]
         public void CheckBoxesThatAreARowsControlStartAtItsColumn()
         {

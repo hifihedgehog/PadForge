@@ -8943,9 +8943,26 @@
                                                      controls:SettingRow.Fills="True" HorizontalAlignment="Left"
                                                      AutomationProperties.Name="{Binding Pad_GyroActivation_Buttons, Source={x:Static strings:Strings.Instance}}"
                                                      ToolTip="{Binding Pad_GyroActivation_Buttons_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <!-- A list of check boxes: each item is its check box,
+                                                     with no pad of the library's 12 around it and no fill
+                                                     for a pick, which a check list has none of, so a
+                                                     button takes a check box's height and its box starts
+                                                     at the row's control column. -->
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                                        <Setter Property="Padding" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="ListBoxItem">
+                                                                    <ContentPresenter/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Content="{Binding DisplayName}" IsChecked="{Binding IsOn, Mode=TwoWay}"/>
+                                                        <CheckBox Content="{Binding DisplayName}" IsChecked="{Binding IsOn, Mode=TwoWay}" Padding="0,5,11,6"/>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>

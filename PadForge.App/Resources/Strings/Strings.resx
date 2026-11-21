@@ -2601,7 +2601,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Smoothing Window</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Length of the smoothing-buffer time window. Larger values smooth more heavily below the tightening threshold. Smaller values feel snappier. Default 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aim Engage Button</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output, as the Engage Mode says. Leave unset to disable the button gate. When both this and the Engage Stick deflection are configured, both must be active for gyro to fire.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output. Engage Mode sets how. Leave unset to disable the button gate. When both this and the Engage Stick deflection are configured, both must be active for gyro to fire.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Engage Mode</value></data>
   <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hold: gyro fires while the engage button is held. Toggle: each press flips gyro on or off, and release does nothing. Release to Aim: gyro fires while the engage button is not held. Toggle is sticky across the polling tick and resets on profile switch.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Hold</value></data>
@@ -4498,7 +4498,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Plays game rumble as low tones through bass shakers or a subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output device, channels, gain, a tone for each motor</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels, the Steam Deck Controller (Composite), the SInput Gamepad and the Joypad-OS Steam Input Gamepad. Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels. It also works with the Steam Deck Controller (Composite), the SInput Gamepad and the Joypad-OS Steam Input Gamepad. Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route Rumble to an Audio Output</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays the game rumble and force feedback this virtual controller receives as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>

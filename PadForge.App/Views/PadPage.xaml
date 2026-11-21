@@ -8937,9 +8937,12 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                              Visibility="{Binding GyroActivationUsesButtons, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="{Binding Pad_GyroActivation_Buttons, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
-                                                       VerticalAlignment="Top" Margin="0,4,12,0"
+                                                       VerticalAlignment="Top" Margin="0,12,12,0"
                                                        ToolTip="{Binding Pad_GyroActivation_Buttons_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ListBox ItemsSource="{Binding GyroActivationButtons}" MaxHeight="160" MaxWidth="260"
+                                            <!-- The row's first line is a 44 band, as every row's is: the list
+                                                 stands 6 down, so its first check box (32) sits in that band as a
+                                                 picker does, and the label and the reset center on that box. -->
+                                            <ListBox ItemsSource="{Binding GyroActivationButtons}" MaxHeight="160" MaxWidth="260" Margin="0,6,0,6"
                                                      controls:SettingRow.Fills="True" HorizontalAlignment="Left"
                                                      AutomationProperties.Name="{Binding Pad_GyroActivation_Buttons, Source={x:Static strings:Strings.Instance}}"
                                                      ToolTip="{Binding Pad_GyroActivation_Buttons_Tooltip, Source={x:Static strings:Strings.Instance}}">
@@ -8967,7 +8970,7 @@
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
                                             <ui:Button Command="{Binding ResetGyroActivationButtonsCommand}" Style="{StaticResource ResetButton}"
-                                                    VerticalAlignment="Top"
+                                                    VerticalAlignment="Top" Margin="0,6,0,0"
                                                     ToolTip="{Binding Pad_ResetGyroActivationButtons, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"

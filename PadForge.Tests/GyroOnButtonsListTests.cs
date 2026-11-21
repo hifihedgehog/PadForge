@@ -92,6 +92,32 @@ namespace PadForge.Tests
                         double drawn = On(page, box).Left + box.Padding.Left;
                         Assert.True(Math.Abs(drawn - column) < 0.5, $"a button's box starts at {drawn}, the column at {column}");
                     }
+
+                    // The first button stands in the row's first 44 as Engage
+                    // Stick's picker stands in its row, the label's middle is
+                    // its middle as Engage Stick's label's is its picker's,
+                    // and the reset stands beside it. The label stood 2.7
+                    // above the first box's middle, and the box at the row's
+                    // top.
+                    double Middle(Rect r) => r.Top + r.Height / 2;
+                    TextBlock Label(string words) => Descendants<TextBlock>(page).Single(t => t.Text == words && Shows(t) && t.ActualWidth > 0);
+                    FrameworkElement RowOf(DependencyObject part)
+                    {
+                        for (var at = VisualTreeHelper.GetParent(part); at != null; at = VisualTreeHelper.GetParent(at))
+                            if (at is PadForge.Controls.SettingRow row) return row;
+                        throw new InvalidOperationException("no row holds the part");
+                    }
+                    var first = Descendants<CheckBox>(items[0]).Single();
+                    var strings = PadForge.Resources.Strings.Strings.Instance;
+                    double inRow = Middle(On(page, first)) - On(page, RowOf(list)).Top;
+                    double stickInRow = Middle(On(page, stick)) - On(page, RowOf(stick)).Top;
+                    Assert.True(Math.Abs(inRow - stickInRow) < 0.5, $"the first button's middle is {inRow} into its row, Engage Stick's {stickInRow}");
+                    double off = Middle(On(page, Label(strings.Pad_GyroActivation_Buttons))) - Middle(On(page, first));
+                    double stickOff = Middle(On(page, Label(strings.Settings_GyroEngageStickSide))) - Middle(On(page, stick));
+                    Assert.True(Math.Abs(off - stickOff) < 0.5, $"the label's middle is {off} from the first box's, Engage Stick's {stickOff}");
+                    var reset = Descendants<Button>(page).Single(b =>
+                        BindingOperations.GetBinding(b, ButtonBase.CommandProperty)?.Path?.Path == "ResetGyroActivationButtonsCommand");
+                    Assert.True(Math.Abs(Middle(On(page, reset)) - Middle(On(page, first))) < 0.5, "the reset stands off the first button's middle");
                 }
                 finally
                 {

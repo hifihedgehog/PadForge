@@ -815,7 +815,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Check for Updates</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Modern fork of x360ce, rebuilt with SDL3, WPF, and .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice, and touchscreens are mapped to virtual game controllers (Xbox, PlayStation, flight sticks, wheels, third-party gamepads) or keyboard+mouse / MIDI output that games treat as real hardware. Powered by HIDMaestro and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, HidHide for per-game device masking, and provides a modern Fluent Design interface for mapping, deadzones, sensitivity curves, and force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge makes any input look like any controller. Gamepads, joysticks, wheels, keyboards, mice, touch screens, MIDI devices and phones drive virtual controllers that games treat as real hardware: Xbox, PlayStation, Nintendo and Steam pads, SInput pads, VR hand controllers, MIDI output, a keyboard and mouse, or a custom device such as a flight stick or a wheel. HIDMaestro creates the virtual gamepads, SDL3 reads controllers, Windows Raw Input reads keyboards and mice, HidHide hides a device from games, and Windows MIDI Services carries MIDI in and out.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Overview</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Built With</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Search credits</value></data>
@@ -1789,11 +1789,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button that ramps the accumulator downward while held</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Down: button that ramps the accumulator downward while held.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rate</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Sweep speed in units per second. 0.5 = full range in 2 s; 2 = full range in 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Sweep speed in units per second. 0.5 = full range in 2 s. 2 = full range in 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Sticky</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>When checked, the accumulator holds its value after release (cruise control). When unchecked, it snaps back to Min on release.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Lower bound of the accumulator. -1 = full negative for bipolar axis targets. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Upper bound of the accumulator. 1 = full positive.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
@@ -2366,7 +2366,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>The part of the screen the pad reaches</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Tunes the Touchpad Pointer X/Y sources, which warp the cursor to your finger’s position on the pad (map them to mouse X/Y on a Keyboard / Mouse virtual controller). Size 1.00 with center 0.50 maps the pad to the whole screen. Shrink the size to confine the cursor to part of the screen, and move the center to place it.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Region Width</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Width of the screen area this pad maps onto, as a fraction of screen width. 1.00 covers the full width; 0.50 confines the cursor to half the screen.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Width of the screen area this pad maps onto, as a fraction of screen width. 1.00 covers the full width. 0.50 confines the cursor to half the screen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Region Height</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Height of the screen area, as a fraction of screen height.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Region Center X</value></data>
@@ -2377,7 +2377,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe Haptics</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ticks as your finger travels</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulses the controller’s haptics as your finger travels across this touchpad, like Steam Input’s trackpad ticks. Steam Controllers and the Steam Deck tick the actuator under the pad; DualSense and DualShock 4 pulse the rumble motors.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulses the controller’s haptics as your finger travels across this touchpad, like Steam Input’s trackpad ticks. Steam Controllers and the Steam Deck tick the actuator under the pad. DualSense and DualShock 4 pulse the rumble motors.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Enable Swipe Haptics</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Fires a short haptic tick each time the finger moves a set distance on this pad. Landing a finger or clicking the pad never ticks. Off by default.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulse Intensity</value></data>
@@ -3936,7 +3936,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>No DualShock 3 found on USB. Connect it with a USB cable and try again.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows will not install PadForge’s USB driver for the DualShock 3, because its signing certificate is not trusted on this PC.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>The Bluetooth driver for PlayStation controllers could not be installed.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>No Bluetooth radio is available. Turn Bluetooth on and try again. Pairing is only needed for wireless play; a cable-connected controller works without it.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>No Bluetooth radio is available. Turn Bluetooth on and try again. Pairing is only needed for wireless play. A cable-connected controller works without it.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pairing did not complete. The step that failed is shown above.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC Tags</value></data>
@@ -4368,10 +4368,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mouse Wheel Tick</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sends one discrete mouse wheel detent per fire. The value is the signed tick count (positive scrolls up or right).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Nudge Cursor</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Moves the mouse cursor by a fixed number of pixels per fire. Positive X moves right, positive Y moves down; negative values are allowed.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Moves the mouse cursor by a fixed number of pixels per fire. Positive X moves right, positive Y moves down. Negative values are allowed.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Nudge cursor by ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Cycle Tap List</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Each fire performs the next tap in the step list and advances. With wrap enabled the list restarts after the last step; without it, firing stops at the end.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Each fire performs the next tap in the step list and advances. With wrap enabled the list restarts after the last step. Without it, firing stops at the end.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Toggle Mouse Button</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the mouse button. A latched button stays held down until the next fire or until the macro is disabled.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Toggle mouse {0}</value></data>
@@ -4695,7 +4695,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Reset Ceiling</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Drag a point to move its frequency and gain. Roll the wheel over a point to widen or narrow it.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Output Path</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Where the controller plays its audio. Default keeps the firmware’s own routing and plays PadForge sounds on the speaker. Headphones + Speaker plays mono on the headset side, a firmware limit. Over Bluetooth this mode plays through the headphones only. Follow Headphone Jack switches to headphones when something is plugged into the controller and back to the speaker when unplugged; with no jack reading available it behaves like Default.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Where the controller plays its audio. Default keeps the firmware’s own routing and plays PadForge sounds on the speaker. Headphones + Speaker plays mono on the headset side, a firmware limit. Over Bluetooth this mode plays through the headphones only. Follow Headphone Jack switches to headphones when something is plugged into the controller and back to the speaker when unplugged. With no jack reading available it behaves like Default.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Default</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Headphones (Stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Headphones (Mono)</value></data>

@@ -22,7 +22,7 @@
 
 **PadForge makes any input look like any controller.** Plug in a steering wheel. The game sees a PlayStation pad. Use a DualSense. The game sees an Xbox 360. Map your keyboard. The game sees a flight stick. Open a tab on your phone. That tab becomes a gamepad your PC games can use.
 
-Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToolkit, HidHide, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), .NET 10, [OpenXInput](https://github.com/hifihedgehog/OpenXinput), SDL3, Windows MIDI Services, and WPF UI.
+Free Windows app, native on x64 and ARM64. No subscription. No paywall. No nag screens. Built on HelixToolkit, HidHide, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), .NET 10, [OpenXInput](https://github.com/hifihedgehog/OpenXinput), SDL3, Windows MIDI Services, and WPF UI.
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
@@ -51,15 +51,16 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
-<summary><b>New in 6.0.0:</b> a rebuilt interface with Home, Extras and search, a wheel that centers the way a car's steering does, crosshairs and a magnifier over your game, Flydigi Apex triggers, lights and screens, SInput pads, and polling up to 10,000 Hz</summary>
+<summary><b>New in 6.0.0:</b> a rebuilt interface with Home, Extras and search, every virtual controller on Windows on ARM, a wheel that centers the way a car's steering does, crosshairs and a magnifier over your game, Flydigi Apex triggers, lights and screens, SInput pads, and polling up to 10,000 Hz</summary>
 
 - PadForge 6 rebuilds the interface around what most people do first, and removes no setting. Home replaces the Dashboard. One switch starts the engine, and each virtual controller has a card with a picture of its controller that lights as you press. On a first run, one click makes the first controller for the connected device, mapped 1:1, and from then on Home offers a virtual controller to each new game controller it meets. The services that stood on the Dashboard are tiles on the new Extras page, and each opens a page of its own. A controller's page trades up to fourteen tabs for six sections: Mappings, Sticks & Triggers, Rumble & Haptics, Motion & Touch, Lights & Sound, and Macros & Menus. Ctrl+K finds pages, controllers, devices, profiles, settings and actions, and Settings has five groups and a search box of its own. The interface was checked in page renders and with the NVDA screen reader, and no controller was put through every page by hand ([#574](https://github.com/hifihedgehog/PadForge/issues/574)).
+- PadForge runs on Windows on ARM. Every Xbox, PlayStation, Nintendo and Extended virtual controller works there: HIDMaestro 2.3.0 runs every one of its profiles on Windows 11 on ARM64, and HidHide hides your controller from games there too. It was tested on a Surface Pro with a Snapdragon X2 Plus: a DualSense over Bluetooth drove an Xbox controller. Earlier ARM64 builds were preliminary, and most virtual controllers could not run there. Razer Sensa HD haptics, Logitech G-keys and SteamVR input still wait on their vendors' ARM64 libraries.
 - A force feedback wheel can center the way a car's steering does. The new Centering card keeps the plain spring as Spring mode and adds Vehicle mode: the torque a car's steering puts on the rim at its speed and grip, for a Sedan, a Compact, a Van, a Race Car or the Stanford X1, with the speed read from your game's telemetry. Release Test measures the wheel with your hands off it and sets the damping that brings it back without swinging past center. No wheel has run it yet, and every stability and Release Test result comes from a simulated wheel ([#588](https://github.com/hifihedgehog/PadForge/issues/588)).
 - Crosshair and Magnifier are two new extras. Crosshair shows up to ten crosshairs over your game, each a cross, a circle, a dot or a picture of your own. Magnifier is a lens like a sniper scope, the whole display zoomed in, or a spotlight that darkens the rest, at 1.25 to 16 times. Macros show and hide either one, and one shows the magnifier only while a button is held. A game in exclusive full screen hides them ([#585](https://github.com/hifihedgehog/PadForge/issues/585)).
 - A Flydigi Apex 4, Apex 5 or Apex 6 Pro gets what a DualSense or an Xbox pad gets on a virtual controller: adaptive trigger effects, impulse triggers, its own lights on the Lighting card, and Controller Screen…, which sends a picture or a GIF to the pad's screen by cable. The Apex 4 and Apex 5 triggers resist, and the Apex 6 Pro's trigger coils vibrate while its grip coils play the DualSense haptic track. No Flydigi pad has run against PadForge yet ([#586](https://github.com/hifihedgehog/PadForge/issues/586)).
 - SInput pads work as input devices. SInput is Hand Held Legend's HID gamepad protocol, and a pad that speaks it arrives with its buttons, sticks, triggers, motion, touchpads, battery and rumble, and plays PadForge's sounds on its haptics. An Extended virtual controller can be an SInput Gamepad too. No SInput pad has run against PadForge yet, and no game has run on the virtual one ([#584](https://github.com/hifihedgehog/PadForge/issues/584)).
 - The polling rate is set in Hz, from 60 to 10000, in Settings and in each profile. It was a whole number of milliseconds, and a saved interval becomes its rate as it loads. Windows wakes the engine at most 2000 times a second on a PC whose timer ticks every 0.5 ms, so a higher rate runs several passes at each wake.
-- HIDMaestro 2.3.0 adds six virtual controller profiles: Xbox One S Controller (Model 1708): Full, a wired Xbox One S pad that Windows' own Xbox drivers bind, the USB forms of the Nintendo Switch Online Genesis, N64 and SNES pads, and the Joy-Con Charging Grip with the left or the right Joy-Con. On Windows on ARM every virtual controller now runs as a USB device that Windows' own drivers bind. No PadForge build has driven the six new profiles yet.
+- HIDMaestro 2.3.0 adds six virtual controller profiles: Xbox One S Controller (Model 1708): Full, a wired Xbox One S pad that Windows' own Xbox drivers bind, the USB forms of the Nintendo Switch Online Genesis, N64 and SNES pads, and the Joy-Con Charging Grip with the left or the right Joy-Con. No PadForge build has driven the six new profiles yet.
 - PadForge lights more RGB devices by itself, 1,572 in all: the ROG Falchion Ace 75 HE key by key, Cooler Master's MK721 and CK721 LINE, the Roccat Kone XTD, and the light bars of the Corsair K70 PRO MINI WIRELESS. None of these has run against PadForge yet. PadForge now knows 2,687 devices by USB identity.
 - Also new. The Logitech RS50 is a wheel, and rumble plays on top of a wheel's centering spring, where turning centering on silenced it ([#572](https://github.com/hifihedgehog/PadForge/issues/572)). Audio Rumble's Sensitivity runs to 60 and its Bass Cutoff to 2000 Hz, for engine notes above the bass range ([#571](https://github.com/hifihedgehog/PadForge/issues/571)). Each shift layer sets how long its flyout stays ([#581](https://github.com/hifihedgehog/PadForge/issues/581)). A Bluetooth Switch 2 controller keeps its place through a lost link for up to 12 seconds, not yet run on a Joy-Con 2 clone ([#568](https://github.com/hifihedgehog/PadForge/issues/568)).
 - Fixes. Hiding a controller works when HidHide was installed while PadForge was already running. With two XInput pads of one ID, rumble and Hide from Games reach the pad on each card's number ([#583](https://github.com/hifihedgehog/PadForge/issues/583)). A steady rumble no longer stops after 65.5 seconds, and forces meant to last now last on a DirectInput wheel. FPS Mouse moves at the same speed at every polling rate, so a speed tuned at a rate other than 1000 Hz needs tuning again. PadForge no longer lists its own Xbox One or Xbox Series virtual controller as an input device.
@@ -145,7 +146,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 - **Elite paddles over USB and the Xbox Wireless Adapter stay on across Windows updates.** That route reads an undocumented Windows format, so the input library checks the Windows files behind it before switching it on. The check was five exact file hashes, which a Windows update broke. It now accepts a family of versions: Windows 11 24H2 or 25H2 at build 26100.8973 or 26200.8973 (July 28, 2026) or later, with version 3 of the GameInput redistributable, or with none. On Windows 10 and older Windows 11 that route stays off, and paddles are read over Bluetooth only.
 - **A voice macro no longer crashes PadForge after a temp cleanup.** A cleaner that removed the cached speech model's files and left its folders made the speech engine hand back an empty model, and the first recognizer built on it took the app down. PadForge now checks the model and unpacks it again.
 
-None of the ARM64 work has run on ARM64 hardware yet. [Requirements](#windows-on-arm-preliminary) lists what the ARM64 build still lacks.
+None of the ARM64 work has run on ARM64 hardware yet. [Requirements](#windows-on-arm) lists what the ARM64 build still lacks.
 
 </details>
 
@@ -1162,9 +1163,9 @@ Checks GitHub 20 seconds after launch and every 12 hours. Install and Restart re
 
 ## Requirements
 
-Windows 10 or 11 on x64, or Windows 11 on ARM64 ([preliminary](#windows-on-arm-preliminary)). Each has its own download: `win-x64` and `win-arm64`. The [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) is bundled in the single-file release, so there is nothing else to install.
+Windows 10 or 11 on x64, or Windows 11 on ARM64 ([Windows on ARM](#windows-on-arm)). Each has its own download: `win-x64` and `win-arm64`. The [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) is bundled in the single-file release, so there is nothing else to install.
 
-### Windows on ARM (preliminary)
+### Windows on ARM
 
 The `win-arm64` download is a native build for Windows 11 on ARM64. It works as the x64 build does: virtual controllers, HidHide, the DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles all run there. HidHide and the DualShock 3 Bluetooth driver install their ARM64 versions. A virtual controller there is a USB device on usbip-win2's host controller, which HIDMaestro installs, and Windows' own drivers bind it.
 
@@ -1177,7 +1178,7 @@ A few features wait on their vendors, because an ARM64 program can load ARM64 li
 | VR headset and controllers through SteamVR | Not available. PadForge loads SteamVR's win64 library |
 | Logitech LIGHTSYNC, OpenXR headset input | Only if the vendor's software installs an ARM64 engine or runtime |
 
-An earlier build of this release ran on one Windows 11 ARM64 PC, with a virtual Xbox controller and a DualSense hidden from games, before the last HIDMaestro update. The other virtual controller types have not been run on ARM64 hardware, and no Bluetooth profile has been driven there with the bundled HIDMaestro.
+HIDMaestro 2.3.0 runs every one of its profiles on Windows 11 on ARM64, and PadForge 6.0 was tested on a Surface Pro with a Snapdragon X2 Plus: a DualSense over Bluetooth drove an Xbox virtual controller, hidden from games through HidHide. The DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles have not run on an ARM64 PC.
 
 ### Drivers
 
@@ -1205,7 +1206,7 @@ dotnet publish PadForge.App/PadForge.App.csproj -c Release
 
 Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/PadForge.exe`
 
-Add `-r win-arm64` for the ARM64 build. [BUILD.md](BUILD.md#arm64-preliminary-451) lists what that build needs.
+Add `-r win-arm64` for the ARM64 build. [BUILD.md](BUILD.md#arm64-since-451) lists what that build needs.
 
 See [BUILD.md](BUILD.md) for project structure, architecture notes, and developer reference. See the [Technical Reference](https://padforge.org/docs/reference/) for deeper dives into the input pipeline, virtual controller backends, settings file format, and visualization renderer.
 

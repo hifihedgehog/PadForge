@@ -232,7 +232,7 @@ Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/Pa
 > Building from the IDE fails before any compile with a message naming this. Use the
 > `dotnet` CLI, or point Visual Studio at it.
 
-### ARM64 (preliminary, 4.5.1)
+### ARM64 (since 4.5.1)
 
 ```bash
 dotnet publish -c Release -r win-arm64 PadForge.App/PadForge.App.csproj
@@ -254,7 +254,7 @@ Three features have a native half, and `PadForge.Engine/Common/PlatformSupport.c
 
 Each rule names the architectures that have the native half and answers false for every other.
 
-`libvosk.dll` for ARM64 is not published by anyone. Vosk's maintainer wrote a Windows ARM64 recipe (vosk-api 1b308a30, `travis/Dockerfile.winaarch64`) and never shipped its output. `tools/build-libvosk-arm64.sh` is that recipe with the same flags and every source pinned to a commit, run from Git Bash with a portable llvm-mingw toolchain, and its header lists each difference from upstream with the reason. It links the C++ runtime statically, so the DLL imports `KERNEL32` and the Universal C Runtime alone, where the x64 one needs three MinGW DLLs beside it. The same recipe aimed at x64 produced recognition output identical to the official x64 library, word timings included. The ARM64 DLL has not run, because the bench is x64. `BundledVoskArm64Tests` checks that it exports every function the managed binding calls and needs no companion DLL.
+`libvosk.dll` for ARM64 is not published by anyone. Vosk's maintainer wrote a Windows ARM64 recipe (vosk-api 1b308a30, `travis/Dockerfile.winaarch64`) and never shipped its output. `tools/build-libvosk-arm64.sh` is that recipe with the same flags and every source pinned to a commit, run from Git Bash with a portable llvm-mingw toolchain, and its header lists each difference from upstream with the reason. It links the C++ runtime statically, so the DLL imports `KERNEL32` and the Universal C Runtime alone, where the x64 one needs three MinGW DLLs beside it. The same recipe aimed at x64 produced recognition output identical to the official x64 library, word timings included. The ARM64 DLL has not run on an ARM64 PC. `BundledVoskArm64Tests` checks that it exports every function the managed binding calls and needs no companion DLL.
 
 A HidHide class filter entry that names a driver which is not running can stop every keyboard and mouse from starting. HidHide's x64 setup ships a watchdog service for that. An ARM64 install has none, so `HidHideArm64Installer` adds the filters only after the driver's control device opens, and at startup on an ARM64 machine takes out any filter entry whose service is gone, or is registered and stopped, which is the watchdog's own condition. On removal it takes the filters off before the device node, as HidHide's setup does. If the removal then stops part way with the node still in, it adds the filters back, provided the driver still answers and no command is still running after its three-minute wait. When every add succeeds the state is a complete install again and Uninstall stays on offer, and an add that fails is logged. nefcon's `remove` takes the device node alone. The service and the driver package stay, as they do after HidHide's own uninstall. `HidHideArm64InstallerTests` pins that order and the hashes of both bundled files.
 
@@ -266,7 +266,7 @@ Drivers that install into Windows follow the machine. HIDMaestro 2.3.0 and BthPS
 
 Of the Visual C++ runtime, both builds bundle `vcruntime140.dll` and `msvcp140.dll`. `SDL3.dll` imports `msvcp140.dll` for the Elite paddle reader, which is C++. Neither item carries an `Exists` condition, so a missing file stops the build and names it. `vcruntime140_1.dll` is x64 only. It holds an exception handler that exists for the x64 ABI alone, and the copy in Microsoft's ARM64 redist folder is an x64 image. `BundledSdlRuntimeImportsTests` reads each bundled `SDL3.dll` for the runtime DLLs it names and fails when one is not in that architecture's `Resources/VisualCpp` folder. It did exactly that when the ARM64 `SDL3.dll` first arrived with the paddle reader in it.
 
-An earlier build of 6.0.0 ran on one Windows 11 ARM64 PC, with a virtual Xbox controller and a DualSense hidden through HidHide, before the last HIDMaestro update. The rest of the ARM64 path has not run on ARM64 hardware.
+PadForge 6.0 runs on Windows 11 on ARM64. HIDMaestro 2.3.0 runs every one of its profiles there, and PadForge was tested on a Surface Pro with a Snapdragon X2 Plus: a DualSense over Bluetooth drove an Xbox virtual controller, hidden through HidHide. The DualShock 3 Bluetooth driver, the Vosk voice engine and the Elite paddle reader have not run on an ARM64 PC.
 
 ## Runtime Requirements
 

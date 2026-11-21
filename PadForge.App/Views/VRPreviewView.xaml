@@ -7,7 +7,9 @@
              d:DesignHeight="400" d:DesignWidth="600"
              Background="Transparent">
 
-    <Viewbox Stretch="Uniform">
+    <!-- The hands keep the room the 3D controller keeps around it
+         (ArrangeOverride sets the margin from the view's size). -->
+    <Viewbox x:Name="VrBox" Stretch="Uniform">
         <Canvas FlowDirection="LeftToRight" x:Name="VrCanvas" ClipToBounds="True" />
     </Viewbox>
 

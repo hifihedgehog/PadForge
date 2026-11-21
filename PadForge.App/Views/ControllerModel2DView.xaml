@@ -11,7 +11,9 @@
              xmlns:reset="clr-namespace:PadForge.Controls">
 
     <Grid>
-        <Viewbox Stretch="Uniform">
+        <!-- The pad keeps the room the 3D controller keeps around it
+             (ArrangeOverride sets the margin from the view's size). -->
+        <Viewbox x:Name="ModelBox" Stretch="Uniform">
             <Canvas FlowDirection="LeftToRight" x:Name="ModelCanvas" ClipToBounds="True" />
         </Viewbox>
 

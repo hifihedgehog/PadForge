@@ -288,7 +288,21 @@ namespace PadForge.Tests
                 typeof(VRPreviewView).GetMethod("Build", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(hands, null);
                 Assert.Equal(1, said);
 
-                // At the art's own size a control is where the art has it.
+                // Where the art has a control, in a view of this size: the
+                // hands keep the 3D view's room around them, 8% of the
+                // height above and below, at least 46 above and 50 below,
+                // and 5% of the width at each side, and are centered in it.
+                static Rect Drawn(Rect art, double width, double height)
+                {
+                    double above = Math.Max(46, 0.08 * height), below = Math.Max(50, 0.08 * height), side = 0.05 * width;
+                    double roomWidth = width - 2 * side, roomHeight = height - above - below;
+                    double scale = Math.Min(roomWidth / 975, roomHeight / 726);
+                    double left = side + (roomWidth - 975 * scale) / 2, top = above + (roomHeight - 726 * scale) / 2;
+                    return new Rect(left + art.X * scale, top + art.Y * scale, art.Width * scale, art.Height * scale);
+                }
+
+                // At the art's own size a control is where the art has it,
+                // moved and scaled with the art into its room.
                 Lay(hands, 975, 726);
                 (string Target, Rect At, bool Round)[] controls =
                 {
@@ -308,7 +322,7 @@ namespace PadForge.Tests
                 foreach (var (target, at, round) in controls)
                 {
                     Assert.True(picture.TryGetPickBounds(target, out Rect bounds, out bool isRound), target);
-                    Near(at, bounds);
+                    Near(Drawn(at, 975, 726), bounds);
                     Assert.True(round == isRound, target);
                 }
                 Assert.False(picture.TryGetPickBounds("ButtonA", out _, out _));
@@ -318,12 +332,12 @@ namespace PadForge.Tests
                 // In a view half the size the hands are half the size.
                 Lay(hands, 487.5, 363);
                 Assert.True(picture.TryGetPickBounds("VrRTrigger", out Rect half, out _));
-                Near(new Rect(296, 180, 44.5, 49.5), half);
+                Near(Drawn(new Rect(592, 360, 89, 99), 487.5, 363), half);
 
                 // In a view of another shape the hands are centered.
                 Lay(hands, 975, 1452);
                 Assert.True(picture.TryGetPickBounds("VrRTrigger", out Rect tall, out _));
-                Near(new Rect(592, 363 + 360, 89, 99), tall);
+                Near(Drawn(new Rect(592, 360, 89, 99), 975, 1452), tall);
             });
         }
 

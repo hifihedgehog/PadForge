@@ -125,6 +125,16 @@ namespace PadForge.Views
             Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
+        /// <summary>Keeps the room the 3D controller keeps around it clear
+        /// around the hands, so their tops stand below the picture's top.
+        /// The pick ring and the clicks find the hands through the layout,
+        /// so they follow them.</summary>
+        protected override Size ArrangeOverride(Size arrangeBounds)
+        {
+            VrBox.Margin = ControllerModelFraming.PictureRoom(arrangeBounds.Width, arrangeBounds.Height);
+            return base.ArrangeOverride(arrangeBounds);
+        }
+
         /// <summary>Binds the pad ViewModel (sibling-preview contract).</summary>
         public void Bind(PadViewModel vm)
         {

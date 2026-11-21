@@ -222,6 +222,23 @@ namespace PadForge.Views
             return (distance, lift);
         }
 
+        /// <summary>The room a flat picture of a controller keeps clear
+        /// around its art in a view of this size: the room the camera keeps
+        /// around the 3D controller, so the 2D pads and the VR hands stand
+        /// in the picture as the 3D controller does. Above and below, a
+        /// share of the height with the least room each side asks for, and
+        /// a share of the width at each side. A view too short for the room
+        /// above and below keeps none, and the art fills it.</summary>
+        public static System.Windows.Thickness PictureRoom(double viewWidth, double viewHeight)
+        {
+            if (!(viewWidth > 0) || !(viewHeight > 0)) return default;
+            double top = Math.Max(TopClear, ClearShare * viewHeight);
+            double bottom = Math.Max(BottomClear, ClearShare * viewHeight);
+            if (top + bottom >= viewHeight) return default;
+            double side = SideShare * viewWidth;
+            return new System.Windows.Thickness(side, top, side, bottom);
+        }
+
         /// <summary>The camera's position for a distance and a lift: back
         /// along its line of sight from the point it looks at, which lies
         /// the lift above the model's center, the origin.</summary>

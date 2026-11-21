@@ -116,6 +116,17 @@ namespace PadForge.Views
             AnnotationCanvas.SizeChanged += (s, e) => LayoutAnnotations();
         }
 
+        /// <summary>Keeps the room the 3D controller keeps around it clear
+        /// around the pad, so its triggers stand below the picture's top and
+        /// its grips above the picture's foot. The annotations, the pick
+        /// ring and the clicks find the pad through the layout, so they
+        /// follow it.</summary>
+        protected override Size ArrangeOverride(Size arrangeBounds)
+        {
+            ModelBox.Margin = ControllerModelFraming.PictureRoom(arrangeBounds.Width, arrangeBounds.Height);
+            return base.ArrangeOverride(arrangeBounds);
+        }
+
         // ─────────────────────────────────────────────
         //  ViewModel binding
         // ─────────────────────────────────────────────

@@ -433,6 +433,25 @@
 
         <!-- The label of a row whose switch stands at its end: it takes the
              room the row has and wraps there (SettingRow.Ends). -->
+        <!-- What a picker of one input holds, drawn inside its box over a
+             picker whose list has no item for it: the saved input or
+             Unassigned, where the picker's own text stands, and the
+             chevron's room kept clear. It takes no clicks, so the picker
+             under it opens as before. -->
+        <Style x:Key="PickerWords" TargetType="TextBlock">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="Margin" Value="9,0,34,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="EndsLabel" TargetType="TextBlock">
             <Setter Property="Margin" Value="0,0,12,0"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -956,33 +975,37 @@
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_Gate_Tooltip, Source={x:Static strings:Strings.Instance}}"
                             Visibility="{Binding HasGate, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_Gate, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock Text="{Binding GateText}" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="260"/>
-                    <ComboBox ItemsSource="{Binding DataContext.SlotAvailableInputsView, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              SelectedItem="{Binding GatePick, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              Width="150" VerticalAlignment="Center" Padding="4,2" IsSynchronizedWithCurrentItem="False"
-                              AutomationProperties.Name="{Binding Mapping_Gate_Pick, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Mapping_Gate_Pick_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                        <ComboBox.GroupStyle>
-                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                        </ComboBox.GroupStyle>
-                    </ComboBox>
+                    <Grid>
+                        <ComboBox ItemsSource="{Binding DataContext.SlotAvailableInputsView, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                  SelectedItem="{Binding GatePick, Mode=TwoWay}" DisplayMemberPath="DisplayName"
+                                  MinWidth="150" VerticalAlignment="Center" Padding="4,2" IsSynchronizedWithCurrentItem="False"
+                                  AutomationProperties.Name="{Binding Mapping_Gate_Pick, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Mapping_Gate_Pick_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                            </ComboBox.GroupStyle>
+                        </ComboBox>
+                        <!-- The input waited on, inside the picker that changes it. -->
+                        <TextBlock Style="{StaticResource PickerWords}" Text="{Binding GateText}" MaxWidth="260"/>
+                    </Grid>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetGateDescriptorCommand}" SettingLabel="{Binding Mapping_Gate, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_Mapping_GateDescriptor"/>
                 </StackPanel>
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_Gate2_Tooltip, Source={x:Static strings:Strings.Instance}}"
                             Visibility="{Binding HasGate2, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_Gate2, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock Text="{Binding Gate2Text}" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="260"/>
-                    <ComboBox ItemsSource="{Binding DataContext.SlotAvailableInputsView, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              SelectedItem="{Binding Gate2Pick, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              Width="150" VerticalAlignment="Center" Padding="4,2" IsSynchronizedWithCurrentItem="False"
-                              AutomationProperties.Name="{Binding Mapping_Gate_Pick, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Mapping_Gate_Pick_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                        <ComboBox.GroupStyle>
-                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                        </ComboBox.GroupStyle>
-                    </ComboBox>
+                    <Grid>
+                        <ComboBox ItemsSource="{Binding DataContext.SlotAvailableInputsView, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                  SelectedItem="{Binding Gate2Pick, Mode=TwoWay}" DisplayMemberPath="DisplayName"
+                                  MinWidth="150" VerticalAlignment="Center" Padding="4,2" IsSynchronizedWithCurrentItem="False"
+                                  AutomationProperties.Name="{Binding Mapping_Gate_Pick, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Mapping_Gate_Pick_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                            </ComboBox.GroupStyle>
+                        </ComboBox>
+                        <!-- The input waited on, inside the picker that changes it. -->
+                        <TextBlock Style="{StaticResource PickerWords}" Text="{Binding Gate2Text}" MaxWidth="260"/>
+                    </Grid>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetGate2DescriptorCommand}" SettingLabel="{Binding Mapping_Gate2, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_Mapping_Gate2Descriptor"/>
                 </StackPanel>
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_SourceCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -6224,31 +6247,35 @@
                                                    VerticalAlignment="Top" Margin="0,4,12,0"
                                                    ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Vertical">
-                                            <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                      SelectedItem="{Binding MouseGestureCustomEngageSelectedInput, Mode=TwoWay}"
-                                                      DisplayMemberPath="DisplayName"
-                                                      MinWidth="260" Padding="4,2"
-                                                      ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                      IsSynchronizedWithCurrentItem="False" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
-                                                <ComboBox.GroupStyle>
-                                                    <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                                                </ComboBox.GroupStyle>
-                                            </ComboBox>
+                                            <Grid>
+                                                <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                          SelectedItem="{Binding MouseGestureCustomEngageSelectedInput, Mode=TwoWay}"
+                                                          DisplayMemberPath="DisplayName"
+                                                          MinWidth="260" Padding="4,2"
+                                                          ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                          IsSynchronizedWithCurrentItem="False" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                                    <ComboBox.GroupStyle>
+                                                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                                                    </ComboBox.GroupStyle>
+                                                </ComboBox>
+                                                <!-- What the picker holds while its list has no item for it:
+                                                     the saved input in words, or Unassigned. -->
+                                                <TextBlock Style="{StaticResource PickerWords}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                           Visibility="{Binding MouseGestureCustomEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource InputWordsConverter}">
+                                                            <Binding Path="MouseGestureCustomEngageButton"/>
+                                                            <Binding Path="Common_Unassigned" Source="{x:Static strings:Strings.Instance}"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
                                             <TextBlock FontSize="12"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="4,1,0,0"
-                                                       TextTrimming="CharacterEllipsis">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="{Binding MouseGestureCustomEngageSelectedInput.DeviceLabel}"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding MouseGestureCustomEngageSelectedInput}" Value="{x:Null}">
-                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Text="{Binding MouseGestureCustomEngageSelectedInput.DeviceLabel}"
+                                                       Visibility="{Binding MouseGestureCustomEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}}"/>
                                         </StackPanel>
                                         <ui:Button Command="{Binding MouseGestureCustomEngageRecordCommand}"
                                                    Style="{StaticResource EmberIconButtonHot}"
@@ -6914,26 +6941,33 @@
                                             <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
                                             <StackPanel Orientation="Vertical">
-                                                <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                          SelectedItem="{Binding LeftTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
-                                                          DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
-                                                          IsSynchronizedWithCurrentItem="False">
-                                                    <ComboBox.GroupStyle>
-                                                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                                                    </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="{Binding LeftTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding LeftTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
-                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                                <Grid>
+                                                    <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                              SelectedItem="{Binding LeftTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
+                                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
+                                                              IsSynchronizedWithCurrentItem="False">
+                                                        <ComboBox.GroupStyle>
+                                                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                                                        </ComboBox.GroupStyle>
+                                                    </ComboBox>
+                                                    <!-- What the picker holds while its list has no item for it:
+                                                         the saved input in words, or Unassigned. -->
+                                                    <TextBlock Style="{StaticResource PickerWords}"
+                                                               Visibility="{Binding LeftTriggerRouteActivatorSelectedInput, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource InputWordsConverter}">
+                                                                <Binding Path="LeftTriggerRouteActivator"/>
+                                                                <Binding Path="Common_Unassigned" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
+                                                <TextBlock FontSize="12"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="4,1,0,0"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Text="{Binding LeftTriggerRouteActivatorSelectedInput.DeviceLabel}"
+                                                           Visibility="{Binding LeftTriggerRouteActivatorSelectedInput, Converter={StaticResource NullToCollapsedConverter}}"/>
                                             </StackPanel>
                                             <ui:Button Command="{Binding LeftTriggerRouteActivatorRecordCommand}" Style="{StaticResource EmberIconButtonHot}" VerticalAlignment="Top">
                                                 <controls:GlyphText Text="{Binding LeftTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
@@ -6998,26 +7032,33 @@
                                             <TextBlock Text="{Binding Pad_TriggerRouting_Activator, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource DzLabel}" VerticalAlignment="Top" Margin="0,4,0,0"/>
                                             <StackPanel Orientation="Vertical">
-                                                <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                          SelectedItem="{Binding RightTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
-                                                          DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
-                                                          IsSynchronizedWithCurrentItem="False">
-                                                    <ComboBox.GroupStyle>
-                                                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                                                    </ComboBox.GroupStyle>
-                                                </ComboBox>
-                                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="4,1,0,0" TextTrimming="CharacterEllipsis">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="{Binding RightTriggerRouteActivatorSelectedInput.DeviceLabel}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding RightTriggerRouteActivatorSelectedInput}" Value="{x:Null}">
-                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                                <Grid>
+                                                    <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                              SelectedItem="{Binding RightTriggerRouteActivatorSelectedInput, Mode=TwoWay}"
+                                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
+                                                              IsSynchronizedWithCurrentItem="False">
+                                                        <ComboBox.GroupStyle>
+                                                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                                                        </ComboBox.GroupStyle>
+                                                    </ComboBox>
+                                                    <!-- What the picker holds while its list has no item for it:
+                                                         the saved input in words, or Unassigned. -->
+                                                    <TextBlock Style="{StaticResource PickerWords}"
+                                                               Visibility="{Binding RightTriggerRouteActivatorSelectedInput, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource InputWordsConverter}">
+                                                                <Binding Path="RightTriggerRouteActivator"/>
+                                                                <Binding Path="Common_Unassigned" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
+                                                <TextBlock FontSize="12"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Margin="4,1,0,0"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Text="{Binding RightTriggerRouteActivatorSelectedInput.DeviceLabel}"
+                                                           Visibility="{Binding RightTriggerRouteActivatorSelectedInput, Converter={StaticResource NullToCollapsedConverter}}"/>
                                             </StackPanel>
                                             <ui:Button Command="{Binding RightTriggerRouteActivatorRecordCommand}" Style="{StaticResource EmberIconButtonHot}" VerticalAlignment="Top">
                                                 <controls:GlyphText Text="{Binding RightTriggerRouteActivatorRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
@@ -8811,31 +8852,35 @@
                                                        VerticalAlignment="Top" Margin="0,4,12,0"
                                                        ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <StackPanel Orientation="Vertical" MaxWidth="260" controls:SettingRow.Fills="True">
-                                                <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                          SelectedItem="{Binding GyroAimEngageSelectedInput, Mode=TwoWay}"
-                                                          DisplayMemberPath="DisplayName"
-                                                          Padding="4,2"
-                                                          ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                          IsSynchronizedWithCurrentItem="False">
-                                                    <ComboBox.GroupStyle>
-                                                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                                                    </ComboBox.GroupStyle>
-                                                </ComboBox>
+                                                <Grid>
+                                                    <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                              SelectedItem="{Binding GyroAimEngageSelectedInput, Mode=TwoWay}"
+                                                              DisplayMemberPath="DisplayName"
+                                                              Padding="4,2"
+                                                              ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                              IsSynchronizedWithCurrentItem="False">
+                                                        <ComboBox.GroupStyle>
+                                                            <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                                                        </ComboBox.GroupStyle>
+                                                    </ComboBox>
+                                                    <!-- What the picker holds while its list has no item for it:
+                                                         the saved input in words, or Unassigned. -->
+                                                    <TextBlock Style="{StaticResource PickerWords}"
+                                                               Visibility="{Binding GyroAimEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource InputWordsConverter}">
+                                                                <Binding Path="GyroAimEngageButton"/>
+                                                                <Binding Path="Common_Unassigned" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
                                                 <TextBlock FontSize="12"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                            Margin="4,1,0,0"
-                                                           TextTrimming="CharacterEllipsis">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="{Binding GyroAimEngageSelectedInput.DeviceLabel}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding GyroAimEngageSelectedInput}" Value="{x:Null}">
-                                                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Text="{Binding GyroAimEngageSelectedInput.DeviceLabel}"
+                                                           Visibility="{Binding GyroAimEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}}"/>
                                             </StackPanel>
                                             <ui:Button Command="{Binding GyroAimEngageRecordCommand}"
                                                        Style="{StaticResource EmberIconButtonHot}"
@@ -12371,31 +12416,35 @@
                                         <TextBlock Text="{Binding Pad_Audio_EngageInput_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
                                                    VerticalAlignment="Top" Margin="16,4,12,0"/>
                                         <StackPanel Orientation="Vertical">
-                                            <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
-                                                      SelectedItem="{Binding MirrorEngageSelectedInput, Mode=TwoWay}"
-                                                      DisplayMemberPath="DisplayName"
-                                                      MinWidth="260" Padding="4,2"
-                                                      IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"
-                                                      IsSynchronizedWithCurrentItem="False">
-                                                <ComboBox.GroupStyle>
-                                                    <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
-                                                </ComboBox.GroupStyle>
-                                            </ComboBox>
+                                            <Grid>
+                                                <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                          SelectedItem="{Binding MirrorEngageSelectedInput, Mode=TwoWay}"
+                                                          DisplayMemberPath="DisplayName"
+                                                          MinWidth="260" Padding="4,2"
+                                                          IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"
+                                                          IsSynchronizedWithCurrentItem="False">
+                                                    <ComboBox.GroupStyle>
+                                                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                                                    </ComboBox.GroupStyle>
+                                                </ComboBox>
+                                                <!-- What the picker holds while its list has no item for it:
+                                                     the saved input in words, or Unassigned. -->
+                                                <TextBlock Style="{StaticResource PickerWords}" IsEnabled="{Binding DeviceConfig.AudioPassthroughEnabled}"
+                                                           Visibility="{Binding MirrorEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource InputWordsConverter}">
+                                                            <Binding Path="DeviceConfig.AudioMirrorEngageButton"/>
+                                                            <Binding Path="Common_Unassigned" Source="{x:Static strings:Strings.Instance}"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
                                             <TextBlock FontSize="12"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        Margin="4,1,0,0"
-                                                       TextTrimming="CharacterEllipsis">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="{Binding MirrorEngageSelectedInput.DeviceLabel}"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding MirrorEngageSelectedInput}" Value="{x:Null}">
-                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Text="{Binding MirrorEngageSelectedInput.DeviceLabel}"
+                                                       Visibility="{Binding MirrorEngageSelectedInput, Converter={StaticResource NullToCollapsedConverter}}"/>
                                         </StackPanel>
                                         <ui:Button Command="{Binding MirrorEngageRecordCommand}"
                                                    Style="{StaticResource EmberIconButtonHot}"

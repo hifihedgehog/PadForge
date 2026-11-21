@@ -547,9 +547,9 @@ namespace PadForge.Tests
                     Picture("section-motion-gyro-alone.png", () =>
                     {
                         foreach (var other in others) other.Visibility = Visibility.Collapsed;
-                        Fold(true, new[] { "GyroSensitivityMore" });
+                        Fold(true, new[] { "GyroSensitivityMore", "GyroEngageCard" });
                     }, TallHeight);
-                    Fold(false, new[] { "GyroSensitivityMore" });
+                    Fold(false, new[] { "GyroSensitivityMore", "GyroEngageCard" });
                     for (int i = 0; i < others.Count; i++) others[i].Visibility = shown[i];
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }

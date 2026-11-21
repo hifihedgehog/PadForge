@@ -1586,6 +1586,7 @@
             <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+            <conv:InputWordsConverter x:Key="InputWordsConverter" />
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
             <conv:AnyOnConverter x:Key="AnyOnConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />

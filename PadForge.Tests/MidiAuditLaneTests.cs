@@ -74,6 +74,34 @@ namespace PadForge.Tests
             Assert.All(values.Where(kv => kv.Key != "Strings.resx"), kv => Assert.NotEqual(values["Strings.resx"], kv.Value));
         }
 
+        /// <summary>No English string sends anyone to a driver's card in
+        /// Settings. PadForge 6's Settings lists the drivers as rows of one
+        /// list, under the Drivers group, and a row says why its driver is
+        /// not running. The line a MIDI controller raises when no MIDI API
+        /// runs still read "The Windows MIDI Services card in Settings says
+        /// why." It now names the row and the group, in the words the Add a
+        /// Controller tile's own line uses.</summary>
+        [Fact]
+        public void NoStringSendsAnyoneToADriversCard()
+        {
+            var dir = Path.Combine(RepoRoot(), "PadForge.App", "Resources", "Strings");
+            var english = XDocument.Load(Path.Combine(dir, "Strings.resx")).Root.Elements("data")
+                .ToDictionary(d => (string)d.Attribute("name"), d => d.Element("value")?.Value ?? "");
+            // Positive control: the strings loaded, and the group is named.
+            Assert.True(english.Count > 5000, $"only {english.Count} English strings were read");
+            string drivers = english["Settings_Group_Drivers"];
+            Assert.False(string.IsNullOrWhiteSpace(drivers));
+
+            var card = new Regex(@"(Windows MIDI Services|SteamVR|HidHide|HIDMaestro|BthPS3|usbip-win2)[^.]{0,30}\bcard\b|\bcard in Settings\b");
+            var wrong = english.Where(kv => card.IsMatch(kv.Value)).Select(kv => kv.Key + ": " + kv.Value).ToList();
+            Assert.True(wrong.Count == 0, "these strings name a driver's card, and Settings has rows under Drivers:\n" + string.Join("\n", wrong));
+
+            string line = english["Status_MidiNotRunning_Format"];
+            Assert.Contains("{0}", line);
+            Assert.Contains("Windows MIDI Services", line);
+            Assert.Contains(drivers, line);
+        }
+
         /// <summary>The install names the Visual C++ Redistributable it can
         /// put in first.</summary>
         [Theory]

@@ -207,7 +207,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide blocked PadForge from a device PadForge had hidden, so PadForge stopped hiding devices.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide’s Inverse application cloak is on, so PadForge hides no devices.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling the Windows MIDI Services runtime…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} could not start because MIDI is not running. The Windows MIDI Services card in Settings says why.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} could not start because MIDI is not running. See Windows MIDI Services in Settings, under Drivers.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} could not start because Windows MIDI Services did not create its port.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} has no Output Port. Pick one on its page.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>The Output Port “{1}” of {0} is not connected. The slot starts once the port is back.</value></data>

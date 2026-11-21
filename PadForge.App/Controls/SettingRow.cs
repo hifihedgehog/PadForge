@@ -111,6 +111,11 @@ namespace PadForge.Controls
         /// a line that wraps.</summary>
         internal const double FillLeast = 96;
 
+        /// <summary>How far under its wanted width a part's share may fall
+        /// and still count as the width it asked for: what the subtractions
+        /// that share out the row leave in the last digits.</summary>
+        private const double WidthSlack = 0.001;
+
         /// <summary>How a row whose controls stand at its end shares its
         /// width between the label and the child that gives way. The label
         /// has all the room the other parts leave. A row too narrow for
@@ -304,14 +309,21 @@ namespace PadForge.Controls
             _fillLeast = fillLeast;
 
             var (leadWidth, fillWidth) = EndsWidths(availableSize.Width, leadWanted, fixedWidth, fillWanted, fillLeast);
-            if (fill != null)
+            // A part that gets the width it asked for keeps the measure it
+            // had with no bound, as FlexLinePanel's parts do. Measured again
+            // at that width, which layout rounding may have taken part of a
+            // pixel off, a status wrapped its last word ("found.") and a
+            // label its last ("Falcon") with the row's room to spare (seen
+            // in the 6.0.0 screenshots).
+            if (fill is FrameworkElement shared)
             {
-                fill.Measure(new Size(fillWidth, availableSize.Height));
+                bool keepsItsWidth = double.IsInfinity(shared.MaxWidth) && fillWidth >= fillWanted - WidthSlack;
+                if (!keepsItsWidth) fill.Measure(new Size(fillWidth, availableSize.Height));
                 height = Math.Max(height, fill.DesiredSize.Height);
             }
             if (lead != null)
             {
-                lead.Measure(new Size(leadWidth, availableSize.Height));
+                if (leadWidth < leadWanted - WidthSlack) lead.Measure(new Size(leadWidth, availableSize.Height));
                 height = Math.Max(height, lead.DesiredSize.Height);
             }
             double width = double.IsInfinity(availableSize.Width) ? leadWanted + fixedWidth + fillWanted : availableSize.Width;

@@ -157,5 +157,69 @@ namespace PadForge.Tests
                 Assert.True(host.ActualWidth > 821 && host.ActualWidth < 823, "the cards are " + host.ActualWidth + " wide");
             }, TimeSpan.FromMinutes(2), "the Settings layout test timed out");
         }
+
+        /// <summary>The lines a laid-out text block draws.</summary>
+        private static List<string> Lines(TextBlock block)
+        {
+            var lines = new List<string>();
+            for (var at = block.ContentStart.GetLineStartPosition(0); at != null;)
+            {
+                var next = at.GetLineStartPosition(1);
+                lines.Add(new System.Windows.Documents.TextRange(at, next ?? block.ContentEnd).Text);
+                at = next;
+            }
+            return lines;
+        }
+
+        /// <summary>The Hardware Support card in the window's rounded layout
+        /// (seen in the 6.0.0 screenshots): "No supported analog keyboard"
+        /// over "found." and "No Bliss-Box port" over "found." with room to
+        /// spare, the word "copy" alone on a line, and "Drive Novint Falcon"
+        /// on two lines while its status took the row. A label keeps one
+        /// line, and a status takes the row's room before it wraps.</summary>
+        [Fact]
+        public void TheHardwareCardsLabelsKeepOneLine_AndAStatusWrapsOnlyWhereTheRowEnds()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                var vm = new SettingsViewModel
+                {
+                    SelectedSettingsGroup = SettingsGroup.Hardware,
+                    AnalogKeyboardsStatus = s.Settings_AnalogKeyboardsStatus_None,
+                    BlissBoxStatus = s.Settings_BlissBoxStatus_None,
+                    KeyboardScreensStatus = "Arx Control: " + s.KeyboardScreens_Status_ArxNoLibrary + "\n"
+                        + "S.T.R.I.K.E. 7: " + s.KeyboardScreens_Status_Strike7NoLibrary + "\n"
+                        + "Keyboard Screens: " + s.KeyboardScreens_Status_NotFound,
+                    FalconStatus = s.Falcon_Status_NoSdk,
+                };
+                var page = new SettingsPage { DataContext = vm, UseLayoutRounding = true };
+                Lay(page, 1176);
+                var hardware = (FrameworkElement)page.FindName("HardwareGroup");
+                var rows = Descendants<SettingRow>(hardware).Where(Shows).ToList();
+                Assert.True(rows.Count >= 7, rows.Count + " rows show in Hardware");
+
+                TextBlock Status(string text)
+                {
+                    var row = rows.Single(r => r.Children.OfType<TextBlock>().Skip(1).Any(t => t.Text == text));
+                    return row.Children.OfType<TextBlock>().Skip(1).Single(t => t.Text == text);
+                }
+                foreach (string text in new[] { vm.AnalogKeyboardsStatus, vm.BlissBoxStatus })
+                    UnitLabelLayoutTests.AssertOneLineWhole(Status(text), "Hardware");
+                // One drawn line for each line the status writes.
+                var screens = Lines(Status(vm.KeyboardScreensStatus));
+                Assert.True(screens.Count == 3, "the screens' status draws " + string.Join(" | ", screens));
+
+                // Every label in the card keeps one line at this width, the
+                // Falcon's too, and its status wraps beside it.
+                foreach (var row in rows)
+                {
+                    if (row.Children[0] is TextBlock label && Shows(label))
+                        UnitLabelLayoutTests.AssertOneLineWhole(label, "Hardware");
+                }
+                var falcon = Status(vm.FalconStatus);
+                Assert.True(Lines(falcon).Count <= 2, "the Falcon's status draws " + string.Join(" | ", Lines(falcon)));
+            }, TimeSpan.FromMinutes(2), "the Hardware layout test timed out");
+        }
     }
 }

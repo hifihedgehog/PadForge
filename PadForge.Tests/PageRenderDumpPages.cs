@@ -307,6 +307,24 @@ namespace PadForge.Tests
                     drawing.Picture(ground, "settings-hardware-900.png", narrow, tall, () => vm.SelectedSettingsGroup = SettingsGroup.Hardware);
                     drawing.Picture(ground, "settings-drivers-900.png", narrow, tall, () => vm.SelectedSettingsGroup = SettingsGroup.Drivers);
 
+                    // The Hardware card as the window lays it out, rounded to
+                    // device pixels, with the lines of the 6.0.0 screenshots:
+                    // the Keyboard Screens' three and the Falcon's.
+                    drawing.Picture(ground, "settings-hardware-rounded.png", width, height, () =>
+                    {
+                        var s = PadForge.Resources.Strings.Strings.Instance;
+                        page.UseLayoutRounding = true;
+                        vm.NovintFalconEnabled = true;
+                        vm.KeyboardScreensStatus = "Arx Control: " + s.KeyboardScreens_Status_ArxNoLibrary + "\n"
+                            + "S.T.R.I.K.E. 7: " + s.KeyboardScreens_Status_Strike7NoLibrary + "\n"
+                            + "Keyboard Screens: " + s.KeyboardScreens_Status_NotFound;
+                        vm.FalconStatus = s.Falcon_Status_NoSdk;
+                        vm.SelectedSettingsGroup = SettingsGroup.Hardware;
+                    });
+                    page.UseLayoutRounding = false;
+                    vm.NovintFalconEnabled = false;
+                    vm.KeyboardScreensStatus = vm.FalconStatus = string.Empty;
+
                     // The Updates card before any check, and with an update waiting.
                     drawing.Picture(ground, "settings-updates-unchecked.png", width, height, () =>
                     {

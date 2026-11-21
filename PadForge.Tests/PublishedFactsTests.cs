@@ -50,7 +50,7 @@ namespace PadForge.Tests
             ("About_License_Mit", new[]
             {
                 "AudioEndPointLibrary", "AutoEq", "BouncyCastle", "Bs2b", "Colore", "Ds4Audio", "Ds4Drv", "Ds5Dongle", "DuaLib",
-                "DsBtHaptics", "DsTester", "DualSenseWindows", "EdRefCard2", "Fusion", "GamepadBatteryMonitor",
+                "DsBtHaptics", "DsTester", "DualSenseWindows", "DualSenseY", "EdRefCard2", "Fusion", "GamepadBatteryMonitor",
                 "GamepadAssetPack", "GamepadMotionHelpers", "HelixToolkit", "HidHide", "HIDMaestro", "Hitboxer",
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
                 "DotNet", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
@@ -79,7 +79,7 @@ namespace PadForge.Tests
             ("About_License_Gpl3", new[] { "Ds4MapperTest", "Ds4WindowsHbashton", "LegionToolkit", "Touchmote" }),
             ("About_License_Gpl3OrLater", new[]
             {
-                "AntiMicroX", "ApexSenseBridge", "Ds4Windows", "Eden", "InputPlumber", "SpecialK", "ViiperHbashton",
+                "AntiMicroX", "ApexSenseBridge", "Ds4Windows", "Eden", "InputPlumber", "RetroArch", "SpecialK", "ViiperHbashton",
             }),
             ("About_License_Agpl3", new[] { "ChiakiNg", "Ds5Bridge" }),
             ("About_License_Lgpl21OrLater", new[] { "FFmpeg", "Libusb" }),
@@ -95,16 +95,16 @@ namespace PadForge.Tests
             ("About_License_NoTermsNamed", new[] { "MysticLightSdk" }),
             ("About_License_NonePublished", new[]
             {
-                "DualSenseSupport", "DualSenseY", "JoyconSinger", "SwitchResearch", "WiiBrew",
+                "DualSenseSupport", "JoyconSinger", "SwitchResearch", "WiiBrew",
             }),
             ("About_License_Several", new[]
             {
-                "ArcadeIoRefs", "BlissBoxRefs", "BleControllerRefs", "RfcommIcadeRefs", "DjiRemoteRefs", "GameModRefs",
+                "ArcadeIoRefs", "BlissBoxRefs", "BleControllerRefs", "RfcommIcadeRefs", "CrosshairRefs", "DjiRemoteRefs", "GameModRefs",
                 "Ds4HeadsetRefs", "GunConRefs", "OpenFlydigi", "AnalogKeyboardRefs", "HidDeviceRefs", "IForceRefs", "IconSources",
                 "InstrumentRefs", "IrohFlexInput", "Kaldi", "KeyboardScreenRefs", "LightingRefs", "Linuxmotehook",
                 "LogitechLedRefs", "MenuRefs", "MingwRuntime", "Nefcon", "FalconRefs", "OpenXrRefs",
                 "PeripheralOutputRefs", "PortMidiRtMidi", "ProfileImportRefs", "Psmoveapi", "TelemetryRefs",
-                "RingConRefs", "Ds3Research", "ScreenColorRefs", "SerialControllerRefs", "SpaceMouseRefs",
+                "RingConRefs", "Ds3Research", "ScreenColorRefs", "SerialControllerRefs", "SInputRefs", "SpaceMouseRefs",
                 "SpecialtyUsbRefs", "SteamControllerRefs", "SteamKit2", "ThumbstickDeadzones", "TrainControllerRefs",
                 "SteeringRefs", "TritonLib", "WheelRefs", "XboxControllerRefs",
             }),
@@ -1278,8 +1278,8 @@ namespace PadForge.Tests
             // Positive control: the split found the entries.
             Assert.True(entries.Count > 60, $"found only {entries.Count} entries");
             // The entries the block was written for are the entries they were.
-            Assert.Contains("WPF UI\n  https://github.com/lepoco/wpfui\n  Licensed under MIT License", entries);
-            Assert.Contains("Windows MIDI Services\n  https://github.com/microsoft/MIDI\n  Licensed under MIT License", entries);
+            Assert.Contains("WPF UI\n  https://github.com/lepoco/wpfui\n  Copyright (c) 2021-2025 Leszek Pomianowski and WPF UI Contributors\n  Licensed under MIT License", entries);
+            Assert.Contains("Windows MIDI Services\n  https://github.com/microsoft/MIDI\n  Copyright (c) Microsoft Corporation\n  Licensed under MIT License", entries);
 
             string Entry(string name) => Flat(entries.Single(e => e.Split('\n')[0] == name));
             foreach (string part in new[] { "VirtualizingWrapPanel", "fluentui-system-icons", "microsoft-ui-xaml", "Segoe Fluent Icons", "ThirdPartyNotices.txt" })

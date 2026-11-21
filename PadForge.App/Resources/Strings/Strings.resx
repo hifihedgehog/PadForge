@@ -155,8 +155,8 @@
   <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes and control changes for music software.</value></data>
   <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtual VR controllers through SteamVR.</value></data>
   <data name="AddController_Foot" xml:space="preserve"><value>To change the type later, click the type chip on the controller. It takes one click.</value></data>
-  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services is not responding. See its card in Settings.</value></data>
-  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Needs SteamVR. Install it from its card in Settings.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services is not responding. See it in Settings, under Drivers.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Needs SteamVR. Install it from Settings, under Drivers.</value></data>
   <data name="AddController_VrOnlyOne" xml:space="preserve"><value>There is a VR controller already. One drives both hands.</value></data>
   <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge has {0} controllers, the most it can run. Delete one to add another.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
@@ -196,7 +196,7 @@
   <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo (max {0})</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>Extended (max {0})</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>Keyboard + Mouse (max {0})</value></data>
-  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (not running, see the Windows MIDI Services card in Settings)</value></data>
+  <data name="Main_MIDI_NotRunning" xml:space="preserve"><value>MIDI (not running, see Windows MIDI Services in Settings, under Drivers)</value></data>
   <data name="Main_MIDI_Max_Format" xml:space="preserve"><value>MIDI (max {0})</value></data>
   <data name="Main_VR_RequiresSteamVR" xml:space="preserve"><value>VR (requires SteamVR)</value></data>
   <data name="Main_VR_Max_Format" xml:space="preserve"><value>VR (max {0})</value></data>
@@ -438,8 +438,8 @@
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send controller motion to emulators that read a DSU motion source.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Take adaptive trigger and light effects from game mods written for DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Turn on telemetry output in the game and point it at this PC and port.</value></data>
-  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>In the emulator, add a motion source at this PC’s address and this port.</value></data>
-  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>A mod’s effects reach every controller that has the hardware for them.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>In an emulator on this PC, add a motion source at 127.0.0.1 and this port.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>A mod reaches each virtual controller that has a connected DualSense or DualShock 4, and its effects play on every controller there that has the hardware for them.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>The head pose is the Head Tracker row on [Devices]. Map head yaw to a stick axis in a controller’s Mappings section.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>The values are the Game Telemetry row on [Devices]. Map them in a controller’s Mappings section or use them to trigger macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>A menu’s own place, size and opacity are set on the menu, in a controller’s [Macros &amp; Menus] section.</value></data>
@@ -620,7 +620,7 @@
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoke</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoke All</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad Overlay</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>An on-screen touch surface for PlayStation touchpad games, for a touch screen or the mouse.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>An on-screen touch surface for PlayStation touchpad games, for a touch screen.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Enable Touchpad Overlay</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacity</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Reset Position</value></data>
@@ -827,6 +827,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Controller input and enumeration.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Per-device keyboard and mouse input</value></data>
+  <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
+  <data name="About_RetroArchDesc" xml:space="preserve"><value>A custom web pad keeps each cluster’s distance from the nearer edge of a wider screen, as RetroArch’s overlays move their two halves. Read as documentation only, no GPL code ships.</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtual MIDI device output (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
@@ -889,6 +891,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer stereophonic-to-binaural crossfeed for headphone output.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus encoder that drives DualSense speaker audio over Bluetooth. By Logan Stromberg.</value></data>
+  <data name="About_CrosshairRefs" xml:space="preserve"><value>Crosshair and magnifier references</value></data>
+  <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>The Cross and its dot from Skarbo’s CSGOCrosshair (no license published), the Circle, picture and outlined styles from Crosshair-Overlay (MIT), and the magnifier’s Lens and full-screen zoom from Microsoft’s Windows-classic-samples (MIT). Documentation only, no code ships.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
   <data name="About_SAxenseDesc" xml:space="preserve"><value>DualSense Bluetooth audio research by egormanga: the packet transport the controller speaker stream rides on. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
@@ -2547,7 +2551,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Units</value></data>
   <data name="Settings_GyroSensitivityUnits_Tooltip" xml:space="preserve"><value>Sensitivity unit display. Multiplier is the internal × scale (1 = baseline). DegPerScreenTurn is Steam-style: degrees of physical controller rotation per one full screen turn.</value></data>
   <data name="Settings_GyroEasyAimThreshold" xml:space="preserve"><value>Easy Aim Threshold</value></data>
-  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Right-stick deflection (0–100%) below which gyro output is zeroed. 0 = always on. Steam’s “gyro engaged while aiming” feel. Gyro fires only when the user pushes the right stick past the threshold.</value></data>
+  <data name="Settings_GyroEasyAimThreshold_Tooltip" xml:space="preserve"><value>Deflection of the Engage Stick (0–100%) below which gyro output is zeroed. 0 = always on. Steam’s “gyro engaged while aiming” feel. Gyro fires only when the user pushes that stick past the threshold.</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tune how this pad’s motion sensor drives mouse and stick output. Calibrate on a flat surface to zero at-rest drift, then dial in sensitivity, smoothing, and engage rules to taste.</value></data>
@@ -2597,9 +2601,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroSmoothingWindow" xml:space="preserve"><value>Smoothing Window</value></data>
   <data name="Settings_GyroSmoothingWindow_Tooltip" xml:space="preserve"><value>Length of the smoothing-buffer time window. Larger values smooth more heavily below the tightening threshold. Smaller values feel snappier. Default 50ms.</value></data>
   <data name="Settings_GyroAimEngageButton" xml:space="preserve"><value>Aim Engage Button</value></data>
-  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output. Gyro fires only while this button is held. Leave unset to disable the button gate. When both this and the right-stick deflection are configured, both must be active for gyro to fire.</value></data>
+  <data name="Settings_GyroAimEngageButton_Tooltip" xml:space="preserve"><value>Button that gates gyro output, as the Engage Mode says. Leave unset to disable the button gate. When both this and the Engage Stick deflection are configured, both must be active for gyro to fire.</value></data>
   <data name="Settings_GyroAimEngageMode" xml:space="preserve"><value>Engage Mode</value></data>
-  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hold: gyro fires while the engage button is held. Toggle: each press flips gyro on or off, and release does nothing. Toggle is sticky across the polling tick and resets on profile switch.</value></data>
+  <data name="Settings_GyroAimEngageMode_Tooltip" xml:space="preserve"><value>Hold: gyro fires while the engage button is held. Toggle: each press flips gyro on or off, and release does nothing. Release to Aim: gyro fires while the engage button is not held. Toggle is sticky across the polling tick and resets on profile switch.</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Hold</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroAimEngageMode_ReleaseToEngage" xml:space="preserve"><value>Release to Aim</value></data>
@@ -2619,7 +2623,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Up (Y+)</value></data>
   <data name="Pad_Gyro_Engage_Header" xml:space="preserve"><value>Engage</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim Engage Button, Engage Mode, Gyro On, Re-Center, Easy Aim Threshold</value></data>
-  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. Right-stick deflection and the aim engage button can each be configured. Gyro fires only while every configured gate is active.</value></data>
+  <data name="Pad_Gyro_Engage_Subtitle" xml:space="preserve"><value>Optional gates that limit when gyro is active. The Engage Stick’s deflection and the aim engage button can each be configured. Gyro fires only while every configured gate is active.</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Player</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>World</value></data>
@@ -2711,7 +2715,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro Tilt Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro Tilt</value></data>
   <data name="Pad_GyroTilt_FoldHint" xml:space="preserve"><value>Full Tilt Range, Tilt Deadzone</value></data>
-  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope for the Gyro Tilt X / Gyro Tilt Y inputs: hold a tilt and the stick holds its deflection, like Steam’s Joystick Deflection mode. Full deflection at the range you set here; Gyro Recenter re-zeroes the resting grip. Yaw (turning the controller flat) is invisible to gravity and does not move these inputs.</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope for the Gyro Tilt X / Gyro Tilt Y inputs: hold a tilt and the stick holds its deflection, like Steam’s Joystick Deflection mode. Full deflection at the range you set here. Gyro Recenter re-zeroes the resting grip. Yaw (turning the controller flat) is invisible to gravity and does not move these inputs.</value></data>
   <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Full Tilt Range</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrees of tilt from the resting grip that count as full stick deflection. Smaller = more sensitive. 25° is the most common value in Steam configs.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Tilt Deadzone</value></data>
@@ -4494,7 +4498,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Plays game rumble as low tones through bass shakers or a subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output device, channels, gain, a tone for each motor</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels, and the Steam Deck Controller (Composite). Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 3, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels, the Steam Deck Controller (Composite), the SInput Gamepad and the Joypad-OS Steam Input Gamepad. Game feedback and Test Rumble play through the audio output. Macro rumble stays on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route Rumble to an Audio Output</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays the game rumble and force feedback this virtual controller receives as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>
@@ -4826,7 +4830,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_OpenXrRefs" xml:space="preserve"><value>OpenXR references</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>The runtime interface, structure layout, and registry keys behind headset and motion controller input, read from the Khronos OpenXR-SDK headers (Apache-2.0) and cross-checked against VirtualDesktop-OpenXR (MIT). PadForge talks to your own installed runtime and ships no Khronos code.</value></data>
   <data name="About_PeripheralOutputRefs" xml:space="preserve"><value>Peripheral output references</value></data>
-  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>The Logitech HID++ haptic, lighting, pairing, and battery frames, read from Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), the OpenLogi docs, keyleds (GPL-3.0-or-later), g810-led and g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), and g915x-heatmap (MIT), with notes from OpenRGB-Fixed (GPL-2.0-or-later) and HaloDaemon-plugins. The Razer product IDs and lighting reports, read from OpenRazer (GPL-2.0-or-later) and OpenRGB (GPL-2.0-or-later) and checked against uncoil (GPL-3.0-or-later), OpenSynapse (MIT), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), and razer-life (GPL-2.0-or-later), with the lock those tools share from Aurora (MIT) and LibreHardwareMonitor (MPL-2.0). The SteelSeries product IDs and lighting reports, read from OpenRGB and rivalcfg (WTFPL) and checked against SignalRGB’s plugins, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), and Wine (LGPL-2.1-or-later). The HID LampArray reports, read from the USB-IF HID Usage Tables, Microsoft’s Dynamic Lighting documentation, and its samples ArduinoHidForWindows and RP2040MacropadHidSample (MIT), and checked against lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq and Apex3TklDynamicLighting (all MIT), acer-predator-helios-rgb (GPL-2.0-only), and crosrgbkblight. The iFeel buzz report, read from iFeel, the Linux iFeel driver (GPL-2.0-or-later), and Logitech-iFeel-Vibration-POC, with a descriptor rule from the Linux kernel (GPL-2.0-or-later) and the strength scale from Logitech’s MouseWare 9.80 driver. The tactile and color handlers from the GameSense SDK. Documentation only, no code ships.</value></data>
+  <data name="About_PeripheralOutputRefsDesc" xml:space="preserve"><value>The Logitech HID++ haptic, lighting, pairing, and battery frames, read from Solaar (GPL-2.0-or-later), libratbag (MIT), LiveHaptics, OpenLogi (0BSD and MIT OR Apache-2.0), the OpenLogi docs, keyleds (GPL-3.0-or-later), g810-led and g810-led-resources (GPL-3.0), rigdeck (GPL-3.0-or-later), OpenGHub (MIT), and g915x-heatmap (MIT), with notes from OpenRGB-Fixed (GPL-2.0-or-later) and HaloDaemon-plugins. The Razer product IDs and lighting reports, read from OpenRazer (GPL-2.0-or-later) and OpenRGB (GPL-2.0-or-later) and checked against uncoil (GPL-3.0-or-later), OpenSynapse (AGPL-3.0-only, MIT when read), openrazer-win (GPL-2.0-or-later), sanshoku (MIT), razer_test (GPL-3.0-or-later), and razer-life (GPL-2.0-or-later), with the lock those tools share from Aurora (MIT) and LibreHardwareMonitor (MPL-2.0). The SteelSeries product IDs and lighting reports, read from OpenRGB and rivalcfg (WTFPL) and checked against SignalRGB’s plugins, Aerox_5 (MIT), apex-3-tkl (MIT), ApexCtl (LGPL-3.0), SteelSeriesControl (GPL-3.0), rival310-re (LGPL-3.0), Cricetus-Imperator (MIT), and Wine (LGPL-2.1-or-later). The HID LampArray reports, read from the USB-IF HID Usage Tables, Microsoft’s Dynamic Lighting documentation, and its samples ArduinoHidForWindows and RP2040MacropadHidSample (MIT), and checked against lampctl (MIT OR Apache-2.0), hid-rgb-ctl, keybackcon, mistel-lights, CaYaLight, hp-omen-35l-rgb, mac-dynamic-lighting, aura-loq and Apex3TklDynamicLighting (all MIT), acer-predator-helios-rgb (GPL-2.0-only), and crosrgbkblight. The iFeel buzz report, read from iFeel, the Linux iFeel driver (GPL-2.0-or-later), and Logitech-iFeel-Vibration-POC, with a descriptor rule from the Linux kernel (GPL-2.0-or-later) and the strength scale from Logitech’s MouseWare 9.80 driver. The tactile and color handlers from the GameSense SDK. Documentation only, no code ships.</value></data>
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>The WinMM call sequences behind the legacy MIDI API: opening a port, sending to it, and closing it. Read from PortMidi (MIT, by Ross Bencina, Phil Burk, and Roger B. Dannenberg) and RtMidi (MIT-style RtMidi license, by Gary P. Scavone). Documentation only, no code ships.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK references</value></data>
@@ -4836,7 +4840,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box references</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>The Bliss-Box API behind Read Bliss-Box Adapters, read from Bliss-Box LLC’s API Tool (BSD-style, redistribution free of charge) and DeviceBuddy (source available, Bliss-Box LLC), with button names from the Bliss-Box files in SteveFox1620’s retroarch-joypad-autoconfig fork, Controller Pak checksums checked against libdragon (Unlicense), and the PlayStation pad reply from psx-spx and Linux’s psxpad-spi driver (GPL-2.0-or-later). Controller names and support notes also come from Bliss-Box LLC’s compatibility list, and the adapters’ behavior was checked against their firmware. Documentation only, no code ships.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport by Vadym Hrynchyshyn for HIDMaestro’s composite USB controllers. HIDMaestro carries its signed host controller driver and installs it the first time a composite controller is created.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport by Vadym Hrynchyshyn for the HIDMaestro controllers that are USB devices: every virtual controller on Windows on ARM, and on x64 the composite controllers, the Steam Controller (2026), the Xbox One S: Full profile and the Joy-Con Charging Grip forms. HIDMaestro carries its host controller driver and installs it the first time one of these controllers is created.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Choose which halves of this slot are live. Turning a half off hides its rows and stops it from sending, and keeps its mappings so turning it back on restores them.</value>
   </data>
@@ -5050,7 +5054,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube adaptive-trigger preset values, by Mxater. Read for facts only.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU motion axis signs, checked against its UDP decoder. Read as documentation only, no GPL code ships.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU motion axis signs, checked against its UDP decoder, and a custom web pad’s control sizes, measured against the screen’s shorter side as its Android overlay measures them. Read as documentation only, no GPL code ships.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
   <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous default presets behind the Space Sim starter profile, by Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
@@ -5139,6 +5143,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_RingConRefsDesc" xml:space="preserve"><value>The Ring-Con start and stop sequences behind the SDL fork’s Switch driver and the strain scale PadForge reads, read from demo-of-ring-con-with-web-hid, Eden (GPL-3.0-or-later), joy by Yamakaky (MIT), joy-con-webhid (Apache-2.0), Nintendo_Switch_Reverse_Engineering, osc-ringcon (MIT), Ringcon-Driver (MIT) and RingconProtocolDebug (Apache-2.0). Documentation only, no code ships.</value></data>
   <data name="About_SerialControllerRefs" xml:space="preserve"><value>Serial controller references</value></data>
   <data name="About_SerialControllerRefsDesc" xml:space="preserve"><value>The protocols behind the SDL fork’s serial drivers for six-axis controllers, gamepads, flight sticks, RC transmitters, flight panels, and ergometers, read from Async.fi, hidsporb, JoypadOS (Apache-2.0), KettlerBLE (MIT), kettlerUSB2BLE (MIT), libsball by John E. Stone (BSD-style), linuxconsole (GPL-2.0-or-later), Linux (GPL-2.0), spacenavd (GPL-3.0-or-later), vJoySerialFeeder (GPL-3.0), VRInsight-Xplane-Interface (MIT), vrinsight-cdu-ii-msfs-driver (MIT), VRPN (BSL-1.0), xf86-input-magellan (MIT/X11), xf86-input-spaceorb (MIT/X11), and XPComboTest (MIT). Documentation only, no code ships.</value></data>
+  <data name="About_SInputRefs" xml:space="preserve"><value>SInput references</value></data>
+  <data name="About_SInputRefsDesc" xml:space="preserve"><value>The reports behind SInput pad support and the SInput persona, read from Hand Held Legend’s SINPUT-LIB-HID (MIT-0) and HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) and OpenPuck’s SInput mode (AGPL-3.0). Documentation only, no AGPL code ships.</value></data>
   <data name="About_SpecialtyUsbRefs" xml:space="preserve"><value>Specialty USB device references</value></data>
   <data name="About_SpecialtyUsbRefsDesc" xml:space="preserve"><value>The protocols behind the SDL fork’s drivers for the Intel Wireless Series base station, the Xbox 360 Big Button receiver, the CH Products Multi-Function Panel, the Ergodex DX1, the TrackIR 2 and 3, and Tacx trainer head units, read from antifier (MIT), chmfp (GPL-3.0-or-later), dx1-studio (GPL-3.0), ergodex-dx1-linux (GPL-3.0), fortius_1942 (GPL-2.0-or-later), FortiusANT (GPL-3.0), intel-wings (GPL-2.0), JoypadOS (Apache-2.0), linuxtrack (MIT), t19xx_usb (GPL-3.0), ttyT1941 (GPL-3.0), and xbox360bb (GPL-2.0-or-later). Documentation only, no code ships.</value></data>
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Train controller references</value></data>
@@ -5160,7 +5166,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
   <data name="About_ChiakiNgDesc" xml:space="preserve"><value>The PS5 haptic PCM format, signed 16-bit at 3 kHz, which settled the signed 8-bit Bluetooth haptics encoding. Read as documentation only, no AGPL code ships.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX game mod references</value></data>
-  <data name="About_GameModRefsDesc" xml:space="preserve"><value>The UDP instructions, replies, port files and trigger effect bytes behind Game Mods, read from Paliverse’s official DSX v3.1 and DualSenseX v2 mod examples, both versions of DualSenseY and DualSense4Rockstar (no license published), DSZ and pydualsense (MIT), and the Wujek Dualsense API and the DSX server in hbashton’s DS4Windows fork (GPL-3.0). Documentation only, no code ships.</value></data>
+  <data name="About_GameModRefsDesc" xml:space="preserve"><value>The UDP instructions, replies, port files and trigger effect bytes behind Game Mods, read from Paliverse’s official DSX v3.1 and DualSenseX v2 mod examples, DualSenseY and DualSense4Rockstar (no license published), DualSenseY-v2, DSZ and pydualsense (MIT), and the Wujek Dualsense API and the DSX server in hbashton’s DS4Windows fork (GPL-3.0). Documentation only, no code ships.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 headset references</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>The headphone and speaker routing, volume ceilings, microphone framing and report mode behind DualShock 4 Bluetooth audio, read from DS4-Sound-Link (MIT), ds4mac (GPL-2.0), ds4drv (MIT) and hbashton’s DS4Windows fork (GPL-3.0), with the SBC decoder’s synthesis windows checked against Google’s libsbc (Apache-2.0), and the USB headsets of the second model and Sony’s adapter read from DJm00n’s ControllersInfo descriptor dumps (no license published) and linux-hardware.org’s LsUSB probes (CC BY 4.0). The speaker route of a DualShock 4 on a cable comes from the Controllers Wiki (CC BY-SA) and mihaits’ NFSU2-SplitScreen (MIT). Documentation only, no code ships.</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch chat references</value></data>

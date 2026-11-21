@@ -179,9 +179,10 @@ dualsense-tester
 
 DualSenseY-v2
   https://github.com/WujekFoliarz/DualSenseY-v2
-  By WujekFoliarz. Behavioral reference for USB controller audio
-  passthrough and adaptive trigger effects. No license published.
-  PadForge's implementation is original C#.
+  Copyright (c) 2026 WujekFoliarz
+  Behavioral reference for USB controller audio passthrough and adaptive
+  trigger effects. PadForge's implementation is original C#.
+  Licensed under the MIT License
 
 DualShock 3 Bluetooth research
   ScpToolkit (https://github.com/nefarius/ScpToolkit), sixad
@@ -302,6 +303,14 @@ Icon sources
   (svgrepo.com/show/473838 and svgrepo.com/show/473754), under the license
   on each icon's page.
 
+iCUE SDK
+  https://github.com/CorsairOfficial/cue-sdk
+  Copyright (c) Corsair Memory, Inc. All rights reserved.
+  iCUESDK.x64_2019.dll 4.0.84.0, signed by Corsair Memory, Inc. Lights Corsair
+  devices while iCUE runs. Ships unmodified inside the executable.
+  Corsair's SDK package ships this DLL in its redist folder ("redist contains
+  both 32 and 64 bit .dll files"), under the terms in the SDK's documentation.
+
 Interhaptics engine and Razer provider
   https://github.com/WyvrnOfficial/Interhaptics_Unity_CoreSDK
   Copyright (c) 2025 Wyvrn. All rights reserved.
@@ -315,21 +324,6 @@ Interhaptics engine and Razer provider
   redistributes.
   Distributed under the Wyvrn End User License Agreement
   (https://www.wyvrn.com/eula/)
-
-iCUE SDK
-  https://github.com/CorsairOfficial/cue-sdk
-  Copyright (c) Corsair Memory, Inc. All rights reserved.
-  iCUESDK.x64_2019.dll 4.0.84.0, signed by Corsair Memory, Inc. Lights Corsair
-  devices while iCUE runs. Ships unmodified inside the executable.
-  Corsair's SDK package ships this DLL in its redist folder ("redist contains
-  both 32 and 64 bit .dll files"), under the terms in the SDK's documentation.
-
-Mystic Light SDK
-  https://www.msi.com/Landing/mystic-light-rgb-gaming-pc/download
-  Copyright (c) Micro-Star International Co., Ltd. All rights reserved.
-  MysticLight_SDK_x64.dll 1.0.0.8, signed by Micro-Star International Co., Ltd.
-  Lights MSI devices while Mystic Light runs. Ships unmodified inside the
-  executable. MSI's download names no terms.
 
 JoyShockMapper
   https://github.com/Electronicks/JoyShockMapper
@@ -428,8 +422,16 @@ Monado
   Licensed under the Boost Software License 1.0 (full text at the end of
   this file)
 
+Mystic Light SDK
+  https://www.msi.com/Landing/mystic-light-rgb-gaming-pc/download
+  Copyright (c) Micro-Star International Co., Ltd. All rights reserved.
+  MysticLight_SDK_x64.dll 1.0.0.8, signed by Micro-Star International Co., Ltd.
+  Lights MSI devices while Mystic Light runs. Ships unmodified inside the
+  executable. MSI's download names no terms.
+
 NAudio
   https://github.com/naudio/NAudio
+  Copyright 2020 Mark Heath
   By Mark Heath and contributors. WASAPI loopback capture for the
   controller-audio Windows-output mirror and the audio-bass trigger rumble.
   Its NAudio.Midi package, which PadForge does not ship, was also read as
@@ -440,6 +442,7 @@ NAudio
 
 Nefarius.Utilities.DeviceManagement
   https://github.com/nefarius/Nefarius.Utilities.DeviceManagement
+  Copyright (c) 2022 Benjamin Höglinger-Stelzer
   Driver-store installation, device class filters, and USB hub port
   cycling for the in-app DualShock 3 driver setup and for releasing a
   hidden USB controller.
@@ -660,6 +663,16 @@ Protocol documentation references (no code from these projects ships)
   signed-8-bit Bluetooth haptics encoding.
   Colore (https://github.com/chroma-sdk/Colore, MIT): corroboration of
   the Razer Chroma REST API request and effect framing.
+  Crosshair and magnifier references: the Cross and its dot, as Skarbo's
+  CS:GO crosshair generator draws them (CSGOCrosshair,
+  https://github.com/Skarbo/CSGOCrosshair, no license published). The
+  Circle, picture and outlined styles, rotation, smooth edges and the
+  overlay's whole-pixel center, read from Crosshair-Overlay
+  (https://github.com/c-m-w/Crosshair-Overlay, MIT, Copyright (c) 2019
+  c-m-w). The magnifier's Lens and full-screen zoom, read from Microsoft's
+  magnification samples in Windows-classic-samples
+  (https://github.com/microsoft/Windows-classic-samples, MIT, Copyright (c)
+  Microsoft Corporation).
   DJI remote references: the DUML messages behind the SDL fork's drivers for
   DJI's drone remotes, read from dji-firmware-tools
   (https://github.com/o-gs/dji-firmware-tools, GPL-3.0-or-later),
@@ -711,13 +724,14 @@ Protocol documentation references (no code from these projects ships)
   trigger effect bytes behind Game Mods, read from Paliverse's official mod
   examples for DSX v3.1 (https://github.com/Paliverse/DSX) and DualSenseX v2
   (https://github.com/Paliverse/DualSenseX), WujekFoliarz's DualSenseY
-  (https://github.com/WujekFoliarz/DualSenseY) and DualSenseY-v2
-  (https://github.com/WujekFoliarz/DualSenseY-v2), and tommargar's
+  (https://github.com/WujekFoliarz/DualSenseY) and tommargar's
   DualSense4Rockstar (https://github.com/tommargar/DualSense4Rockstar), none
-  of which publishes a license, DSZ (https://github.com/MaximumFreak/dsz,
-  MIT), pydualsense (https://github.com/flok/pydualsense, MIT), the Wujek
-  Dualsense API (https://github.com/ThreeDeeJay/Wujek-Dualsense-API, GPL-3.0)
-  and the DSX server in hbashton's DS4Windows fork
+  of which publishes a license, WujekFoliarz's DualSenseY-v2
+  (https://github.com/WujekFoliarz/DualSenseY-v2, MIT), DSZ
+  (https://github.com/MaximumFreak/dsz, MIT), pydualsense
+  (https://github.com/flok/pydualsense, MIT), the Wujek Dualsense API
+  (https://github.com/ThreeDeeJay/Wujek-Dualsense-API, GPL-3.0) and the DSX
+  server in hbashton's DS4Windows fork
   (https://github.com/hbashton/DS4Windows, GPL-3.0). DSX itself is closed
   source.
   DualSense-Windows (https://github.com/Ohjurot/DualSense-Windows, MIT, Ludwig
@@ -743,7 +757,9 @@ Protocol documentation references (no code from these projects ships)
   mihaits' NFSU2-SplitScreen (https://github.com/mihaits/NFSU2-SplitScreen,
   MIT).
   Eden (https://git.eden-emu.dev/eden-emu/eden, GPL-3.0-or-later): the DSU
-  motion axis signs, checked against its UDP decoder.
+  motion axis signs, checked against its UDP decoder, and a custom web pad's
+  control sizes, measured against the screen's shorter side as its Android
+  overlay measures them.
   EDRefCard2 (https://github.com/brammmers/edrefcard2, MIT): the Elite
   Dangerous default presets behind the Space Sim starter profile.
   FFmpeg (https://github.com/FFmpeg/FFmpeg, LGPL-2.1-or-later): the Wii
@@ -875,54 +891,6 @@ Protocol documentation references (no code from these projects ships)
   libwdi (https://github.com/pbatard/libwdi, LGPL-3.0-or-later): the
   one-INF-per-device packaging and device listing behind the automatic
   WinUSB binding.
-  Linux kernel (https://github.com/torvalds/linux, GPL-2.0-or-later): the
-  hid-sony, hid-playstation, hid-steam and hid-pidff report and force-feedback
-  facts, and the ACPI WMI _WDG block layout in drivers/platform/x86/wmi.c.
-  PadForge reads keyboard and mouse descriptors by hid-core.c's rules, and the
-  keyboard and mouse reports it reads by itself as hid-core.c, hid-input.c and
-  usbmouse.c read them.
-  linuxmotehook (https://github.com/v1993/linuxmotehook, Apache-2.0) and
-  WiimoteHook (https://github.com/epigramx/WiimoteHook, closed source, read
-  through its documentation): the Wii Remote hold-orientation presets the
-  Grip setting mirrors.
-  Menu references: the On-Screen Keyboard's Wheel layout and its first three
-  character sets, from daisywheeljs
-  (https://github.com/likethemammal/daisywheeljs, MIT, Christopher J.
-  Dolphin), and the stick deflections that engage and release a radial menu's
-  selection, from sc-controller (https://github.com/kozec/sc-controller,
-  GPL-2.0).
-  Mumble (https://github.com/mumble-voip/mumble, BSD 3-Clause): the
-  Logitech G-key SDK library search order and shutdown lifecycle, read
-  alongside LogitechGkeyLib.h from the SDK itself, which defines the event
-  word. PadForge loads the library Logitech Gaming Software installs at
-  run time and ships no Logitech binary.
-  Nintendo_Switch_Reverse_Engineering
-  (https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering, no
-  license published) and switch2_controller_research
-  (https://github.com/ndeadly/switch2_controller_research, no license
-  published): Joy-Con and Pro Controller HID, HD rumble and home LED notes,
-  and the Switch 2 controller commands and report notes.
-  Novint Falcon references: the library calls, feels and game forces behind
-  Novint Falcon support, read from Force Dimension's SDK (its dhdc.h header,
-  documentation and multithread example, licensed for use with no right to
-  redistribute), FalconJoystick
-  (https://github.com/Cyclops-11B/FalconJoystick) and FalconJoyForce
-  (https://github.com/Cyclops-11B/FalconJoyForce1.0), both by Cyclops-11B with
-  no license published, CHAI3D (https://github.com/chai3d/chai3d, BSD
-  3-Clause) and libnifalcon (https://github.com/libnifalcon/libnifalcon, BSD).
-  PadForge loads the Force Dimension library the user installs.
-  obs-browser (https://github.com/obsproject/obs-browser, GPL-2.0-or-later):
-  OBS's browser cancels a page whose certificate it does not trust, so the
-  controller picture page for an OBS browser source is served on the plain
-  address.
-  OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0-or-later):
-  detection rules, report frames, LED tables and key layouts for the lighting
-  families PadForge drives directly, ported and generated from OpenRGB at commit
-  b9d903b5, DualSense and DualShock 4 lightbar output-report byte usage, and the
-  Logitech HID++ 0x8070 lighting frames and collection layout.
-  The generated tables, whose header comments name OpenRGB, and the family
-  classes that cite OpenRGB source lines are GPL-2.0-or-later. PadForge's
-  other files stay under the license at the top of this file.
   Lighting references: report frames, key names and program names for the
   direct lighting families, read from SignalRGB's plugins
   (https://gitlab.com/signalrgb/signal-plugins, no license published, facts
@@ -982,6 +950,54 @@ Protocol documentation references (no code from these projects ships)
   Annemone (https://github.com/manualmanul/Annemone, MIT, illixion), and the
   firmware of the MNT Reform keyboards (https://source.mnt.re/reform/reform,
   CERN-OHL-S-2.0), read for why those keyboards are not lit on Windows.
+  Linux kernel (https://github.com/torvalds/linux, GPL-2.0-or-later): the
+  hid-sony, hid-playstation, hid-steam and hid-pidff report and force-feedback
+  facts, and the ACPI WMI _WDG block layout in drivers/platform/x86/wmi.c.
+  PadForge reads keyboard and mouse descriptors by hid-core.c's rules, and the
+  keyboard and mouse reports it reads by itself as hid-core.c, hid-input.c and
+  usbmouse.c read them.
+  linuxmotehook (https://github.com/v1993/linuxmotehook, Apache-2.0) and
+  WiimoteHook (https://github.com/epigramx/WiimoteHook, closed source, read
+  through its documentation): the Wii Remote hold-orientation presets the
+  Grip setting mirrors.
+  Menu references: the On-Screen Keyboard's Wheel layout and its first three
+  character sets, from daisywheeljs
+  (https://github.com/likethemammal/daisywheeljs, MIT, Christopher J.
+  Dolphin), and the stick deflections that engage and release a radial menu's
+  selection, from sc-controller (https://github.com/kozec/sc-controller,
+  GPL-2.0).
+  Mumble (https://github.com/mumble-voip/mumble, BSD 3-Clause): the
+  Logitech G-key SDK library search order and shutdown lifecycle, read
+  alongside LogitechGkeyLib.h from the SDK itself, which defines the event
+  word. PadForge loads the library Logitech Gaming Software installs at
+  run time and ships no Logitech binary.
+  Nintendo_Switch_Reverse_Engineering
+  (https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering, no
+  license published) and switch2_controller_research
+  (https://github.com/ndeadly/switch2_controller_research, no license
+  published): Joy-Con and Pro Controller HID, HD rumble and home LED notes,
+  and the Switch 2 controller commands and report notes.
+  Novint Falcon references: the library calls, feels and game forces behind
+  Novint Falcon support, read from Force Dimension's SDK (its dhdc.h header,
+  documentation and multithread example, licensed for use with no right to
+  redistribute), FalconJoystick
+  (https://github.com/Cyclops-11B/FalconJoystick) and FalconJoyForce
+  (https://github.com/Cyclops-11B/FalconJoyForce1.0), both by Cyclops-11B with
+  no license published, CHAI3D (https://github.com/chai3d/chai3d, BSD
+  3-Clause) and libnifalcon (https://github.com/libnifalcon/libnifalcon, BSD).
+  PadForge loads the Force Dimension library the user installs.
+  obs-browser (https://github.com/obsproject/obs-browser, GPL-2.0-or-later):
+  OBS's browser cancels a page whose certificate it does not trust, so the
+  controller picture page for an OBS browser source is served on the plain
+  address.
+  OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0-or-later):
+  detection rules, report frames, LED tables and key layouts for the lighting
+  families PadForge drives directly, ported and generated from OpenRGB at commit
+  6b681e3c, DualSense and DualShock 4 lightbar output-report byte usage, and the
+  Logitech HID++ 0x8070 lighting frames and collection layout.
+  The generated tables, whose header comments name OpenRGB, and the family
+  classes that cite OpenRGB source lines are GPL-2.0-or-later. PadForge's
+  other files stay under the license at the top of this file.
   OpenTabletDriver (https://github.com/OpenTabletDriver/OpenTabletDriver,
   LGPL-3.0): the elevated update-verb pattern behind the in-app updater's
   helper.
@@ -1016,13 +1032,13 @@ Protocol documentation references (no code from these projects ships)
   OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0-or-later) and
   checked against uncoil (https://github.com/justinthevoid/uncoil,
   GPL-3.0-or-later), OpenSynapse (https://github.com/A1mAssist/OpenSynapse,
-  MIT), openrazer-win (https://github.com/Ar4ikov/openrazer-win,
-  GPL-2.0-or-later), sanshoku (https://github.com/ushineko/sanshoku, MIT,
-  ushineko), razer_test (https://github.com/z3ntu/razer_test,
-  GPL-3.0-or-later, Luca Weiss) and razer-life
-  (https://github.com/thesmilingsloth/razer-life, GPL-2.0-or-later), with the
-  lock those tools share from OpenRGB, uncoil, Aurora
-  (https://github.com/Aurora-RGB/Aurora, MIT) and LibreHardwareMonitor
+  AGPL-3.0-only, MIT when PadForge read it), openrazer-win
+  (https://github.com/Ar4ikov/openrazer-win, GPL-2.0-or-later), sanshoku
+  (https://github.com/ushineko/sanshoku, MIT, ushineko), razer_test
+  (https://github.com/z3ntu/razer_test, GPL-3.0-or-later, Luca Weiss) and
+  razer-life (https://github.com/thesmilingsloth/razer-life,
+  GPL-2.0-or-later), with the lock those tools share from OpenRGB, uncoil,
+  Aurora (https://github.com/Aurora-RGB/Aurora, MIT) and LibreHardwareMonitor
   (https://github.com/LibreHardwareMonitor/LibreHardwareMonitor, MPL-2.0).
   The SteelSeries product IDs and lighting reports, read from OpenRGB and
   rivalcfg (https://github.com/flozz/rivalcfg, WTFPL) and checked against
@@ -1110,6 +1126,9 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/vazhure/vAzhureRacingHub, GPL-3.0). The RPM lights'
   Assetto Corsa layout comes from assettocorsasharedmemory, credited in its
   own entry above.
+  RetroArch (https://github.com/libretro/RetroArch, GPL-3.0-or-later): a
+  custom web pad keeping each cluster's distance from the nearer edge of a
+  wider screen, as its overlays move their two halves.
   Ring-Con references: the Ring-Con start and stop sequences behind the SDL
   fork's Switch driver and the strain scale PadForge reads, read from
   demo-of-ring-con-with-web-hid
@@ -1159,6 +1178,15 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/freedesktop-unofficial-mirror/xorg__driver__xf86-input-spaceorb,
   MIT/X11) and XPComboTest (https://github.com/xprezzo-marco/XPComboTest,
   MIT).
+  SInput references: the reports behind SInput pad support and the SInput
+  persona. The input report, feature reply and haptic frame, read from Hand
+  Held Legend's SINPUT-LIB-HID (https://github.com/HandHeldLegend/SINPUT-LIB-HID,
+  MIT-0, Copyright (c) 2026 Hand Held Legend, LLC). The frame a pad keeps
+  playing and its oscillator scale, read from HOJA-LIB-RP2040
+  (https://github.com/HandHeldLegend/HOJA-LIB-RP2040, CC BY-NC-SA 3.0 per
+  its README, Hand Held Legend). The dual-stage trigger and two-touchpad
+  shape and the louder band played on each side, read from OpenPuck's
+  SInput mode (https://github.com/safijari/OpenPuck, AGPL-3.0).
   SpaceMouse references: the 3Dconnexion report layout, device table and
   axis scale, read from hid.spacemouse
   (https://github.com/microdee/hid.spacemouse, MIT), PySpaceMouse
@@ -1417,10 +1445,12 @@ usbip-win2
   https://github.com/vadimgrn/usbip-win2
   Copyright (c) 2021-2026, Vadym Hrynchyshyn
   HIDMaestro.Core.dll carries the upstream 0.9.8.1 host controller
-  driver for x64 and ARM64, unmodified, which Microsoft signed, and
-  installs the one matching the machine the first time a composite USB
-  controller is created. It is the USB transport for those controllers.
-  Any other controller type installs nothing from it.
+  driver for x64 and ARM64, unmodified, and installs the one matching the
+  machine the first time a controller that runs on it is created. It is
+  the USB transport for every virtual controller on Windows on ARM, and on
+  x64 for the composite controllers, the Steam Controller (2026), the Xbox
+  One S: Full profile and the Joy-Con Charging Grip forms. No other x64
+  controller installs anything from it.
   Licensed under the BSD 2-Clause License (full text at the end of this file)
 
 Valve Steam Controller CAD
@@ -1446,10 +1476,12 @@ Vosk
 
 Windows MIDI Services
   https://github.com/microsoft/MIDI
+  Copyright (c) Microsoft Corporation
   Licensed under MIT License
 
 WPF UI
   https://github.com/lepoco/wpfui
+  Copyright (c) 2021-2025 Leszek Pomianowski and WPF UI Contributors
   Licensed under MIT License
 
 WPF UI third-party components

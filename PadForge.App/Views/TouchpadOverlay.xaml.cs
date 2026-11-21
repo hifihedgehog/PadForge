@@ -36,7 +36,8 @@ namespace PadForge.Views
         // (consumed by the virtual-output side); all slots feed the new
         // TouchpadInputState the gesture engine reads. Slots get
         // allocated dynamically by TouchDevice.Id on TouchDown; freed on
-        // TouchUp. Mouse-drag drives slot 0 only.
+        // TouchUp. The mouse makes no touch: its right drag moves the
+        // window, and its left button presses the click bar.
         private const int OverlaySlotCount = Engine.TouchpadOverlayDevice.OverlayMaxFingers;
         private readonly int?[] _slotTouchIds = new int?[OverlaySlotCount];
         private readonly float[] _slotX = new float[OverlaySlotCount];

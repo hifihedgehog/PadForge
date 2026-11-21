@@ -1007,6 +1007,8 @@ public class Strings : INotifyPropertyChanged
     public string About_SDL3Desc => Get("About_SDL3Desc");
     public string About_RawInput => Get("About_RawInput");
     public string About_RawInputDesc => Get("About_RawInputDesc");
+    public string About_RetroArch => Get("About_RetroArch");
+    public string About_RetroArchDesc => Get("About_RetroArchDesc");
     public string About_MidiServices => Get("About_MidiServices");
     public string About_MidiServicesDesc => Get("About_MidiServicesDesc");
     public string About_HelixToolkit => Get("About_HelixToolkit");
@@ -1118,6 +1120,8 @@ public class Strings : INotifyPropertyChanged
     public string About_UsbipWin2Desc => Get("About_UsbipWin2Desc");
     public string About_Concentus => Get("About_Concentus");
     public string About_ConcentusDesc => Get("About_ConcentusDesc");
+    public string About_CrosshairRefs => Get("About_CrosshairRefs");
+    public string About_CrosshairRefsDesc => Get("About_CrosshairRefsDesc");
     public string About_SAxense => Get("About_SAxense");
     public string About_SAxenseDesc => Get("About_SAxenseDesc");
     public string About_DsBtHaptics => Get("About_DsBtHaptics");
@@ -4923,6 +4927,8 @@ public class Strings : INotifyPropertyChanged
     public string About_RingConRefsDesc => Get("About_RingConRefsDesc");
     public string About_SerialControllerRefs => Get("About_SerialControllerRefs");
     public string About_SerialControllerRefsDesc => Get("About_SerialControllerRefsDesc");
+    public string About_SInputRefs => Get("About_SInputRefs");
+    public string About_SInputRefsDesc => Get("About_SInputRefsDesc");
     public string About_SpecialtyUsbRefs => Get("About_SpecialtyUsbRefs");
     public string About_SpecialtyUsbRefsDesc => Get("About_SpecialtyUsbRefsDesc");
     public string About_TrainControllerRefs => Get("About_TrainControllerRefs");

@@ -130,7 +130,7 @@
          The ARM64 SDL3.dll delivered for 4.5.1 had that reader switched off
          and imported vcruntime140.dll alone, so the ARM64 folder went
          without msvcp140.dll until the fork built the reader for ARM64 (SDL
-         fork a1416320e2). BundledSdlRuntimeImportsTests reads each SDL3.dll
+         fork 011dd342aa). BundledSdlRuntimeImportsTests reads each SDL3.dll
          for the runtime DLLs it names and fails when one is not in that
          architecture's folder, which is how the ARM64 file came to be added.
          The item carries no Exists condition, like vcruntime140.dll below

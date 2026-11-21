@@ -14,7 +14,7 @@ namespace PadForge.Tests
     /// is C++. The ARM64 one delivered for 4.5.1 had that reader switched off
     /// and imported neither, so the ARM64 build stopped carrying them.
     ///
-    /// <para>The fork then built the reader for ARM64 (a1416320e2), and the
+    /// <para>The fork then built the reader for ARM64 (011dd342aa), and the
     /// ARM64 SDL3.dll imports msvcp140.dll again. Taken without the DLL
     /// beside it, SDL3.dll fails to load on a clean ARM64 machine and every
     /// controller is dead, with nothing at build time to say why. So each

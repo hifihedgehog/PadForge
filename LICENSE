@@ -578,7 +578,7 @@ Protocol documentation references (no code from these projects ships)
   MIT): the layout of Windows' undocumented IPolicyConfig interface, which
   PadForge uses to re-enable a controller's audio endpoint.
   AutoEq (https://github.com/jaakkopasanen/AutoEq, MIT): the parametric EQ
-  profile format the Audio tab imports.
+  profile format a controller's Parametric EQ card imports.
   AutoHotkey (https://github.com/AutoHotkey/AutoHotkey, GPL-2.0-or-later):
   Unicode text typing through SendInput and its batch limit, the Win-key mask
   key, and tagged injected input, behind Text Block macros and the keyboard
@@ -1374,9 +1374,9 @@ QMK Firmware
 
 QR-Code-generator
   https://github.com/nayuki/QR-Code-generator
-  Copyright (c) Project Nayuki. The byte-mode QR encoder behind the
-  Dashboard's web controller card is a C# port of this reference
-  implementation (PadForge.Services.QrCode).
+  Copyright (c) Project Nayuki. The byte-mode QR encoder for the Web
+  Controller's addresses is a C# port of this reference implementation
+  (PadForge.Services.QrCode).
   Licensed under the MIT License
 
 SAxense
@@ -1507,8 +1507,8 @@ xbledctl
 
 Zacksly Icon Pack
   https://zacksly.itch.io/
-  By Zacksly. PadForge's stick and trigger tab icon geometry derives from
-  the pack's Xbox Series icons.
+  By Zacksly. PadForge's stick and trigger icon geometry derives from the
+  pack's Xbox Series icons.
   Licensed under CC BY 3.0
 
 Zergatul.Obs.InputOverlay

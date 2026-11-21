@@ -288,6 +288,33 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True for a mode the Mode picker lists (<see cref="KindOptions"/>).</summary>
+        internal static bool IsEditorKind(string kind) => kind is
+            "Direct" or "Toggle" or "RapidTrigger" or "Incremental" or "InvertOnHold" or "Ramped";
+
+        /// <summary>A stored source as the mapping editor holds it, a copy when
+        /// it differs. A mode the picker does not list loads as Direct, so the
+        /// picker never holds a mode it cannot show. The Sticks card's steering
+        /// stamps its mode onto every source of a stick row as the row saves
+        /// (SettingsService.ApplySteeringKindToRow), with the stick's X axis in
+        /// Descriptor and its Y axis in ParamYDescriptor. Such a source is the
+        /// row's own axis read Direct, the axis the stamp's revert puts back
+        /// (RevertSourceToDirect): Descriptor, or ParamYDescriptor for Angle to
+        /// Axis Y, which stamps the Y row. The next save stamps it again. The
+        /// older Motion Lean steering left the row's input in Descriptor. Any
+        /// other unlisted mode reads its Descriptor as Direct, as the engine
+        /// reads it (SourceEvaluator's default case).</summary>
+        internal static Engine.Data.MappingSource AsEditorSource(Engine.Data.MappingSource src)
+        {
+            if (src == null || IsEditorKind(src.Kind)) return src;
+            var copy = src.Clone();
+            if (string.Equals(src.Kind, "AngleToAxisY", StringComparison.Ordinal)
+                && !string.IsNullOrEmpty(src.ParamYDescriptor))
+                copy.Descriptor = src.ParamYDescriptor;
+            copy.Kind = "Direct";
+            return copy;
+        }
+
         /// <summary>Instance accessor over <see cref="KindOptions"/> for the
         /// extra-source row template. The XAML previously bound the static
         /// list via x:Static, which WPF evaluates exactly once, so a live
@@ -1538,6 +1565,7 @@ namespace PadForge.ViewModels
         public static MappingSourceItem FromDomain(Engine.Data.MappingSource src)
         {
             if (src == null) return new MappingSourceItem();
+            src = AsEditorSource(src);
             var item = new MappingSourceItem
             {
                 // First, before any key: a kind set with keys in follows

@@ -8263,7 +8263,10 @@ namespace PadForge.Services
                 // PrimaryKindSource so the primary can carry a kind, not only Direct
                 // (#111 follow-up). Either way the extras start at index 1.
                 msRowsByTarget.TryGetValue(target, out var msRow);
-                var primarySrc = (msRow?.Sources != null && msRow.Sources.Count > 0) ? msRow.Sources[0] : null;
+                // As the editor holds it: a stick's steering mode is the
+                // row's own axis read Direct (MappingSourceItem.AsEditorSource).
+                var primarySrc = ViewModels.MappingSourceItem.AsEditorSource(
+                    (msRow?.Sources != null && msRow.Sources.Count > 0) ? msRow.Sources[0] : null);
                 mapping.PrimarySourceExists = msRow?.Sources?.Count > 0;
                 bool primaryIsKind = primarySrc != null
                     && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(primarySrc.Kind);

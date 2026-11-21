@@ -277,6 +277,7 @@ namespace PadForge.ViewModels
         /// moves up reads exactly as it would after a save and a load.</summary>
         internal void LoadFirstSource(MappingSource source, Func<string, string> deviceLabelOf)
         {
+            source = MappingSourceItem.AsEditorSource(source);
             bool readsKeys = source != null && !SourceEvaluator.IsDescriptorKind(source.Kind);
             if (source != null && !readsKeys)
             {

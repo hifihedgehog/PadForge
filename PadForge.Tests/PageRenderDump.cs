@@ -395,6 +395,34 @@ namespace PadForge.Tests
                             foreach (string kind in new[] { "Toggle", "RapidTrigger", "Incremental", "InvertOnHold", "Ramped" })
                                 Options("kind-" + kind.ToLowerInvariant(), () => row.PrimaryKindSource.Kind = kind);
                             row.PrimaryKindSource.Kind = "Direct";
+                            // A load into the open row, as a profile switch
+                            // makes one: the trigger read a button first, so
+                            // its list lacked Rapid Trigger. And a stick row
+                            // the Sticks card's steering stamped as it saved.
+                            void LoadRow(MappingItem into, PadForge.Engine.Data.MappingSource first)
+                            {
+                                into.BeginLoadRow();
+                                try { into.LoadFirstSource(first, _ => string.Empty); }
+                                finally { into.EndLoadRow(); }
+                            }
+                            Options("load-rapidtrigger", () =>
+                            {
+                                LoadRow(row, new PadForge.Engine.Data.MappingSource { Kind = "Direct", Descriptor = "Button 6" });
+                                Lay(ground, Height);
+                                LoadRow(row, new PadForge.Engine.Data.MappingSource { Kind = "RapidTrigger", Descriptor = "Axis 4" });
+                            });
+                            LoadRow(row, null);
+                            var steered = vm.Mappings.First(m => m.TargetSettingName == "LeftThumbAxisX");
+                            Options("load-steering", () =>
+                            {
+                                vm.PickedTarget = "LeftThumbAxisX";
+                                LoadRow(steered, new PadForge.Engine.Data.MappingSource
+                                {
+                                    Kind = "WindingStick", Descriptor = "Axis 0", ParamYDescriptor = "Axis 1",
+                                });
+                            });
+                            LoadRow(steered, null);
+                            vm.PickedTarget = "LeftTrigger";
                             row.AddExtraSourceCommand.Execute(null);
                             var added = row.ExtraSources[row.ExtraSources.Count - 1];
                             Options("added", () => { });

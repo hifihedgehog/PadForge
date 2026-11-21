@@ -358,12 +358,17 @@ namespace PadForge.ViewModels
         /// mapping that silently does nothing. The extra-source dropdown still binds
         /// the full list, since that is where InvertOnHold belongs. Rapid Trigger
         /// (#482) is hidden the same way where it cannot act
-        /// (<see cref="IsRapidTriggerOffered"/>).</summary>
+        /// (<see cref="IsRapidTriggerOffered"/>). While a load fills the row
+        /// every mode is offered: the row's input and its other sources land
+        /// after or before its mode in any order, and a picker given a mode
+        /// its list lacks drops it and stays blank once the list holds it.
+        /// The gate judges the finished row (<see cref="EndLoadRow"/>).</summary>
         public System.Collections.Generic.IReadOnlyList<MappingSourceItem.KindChoice> PrimaryKindOptions
         {
             get
             {
                 var all = MappingSourceItem.KindOptions;
+                if (_suppressPrimaryKindGate) return all;
                 bool keepInvertOnHold = HasContributingExtraSource;
                 bool keepRapidTrigger = IsRapidTriggerOffered;
                 if (keepInvertOnHold && keepRapidTrigger) return all;
@@ -383,12 +388,20 @@ namespace PadForge.ViewModels
         /// before refilling it, so every firing point saw "no contributing
         /// secondary" mid-load and reverted a perfectly valid stored
         /// InvertOnHold primary to Direct. The loader brackets the row and
-        /// runs the gate once at the end, against the finished state. A key
+        /// runs the gate once at the end, against the finished state, and the
+        /// first source's mode list stays whole until then. A key
         /// saved before keys carried a controller takes none inside the
         /// bracket either (<see cref="RefreshExtraSourceInputs"/>).</summary>
         private bool _suppressPrimaryKindGate;
 
-        internal void BeginLoadRow() => _suppressPrimaryKindGate = true;
+        internal void BeginLoadRow()
+        {
+            _suppressPrimaryKindGate = true;
+            // The first source's picker takes the full list before the
+            // stored mode lands (PrimaryKindOptions).
+            OnPropertyChanged(nameof(PrimaryKindOptions));
+            PrimaryKindSource?.RaiseModeChoices();
+        }
 
         internal void EndLoadRow()
         {

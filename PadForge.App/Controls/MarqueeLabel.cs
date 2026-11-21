@@ -13,11 +13,9 @@ namespace PadForge.Controls
     /// 2026-10-30, for the slot cards' Preset name, discussion #543). The
     /// whole text is always the tooltip.
     ///
-    /// <para>Common.MarqueeBehavior scrolls for as long as its content
-    /// overflows, which suits a device roster that changes on its own. A name
-    /// the user reads on demand stays still until the pointer asks for it.
-    /// The speed and the edge fade are MarqueeBehavior's, so the two read as
-    /// one motion.</para>
+    /// <para>The copy slides 40 pixels a second, and its ends fade only while
+    /// it slides: a mask kept at rest dimmed the ends of a line that fit (user
+    /// report, 2026-07-06).</para>
     ///
     /// <para>The moving copy sits in a Canvas, which measures it unconstrained
     /// and clips it at its own bounds. A trimmed TextBlock would only slide
@@ -30,6 +28,20 @@ namespace PadForge.Controls
         // pause leaves time to read the tail.
         private const double StartPauseSeconds = 0.6;
         private const double EndPauseSeconds = 1.5;
+        private const double PixelsPerSecond = 40.0;
+
+        private static readonly LinearGradientBrush EdgeFade = MakeEdgeFade();
+
+        private static LinearGradientBrush MakeEdgeFade()
+        {
+            var brush = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0, 0, 0), 0));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0, 0, 0), 0.05));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0, 0, 0), 0.95));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0, 0, 0), 1));
+            brush.Freeze();
+            return brush;
+        }
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             nameof(Text), typeof(string), typeof(MarqueeLabel),
@@ -113,14 +125,14 @@ namespace PadForge.Controls
             Canvas.SetTop(_run, Math.Max(0, (ActualHeight - _run.DesiredSize.Height) / 2));
             _rest.Visibility = Visibility.Hidden;
             _track.Visibility = Visibility.Visible;
-            Common.MarqueeBehavior.SetEdgeFade(_track, true);
+            _track.OpacityMask = EdgeFade;
             // Moving text in a BitmapCache composites as a texture instead of
-            // re-rasterizing at every subpixel offset (MarqueeBehavior's
-            // profiled reason).
+            // re-rasterizing its glyphs at every subpixel offset, which was
+            // profiled as rasterizer work on every frame.
             if (_run.CacheMode == null)
                 _run.CacheMode = new BitmapCache();
 
-            double travel = overflow / Common.MarqueeBehavior.PixelsPerSecond;
+            double travel = overflow / PixelsPerSecond;
             double atEnd = StartPauseSeconds + travel;
             double leaveEnd = atEnd + EndPauseSeconds;
             var slide = new DoubleAnimationUsingKeyFrames { RepeatBehavior = RepeatBehavior.Forever };
@@ -136,7 +148,7 @@ namespace PadForge.Controls
         {
             _shift.BeginAnimation(TranslateTransform.XProperty, null);
             _shift.X = 0;
-            Common.MarqueeBehavior.SetEdgeFade(_track, false);
+            _track.OpacityMask = null;
             _track.Visibility = Visibility.Hidden;
             _rest.Visibility = Visibility.Visible;
         }

@@ -914,19 +914,6 @@ namespace PadForge.Tests
             Assert.Equal(236, DevicesPage.SearchWidth(588, 336));
             Assert.Equal(320, DevicesPage.SearchWidth(500, 336));
             Assert.Equal(180, DevicesPage.SearchWidth(180, 336));
-            // The idle row in the panel's 338, with the label's text 100
-            // wide and the unit's 128: the row lacks 14, and the unit gives
-            // all of it, so the label stays on one line and the unit wraps
-            // to two. A wide row leaves the unit its text.
-            Assert.Equal(114, DevicesPage.IdleUnitWidth(338, 100, 128));
-            Assert.Equal(128, DevicesPage.IdleUnitWidth(554, 100, 128));
-            Assert.Equal(128, DevicesPage.IdleUnitWidth(352, 100, 128));
-            // A unit as short as its two lines has nothing to give: the
-            // two share what the row lacks.
-            Assert.Equal(72, DevicesPage.IdleUnitWidth(296, 100, 128));
-            Assert.Equal(72 - 20 * 72 / 244.0, DevicesPage.IdleUnitWidth(276, 100, 128), 6);
-            // A short unit in a narrow row: 4 over, which it gives whole.
-            Assert.Equal(46, DevicesPage.IdleUnitWidth(270, 100, 50));
         }
 
         // ── 16, 17, 18: the page's parts ──

@@ -2408,22 +2408,26 @@
                                          the feature fires. -->
                                     <StackPanel x:Name="PowerRows"
                                                 Visibility="{Binding SelectedDevice.ShowPowerSection, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <!-- The label and the unit share a narrow row
-                                             as the board's does, and each wraps
-                                             (DevicesPage.IdleUnitWidth). -->
-                                        <controls:SettingRow x:Name="IdleRow" MinHeight="44" SizeChanged="IdleRow_SizeChanged"
-                                                             Binding.TargetUpdated="IdleRow_TextUpdated"
+                                        <!-- The board's row: the label with "0 means
+                                             never" under it takes the room and wraps,
+                                             and the box keeps its short unit on one
+                                             line beside it. -->
+                                        <controls:SettingRow x:Name="IdleRow" MinHeight="44"
                                                              Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}"
                                                              ToolTip="{Binding Devices_IdleDisconnectTooltip, Source={x:Static strings:Strings.Instance}}">
-                                            <TextBlock x:Name="IdleLabel" Style="{StaticResource DeviceRowLabel}"
-                                                       Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}, NotifyOnTargetUpdated=True}"/>
+                                            <StackPanel controls:SettingRow.Fills="True" Margin="0,0,12,0" VerticalAlignment="Center">
+                                                <TextBlock x:Name="IdleLabel" Style="{StaticResource DeviceRowLabel}" Margin="0"
+                                                           Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock x:Name="IdleNeverText" FontSize="12" TextWrapping="Wrap"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Text="{Binding Devices_IdleDisconnectNever, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
                                             <TextBox x:Name="IdleDisconnectBox" Style="{StaticResource DeviceNumberBox}"
                                                      Text="{Binding SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                      LostFocus="IdleDisconnect_LostFocus"/>
-                                            <TextBlock x:Name="IdleUnitText" Margin="10,0,10,0" TextWrapping="Wrap" FontSize="14" VerticalAlignment="Center"
-                                                       LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
-                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                       Text="{Binding Common_MinutesZeroNever, Source={x:Static strings:Strings.Instance}, NotifyOnTargetUpdated=True}"/>
+                                            <TextBlock x:Name="IdleUnitText" Style="{StaticResource DeviceSmall}" Margin="8,0,10,0" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Text="{Binding Common_Min, Source={x:Static strings:Strings.Instance}}"/>
                                             <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="IdleDisconnectMinutes" SettingLabel="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_IdleDisconnectMinutes_1094"/>
                                         </controls:SettingRow>
                                         <!-- Quick Charge (#372) on its own gate. Click,

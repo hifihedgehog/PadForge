@@ -277,6 +277,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_PageRight => Get("Common_PageRight");
     public string Common_None => Get("Common_None");
     public string Common_Ms => Get("Common_Ms");
+    public string Common_Min => Get("Common_Min");
     public string Common_Seconds => Get("Common_Seconds");
     public string Common_MinutesZeroNever => Get("Common_MinutesZeroNever");
     public string Common_Hz => Get("Common_Hz");
@@ -1379,6 +1380,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_TextBlock_Delay => Get("MacroAction_TextBlock_Delay");
     public string MacroAction_TextBlock_Delay_Tooltip => Get("MacroAction_TextBlock_Delay_Tooltip");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
+    public string Devices_IdleDisconnectNever => Get("Devices_IdleDisconnectNever");
     public string Devices_Dossier => Get("Devices_Dossier");
     public string Devices_QuickCharge => Get("Devices_QuickCharge");
     public string Devices_QuickChargeTooltip => Get("Devices_QuickChargeTooltip");

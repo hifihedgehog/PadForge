@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Page Right</value></data>
   <data name="Common_None" xml:space="preserve"><value>None</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>seconds</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -943,6 +944,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Delay Between Letters</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milliseconds between typed characters, up to 1000. 0 types the whole text at once.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Idle Disconnect</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 means never</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Details</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnect Bluetooth When Plugged In over USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this controller reports it is charging while connected over Bluetooth, the Bluetooth link is dropped so it charges without powering the radio. Any USB power source counts, including wall chargers. If you turn Bluetooth back on while the cable stays in, it is left alone until the next unplug.</value></data>

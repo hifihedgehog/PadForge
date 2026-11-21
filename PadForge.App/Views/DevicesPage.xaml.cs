@@ -85,38 +85,6 @@ namespace PadForge.Views
         internal static double SearchWidth(double rowWidth, double segmentWidth)
             => rowWidth >= 220 + 16 + segmentWidth ? Math.Min(320, rowWidth - 16 - segmentWidth) : Math.Min(320, Math.Max(0, rowWidth));
 
-        /// <summary>The idle row's unit width. The label with the box (the
-        /// label's text, 12 and the box's 60) and the unit start at the widths
-        /// their text asks, beside 10 either side of the unit and the reset's
-        /// 32. What the row lacks comes off the unit first, down to two lines
-        /// of its text, so the label stays on one line: in the panel's 338 the
-        /// row lacks 14, and sharing that between the two wrapped both
-        /// (seen 2026-11-13). What it still lacks then comes off the two in
-        /// proportion to their widths. The unit is never wider than its
-        /// text.</summary>
-        internal static double IdleUnitWidth(double rowWidth, double labelText, double unitText)
-        {
-            double lead = labelText + 12 + 60;
-            double over = lead + unitText - (rowWidth - 10 - 10 - 32);
-            if (over <= 0) return unitText;
-            // Two lines of the unit's text, with a little for a word that
-            // ends past the middle.
-            double twoLines = unitText / 2 + 8;
-            double first = Math.Min(over, Math.Max(0, unitText - twoLines));
-            double unit = unitText - first;
-            double still = over - first;
-            return still <= 0 ? unit : Math.Max(0, unit - still * unit / (lead + unit));
-        }
-
-        /// <summary>A text's width on one line in its block's face and size.</summary>
-        private static double TextWidth(TextBlock block)
-        {
-            var text = new FormattedText(block.Text ?? string.Empty, System.Globalization.CultureInfo.CurrentUICulture,
-                block.FlowDirection, new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch),
-                block.FontSize, Brushes.Black, VisualTreeHelper.GetDpi(block).PixelsPerDip);
-            return Math.Ceiling(text.WidthIncludingTrailingWhitespace);
-        }
-
         /// <summary>The link as Copy Details writes it, the same in every
         /// language, or null where the row has none.</summary>
         internal static string DossierLink(PadForge.Common.DeviceLink link)
@@ -194,19 +162,6 @@ namespace PadForge.Views
         /// line.</summary>
         internal static double SegmentsWidth(double rowWidth, double showWidth, double connectionWidth)
             => rowWidth >= 220 + 16 + showWidth + 16 + connectionWidth ? showWidth + 16 + connectionWidth : showWidth;
-
-        private void IdleRow_SizeChanged(object sender, SizeChangedEventArgs e) => ShareIdleRow(e.NewSize.Width);
-
-        /// <summary>A new language changes the texts and not the row's width.</summary>
-        private void IdleRow_TextUpdated(object sender, DataTransferEventArgs e) => ShareIdleRow(IdleRow.ActualWidth);
-
-        private void ShareIdleRow(double rowWidth)
-        {
-            if (rowWidth <= 0) return;
-            double unit = TextWidth(IdleUnitText);
-            double share = IdleUnitWidth(rowWidth, TextWidth(IdleLabel), unit);
-            IdleUnitText.Width = share >= unit ? double.NaN : share;
-        }
 
         // ── The lists ──
 

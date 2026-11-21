@@ -367,6 +367,50 @@ namespace PadForge.Tests
             Assert.Equal(1025, io.Outputs.Single(f => f[2] == 0x06).Length);
         }
 
+        /// <summary>The K70 PRO MINI WIRELESS lights its light bars with the colors asked for.
+        /// OpenRGB's table for it holds its keys only (CorsairPeripheralV2Devices.cpp:189-207 and
+        /// 1223-1264 at 6b681e3c), so its picture sends LEDs 58 to 85 black (buffer_map's
+        /// null_color, RGBController_CorsairV2Hardware.cpp:203-213). SignalRGB's Bragi plugin
+        /// names those LEDs as the bars and lights them in the same triplets as the keys
+        /// (Corsair_Bragi_Device.js at 9511979f, "K70 Pro Mini", lines 1895-1934, and
+        /// getLightingControllerColors, lines 918-950). The picture keeps OpenRGB's frame: one
+        /// 1025-byte block write on handle 1 of 12 00 and 123 triplets, the highest key value,
+        /// 122, plus one.</summary>
+        [Theory]
+        [InlineData(0x1BB6, 1)]
+        [InlineData(0x1BD3, 1)]
+        [InlineData(0x1BB6, 2)]
+        public void TheK70ProMiniWireless_LightsItsBars_WithTheColorsAsked(int product, int layout)
+        {
+            var model = Family().Match(Collection((ushort)product));
+            var io = Device((uint)product, layout: (uint)layout);
+            var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+            Assert.Equal(123, session.BufferLength);
+            var lights = session.Map.Lights;
+            static int Asked(LightInfo l) => l.Kind == LightKind.Edge ? 0x400000 | l.Address << 8 | 0x0F : l.Usage == 0x29 ? 0x112233 : 0;
+            io.Log.Clear();
+            io.Outputs.Clear();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, lights.Select(Asked).ToList()));
+            var block = io.Outputs.Single(f => f[2] == 0x06);
+            Assert.Equal(1025, block.Length);
+            Assert.Equal("00 08 06 01 73 01 00 00 12 00", Hex(block, 10));
+            Assert.Equal("11 22 33", Hex(block, 10 + 41 * 3, 3));
+            for (int led = 58; led <= 85; led++)
+                Assert.Equal($"40 {led:X2} 0F", Hex(block, 10 + led * 3, 3));
+            // The bars are the plugin's 28, each its own LED, none on a key OpenRGB places,
+            // and they sit around OpenRGB's keys: the plugin's grid moved so its Esc is OpenRGB's.
+            var bars = lights.Where(l => l.Kind == LightKind.Edge).ToList();
+            Assert.Equal(Enumerable.Range(58, 28), bars.Select(l => l.Address).OrderBy(a => a));
+            Assert.DoesNotContain(lights, l => l.Kind != LightKind.Edge && l.Address is >= 58 and <= 85);
+            var esc = lights.Single(l => l.Usage == 0x29);
+            Assert.Equal((0f, 0f), (esc.X, esc.Y));
+            Assert.All(bars, l => Assert.True(l.HasPosition));
+            Assert.Equal((-1f, -1f), (bars.Single(l => l.Address == 58).X, bars.Single(l => l.Address == 58).Y));
+            Assert.Equal((14f, 0f), (bars.Single(l => l.Address == 69).X, bars.Single(l => l.Address == 69).Y));
+            Assert.Equal((-1f, 4f), (bars.Single(l => l.Address == 82).X, bars.Single(l => l.Address == 82).Y));
+            Assert.Equal((14f, 5f), (bars.Single(l => l.Address == 73).X, bars.Single(l => l.Address == 73).Y));
+        }
+
         /// <summary>The K70 RGB PRO's ID only SignalRGB's plugin lists, 1BD4, takes OpenRGB's
         /// K70 RGB PRO table and the plugin's rule for its reports: the collection's write length
         /// (Corsair_Bragi_Device.js at 95031635, lines 1862-1864 and 2446-2474). OpenRGB's 129 for

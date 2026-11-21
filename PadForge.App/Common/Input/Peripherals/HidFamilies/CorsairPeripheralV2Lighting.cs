@@ -49,7 +49,9 @@ namespace PadForge.Common.Input.Peripherals
     /// other answer, each light's address its value in the layout, and any
     /// other zone's lights numbered after every light before them
     /// (RGBController_CorsairV2Hardware.cpp:87-214,
-    /// RGBController_CorsairV2Software.cpp:74-201). A picture is one color
+    /// RGBController_CorsairV2Software.cpp:74-201). The K70 PRO MINI WIRELESS's
+    /// light bars, which OpenRGB's table lacks, are SignalRGB's plugin's
+    /// (<see cref="PluginBars"/>). A picture is one color
     /// per address up to the highest. A device of the software detector, or
     /// of the hardware one on resource 1, takes it as all reds, all greens
     /// and all blues. One of the hardware detector on resource 22 takes 12
@@ -248,7 +250,8 @@ namespace PadForge.Common.Input.Peripherals
         /// that list, is left out: that device's table lights it, and a second
         /// table here for the same keyboard was one nothing chose while the
         /// first matched. The K70 PRO MINI WIRELESS left the plugin's rows when
-        /// OpenRGB listed it (3035206c).
+        /// OpenRGB listed it (3035206c), and takes only its light bars from its
+        /// row (<see cref="PluginBars"/>).
         /// </summary>
         internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
             .Where(d => !IsReceiver(d.Product) && !OtherIds.ContainsKey((ushort)d.Product)
@@ -362,8 +365,66 @@ namespace PadForge.Common.Input.Peripherals
                     lights.Add(CorsairLights.Light(lights.Count, zone.Name + " " + i.ToString(System.Globalization.CultureInfo.InvariantCulture), fallback));
                 max = Math.Max(max, (uint)lights.Count);
             }
+            // A light only the plugin gives reaches the buffer as a key does: one past
+            // the highest value (lines 156-164).
+            foreach (var bar in PluginBars(device, lights).ToList())
+            {
+                lights.Add(bar);
+                max = Math.Max(max, (uint)bar.Address + 1);
+            }
             bufferLength = (int)max;
             return CorsairLights.NumberZones(lights);
+        }
+
+        /// <summary>
+        /// The keyboards of OpenRGB's list whose light bars its table lacks: the K70 PRO
+        /// MINI WIRELESS, 1BB6 and 1BD3. OpenRGB's table for it is a 5 by 14 key matrix
+        /// over corsair_sixty_values with keys only (CorsairPeripheralV2Devices.cpp:48-60,
+        /// 189-207 and 1223-1264 at 6b681e3c), so its picture sends the 28 LEDs of the bars
+        /// around the keys, 58 to 85, black (buffer_map's null_color,
+        /// RGBController_CorsairV2Hardware.cpp:203-213). SignalRGB's Bragi plugin names
+        /// them TopBar, RightBar, BottomBar and LeftBar and lights them at those LEDs, in
+        /// the same 12 00 triplets as the keys on resource 22, which OpenRGB pins for this
+        /// keyboard (Corsair_Bragi_Device.js at 9511979f, "K70 Pro Mini", lines 1895-1934,
+        /// getLightingControllerColors, lines 918-950, SendRGBData, lines 3540-3549, and
+        /// the endpoint and data type, lines 2694 and 2732), so the bars come from the plugin's
+        /// row (<see cref="PluginCorsairTables"/>) and go out in OpenRGB's frame, on its
+        /// handle 1, where the plugin writes handle 0 (line 3544). The bars add no length
+        /// to OpenRGB's picture: its highest key is 122, and the plugin's buffer for the
+        /// keyboard also ends there.
+        /// </summary>
+        internal static bool TakesThePluginsBars(uint productId) => productId is 0x1BB6 or 0x1BD3;
+
+        /// <summary>The light bars of a keyboard of <see cref="TakesThePluginsBars"/>: the
+        /// edge lights of its row in the plugin's list, each at the plugin's LED, except one
+        /// at a LED <paramref name="keys"/> holds, which stays OpenRGB's. The plugin's grid is
+        /// 16 by 8 with the bars around the keys, so each bar moves by the distance between
+        /// the plugin's Esc and OpenRGB's.</summary>
+        internal static IEnumerable<LightInfo> PluginBars(CorsairV2Device device, IReadOnlyList<LightInfo> keys)
+        {
+            if (!TakesThePluginsBars(device.ProductId)) yield break;
+            var row = PluginCorsairTables.Devices.FirstOrDefault(d => d.Product == device.ProductId);
+            if (row == null) yield break;
+            var plugin = PluginKeyNames.Lights(row.Table());
+            int pluginEsc = IndexOfUsage(plugin, 0x29), keyEsc = IndexOfUsage(keys, 0x29);
+            float dx = 0, dy = 0;
+            if (pluginEsc >= 0 && keyEsc >= 0)
+            {
+                dx = keys[keyEsc].X - plugin[pluginEsc].X;
+                dy = keys[keyEsc].Y - plugin[pluginEsc].Y;
+            }
+            foreach (var light in plugin)
+            {
+                if (light.Kind != LightKind.Edge || keys.Any(k => k.Address == light.Address)) continue;
+                yield return light.HasPosition ? light with { X = light.X + dx, Y = light.Y + dy } : light;
+            }
+        }
+
+        private static int IndexOfUsage(IReadOnlyList<LightInfo> lights, ushort usage)
+        {
+            for (int i = 0; i < lights.Count; i++)
+                if (lights[i].Kind == LightKind.Key && lights[i].Usage == usage) return i;
+            return -1;
         }
 
         internal static LightMap MapOf(CorsairV2Device device, KeyboardLayout layout, out int bufferLength)

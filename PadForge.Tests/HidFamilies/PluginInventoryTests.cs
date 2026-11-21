@@ -169,6 +169,9 @@ namespace PadForge.Tests
             [(0x048D, 0xC693)] = "A LampArray, which the LampArray family lights.",
             // An external disk's light, through SCSI (asusctl rog-scsi).
             [(0x0B05, 0x1932)] = "ROG Strix Arion, an external disk lit through SCSI commands.",
+            // G-Helper a2bd94e. No OpenRGB family or SignalRGB plugin names the product.
+            [(0x0B05, 0x1C7D)] = "ROG Falchion Ace 75 HE: only G-Helper drives it, through its own keyboard "
+                + "classes (FalchionAce75HE, Falchion.cs:98-118, and AsusKeyboard.cs), which no family ports.",
         };
 
         private const string LegacyTransfers = "Lit through vendor control transfers, which need a driver swap.";

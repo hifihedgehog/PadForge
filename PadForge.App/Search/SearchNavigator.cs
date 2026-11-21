@@ -87,9 +87,13 @@ namespace PadForge.Search
             switch (entry.Page)
             {
                 case SearchPage.Pad:
+                    // The controller the result stands on, which can be
+                    // another than the page shows: opening its page binds
+                    // the page to it.
                     var pad = _pageOf(SearchPage.Pad) as PadPage;
-                    if (pad?.DataContext is not PadViewModel padVm) return;
+                    if (pad == null || (result.Pad ?? pad.DataContext as PadViewModel) is not PadViewModel padVm) return;
                     _selectNav("Pad" + (padVm.PadIndex + 1));
+                    if (!ReferenceEquals(pad.DataContext, padVm)) return;
                     if (entry.Kind == SearchKind.Section) { pad.OpenSection(entry.Section); return; }
                     if (entry.Kind == SearchKind.Part) { pad.OpenTab(entry.Tab); return; }
                     if (entry.Tab >= 0) pad.OpenTab(entry.Tab);

@@ -895,11 +895,23 @@ namespace PadForge.Views
             }
 
             SyncTabVisibility();
+            // Search reads what the page shows for each controller in turn
+            // and binds it back to its controller before anything is drawn,
+            // so the picture stays on the controller it shows.
+            if (ReadingForSearch) return;
             BindActiveModelView();
             // Another picture shows, which draws the picked control
             // elsewhere or not at all.
             QueuePickRingSync();
         }
+
+        /// <summary>True while Search binds the page to each controller in
+        /// turn to read which sections, parts and rows it shows
+        /// (SearchService.RefreshAvailability). The picture is left bound to
+        /// the controller it showed, which the page is bound to again before
+        /// the read ends: binding a controller's 3D model is most of what a
+        /// change of controller costs.</summary>
+        internal bool ReadingForSearch { get; set; }
 
         /// <summary>The Falcon card (#521): shown for a Falcon row. It holds
         /// this slot's settings only. The Falcon's reach belongs to the

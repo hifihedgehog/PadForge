@@ -1,3 +1,5 @@
+using PadForge.ViewModels;
+
 namespace PadForge.Search
 {
     /// <summary>The groups of Search's results, in the order a tie between
@@ -62,6 +64,16 @@ namespace PadForge.Search
         /// controller's index, the device's row, the profile, or the
         /// documentation's query.</summary>
         internal object Payload { get; init; }
+
+        /// <summary>The controller a controller page's entry stands on, which
+        /// its page opens on. Null for every other result.</summary>
+        internal PadViewModel Pad { get; init; }
+
+        /// <summary>The value read while the controller page showed
+        /// <see cref="Pad"/>, for a controller the page is not bound to.
+        /// Null when the value is read once the query has ranked the
+        /// result.</summary>
+        internal string ReadValue { get; init; }
 
         public override string ToString() => AutomationName;
     }

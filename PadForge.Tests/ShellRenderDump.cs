@@ -172,6 +172,33 @@ namespace PadForge.Tests
                         Area("search-narrowed.png", host, NarrowWidth, NarrowHeight);
                     }
                     finally { PadForge.Common.Input.SettingsManager.SlotCreated[0] = made; }
+
+                    // The same query on a VR controller's page, which has no
+                    // stick, beside an Xbox controller, which has two.
+                    bool[] slots = (bool[])PadForge.Common.Input.SettingsManager.SlotCreated.Clone();
+                    try
+                    {
+                        for (int i = 0; i < slots.Length; i++) PadForge.Common.Input.SettingsManager.SlotCreated[i] = i < 2;
+                        var main = new MainViewModel();
+                        main.Pads[1].OutputType = VirtualControllerType.Vr;
+                        var padPage = new PadPage { DataContext = main.Pads[1] };
+                        padPage.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
+                        var padGround = new Border { Child = padPage };
+                        padGround.Measure(new Size(1473, 985));
+                        padGround.Arrange(new Rect(0, 0, 1473, 985));
+                        padGround.UpdateLayout();
+                        PageRenderDump.Settle(dispatcher);
+                        var service = new PadForge.Search.SearchService(main, p => p == PadForge.Search.SearchPage.Pad ? padPage : null);
+                        service.SetIndex(PadForge.Search.SearchIndexBuilder.Build(PadForge.Search.SearchSources.Load()));
+                        service.RefreshAvailability();
+                        var search = new SearchViewModel(service.Query) { Query = "deadzone" };
+                        File.WriteAllLines(Path.Combine(dir, "search-other-controller.txt"),
+                            search.Results.Select(r => r.GroupLabel + " | " + r.Title + r.QualifierText + " | " + r.Where + " | " + r.Value));
+                        var host = new ShellDialog { FrameMaxWidth = 660, ClosesOnGroundPress = true, Content = new SearchPanel { DataContext = search } };
+                        host.Open(null);
+                        Area("search-other-controller.png", host);
+                    }
+                    finally { Array.Copy(slots, PadForge.Common.Input.SettingsManager.SlotCreated, slots.Length); }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
                 finally

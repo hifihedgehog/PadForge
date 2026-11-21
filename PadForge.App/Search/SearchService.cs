@@ -27,7 +27,17 @@ namespace PadForge.Search
         private readonly Func<SearchPage, FrameworkElement> _pageOf;
         private readonly SearchLocator _locator;
         private IReadOnlyList<SearchEntry> _index = Array.Empty<SearchEntry>();
-        private readonly List<(SearchEntry Entry, object Item, DependencyObject Label)> _available = new();
+        private readonly List<Available> _available = new();
+
+        /// <summary>An entry that shows now. A controller page's entry names
+        /// the controller it shows on, the name of its section there, and,
+        /// for a controller other than the one the page is bound to, the
+        /// value it read while the page showed that controller (the page's
+        /// elements show the bound one's again by the time a query runs).
+        /// <see cref="Value"/> is null when the value is read at the
+        /// query.</summary>
+        private sealed record Available(SearchEntry Entry, object Item, DependencyObject Label,
+            PadViewModel Pad = null, string Section = null, string Value = null);
 
         /// <summary>The Settings group each available entry of that page
         /// sits in, by its name, for the entry's second line.</summary>
@@ -107,22 +117,95 @@ namespace PadForge.Search
             return SearchLocator.Shows(element, PlaceRoot(entry));
         }
 
-        /// <summary>Reads which entries show now: on the bound controller
+        /// <summary>Reads which entries show now: on each controller made
         /// (its section and tab shown), on the selected device, and for each
-        /// item of a card per item, by the item's own gates.</summary>
+        /// item of a card per item, by the item's own gates.
+        ///
+        /// <para>The controller page shows one controller at a time, and
+        /// what it shows depends on the controller's kind and its devices.
+        /// So the page is bound to each controller made in turn, the one it
+        /// was bound to first and then the rest in sidebar order, and read
+        /// as it shows each. An entry that shows on more than one controller
+        /// is kept for the first of them: a setting the bound controller has
+        /// stays that controller's, and a setting it lacks is offered on the
+        /// first controller that has it. The page is bound back to its
+        /// controller at the end, before anything is drawn.</para></summary>
         internal void RefreshAvailability()
         {
             _available.Clear();
             _settingsGroup.Clear();
             _locator.Reset();
-            var pad = Pad;
-            bool padMade = IsMade(BoundPad);
+            ReadEntries(e => e.Page != SearchPage.Pad, null, null, false);
+
+            var page = Pad;
+            if (page == null) return;
+            var bound = BoundPad;
+            var order = new List<PadViewModel>();
+            if (IsMade(bound)) order.Add(bound);
+            foreach (int index in _vm.NavControllerItems.Select(n => n.PadIndex).Concat(Enumerable.Range(0, InputManager.MaxPads)))
+            {
+                var other = index >= 0 && index < _vm.Pads.Count ? _vm.Pads[index] : null;
+                if (IsMade(other) && !order.Contains(other)) order.Add(other);
+            }
+            if (order.Count == 0) return;
+
+            var taken = new HashSet<(SearchEntry, string, string)>();
+            page.ReadingForSearch = true;
+            try
+            {
+                foreach (var pad in order)
+                {
+                    if (!ReferenceEquals(page.DataContext, pad))
+                    {
+                        page.DataContext = pad;
+                        _locator.Reset();
+                    }
+                    ReadEntries(e => e.Page == SearchPage.Pad, pad, taken, readValues: !ReferenceEquals(pad, bound));
+                }
+            }
+            finally
+            {
+                if (!ReferenceEquals(page.DataContext, bound)) page.DataContext = bound;
+                page.ReadingForSearch = false;
+                _locator.Reset();
+            }
+        }
+
+        /// <summary>Reads the entries <paramref name="which"/> picks as their
+        /// pages show now. For the controller page, <paramref name="pad"/>
+        /// is the controller it shows, and an entry already in
+        /// <paramref name="taken"/> (read on an earlier controller) is
+        /// left out. <paramref name="readValues"/> reads each entry's value
+        /// now, for a controller the page will not show once the read is
+        /// done.</summary>
+        private void ReadEntries(Func<SearchEntry, bool> which, PadViewModel pad, HashSet<(SearchEntry, string, string)> taken, bool readValues)
+        {
+            var padPage = Pad;
             // How many entries before each one show the same words in the
             // same scope, counted over every entry, shown or not: the Nth
             // such entry is the Nth such element of the scope.
             var seen = new Dictionary<(SearchPage, string, SearchLabelSource, string), int>();
+
+            void Add(SearchEntry entry, object item, DependencyObject label)
+            {
+                if (pad == null)
+                {
+                    _available.Add(new Available(entry, item, label));
+                    return;
+                }
+                object data = item ?? pad;
+                var key = (entry, SearchLocator.LabelText(entry.Label, data) ?? string.Empty, SearchLocator.LabelText(entry.Qualifier, data) ?? string.Empty);
+                if (!taken.Add(key)) return;
+                string section = entry.Section >= 0 ? padPage.SectionName(entry.Section) : null;
+                // Another controller's value is read now, while the page's
+                // elements show that controller.
+                string value = readValues ? ValueOf(entry, item ?? label) : null;
+                _available.Add(new Available(entry, item, label, pad, section, value));
+            }
+
             foreach (var entry in _index)
             {
+                if (!which(entry)) continue;
                 try
                 {
                     int n = 0;
@@ -139,23 +222,23 @@ namespace PadForge.Search
 
                     if (entry.Page == SearchPage.Pad)
                     {
-                        if (!padMade || pad == null) continue;
-                        if (entry.Section >= 0 && !pad.IsSectionShown(entry.Section)) continue;
-                        if (entry.Tab >= 0 && !pad.IsTabAvailable(entry.Tab)) continue;
+                        if (pad == null || padPage == null) continue;
+                        if (entry.Section >= 0 && !padPage.IsSectionShown(entry.Section)) continue;
+                        if (entry.Tab >= 0 && !padPage.IsTabAvailable(entry.Tab)) continue;
                     }
                     else if (entry.Page == SearchPage.Devices && _vm.Devices?.SelectedDevice == null)
                         continue;
 
                     if (entry.Kind is SearchKind.Section or SearchKind.Part or SearchKind.Extra)
                     {
-                        _available.Add((entry, null, null));
+                        Add(entry, null, null);
                         continue;
                     }
                     if (entry.RowOptions)
                     {
-                        if (pad?.FindName("MappingDataGrid") is ItemsControl grid
+                        if (padPage?.FindName("MappingDataGrid") is ItemsControl grid
                             && grid.Items.Cast<object>().Any(item => entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => Resource(entry.Page, k)))))
-                            _available.Add((entry, null, null));
+                            Add(entry, null, null);
                         continue;
                     }
                     if (entry.ItemsPath != null)
@@ -164,12 +247,12 @@ namespace PadForge.Search
                         if (list == null || !Shows(entry, list)) continue;
                         foreach (object item in list.Items)
                             if (entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => Resource(entry.Page, k))))
-                                _available.Add((entry, item, null));
+                                Add(entry, item, null);
                         continue;
                     }
                     var label = _locator.Find(entry, n, text);
                     if (label != null && Shows(entry, label))
-                        _available.Add((entry, null, label));
+                        Add(entry, null, label);
                 }
                 catch (Exception error)
                 {
@@ -186,15 +269,14 @@ namespace PadForge.Search
             string q = text?.Trim() ?? string.Empty;
             if (q.Length == 0) return Array.Empty<SearchResult>();
             var scored = new List<SearchResult>();
-            var pad = BoundPad;
 
-            foreach (var (entry, item, label) in _available)
+            foreach (var (entry, item, label, pad, section, value) in _available)
             {
-                object data = item ?? _pageOf(entry.Page)?.DataContext;
+                object data = item ?? pad ?? _pageOf(entry.Page)?.DataContext;
                 string title = SearchLocator.LabelText(entry.Label, data) ?? string.Empty;
                 if (title.Length == 0) continue;
                 string qualifier = SearchLocator.LabelText(entry.Qualifier, data) ?? string.Empty;
-                string where = WhereOf(entry, pad, data);
+                string where = WhereOf(entry, pad, section, data);
                 string english = SearchLocator.EnglishText(entry.Label);
                 string englishQualifier = SearchLocator.EnglishText(entry.Qualifier);
                 if (english != null && englishQualifier != null) english += " " + englishQualifier;
@@ -218,6 +300,8 @@ namespace PadForge.Search
                     Target = SearchTarget.Entry,
                     Entry = entry,
                     Payload = item ?? label,
+                    Pad = pad,
+                    ReadValue = value,
                 });
             }
 
@@ -230,7 +314,7 @@ namespace PadForge.Search
                 .ThenBy(g => g[0].Group)
                 .ToList();
             var results = groups.SelectMany(g => g).ToList();
-            foreach (var r in results) r.Value = ValueOf(r);
+            foreach (var r in results) r.Value = r.ReadValue ?? (r.Entry == null ? string.Empty : ValueOf(r.Entry, r.Payload));
             return results;
         }
 
@@ -264,7 +348,7 @@ namespace PadForge.Search
 
         /// <summary>The second line of a result: where it is, its parts
         /// joined by the language's list separator.</summary>
-        private string WhereOf(SearchEntry entry, PadViewModel pad, object data)
+        private string WhereOf(SearchEntry entry, PadViewModel pad, string section, object data)
         {
             var parts = new List<string>();
             switch (entry.Page)
@@ -272,7 +356,7 @@ namespace PadForge.Search
                 case SearchPage.Pad:
                     parts.Add(SlotName(pad));
                     if (entry.Kind == SearchKind.Section) break;
-                    if (entry.Section >= 0 && Pad?.SectionName(entry.Section) is { Length: > 0 } section) parts.Add(section);
+                    if (!string.IsNullOrEmpty(section)) parts.Add(section);
                     break;
                 case SearchPage.Settings:
                     parts.Add(Strings.Instance.Settings_Title);
@@ -356,24 +440,24 @@ namespace PadForge.Search
             });
         }
 
-        /// <summary>The value a shown result reads now: its value box and
-        /// unit, its switch's On or Off, its picker's text, or a fold card's
-        /// summary.</summary>
-        private string ValueOf(SearchResult result)
+        /// <summary>The value an entry's element reads now: its value box
+        /// and unit, its switch's On or Off, its picker's text, or a fold
+        /// card's summary. <paramref name="payload"/> is the entry's item or
+        /// its label's element.</summary>
+        private string ValueOf(SearchEntry entry, object payload)
         {
-            var entry = result.Entry;
             if (entry == null) return string.Empty;
             try
             {
-                if (entry.Kind == SearchKind.Card && result.Payload is PadForge.Controls.FoldCard fold)
+                if (entry.Kind == SearchKind.Card && payload is PadForge.Controls.FoldCard fold)
                     return fold.Summary ?? string.Empty;
                 if (entry.Value == null || entry.RowOptions) return string.Empty;
                 object data;
                 FrameworkElement row = null;
-                if (entry.ItemsPath != null) data = result.Payload;
+                if (entry.ItemsPath != null) data = payload;
                 else
                 {
-                    row = SearchLocator.Up(result.Payload as DependencyObject) as FrameworkElement;
+                    row = SearchLocator.Up(payload as DependencyObject) as FrameworkElement;
                     data = row?.DataContext;
                 }
                 switch (entry.Value.Kind)

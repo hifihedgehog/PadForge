@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Kosongkan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tiada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>saat</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minit (0 = tidak pernah)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide menyekat PadForge daripada peranti yang disembunyikan oleh PadForge, jadi PadForge berhenti menyembunyikan peranti.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Penyamaran aplikasi Inverse HidHide dihidupkan, jadi PadForge tidak menyembunyikan sebarang peranti.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Menyahpasang masa jalan Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} tidak dapat dimulakan kerana MIDI tidak berjalan. Kad Windows MIDI Services dalam Tetapan menerangkan sebabnya.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} tidak dapat dimulakan kerana MIDI tidak berjalan. Lihat Windows MIDI Services dalam Tetapan, di bawah Pemacu.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} tidak dapat dimulakan kerana Windows MIDI Services tidak mencipta portnya.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} tiada Port Output. Pilih satu pada halamannya.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Port Output “{1}” bagi {0} tidak disambungkan. Slot bermula apabila port kembali.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK enggan dimulakan. Logitech Gaming Software biasanya tidak berjalan.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Bersambung, belum ada kekunci dilihat. Dalam Logitech Gaming Software, seret arahan G-key ke atas setiap kekunci dalam profil PadForge, dan jadikan profil itu berterusan. Tetikus G600 atau G300 juga mesti keluar daripada mod memori terbina dalam.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Berjalan, {0} peristiwa kekunci</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Berjalan, {0} peristiwa kekunci</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Baca Papan Kekunci Analog</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Membaca sejauh mana setiap kekunci ditekan pada papan kekunci analog daripada Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA, dan pembuat lain, setiap satu sebagai barisan peranti sendiri. Dokumentasi menyenaraikan setiap model yang disokong. Papan kekunci Razer memerlukan Razer Synapse berjalan. Kebanyakan yang lain dibaca melalui saluran yang digunakan oleh konfigurator mereka sendiri, jadi tutup konfigurator semasa ini dihidupkan.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Tiada papan kekunci analog yang disokong ditemui.</value></data>
@@ -801,7 +803,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Semak Kemas Kini</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Cabang moden x360ce, dibina semula dengan SDL3, WPF, dan .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge menukar sebarang peranti input kepada sebarang pengawal maya. Gamepad, joystick, papan kekunci, tetikus, dan skrin sentuh dipetakan kepada pengawal permainan maya (Xbox, PlayStation, joystick penerbangan, roda stereng, gamepad pihak ketiga) atau output papan kekunci+tetikus / MIDI yang dianggap permainan sebagai perkakasan sebenar. Dikuasakan oleh HIDMaestro dan Windows MIDI Services. Ia menggunakan SDL3 untuk input pengawal, Windows Raw Input untuk papan kekunci dan tetikus, HidHide untuk penyamaran peranti mengikut permainan, dan menyediakan antara muka Fluent Design moden untuk pemetaan, zon mati, lengkung kepekaan, dan maklum balas daya.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge menjadikan sebarang input kelihatan seperti sebarang pengawal. Gamepad, joystick, roda stereng, papan kekunci, tetikus, skrin sentuh, peranti MIDI dan telefon memacu pengawal maya yang dianggap permainan sebagai perkakasan sebenar: pad Xbox, PlayStation, Nintendo dan Steam, pad SInput, pengawal tangan VR, output MIDI, papan kekunci dan tetikus, atau peranti tersuai seperti joystick penerbangan atau roda stereng. HIDMaestro mencipta gamepad maya, SDL3 membaca pengawal, Windows Raw Input membaca papan kekunci dan tetikus, HidHide menyembunyikan peranti daripada permainan, dan Windows MIDI Services membawa MIDI masuk dan keluar.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Gambaran Keseluruhan</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Dibina Dengan</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Cari kredit</value></data>
@@ -929,6 +931,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Jeda antara huruf</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisaat antara aksara yang ditaip, sehingga 1000. 0 menaip keseluruhan teks sekali gus.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Putus Sambungan Semasa Tidak Aktif</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 bermakna tidak pernah</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Butiran</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Putuskan Bluetooth Apabila Dipalamkan melalui USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Cas Pantas. Apabila pengawal ini melaporkan ia sedang dicas semasa disambungkan melalui Bluetooth, pautan Bluetooth diputuskan supaya ia dicas tanpa menghidupkan radio. Mana-mana sumber kuasa USB dikira, termasuk pengecas dinding. Jika anda menghidupkan Bluetooth semula sementara kabel masih terpasang, ia dibiarkan sehingga kabel dicabut seterusnya.</value></data>
@@ -993,6 +996,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Hantar</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bingkai: {0}. Penghantaran mengambil masa kira-kira {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Pengawal menerima paling banyak {0} bingkai, jadi {1} bingkai terakhir ditinggalkan.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Pengawal menerima paling banyak {0} bingkai, jadi bingkai yang terakhir ditinggalkan.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sambungkan pengawal dengan kabel. Ia dimulakan semula sendiri kira-kira 15 saat selepas gambar dimasukkan.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sambungkan pengawal dengan kabel. Untuk penghantaran, PadForge menukarnya ke mod Xbox dan memindahkannya daripada pemacu Xbox Windows ke WinUSB, kemudian memulihkan kedua-duanya.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge akan menukar pengawal ke mod Xbox, memindahkannya ke WinUSB untuk penghantaran, kemudian memulangkannya kepada pemacu Xbox Windows dan menukarnya semula ke mod DInput. Cabut dahulu setiap pengawal Xbox 360 yang lain. Hantar sekarang?</value></data>
@@ -1424,8 +1428,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klon</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Pilih peranti pada slot ini untuk diklon.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Peranti terpilih tidak mendedahkan paksi, butang atau POV untuk diklon.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klon {0} ke slot ini sebagai laluan terus 1:1? Susun atur menjadi {1} paksi, {2} butang dan {3} POV, dan baris peranti ini pada slot digantikan dengan inputnya sendiri.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Peranti ini mempunyai lebih banyak input daripada yang boleh dibawa oleh pengawal Extended. Dipetakan {0} daripada {1} paksi, {2} daripada {3} butang dan {4} daripada {5} POV. Selebihnya dibiarkan tidak dipetakan.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klon {0} ke slot ini sebagai laluan terus 1:1? Susun atur menjadi {1}, {2} dan {3}, dan baris peranti ini pada slot digantikan dengan inputnya sendiri.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Peranti ini mempunyai lebih banyak input daripada yang boleh dibawa oleh pengawal Extended. Dipetakan {0} daripada {1}, {2} daripada {3} dan {4} daripada {5}. Selebihnya dibiarkan tidak dipetakan.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Pratetap Pengawal</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Tambah pratetap untuk pengawal yang tidak disertakan PadForge, daripada fail atau daripada pengawal itu sendiri.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Diimport</value></data>
@@ -1597,11 +1601,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Butang yang menurunkan penumpuk ke bawah semasa ditahan</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Bawah: butang yang menurunkan penumpuk ke bawah semasa ditahan.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Kadar</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kelajuan sapuan dalam unit sesaat. 0.5 = julat penuh dalam 2 s; 2 = julat penuh dalam 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kelajuan sapuan dalam unit sesaat. 0.5 = julat penuh dalam 2 s. 2 = julat penuh dalam 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Melekat</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Apabila ditanda, penumpuk mengekalkan nilainya selepas dilepaskan (kawalan jelajah). Apabila tidak ditanda, ia kembali ke Min semasa dilepaskan.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Had bawah penumpuk. -1 = negatif penuh untuk sasaran paksi dwikutub; 0 = sehala.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Had bawah penumpuk. -1 = negatif penuh untuk sasaran paksi dwikutub. 0 = sehala.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Had atas penumpuk. 1 = positif penuh.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Tanjakan</value></data>
@@ -1894,6 +1898,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Menetapkan mod bar cahaya slot yang ditetapkan kepada nilai tertentu. Kekal seperti suntingan pada kad Pencahayaan sehingga tindakan lain atau pengguna mengubahnya.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Kitar Mod Bar Cahaya</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Kitar melalui {0} mod bar cahaya</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Kitar melalui {0} mod bar cahaya</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mod bar cahaya slot melalui mod yang dipilih di bawah. Setiap pelaksanaan beralih ke mod bertanda yang seterusnya. Kedudukan kitaran adalah bagi setiap tindakan dan ditetapkan semula apabila aplikasi dimulakan semula.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tahan</value></data>
@@ -2291,6 +2296,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Semua sampel telah ditangkap. Namakan gerak isyarat dan klik Simpan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sampel {0} daripada {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} sampel</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} sampel</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Sampel untuk ditangkap</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Sampel untuk ditangkap</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ialah standard. Lebih banyak sampel memberi padanan lebih tepat, dan lebih sedikit lebih pantas dirakam.</value></data>
@@ -3389,6 +3395,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistol Luar Skrin</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Kitar Mod Penuding</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Kitar melalui {0} mod penuding</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Kitar melalui {0} mod penuding</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mod penuding Wii melalui mod yang dipilih di bawah untuk setiap alat kawalan jauh berupaya IR pada slot. Setiap pelaksanaan beralih ke mod ditanda yang seterusnya. Kedudukan kitaran adalah bagi setiap tindakan dan ditetapkan semula apabila aplikasi dimulakan semula.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pilih mod penuding yang patut dikitar oleh makro. Setiap pelaksanaan maju ke mod ditanda yang seterusnya.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3716,7 +3723,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Tiada DualShock 3 ditemui pada USB. Sambungkannya dengan kabel USB dan cuba lagi.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows tidak akan memasang pemacu USB PadForge untuk DualShock 3, kerana sijil tandatangannya tidak dipercayai pada PC ini.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Pemacu Bluetooth untuk pengawal PlayStation tidak dapat dipasang.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Tiada radio Bluetooth tersedia. Hidupkan Bluetooth dan cuba lagi. Penggandingan hanya diperlukan untuk permainan tanpa wayar; pengawal bersambung kabel berfungsi tanpanya.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Tiada radio Bluetooth tersedia. Hidupkan Bluetooth dan cuba lagi. Penggandingan hanya diperlukan untuk permainan tanpa wayar. Pengawal bersambung kabel berfungsi tanpanya.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Penggandingan tidak selesai. Langkah yang gagal ditunjukkan di atas.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tutup</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Tag NFC</value></data>
@@ -3807,7 +3814,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lepaskan butang itu.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Langkah {0} daripada {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Tiada perubahan dilihat. Pilih Mula Semula, kemudian tekan dan tahan butang apabila diminta.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Memantau {0} laporan vendor dan {1} kelas peristiwa. Semasa penekanan: {2} laporan, {3} peristiwa.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Laporan vendor dipantau: {0}. Kelas peristiwa dipantau: {1}. Laporan semasa penekanan: {2}. Peristiwa semasa penekanan: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Butang ditangkap. Masukkan nama dan klik Daftar.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Sumber</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nama</value></data>
@@ -3823,7 +3830,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Eksport…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} butang dieksport.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} butang dieksport.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} butang diimport.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} butang diimport.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Butang PC Pegang Tangan</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC permainan dan komputer riba pegang tangan mempunyai butang yang tidak pernah dipaparkan oleh sistem pengendalian sebagai pengawal: paddle belakang, kekunci menu, roda, kekunci pintas vendor. Hidupkan ini untuk mempelajarinya sekali dengan menekannya, kemudian petakannya seperti butang lain. Ia juga menambah giro mesin itu sendiri sebagai peranti gerakan.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Dayakan Butang PC Pegang Tangan</value></data>
@@ -3987,9 +3996,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Menaik</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Menurun</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} pengikatan</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} pengikatan</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ditemui</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Menunjukkan {0} daripada {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurasi</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurasi</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>sokongan pengawal penuh</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>sokongan pengawal separa</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Cari Permainan</value></data>
@@ -3999,7 +4010,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} bulan lalu</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} tahun lalu</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} pelanggan</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} pelanggan</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} undi</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} undi</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Semua</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Belum Ada Konfigurasi untuk Permainan Ini</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop tidak mempunyai konfigurasi pengawal komuniti untuk {0}. Anda boleh menjadi yang pertama: bina satu di Steam dan ia akan muncul di sini.</value></data>
@@ -4032,6 +4045,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lapisan: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>tiada pencetus bebas peranti untuk input ini</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} tindakan dalam permainan, khusus Steam, tiada cangkuk sebelah permainan</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} tindakan dalam permainan, khusus Steam, tiada cangkuk sebelah permainan</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>tindakan klien Steam {0}, tiada yang setara</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>tindakan pengawal {0} tidak disokong</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>jenis pengikatan tidak diketahui {0}</value></data>
@@ -4122,6 +4136,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Togol Tatal Roda</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Setiap pencetusan mengunci atau melepaskan tatal berterusan. Semasa dikunci, menghantar kiraan detik sekali setiap sela sehingga pencetusan seterusnya atau sehingga makro dimatikan.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Togol tatal roda ({0} detik setiap {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Togol tatal roda ({0} detik setiap {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Denyut Semasa Dikunci</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Semasa dikunci, mendenyutkan output hidup dan mati pada sela ulangan dan bukannya menahannya padu.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Tambah Paksi (Relatif)</value></data>
@@ -4143,6 +4158,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Apabila pergerakan fizikal menolak sasaran melepasi ambang, makro berhenti menulis paksi untuk sisa pengaktifan.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(mengalah kepada fizikal)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Kitar senarai ketik ({0} langkah)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Kitar senarai ketik ({0} langkah)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Langkah</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Lilit</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Togol kekunci {0}</value></data>
@@ -4226,6 +4242,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Tindihan Tukar Profil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tunjukkan cincin atau grid atas skrin semasa menu jejari atau sentuh diaktifkan. Menu masih dicetuskan apabila tindihan dimatikan.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu atas skrin dicipta ({0} sel terikat)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu atas skrin dicipta ({0} sel terikat)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu tiada sel terikat</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>permukaan hos menu tidak disokong ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), jadi sel mengekalkan label teksnya</value></data>
@@ -4412,6 +4429,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pilih .txt yang dimuat turun AutoEq. Inilah yang patut digunakan: autoeq.app memberi anda fail dan bukannya teks yang boleh disalin.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Untuk pembetulan yang sepadan dengan fon kepala anda: buka autoeq.app, pilih model anda, pilih Custom Parametric Eq dan muat turunnya, kemudian Import dari Fail. Muat turun Graphic Eq tiada baris penapis dan tidak akan diimport.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Mengimport {0} jalur dengan prapenguat {1:0.#} dB daripada {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Mengimport {0} jalur dengan prapenguat {1:0.#} dB daripada {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Tiada baris penapis dalam profil itu. Eksport Graphic Eq AutoEq tidak boleh dibaca di sini. Muat turun yang Custom Parametric Eq sebaliknya. EQ semasa tidak berubah.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Tiada apa-apa untuk diimport. EQ semasa tidak berubah.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Tidak dapat membaca fail itu: {0}</value></data>

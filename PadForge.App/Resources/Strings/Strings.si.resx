@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>හිස් කරන්න</value></data>
   <data name="Common_None" xml:space="preserve"><value>කිසිවක් නැත</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>මිනිත්තු</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>තත්පර</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>මිනිත්තු (0 = කිසි විටෙක නැත)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge සඟවා තිබූ උපාංගයකින් HidHide විසින් PadForge අවහිර කළ බැවින් PadForge උපාංග සැඟවීම නැවැත්වීය.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide හි Inverse application cloak ක්‍රියාත්මක බැවින් PadForge කිසිදු උපාංගයක් සඟවන්නේ නැත.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services ධාවන කාලය අස්ථාපනය කරමින්…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ධාවනය නොවන බැවින් {0} ආරම්භ කළ නොහැකි විය. හේතුව සැකසීම් හි Windows MIDI Services කාඩ්පතේ දැක්වේ.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ධාවනය නොවන බැවින් {0} ආරම්භ කළ නොහැකි විය. සැකසීම් හි ධාවක යටතේ ඇති Windows MIDI Services බලන්න.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services එහි තොට සෑදුවේ නැති බැවින් {0} ආරම්භ කළ නොහැකි විය.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} හට ප්‍රතිදාන තොටක් නැත. එහි පිටුවෙන් එකක් තෝරන්න.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} හි ප්‍රතිදාන තොට “{1}” සම්බන්ධ වී නැත. තොට නැවත පැමිණි විට ස්ලොට් එක ආරම්භ වේ.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ආරම්භ වීම ප්‍රතික්ෂේප කළේය. සාමාන්‍යයෙන් හේතුව Logitech Gaming Software ධාවනය නොවීමයි.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>සම්බන්ධයි, තවම කිසිදු යතුරක් දැක නැත. Logitech Gaming Software හි, PadForge පැතිකඩෙහි සෑම යතුරකටම G-key විධානය ඇදගෙන ගොස්, එම පැතිකඩ ස්ථිර කරන්න. G600 හෝ G300 මූසිකයක් ද ඔන්බෝඩ් මතක ප්‍රකාරයෙන් පිටත තිබිය යුතුය.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>ධාවනය වෙමින්, යතුරු සිදුවීම් {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>ධාවනය වෙමින්, යතුරු සිදුවීම් {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>ඇනලොග් යතුරුපුවරු කියවන්න</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA සහ වෙනත් නිෂ්පාදකයන්ගේ ඇනලොග් යතුරුපුවරුවල සෑම යතුරක්ම කොපමණ දුරට ඔබා ඇත්දැයි කියවයි, එක් එක් යතුරුපුවරුව වෙනම උපාංග පේළියක් ලෙස. සහාය දක්වන සෑම මාදිලියක්ම ලේඛනයේ ලැයිස්තුගත කර ඇත. Razer යතුරුපුවරු සඳහා Razer Synapse ධාවනය විය යුතුය. අනෙක් බොහොමයක් කියවනු ලබන්නේ ඒවායේම වින්‍යාසකාරකය භාවිත කරන නාලිකාව හරහා බැවින්, මෙය ක්‍රියාත්මක අතරතුර වින්‍යාසකාරකය වසන්න.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>සහාය දක්වන ඇනලොග් යතුරුපුවරුවක් හමු නොවීය.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>යාවත්කාලීන පරීක්ෂා කරන්න</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce හි නවීන ශාඛාවක්, SDL3, WPF සහ .NET 10 සමඟ නැවත ගොඩනගා ඇත</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ඕනෑම ආදාන උපාංගයක් ඕනෑම අතථ්‍ය පාලකයක් බවට පත් කරයි. ගේම්පෑඩ්, ජොයිස්ටික්, යතුරුපුවරු, මූසික සහ ස්පර්ශ තිර, ක්‍රීඩා සැබෑ දෘඩාංග ලෙස සලකන අතථ්‍ය ක්‍රීඩා පාලක (Xbox, PlayStation, ගුවන් ස්ටික්, සුක්කානම්, තෙවන පාර්ශ්ව ගේම්පෑඩ්) හෝ යතුරුපුවරු+මූසික / MIDI ප්‍රතිදානය වෙත සිතියම්ගත කෙරේ. HIDMaestro සහ Windows MIDI Services මඟින් බලගැන්වේ. එය පාලක ආදානය සඳහා SDL3, යතුරුපුවරුව සහ මූසිකය සඳහා Windows Raw Input, ක්‍රීඩාවකට අනුව උපාංග සැඟවීම සඳහා HidHide භාවිත කරන අතර, සිතියම්ගත කිරීම, ඩෙඩ්සෝන්, සංවේදීතා වක්‍ර සහ බල ප්‍රතිපෝෂණය සඳහා නවීන Fluent Design අතුරු මුහුණතක් සපයයි.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ඕනෑම ආදානයක් ඕනෑම පාලකයක් ලෙස පෙනෙන්නට සලස්වයි. ගේම්පෑඩ්, ජොයිස්ටික්, සුක්කානම්, යතුරුපුවරු, මූසික, ස්පර්ශ තිර, MIDI උපාංග සහ දුරකථන මඟින්, ක්‍රීඩා සැබෑ දෘඩාංග ලෙස සලකන අතථ්‍ය පාලක ක්‍රියාත්මක කෙරේ: Xbox, PlayStation, Nintendo සහ Steam පෑඩ්, SInput පෑඩ්, VR අත් පාලක, MIDI ප්‍රතිදානය, යතුරුපුවරුවක් සහ මූසිකයක්, හෝ ගුවන් ස්ටික් එකක් හෝ සුක්කානමක් වැනි අභිරුචි උපාංගයක්. HIDMaestro අතථ්‍ය ගේම්පෑඩ් නිර්මාණය කරයි, SDL3 පාලක කියවයි, Windows Raw Input යතුරුපුවරු සහ මූසික කියවයි, HidHide උපාංගයක් ක්‍රීඩාවලින් සඟවයි, සහ Windows MIDI Services මඟින් MIDI ඇතුළට සහ පිටතට ගෙන යයි.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>දළ විශ්ලේෂණය</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>ගොඩනැගීමට භාවිත කළේ</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ස්තුති සොයන්න</value></data>
@@ -928,6 +930,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>අකුරු අතර ප්‍රමාදය</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ටයිප් කරන අක්ෂර අතර මිලිතත්පර, 1000 දක්වා. 0 නම් මුළු පෙළම එකවර ටයිප් කරයි.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>අක්‍රිය විට විසන්ධි කිරීම</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 යනු කිසි විටෙක නැත</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>විස්තර</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB හරහා සම්බන්ධ කළ විට Bluetooth විසන්ධි කරන්න</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ඉක්මන් ආරෝපණය. Bluetooth හරහා සම්බන්ධව සිටියදී මෙම පාලකය ආරෝපණය වන බව වාර්තා කළ විට, Bluetooth සබැඳිය විසන්ධි කරනු ලැබේ, එවිට රේඩියෝව බලගන්වන්නේ නැතිව එය ආරෝපණය වේ. බිත්ති චාජර් ඇතුළු ඕනෑම USB බල ප්‍රභවයක් ගණන් ගැනේ. කේබලය සම්බන්ධව තිබියදී ඔබ Bluetooth නැවත ක්‍රියාත්මක කළහොත්, ඊළඟ වතාවේ ගලවන තෙක් එය එසේම තබනු ලැබේ.</value></data>
@@ -992,6 +995,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>යවන්න</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>රාමු: {0}. යැවීමට ගතවන දළ කාලය: {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>පාලකයට ගත හැකි උපරිම රාමු ගණන {0} වේ, එබැවින් අවසාන රාමු {1} අත්හැරිණි.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>පාලකයට ගත හැකි උපරිම රාමු ගණන {0} වේ, එබැවින් අවසාන රාමුව අත්හැරිණි.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>පාලකය කේබලයකින් සම්බන්ධ කරන්න. පින්තූරය ඇතුළු වී තත්පර 15 කට පමණ පසු එය ස්වයංක්‍රීයව නැවත ආරම්භ වේ.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>පාලකය කේබලයකින් සම්බන්ධ කරන්න. යැවීම සඳහා PadForge එය Xbox ප්‍රකාරයට මාරු කර Windows හි Xbox ධාවකයෙන් WinUSB වෙත ගෙන යයි, ඉන්පසු දෙකම පෙර තත්ත්වයට පත් කරයි.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge පාලකය Xbox ප්‍රකාරයට මාරු කර, යැවීම සඳහා WinUSB වෙත ගෙන ගොස්, ඉන්පසු එය නැවත Windows හි Xbox ධාවකයට ලබා දී DInput ප්‍රකාරයට මාරු කරයි. පළමුව අනෙක් සෑම Xbox 360 පාලකයක්ම ගලවන්න. දැන් යවන්නද?</value></data>
@@ -1423,8 +1427,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ක්ලෝන කරන්න</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ක්ලෝන කිරීමට මෙම ස්ලොට් එකේ උපාංගයක් තෝරන්න.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>තෝරාගත් උපාංගය ක්ලෝන කිරීමට අක්ෂ, බොත්තම් හෝ හැට් කිසිවක් ලබා නොදෙයි.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} මෙම ස්ලොට් එකට 1:1 පාස්ත්‍රූ එකක් ලෙස ක්ලෝන කරන්නද? පිරිසැලසුම අක්ෂ {1}, බොත්තම් {2}, සහ POV {3} බවට පත් වන අතර, ස්ලොට් එකේ මෙම උපාංගයේ පේළි එහිම ආදානවලින් ප්‍රතිස්ථාපනය වේ.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>විස්තෘත පාලකයකට දැරිය හැකි ප්‍රමාණයට වඩා ආදාන මෙම උපාංගයට ඇත. අක්ෂ {1}න් {0}ක්, බොත්තම් {3}න් {2}ක්, සහ POV {5}න් {4}ක් සිතියම්ගත කරන ලදී. ඉතිරිය සිතියම්ගත නොකර තබන ලදී.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} මෙම ස්ලොට් එකට 1:1 පාස්ත්‍රූ එකක් ලෙස ක්ලෝන කරන්නද? පිරිසැලසුම {1}, {2}, සහ {3} බවට පත් වන අතර, ස්ලොට් එකේ මෙම උපාංගයේ පේළි එහිම ආදානවලින් ප්‍රතිස්ථාපනය වේ.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>විස්තෘත පාලකයකට දැරිය හැකි ප්‍රමාණයට වඩා ආදාන මෙම උපාංගයට ඇත. {1}න් {0}ක්, {3}න් {2}ක්, සහ {5}න් {4}ක් සිතියම්ගත කරන ලදී. ඉතිරිය සිතියම්ගත නොකර තබන ලදී.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>පාලක පෙරසැකසුම්</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge සමඟ නොඑන පාලකයක් සඳහා, ගොනුවකින් හෝ පාලකයෙන්ම පෙරසැකසුමක් එක් කරන්න.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>ආනයනය කළ</value></data>
@@ -1596,11 +1600,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>ඔබාගෙන සිටින අතරතුර සමුච්චායකය පහළට අඩු කරන බොත්තම</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>පහළ: ඔබාගෙන සිටින අතරතුර සමුච්චායකය පහළට අඩු කරන බොත්තම.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>අනුපාතය</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>තත්පරයකට ඒකක වලින් වෙනස් වීමේ වේගය. 0.5 = තත්පර 2 කින් සම්පූර්ණ පරාසය; 2 = තත්පර 0.5 කින් සම්පූර්ණ පරාසය.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>තත්පරයකට ඒකක වලින් වෙනස් වීමේ වේගය. 0.5 = තත්පර 2 කින් සම්පූර්ණ පරාසය. 2 = තත්පර 0.5 කින් සම්පූර්ණ පරාසය.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ඇලෙන</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, මුදා හැරීමෙන් පසු සමුච්චායකය එහි අගය රඳවා ගනී (ක්‍රූස් පාලනය). සලකුණු නොකළ විට, මුදා හැරීමේදී එය නැවත අවම අගයට පැන යයි.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>අවම</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>සමුච්චායකයේ පහළ සීමාව. -1 = ද්විධ්‍රැව අක්ෂ ඉලක්ක සඳහා සම්පූර්ණ ඍණ; 0 = ඒකධ්‍රැව.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>සමුච්චායකයේ පහළ සීමාව. -1 = ද්විධ්‍රැව අක්ෂ ඉලක්ක සඳහා සම්පූර්ණ ඍණ. 0 = ඒකධ්‍රැව.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>උපරිම</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>සමුච්චායකයේ ඉහළ සීමාව. 1 = සම්පූර්ණ ධන.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>රැම්ප්</value></data>
@@ -1893,6 +1897,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය නිශ්චිත අගයකට සකසයි. වෙනත් ක්‍රියාවක් හෝ පරිශීලකයා එය වෙනස් කරන තුරු ආලෝකකරණ කාඩ්පතේ කළ සංස්කරණයක් මෙන් පවතී.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර {0} ක් හරහා චක්‍රීය කරන්න</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර {0} ක් හරහා චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>පහත තෝරාගත් ප්‍රකාර හරහා ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය ඉදිරියට ගෙන යයි. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ගමන් කරයි. චක්‍රයේ පිහිටීම එක් එක් ක්‍රියාවට වෙන් වන අතර යෙදුම නැවත ආරම්භ කළ විට යළි සැකසේ.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>රඳවා තැබීම</value></data>
@@ -2290,6 +2295,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>සියලු නියැදි ග්‍රහණය කරන ලදී. අභිනයට නමක් දී සුරකින්න ක්ලික් කරන්න.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>නියැදිය {1} න් {0}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>නියැදි {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>නියැදි {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ග්‍රහණය කළ යුතු නියැදි</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>ග්‍රහණය කළ යුතු නියැදි</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 සම්මත අගයයි. වැඩි නියැදි වඩා ස්ථිර ගැළපීමක් දෙන අතර, අඩු නියැදි පටිගත කිරීමට ඉක්මන්ය.</value></data>
@@ -3353,6 +3359,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>තුවක්කුව තිරයෙන් පිටත</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>පොයින්ටර ප්‍රකාර චක්‍රීයව මාරු කරන්න</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>පොයින්ටර ප්‍රකාර {0} ක් හරහා චක්‍රීයව මාරු කරන්න</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>පොයින්ටර ප්‍රකාර {0} ක් හරහා චක්‍රීයව මාරු කරන්න</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ස්ලොට් එකේ ඇති IR හැකියාව සහිත සෑම දුරස්ථ පාලකයක් සඳහාම, පහත තෝරාගත් ප්‍රකාර හරහා Wii පොයින්ටර ප්‍රකාරය ඉදිරියට ගෙන යයි. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට යයි. චක්‍රයේ පිහිටීම එක් එක් ක්‍රියාවට වෙන් වන අතර යෙදුම නැවත ආරම්භ කළ විට යළි සැකසේ.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>මැක්‍රෝව චක්‍රීයව මාරු කළ යුතු පොයින්ටර ප්‍රකාර තෝරන්න. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ඉදිරියට යයි.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ශ්‍රව්‍ය</value></data>
@@ -3771,7 +3778,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>බොත්තම අත හරින්න.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>පියවර {0} / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>කිසිදු වෙනසක් දක්නට නොලැබුණි. “නැවත අරඹන්න” තෝරා, ඉල්ලූ විට බොත්තම ඔබාගෙන සිටින්න.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>නිෂ්පාදක වාර්තා {0} ක් සහ සිදුවීම් පන්ති {1} ක් නිරීක්ෂණය කළා. එබීම අතරතුර: වාර්තා {2}, සිදුවීම් {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>නිරීක්ෂණය කළ නිෂ්පාදක වාර්තා: {0}. නිරීක්ෂණය කළ සිදුවීම් පන්ති: {1}. එබීම අතරතුර වාර්තා: {2}. එබීම අතරතුර සිදුවීම්: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>බොත්තම ග්‍රහණය කළා. නමක් ඇතුළත් කර “ලියාපදිංචි කරන්න” ක්ලික් කරන්න.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>මූලාශ්‍රය</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>නම</value></data>
@@ -3787,7 +3794,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>අපනයනය…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>ආනයනය…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>බොත්තම් {0} ක් අපනයනය කළා.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>බොත්තම් {0} ක් අපනයනය කළා.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>බොත්තම් {0} ක් ආනයනය කළා.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>බොත්තම් {0} ක් ආනයනය කළා.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>අතේ ගෙන යන PC බොත්තම්</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>අතේ ගෙන යන ක්‍රීඩා PC සහ ලැප්ටොප්වල, මෙහෙයුම් පද්ධතිය කිසිවිටෙක පාලකයක් ලෙස නොපෙන්වන බොත්තම් ඇත: පසුපස පැඩල, මෙනු යතුරු, රෝද, නිෂ්පාදක කෙටිමං යතුරු. ඒවා එක් වරක් ඔබා ඉගෙන ගැනීමට මෙය සක්‍රිය කරන්න, පසුව වෙනත් ඕනෑම බොත්තමක් මෙන් සිතියම්ගත කරන්න. යන්ත්‍රයේම ගයිරොස්කෝපය චලන උපාංගයක් ලෙසද එක් කරයි.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>අතේ ගෙන යන PC බොත්තම් සබල කරන්න</value></data>
@@ -3951,9 +3960,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ආරෝහණ</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>අවරෝහණ</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>බැඳීම් {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>බැඳීම් {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ක් හමු විය</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} න් {0} පෙන්වමින්</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>වින්‍යාස {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>වින්‍යාස {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>සම්පූර්ණ පාලක සහාය</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>අර්ධ පාලක සහාය</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ක්‍රීඩා සොයන්න</value></data>
@@ -3963,7 +3974,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>මාස {0} කට පෙර</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>වසර {0} කට පෙර</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>දායකයින් {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>දායකයින් {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>ඡන්ද {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>ඡන්ද {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>සියල්ල</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>මෙම ක්‍රීඩාව සඳහා තවම වින්‍යාස නැත</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop හි {0} සඳහා ප්‍රජා පාලක වින්‍යාස නැත. ඔබට පළමුවැන්නා විය හැක: Steam තුළ එකක් සාදන්න, එය මෙහි දිස් වේ.</value></data>
@@ -3996,6 +4009,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ස්ථරය: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>මෙම ආදානය සඳහා උපාංගයෙන් ස්වාධීන ට්‍රිගරයක් නැත</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>ක්‍රීඩාව තුළ ක්‍රියා {0}, Steam සඳහා පමණි, ක්‍රීඩා පැත්තේ සම්බන්ධකයක් නැත</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>ක්‍රීඩාව තුළ ක්‍රියා {0}, Steam සඳහා පමණි, ක්‍රීඩා පැත්තේ සම්බන්ධකයක් නැත</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam සේවාලාභී ක්‍රියාව {0}, සමාන එකක් නැත</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>පාලක ක්‍රියාව {0} සඳහා සහාය නැත</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>නොදන්නා බැඳීම් වර්ගය {0}</value></data>
@@ -4086,6 +4100,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>රෝද අනුචලනය ටොගල් කරන්න</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>සෑම ක්‍රියාත්මක වීමක්ම අඛණ්ඩ අනුචලනයක් රඳවයි හෝ මුදා හරියි. රඳවා ඇති අතරතුර, ඊළඟ ක්‍රියාත්මක වීම තෙක් හෝ මැක්‍රෝව අක්‍රිය කරන තෙක් කාල පරතරයකට වරක් පියවර ගණන යවයි.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>රෝද අනුචලනය ටොගල් කරන්න (සෑම {1} ms කට වරක් පියවර {0})</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>රෝද අනුචලනය ටොගල් කරන්න (සෑම {1} ms කට වරක් පියවර {0})</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>රඳවා ඇති අතරතුර ස්පන්දනය</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>රඳවා ඇති අතරතුර, ප්‍රතිදානය ස්ථාවරව රඳවා තබනවා වෙනුවට පුනරාවර්තන කාල පරතරයට සක්‍රිය හා අක්‍රිය කරන්න.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>අක්ෂයට එකතු කිරීම (සාපේක්ෂ)</value></data>
@@ -4107,6 +4122,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>භෞතික චලනය ඉලක්කය සීමා අගය පසු කර තල්ලු කරන විට, සක්‍රිය කිරීමේ ඉතිරි කාලය සඳහා මැක්‍රෝව අක්ෂය ලිවීම නවත්වයි.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(භෞතික ආදානයට ඉඩ දෙයි)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>තට්ටු ලැයිස්තුව චක්‍රීය කරන්න (පියවර {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>තට්ටු ලැයිස්තුව චක්‍රීය කරන්න (පියවර {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>පියවර</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>වට කිරීම</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>යතුරු {0} ටොගල් කරන්න</value></data>
@@ -4190,6 +4206,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>පැතිකඩ මාරු ඕවර්ලේ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>රේඩියල් හෝ ස්පර්ශ මෙනුවක් සක්‍රිය අතරතුර තිරයේ වළල්ල හෝ ජාලකය පෙන්වන්න. ඕවර්ලේ අක්‍රිය වුවද මෙනු ක්‍රියාත්මක වේ.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>තිරය මත මෙනුවක් සාදන ලදී (බැඳි කොටු {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>තිරය මත මෙනුවක් සාදන ලදී (බැඳි කොටු {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>මෙනුවේ බැඳි කොටු නැත</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>මෙනු සත්කාරක පෘෂ්ඨය සඳහා සහාය නැත ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>මෙනු කොටු අයිකනය හඳුනා නොගැනිණි ({0}), එබැවින් කොටුව එහි පාඨ ලේබලය තබා ගනී</value></data>
@@ -4372,6 +4389,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq වෙතින් බාගත කළ .txt ගොනුව තෝරන්න. භාවිත කළ යුත්තේ මෙයයි: autoeq.app ඔබට ලබා දෙන්නේ පිටපත් කළ හැකි පෙළක් නොව ගොනුවකි.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>ඔබේ හෙඩ්ෆෝනයට ගැළපෙන නිවැරදි කිරීමක් සඳහා: autoeq.app විවෘත කර, ඔබේ මාදිලිය තෝරා, Custom Parametric Eq තෝරා එය බාගත කර, පසුව "ගොනුවෙන් ආයාත කරන්න" ක්ලික් කරන්න. Graphic Eq බාගැනීමේ පෙරහන් පේළි නොමැති බැවින් එය ආයාත නොවේ.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} වෙතින් {1:0.#} dB ප්‍රීඇම්ප් එකක් සමඟ කලාප {0}ක් ආයාත කරන ලදී.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} වෙතින් {1:0.#} dB ප්‍රීඇම්ප් එකක් සමඟ කලාප {0}ක් ආයාත කරන ලදී.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>එම පැතිකඩෙහි පෙරහන් පේළි නොමැත. AutoEq හි Graphic Eq අපනයනය මෙහි කියවිය නොහැක. ඒ වෙනුවට Custom Parametric Eq එක බාගත කරන්න. වත්මන් EQ වෙනස් වී නැත.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>ආයාත කිරීමට කිසිවක් නැත. වත්මන් EQ වෙනස් වී නැත.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>එම ගොනුව කියවිය නොහැකි විය: {0}</value></data>

@@ -80,6 +80,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Pichay</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mana imapas</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundokuna</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1142,6 +1143,7 @@
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Pukllaykunata maskay</value></data>
   <data name="Workshop_Games" xml:space="preserve"><value>Pukllaykuna</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} asignacionkuna</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} asignacion</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pukllaykunata maskay</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>kunan p'unchaw</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Llapan</value></data>

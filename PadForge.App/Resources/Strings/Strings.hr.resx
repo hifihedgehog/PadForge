@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Očisti</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ništa</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekundi</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuta (0 = nikad)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide je programu PadForge blokirao pristup uređaju koji je PadForge sakrio pa je PadForge prestao skrivati uređaje.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>U programu HidHide uključena je opcija Inverse application cloak pa PadForge ne skriva nijedan uređaj.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Deinstaliranje izvršnog okruženja Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Nije moguće pokrenuti {0} jer MIDI ne radi. Razlog je naveden na kartici Windows MIDI Services na stranici Postavke.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Nije moguće pokrenuti {0} jer MIDI ne radi. Pogledajte Windows MIDI Services u Postavkama, u odjeljku Upravljački programi.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Nije moguće pokrenuti {0} jer Windows MIDI Services nije stvorio njegov priključak.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} nema izlazni priključak. Odaberite ga na stranici tog utora.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Izlazni priključak „{1}“ za {0} nije povezan. Utor će se pokrenuti čim se priključak vrati.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK se odbio pokrenuti. Obično to znači da Logitech Gaming Software nije pokrenut.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Povezano, još nije zabilježena nijedna tipka. U programu Logitech Gaming Software povucite naredbu G-key na svaku tipku u profilu PadForge i postavite taj profil kao trajni. Miš G600 ili G300 također mora biti izvan načina rada s ugrađenom memorijom.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Radi, događaja tipki: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Radi, događaja tipki: {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Čitaj analogne tipkovnice</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Čita koliko je duboko pritisnuta svaka tipka na analognim tipkovnicama proizvođača Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA i drugih, svaku kao zaseban redak uređaja. Dokumentacija navodi svaki podržani model. Za Razer tipkovnice mora biti pokrenut Razer Synapse. Većina ostalih čita se putem kanala koji koristi njihov vlastiti konfigurator pa zatvorite konfigurator dok je ova opcija uključena.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nije pronađena nijedna podržana analogna tipkovnica.</value></data>
@@ -801,7 +803,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Provjeri ažuriranja</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderni fork projekta x360ce, ponovno izgrađen uz SDL3, WPF i .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge pretvara bilo koji ulazni uređaj u bilo koji virtualni kontroler. Gamepadi, džojstici, tipkovnice, miševi i zasloni osjetljivi na dodir mapiraju se na virtualne kontrolere za igre (Xbox, PlayStation, džojstici za letenje, volani, gamepadi drugih proizvođača) ili na izlaz tipkovnice i miša / MIDI koji igre tretiraju kao stvarni hardver. Pokreću ga HIDMaestro i Windows MIDI Services. Koristi SDL3 za ulaz kontrolera, Windows Raw Input za tipkovnicu i miš, HidHide za skrivanje uređaja od pojedinih igara te nudi moderno sučelje Fluent Design za mapiranje, mrtve zone, krivulje osjetljivosti i povratnu silu.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge čini da bilo koji ulaz izgleda kao bilo koji kontroler. Gamepadi, džojstici, volani, tipkovnice, miševi, zasloni osjetljivi na dodir, MIDI uređaji i telefoni upravljaju virtualnim kontrolerima koje igre tretiraju kao stvarni hardver: Xbox, PlayStation, Nintendo i Steam kontrolerima, SInput kontrolerima, VR ručnim kontrolerima, MIDI izlazom, tipkovnicom i mišem ili prilagođenim uređajem poput džojstika za letenje ili volana. HIDMaestro stvara virtualne gamepade, SDL3 čita kontrolere, Windows Raw Input čita tipkovnice i miševe, HidHide skriva uređaj od igara, a Windows MIDI Services prenosi MIDI ulaz i izlaz.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Pregled</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Izrađeno pomoću</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Pretraži zahvale</value></data>
@@ -929,6 +931,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Odgoda između slova</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekunde između upisanih znakova, najviše 1000. Uz 0 cijeli se tekst upisuje odjednom.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Prekid veze pri neaktivnosti</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 znači nikad</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Pojedinosti</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Prekini Bluetooth vezu kada je priključen putem USB-a</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Brzo punjenje. Kada ovaj kontroler javi da se puni dok je povezan putem Bluetootha, Bluetooth veza se prekida kako bi se punio bez napajanja radija. Računa se svaki USB izvor napajanja, uključujući zidne punjače. Ako ponovno uključite Bluetooth dok je kabel i dalje priključen, kontroler se ne dira do sljedećeg isključivanja kabela.</value></data>
@@ -993,6 +996,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Pošalji</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Okviri: {0}. Slanje traje oko {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroler prima najviše {0} okvira, pa je posljednjih {1} izostavljeno.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontroler prima najviše {0} okvira, pa je posljednji izostavljen.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Spojite kontroler kabelom. Sam se ponovno pokreće otprilike 15 sekundi nakon što slika stigne.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Spojite kontroler kabelom. Za slanje ga PadForge prebacuje u Xbox način rada i premješta s Windowsova Xbox upravljačkog programa na WinUSB, a zatim sve vraća.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge će prebaciti kontroler u Xbox način rada, premjestiti ga na WinUSB za slanje, zatim ga vratiti Windowsovu Xbox upravljačkom programu i prebaciti natrag u DInput način rada. Prvo iskopčajte sve ostale Xbox 360 kontrolere. Poslati sada?</value></data>
@@ -1424,8 +1428,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Kloniraj</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Odaberite uređaj u ovom utoru za kloniranje.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Odabrani uređaj nema osi, gumbe ni POV prekidače za kloniranje.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonirati {0} u ovaj utor kao izravno propuštanje 1:1? Novi raspored: osi {1}, gumbi {2}, POV prekidači {3}, a retci ovog uređaja u utoru zamjenjuju se njegovim vlastitim ulazima.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Ovaj uređaj ima više ulaza nego što Prošireni kontroler može prenijeti. Mapirano je {0} od {1} osi, {2} od {3} gumba i {4} od {5} POV prekidača. Ostatak je ostao nemapiran.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonirati {0} u ovaj utor kao izravno propuštanje 1:1? Novi raspored: {1}, {2}, {3}, a retci ovog uređaja u utoru zamjenjuju se njegovim vlastitim ulazima.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Ovaj uređaj ima više ulaza nego što Prošireni kontroler može prenijeti. Mapirano je {0} od {1}, {2} od {3} i {4} od {5}. Ostatak je ostao nemapiran.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Predlošci kontrolera</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Dodajte predložak za kontroler koji PadForge ne isporučuje, iz datoteke ili sa samog kontrolera.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Uvezeno</value></data>
@@ -1597,11 +1601,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Gumb koji smanjuje akumulator dok se drži</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Dolje: gumb koji smanjuje akumulator dok se drži.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Brzina</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Brzina promjene u jedinicama po sekundi. 0.5 = puni raspon za 2 s; 2 = puni raspon za 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Brzina promjene u jedinicama po sekundi. 0.5 = puni raspon za 2 s. 2 = puni raspon za 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Zadrži vrijednost</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kada je označeno, akumulator zadržava vrijednost nakon otpuštanja (tempomat). Kada nije označeno, pri otpuštanju se vraća na Min.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Donja granica akumulatora. -1 = puni negativni otklon za bipolarne osi; 0 = unipolarno.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Donja granica akumulatora. -1 = puni negativni otklon za bipolarne osi. 0 = unipolarno.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Gornja granica akumulatora. 1 = puni pozitivni otklon.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -1894,6 +1898,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Postavlja način svjetlosne trake dodijeljenog utora na određenu vrijednost. Ostaje kao izmjena na kartici Osvjetljenje dok ga ne promijeni druga radnja ili korisnik.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Izmjenjuj načine svjetlosne trake</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Izmjenjuj {0} načina svjetlosne trake</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Izmjenjuj {0} način svjetlosne trake</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Prebacuje način svjetlosne trake utora kroz načine odabrane u nastavku. Svako aktiviranje prelazi na sljedeći označeni način. Položaj u ciklusu vodi se zasebno za svaku radnju i vraća se na početak pri ponovnom pokretanju aplikacije.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Zadržavanje</value></data>
@@ -2172,7 +2177,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Dio zaslona do kojeg pločica dosiže</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Podešava izvore Pokazivač X/Y dodirne pločice, koji premještaju pokazivač na položaj vašeg prsta na pločici (mapirajte ih na X/Y miša na virtualnom kontroleru Tipkovnica / miš). Veličina 1.00 sa središtem 0.50 preslikava pločicu na cijeli zaslon. Smanjite veličinu da biste pokazivač ograničili na dio zaslona, a pomaknite središte da biste ga smjestili.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Širina područja</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Širina područja zaslona na koje se ova pločica preslikava, kao udio širine zaslona. 1.00 pokriva cijelu širinu; 0.50 ograničava pokazivač na pola zaslona.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Širina područja zaslona na koje se ova pločica preslikava, kao udio širine zaslona. 1.00 pokriva cijelu širinu. 0.50 ograničava pokazivač na pola zaslona.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Visina područja</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Visina područja zaslona, kao udio visine zaslona.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Središte područja X</value></data>
@@ -2183,7 +2188,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptika prelaska prstom</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Otkucaji dok prst prelazi pločicom</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulsira haptiku kontrolera dok vaš prst prelazi preko ove dodirne pločice, poput otkucaja trackpada u Steam Inputu. Kontroleri Steam Controller i Steam Deck otkucavaju aktuatorom ispod pločice; DualSense i DualShock 4 pulsiraju motorima vibracije.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulsira haptiku kontrolera dok vaš prst prelazi preko ove dodirne pločice, poput otkucaja trackpada u Steam Inputu. Kontroleri Steam Controller i Steam Deck otkucavaju aktuatorom ispod pločice. DualSense i DualShock 4 pulsiraju motorima vibracije.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Omogući haptiku prelaska prstom</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Daje kratki haptički otkucaj svaki put kada se prst pomakne za zadanu udaljenost na ovoj pločici. Spuštanje prsta ili klik pločice nikad ne daju otkucaj. Zadano isključeno.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intenzitet impulsa</value></data>
@@ -2291,6 +2296,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Svi su uzorci snimljeni. Imenujte gestu i kliknite Spremi.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Uzorak {0} od {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Uzorci: {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Uzorci: {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Broj uzoraka za snimanje</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Uzorci za snimanje</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Standardno su 3. Više uzoraka daje pouzdanije podudaranje, a manje se brže snima.</value></data>
@@ -3394,6 +3400,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pištolj izvan zaslona</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Izmjenjuj načine pokazivača</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Izmjenjuj {0} načina pokazivača</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Izmjenjuj {0} način pokazivača</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Prebacuje način Wii pokazivača kroz načine odabrane u nastavku za svaki Wii Remote s IR kamerom na utoru. Svako aktiviranje prelazi na sljedeći označeni način. Položaj u ciklusu vodi se zasebno za svaku radnju i vraća se na početak pri ponovnom pokretanju aplikacije.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Odaberite načine pokazivača koje makro treba izmjenjivati. Svako aktiviranje prelazi na sljedeći označeni način.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
@@ -3721,7 +3728,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Na USB-u nije pronađen DualShock 3. Povežite ga USB kabelom i pokušajte ponovno.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows neće instalirati USB upravljački program za DualShock 3 koji isporučuje PadForge jer njegov certifikat za potpisivanje nije pouzdan na ovom računalu.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Bluetooth upravljački program za PlayStation kontrolere nije moguće instalirati.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nije dostupan nijedan Bluetooth radio. Uključite Bluetooth i pokušajte ponovno. Uparivanje je potrebno samo za bežično igranje; kontroler povezan kabelom radi i bez njega.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nije dostupan nijedan Bluetooth radio. Uključite Bluetooth i pokušajte ponovno. Uparivanje je potrebno samo za bežično igranje. Kontroler povezan kabelom radi i bez njega.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Uparivanje nije dovršeno. Korak koji nije uspio prikazan je iznad.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Zatvori</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC oznake</value></data>
@@ -3812,7 +3819,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Pustite gumb.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Korak {0} od {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nije uočena nikakva promjena. Odaberite Počni ispočetka, a zatim pritisnite i držite gumb kada se to zatraži.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Praćeno izvješća proizvođača: {0}, klasa događaja: {1}. Tijekom pritiska: izvješća {2}, događaja {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Praćena izvješća proizvođača: {0}. Praćene klase događaja: {1}. Izvješća tijekom pritiska: {2}. Događaji tijekom pritiska: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Gumb je zabilježen. Unesite naziv i kliknite Registriraj.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Izvor</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Naziv</value></data>
@@ -3828,7 +3835,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Izvezi…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Uvezi…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Izvezeno gumba: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Izvezeno gumba: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Uvezeno gumba: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Uvezeno gumba: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Gumbi ručnog računala</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Ručna igraća računala i prijenosna računala imaju gumbe koje operacijski sustav nikad ne prikazuje kao kontroler: stražnje lopatice, tipke izbornika, kotačiće, prečace proizvođača. Uključite ovo da biste ih jednom naučili pritiskom, a zatim ih mapirali kao bilo koji drugi gumb. Također dodaje vlastiti žiroskop računala kao uređaj pokreta.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Omogući gumbe ručnog računala</value></data>
@@ -3992,9 +4001,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Uzlazno</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Silazno</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Povezivanja: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Povezivanja: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Pronađeno: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Prikazano {0} od {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Konfiguracija: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Konfiguracija: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>potpuna podrška za kontrolere</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>djelomična podrška za kontrolere</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pretraži igre</value></data>
@@ -4004,7 +4015,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>prije {0} mj.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>prije {0} god.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>pretplatnika: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>pretplatnika: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>glasova: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>glasova: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Sve</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Još nema konfiguracija za ovu igru</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop nema konfiguracija kontrolera zajednice za {0}. Možete biti prvi: izradite je u Steamu i pojavit će se ovdje.</value></data>
@@ -4037,6 +4050,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>sloj: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nema pokretača neovisnog o uređaju za ovaj ulaz</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>radnji u igri: {0} (samo Steam, nema kuke na strani igre)</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>radnji u igri: {0} (samo Steam, nema kuke na strani igre)</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>radnja Steam klijenta {0}, nema ekvivalenta</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>radnja kontrolera {0} nije podržana</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>nepoznata vrsta povezivanja {0}</value></data>
@@ -4111,10 +4125,10 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Pomak kotačića miša</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Šalje jedan zasebni pomak kotačića miša po aktiviranju. Vrijednost je broj pomaka s predznakom (pozitivno pomiče gore ili desno).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Pomakni pokazivač</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Pomiče pokazivač miša za fiksni broj piksela po aktiviranju. Pozitivni X pomiče udesno, pozitivni Y prema dolje; dopuštene su i negativne vrijednosti.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Pomiče pokazivač miša za fiksni broj piksela po aktiviranju. Pozitivni X pomiče udesno, pozitivni Y prema dolje. Dopuštene su i negativne vrijednosti.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Pomakni pokazivač za ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Kružni popis pritisaka</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Svako aktiviranje izvodi sljedeći pritisak s popisa koraka i prelazi dalje. Uz omogućeno kruženje popis počinje ispočetka nakon posljednjeg koraka; bez toga aktiviranje staje na kraju.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Svako aktiviranje izvodi sljedeći pritisak s popisa koraka i prelazi dalje. Uz omogućeno kruženje popis počinje ispočetka nakon posljednjeg koraka. Bez toga aktiviranje staje na kraju.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Preklopna tipka miša</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Svako aktiviranje zadržava ili otpušta tipku miša. Zadržana tipka ostaje pritisnuta do sljedećeg aktiviranja ili dok se makro ne onemogući.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Preklopi tipku miša {0}</value></data>
@@ -4127,6 +4141,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Preklopno pomicanje kotačića</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Svako aktiviranje zadržava ili otpušta neprekidno pomicanje. Dok je zadržano, šalje broj pomaka jednom po intervalu do sljedećeg aktiviranja ili dok se makro ne onemogući.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Preklopno pomicanje kotačića (pomaka: {0} svakih {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Preklopno pomicanje kotačića (pomaka: {0} svakih {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsiraj dok je zadržano</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Dok je zadržano, izlaz se uključuje i isključuje u intervalu ponavljanja umjesto da se drži neprekidno.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Dodavanje osi (relativno)</value></data>
@@ -4148,6 +4163,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kada fizički pokret pomakne cilj preko praga, makro prestaje zapisivati os do kraja aktivacije.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(prepušta fizičkom)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Kružni popis pritisaka (koraka: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Kružni popis pritisaka (koraka: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Koraci</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Kružno</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Preklopi tipke {0}</value></data>
@@ -4231,6 +4247,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Prekrivni prikaz promjene profila</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Prikazuje prsten ili mrežu na zaslonu dok je radijalni izbornik ili izbornik na dodir uključen. Izbornici se aktiviraju i kada je prekrivni prikaz isključen.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>stvoren je izbornik na zaslonu (povezanih ćelija: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>stvoren je izbornik na zaslonu (povezanih ćelija: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>izbornik nema povezanih ćelija</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>površina izvora izbornika nije podržana ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona ćelije izbornika nije prepoznata ({0}) pa ćelija zadržava tekstnu oznaku</value></data>
@@ -4415,6 +4432,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Odaberite datoteku .txt preuzetu s AutoEq. Ovo je pravi način: autoeq.app daje datoteku, a ne tekst koji se može kopirati.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Za ispravak prilagođen vašim slušalicama: otvorite autoeq.app, odaberite svoj model, odaberite Custom Parametric Eq i preuzmite ga, a zatim upotrijebite Uvezi iz datoteke. Preuzimanje Graphic Eq nema retke filtara i neće se uvesti.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Uvezeno pojaseva: {0}, s predpojačanjem od {1:0.#} dB iz {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Uvezeno pojaseva: {0}, s predpojačanjem od {1:0.#} dB iz {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>U tom profilu nema redaka filtara. Izvoz Graphic Eq iz AutoEq ovdje se ne može pročitati. Umjesto toga preuzmite Custom Parametric Eq. Trenutačni ekvilizator nije promijenjen.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nema ničega za uvoz. Trenutačni ekvilizator nije promijenjen.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Nije moguće pročitati tu datoteku: {0}</value></data>
@@ -4430,7 +4448,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Vrati gornju granicu na zadano</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Povucite točku da biste promijenili njezinu frekvenciju i pojačanje. Okrenite kotačić iznad točke da biste je proširili ili suzili.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Izlazna putanja</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Gdje kontroler reproducira zvuk. Zadano zadržava usmjeravanje samog firmvera i reproducira zvukove programa PadForge na zvučniku. Slušalice + zvučnik reproducira mono na strani slušalica, što je ograničenje firmvera. Putem Bluetootha ovaj način reproducira samo kroz slušalice. Prati priključak za slušalice prebacuje na slušalice kada se nešto priključi u kontroler i natrag na zvučnik kada se isključi; ako očitanje priključka nije dostupno, ponaša se kao Zadano.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Gdje kontroler reproducira zvuk. Zadano zadržava usmjeravanje samog firmvera i reproducira zvukove programa PadForge na zvučniku. Slušalice + zvučnik reproducira mono na strani slušalica, što je ograničenje firmvera. Putem Bluetootha ovaj način reproducira samo kroz slušalice. Prati priključak za slušalice prebacuje na slušalice kada se nešto priključi u kontroler i natrag na zvučnik kada se isključi. Ako očitanje priključka nije dostupno, ponaša se kao Zadano.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Zadano</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Slušalice (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Slušalice (mono)</value></data>

@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>1 ページ右へ</value></data>
   <data name="Common_None" xml:space="preserve"><value>なし</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>分</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>秒</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>分 (0 = 無効)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -203,7 +204,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge が隠したデバイスへのアクセスを HidHide が拒否したため、PadForge はデバイスを隠すのをやめました。</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide の「Inverse application cloak」がオンのため、PadForge はデバイスを隠しません。</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services ランタイムをアンインストールしています…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI が動作していないため、{0} を開始できませんでした。理由は設定の Windows MIDI Services カードで確認できます。</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI が動作していないため、{0} を開始できませんでした。設定の「ドライバー」にある Windows MIDI Services を確認してください。</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services がポートを作成しなかったため、{0} を開始できませんでした。</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} に出力ポートがありません。そのページで出力ポートを選んでください。</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} の出力ポート「{1}」が接続されていません。ポートが戻るとスロットが開始します。</value></data>
@@ -378,6 +379,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK を開始できませんでした。通常は Logitech Gaming Software が実行されていません。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で、PadForge プロファイルの各キーに G-key コマンドをドラッグし、そのプロファイルを常設に設定してください。また、G600 または G300 マウスはオンボードモードを解除しておく必要があります。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>実行中、キーイベント {0} 件</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>実行中、キーイベント {0} 件</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>アナログキーボードを読み取る</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting、Razer、SteelSeries、Keychron、NuPhy、DrunkDeer、AULA などのアナログキーボードで、各キーの押し込み量を読み取り、それぞれを独立したデバイス行にします。対応モデルの一覧はドキュメントにあります。Razer 製キーボードには Razer Synapse の実行が必要です。その他の多くは各社の設定ソフトが使う経路で問い合わせて読み取るため、この設定がオンの間は設定ソフトを閉じてください。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>対応するアナログキーボードが見つかりません。</value></data>
@@ -583,7 +585,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>更新を確認</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク。SDL3、WPF、.NET 10 で再構築</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー (Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド) またはキーボード + マウス / MIDI 出力にマッピングし、HIDMaestro と Windows MIDI Services によってゲームから実際のハードウェアとして認識させます。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス非表示には HidHide を使用し、マッピング、デッドゾーン、感度カーブ、フォースフィードバック用のモダンな Fluent Design インターフェースを提供します。</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力をあらゆるコントローラーに見せかけます。ゲームパッド、ジョイスティック、ステアリングホイール、キーボード、マウス、タッチスクリーン、MIDI デバイス、スマートフォンで仮想コントローラーを操作し、ゲームには実際のハードウェアとして認識させます。対応する仮想コントローラーは、Xbox、PlayStation、Nintendo、Steam のパッド、SInput パッド、VR ハンドコントローラー、MIDI 出力、キーボードとマウス、そしてフライトスティックやステアリングホイールなどのカスタムデバイスです。仮想ゲームパッドの作成には HIDMaestro、コントローラーの読み取りには SDL3、キーボードとマウスの読み取りには Windows Raw Input、ゲームからのデバイス非表示には HidHide、MIDI の入出力には Windows MIDI Services を使用します。</value></data>
   <data name="About_Overview" xml:space="preserve"><value>概要</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>クレジットを検索</value></data>
@@ -730,6 +732,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows は {0} でポインターを動かさなくなりました。意図した操作でない場合は、何もしないでください。元に戻ります。</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows は {0} でポインターを動かさなくなりました。意図した操作でない場合は、何もしないでください。元に戻ります。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後に元に戻します</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>{0} 秒後に元に戻します</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>使い続ける</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>元に戻す</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>先に、このモデルのほかのキーボードを取り外してください。Windows は接続されているこのモデルのキーボードをすべて同時に PadForge のドライバーに切り替え、どのキーボードも文字入力に使用しなくなります。</value></data>
@@ -909,11 +912,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>押している間、アキュムレーターを下方向に減少させるボタン</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>下: 押している間、アキュムレーターを下方向に減少させるボタン。</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>レート</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>毎秒の掃引速度（単位/秒）。0.5 = 2秒で全範囲；2 = 0.5秒で全範囲。</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>毎秒の掃引速度（単位/秒）。0.5 = 2秒で全範囲。2 = 0.5秒で全範囲。</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>スティッキー</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>チェックすると、離した後もアキュムレーターの値が保持されます（クルーズコントロール）。チェックなしの場合、離すと最小値に戻ります。</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>最小</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>アキュムレーターの下限値。-1 = 双極性軸ターゲットの最大負；0 = 単極性。</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>アキュムレーターの下限値。-1 = 双極性軸ターゲットの最大負。0 = 単極性。</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>アキュムレーターの上限値。1 = 最大正。</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ランプ</value></data>
@@ -1207,6 +1210,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>割り当てられたスロットのライトバーモードを特定の値に設定します。別のアクションかユーザーが変更するまで、「ライティング」カードでの編集と同様に保持されます。</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ライトバーモードを循環</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}個のライトバーモードを循環</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0}個のライトバーモードを循環</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>下で選択したモードでスロットのライトバーモードを進めます。発火ごとに次のチェック済みモードへ移ります。位置はアクション単位で、アプリ再起動時にリセットされます。</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持</value></data>
@@ -2667,6 +2671,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>すべてのサンプルを取得しました。ジェスチャーに名前を付けて保存をクリックしてください。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>サンプル {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} サンプル</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} サンプル</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>取得するサンプル数</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>取り込むサンプル数</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準は 3 です。サンプル数が多いほど判定が確実になり、少ないほど記録が速く終わります。</value></data>
@@ -2851,6 +2856,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ガン画面外</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>ポインターモード切り替え</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0}個のポインターモードを順に切り替え</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0}個のポインターモードを順に切り替え</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>スロット上のIR対応リモコンすべてで、下で選んだモードの間をWiiポインターモードが順に進みます。発火ごとに次のチェック済みモードへ移ります。位置はアクションごとで、再起動でリセットされます。</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>マクロで切り替えるポインターモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
@@ -3271,7 +3277,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ボタンを離してください。</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ステップ {0} / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>変化は検出されませんでした。「やり直す」を選び、求められたらボタンを押し続けてください。</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} 個のベンダー レポートと {1} 個のイベント クラスを監視しました。押下中: レポート {2} 件、イベント {3} 件。</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>監視したベンダー レポート: {0}。監視したイベント クラス: {1}。押下中のレポート: {2}。押下中のイベント: {3}。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ボタンを取得しました。名前を入力して「登録」をクリックしてください。</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ソース</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>名前</value></data>
@@ -3307,12 +3313,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>すべて削除</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>このモデルで学習した名前をすべて削除します。</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0}件の名前をエクスポートしました。</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0}件の名前をエクスポートしました。</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0}件の名前をインポートしました。</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0}件の名前をインポートしました。</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>別のモデル ({1}) の名前を{0}件インポートしました。</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>別のモデル ({1}) の名前を{0}件インポートしました。</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>このファイルにはキーライトの名前が含まれていません。</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>インポート…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} 個のボタンをエクスポートしました。</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} 個のボタンをエクスポートしました。</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} 個のボタンをインポートしました。</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} 個のボタンをインポートしました。</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>携帯型 PC ボタン</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>携帯型ゲーミング PC やノート PC には、OS がコントローラーとして表示しないボタンがあります。背面パドル、メニュー キー、ホイール、メーカー独自のホットキーなどです。オンにすると、押すだけで一度学習し、他のボタンと同じように割り当てられます。マシン自体のジャイロスコープもモーション デバイスとして追加されます。</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>携帯型 PC ボタンを有効にする</value></data>
@@ -3338,6 +3349,7 @@
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>作業ディレクトリ</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>任意。プログラムが現在のディレクトリとして使用するフォルダーです。プログラムファイルがある場所ではありません。空欄にすると既定値が使われます。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 は無効</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>詳細</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB接続時にBluetoothを切断</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>クイックチャージ。Bluetooth接続中にこのコントローラーが充電中と報告すると、Bluetoothリンクを切断し、無線に電力を使わずに充電します。壁の充電器を含め、あらゆるUSB電源が対象です。ケーブルを挿したままBluetoothを再接続した場合は、次にケーブルを抜くまでそのままにします。</value></data>
@@ -3402,6 +3414,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>送信</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>フレーム数：{0}。送信には約 {1} かかります。</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>コントローラーが受け付けるのは最大 {0} フレームのため、最後の {1} フレームは除外しました。</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>コントローラーが受け付けるのは最大 {0} フレームのため、最後の 1 フレームは除外しました。</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>コントローラーをケーブルで接続してください。画像の転送後、約 15 秒で自動的に再起動します。</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>コントローラーをケーブルで接続してください。送信中は、PadForge がコントローラーを Xbox モードに切り替え、Windows の Xbox ドライバーから WinUSB に移し、送信後に両方を元に戻します。</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge はコントローラーを Xbox モードに切り替え、送信のあいだ WinUSB に移し、その後 Windows の Xbox ドライバーに戻して DInput モードに切り替え直します。先に、ほかの Xbox 360 コントローラーをすべて取り外してください。今すぐ送信しますか？</value></data>
@@ -3560,7 +3573,7 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>スロット</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>停止中</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、設定を確認して入力をテストできます。</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>利用できる Bluetooth アダプターがありません。Bluetooth をオンにしてやり直してください。ペアリングはワイヤレス接続にのみ必要で、ケーブル接続なら不要です。</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>利用できる Bluetooth アダプターがありません。Bluetooth をオンにしてやり直してください。ペアリングはワイヤレス接続にのみ必要です。ケーブル接続なら不要です。</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングは完了しませんでした。失敗した手順は上に表示されています。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation コントローラー用の Bluetooth ドライバーをインストールできませんでした。</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3 を USB ケーブルで接続し、「ペアリング」をクリックします。PadForge がこの PC をコントローラーに書き込み、登録します。完了したらケーブルを抜き、PS ボタンを押して Bluetooth で接続してください。</value></data>
@@ -3791,8 +3804,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>複製</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>複製するには、このスロットのデバイスを選択してください。</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>選択したデバイスには、複製できる軸、ボタン、ハットがありません。</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} を1:1パススルーとしてこのスロットに複製しますか？レイアウトは {1} 軸、{2} ボタン、{3} POV になり、スロット上のこのデバイスの行はデバイス自身の入力で置き換えられます。</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>このデバイスの入力数は、Extended コントローラーが扱える数を超えています。{1} 軸中 {0} 軸、{3} ボタン中 {2} ボタン、{5} POV 中 {4} POV をマッピングしました。残りは未マッピングのままです。</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} を1:1パススルーとしてこのスロットに複製しますか？レイアウトは {1}、{2}、{3} になり、スロット上のこのデバイスの行はデバイス自身の入力で置き換えられます。</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>このデバイスの入力数は、Extended コントローラーが扱える数を超えています。{1} 中 {0}、{3} 中 {2}、{5} 中 {4} をマッピングしました。残りは未マッピングのままです。</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>テキストブロック</value></data>
   <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>マクロ実行時にテキストをキー入力として打ち込みます。アクセント記号、CJK、絵文字を含むあらゆる文字が使えます。改行は Enter を押します。貼り付けたタブ文字は Tab を押します（この欄で Tab キーを押すと次の欄へ移動します）。キーの組み合わせには引き続き「キー押下」を使ってください。</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>「{0}」を入力</value></data>
@@ -4033,9 +4046,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>昇順</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>降順</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>割り当て {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>割り当て {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} 件中 {0} 件を表示</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>フルコントローラーサポート</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分的なコントローラーサポート</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ゲームを検索</value></data>
@@ -4045,7 +4060,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} か月前</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>登録者 {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>登録者 {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} 票</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} 票</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>すべて</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>このゲームのコンフィグはまだありません</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ワークショップには {0} のコミュニティ製コントローラーコンフィグがありません。最初の作成者になれます。Steam で作成すれば、ここに表示されます。</value></data>
@@ -4078,6 +4095,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>レイヤー: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>この入力にはデバイス非依存のトリガーがありません</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam クライアントアクション {0}、対応するものがありません</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>コントローラーアクション {0} は未対応</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>不明なバインドタイプ {0}</value></data>
@@ -4151,7 +4169,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>パッドが届く画面の範囲</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>タッチパッド ポインター X/Y ソースを調整します。これはパッド上の指の位置にカーソルを移動させます (キーボード / マウス仮想コントローラーのマウス X/Y に割り当ててください)。サイズ 1.00、中心 0.50 でパッドが画面全体に対応します。サイズを小さくするとカーソルが画面の一部に制限され、中心でその位置を決めます。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>領域の幅</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>このパッドを割り当てる画面領域の幅を、画面幅に対する割合で指定します。1.00 で全幅、0.50 でカーソルを画面の半分に制限します。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>このパッドを割り当てる画面領域の幅を、画面幅に対する割合で指定します。1.00 で全幅。0.50 でカーソルを画面の半分に制限します。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>領域の高さ</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>画面領域の高さを、画面の高さに対する割合で指定します。</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>領域の中心 X</value></data>
@@ -4160,7 +4178,7 @@
   <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 が上端、0.50 が中央、1.00 が下端です。</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>スワイプハプティクス</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>指の移動に合わせたティック</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input のトラックパッドのティックのように、指がこのタッチパッド上を移動するあいだコントローラーのハプティクスをパルスさせます。Steam Controller と Steam Deck はパッド下のアクチュエーターをティックし、DualSense と DualShock 4 は振動モーターをパルスします。</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input のトラックパッドのティックのように、指がこのタッチパッド上を移動するあいだコントローラーのハプティクスをパルスさせます。Steam Controller と Steam Deck はパッド下のアクチュエーターをティックします。DualSense と DualShock 4 は振動モーターをパルスします。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスを有効化</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>このパッド上で指が設定距離を移動するたびに短いハプティックティックを発生させます。指を置いたりパッドをクリックしたりしてもティックは発生しません。既定ではオフです。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>パルス強度</value></data>
@@ -4292,6 +4310,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ホイールスクロールをトグル</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>発火のたびに連続スクロールを固定または解除します。固定中は次の発火かマクロの無効化まで間隔ごとにティック数を送信します。</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ホイールをトグル（{1}msごとに{0}ティック）</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>ホイールをトグル（{1}msごとに{0}ティック）</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>固定中はパルス</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>固定中は出力を押しっぱなしにせず、リピート間隔でオンとオフを繰り返します。</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>軸を加算(相対)</value></data>
@@ -4313,6 +4332,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>物理入力がしきい値を超えて対象を動かすと、その作動が終わるまでマクロは軸への書き込みを停止します。</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(物理入力優先)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ステップ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
@@ -4395,6 +4415,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>プロファイル切り替えオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
@@ -4583,6 +4604,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq がダウンロードした .txt を選びます。autoeq.app はコピーできるテキストではなくファイルを渡すため、通常はこちらを使います。</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>お使いのヘッドホンに合わせた補正を行うには、autoeq.app を開いて機種を選び、Custom Parametric Eq をダウンロードしてから「ファイルから読み込む」を実行します。Graphic Eq のダウンロードにはフィルター行がないため読み込めません。</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} から {0} 個のバンドとプリアンプ {1:0.#} dB を読み込みました。</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} から {0} 個のバンドとプリアンプ {1:0.#} dB を読み込みました。</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>そのプロファイルにフィルター行がありません。AutoEq の Graphic Eq 形式はここでは読み込めません。代わりに Custom Parametric Eq をダウンロードしてください。現在の EQ は変更されていません。</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>読み込むものがありません。現在の EQ は変更されていません。</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>そのファイルを読み込めませんでした: {0}</value></data>
@@ -5455,11 +5477,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>この仮想コントローラーで実行中の「キーの色を設定」のうち、ここで選んだキーを点灯しているものを終了します。キーを選ばない場合はすべて終了します。</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>すべてのキーの色を解除</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0}個のライトのキーの色を解除</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>{0}個のライトのキーの色を解除</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 ({2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 ({2} ms)</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 (押している間)</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 (押している間)</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 (解除するまで)</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯 (解除するまで)</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯、{2} msかけてフェードアウト</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯、{2} msかけてフェードアウト</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯、{2} msかけてカウントダウン</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0}個のライトを{1}で点灯、{2} msかけてカウントダウン</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>キー</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>すべてのライト</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>キーが選ばれていないため、何も点灯しません。</value></data>

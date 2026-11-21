@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>পৃষ্ঠা ডানে</value></data>
   <data name="Common_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>সেকেন্ড</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>মিনিট (0 = কখনো নয়)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge যে ডিভাইসটি লুকিয়েছিল, HidHide সেটিতে PadForge-এর প্রবেশ আটকে দিয়েছে, তাই PadForge ডিভাইস লুকানো বন্ধ করেছে।</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-এর Inverse application cloak চালু আছে, তাই PadForge কোনো ডিভাইস লুকায় না।</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services রানটাইম আনইনস্টল হচ্ছে…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI চলছে না বলে {0} চালু হতে পারেনি। কারণটি সেটিংসের Windows MIDI Services কার্ডে লেখা আছে।</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI চলছে না বলে {0} চালু হতে পারেনি। সেটিংসে ড্রাইভার-এর অধীনে Windows MIDI Services দেখুন।</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services এটির পোর্ট তৈরি করেনি বলে {0} চালু হতে পারেনি।</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}-এর কোনো আউটপুট পোর্ট নেই। এর পৃষ্ঠায় একটি বেছে নিন।</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}-এর আউটপুট পোর্ট “{1}” সংযুক্ত নেই। পোর্টটি ফিরে এলে স্লটটি চালু হবে।</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK চালু হতে অস্বীকার করেছে। সাধারণত এর কারণ, Logitech Gaming Software চলছে না।</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>সংযুক্ত, এখনো কোনো কী দেখা যায়নি। Logitech Gaming Software-এ PadForge প্রোফাইলের প্রতিটি কী-তে G-key কমান্ডটি টেনে আনুন, আর ওই প্রোফাইলটিকে স্থায়ী (Persistent) করুন। G600 বা G300 মাউসকে অন-বোর্ড মেমরি মোড থেকেও বের করে রাখতে হবে।</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>চলছে, {0}টি কী ইভেন্ট</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>চলছে, {0}টি কী ইভেন্ট</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>অ্যানালগ কীবোর্ড পড়ুন</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA ও অন্যান্য নির্মাতার অ্যানালগ কীবোর্ডে প্রতিটি কী কতটা চাপা হয়েছে তা পড়ে, প্রতিটি কীবোর্ড নিজস্ব ডিভাইস সারি হিসেবে। সমর্থিত সব মডেলের তালিকা ডকুমেন্টেশনে আছে। Razer কীবোর্ডের জন্য Razer Synapse চালু থাকা দরকার। বাকিগুলোর বেশির ভাগ পড়া হয় সেই চ্যানেলে, যা তাদের নিজস্ব কনফিগারেটর ব্যবহার করে, তাই এটি চালু থাকার সময় কনফিগারেটর বন্ধ রাখুন।</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>কোনো সমর্থিত অ্যানালগ কীবোর্ড পাওয়া যায়নি।</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>আপডেট খুঁজুন</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-এর আধুনিক ফর্ক, SDL3, WPF ও .NET 10 দিয়ে নতুন করে তৈরি</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge যেকোনো ইনপুট ডিভাইসকে যেকোনো ভার্চুয়াল কন্ট্রোলারে পরিণত করে। গেমপ্যাড, জয়স্টিক, কীবোর্ড, মাউস ও টাচস্ক্রিনকে ভার্চুয়াল গেম কন্ট্রোলারে (Xbox, PlayStation, ফ্লাইট স্টিক, হুইল, তৃতীয় পক্ষের গেমপ্যাড) অথবা কীবোর্ড+মাউস / MIDI আউটপুটে ম্যাপ করা হয়, যেগুলোকে গেম আসল হার্ডওয়্যার বলেই ধরে। এটি চলে HIDMaestro ও Windows MIDI Services-এর শক্তিতে। এটি কন্ট্রোলার ইনপুটের জন্য SDL3, কীবোর্ড ও মাউসের জন্য Windows Raw Input, গেমভিত্তিক ডিভাইস মাস্কিংয়ের জন্য HidHide ব্যবহার করে, আর ম্যাপিং, ডেডজোন, সংবেদনশীলতার কার্ভ ও ফোর্স ফিডব্যাকের জন্য একটি আধুনিক Fluent Design ইন্টারফেস দেয়।</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge যেকোনো ইনপুটকে যেকোনো কন্ট্রোলারের মতো দেখায়। গেমপ্যাড, জয়স্টিক, হুইল, কীবোর্ড, মাউস, টাচ স্ক্রিন, MIDI ডিভাইস ও ফোন ভার্চুয়াল কন্ট্রোলার চালায়, যেগুলোকে গেম আসল হার্ডওয়্যার বলেই ধরে: Xbox, PlayStation, Nintendo ও Steam প্যাড, SInput প্যাড, VR হ্যান্ড কন্ট্রোলার, MIDI আউটপুট, কীবোর্ড ও মাউস, অথবা ফ্লাইট স্টিক বা হুইলের মতো কাস্টম ডিভাইস। HIDMaestro ভার্চুয়াল গেমপ্যাড তৈরি করে, SDL3 কন্ট্রোলার পড়ে, Windows Raw Input কীবোর্ড ও মাউস পড়ে, HidHide গেমের কাছ থেকে ডিভাইস লুকিয়ে রাখে, আর Windows MIDI Services MIDI ভেতরে ও বাইরে পৌঁছে দেয়।</value></data>
   <data name="About_Overview" xml:space="preserve"><value>সংক্ষিপ্ত বিবরণ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>যা দিয়ে তৈরি</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>কৃতজ্ঞতা অনুসন্ধান করুন</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>অক্ষরের মধ্যে বিলম্ব</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>টাইপ করা অক্ষরগুলোর মাঝের মিলিসেকেন্ড, সর্বোচ্চ 1000। 0 দিলে পুরো টেক্সট একবারে টাইপ হয়।</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>নিষ্ক্রিয় থাকলে বিচ্ছিন্ন</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 মানে কখনো নয়</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>বিবরণ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-তে লাগানো হলে Bluetooth বিচ্ছিন্ন করুন</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>দ্রুত চার্জ। Bluetooth-এ সংযুক্ত থাকা অবস্থায় এই কন্ট্রোলার চার্জ হচ্ছে বলে জানালে Bluetooth সংযোগ কেটে দেওয়া হয়, যাতে রেডিওতে বিদ্যুৎ খরচ না করে এটি চার্জ হয়। ওয়াল চার্জারসহ যেকোনো USB পাওয়ার উৎসই গণ্য হয়। USB কেবল লাগানো অবস্থায় আপনি Bluetooth আবার চালু করলে, পরের বার USB কেবল খুলে ফেলা পর্যন্ত এতে আর হাত দেওয়া হয় না।</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>পাঠান</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ফ্রেম: {0}। পাঠাতে প্রায় {1} লাগে।</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>কন্ট্রোলার সর্বোচ্চ {0}টি ফ্রেম নেয়, তাই শেষের {1}টি বাদ দেওয়া হয়েছে।</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>কন্ট্রোলার সর্বোচ্চ {0}টি ফ্রেম নেয়, তাই শেষেরটি বাদ দেওয়া হয়েছে।</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>কন্ট্রোলারটি কেবল দিয়ে সংযুক্ত করুন। ছবি ঢোকার প্রায় 15 সেকেন্ড পরে এটি নিজে থেকে রিস্টার্ট হয়।</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>কন্ট্রোলারটি কেবল দিয়ে সংযুক্ত করুন। পাঠানোর জন্য PadForge এটিকে Xbox মোডে নেয় এবং Windows-এর Xbox ড্রাইভার থেকে WinUSB-তে সরায়, তারপর দুটোই আগের অবস্থায় ফিরিয়ে দেয়।</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge কন্ট্রোলারটিকে Xbox মোডে নেবে, পাঠানোর জন্য WinUSB-তে সরাবে, তারপর Windows-এর Xbox ড্রাইভারে ফিরিয়ে দেবে এবং DInput মোডে ফেরাবে। আগে অন্য সব Xbox 360 কন্ট্রোলার খুলে নিন। এখনই পাঠাবেন?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে পয়েন্টার নড়ায় না। আপনি এটি না চাইলে কিছু করবেন না, এটি ফিরে আসবে।</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows আর {0} দিয়ে পয়েন্টার নড়ায় না। আপনি এটি না চাইলে কিছু করবেন না, এটি ফিরে আসবে।</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} সেকেন্ডে ফিরিয়ে দেওয়া হবে</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>{0} সেকেন্ডে ফিরিয়ে দেওয়া হবে</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>রাখুন</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>ফিরিয়ে দিন</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>আগে এই মডেলের অন্য কীবোর্ডগুলো খুলে ফেলুন। Windows লাগানো সবগুলোকে একসঙ্গে PadForge-এর ড্রাইভারে সরিয়ে নেয় এবং কোনোটি দিয়েই আর টাইপ করে না।</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ক্লোন করুন</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ক্লোন করতে এই স্লটের একটি ডিভাইস নির্বাচন করুন।</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>নির্বাচিত ডিভাইসে ক্লোন করার মতো কোনো অক্ষ, বোতাম বা হ্যাট নেই।</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0}-কে 1:1 পাসথ্রু হিসেবে এই স্লটে ক্লোন করবেন? লেআউট হবে {1}টি অক্ষ, {2}টি বোতাম ও {3}টি POV, আর স্লটে এই ডিভাইসের সারিগুলোর জায়গায় এর নিজস্ব ইনপুট বসবে।</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>এই ডিভাইসে বর্ধিত কন্ট্রোলার যতটা ধারণ করতে পারে তার চেয়ে বেশি ইনপুট আছে। {1}টি অক্ষের মধ্যে {0}টি, {3}টি বোতামের মধ্যে {2}টি এবং {5}টি POV-এর মধ্যে {4}টি ম্যাপ হয়েছে। বাকিগুলো ম্যাপ করা হয়নি।</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0}-কে 1:1 পাসথ্রু হিসেবে এই স্লটে ক্লোন করবেন? লেআউট হবে {1}, {2} ও {3}, আর স্লটে এই ডিভাইসের সারিগুলোর জায়গায় এর নিজস্ব ইনপুট বসবে।</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>এই ডিভাইসে বর্ধিত কন্ট্রোলার যতটা ধারণ করতে পারে তার চেয়ে বেশি ইনপুট আছে। {1}-এর মধ্যে {0}টি, {3}-এর মধ্যে {2}টি এবং {5}-এর মধ্যে {4}টি ম্যাপ হয়েছে। বাকিগুলো ম্যাপ করা হয়নি।</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>কন্ট্রোলার প্রিসেট</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge যে কন্ট্রোলার সঙ্গে দেয় না তার জন্য একটি ফাইল থেকে বা কন্ট্রোলার থেকেই একটি প্রিসেট যোগ করুন।</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>ইমপোর্ট করা</value></data>
@@ -1785,11 +1790,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>যে বোতাম ধরে রাখলে সঞ্চিত মান ধীরে ধীরে কমে</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>নিচ: যে বোতাম ধরে রাখলে সঞ্চিত মান ধীরে ধীরে কমে।</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>হার</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>প্রতি সেকেন্ডে একক হিসেবে পরিবর্তনের গতি। 0.5 = 2 সেকেন্ডে পূর্ণ পরিসর; 2 = 0.5 সেকেন্ডে পূর্ণ পরিসর।</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>প্রতি সেকেন্ডে একক হিসেবে পরিবর্তনের গতি। 0.5 = 2 সেকেন্ডে পূর্ণ পরিসর। 2 = 0.5 সেকেন্ডে পূর্ণ পরিসর।</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>স্টিকি</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>টিক দেওয়া থাকলে ছেড়ে দেওয়ার পরও সঞ্চিত মান একই থাকে (ক্রুজ কন্ট্রোল)। টিক না থাকলে ছেড়ে দিলেই তা সর্বনিম্নে ফিরে যায়।</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>সর্বনিম্ন</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>সঞ্চিত মানের নিম্নসীমা। -1 = দ্বিমুখী অক্ষের লক্ষ্যের জন্য পূর্ণ ঋণাত্মক; 0 = একমুখী।</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>সঞ্চিত মানের নিম্নসীমা। -1 = দ্বিমুখী অক্ষের লক্ষ্যের জন্য পূর্ণ ঋণাত্মক। 0 = একমুখী।</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>সর্বোচ্চ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>সঞ্চিত মানের ঊর্ধ্বসীমা। 1 = পূর্ণ ধনাত্মক।</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ক্রমবৃদ্ধি</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>বরাদ্দ করা স্লটের লাইটবারের মোড একটি নির্দিষ্ট মানে সেট করে। অন্য কোনো অ্যাকশন বা ব্যবহারকারী না বদলানো পর্যন্ত লাইটিং কার্ডে করা পরিবর্তনের মতোই থেকে যায়।</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>লাইটবারের মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}টি লাইটবার মোড পালাক্রমে বদলান</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0}টি লাইটবার মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>স্লটের লাইটবারের মোডকে নিচে নির্বাচিত মোডগুলোর মধ্যে এগিয়ে নেয়। প্রতিবার চালু হলে পরের টিক দেওয়া মোডে যায়। চক্রের অবস্থান প্রতিটি অ্যাকশনের জন্য আলাদা এবং অ্যাপ রিস্টার্ট হলে রিসেট হয়।</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>ধরে রাখা</value></data>
@@ -2361,7 +2367,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>প্যাড স্ক্রিনের যে অংশ ছোঁয়, সেটি</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>টাচপ্যাড পয়েন্টার X/Y উৎসগুলো ঠিক করে, যেগুলো প্যাডে আপনার আঙুলের অবস্থানে কার্সার নিয়ে যায় (কীবোর্ড / মাউস ভার্চুয়াল কন্ট্রোলারে এগুলো মাউস X/Y-তে ম্যাপ করুন)। আকার 1.00 ও কেন্দ্র 0.50 হলে প্যাড পুরো স্ক্রিনে ম্যাপ হয়। কার্সারকে স্ক্রিনের একটি অংশে আটকে রাখতে আকার ছোট করুন, আর সেটি কোথায় বসবে তা ঠিক করতে কেন্দ্র সরান।</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>এলাকার প্রস্থ</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>এই প্যাড স্ক্রিনের যে এলাকায় ম্যাপ হয় তার প্রস্থ, স্ক্রিনের প্রস্থের ভগ্নাংশ হিসেবে। 1.00 পুরো প্রস্থ জুড়ে; 0.50 কার্সারকে স্ক্রিনের অর্ধেকে আটকে রাখে।</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>এই প্যাড স্ক্রিনের যে এলাকায় ম্যাপ হয় তার প্রস্থ, স্ক্রিনের প্রস্থের ভগ্নাংশ হিসেবে। 1.00 পুরো প্রস্থ জুড়ে। 0.50 কার্সারকে স্ক্রিনের অর্ধেকে আটকে রাখে।</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>এলাকার উচ্চতা</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>স্ক্রিন এলাকার উচ্চতা, স্ক্রিনের উচ্চতার ভগ্নাংশ হিসেবে।</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>এলাকার কেন্দ্র X</value></data>
@@ -2372,7 +2378,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>সোয়াইপ হ্যাপটিক্স</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>আঙুল চলার সঙ্গে টিক টিক</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>আঙুল এই টাচপ্যাডের উপর দিয়ে চলার সময় কন্ট্রোলারের হ্যাপটিক্সে পালস দেয়, Steam Input-এর ট্র্যাকপ্যাড টিকের মতো। Steam Controller ও Steam Deck প্যাডের নিচের অ্যাকচুয়েটরে টিক দেয়; DualSense ও DualShock 4 রাম্বল মোটরে পালস দেয়।</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>আঙুল এই টাচপ্যাডের উপর দিয়ে চলার সময় কন্ট্রোলারের হ্যাপটিক্সে পালস দেয়, Steam Input-এর ট্র্যাকপ্যাড টিকের মতো। Steam Controller ও Steam Deck প্যাডের নিচের অ্যাকচুয়েটরে টিক দেয়। DualSense ও DualShock 4 রাম্বল মোটরে পালস দেয়।</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>সোয়াইপ হ্যাপটিক্স সক্ষম করুন</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>আঙুল এই প্যাডে নির্দিষ্ট দূরত্ব সরলেই প্রতিবার একটি ছোট হ্যাপটিক টিক দেয়। আঙুল রাখলে বা প্যাডে ক্লিক করলে কখনো টিক দেয় না। ডিফল্টভাবে বন্ধ।</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>পালসের তীব্রতা</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>সব নমুনা ধরা হয়েছে। জেসচারটির নাম দিন এবং “সংরক্ষণ করুন”-এ ক্লিক করুন।</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>{1}টির মধ্যে নমুনা {0}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1}টি নমুনা</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1}টি নমুনা</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>যতগুলো নমুনা ধরা হবে</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>যত নমুনা ধরা হবে</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 হলো প্রচলিত মান। নমুনা বেশি হলে মিল আরও নির্ভরযোগ্য হয়, কম হলে রেকর্ডিং দ্রুত হয়।</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>গান স্ক্রিনের বাইরে</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>পয়েন্টার মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0}টি পয়েন্টার মোড পালাক্রমে বদলান</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0}টি পয়েন্টার মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>স্লটের IR-সক্ষম প্রতিটি রিমোটের জন্য Wii পয়েন্টার মোডকে নিচে নির্বাচিত মোডগুলোর মধ্যে এগিয়ে নেয়। প্রতিবার চালু হলে পরের টিক দেওয়া মোডে যায়। চক্রের অবস্থান প্রতিটি অ্যাকশনের জন্য আলাদা এবং অ্যাপ রিস্টার্ট হলে রিসেট হয়।</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ম্যাক্রো কোন কোন পয়েন্টার মোডের মধ্যে পালাক্রমে ঘুরবে তা বেছে নিন। প্রতিবার চালু হলে পরের টিক দেওয়া মোডে যায়।</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>অডিও</value></data>
@@ -3916,7 +3924,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB-তে কোনো DualShock 3 পাওয়া যায়নি। USB কেবল দিয়ে এটি সংযুক্ত করে আবার চেষ্টা করুন।</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows DualShock 3-এর জন্য PadForge-এর USB ড্রাইভার ইনস্টল করবে না, কারণ এর সাইনিং সার্টিফিকেট এই পিসিতে বিশ্বস্ত নয়।</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation কন্ট্রোলারের Bluetooth ড্রাইভার ইনস্টল করা যায়নি।</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>কোনো Bluetooth রেডিও উপলব্ধ নেই। Bluetooth চালু করে আবার চেষ্টা করুন। পেয়ারিং কেবল তারবিহীনভাবে খেলার জন্য দরকার; USB কেবলে সংযুক্ত কন্ট্রোলার এটি ছাড়াই কাজ করে।</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>কোনো Bluetooth রেডিও উপলব্ধ নেই। Bluetooth চালু করে আবার চেষ্টা করুন। পেয়ারিং কেবল তারবিহীনভাবে খেলার জন্য দরকার। USB কেবলে সংযুক্ত কন্ট্রোলার এটি ছাড়াই কাজ করে।</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>পেয়ারিং সম্পন্ন হয়নি। যে ধাপটি ব্যর্থ হয়েছে তা উপরে দেখানো হয়েছে।</value></data>
   <data name="Common_Close" xml:space="preserve"><value>বন্ধ করুন</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ট্যাগ</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>বোতামটি ছেড়ে দিন।</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ধাপ {0}, মোট {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>কোনো পরিবর্তন দেখা যায়নি। আবার শুরু করুন চাপুন, তারপর বলা হলে বোতামটি চেপে ধরে রাখুন।</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0}টি ভেন্ডর রিপোর্ট ও {1}টি ইভেন্ট শ্রেণি লক্ষ করা হয়েছে। চাপের সময়: {2}টি রিপোর্ট, {3}টি ইভেন্ট।</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>পর্যবেক্ষণ করা ভেন্ডর রিপোর্ট: {0}। পর্যবেক্ষণ করা ইভেন্ট শ্রেণি: {1}। চাপের সময় রিপোর্ট: {2}। চাপের সময় ইভেন্ট: {3}।</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>বোতাম ধরা হয়েছে। একটি নাম লিখে “নিবন্ধন করুন”-এ ক্লিক করুন।</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>উৎস</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>নাম</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>সব ভুলে যান</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>এই মডেলের জন্য শেখা সব নাম সরান।</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0}টি নাম এক্সপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0}টি নাম এক্সপোর্ট করা হয়েছে।</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>অন্য মডেল {1}-এর জন্য {0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>অন্য মডেল {1}-এর জন্য {0}টি নাম ইমপোর্ট করা হয়েছে।</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>ওই ফাইলে কোনো কী লাইটের নাম নেই।</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>ইমপোর্ট করুন…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0}টি বোতাম এক্সপোর্ট হয়েছে।</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0}টি বোতাম এক্সপোর্ট হয়েছে।</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0}টি বোতাম ইমপোর্ট হয়েছে।</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0}টি বোতাম ইমপোর্ট হয়েছে।</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>হ্যান্ডহেল্ড পিসির বোতাম</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>হ্যান্ডহেল্ড গেমিং পিসি ও ল্যাপটপে এমন বোতাম থাকে, যেগুলো অপারেটিং সিস্টেম কখনো কন্ট্রোলার হিসেবে দেখায় না: পিছনের প্যাডল, মেনু কী, হুইল, ভেন্ডরের হটকী। এটি চালু করে সেগুলো একবার চেপে শিখিয়ে নিন, তারপর অন্য যেকোনো বোতামের মতো ম্যাপ করুন। মেশিনের নিজস্ব জাইরোস্কোপকেও একটি মোশন ডিভাইস হিসেবে যোগ করে।</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>হ্যান্ডহেল্ড পিসির বোতাম সক্ষম করুন</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ঊর্ধ্বক্রম</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>অধঃক্রম</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0}টি বাইন্ডিং</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0}টি বাইন্ডিং</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0}টি পাওয়া গেছে</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1}টির মধ্যে {0}টি দেখানো হচ্ছে</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0}টি কনফিগ</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0}টি কনফিগ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>পূর্ণ কন্ট্রোলার সাপোর্ট</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>আংশিক কন্ট্রোলার সাপোর্ট</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>গেম অনুসন্ধান করুন</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} মাস আগে</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} বছর আগে</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} জন সাবস্ক্রাইবার</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} জন সাবস্ক্রাইবার</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0}টি ভোট</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0}টি ভোট</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>সব</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>এই গেমের জন্য এখনো কোনো কনফিগ নেই</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ওয়ার্কশপে {0}-এর জন্য কমিউনিটির কোনো কন্ট্রোলার কনফিগ নেই। আপনিই প্রথম হতে পারেন: Steam-এ একটি তৈরি করুন, তাহলে তা এখানে দেখা যাবে।</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>লেয়ার: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>এই ইনপুটের জন্য ডিভাইস-নিরপেক্ষ কোনো ট্রিগার নেই</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0}টি ইন-গেম অ্যাকশন, শুধু Steam-এ চলে, গেমের দিকে কোনো হুক নেই</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0}টি ইন-গেম অ্যাকশন, শুধু Steam-এ চলে, গেমের দিকে কোনো হুক নেই</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam ক্লায়েন্টের অ্যাকশন {0}, কোনো সমতুল্য নেই</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>কন্ট্রোলার অ্যাকশন {0} সমর্থিত নয়</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>অজানা বাইন্ডিং ধরন {0}</value></data>
@@ -4331,10 +4349,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>মাউস হুইলের টিক</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে মাউস হুইলের একটি করে আলাদা ধাপ পাঠায়। মানটি হলো চিহ্নসহ টিকের সংখ্যা (ধনাত্মক হলে উপরে বা ডানে স্ক্রোল করে)।</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>কার্সার সামান্য সরান</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে মাউসের কার্সার নির্দিষ্ট সংখ্যক পিক্সেল সরায়। ধনাত্মক X ডানে সরায়, ধনাত্মক Y নিচে সরায়; ঋণাত্মক মানও দেওয়া যায়।</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে মাউসের কার্সার নির্দিষ্ট সংখ্যক পিক্সেল সরায়। ধনাত্মক X ডানে সরায়, ধনাত্মক Y নিচে সরায়। ঋণাত্মক মানও দেওয়া যায়।</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>কার্সার ({0}, {1}) px সরান</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>ট্যাপ তালিকা পালাক্রমে চালান</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে ধাপের তালিকার পরের ট্যাপটি করে এবং এক ধাপ এগোয়। “ঘুরে শুরুতে ফেরা” সক্ষম থাকলে শেষ ধাপের পর তালিকা আবার শুরু হয়; না থাকলে শেষে গিয়ে চালু হওয়া বন্ধ হয়।</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে ধাপের তালিকার পরের ট্যাপটি করে এবং এক ধাপ এগোয়। “ঘুরে শুরুতে ফেরা” সক্ষম থাকলে শেষ ধাপের পর তালিকা আবার শুরু হয়। না থাকলে শেষে গিয়ে চালু হওয়া বন্ধ হয়।</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>মাউস বোতাম টগল করুন</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে মাউসের বোতামটি ল্যাচ হয় বা ল্যাচ খোলে। ল্যাচ হওয়া বোতাম পরের বার চালু হওয়া বা ম্যাক্রো নিষ্ক্রিয় করা পর্যন্ত চাপা থাকে।</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>মাউস {0} টগল করুন</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>হুইল স্ক্রোল টগল করুন</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>প্রতিবার চালু হলে একটানা স্ক্রোল ল্যাচ হয় বা ল্যাচ খোলে। ল্যাচ থাকা অবস্থায় পরের বার চালু হওয়া বা ম্যাক্রো নিষ্ক্রিয় করা পর্যন্ত প্রতি ব্যবধানে একবার টিকের সংখ্যা পাঠায়।</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>হুইল স্ক্রোল টগল করুন (প্রতি {1} ms-এ {0}টি টিক)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>হুইল স্ক্রোল টগল করুন (প্রতি {1} ms-এ {0}টি টিক)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>ল্যাচ থাকা অবস্থায় পালস</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ল্যাচ থাকা অবস্থায় আউটপুটকে একটানা ধরে না রেখে পুনরাবৃত্তির ব্যবধানে চালু ও বন্ধ করে।</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>অক্ষে যোগ (আপেক্ষিক)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>ফিজিক্যাল নড়াচড়া লক্ষ্যকে থ্রেশহোল্ড পার করালে ম্যাক্রো এই সক্রিয়তার বাকি সময় অক্ষে লেখা বন্ধ রাখে।</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ফিজিক্যালকে পথ ছাড়ে)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>ট্যাপ তালিকা পালাক্রমে চালান ({0}টি ধাপ)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>ট্যাপ তালিকা পালাক্রমে চালান ({0}টি ধাপ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ধাপ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>ঘুরে শুরুতে ফেরা</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>কী {0} টগল করুন</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>প্রোফাইল বদলের ওভারলে</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>রেডিয়াল বা টাচ মেনু সক্রিয় থাকা অবস্থায় অন-স্ক্রিন রিং বা গ্রিড দেখায়। ওভারলে বন্ধ থাকলেও মেনু কাজ করে।</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>অন-স্ক্রিন মেনু তৈরি হয়েছে ({0}টি বাইন্ড করা সেল)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>অন-স্ক্রিন মেনু তৈরি হয়েছে ({0}টি বাইন্ড করা সেল)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>মেনুতে কোনো বাইন্ড করা সেল নেই</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>মেনুর হোস্ট সারফেস সমর্থিত নয় ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>মেনু সেলের আইকন চেনা যায়নি ({0}), তাই সেলটিতে লেখার লেবেলই থাকে</value></data>
@@ -4639,6 +4660,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq থেকে ডাউনলোড করা .txt ফাইলটি বেছে নিন। এটিই ব্যবহার করুন: autoeq.app কপি করার মতো লেখা না দিয়ে একটি ফাইল দেয়।</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>আপনার হেডফোনের সঙ্গে মেলানো সংশোধনের জন্য: autoeq.app খুলুন, আপনার মডেল বেছে নিন, Custom Parametric Eq বেছে নিয়ে ডাউনলোড করুন, তারপর “ফাইল থেকে ইমপোর্ট করুন”। Graphic Eq ডাউনলোডে কোনো ফিল্টার লাইন থাকে না, তাই সেটি ইমপোর্ট হবে না।</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} থেকে {1:0.#} dB প্রিঅ্যাম্পসহ {0}টি ব্যান্ড ইমপোর্ট হয়েছে।</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} থেকে {1:0.#} dB প্রিঅ্যাম্পসহ {0}টি ব্যান্ড ইমপোর্ট হয়েছে।</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ওই প্রোফাইলে কোনো ফিল্টার লাইন নেই। AutoEq-এর Graphic Eq এক্সপোর্ট এখানে পড়া যায় না। তার বদলে Custom Parametric Eq-টি ডাউনলোড করুন। বর্তমান EQ অপরিবর্তিত আছে।</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>ইমপোর্ট করার মতো কিছু নেই। বর্তমান EQ অপরিবর্তিত আছে।</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ওই ফাইলটি পড়া যায়নি: {0}</value></data>
@@ -4654,7 +4676,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>সর্বোচ্চ সীমা রিসেট করুন</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>একটি বিন্দুর ফ্রিকোয়েন্সি ও গেইন সরাতে সেটি টানুন। প্রশস্ত বা সরু করতে বিন্দুটির উপর মাউস হুইল ঘোরান।</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>আউটপুটের পথ</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>কন্ট্রোলার তার অডিও কোথায় বাজায়। “ডিফল্ট” ফার্মওয়্যারের নিজস্ব রাউটিং রাখে এবং PadForge-এর শব্দ স্পিকারে বাজায়। “হেডফোন + স্পিকার” হেডসেটের দিকে মনো বাজায়, যা ফার্মওয়্যারের সীমাবদ্ধতা। Bluetooth-এ এই মোড কেবল হেডফোনে বাজায়। “হেডফোন জ্যাক অনুসরণ করুন” কন্ট্রোলারে কিছু লাগানো হলে হেডফোনে বদলায় এবং খুলে ফেললে আবার স্পিকারে ফেরে; জ্যাকের অবস্থা পড়া না গেলে এটি “ডিফল্ট”-এর মতো আচরণ করে।</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>কন্ট্রোলার তার অডিও কোথায় বাজায়। “ডিফল্ট” ফার্মওয়্যারের নিজস্ব রাউটিং রাখে এবং PadForge-এর শব্দ স্পিকারে বাজায়। “হেডফোন + স্পিকার” হেডসেটের দিকে মনো বাজায়, যা ফার্মওয়্যারের সীমাবদ্ধতা। Bluetooth-এ এই মোড কেবল হেডফোনে বাজায়। “হেডফোন জ্যাক অনুসরণ করুন” কন্ট্রোলারে কিছু লাগানো হলে হেডফোনে বদলায় এবং খুলে ফেললে আবার স্পিকারে ফেরে। জ্যাকের অবস্থা পড়া না গেলে এটি “ডিফল্ট”-এর মতো আচরণ করে।</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>ডিফল্ট</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>হেডফোন (স্টেরিও)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>হেডফোন (মনো)</value></data>
@@ -5500,11 +5522,17 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলারে চলমান যে কী-র রং সেট করুন অ্যাকশনগুলো এখানে বাছাই করা কোনো কী জ্বালাচ্ছে সেগুলো শেষ করে, কিছু বাছাই না থাকলে সবগুলো শেষ করে।</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>সব কী-র রং সাফ করুন</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0}টি লাইটের কী-র রং সাফ করুন</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>{0}টি লাইটের কী-র রং সাফ করুন</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, ধরে রাখা পর্যন্ত</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, ধরে রাখা পর্যন্ত</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, সাফ করা পর্যন্ত</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, সাফ করা পর্যন্ত</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে ফিকে হয়ে</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে ফিকে হয়ে</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে গুনে গুনে নিভে</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0}টি লাইট {1} রঙে, {2} ms ধরে গুনে গুনে নিভে</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>কী</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>প্রতিটি লাইট</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>কোনো কী বাছাই করা হয়নি, তাই অ্যাকশন কিছুই জ্বালাবে না।</value></data>

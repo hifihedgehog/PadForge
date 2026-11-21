@@ -1318,6 +1318,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Romela</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Diforeime: {0}. Go romela go tšea nako e ka bago {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Khontroulara e amogela diforeime tše {0} fela go feta, ka gona tša mafelelo tše {1} di tlogetšwe.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Khontroulara e amogela diforeime tše {0} fela go feta, ka gona ya mafelelo e tlogetšwe.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kgokaganya khontroulara ka thapo. E thoma gape e nnoši metsotswana e ka bago 15 ka morago ga ge seswantšho se tsene.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kgokaganya khontroulara ka thapo. Go romela, PadForge e e fetošetša go mokgwa wa Xbox gomme e e tloša go draebara ya Xbox ya Windows go ya go WinUSB, ke moka e bušetša tšohle morago.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge e tla fetošetša khontroulara go mokgwa wa Xbox, e e iše go WinUSB go romela, ke moka e e bušetše go draebara ya Xbox ya Windows gomme e e bušetše go mokgwa wa DInput. Pele, ntšha khontroulara ye nngwe le ye nngwe ya Xbox 360. Romela bjale?</value></data>

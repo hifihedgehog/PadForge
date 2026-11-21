@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Limpar</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nenhum</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundos</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>O HidHide bloqueou o acesso do PadForge a um dispositivo que o PadForge tinha ocultado, pelo que o PadForge deixou de ocultar dispositivos.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>A opção “Inverse application cloak” do HidHide está ativada, pelo que o PadForge não oculta nenhum dispositivo.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>A desinstalar o runtime do Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Não foi possível iniciar {0} porque o MIDI não está em execução. O cartão Windows MIDI Services nas Definições indica o motivo.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Não foi possível iniciar {0} porque o MIDI não está em execução. Consulte Windows MIDI Services nas Definições, em Controladores.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Não foi possível iniciar {0} porque o Windows MIDI Services não criou a respetiva porta.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} não tem Porta de saída. Escolha uma na respetiva página.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>A Porta de saída “{1}” de {0} não está ligada. O slot inicia assim que a porta voltar.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>O SDK G-key recusou-se a iniciar. Normalmente, isto significa que o Logitech Gaming Software não está em execução.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Ligado, ainda sem nenhuma tecla detetada. No Logitech Gaming Software, arraste o comando G-key para cada tecla do perfil do PadForge e torne esse perfil persistente. Um rato G600 ou G300 também tem de estar fora do modo de memória integrada.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Em execução, {0} eventos de tecla</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Em execução, {0} evento de tecla</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Ler teclados analógicos</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lê até que ponto cada tecla está premida em teclados analógicos da Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA e de outros fabricantes, cada um como a sua própria linha de dispositivo. A documentação indica todos os modelos suportados. Os teclados Razer precisam do Razer Synapse em execução. A maioria dos restantes é lida através do canal que o respetivo configurador utiliza, por isso feche o configurador enquanto esta opção estiver ligada.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Não foi encontrado nenhum teclado analógico suportado.</value></data>
@@ -801,7 +803,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Procurar atualizações</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork moderno do x360ce, reconstruído com SDL3, WPF e .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>O PadForge transforma qualquer dispositivo de entrada em qualquer comando virtual. Gamepads, joysticks, teclados, ratos e ecrãs táteis são mapeados para comandos de jogo virtuais (Xbox, PlayStation, joysticks de voo, volantes, gamepads de terceiros) ou para saída de teclado+rato / MIDI que os jogos tratam como hardware real. Assenta no HIDMaestro e no Windows MIDI Services. Usa o SDL3 para a entrada de comandos, o Windows Raw Input para teclado e rato e o HidHide para ocultar dispositivos por jogo, e disponibiliza uma interface moderna em Fluent Design para mapeamento, zonas mortas, curvas de sensibilidade e force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>O PadForge faz com que qualquer entrada passe por qualquer comando. Gamepads, joysticks, volantes, teclados, ratos, ecrãs táteis, dispositivos MIDI e telemóveis controlam comandos virtuais que os jogos tratam como hardware real: comandos Xbox, PlayStation, Nintendo e Steam, comandos SInput, comandos de mão para VR, saída MIDI, um teclado e rato, ou um dispositivo personalizado, como um joystick de voo ou um volante. O HIDMaestro cria os gamepads virtuais, o SDL3 lê os comandos, o Windows Raw Input lê teclados e ratos, o HidHide oculta um dispositivo dos jogos e o Windows MIDI Services transporta o MIDI de entrada e de saída.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Descrição geral</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Criado com</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Pesquisar créditos</value></data>
@@ -929,6 +931,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Atraso entre letras</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milissegundos entre os carateres escritos, até 1000. 0 escreve o texto todo de uma vez.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desligar por inatividade</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 significa nunca</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalhes</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desligar o Bluetooth ao ligar por USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Carregamento rápido. Quando este comando comunica que está a carregar enquanto está ligado por Bluetooth, a ligação Bluetooth é cortada para que carregue sem alimentar o rádio. Qualquer fonte de alimentação USB conta, incluindo carregadores de parede. Se voltar a ligar o Bluetooth com o cabo ainda inserido, a ligação é mantida até o cabo ser retirado.</value></data>
@@ -993,6 +996,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Enviar</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogramas: {0}. O envio demora cerca de {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>O comando aceita {0} fotogramas no máximo, por isso os últimos {1} ficaram de fora.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>O comando aceita {0} fotogramas no máximo, por isso o último ficou de fora.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ligue o comando por cabo. Reinicia sozinho cerca de 15 segundos depois de a imagem entrar.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ligue o comando por cabo. Para o envio, o PadForge muda-o para o modo Xbox e passa-o do controlador Xbox do Windows para o WinUSB, e depois repõe ambos.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>O PadForge vai mudar o comando para o modo Xbox, passá-lo para o WinUSB durante o envio, devolvê-lo ao controlador Xbox do Windows e mudá-lo de novo para o modo DInput. Desligue primeiro todos os outros comandos Xbox 360. Enviar agora?</value></data>
@@ -1424,8 +1428,8 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clonar</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecione um dispositivo neste slot para clonar.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>O dispositivo selecionado não expõe eixos, botões nem POVs para clonar.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clonar {0} para este slot como uma passagem direta 1:1? A disposição passa a ter {1} eixos, {2} botões e {3} POVs, e as linhas deste dispositivo no slot são substituídas pelas suas próprias entradas.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Este dispositivo tem mais entradas do que um comando Alargado consegue comportar. Foram mapeados {0} de {1} eixos, {2} de {3} botões e {4} de {5} POVs. Os restantes ficaram por mapear.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clonar {0} para este slot como uma passagem direta 1:1? A disposição passa a ter {1}, {2} e {3}, e as linhas deste dispositivo no slot são substituídas pelas suas próprias entradas.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Este dispositivo tem mais entradas do que um comando Alargado consegue comportar. Foram mapeados {0} de {1}, {2} de {3} e {4} de {5}. Os restantes ficaram por mapear.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Predefinições de comandos</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Adicione uma predefinição para um comando que o PadForge não inclui, a partir de um ficheiro ou do próprio comando.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importadas</value></data>
@@ -1597,11 +1601,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botão que faz descer o acumulador enquanto estiver premido</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Baixo: botão que faz descer o acumulador enquanto estiver premido.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Taxa</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocidade de varrimento em unidades por segundo. 0.5 = intervalo completo em 2 s; 2 = intervalo completo em 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocidade de varrimento em unidades por segundo. 0.5 = intervalo completo em 2 s. 2 = intervalo completo em 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Persistente</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Quando está marcado, o acumulador mantém o valor depois de soltar (controlo de velocidade de cruzeiro). Quando está desmarcado, volta de imediato ao Mín ao soltar.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Mín</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limite inferior do acumulador. -1 = totalmente negativo para destinos de eixo bipolares; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limite inferior do acumulador. -1 = totalmente negativo para destinos de eixo bipolares. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limite superior do acumulador. 1 = totalmente positivo.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -1894,6 +1898,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Define o modo da barra de luz do slot atribuído para um valor específico. Mantém-se, tal como uma alteração feita no cartão Iluminação, até que outra ação ou o utilizador o altere.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Percorrer modos da barra de luz</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Percorrer {0} modos da barra de luz</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Percorrer {0} modo da barra de luz</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Avança o modo da barra de luz do slot pelos modos selecionados abaixo. Cada disparo passa para o modo marcado seguinte. A posição no ciclo é própria de cada ação e é reposta quando a aplicação reinicia.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Retenção</value></data>
@@ -2172,7 +2177,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>A parte do ecrã que o painel alcança</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta as origens Ponteiro X/Y do painel tátil, que transportam o cursor para a posição do dedo no painel (mapeie-as para o rato X/Y num comando virtual Teclado / Rato). O tamanho 1.00 com o centro em 0.50 mapeia o painel para todo o ecrã. Reduza o tamanho para confinar o cursor a uma parte do ecrã e desloque o centro para a posicionar.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Largura da região</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Largura da área do ecrã para a qual este painel é mapeado, como fração da largura do ecrã. 1.00 abrange a largura total; 0.50 confina o cursor a metade do ecrã.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Largura da área do ecrã para a qual este painel é mapeado, como fração da largura do ecrã. 1.00 abrange a largura total. 0.50 confina o cursor a metade do ecrã.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Altura da região</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Altura da área do ecrã, como fração da altura do ecrã.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Centro da região X</value></data>
@@ -2183,7 +2188,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Háptica de deslize</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiques à medida que o dedo se desloca</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Faz pulsar a háptica do comando à medida que o dedo percorre este painel tátil, como os tiques de trackpad do Steam Input. Os Steam Controllers e a Steam Deck acionam o atuador que fica por baixo do painel; o DualSense e o DualShock 4 fazem pulsar os motores de vibração.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Faz pulsar a háptica do comando à medida que o dedo percorre este painel tátil, como os tiques de trackpad do Steam Input. Os Steam Controllers e a Steam Deck acionam o atuador que fica por baixo do painel. O DualSense e o DualShock 4 fazem pulsar os motores de vibração.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Ativar háptica de deslize</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Dispara um tique háptico curto de cada vez que o dedo percorre uma distância definida neste painel. Pousar um dedo ou clicar no painel nunca gera um tique. Desligado por predefinição.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensidade do impulso</value></data>
@@ -2291,6 +2296,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Todas as amostras foram capturadas. Dê um nome ao gesto e clique em Guardar.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Amostra {0} de {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} amostras</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} amostra</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Amostras a capturar</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Amostras a capturar</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 é o habitual. Mais amostras dão uma correspondência mais segura e menos amostras gravam-se mais depressa.</value></data>
@@ -3395,6 +3401,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistola fora do ecrã</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Percorrer modos do ponteiro</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Percorrer {0} modos do ponteiro</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Percorrer {0} modo do ponteiro</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avança o modo do ponteiro Wii pelos modos selecionados abaixo em todos os comandos com IR do slot. Cada disparo passa para o modo marcado seguinte. A posição no ciclo é própria de cada ação e é reposta quando a aplicação reinicia.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Escolha os modos do ponteiro que a macro deve percorrer. Cada disparo avança para o modo marcado seguinte.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudio</value></data>
@@ -3722,7 +3729,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Não foi encontrado nenhum DualShock 3 por USB. Ligue-o com um cabo USB e tente novamente.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>O Windows não instala o controlador USB do PadForge para o DualShock 3, porque o respetivo certificado de assinatura não é de confiança neste PC.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Não foi possível instalar o controlador Bluetooth para comandos PlayStation.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Não há nenhum rádio Bluetooth disponível. Ligue o Bluetooth e tente novamente. O emparelhamento só é necessário para jogar sem fios; um comando ligado por cabo funciona sem ele.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Não há nenhum rádio Bluetooth disponível. Ligue o Bluetooth e tente novamente. O emparelhamento só é necessário para jogar sem fios. Um comando ligado por cabo funciona sem ele.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>O emparelhamento não foi concluído. O passo que falhou é indicado acima.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Fechar</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Etiquetas NFC</value></data>
@@ -3813,7 +3820,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Solte o botão.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Passo {0} de {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Não foi detetada nenhuma alteração. Selecione Recomeçar e depois mantenha o botão premido quando lhe for pedido.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Foram observados {0} relatórios do fabricante e {1} classes de eventos. Durante a pressão: {2} relatórios, {3} eventos.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Relatórios do fabricante observados: {0}. Classes de eventos observadas: {1}. Relatórios durante a pressão: {2}. Eventos durante a pressão: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Botão capturado. Introduza um nome e clique em Registar.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Origem</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nome</value></data>
@@ -3829,7 +3836,9 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Exportar…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importar…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} botões exportados.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} botão exportado.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} botões importados.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} botão importado.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botões de PC portátil</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Os PCs de jogos portáteis (handhelds) e os computadores portáteis têm botões que o sistema operativo nunca mostra como um comando: patilhas traseiras, teclas de menu, rodas e teclas de atalho do fabricante. Ligue esta opção para os aprender uma vez, premindo-os, e depois mapeá-los como qualquer outro botão. Também adiciona o giroscópio da própria máquina como dispositivo de movimento.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ativar botões de PC portátil</value></data>
@@ -3993,9 +4002,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Ascendente</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Descendente</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} associações</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} associação</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} encontradas</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>A mostrar {0} de {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurações</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} configuração</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>suporte total para comandos</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>suporte parcial para comandos</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pesquisar jogos</value></data>
@@ -4005,7 +4016,9 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>há {0} mês(es)</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>há {0} ano(s)</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subscritores</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} subscritor</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votos</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} voto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Todas</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ainda não há configurações para este jogo</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>A Oficina Steam não tem configurações de comando da comunidade para {0}. Pode ser o primeiro: crie uma no Steam e ela aparece aqui.</value></data>
@@ -4038,6 +4051,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>camada: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>não há acionador independente do dispositivo para esta entrada</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ações de jogo, exclusivas do Steam, sem ligação do lado do jogo</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ação de jogo, exclusiva do Steam, sem ligação do lado do jogo</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>ação do cliente Steam {0}, sem equivalente</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ação de comando {0} não suportada</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tipo de associação desconhecido {0}</value></data>
@@ -4112,10 +4126,10 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Passo da roda do rato</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envia um passo discreto da roda do rato por disparo. O valor é o número de passos com sinal (positivo desloca para cima ou para a direita).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Deslocar cursor</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Move o cursor do rato um número fixo de píxeis por disparo. X positivo move para a direita e Y positivo move para baixo; são permitidos valores negativos.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Move o cursor do rato um número fixo de píxeis por disparo. X positivo move para a direita e Y positivo move para baixo. São permitidos valores negativos.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Deslocar o cursor ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Percorrer lista de toques</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo executa o toque seguinte da lista de passos e avança. Com a opção “Dar a volta” ativada, a lista recomeça depois do último passo; sem ela, os disparos param no fim.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo executa o toque seguinte da lista de passos e avança. Com a opção “Dar a volta” ativada, a lista recomeça depois do último passo. Sem ela, os disparos param no fim.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Alternar botão do rato</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Cada disparo fixa ou liberta o botão do rato. Um botão fixado fica premido até ao disparo seguinte ou até a macro ser desativada.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Alternar botão do rato {0}</value></data>
@@ -4128,6 +4142,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Alternar deslocamento da roda</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Cada disparo fixa ou liberta um deslocamento contínuo. Enquanto estiver fixado, envia o número de passos uma vez por intervalo até ao disparo seguinte ou até a macro ser desativada.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alternar deslocamento da roda ({0} passos a cada {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Alternar deslocamento da roda ({0} passo a cada {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsar enquanto fixado</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Enquanto estiver fixada, a saída liga e desliga ao intervalo de repetição em vez de se manter continuamente ligada.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Somar ao eixo (relativo)</value></data>
@@ -4149,6 +4164,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Quando o movimento físico leva o destino para lá do limiar, a macro deixa de escrever no eixo durante o resto da ativação.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(cede à entrada física)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Percorrer lista de toques ({0} passos)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Percorrer lista de toques ({0} passo)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passos</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Dar a volta</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
@@ -4232,6 +4248,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sobreposição de mudança de perfil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grelha no ecrã enquanto um menu radial ou tátil está ativo. Os menus continuam a disparar com a sobreposição desligada.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu no ecrã criado ({0} células associadas)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu no ecrã criado ({0} célula associada)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>o menu não tem células associadas</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície anfitriã do menu não suportada ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), pelo que a célula mantém a etiqueta de texto</value></data>
@@ -4416,6 +4433,7 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Escolha o .txt que o AutoEq transferiu. É esta a opção a usar: o autoeq.app entrega um ficheiro em vez de texto que possa copiar.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para uma correção à medida dos seus auscultadores: abra o autoeq.app, escolha o seu modelo, selecione Custom Parametric Eq e transfira-o, e depois use “Importar de ficheiro”. A transferência Graphic Eq não tem linhas de filtro e não é importada.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} bandas importadas com uma pré-amplificação de {1:0.#} dB. Origem: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} banda importada com uma pré-amplificação de {1:0.#} dB. Origem: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Esse perfil não tem linhas de filtro. A exportação Graphic Eq do AutoEq não pode ser lida aqui. Transfira antes a Custom Parametric Eq. O equalizador atual não foi alterado.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nada para importar. O equalizador atual não foi alterado.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Não foi possível ler esse ficheiro: {0}</value></data>
@@ -4431,7 +4449,7 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Repor teto</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Arraste um ponto para mover a respetiva frequência e ganho. Rode a roda do rato sobre um ponto para o alargar ou estreitar.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Percurso de saída</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>O local onde o comando reproduz o áudio. “Predefinido” mantém o encaminhamento do próprio firmware e reproduz os sons do PadForge no altifalante. “Auscultadores + Altifalante” reproduz em mono do lado dos auscultadores, uma limitação do firmware. Por Bluetooth, este modo reproduz apenas nos auscultadores. “Seguir a entrada de auscultadores” muda para os auscultadores quando algo é ligado ao comando e volta ao altifalante quando é desligado; sem leitura da entrada disponível, comporta-se como “Predefinido”.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>O local onde o comando reproduz o áudio. “Predefinido” mantém o encaminhamento do próprio firmware e reproduz os sons do PadForge no altifalante. “Auscultadores + Altifalante” reproduz em mono do lado dos auscultadores, uma limitação do firmware. Por Bluetooth, este modo reproduz apenas nos auscultadores. “Seguir a entrada de auscultadores” muda para os auscultadores quando algo é ligado ao comando e volta ao altifalante quando é desligado. Sem leitura da entrada disponível, comporta-se como “Predefinido”.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predefinido</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Auscultadores (estéreo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Auscultadores (mono)</value></data>

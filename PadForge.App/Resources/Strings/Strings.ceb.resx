@@ -108,6 +108,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Hawani</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Wala gi-assign</value></data>
@@ -492,6 +493,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ipadala</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Mga frame: {0}. Ang pagpadala mokabat og mga {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ang controller modawat og {0} ka frame labing daghan, mao nga wala giapil ang katapusang {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Ang controller modawat og {0} ka frame labing daghan, mao nga wala giapil ang katapusang usa.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ikonektar ang controller pinaagi sa cable. Kusang mo-restart kini mga 15 segundos human masulod ang hulagway.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ikonektar ang controller pinaagi sa cable. Alang sa pagpadala, ibalhin kini sa PadForge ngadto sa Xbox mode ug ibalhin gikan sa Xbox driver sa Windows ngadto sa WinUSB, unya ibalik ang duha.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Ibalhin sa PadForge ang controller ngadto sa Xbox mode, ibalhin kini sa WinUSB alang sa pagpadala, unya ibalik kini sa Xbox driver sa Windows ug ibalik sa DInput mode. Tangtanga una ang matag usa pang Xbox 360 nga controller. Ipadala karon?</value></data>
@@ -834,8 +836,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>I-clone</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Pili og device niini nga slot aron i-clone.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Ang napili nga device walay axis, button, o hat nga ma-clone.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>I-clone ang {0} niini nga slot isip 1:1 nga passthrough? Mahimong {1} ka axis, {2} ka button, ug {3} ka POV ang layout, ug ang mga laray niini nga device sa slot ilisan sa kaugalingong mga input niini.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kini nga device adunay mas daghang input kaysa madala sa Extended nga controller. Na-map ang {0} sa {1} ka axis, {2} sa {3} ka button, ug {4} sa {5} ka POV. Ang uban wala na-map.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>I-clone ang {0} niini nga slot isip 1:1 nga passthrough? Mahimong {1}, {2}, ug {3} ang layout, ug ang mga laray niini nga device sa slot ilisan sa kaugalingong mga input niini.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kini nga device adunay mas daghang input kaysa madala sa Extended nga controller. Na-map ang {0} sa {1}, {2} sa {3}, ug {4} sa {5}. Ang uban wala na-map.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Mga preset sa controller</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Idugang ang preset para sa controller nga wala gilakip sa PadForge, gikan sa file o gikan sa controller mismo.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Gi-import</value></data>
@@ -1215,6 +1217,7 @@
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Ibutang ang mode sa lightbar ngadto sa {0}</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Libuta ang mga mode sa lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Libuton ang {0} ka mode sa lightbar</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Libuton ang {0} ka mode sa lightbar</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Pagkupti</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Kolor</value></data>
@@ -1531,6 +1534,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Nakuha na ang tanang sample. Nganli ang gesture ug i-click ang I-save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} sa {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ka sample</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ka sample</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Mga sample nga kuhaon</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Mga sample nga kuhaon</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
@@ -2697,7 +2701,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Buhii ang button.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Lakang {0} sa {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Walay nakita nga kausaban. Pilia ang Sugdi pag-usab, dayon pislita ug kuptan ang button kung gipangayo.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Gibantayan ang {0} ka vendor report ug {1} ka klase sa event. Samtang gipislit: {2} ka report, {3} ka event.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Gibantayan nga vendor report: {0}. Gibantayan nga klase sa event: {1}. Report samtang gipislit: {2}. Event samtang gipislit: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Nakuha ang button. Isulod ang ngalan ug i-click ang Irehistro.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Gigikanan</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
@@ -2713,7 +2717,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Na-export ang {0} ka button.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Na-export ang {0} ka button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Na-import ang {0} ka button.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Na-import ang {0} ka button.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Mga button sa handheld PC</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Ang mga handheld gaming PC ug laptop adunay mga button nga wala gayud gipakita sa operating system isip controller: mga paddle sa likod, mga menu key, mga wheel, mga hotkey sa vendor. I-on kini aron makat-unan sila kausa pinaagi sa pagpislit, unya i-map sila sama sa bisan unsang button. Modugang usab kini sa kaugalingong gyroscope sa makina isip motion device.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>I-enable ang mga button sa handheld PC</value></data>
@@ -2812,9 +2818,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Pasaka</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Paubos</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} ka binding</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} ka binding</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ang nakit-an</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Gipakita ang {0} sa {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} ka config</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} ka config</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>bug-os nga suporta sa controller</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>bahin nga suporta sa controller</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pangitaa ang mga dula</value></data>
@@ -2824,7 +2832,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ka bulan ang milabay</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} ka tuig ang milabay</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} ka subscriber</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} ka subscriber</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ka boto</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ka boto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tanan</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Wala pay config para niini nga dula</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Ang Steam Workshop walay config sa controller gikan sa komunidad para sa {0}. Mahimo kang mauna: paghimo og usa sa Steam, ug makita kini dinhi.</value></data>
@@ -2895,6 +2905,7 @@
   <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Balik-balika ang {0} = {1} matag {2} ms</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>I-toggle ang scroll sa wheel</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>I-toggle ang scroll sa wheel ({0} ka tick matag {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>I-toggle ang scroll sa wheel ({0} ka tick matag {1} ms)</value></data>
   <data name="MacroAction_AllAxes" xml:space="preserve"><value>Tanang axis</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Mga lakang</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>I-toggle ang mga key {0}</value></data>
@@ -3074,6 +3085,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pilia ang .txt nga gi-download sa AutoEq. Kini ang gamiton: ang autoeq.app mohatag kanimo og file imbes nga text nga imong makopya.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para sa koreksyon nga gipahiangay sa imong headphone: ablihi ang autoeq.app, pilia ang imong modelo, pilia ang Custom Parametric Eq ug i-download kini, dayon I-import gikan sa file. Ang Graphic Eq nga download walay filter line ug dili ma-import.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Na-import ang {0} ka band nga adunay {1:0.#} dB nga preamp gikan sa {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Na-import ang {0} ka band nga adunay {1:0.#} dB nga preamp gikan sa {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Walay filter line niana nga profile. Ang Graphic Eq export sa AutoEq dili mabasa dinhi. I-download hinuon ang Custom Parametric Eq. Wala mausab ang kasamtangang EQ.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Walay ma-import. Wala mausab ang kasamtangang EQ.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Dili mabasa kana nga file: {0}</value></data>

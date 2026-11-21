@@ -89,6 +89,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Ūkui</value></data>
   <data name="Common_None" xml:space="preserve"><value>Kore</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>hēkona</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -898,6 +899,7 @@
   <data name="Recorder_Drawing" xml:space="preserve"><value>E tuhi ana…</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Tauira {0} o {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} tauira</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} tauira</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ingoa</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Tapaina tēnei tohu ā ringa</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Me whai ingoa</value></data>
@@ -1417,7 +1419,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Kaweake…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Kawemai…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Kua kaweakehia ngā pātene e {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Kua kaweakehia {0} pātene.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Kua kawemaihia ngā pātene e {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Kua kawemaihia {0} pātene.</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mauī</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Matau</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Runga</value></data>
@@ -1441,6 +1445,7 @@
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Rapu kēmu</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>i tēnei rā</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} pōti</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} pōti</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Katoa</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Whakamātau anō</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Huakina i Steam Workshop</value></data>
@@ -2047,6 +2052,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tukua</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Anga: {0}. Ka tata ki te {1} te roa o te tuku.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ko {0} te nui rawa o ngā anga ka tangohia e te pūwhakahaere, nā reira i waiho {1} o ngā anga whakamutunga.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Ko {0} te nui rawa o ngā anga ka tangohia e te pūwhakahaere, nā reira i waiho te anga whakamutunga.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Honoa te pūwhakahaere mā te taura. Ka tīmata anō ia i a ia anō, tata ki te 15 hēkona i muri i te taenga mai o te pikitia.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Honoa te pūwhakahaere mā te taura. Mō te tuku, ka huri a PadForge i a ia ki te aratau Xbox, ka nuku i a ia i te taraiwa Xbox o Windows ki WinUSB, kātahi ka whakahoki i ngā mea e rua.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Ka huri a PadForge i te pūwhakahaere ki te aratau Xbox, ka nuku i a ia ki WinUSB mō te tuku, kātahi ka whakahoki i a ia ki te taraiwa Xbox o Windows, ka huri anō ki te aratau DInput. Tangohia i te tuatahi ia pūwhakahaere Xbox 360 kē atu. Me tuku ināianei?</value></data>

@@ -721,6 +721,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Zonke iisampulu zifunyenwe. Nika i-gesture igama uze ucofe Gcina.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Isampulu {0} kwe-{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} iisampulu</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} isampulu</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Igama</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Thiya le gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kufuneka igama</value></data>
@@ -1306,7 +1307,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Thumela ngaphandle…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Ngenisa…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Amaqhosha athunyelwe ngaphandle: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Iqhosha elithunyelwe ngaphandle: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Amaqhosha angenisiweyo: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Iqhosha elingenisiweyo: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Amaqhosha e-PC ephathwayo</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Vula amaqhosha e-PC ephathwayo</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ii-gesture zempuku</value></data>
@@ -1349,6 +1352,7 @@
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Khangela imidlalo</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>namhlanje</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Ababhalisileyo: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Obhalisileyo: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Zonke</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>I-Steam ayifikeleleki</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Ayikwazanga ukufikelela kwi-Steam. Jonga uqhagamshelo lwakho. Iiprofayile osele uzingenisile ziyaqhubeka zisebenza: zigcinwe kule PC.</value></data>

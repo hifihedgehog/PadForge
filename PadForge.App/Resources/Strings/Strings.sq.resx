@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Pastro</value></data>
   <data name="Common_None" xml:space="preserve"><value>Asnjë</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekonda</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuta (0 = kurrë)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide e bllokoi PadForge nga një pajisje që PadForge e kishte fshehur, ndaj PadForge pushoi së fshehuri pajisjet.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Opsioni "Inverse application cloak" i HidHide është aktiv, ndaj PadForge nuk fsheh asnjë pajisje.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Po çinstalohet runtime-i i Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nuk mund të niset sepse MIDI nuk është në punë. Karta Windows MIDI Services te Cilësimet tregon arsyen.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nuk mund të niset sepse MIDI nuk është në punë. Shih Windows MIDI Services te Cilësimet, nën Drajverët.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} nuk mund të niset sepse Windows MIDI Services nuk krijoi portën e tij.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} nuk ka portë dalëse. Zgjidh një te faqja e tij.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Porta dalëse “{1}” e {0} nuk është e lidhur. Slot-i niset sapo porta të kthehet.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK refuzoi të niset. Zakonisht Logitech Gaming Software nuk është në punë.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>U lidh, por nuk është parë ende asnjë tast. Në Logitech Gaming Software, tërhiq komandën G-key mbi çdo tast në profilin PadForge dhe bëje atë profil të përhershëm. Një maus G600 ose G300 duhet gjithashtu të jetë jashtë modalitetit të memories së brendshme.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Në punë, {0} ngjarje tastesh</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Në punë, {0} ngjarje tasti</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lexo tastierat analoge</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lexon sa është shtypur çdo tast në tastierat analoge nga Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA dhe prodhues të tjerë, secila si rresht i veçantë pajisjeje. Dokumentacioni liston çdo model të mbështetur. Tastierat Razer kërkojnë që Razer Synapse të jetë në punë. Shumica e të tjerave lexohen përmes kanalit që përdor konfiguruesi i tyre, ndaj mbylle konfiguruesin ndërsa kjo është aktive.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nuk u gjet asnjë tastierë analoge e mbështetur.</value></data>
@@ -801,7 +803,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Kontrollo për përditësime</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork i ri i x360ce, rindërtuar me SDL3, WPF dhe .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge e kthen çdo pajisje hyrjeje në çdo kontrollues virtual. Gamepad-et, joystick-et, tastierat, mausat dhe ekranet me prekje hartëzohen te kontrollues virtualë lojërash (Xbox, PlayStation, flight stick-e, timona, gamepad-e të palëve të treta) ose te dalja tastierë+maus / MIDI që lojërat e trajtojnë si hardware të vërtetë. Mundësohet nga HIDMaestro dhe Windows MIDI Services. Përdor SDL3 për hyrjen e kontrolluesve, Windows Raw Input për tastierën dhe mausin, HidHide për maskimin e pajisjeve sipas lojës, dhe ofron një ndërfaqe Fluent Design për hartëzim, zona të vdekura, kurba ndjeshmërie dhe force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge e bën çdo hyrje të duket si çdo kontrollues. Gamepad-et, joystick-et, timonat, tastierat, mausat, ekranet me prekje, pajisjet MIDI dhe telefonat drejtojnë kontrollues virtualë që lojërat i trajtojnë si hardware të vërtetë: gamepad-e Xbox, PlayStation, Nintendo dhe Steam, gamepad-e SInput, kontrollues dore për VR, dalje MIDI, një tastierë dhe maus, ose një pajisje e personalizuar si flight stick ose timon. HIDMaestro krijon gamepad-et virtualë, SDL3 lexon kontrolluesit, Windows Raw Input lexon tastierat dhe mausat, HidHide e fsheh një pajisje nga lojërat, dhe Windows MIDI Services bart MIDI-n hyrës e dalës.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Përmbledhje</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Ndërtuar me</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Kërko te kreditet</value></data>
@@ -928,6 +930,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Vonesa mes shkronjave</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekonda ndërmjet karaktereve të shkruara, deri në 1000. Me 0 i gjithë teksti shkruhet menjëherë.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Shkëputje pas joaktivitetit</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 do të thotë kurrë</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detajet</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Shkëput Bluetooth kur lidhet me USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karikim i shpejtë. Kur ky kontrollues raporton se po karikohet ndërsa është i lidhur me Bluetooth, lidhja Bluetooth ndërpritet që të karikohet pa e ndezur radion. Çdo burim energjie USB llogaritet, përfshirë karikuesit e murit. Nëse e ndizni përsëri Bluetooth ndërsa kablloja mbetet e futur, ai lihet në paqe deri në shkëputjen tjetër.</value></data>
@@ -992,6 +995,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Dërgo</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuadro: {0}. Dërgimi zgjat rreth {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolluesi pranon më së shumti {0} kuadro, prandaj {1} të fundit u lanë jashtë.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontrolluesi pranon më së shumti {0} kuadro, prandaj i fundit u la jashtë.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Lidhe kontrolluesin me kabllo. Ai rindizet vetë rreth 15 sekonda pasi imazhi të jetë brenda.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Lidhe kontrolluesin me kabllo. Për dërgimin, PadForge e kalon në modalitetin Xbox dhe e lëviz nga drejtuesi Xbox i Windows te WinUSB, pastaj i kthen të dyja.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge do ta kalojë kontrolluesin në modalitetin Xbox, do ta lëvizë te WinUSB për dërgimin, pastaj do t’ia kthejë drejtuesit Xbox të Windows dhe do ta kalojë përsëri në modalitetin DInput. Shkëput më parë çdo kontrollues tjetër Xbox 360. Të dërgohet tani?</value></data>
@@ -1423,8 +1427,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klono</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Zgjidhni një pajisje në këtë slot për ta klonuar.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Pajisja e zgjedhur nuk ka boshte, butona ose POV për klonim.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Të klonohet {0} në këtë slot si kalim i drejtpërdrejtë 1:1? Paraqitja bëhet {1} boshte, {2} butona dhe {3} POV, dhe rreshtat e kësaj pajisjeje në slot zëvendësohen me hyrjet e saj.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kjo pajisje ka më shumë hyrje nga sa mund të mbajë një kontrollues i zgjeruar. U hartëzuan {0} nga {1} boshte, {2} nga {3} butona dhe {4} nga {5} POV. Pjesa tjetër mbeti e pahartëzuar.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Të klonohet {0} në këtë slot si kalim i drejtpërdrejtë 1:1? Paraqitja bëhet {1}, {2} dhe {3}, dhe rreshtat e kësaj pajisjeje në slot zëvendësohen me hyrjet e saj.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kjo pajisje ka më shumë hyrje nga sa mund të mbajë një kontrollues i zgjeruar. U hartëzuan {0} nga {1}, {2} nga {3} dhe {4} nga {5}. Pjesa tjetër mbeti e pahartëzuar.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Paravendosjet e kontrolluesit</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Shto një paravendosje për një kontrollues që PadForge nuk e përfshin, nga një skedar ose nga vetë kontrolluesi.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Të importuara</value></data>
@@ -1596,11 +1600,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Butoni që e ul akumulatorin poshtë për sa kohë mbahet</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Poshtë: butoni që e ul akumulatorin poshtë për sa kohë mbahet.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Shpejtësia</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Shpejtësia e fshirjes në njësi për sekondë. 0.5 = diapazoni i plotë në 2 s; 2 = diapazoni i plotë në 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Shpejtësia e fshirjes në njësi për sekondë. 0.5 = diapazoni i plotë në 2 s. 2 = diapazoni i plotë në 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>I ngjitur</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kur është i shënuar, akumulatori e mban vlerën pas lëshimit (cruise control). Kur nuk është i shënuar, kthehet te Min pas lëshimit.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Kufiri i poshtëm i akumulatorit. -1 = plotësisht negativ për objektivat e boshteve dypolare; 0 = njëpolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Kufiri i poshtëm i akumulatorit. -1 = plotësisht negativ për objektivat e boshteve dypolare. 0 = njëpolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Kufiri i sipërm i akumulatorit. 1 = plotësisht pozitiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampë</value></data>
@@ -1893,6 +1897,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Cakton mënyrën e shiritit të dritës të slotit në një vlerë të caktuar. Mbetet si një redaktim në kartën „Ndriçimi“ derisa ta ndryshojë një veprim tjetër ose përdoruesi.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Qarko mënyrat e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Qarko nëpër {0} mënyra të shiritit të dritës</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Qarko nëpër {0} mënyrë të shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>E çon mënyrën e shiritit të dritës të slotit nëpër mënyrat e zgjedhura më poshtë. Çdo aktivizim kalon te mënyra tjetër e shënuar. Pozicioni i ciklit është për çdo veprim dhe rivendoset kur riniset aplikacioni.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Mbajtja</value></data>
@@ -2171,7 +2176,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Pjesa e ekranit që arrin touchpad-i</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Rregullon burimet Touchpad Tregues X/Y, që e çojnë kursorin te pozicioni i gishtit tuaj në touchpad (hartëzojini te maus X/Y në një kontrollues virtual Tastierë / Maus). Madhësia 1.00 me qendër 0.50 e hartëzon touchpad-in në gjithë ekranin. Zvogëloni madhësinë që ta kufizoni kursorin në një pjesë të ekranit dhe lëvizni qendrën që ta vendosni.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gjerësia e zonës</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Gjerësia e zonës së ekranit ku hartëzohet ky touchpad, si pjesë e gjerësisë së ekranit. 1.00 mbulon gjithë gjerësinë, 0.50 e kufizon kursorin në gjysmën e ekranit.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Gjerësia e zonës së ekranit ku hartëzohet ky touchpad, si pjesë e gjerësisë së ekranit. 1.00 mbulon gjithë gjerësinë. 0.50 e kufizon kursorin në gjysmën e ekranit.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Lartësia e zonës</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Lartësia e zonës së ekranit, si pjesë e lartësisë së ekranit.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Qendra e zonës X</value></data>
@@ -2290,6 +2295,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Recorder_Complete" xml:space="preserve"><value>Të gjithë kampionët u kapën. Emërtoni gjestin dhe klikoni Ruaj.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Kampioni {0} nga {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} kampionë</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} kampion</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Kampionë për t'u kapur</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Kampionë për t'u kapur</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 është standardi. Më shumë kampionë japin një përputhje më të sigurt, dhe më pak regjistrohen më shpejt.</value></data>
@@ -3339,6 +3345,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Arma jashtë ekranit</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Kalo nëpër mënyrat e treguesit</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Kalo nëpër {0} mënyra treguesi</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Kalo nëpër {0} mënyrë treguesi</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Kalon mënyrën e treguesit Wii nëpër mënyrat e zgjedhura më poshtë për çdo telekomandë me IR në slot. Çdo aktivizim kalon te mënyra tjetër e zgjedhur. Pozicioni i ciklit është për veprim dhe rivendoset kur riniset aplikacioni.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Zgjidh nëpër cilat mënyra treguesi duhet të kalojë makroja. Çdo aktivizim kalon te mënyra tjetër e zgjedhur.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3666,7 +3673,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nuk u gjet DualShock 3 në USB. Lidhe me kabllo USB dhe provo sërish.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows nuk do ta instalojë drajverin USB të PadForge për DualShock 3, sepse certifikata e tij e nënshkrimit nuk besohet në këtë PC.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Drajveri Bluetooth për kontrolluesit PlayStation nuk mund të instalohej.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nuk ka radio Bluetooth. Ndiz Bluetooth dhe provo sërish. Çiftimi nevojitet vetëm për lojë pa tel: një kontrollues me kabllo funksionon pa të.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nuk ka radio Bluetooth. Ndiz Bluetooth dhe provo sërish. Çiftimi nevojitet vetëm për lojë pa tel. Një kontrollues me kabllo funksionon pa të.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Çiftimi nuk u krye. Hapi që dështoi shfaqet sipër.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Mbyll</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Etiketat NFC</value></data>
@@ -3757,7 +3764,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lëshoje butonin.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Hapi {0} nga {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nuk u pa asnjë ndryshim. Zgjidh Fillo nga e para, pastaj shtyp dhe mbaje butonin kur të kërkohet.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>U vëzhguan {0} raporte të prodhuesit dhe {1} klasa ngjarjesh. Gjatë shtypjes: {2} raporte, {3} ngjarje.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Raporte të prodhuesit të vëzhguara: {0}. Klasa ngjarjesh të vëzhguara: {1}. Raporte gjatë shtypjes: {2}. Ngjarje gjatë shtypjes: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Butoni u kap. Shkruaj një emër dhe kliko Regjistro.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Burimi</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Emri</value></data>
@@ -3773,7 +3780,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Handheld_Export" xml:space="preserve"><value>Eksporto…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importo…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>U eksportuan {0} butona.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>U eksportua {0} buton.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>U importuan {0} butona.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>U importua {0} buton.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Butonat e PC-së portative</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC-të portative për lojëra dhe laptopët kanë butona që sistemi operativ nuk i shfaq kurrë si kontrollues: paddle të pasme, tasta menyje, rrota, shkurtore të prodhuesit. Aktivizoje që t'i mësosh një herë duke i shtypur, pastaj hartëzoji si çdo buton tjetër. Shton gjithashtu xhiron e vetë makinës si pajisje lëvizjeje.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivizo butonat e PC-së portative</value></data>
@@ -3937,9 +3946,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Në rritje</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Në zbritje</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} lidhje</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} lidhje</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} u gjetën</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Po shfaqen {0} nga {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurime</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurim</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>mbështetje e plotë për kontrollues</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>mbështetje e pjesshme për kontrollues</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Kërko lojëra</value></data>
@@ -3949,7 +3960,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mj më parë</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} v më parë</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonentë</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} abonent</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} vota</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} votë</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Të gjitha</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ende asnjë konfigurim për këtë lojë</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop nuk ka konfigurime kontrolluesi të komunitetit për {0}. Mund të jesh i pari: ndërtoje një në Steam dhe shfaqet këtu.</value></data>
@@ -3982,6 +3995,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>shtresa: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nuk ka nxitës të pavarur nga pajisja për këtë hyrje</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} veprime brenda lojës, vetëm për Steam, pa mekanizëm në anën e lojës</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} veprim brenda lojës, vetëm për Steam, pa mekanizëm në anën e lojës</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>veprim {0} i klientit Steam, pa ekuivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>veprimi i kontrolluesit {0} nuk mbështetet</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>lloj caktimi i panjohur {0}</value></data>
@@ -4072,6 +4086,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Ndërro rrëshqitjen me rrotë</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Çdo nisje e kyç ose e shkyç një rrëshqitje të vazhdueshme. Ndërsa është e kyçur, dërgon numrin e hapave një herë në çdo interval deri në nisjen tjetër ose derisa makroja të çaktivizohet.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Ndërro rrëshqitjen me rrotë ({0} hapa çdo {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Ndërro rrëshqitjen me rrotë ({0} hap çdo {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Puls gjatë mbajtjes</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Ndërsa është e kyçur, dalja ndizet e fiket me intervalin e përsëritjes në vend që të mbahet e vazhdueshme.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Shto te boshti (relative)</value></data>
@@ -4093,6 +4108,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kur lëvizja fizike e shtyn objektivin përtej pragut, makroja ndalon së shkruari boshtin për pjesën tjetër të aktivizimit.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ia lë vendin hyrjes fizike)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Listë ciklike prekjesh ({0} hapa)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Listë ciklike prekjesh ({0} hap)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Hapat</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Përsërit nga fillimi</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Ndërro tastet {0}</value></data>
@@ -4176,6 +4192,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Mbivendosja e ndërrimit të profilit</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Shfaq unazën ose rrjetën në ekran ndërsa një meny radiale ose me prekje është e aktivizuar. Menytë nisin edhe kur mbivendosja është e fikur.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>u krijua meny në ekran ({0} qeliza të caktuara)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>u krijua meny në ekran ({0} qelizë e caktuar)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menyja nuk ka qeliza të caktuara</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>sipërfaqja pritëse e menysë nuk mbështetet ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona e qelizës së menysë nuk u njoh ({0}), ndaj qeliza mban etiketën me tekst</value></data>
@@ -4362,6 +4379,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Zgjidhni skedarin .txt që shkarkoi AutoEq. Ky është ai që duhet përdorur: autoeq.app jep një skedar dhe jo tekst që mund ta kopjoni.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Për një korrigjim të përshtatur me kufjet tuaja: hapni autoeq.app, zgjidhni modelin tuaj, zgjidhni Custom Parametric Eq dhe shkarkojeni, pastaj Importo nga skedari. Shkarkimi Graphic Eq nuk ka rreshta filtri dhe nuk importohet.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>U importuan {0} breza me preamp {1:0.#} dB nga {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>U importua {0} brez me preamp {1:0.#} dB nga {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Nuk ka rreshta filtri në atë profil. Eksporti Graphic Eq i AutoEq nuk mund të lexohet këtu. Shkarkoni në vend të tij atë Custom Parametric Eq. EQ-ja aktuale nuk ndryshon.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nuk ka çfarë të importohet. EQ-ja aktuale nuk ndryshon.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Skedari nuk u lexua: {0}</value></data>
@@ -4377,7 +4395,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Rivendos tavanin</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Tërhiqni një pikë për të lëvizur frekuencën dhe fitimin e saj. Rrotulloni rrotën mbi një pikë për ta zgjeruar ose ngushtuar.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Rruga e daljes</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Ku luan kontrolluesi audion e tij. Parazgjedhje e mban rrugëzimin e vetë firmuerit dhe i luan zërat e PadForge në altoparlant. Kufje + altoparlant luan mono në anën e kufjeve, kufizim i firmuerit. Mbi Bluetooth ky modalitet luan vetëm nëpër kufje. Ndiq prizën e kufjeve kalon te kufjet kur diçka futet në kontrollues dhe kthehet te altoparlanti kur hiqet; pa lexim të prizës ai sillet si Parazgjedhje.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Ku luan kontrolluesi audion e tij. Parazgjedhje e mban rrugëzimin e vetë firmuerit dhe i luan zërat e PadForge në altoparlant. Kufje + altoparlant luan mono në anën e kufjeve, kufizim i firmuerit. Mbi Bluetooth ky modalitet luan vetëm nëpër kufje. Ndiq prizën e kufjeve kalon te kufjet kur diçka futet në kontrollues dhe kthehet te altoparlanti kur hiqet. Pa lexim të prizës ai sillet si Parazgjedhje.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Parazgjedhje</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Kufje (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Kufje (mono)</value></data>

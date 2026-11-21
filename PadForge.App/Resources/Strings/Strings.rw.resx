@@ -89,6 +89,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Tangiza</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nta na kimwe</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>amasegonda</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1418,7 +1419,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>hashize amezi {0}</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>hashize imyaka {0}</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Abiyandikishije {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Uwiyandikishije {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Amajwi {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Ijwi {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Byose</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Ongera ugerageze</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Byasimbutswe</value></data>

@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>向右翻页</value></data>
   <data name="Common_None" xml:space="preserve"><value>无</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>分钟</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>秒</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>分钟（0 = 永不）</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -203,7 +204,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide 阻止了 PadForge 访问 PadForge 已隐藏的设备，因此 PadForge 已停止隐藏设备。</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide 的“Inverse application cloak”已开启，因此 PadForge 不会隐藏任何设备。</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services 运行时…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI 未运行，因此 {0} 无法启动。设置中的 Windows MIDI Services 卡片会说明原因。</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI 未运行，因此 {0} 无法启动。请参阅设置中“驱动程序”下的 Windows MIDI Services。</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services 没有创建端口，因此 {0} 无法启动。</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} 没有输出端口。请在它的页面上选择一个。</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} 的输出端口“{1}”未连接。端口恢复后，该插槽会启动。</value></data>
@@ -378,6 +379,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK 未能启动。通常是 Logitech Gaming Software 未运行。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>已连接，尚未检测到按键。请在 Logitech Gaming Software 中，将 G-key 命令拖到 PadForge 配置文件的每个按键上，并将该配置文件设为常驻。此外，G600 或 G300 鼠标不能处于板载模式。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>运行中，{0} 个按键事件</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>运行中，{0} 个按键事件</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>读取模拟键盘</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>读取 Wooting、Razer、SteelSeries、Keychron、NuPhy、DrunkDeer、AULA 等厂商的模拟键盘上每个键的按下深度，每个设备单独成行。文档列出了所有支持的型号。Razer 键盘需要运行 Razer Synapse。其他大多数键盘通过其配置软件使用的通道询问读取，因此开启此项时请关闭配置软件。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>未找到受支持的模拟键盘。</value></data>
@@ -583,7 +585,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>检查更新</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce 的现代分支。使用 SDL3、WPF 和 .NET 10 重新构建</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge 可将任何输入设备转换为任何虚拟控制器。游戏手柄、摇杆、键盘、鼠标和触摸屏可映射为虚拟游戏控制器（Xbox、PlayStation、飞行摇杆、方向盘、第三方手柄）或键盘+鼠标 / MIDI 输出，让游戏将其识别为真实硬件，由 HIDMaestro 和 Windows MIDI Services 提供支持。它使用 SDL3 处理控制器输入，使用 Windows Raw Input 处理键盘和鼠标输入，使用 HidHide 按游戏隐藏设备，并提供现代 Fluent Design 界面用于映射、死区、灵敏度曲线和力反馈配置。</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge 让任何输入设备都能表现为任何控制器。游戏手柄、摇杆、方向盘、键盘、鼠标、触摸屏、MIDI 设备和手机可驱动虚拟控制器，游戏会将其视为真实硬件，包括 Xbox、PlayStation、Nintendo 和 Steam 手柄、SInput 手柄、VR 手部控制器、MIDI 输出、键盘和鼠标，或飞行摇杆、方向盘之类的自定义设备。HIDMaestro 负责创建虚拟游戏手柄，SDL3 负责读取控制器，Windows Raw Input 负责读取键盘和鼠标，HidHide 负责对游戏隐藏设备，Windows MIDI Services 负责传输 MIDI 输入和输出。</value></data>
   <data name="About_Overview" xml:space="preserve"><value>概述</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>构建技术</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>搜索致谢</value></data>
@@ -730,6 +732,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows 不再使用 {0} 移动指针。如果你不是有意这样做，请不要操作，它会恢复。</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows 不再使用 {0} 移动指针。如果你不是有意这样做，请不要操作，它会恢复。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>将在 {0} 秒后归还</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>将在 {0} 秒后归还</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>保留</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>立即归还</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>请先拔下此型号的其他键盘。Windows 会将所有已连接的此型号键盘一并切换到 PadForge 驱动程序，并不再使用它们打字。</value></data>
@@ -1207,6 +1210,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>将已分配插槽的灯条模式设置为指定值。如同在"灯光"卡片上的编辑一样持久，直到另一个动作或用户更改它。</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>循环灯条模式</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>循环{0}个灯条模式</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>循环{0}个灯条模式</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>在下方选定的模式中推进插槽的灯条模式。每次触发跳到下一个已勾选模式。位置按动作存储，应用重启时重置。</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>保持</value></data>
@@ -2666,6 +2670,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>已采集所有样本。命名手势并点击“保存”。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>第 {0} 个样本，共 {1} 个</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} 个样本</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} 个样本</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>要采集的样本数</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>要捕获的样本数</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 为标准值。样本越多，匹配越可靠，样本越少，录制越快。</value></data>
@@ -2869,6 +2874,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>光枪屏幕外</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>循环指针模式</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>循环{0}个指针模式</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>循环{0}个指针模式</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>在下方勾选的模式之间循环该插槽所有IR遥控器的Wii指针模式。每次触发前进到下一个勾选的模式。位置按动作独立，重启后重置。</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的指针模式。每次触发前进到下一个勾选的模式。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>音频</value></data>
@@ -3271,7 +3277,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>松开按键。</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>第 {0} 步，共 {1} 步</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>未检测到变化。请选择“重新开始”，然后在提示时按住按键。</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>已监视 {0} 个厂商报告和 {1} 个事件类。按下期间：{2} 个报告，{3} 个事件。</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>已监视的厂商报告：{0}。已监视的事件类：{1}。按下期间的报告：{2}。按下期间的事件：{3}。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>已捕获按键。输入名称并点击“注册”。</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>来源</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>名称</value></data>
@@ -3307,12 +3313,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>全部忘记</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>移除为此型号学到的所有名称。</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>已导出 {0} 个名称。</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>已导出 {0} 个名称。</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>已导入 {0} 个名称。</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>已导入 {0} 个名称。</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>已导入 {0} 个名称，对应另一型号 {1}。</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>已导入 {0} 个名称，对应另一型号 {1}。</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>该文件不包含按键灯光名称。</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>导入…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>已导出 {0} 个按键。</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>已导出 {0} 个按键。</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>已导入 {0} 个按键。</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>已导入 {0} 个按键。</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>掌机按键</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>掌上游戏 PC 和笔记本电脑有一些操作系统从不作为控制器显示的按键：背部拨片、菜单键、滚轮、厂商热键。开启后，按一下即可学习它们，然后像其他按键一样映射。同时会把机器自身的陀螺仪添加为体感设备。</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>启用掌机按键</value></data>
@@ -3338,6 +3349,7 @@
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>工作目录</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>可选。程序用作当前目录的文件夹。不是程序文件所在的文件夹。留空则使用默认值。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 表示永不</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>详情</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>通过USB连接时断开蓝牙</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。当此控制器在蓝牙连接期间报告正在充电时，将断开蓝牙链接，使其充电时不再为无线模块供电。任何USB电源都有效，包括墙充。若在插着线时重新开启蓝牙，将保持不动，直到下次拔线。</value></data>
@@ -3402,6 +3414,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>发送</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>帧数：{0}。发送大约需要 {1}。</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>控制器最多接收 {0} 帧，因此最后 {1} 帧已被舍去。</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>控制器最多接收 {0} 帧，因此最后 1 帧已被舍去。</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>请用数据线连接控制器。图片传入约 15 秒后，控制器会自行重启。</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>请用数据线连接控制器。发送时，PadForge 会将其切换到 Xbox 模式，并从 Windows 的 Xbox 驱动程序改用 WinUSB，之后再全部恢复。</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge 将把控制器切换到 Xbox 模式，发送期间改用 WinUSB，然后交还给 Windows 的 Xbox 驱动程序，并切换回 DInput 模式。请先拔下所有其他 Xbox 360 控制器。现在发送吗？</value></data>
@@ -3791,8 +3804,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>克隆</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>请选择该插槽上的设备进行克隆。</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>所选设备没有可克隆的轴、按钮或方向帽。</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>以 1:1 直通方式将 {0} 克隆到该插槽？布局将变为 {1} 个轴、{2} 个按钮和 {3} 个 POV，并且该设备在该插槽上的行将替换为其自身的输入。</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>该设备的输入数量超过了 Extended 控制器所能承载的上限。已映射 {1} 个轴中的 {0} 个、{3} 个按钮中的 {2} 个、{5} 个 POV 中的 {4} 个。其余部分未映射。</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>以 1:1 直通方式将 {0} 克隆到该插槽？布局将变为 {1}、{2}和 {3}，并且该设备在该插槽上的行将替换为其自身的输入。</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>该设备的输入数量超过了 Extended 控制器所能承载的上限。已映射 {1} 中的 {0}、{3} 中的 {2}、{5} 中的 {4}。其余部分未映射。</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>文本块</value></data>
   <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>宏运行时将文本作为按键输入逐字打出。支持任何字符，包括重音字母、中日韩文字和表情符号。换行按 Enter。粘贴的制表符按 Tab（在此输入框按 Tab 键会切换到下一个字段）。按键组合请继续使用"按下按键"。</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>输入"{0}"</value></data>
@@ -4033,9 +4046,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>升序</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>降序</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} 个映射</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} 个映射</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>找到 {0} 个</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>显示 {0} / 共 {1} 个</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 个配置</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} 个配置</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>完全支持控制器</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分支持控制器</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>搜索游戏</value></data>
@@ -4045,7 +4060,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} 个月前</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} 订阅</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} 订阅</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} 票</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} 票</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>全部</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>此游戏暂无配置</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam 创意工坊上还没有 {0} 的社区控制器配置。您可以成为第一个：在 Steam 中制作一个，它就会出现在这里。</value></data>
@@ -4078,6 +4095,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>层：{0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此输入没有可用的无设备触发器</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 客户端动作 {0}，无对应项</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>不支持控制器动作 {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>未知绑定类型 {0}</value></data>
@@ -4151,7 +4169,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>触控板覆盖的屏幕区域</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它会把光标移动到手指在触控板上的位置（请将其映射到键盘 / 鼠标虚拟控制器的鼠标 X/Y）。大小 1.00、中心 0.50 时触控板对应整个屏幕。缩小大小可将光标限制在屏幕的一部分，并用中心确定其位置。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>区域宽度</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>此触控板映射到的屏幕区域宽度，以屏幕宽度的比例表示。1.00 覆盖整个宽度；0.50 将光标限制在半屏内。</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>此触控板映射到的屏幕区域宽度，以屏幕宽度的比例表示。1.00 覆盖整个宽度。0.50 将光标限制在半屏内。</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>区域高度</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>屏幕区域的高度，以屏幕高度的比例表示。</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>区域中心 X</value></data>
@@ -4160,7 +4178,7 @@
   <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>垂直位置。0.00 为上边缘，0.50 为中间，1.00 为下边缘。</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>滑动触觉反馈</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>手指滑动时的咔嗒反馈</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>当手指在此触控板上滑动时使手柄的触觉反馈产生脉冲，类似 Steam Input 的触控板咔嗒反馈。Steam Controller 和 Steam Deck 通过触控板下方的致动器产生咔嗒；DualSense 和 DualShock 4 则脉冲震动马达。</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>当手指在此触控板上滑动时使手柄的触觉反馈产生脉冲，类似 Steam Input 的触控板咔嗒反馈。Steam Controller 和 Steam Deck 通过触控板下方的致动器产生咔嗒。DualSense 和 DualShock 4 则脉冲震动马达。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>启用滑动触觉反馈</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>手指在此触控板上每移动设定距离就发出一次短促的触觉咔嗒。手指落下或按下触控板不会产生咔嗒。默认关闭。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>脉冲强度</value></data>
@@ -4276,7 +4294,7 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>滚轮一格</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>每次触发发送一格鼠标滚轮。数值为带符号的格数(正值向上或向右滚动)。</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>微移光标</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>每次触发将鼠标光标移动固定的像素数。X 为正向右,Y 为正向下,允许负值。</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>每次触发将鼠标光标移动固定的像素数。X 为正向右,Y 为正向下。允许负值。</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>光标微移 ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>循环点击列表</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>每次触发执行列表中的下一步并前进。开启循环时,最后一步之后回到开头。关闭时,到达末尾后不再输出。</value></data>
@@ -4292,6 +4310,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>切换滚轮滚动</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>每次触发锁定或解锁连续滚动。锁定期间每个间隔发送一次滚动格数,直到下次触发或宏被禁用。</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>切换滚轮(每 {1} 毫秒 {0} 格)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>切换滚轮(每 {1} 毫秒 {0} 格)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>锁定时脉冲</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>锁定期间按重复间隔开关输出,而不是持续保持。</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>轴叠加(相对)</value></data>
@@ -4313,6 +4332,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>当物理移动使目标超过阈值时,宏在本次激活的剩余时间内停止写入该轴。</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(让位于物理输入)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>循环点击列表({0} 步)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>循环点击列表({0} 步)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>步骤</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>循环</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
@@ -4395,6 +4415,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>配置文件切换叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
@@ -4583,6 +4604,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>选择 AutoEq 下载的 .txt。通常用这一项：autoeq.app 提供的是文件，而不是可复制的文本。</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>要获得与你的耳机匹配的校正：打开 autoeq.app，选择型号，下载 Custom Parametric Eq，然后使用“从文件导入”。Graphic Eq 下载没有滤波器行，无法导入。</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>已从 {2} 导入 {0} 条频段，前置增益 {1:0.#} dB。</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>已从 {2} 导入 {0} 条频段，前置增益 {1:0.#} dB。</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>该配置文件中没有滤波器行。此处无法读取 AutoEq 的 Graphic Eq 格式，请改为下载 Custom Parametric Eq。当前 EQ 未更改。</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>没有可导入的内容。当前 EQ 未更改。</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>无法读取该文件：{0}</value></data>
@@ -4598,7 +4620,7 @@
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>重置上限</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>拖动控制点可改变其频率与增益。在控制点上滚动滚轮可调整其宽度。</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>输出路径</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器；无法读取接口状态时与默认相同。</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器。无法读取接口状态时与默认相同。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>默认</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>耳机（立体声）</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>耳机（单声道）</value></data>
@@ -5455,11 +5477,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>结束此虚拟控制器上正在运行、且点亮此处所选任一按键的“设置按键颜色”动作；未选择按键时结束全部。</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>清除所有按键颜色</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>清除 {0} 个灯光的按键颜色</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>清除 {0} 个灯光的按键颜色</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，持续 {2} 毫秒</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，持续 {2} 毫秒</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，按住期间</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，按住期间</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，直到清除</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，直到清除</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，在 {2} 毫秒内渐隐</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，在 {2} 毫秒内渐隐</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，在 {2} 毫秒内倒计时熄灭</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} 个灯光呈 {1}，在 {2} 毫秒内倒计时熄灭</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>按键</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>所有灯光</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>未选择按键，因此该动作不会点亮任何灯光。</value></data>

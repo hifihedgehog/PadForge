@@ -76,6 +76,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Kobanda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Eloko te</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekondi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -744,6 +745,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>pavé tactile oyo</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Échantillon {0} kati na {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>échantillons {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>échantillon {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Kombo</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Pesa geste oyo nkombo</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kombo esengeli</value></data>
@@ -1983,6 +1985,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tinda</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ba frame: {0}. Kotinda ezwaka pene na {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Manette ezwaka ba frame {0} kaka, yango wana ba frame ya suka etikamaki: {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Manette ezwaka ba frame {0} kaka, yango wana frame ya suka etikamaki.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kangisa manette na nsinga. Ekobanda lisusu yango moko pene na basekonde 15 sima elili ekoti.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kangisa manette na nsinga. Mpo na kotinda, PadForge ebongolaka yango na mode Xbox mpe elongolaka yango na driver ya Xbox ya Windows mpo na WinUSB, sima ezongisaka nyonso mibale.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ekobongola manette na mode Xbox, ekotya yango na WinUSB mpo na kotinda, sima ekozongisa yango na driver ya Xbox ya Windows mpe ekozongisa yango na mode DInput. Liboso, longola ba manette mosusu nyonso ya Xbox 360. Kotinda sikoyo?</value></data>

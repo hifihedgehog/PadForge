@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Tühjenda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Puudub</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekundit</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutit (0 = mitte kunagi)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide blokeeris PadForge'i juurdepääsu seadmele, mille PadForge oli peitnud, seega lõpetas PadForge seadmete peitmise.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide'i valik „Inverse application cloak“ on sisse lülitatud, seega PadForge ei peida ühtegi seadet.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Käituskeskkonna Windows MIDI Services desinstallimine…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ei saanud käivituda, sest MIDI ei tööta. Põhjus on kirjas Sätete lehel kaardil Windows MIDI Services.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ei saanud käivituda, sest MIDI ei tööta. Vaadake Sätete lehel jaotises Draiverid rida Windows MIDI Services.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} ei saanud käivituda, sest Windows MIDI Services ei loonud oma porti.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} jaoks pole väljundporti valitud. Valige see pesa lehel.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Väljundport „{1}“ ({0}) pole ühendatud. Pesa käivitub, kui port on taas ühendatud.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK keeldus käivitumast. Tavaliselt tähendab see, et Logitech Gaming Software ei tööta.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Ühendatud, ühtegi klahvi pole veel tuvastatud. Lohistage Logitech Gaming Software'is käsk „G-key“ PadForge'i profiilis igale klahvile ja muutke see profiil püsivaks. G600- või G300-hiir peab olema ka sisemälu režiimist väljas.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Töötab, {0} klahvisündmust</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Töötab, {0} klahvisündmus</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Loe analoogklaviatuure</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Loeb, kui sügavale on iga klahv vajutatud tootjate Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA jt analoogklaviatuuridel, igaüks eraldi seadmereana. Kõik toetatud mudelid on loetletud dokumentatsioonis. Razeri klaviatuurid vajavad töötavat Razer Synapse'i. Enamikku teistest loetakse sama kanali kaudu, mida kasutab nende enda konfiguraator, seega sulgege konfiguraator, kui see valik on sisse lülitatud.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Toetatud analoogklaviatuuri ei leitud.</value></data>
@@ -801,7 +803,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Otsi uuendusi</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce kaasaegne edasiarendus, mis on üles ehitatud SDL3, WPF-i ja .NET 10 baasil</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge muudab mis tahes sisendseadme mis tahes virtuaalseks kontrolleriks. Mängupuldid, juhtkangid, klaviatuurid, hiired ja puuteekraanid vastendatakse virtuaalsetele mängukontrolleritele (Xbox, PlayStation, lennujuhtkangid, roolid, kolmandate osapoolte mängupuldid) või klaviatuuri ja hiire / MIDI-väljundile, mida mängud käsitlevad päris riistvarana. Mootoriteks on HIDMaestro ja Windows MIDI Services. Kontrolleri sisendi jaoks kasutab see SDL3-t, klaviatuuri ja hiire jaoks Windows Raw Inputi, mängupõhiseks seadmete peitmiseks HidHide'i ning pakub kaasaegset Fluent Designi liidest vastenduste, surnud tsoonide, tundlikkuskõverate ja jõutagasiside jaoks.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge paneb mis tahes sisendi näima mis tahes kontrollerina. Mängupuldid, juhtkangid, rooliseadmed, klaviatuurid, hiired, puuteekraanid, MIDI-seadmed ja telefonid juhivad virtuaalseid kontrollereid, mida mängud käsitlevad päris riistvarana: Xbox, PlayStation, Nintendo ja Steam puldid, SInputi puldid, VR-käekontrollerid, MIDI-väljund, klaviatuur ja hiir või kohandatud seade, näiteks lennujuhtkang või rool. HIDMaestro loob virtuaalsed mängupuldid, SDL3 loeb kontrollereid, Windows Raw Input loeb klaviatuure ja hiiri, HidHide peidab seadme mängude eest ning Windows MIDI Services edastab MIDI-d sisse ja välja.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Ülevaade</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Kasutatud tehnoloogiad</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Otsi tunnustusi</value></data>
@@ -929,6 +931,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Viivitus tähtede vahel</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekundid trükitud märkide vahel, kuni 1000. 0 trükib kogu teksti korraga.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Ühenduse katkestamine jõudeolekus</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 tähendab mitte kunagi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Üksikasjad</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Katkesta Bluetooth-ühendus, kui seade on USB kaudu ühendatud</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Kiirlaadimine. Kui see kontroller teatab Bluetoothi kaudu ühendatuna, et laeb, katkestatakse Bluetooth-ühendus, et see laeks ilma raadiot toitmata. Arvesse läheb iga USB-toiteallikas, sh seinalaadijad. Kui lülitate Bluetoothi kaabli ühendatuks jäädes uuesti sisse, jäetakse see rahule kuni järgmise lahtiühendamiseni.</value></data>
@@ -993,6 +996,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Saada</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kaadreid: {0}. Saatmine võtab umbes {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroller võtab vastu kuni {0} kaadrit, seega viimased {1} jäeti välja.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontroller võtab vastu kuni {0} kaadrit, seega viimane jäeti välja.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ühendage kontroller kaabliga. See taaskäivitub ise umbes 15 sekundit pärast pildi kohalejõudmist.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ühendage kontroller kaabliga. Saatmiseks lülitab PadForge selle Xboxi režiimi ja viib Windowsi Xboxi draiverilt üle WinUSB-le, seejärel taastab mõlemad.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge lülitab kontrolleri Xboxi režiimi, viib selle saatmiseks WinUSB-le, annab selle seejärel tagasi Windowsi Xboxi draiverile ja lülitab tagasi DInputi režiimi. Eemaldage esmalt kõik muud Xbox 360 kontrollerid. Kas saata nüüd?</value></data>
@@ -1424,8 +1428,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klooni</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Valige selle pesa seade, mida kloonida.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Valitud seadmel pole telgi, nuppe ega POV-lüliteid, mida kloonida.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Kas kloonida {0} sellele pesale 1:1 läbilaskmisena? Paigutuseks saab {1} telge, {2} nuppu ja {3} POV-i ning selle seadme read pesal asendatakse selle enda sisenditega.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Sellel seadmel on rohkem sisendeid, kui laiendatud kontroller mahutab. Vastendati {1} teljest {0}, {3} nupust {2} ja {5} POV-ist {4}. Ülejäänud jäid vastendamata.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Kas kloonida {0} sellele pesale 1:1 läbilaskmisena? Paigutuseks saab {1}, {2} ja {3} ning selle seadme read pesal asendatakse selle enda sisenditega.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Sellel seadmel on rohkem sisendeid, kui laiendatud kontroller mahutab. Vastendati {0} / {1}, {2} / {3} ja {4} / {5}. Ülejäänud jäid vastendamata.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Kontrolleri eelseadistused</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Lisage failist või kontrollerist endast eelseadistus kontrollerile, mida PadForge kaasas ei tarni.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Imporditud</value></data>
@@ -1597,11 +1601,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Nupp, mis allhoidmisel vähendab akumulaatori väärtust</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Alla: nupp, mis allhoidmisel vähendab akumulaatori väärtust.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Kiirus</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Muutumiskiirus ühikutes sekundis. 0.5 = kogu vahemik 2 s jooksul, 2 = kogu vahemik 0.5 s jooksul.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Muutumiskiirus ühikutes sekundis. 0.5 = kogu vahemik 2 s jooksul. 2 = kogu vahemik 0.5 s jooksul.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Kleepuv</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kui see on märgitud, säilitab akumulaator pärast vabastamist oma väärtuse (püsikiirusehoidja). Kui märkimata, naaseb see vabastamisel väärtusele Min.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Akumulaatori alampiir. -1 = täielik negatiivne kahepolaarsete teljesihtmärkide jaoks, 0 = ühepolaarne.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Akumulaatori alampiir. -1 = täielik negatiivne kahepolaarsete teljesihtmärkide jaoks. 0 = ühepolaarne.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Akumulaatori ülempiir. 1 = täielik positiivne.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
@@ -1894,6 +1898,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Määrab määratud pesa valgusriba režiimile kindla väärtuse. Püsib nagu kaardil Valgustus tehtud muudatus, kuni mõni teine toiming või kasutaja seda muudab.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Vaheta valgusriba režiime tsükliliselt</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Vaheta tsükliliselt {0} valgusriba režiimi vahel</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Vaheta tsükliliselt {0} valgusriba režiimi vahel</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Liigutab pesa valgusriba režiimi läbi allpool valitud režiimide. Iga käivitus liigub järgmisele märgitud režiimile. Tsükli asukoht on toimingupõhine ja lähtestub rakenduse taaskäivitamisel.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hoidmine</value></data>
@@ -2172,7 +2177,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ekraani osa, kuhu plaat ulatub</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Häälestab puuteplaadi osuti X/Y-allikaid, mis viivad kursori sõrme asukohta plaadil (vastendage need klaviatuuri / hiire virtuaalse kontrolleri hiire X/Y-le). Suurus 1.00 ja keskpunkt 0.50 vastendavad plaadi kogu ekraanile. Kursori piiramiseks ekraani osaga vähendage suurust ja paigutamiseks liigutage keskpunkti.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ala laius</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekraaniala laius, millele see plaat vastendub, murdosana ekraani laiusest. 1.00 katab kogu laiuse, 0.50 piirab kursori poole ekraaniga.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekraaniala laius, millele see plaat vastendub, murdosana ekraani laiusest. 1.00 katab kogu laiuse. 0.50 piirab kursori poole ekraaniga.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Ala kõrgus</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Ekraaniala kõrgus murdosana ekraani kõrgusest.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Ala keskpunkt X</value></data>
@@ -2183,7 +2188,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Pühkimise haptika</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiksud sõrme liikudes</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Annab kontrolleri haptikaga impulsse, kui sõrm üle selle puuteplaadi liigub, nagu Steam Inputi puuteplaadi tiksud. Steam Controllerid ja Steam Deck tiksuvad plaadi all oleva täituriga, DualSense ja DualShock 4 annavad impulsse vibratsioonimootoritega.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Annab kontrolleri haptikaga impulsse, kui sõrm üle selle puuteplaadi liigub, nagu Steam Inputi puuteplaadi tiksud. Steam Controllerid ja Steam Deck tiksuvad plaadi all oleva täituriga. DualSense ja DualShock 4 annavad impulsse vibratsioonimootoritega.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Luba pühkimise haptika</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Annab lühikese haptilise tiksu iga kord, kui sõrm liigub sellel plaadil teatud vahemaa. Sõrme asetamine või plaadil klõpsamine ei tiksu kunagi. Vaikimisi väljas.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Impulsi intensiivsus</value></data>
@@ -2291,6 +2296,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Kõik näidised on jäädvustatud. Andke žestile nimi ja klõpsake Salvesta.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Näidis {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} näidist</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} näidis</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Jäädvustatavate näidiste arv</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Jäädvustatavad näidised</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Tavaline on 3. Rohkem näidiseid annab kindlama tuvastuse, vähem on kiirem lindistada.</value></data>
@@ -3394,6 +3400,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Püss väljaspool ekraani</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Vaheta osuti režiime tsükliliselt</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Vaheta tsükliliselt {0} osuti režiimi vahel</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Vaheta tsükliliselt {0} osuti režiimi vahel</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Liigutab Wii osuti režiimi läbi allpool valitud režiimide kõigi pesa IR-võimeliste pultide jaoks. Iga käivitus liigub järgmisele märgitud režiimile. Tsükli asukoht on toimingupõhine ja lähtestub rakenduse taaskäivitamisel.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Valige, milliste osuti režiimide vahel makro tsükliliselt vahetab. Iga käivitus liigub järgmisele märgitud režiimile.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Heli</value></data>
@@ -3721,7 +3728,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB kaudu ei leitud ühtegi DualShock 3 kontrollerit. Ühendage see USB-kaabliga ja proovige uuesti.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows ei installi PadForge'i USB-draiverit DualShock 3 jaoks, sest selle allkirjastamissertifikaat pole selles arvutis usaldusväärne.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation-kontrollerite Bluetoothi draiverit ei saanud installida.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetoothi raadiot pole saadaval. Lülitage Bluetooth sisse ja proovige uuesti. Sidumist on vaja ainult juhtmeta mängimiseks, kaabliga ühendatud kontroller töötab ka ilma selleta.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetoothi raadiot pole saadaval. Lülitage Bluetooth sisse ja proovige uuesti. Sidumist on vaja ainult juhtmeta mängimiseks. Kaabliga ühendatud kontroller töötab ka ilma selleta.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Sidumine ei lõppenud. Nurjunud samm on näidatud ülal.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Sulge</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-sildid</value></data>
@@ -3812,7 +3819,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Laske nupust lahti.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Samm {0} / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Muutust ei tuvastatud. Valige Alusta uuesti ja hoidke nuppu all, kui palutakse.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Jälgiti tootja aruandeid: {0}, sündmuste klasse: {1}. Vajutuse ajal: aruandeid {2}, sündmusi {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Jälgitud tootja aruandeid: {0}. Jälgitud sündmuste klasse: {1}. Aruandeid vajutuse ajal: {2}. Sündmusi vajutuse ajal: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Nupp jäädvustatud. Sisestage nimi ja klõpsake Registreeri.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Allikas</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nimi</value></data>
@@ -3828,7 +3835,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Ekspordi…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Impordi…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Eksporditud nuppe: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Eksporditud nuppe: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Imporditud nuppe: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Imporditud nuppe: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Pihuarvuti nupud</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Mänguri pihuarvutitel ja sülearvutitel on nuppe, mida operatsioonisüsteem kunagi kontrollerina ei näita: tagumised nupud, menüüklahvid, rattad, tootja kiirklahvid. Lülitage see sisse, et need üks kord vajutades selgeks õppida ja seejärel vastendada nagu iga teist nuppu. Lisab ka arvuti enda güroskoobi liikumisseadmena.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Luba pihuarvuti nupud</value></data>
@@ -3992,9 +4001,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Kasvav</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Kahanev</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Sidumisi: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Sidumisi: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Leitud: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Kuvatakse {0}/{1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Konfiguratsioone: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Konfiguratsioone: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>täielik kontrolleri tugi</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>osaline kontrolleri tugi</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Otsi mänge</value></data>
@@ -4004,7 +4015,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} kuu eest</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} aasta eest</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Tellijaid: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Tellijaid: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Hääli: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Hääli: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Kõik</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Selle mängu jaoks pole veel konfiguratsioone</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshopis pole mängu {0} jaoks kogukonna kontrollerikonfiguratsioone. Võite olla esimene: looge see Steamis ja see ilmub siia.</value></data>
@@ -4037,6 +4050,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>kiht: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>selle sisendi jaoks pole seadmest sõltumatut käivitajat</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>mängusiseseid toiminguid: {0}, ainult Steamis, mängupoolne liides puudub</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>mängusiseseid toiminguid: {0}, ainult Steamis, mängupoolne liides puudub</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steami kliendi toiming {0}, vaste puudub</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrolleri toimingut {0} ei toetata</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tundmatu sidumistüüp {0}</value></data>
@@ -4114,7 +4128,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Liigutab hiirekursorit iga käivitusega kindla arvu piksleid. Positiivne X liigutab paremale, positiivne Y alla. Lubatud on ka negatiivsed väärtused.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Nihuta kursorit ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Vajutuste loendi tsükkel</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Iga käivitus teeb sammude loendist järgmise vajutuse ja liigub edasi. Kui ringlus on lubatud, algab loend pärast viimast sammu uuesti, muidu peatub käivitamine lõpus.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Iga käivitus teeb sammude loendist järgmise vajutuse ja liigub edasi. Kui ringlus on lubatud, algab loend pärast viimast sammu uuesti. Muidu peatub käivitamine lõpus.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Hiirenupu lülitus</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Iga käivitus lukustab või vabastab hiirenupu. Lukustatud nupp jääb alla kuni järgmise käivituseni või makro keelamiseni.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Lülita hiirenuppu {0}</value></data>
@@ -4127,6 +4141,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Ratta kerimise lülitus</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Iga käivitus lukustab või vabastab pideva kerimise. Lukustatuna saadab sammude arvu kord intervalli jooksul kuni järgmise käivituseni või makro keelamiseni.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Lülita ratta kerimine ({0} sammu iga {1} ms järel)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Lülita ratta kerimine ({0} samm iga {1} ms järel)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulseeri lukustatuna</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Lukustatuna lülitatakse väljundit kordusintervalliga sisse ja välja, selle asemel et seda pidevalt hoida.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Telje liitmine (suhteline)</value></data>
@@ -4148,6 +4163,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kui füüsiline liikumine viib sihi üle läve, lõpetab makro ülejäänud aktiveerimise ajaks telje kirjutamise.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(loovutab füüsilisele)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Vajutuste loendi tsükkel ({0} sammu)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Vajutuste loendi tsükkel ({0} samm)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Sammud</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ringlus</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Lülita klahvid {0}</value></data>
@@ -4231,6 +4247,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profiilivahetuse ülekate</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Kuvab ekraanil ringi või ruudustiku, kui radiaal- või puutemenüü on aktiivne. Menüüd käivituvad ka siis, kui ülekate on väljas.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>loodi ekraanimenüü (seotud lahtreid: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>loodi ekraanimenüü (seotud lahtreid: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menüül pole seotud lahtreid</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüü avajapinda ei toetata ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menüü lahtri ikooni ei tuvastatud ({0}), seega jääb lahtrile tekstisilt</value></data>
@@ -4414,6 +4431,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Valige AutoEq-ist alla laaditud .txt-fail. Seda tulebki kasutada: autoeq.app annab teile faili, mitte kopeeritava teksti.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Kõrvaklappidele sobitatud korrektsiooni jaoks: avage autoeq.app, valige oma mudel, valige Custom Parametric Eq ja laadige see alla, seejärel kasutage nuppu Impordi failist. Graphic Eq allalaadimises pole filtriridu ja seda ei saa importida.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Imporditi {0} riba eelvõimendusega {1:0.#} dB (allikas: {2}).</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Imporditi {0} riba eelvõimendusega {1:0.#} dB (allikas: {2}).</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Selles profiilis pole filtriridu. AutoEq-i Graphic Eq eksporti ei saa siin lugeda. Laadige selle asemel alla Custom Parametric Eq. Praegune ekvalaiser jääb muutmata.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Pole midagi importida. Praegune ekvalaiser jääb muutmata.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Seda faili ei saanud lugeda: {0}</value></data>

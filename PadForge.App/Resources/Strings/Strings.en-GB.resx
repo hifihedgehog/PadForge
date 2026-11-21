@@ -98,7 +98,7 @@
 
   <!-- ═══ About ═══ -->
   <data name="About_Tagline" xml:space="preserve"><value>Modern fork of x360ce, rebuilt with SDL3, WPF and .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice and touchscreens are mapped to virtual game controllers (Xbox, PlayStation, flight sticks, wheels, third-party gamepads) or keyboard+mouse / MIDI output that games treat as real hardware. Powered by HIDMaestro and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, HidHide for per-game device masking, and provides a modern Fluent Design interface for mapping, deadzones, sensitivity curves and force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge makes any input look like any controller. Gamepads, joysticks, wheels, keyboards, mice, touch screens, MIDI devices and phones drive virtual controllers that games treat as real hardware: Xbox, PlayStation, Nintendo and Steam pads, SInput pads, VR hand controllers, MIDI output, a keyboard and mouse or a custom device such as a flight stick or a wheel. HIDMaestro creates the virtual gamepads, SDL3 reads controllers, Windows Raw Input reads keyboards and mice, HidHide hides a device from games and Windows MIDI Services carries MIDI in and out.</value></data>
   <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D controller visualisation.</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Touchpad shape-template matcher (Circle / Square / Triangle / Z / Tick and custom recorded gestures). C# re-derivation of the JavaScript reference by Magrofuoco, Vatavu, Anthony and Wobbrock.</value></data>
   <data name="About_License" xml:space="preserve"><value>Licence</value></data>
@@ -204,8 +204,8 @@
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Manage the controller presets you added: import one from a file or a connected device, export one to JSON or delete one you no longer need.</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Map every axis, button and hat on the selected device straight through to the same-numbered virtual output. Sizes the layout to the device and replaces this device’s rows on the slot with a 1:1 passthrough.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>The selected device exposes no axes, buttons or hats to clone.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clone {0} onto this slot as a 1:1 passthrough? The layout becomes {1} axes, {2} buttons and {3} POVs, and this device’s rows on the slot are replaced with its own inputs.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>This device has more inputs than an Extended controller can carry. Mapped {0} of {1} axes, {2} of {3} buttons and {4} of {5} POVs. The rest were left unmapped.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clone {0} onto this slot as a 1:1 passthrough? The layout becomes {1}, {2} and {3}, and this device’s rows on the slot are replaced with its own inputs.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>This device has more inputs than an Extended controller can carry. Mapped {0} of {1}, {2} of {3} and {4} of {5}. The rest were left unmapped.</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Deleted “{0}”.</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Customise</value></data>
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Snap every override field back to the current profile’s catalogue values (Product String, VID, PID, stick/trigger/POV/button counts) and clear the OEM override flag.</value></data>
@@ -633,4 +633,5 @@
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Aim Engage Button, Engage Mode, Gyro On, Re-Centre, Easy Aim Threshold</value></data>
   <data name="Pad_GyroActivation_Needs_Tooltip" xml:space="preserve"><value>Whether one ticked button is enough or every ticked button must be held.</value></data>
   <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>The Cross and its dot from Skarbo’s CSGOCrosshair (no licence published), the Circle, picture and outlined styles from Crosshair-Overlay (MIT) and the magnifier’s Lens and full-screen zoom from Microsoft’s Windows-classic-samples (MIT). Documentation only, no code ships.</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Clear key colours on {0} light</value></data>
 </root>

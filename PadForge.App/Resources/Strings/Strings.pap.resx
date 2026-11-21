@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Limpia</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ningun</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekonde</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>No asigná</value></data>
@@ -181,7 +182,7 @@
   <data name="Status_UninstallingHidHide" xml:space="preserve"><value>Ta deshinstalá HidHide…</value></data>
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide a bloká PadForge di un aparato ku PadForge a skonde, p'esei PadForge a para di skonde aparatonan.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Ta deshinstalá e runtime di Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} no por a kuminsá pasobra MIDI no ta kore. E karchi Windows MIDI Services den Konfigurashon ta bisa dikon.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} no por a kuminsá pasobra MIDI no ta kore. Wak Windows MIDI Services den Konfigurashon, bou di Driver.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} no por a kuminsá pasobra Windows MIDI Services no a krea su pòrt.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} no tin pòrt di salida. Skohe un riba su página.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>E pòrt di salida “{1}” di {0} no ta konektá. E slot ta kuminsá apenas e pòrt bolbe.</value></data>
@@ -375,6 +376,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod di wega</value></data>
   <data name="Settings_GKeys" xml:space="preserve"><value>Lesa teklanan G di Logitech</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ta kore, {0} evento di tekla</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lesa teklado análogo</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No a haña ningun teklado análogo soportá.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Kuminsá Razer Synapse pa lesa {0}.</value></data>
@@ -1283,6 +1285,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>e touchpad aki</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Mwestra {0} di {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} mwestra</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} mwestra</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nòmber</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Duna e gesto aki un nòmber</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Mester di un nòmber</value></data>
@@ -2039,7 +2042,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Eksportá…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importá…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>A eksportá {0} botòn.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>A eksportá {0} botòn.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>A importá {0} botòn.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>A importá {0} botòn.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botònnan di PC portátil</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivá botònnan di PC portátil</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesto di mouse</value></data>
@@ -2110,8 +2115,10 @@
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Mas nobo</value></data>
   <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Mas voto</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} asignashon</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} asignashon</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ta mustra {0} di {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurashon</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurashon</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Buska wega</value></data>
   <data name="Workshop_ByLine_Format" xml:space="preserve"><value>dor di {0} · aktualisá {1}</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>awe</value></data>
@@ -2119,6 +2126,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} luna pasá</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} aña pasá</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} voto</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} voto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tur</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ainda no tin konfigurashon pa e wega aki</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>No por konektá ku Steam</value></data>
@@ -2831,6 +2839,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Manda</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuadro: {0}. Pa manda ta dura mas o ménos {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>E kontrol ta aseptá máksimo {0} kuadro, pues e último {1} a keda afó.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>E kontrol ta aseptá máksimo {0} kuadro, pues e último kuadro a keda afó.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektá e kontrol ku kabel. E ta reinisiá su mes mas o ménos 15 sekonde despues ku e potrèt ta aden.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektá e kontrol ku kabel. Pa e envio, PadForge ta kambia e kontrol na modo Xbox i ta move e for di e driver Xbox di Windows pa WinUSB, despues e ta pone tur dos bèk.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge lo kambia e kontrol na modo Xbox, move e pa WinUSB pa e envio, despues duna e bèk na e driver Xbox di Windows i kambia e bèk na modo DInput. Deskonektá tur otro kontrol Xbox 360 promé. Manda awor?</value></data>

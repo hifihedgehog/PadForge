@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sayfa Sağa</value></data>
   <data name="Common_None" xml:space="preserve"><value>Yok</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>dk</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>saniye</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>dakika (0 = hiç)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide, PadForge'un gizlediği bir cihaza PadForge'un erişimini engellediği için PadForge cihazları gizlemeyi bıraktı.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide'ın Inverse application cloak seçeneği açık olduğu için PadForge hiçbir cihazı gizlemiyor.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services çalışma zamanı kaldırılıyor…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI çalışmadığı için {0} başlatılamadı. Nedeni Ayarlar'daki Windows MIDI Services kartında yazıyor.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI çalışmadığı için {0} başlatılamadı. Ayarlar'da Sürücüler altındaki Windows MIDI Services satırına bakın.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services portunu oluşturmadığı için {0} başlatılamadı.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} için çıkış portu seçilmemiş. Kendi sayfasından bir port seçin.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} için seçilen “{1}” çıkış portu bağlı değil. Port geri geldiğinde yuva başlar.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK başlamayı reddetti. Bunun nedeni çoğunlukla Logitech Gaming Software'in çalışmamasıdır.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Bağlandı, henüz tuş görülmedi. Logitech Gaming Software'de, PadForge profilindeki her tuşa G-key komutunu sürükleyin ve bu profili kalıcı yapın. Ayrıca G600 veya G300 farenin dahili bellek modundan çıkarılmış olması gerekir.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Çalışıyor, {0} tuş olayı</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Çalışıyor, {0} tuş olayı</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analog klavyeleri oku</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA ve diğer üreticilerin analog klavyelerinde her tuşa ne kadar basıldığını okur ve her klavyeyi kendi cihaz satırında gösterir. Desteklenen tüm modeller belgelerde listelenir. Razer klavyeler için Razer Synapse'in çalışıyor olması gerekir. Diğerlerinin çoğu, kendi yapılandırma yazılımının kullandığı kanal üzerinden okunduğundan, bu seçenek açıkken o yazılımı kapatın.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Desteklenen bir analog klavye bulunamadı.</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Güncellemeleri denetle</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce'nin SDL3, WPF ve .NET 10 ile yeniden yazılmış modern çatalı</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge, herhangi bir giriş cihazını herhangi bir sanal kontrolcüye dönüştürür. Oyun kumandaları, joystickler, klavyeler, fareler ve dokunmatik ekranlar, oyunların gerçek donanım olarak gördüğü sanal oyun kontrolcülerine (Xbox, PlayStation, uçuş kolları, direksiyonlar, üçüncü taraf oyun kumandaları) veya klavye+fare / MIDI çıkışına eşlenir. Gücünü HIDMaestro ve Windows MIDI Services'ten alır. Kontrolcü girişi için SDL3, klavye ve fare için Windows Raw Input, oyun başına cihaz gizleme için HidHide kullanır ve eşleme, ölü bölgeler, hassasiyet eğrileri ve kuvvet geri bildirimi için modern bir Fluent Design arayüzü sunar.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge, her girişi istediğiniz kontrolcü gibi gösterir. Oyun kumandaları, joystickler, direksiyonlar, klavyeler, fareler, dokunmatik ekranlar, MIDI cihazları ve telefonlar, oyunların gerçek donanım olarak gördüğü sanal kontrolcüleri sürer: Xbox, PlayStation, Nintendo ve Steam kumandaları, SInput kumandaları, VR el kontrolcüleri, MIDI çıkışı, klavye ve fare ya da uçuş kolu veya direksiyon gibi özel bir cihaz. Sanal oyun kumandalarını HIDMaestro oluşturur, kontrolcüleri SDL3 okur, klavye ve fareleri Windows Raw Input okur, HidHide bir cihazı oyunlardan gizler ve Windows MIDI Services MIDI girişini ve çıkışını taşır.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Genel bakış</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Kullanılan teknolojiler</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Katkıda bulunanlarda ara</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Harfler arası gecikme</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Yazılan karakterler arasındaki milisaniye, en fazla 1000. 0 değeri tüm metni bir kerede yazar.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Boştayken bağlantıyı kes</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 hiçbir zaman demektir</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Ayrıntılar</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ile takıldığında Bluetooth bağlantısını kes</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hızlı şarj. Bu kontrolcü Bluetooth ile bağlıyken şarj olduğunu bildirdiğinde Bluetooth bağlantısı kesilir. Böylece radyoya güç harcamadan şarj olur. Duvar şarj cihazları dahil her USB güç kaynağı sayılır. Kablo takılıyken Bluetooth'u yeniden açarsanız, kablo bir sonraki çıkarılışına kadar bağlantıya dokunulmaz.</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Gönder</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kare sayısı: {0}. Göndermek yaklaşık {1} sürer.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolcü en fazla {0} kare alır, bu yüzden son {1} kare dışarıda bırakıldı.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontrolcü en fazla {0} kare alır, bu yüzden son kare dışarıda bırakıldı.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kontrolcüyü kabloyla bağlayın. Resim girdikten yaklaşık 15 saniye sonra kendiliğinden yeniden başlar.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kontrolcüyü kabloyla bağlayın. Göndermek için PadForge onu Xbox moduna alır, Windows'un Xbox sürücüsünden WinUSB'ye geçirir, sonra ikisini de geri koyar.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge kontrolcüyü Xbox moduna alacak, göndermek için WinUSB'ye geçirecek, sonra Windows'un Xbox sürücüsüne geri verip DInput moduna döndürecek. Önce diğer tüm Xbox 360 kontrolcülerini çıkarın. Şimdi gönderilsin mi?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows artık {0} ile işaretçiyi hareket ettirmiyor. Bunu istemediyseniz hiçbir şey yapmayın, geri gelir.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows artık {0} ile işaretçiyi hareket ettirmiyor. Bunu istemediyseniz hiçbir şey yapmayın, geri gelir.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} saniye içinde geri verilecek</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>{0} saniye içinde geri verilecek</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Tut</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Geri ver</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Önce bu modelin diğer klavyelerini çıkarın. Windows takılı olanların hepsini aynı anda PadForge'un sürücüsüne taşır ve hiçbiriyle yazı yazmaz.</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonla</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Klonlamak için bu yuvadaki bir cihazı seçin.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Seçili cihazda klonlanacak eksen, düğme veya şapka yok.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} bu yuvaya 1:1 doğrudan aktarım olarak klonlansın mı? Düzen {1} eksen, {2} düğme ve {3} POV olur ve bu cihazın yuvadaki satırları kendi girişleriyle değiştirilir.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Bu cihazda bir Genişletilmiş kontrolcünün taşıyabileceğinden fazla giriş var. {1} eksenden {0} tanesi, {3} düğmeden {2} tanesi ve {5} POV'dan {4} tanesi eşlendi. Geri kalanlar eşlenmeden bırakıldı.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} bu yuvaya 1:1 doğrudan aktarım olarak klonlansın mı? Düzen {1}, {2} ve {3} olur ve bu cihazın yuvadaki satırları kendi girişleriyle değiştirilir.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Bu cihazda bir Genişletilmiş kontrolcünün taşıyabileceğinden fazla giriş var. {1} içinden {0}, {3} içinden {2} ve {5} içinden {4} eşlendi. Geri kalanlar eşlenmeden bırakıldı.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Kontrolcü ön ayarları</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Dosyadan veya kontrolcünün kendisinden, PadForge'un içermediği bir kontrolcü için ön ayar ekleyin.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>İçe aktarılanlar</value></data>
@@ -1785,11 +1790,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Basılı tutulurken biriktiriciyi aşağı doğru azaltan düğme</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Aşağı: basılı tutulurken biriktiriciyi aşağı doğru azaltan düğme.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hız</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Birim/saniye cinsinden tarama hızı. 0.5 = 2 saniyede tam aralık; 2 = 0.5 saniyede tam aralık.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Birim/saniye cinsinden tarama hızı. 0.5 = 2 saniyede tam aralık. 2 = 0.5 saniyede tam aralık.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Yapışkan</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>İşaretliyken biriktirici bırakıldıktan sonra değerini korur (hız sabitleyici gibi). İşaretli değilken bırakıldığında Min değerine geri döner.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Biriktiricinin alt sınırı. -1 = çift kutuplu eksen hedefleri için tam negatif; 0 = tek kutuplu.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Biriktiricinin alt sınırı. -1 = çift kutuplu eksen hedefleri için tam negatif. 0 = tek kutuplu.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Biriktiricinin üst sınırı. 1 = tam pozitif.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Atanmış yuvanın ışık çubuğu modunu belirli bir değere ayarlar. Başka bir eylem veya kullanıcı değiştirene kadar, Aydınlatma kartındaki bir düzenleme gibi kalıcıdır.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Işık çubuğu modları arasında dolaş</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} ışık çubuğu modu arasında dolaş</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} ışık çubuğu modu arasında dolaş</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Yuvanın ışık çubuğu modunu aşağıda seçilen modlar arasında ilerletir. Her tetiklenişte bir sonraki işaretli moda geçer. Döngü konumu eyleme özeldir ve uygulama yeniden başlatıldığında sıfırlanır.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tutma</value></data>
@@ -2361,7 +2367,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Yüzeyin ekranda ulaştığı bölge</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>İmleci parmağınızın yüzeydeki konumuna taşıyan Dokunmatik yüzey işaretçi X/Y kaynaklarını ayarlar (bunları bir Klavye / Fare sanal kontrolcüsünde fare X/Y eksenine eşleyin). 1.00 boyut ve 0.50 merkez, yüzeyi tüm ekrana eşler. İmleci ekranın bir bölümüyle sınırlamak için boyutu küçültün ve bölgeyi yerleştirmek için merkezi taşıyın.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Bölge genişliği</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bu yüzeyin eşlendiği ekran alanının genişliği (ekran genişliğinin kesri olarak). 1.00 tüm genişliği kaplar; 0.50 imleci ekranın yarısıyla sınırlar.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bu yüzeyin eşlendiği ekran alanının genişliği (ekran genişliğinin kesri olarak). 1.00 tüm genişliği kaplar. 0.50 imleci ekranın yarısıyla sınırlar.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Bölge yüksekliği</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Ekran alanının yüksekliği (ekran yüksekliğinin kesri olarak).</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Bölge merkezi X</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Tüm örnekler yakalandı. Jeste bir ad verin ve Kaydet'e tıklayın.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Örnek {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} örnek</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} örnek</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Yakalanacak örnek sayısı</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Yakalanacak örnekler</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Standart değer 3'tür. Daha fazla örnek daha sağlam bir eşleşme verir, daha az örnek kaydı hızlandırır.</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Tabanca ekran dışı</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>İşaretçi modları arasında dolaş</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} işaretçi modu arasında dolaş</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} işaretçi modu arasında dolaş</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Yuvadaki IR özellikli her kumanda için Wii işaretçi modunu aşağıda seçilen modlar arasında ilerletir. Her tetiklenişte bir sonraki işaretli moda geçer. Döngü konumu eyleme özeldir ve uygulama yeniden başlatıldığında sıfırlanır.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Makronun hangi işaretçi modları arasında dolaşacağını seçin. Her tetiklenişte bir sonraki işaretli moda geçer.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ses</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Düğmeyi bırakın.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Adım {0} / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Hiçbir değişiklik görülmedi. Baştan başla'yı seçin, sonra istendiğinde düğmeye basıp basılı tutun.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} üretici raporu ve {1} olay sınıfı izlendi. Basış sırasında: {2} rapor, {3} olay.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>İzlenen üretici raporları: {0}. İzlenen olay sınıfları: {1}. Basış sırasındaki raporlar: {2}. Basış sırasındaki olaylar: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Düğme yakalandı. Bir ad girin ve Kaydet'e tıklayın.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Kaynak</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Ad</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Tümünü unut</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Bu model için öğrenilen tüm adları kaldır.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} ad dışa aktarıldı.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0} ad dışa aktarıldı.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} ad içe aktarıldı.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0} ad içe aktarıldı.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Başka bir model olan {1} için {0} ad içe aktarıldı.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Başka bir model olan {1} için {0} ad içe aktarıldı.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Bu dosyada tuş ışığı adı yok.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>İçe aktar…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} düğme dışa aktarıldı.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} düğme dışa aktarıldı.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} düğme içe aktarıldı.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} düğme içe aktarıldı.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>El tipi bilgisayar düğmeleri</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>El tipi oyun bilgisayarlarında ve dizüstü bilgisayarlarda, işletim sisteminin hiçbir zaman kontrolcü olarak göstermediği düğmeler bulunur: arka pedallar, menü tuşları, tekerlekler, üreticiye özel kısayol tuşları. Bunlara basarak bir kez öğretmek için bu seçeneği açın, ardından onları diğer düğmeler gibi eşleyin. Ayrıca makinenin kendi jiroskopunu hareket cihazı olarak ekler.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>El tipi bilgisayar düğmelerini etkinleştir</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Artan</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Azalan</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} atama</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} atama</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} bulundu</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} öğeden {0} tanesi gösteriliyor</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} yapılandırma</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} yapılandırma</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>tam kontrolcü desteği</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>kısmi kontrolcü desteği</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Oyun ara</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ay önce</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} yıl önce</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abone</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} abone</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} oy</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} oy</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tümü</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Bu oyun için henüz yapılandırma yok</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Atölyesi'nde {0} için topluluk kontrolcü yapılandırması yok. İlk siz olabilirsiniz: Steam'de bir tane oluşturun, burada görünür.</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>katman: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>bu giriş için cihazdan bağımsız tetikleyici yok</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} oyun içi eylem, yalnızca Steam, oyun tarafında kanca yok</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} oyun içi eylem, yalnızca Steam, oyun tarafında kanca yok</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam istemcisi eylemi {0}, karşılığı yok</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrolcü eylemi {0} desteklenmiyor</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>bilinmeyen atama türü {0}</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Tekerlek kaydırmasını aç/kapat</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Her tetiklenişte sürekli kaydırmayı kilitler veya kilidini açar. Kilitliyken, bir sonraki tetiklenişe veya makro devre dışı bırakılana kadar her aralıkta bir kez adım sayısını gönderir.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Tekerlek kaydırmasını aç/kapat (her {1} ms'de {0} adım)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Tekerlek kaydırmasını aç/kapat (her {1} ms'de {0} adım)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Kilitliyken darbeli çalış</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Kilitliyken çıkışı sürekli tutmak yerine yineleme aralığında açıp kapatır.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Eksene ekle (göreli)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Fiziksel hareket hedefi eşiğin ötesine ittiğinde makro, etkinleşmenin geri kalanında eksene yazmayı bırakır.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(fiziksele öncelik verir)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Basış listesinde dolaş ({0} adım)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Basış listesinde dolaş ({0} adım)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Adımlar</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Başa sar</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tuşları aç/kapat: {0}</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil değiştirme kaplaması</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Dairesel veya dokunmatik bir menü devredeyken ekrandaki halkayı veya ızgarayı gösterir. Kaplama kapalıyken de menüler tetiklenir.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ekran menüsü oluşturuldu ({0} atanmış hücre)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ekran menüsü oluşturuldu ({0} atanmış hücre)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menüde atanmış hücre yok</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüyü barındıran yüzey desteklenmiyor ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menü hücresi simgesi tanınmadı ({0}), bu yüzden hücre metin etiketini korur</value></data>
@@ -4639,6 +4660,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq'nun indirdiği .txt dosyasını seçin. Kullanılacak seçenek budur: autoeq.app size kopyalanabilir metin yerine bir dosya verir.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Kulaklığınıza uygun bir düzeltme için: autoeq.app adresini açın, modelinizi seçin, Custom Parametric Eq seçeneğini belirleyip indirin, ardından Dosyadan içe aktar'ı kullanın. Graphic Eq indirmesinde filtre satırları yoktur ve içe aktarılamaz.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} kaynağından {0} bant ve {1:0.#} dB ön amfi içe aktarıldı.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} kaynağından {0} bant ve {1:0.#} dB ön amfi içe aktarıldı.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Bu profilde filtre satırı yok. AutoEq'nun Graphic Eq dışa aktarımı burada okunamaz. Bunun yerine Custom Parametric Eq olanı indirin. Geçerli EQ değişmedi.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>İçe aktarılacak bir şey yok. Geçerli EQ değişmedi.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Dosya okunamadı: {0}</value></data>
@@ -5500,11 +5522,17 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Bu sanal denetleyicide çalışan ve burada seçilen tuşlardan birini yakan Tuş renklerini ayarla eylemlerini sonlandırır, hiç tuş seçilmediyse hepsini sonlandırır.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Tüm tuş renklerini temizle</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0} ışığın tuş renklerini temizle</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>{0} ışığın tuş renklerini temizle</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms boyunca</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms boyunca</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} ışık {1} renginde, basılı tutulduğu sürece</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} ışık {1} renginde, basılı tutulduğu sürece</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} ışık {1} renginde, temizlenene kadar</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} ışık {1} renginde, temizlenene kadar</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde sönerek</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde sönerek</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde geri sayarak</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} ışık {1} renginde, {2} ms içinde geri sayarak</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Tuşlar</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Her ışık</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Seçili tuş yok, bu yüzden eylem hiçbir şeyi yakmaz.</value></data>

@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Side til høyre</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekunder</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutter (0 = aldri)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide sperret PadForge ute fra en enhet som PadForge hadde skjult, så PadForge sluttet å skjule enheter.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Inverse application cloak i HidHide er slått på, så PadForge skjuler ingen enheter.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Avinstallerer kjøretidsmiljøet for Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kunne ikke starte fordi MIDI ikke kjører. Kortet Windows MIDI Services i Innstillinger forklarer hvorfor.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kunne ikke starte fordi MIDI ikke kjører. Se Windows MIDI Services i Innstillinger, under Drivere.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} kunne ikke starte fordi Windows MIDI Services ikke opprettet porten sin.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} har ingen utgangsport. Velg en på siden til kontrolleren.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Utgangsporten «{1}» for {0} er ikke tilkoblet. Sporet starter når porten er tilbake.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ville ikke starte. Som regel kjører ikke Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Tilkoblet, ingen tast registrert ennå. I Logitech Gaming Software drar du G-key-kommandoen til hver tast i PadForge-profilen og gjør profilen vedvarende. En G600- eller G300-mus må også være ute av modusen for innebygd minne.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Kjører, {0} tastehendelser</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Kjører, {0} tastehendelse</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Les analoge tastaturer</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leser hvor langt hver tast er trykket ned på analoge tastaturer fra Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA og andre produsenter, hvert som sin egen enhetsrad. Dokumentasjonen viser alle støttede modeller. Razer-tastaturer krever at Razer Synapse kjører. De fleste andre leses over den samme kanalen som deres eget konfigurasjonsprogram bruker, så lukk konfigurasjonsprogrammet mens dette er på.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Fant ikke noe støttet analogt tastatur.</value></data>
@@ -814,7 +816,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Se etter oppdateringer</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne forgrening av x360ce, bygd på nytt med SDL3, WPF og .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge gjør enhver inndataenhet om til en hvilken som helst virtuell kontroller. Gamepader, joysticker, tastaturer, mus og berøringsskjermer tilordnes virtuelle spillkontrollere (Xbox, PlayStation, styrespaker, ratt, gamepader fra tredjeparter) eller utdata som tastatur+mus / MIDI, som spill behandler som ekte maskinvare. Drives av HIDMaestro og Windows MIDI Services. Programmet bruker SDL3 for kontrollerinndata, Windows Raw Input for tastatur og mus og HidHide for å maskere enheter per spill, og har et moderne Fluent Design-grensesnitt for tilordning, dødsoner, følsomhetskurver og force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge får enhver inndata til å se ut som en hvilken som helst kontroller. Gamepader, joysticker, ratt, tastaturer, mus, berøringsskjermer, MIDI-enheter og telefoner styrer virtuelle kontrollere som spill behandler som ekte maskinvare: Xbox-, PlayStation-, Nintendo- og Steam-kontrollere, SInput-kontrollere, VR-håndkontrollere, MIDI-utdata, et tastatur og en mus, eller en egendefinert enhet som en styrespak eller et ratt. HIDMaestro oppretter de virtuelle gamepadene, SDL3 leser kontrollere, Windows Raw Input leser tastaturer og mus, HidHide skjuler en enhet for spill, og Windows MIDI Services formidler MIDI inn og ut.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Sammendrag</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Bygd med</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Søk i bidragsytere</value></data>
@@ -942,6 +944,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Forsinkelse mellom tegn</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunder mellom hvert tegn, opptil 1000. 0 skriver hele teksten på én gang.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Frakobling ved inaktivitet</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 betyr aldri</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detaljer</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Koble fra Bluetooth når den er koblet til med USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hurtiglading. Når denne kontrolleren melder at den lader mens den er koblet til over Bluetooth, brytes Bluetooth-forbindelsen slik at den lader uten å drive radioen. Alle USB-strømkilder teller, også veggladere. Hvis du slår på Bluetooth igjen mens kabelen sitter i, får den være i fred til neste gang kabelen trekkes ut.</value></data>
@@ -1006,6 +1009,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Send</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bilder: {0}. Sendingen tar omtrent {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolleren tar høyst {0} bilder, så de siste {1} ble utelatt.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontrolleren tar høyst {0} bilder, så det siste ble utelatt.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Koble kontrolleren til med kabel. Den starter på nytt av seg selv omtrent 15 sekunder etter at bildet er overført.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Koble kontrolleren til med kabel. Under sendingen setter PadForge den i Xbox modus og flytter den fra Windows sin Xbox driver til WinUSB, og setter begge tilbake etterpå.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge setter kontrolleren i Xbox modus, flytter den til WinUSB under sendingen, gir den så tilbake til Windows sin Xbox driver og setter den tilbake i DInput modus. Koble først fra alle andre Xbox 360 kontrollere. Sende nå?</value></data>
@@ -1198,6 +1202,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows flytter ikke lenger pekeren med {0}. Hvis du ikke mente det, gjør ingenting, så kommer det tilbake.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows flytter ikke lenger pekeren med {0}. Hvis du ikke mente det, gjør ingenting, så kommer det tilbake.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Gir det tilbake om {0} sekunder</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Gir det tilbake om {0} sekund</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behold</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Gi tilbake</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koble fra de andre tastaturene av denne modellen først. Windows flytter alle tilkoblede tastaturer av modellen til PadForge-driveren samtidig og slutter å skrive med hvert av dem.</value></data>
@@ -1612,8 +1617,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klon</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Velg en enhet i dette sporet som skal klones.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Den valgte enheten har ingen akser, knapper eller hattbrytere å klone.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Vil du klone {0} til dette sporet som en 1:1-gjennomkobling? Oppsettet blir {1} akser, {2} knapper og {3} POV-er, og radene for denne enheten i sporet erstattes med enhetens egne inndata.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Denne enheten har flere inndata enn en utvidet kontroller kan bære. Tilordnet {0} av {1} akser, {2} av {3} knapper og {4} av {5} POV-er. Resten ble ikke tilordnet.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Vil du klone {0} til dette sporet som en 1:1-gjennomkobling? Oppsettet blir {1}, {2} og {3}, og radene for denne enheten i sporet erstattes med enhetens egne inndata.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Denne enheten har flere inndata enn en utvidet kontroller kan bære. Tilordnet {0} av {1}, {2} av {3} og {4} av {5}. Resten ble ikke tilordnet.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Kontrollerforhåndsinnstillinger</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Legg til en forhåndsinnstilling for en kontroller PadForge ikke leverer, fra en fil eller fra selve kontrolleren.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importert</value></data>
@@ -1785,11 +1790,11 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knapp som senker akkumulatoren gradvis mens den holdes inne</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Ned: knapp som senker akkumulatoren gradvis mens den holdes inne.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hastighet</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Endringshastighet i enheter per sekund. 0.5 = hele området på 2 s; 2 = hele området på 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Endringshastighet i enheter per sekund. 0.5 = hele området på 2 s. 2 = hele området på 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Behold verdi</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Når dette er avmerket, beholder akkumulatoren verdien etter at du slipper (cruisekontroll). Når det ikke er avmerket, går den tilbake til Min når du slipper.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Nedre grense for akkumulatoren. -1 = fullt negativ for bipolare akser; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Nedre grense for akkumulatoren. -1 = fullt negativ for bipolare akser. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Øvre grense for akkumulatoren. 1 = fullt positiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
@@ -2083,6 +2088,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setter modusen for lyslisten i det tilordnede sporet til en bestemt verdi. Varer som en endring på kortet Belysning til en annen handling eller brukeren endrer den.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Bla gjennom lyslistmoduser</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Gå gjennom {0} lyslistmoduser</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Gå gjennom {0} lyslistmodus</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Flytter modusen for lyslisten i sporet gjennom modusene som er valgt nedenfor. Hver utløsning går til neste avmerkede modus. Posisjonen i syklusen gjelder per handling og tilbakestilles når appen startes på nytt.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hold</value></data>
@@ -2361,7 +2367,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Delen av skjermen platen når</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Justerer kildene Peker X/Y for berøringsplaten, som flytter pekeren til fingerens posisjon på platen (tilordne dem til mus X/Y på en virtuell kontroller av typen Tastatur / mus). Størrelse 1.00 med midtpunkt 0.50 tilordner platen til hele skjermen. Reduser størrelsen for å holde pekeren innenfor en del av skjermen, og flytt midtpunktet for å plassere den.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Områdebredde</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bredden på skjermområdet denne platen tilordnes, som en brøkdel av skjermbredden. 1.00 dekker hele bredden; 0.50 holder pekeren innenfor halve skjermen.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bredden på skjermområdet denne platen tilordnes, som en brøkdel av skjermbredden. 1.00 dekker hele bredden. 0.50 holder pekeren innenfor halve skjermen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Områdehøyde</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Høyden på skjermområdet, som en brøkdel av skjermhøyden.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Områdets midtpunkt X</value></data>
@@ -2372,7 +2378,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Sveipehaptikk</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tikk mens fingeren beveger seg</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sender haptiske pulser i kontrolleren mens fingeren beveger seg over denne berøringsplaten, som styreflate-tikkene i Steam Input. Steam Controller og Steam Deck tikker aktuatoren under platen; DualSense og DualShock 4 pulserer vibrasjonsmotorene.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sender haptiske pulser i kontrolleren mens fingeren beveger seg over denne berøringsplaten, som styreflate-tikkene i Steam Input. Steam Controller og Steam Deck tikker aktuatoren under platen. DualSense og DualShock 4 pulserer vibrasjonsmotorene.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktiver sveipehaptikk</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Sender et kort haptisk tikk hver gang fingeren beveger seg en bestemt avstand på denne platen. Å sette ned en finger eller klikke på platen gir aldri tikk. Av som standard.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensitet</value></data>
@@ -2480,6 +2486,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle prøvene er fanget. Gi gesten et navn og klikk Lagre.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Prøve {0} av {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} prøver</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} prøve</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Antall prøver</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Prøver som skal tas opp</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 er standard. Flere prøver gir sikrere gjenkjenning, og færre går raskere å ta opp.</value></data>
@@ -3585,6 +3592,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistol utenfor skjermen</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Bla gjennom pekermoduser</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Gå gjennom {0} pekermoduser</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Gå gjennom {0} pekermodus</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Flytter Wii-pekermodusen gjennom modusene som er valgt nedenfor, for hver fjernkontroll med IR i sporet. Hver utløsning går til neste avmerkede modus. Posisjonen i syklusen gjelder per handling og tilbakestilles når appen startes på nytt.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Velg hvilke pekermoduser makroen skal gå gjennom. Hver utløsning går videre til neste avmerkede modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Lyd</value></data>
@@ -3916,7 +3924,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Fant ingen DualShock 3 på USB. Koble den til med en USB-kabel og prøv igjen.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows vil ikke installere USB-driveren fra PadForge for DualShock 3, fordi signeringssertifikatet ikke er klarert på denne PC-en.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Bluetooth-driveren for PlayStation-kontrollere kunne ikke installeres.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Ingen Bluetooth-radio er tilgjengelig. Slå på Bluetooth og prøv igjen. Sammenkobling trengs bare for trådløst spill; en kontroller koblet til med kabel fungerer uten.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Ingen Bluetooth-radio er tilgjengelig. Slå på Bluetooth og prøv igjen. Sammenkobling trengs bare for trådløst spill. En kontroller koblet til med kabel fungerer uten.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Sammenkoblingen ble ikke fullført. Trinnet som mislyktes, vises ovenfor.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Lukk</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-brikker</value></data>
@@ -4007,7 +4015,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Slipp knappen.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Trinn {0} av {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Ingen endring ble registrert. Velg Start på nytt, og trykk og hold knappen når du blir bedt om det.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Overvåket {0} leverandørrapporter og {1} hendelsesklasser. Under trykket: {2} rapporter, {3} hendelser.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Leverandørrapporter overvåket: {0}. Hendelsesklasser overvåket: {1}. Rapporter under trykket: {2}. Hendelser under trykket: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Knappen er fanget opp. Skriv inn et navn og klikk Registrer.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Kilde</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Navn</value></data>
@@ -4043,12 +4051,17 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Glem alle</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Fjern alle navn som er lært for denne modellen.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Eksporterte {0} navn.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Eksporterte {0} navn.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importerte {0} navn.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Importerte {0} navn.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importerte {0} navn for en annen modell, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Importerte {0} navn for en annen modell, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Den filen inneholder ingen tastelysnavn.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importer…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Eksporterte {0} knapper.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Eksporterte {0} knapp.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importerte {0} knapper.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Importerte {0} knapp.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Knapper på håndholdt PC</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Håndholdte spill-PC-er og bærbare PC-er har knapper som operativsystemet aldri viser som en kontroller: bakknapper, menytaster, hjul og leverandørens hurtigtaster. Slå på dette for å lære dem én gang ved å trykke på dem, og tilordne dem deretter som alle andre knapper. Legger også til maskinens eget gyroskop som en bevegelsesenhet.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktiver knapper på håndholdt PC</value></data>
@@ -4212,9 +4225,11 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Stigende</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Synkende</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} bindinger</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} binding</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} funnet</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Viser {0} av {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurasjoner</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurasjon</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>full kontrollerstøtte</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>delvis kontrollerstøtte</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Søk etter spill</value></data>
@@ -4224,7 +4239,9 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>for {0} md. siden</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>for {0} år siden</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnenter</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} abonnent</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} stemmer</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} stemme</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Alle</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ingen konfigurasjoner for dette spillet ennå</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop har ingen kontrollerkonfigurasjoner fra fellesskapet for {0}. Du kan bli den første: lag en i Steam, så vises den her.</value></data>
@@ -4257,6 +4274,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lag: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ingen enhetsuavhengig utløser for denne inndatakilden</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} handlinger i spillet, bare for Steam, ingen kobling på spillsiden</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} handling i spillet, bare for Steam, ingen kobling på spillsiden</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>handling {0} i Steam-klienten, ingen tilsvarende</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>kontrollerhandlingen {0} støttes ikke</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ukjent bindingstype {0}</value></data>
@@ -4331,10 +4349,10 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Rullehjulhakk</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sender ett enkelt hakk på rullehjulet per utløsning. Verdien er antall hakk med fortegn (positivt ruller opp eller til høyre).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Dytt pekeren</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Flytter musepekeren et fast antall piksler per utløsning. Positiv X flytter mot høyre, positiv Y flytter nedover; negative verdier er tillatt.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Flytter musepekeren et fast antall piksler per utløsning. Positiv X flytter mot høyre, positiv Y flytter nedover. Negative verdier er tillatt.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Dytt pekeren med ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Gå gjennom trykkliste</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Hver utløsning utfører neste trykk i trinnlisten og går videre. Med Gå rundt aktivert starter listen på nytt etter siste trinn; uten den stopper utløsningen ved slutten.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Hver utløsning utfører neste trykk i trinnlisten og går videre. Med Gå rundt aktivert starter listen på nytt etter siste trinn. Uten den stopper utløsningen ved slutten.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Veksle museknapp</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Hver utløsning låser eller frigjør museknappen. En låst knapp forblir trykket ned til neste utløsning eller til makroen deaktiveres.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Veksle museknapp {0}</value></data>
@@ -4347,6 +4365,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Veksle rulling med hjulet</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Hver utløsning låser eller frigjør en kontinuerlig rulling. Mens den er låst, sendes antall hakk én gang per intervall til neste utløsning eller til makroen deaktiveres.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Veksle rulling med hjulet ({0} hakk med {1} ms mellomrom)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Veksle rulling med hjulet ({0} hakk med {1} ms mellomrom)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulser mens låst</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mens den er låst, slås utgangen av og på med gjentakelsesintervallet i stedet for å holdes konstant.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Legg til akse (relativ)</value></data>
@@ -4368,6 +4387,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Når fysisk bevegelse skyver målet forbi terskelen, slutter makroen å skrive til aksen resten av aktiveringen.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(viker for fysisk)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Gå gjennom trykkliste ({0} trinn)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Gå gjennom trykkliste ({0} trinn)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Trinn</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Gå rundt</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Veksle taster {0}</value></data>
@@ -4451,6 +4471,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlegg for profilbytte</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Vis ringen eller rutenettet på skjermen mens en radiell meny eller berøringsmeny er aktiv. Menyene utløses fortsatt når overlegget er av.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>skjermmeny opprettet ({0} bundne celler)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>skjermmeny opprettet ({0} bundet celle)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menyen har ingen bundne celler</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menyflaten støttes ikke ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikonet for menycellen ble ikke gjenkjent ({0}), så cellen beholder tekstetiketten</value></data>
@@ -4639,6 +4660,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Velg .txt-filen som AutoEq lastet ned. Det er denne du skal bruke: autoeq.app gir deg en fil og ikke tekst du kan kopiere.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For en korrigering tilpasset hodetelefonene dine: åpne autoeq.app, velg modellen din, velg Custom Parametric Eq og last den ned, og velg deretter Importer fra fil. Nedlastingen Graphic Eq har ingen filterlinjer og kan ikke importeres.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importerte {0} bånd med forforsterkning på {1:0.#} dB fra {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Importerte {0} bånd med forforsterkning på {1:0.#} dB fra {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Ingen filterlinjer i den profilen. Eksporten Graphic Eq fra AutoEq kan ikke leses her. Last ned Custom Parametric Eq i stedet. Den gjeldende EQ-en er uendret.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Ingenting å importere. Den gjeldende EQ-en er uendret.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Kunne ikke lese den filen: {0}</value></data>
@@ -4654,7 +4676,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Tilbakestill tak</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Dra et punkt for å flytte frekvensen og forsterkningen. Rull med hjulet over et punkt for å gjøre det bredere eller smalere.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Utgangsvei</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hvor kontrolleren spiller av lyden. Standard beholder fastvarens egen ruting og spiller av PadForge-lyder på høyttaleren. Hodetelefoner + høyttaler spiller mono på hodetelefonsiden, en begrensning i fastvaren. Over Bluetooth spiller denne modusen bare gjennom hodetelefonene. Følg hodetelefonkontakten bytter til hodetelefoner når noe er koblet til kontrolleren, og tilbake til høyttaleren når det kobles fra; uten noen avlesning av kontakten oppfører den seg som Standard.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hvor kontrolleren spiller av lyden. Standard beholder fastvarens egen ruting og spiller av PadForge-lyder på høyttaleren. Hodetelefoner + høyttaler spiller mono på hodetelefonsiden, en begrensning i fastvaren. Over Bluetooth spiller denne modusen bare gjennom hodetelefonene. Følg hodetelefonkontakten bytter til hodetelefoner når noe er koblet til kontrolleren, og tilbake til høyttaleren når det kobles fra. Uten noen avlesning av kontakten oppfører den seg som Standard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Hodetelefoner (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Hodetelefoner (mono)</value></data>
@@ -5500,11 +5522,17 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Avslutter Angi tastefarger-handlingene som kjører på denne virtuelle kontrolleren og lyser opp en av tastene som er valgt her, eller alle når ingen er valgt.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Fjern alle tastefarger</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Fjern tastefarger på {0} lys</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Fjern tastefarger på {0} lys</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} lys i {1} i {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} lys i {1} i {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} lys i {1} mens den holdes</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} lys i {1} mens den holdes</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} lys i {1} til de fjernes</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} lys i {1} til det fjernes</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} lys i {1}, tones ut over {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} lys i {1}, tones ut over {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} lys i {1}, teller ned over {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} lys i {1}, teller ned over {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Taster</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Alle lys</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Ingen taster er valgt, så handlingen lyser ikke opp noe.</value></data>

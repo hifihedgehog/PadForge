@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sivu oikealle</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ei mitään</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekuntia</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuuttia (0 = ei koskaan)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide esti PadForge-sovellusta käyttämästä laitetta, jonka PadForge oli piilottanut, joten PadForge lopetti laitteiden piilottamisen.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ohjelman Inverse application cloak -asetus on käytössä, joten PadForge ei piilota laitteita.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Poistetaan Windows MIDI Services -ajoympäristön asennus…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ei voinut käynnistyä, koska MIDI ei ole käynnissä. Asetusten Windows MIDI Services -kortti kertoo syyn.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ei voinut käynnistyä, koska MIDI ei ole käynnissä. Katso Windows MIDI Services Asetusten Ajurit-kortista.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} ei voinut käynnistyä, koska Windows MIDI Services ei luonut sille porttia.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}: ei lähtöporttia. Valitse portti sen sivulla.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}: lähtöportti ”{1}” ei ole yhdistettynä. Paikka käynnistyy, kun portti on taas käytettävissä.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK kieltäytyi käynnistymästä. Yleensä syynä on, ettei Logitech Gaming Software ole käynnissä.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Yhdistetty, näppäimiä ei ole vielä havaittu. Vedä Logitech Gaming Softwaressa G-key-komento PadForge-profiilin jokaiselle näppäimelle ja tee profiilista pysyvä. G600- tai G300-hiiren on myös oltava poissa sisäisen muistin tilasta.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Käynnissä, näppäintapahtumia: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Käynnissä, näppäintapahtumia: {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lue analogiset näppäimistöt</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lukee jokaisen näppäimen painallussyvyyden analogisista näppäimistöistä (Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA ja muut valmistajat), kunkin omana laiterivinään. Dokumentaatiossa luetellaan kaikki tuetut mallit. Razer-näppäimistöt vaativat, että Razer Synapse on käynnissä. Useimpia muita luetaan samaa kanavaa pitkin, jota niiden oma määritysohjelma käyttää, joten sulje määritysohjelma, kun tämä on käytössä.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Tuettua analogista näppäimistöä ei löytynyt.</value></data>
@@ -814,7 +816,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Tarkista päivitykset</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce:n nykyaikainen haara, rakennettu uudelleen SDL3:lla, WPF:llä ja .NET 10:llä</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge muuttaa minkä tahansa syöttölaitteen miksi tahansa virtuaaliohjaimeksi. Peliohjaimet, ohjaussauvat, näppäimistöt, hiiret ja kosketusnäytöt määritetään virtuaalisiksi peliohjaimiksi (Xbox, PlayStation, lentosauvat, ratit, kolmannen osapuolen peliohjaimet) tai näppäimistö- ja hiirilähdöksi tai MIDI-lähdöksi, jota pelit kohtelevat oikeana laitteistona. Taustalla toimivat HIDMaestro ja Windows MIDI Services. Ohjelma käyttää SDL3:a ohjainsyötteeseen, Windowsin Raw Inputia näppäimistöön ja hiireen sekä HidHide-ajuria pelikohtaiseen laitteiden peittämiseen, ja sen nykyaikainen Fluent Design -käyttöliittymä kattaa määritykset, kuolleet alueet, herkkyyskäyrät ja voimapalautteen.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge saa minkä tahansa syötteen näyttämään miltä tahansa ohjaimelta. Peliohjaimet, ohjaussauvat, ratit, näppäimistöt, hiiret, kosketusnäytöt, MIDI-laitteet ja puhelimet ohjaavat virtuaaliohjaimia, joita pelit kohtelevat oikeana laitteistona: Xbox-, PlayStation-, Nintendo- ja Steam-ohjaimia, SInput-ohjaimia, VR-käsiohjaimia, MIDI-lähtöä, näppäimistöä ja hiirtä tai mukautettua laitetta, kuten lentosauvaa tai rattia. HIDMaestro luo virtuaaliset peliohjaimet, SDL3 lukee ohjaimet, Windows Raw Input lukee näppäimistöt ja hiiret, HidHide piilottaa laitteen peleiltä ja Windows MIDI Services välittää MIDI-tiedon sisään ja ulos.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Yleiskatsaus</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Käytetyt tekniikat</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Hae tekijöitä</value></data>
@@ -942,6 +944,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Kirjainten välinen viive</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunteja kirjoitettujen merkkien välillä, enintään 1000. 0 kirjoittaa koko tekstin kerralla.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Katkaisu käyttämättömänä</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 tarkoittaa ei koskaan</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Tiedot</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Katkaise Bluetooth, kun ohjain kytketään USB:llä</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Pikalataus. Kun tämä ohjain ilmoittaa latautuvansa Bluetooth-yhteyden aikana, Bluetooth-yhteys katkaistaan, jotta ohjain latautuu ilman radion virrankulutusta. Mikä tahansa USB-virtalähde kelpaa, myös seinälaturit. Jos kytket Bluetoothin takaisin päälle kaapelin ollessa kiinni, yhteyteen ei kosketa ennen seuraavaa irrotusta.</value></data>
@@ -1006,6 +1009,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Lähetä</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuvia: {0}. Lähetys kestää noin {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ohjain ottaa vastaan enintään {0} kuvaa, joten viimeiset {1} jätettiin pois.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Ohjain ottaa vastaan enintään {0} kuvaa, joten viimeinen jätettiin pois.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Yhdistä ohjain kaapelilla. Se käynnistyy itsestään uudelleen noin 15 sekuntia kuvan siirron jälkeen.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Yhdistä ohjain kaapelilla. Lähetystä varten PadForge vaihtaa sen Xbox-tilaan ja siirtää sen Windowsin Xbox-ajurista WinUSB:hen ja palauttaa sitten molemmat.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge vaihtaa ohjaimen Xbox-tilaan, siirtää sen lähetystä varten WinUSB:hen, antaa sen sitten takaisin Windowsin Xbox-ajurille ja vaihtaa sen takaisin DInput-tilaan. Irrota ensin kaikki muut Xbox 360 -ohjaimet. Lähetetäänkö nyt?</value></data>
@@ -1198,6 +1202,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows ei enää liikuta osoitinta laitteella {0}. Jos et tarkoittanut sitä, älä tee mitään, niin se palaa.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows ei enää liikuta osoitinta laitteella {0}. Jos et tarkoittanut sitä, älä tee mitään, niin se palaa.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Palautetaan {0} sekunnin kuluttua</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Palautetaan {0} sekunnin kuluttua</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Pidä</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Palauta</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Irrota ensin muut tämän mallin näppäimistöt. Windows siirtää kaikki kytketyt näppäimistöt PadForge-ajuriin kerralla ja lakkaa kirjoittamasta niillä.</value></data>
@@ -1612,8 +1617,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Kloonaa</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Valitse kloonattava laite tästä paikasta.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Valitulla laitteella ei ole kloonattavia akseleita, painikkeita tai hattuja.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Kloonataanko {0} tähän paikkaan 1:1-läpivientinä? Asettelu: akseleita {1}, painikkeita {2} ja POV-hattuja {3}. Tämän laitteen rivit paikassa korvataan sen omilla syötteillä.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Laitteessa on enemmän syötteitä kuin laajennettu ohjain voi välittää. Määritettiin akseleita {0}/{1}, painikkeita {2}/{3} ja POV-hattuja {4}/{5}. Loput jätettiin määrittämättä.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Kloonataanko {0} tähän paikkaan 1:1-läpivientinä? Asettelu: {1}, {2} ja {3}. Tämän laitteen rivit paikassa korvataan sen omilla syötteillä.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Laitteessa on enemmän syötteitä kuin laajennettu ohjain voi välittää. Määritettiin {0}/{1}, {2}/{3} ja {4}/{5}. Loput jätettiin määrittämättä.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Ohjainesiasetukset</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Lisää esiasetus ohjaimelle, jota PadForge ei toimita, tiedostosta tai itse ohjaimesta.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Tuodut</value></data>
@@ -1785,11 +1790,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Painike, joka pienentää kertymää, kun sitä pidetään painettuna</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Alas: painike, joka pienentää kertymää, kun sitä pidetään painettuna.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Nopeus</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Muutosnopeus yksikköinä sekunnissa. 0.5 = koko vaihteluväli ajassa 2 s, 2 = koko vaihteluväli ajassa 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Muutosnopeus yksikköinä sekunnissa. 0.5 = koko vaihteluväli ajassa 2 s. 2 = koko vaihteluväli ajassa 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Pysyvä</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kun valittuna, kertymä säilyttää arvonsa vapautuksen jälkeen (vakionopeudensäädin). Kun ei valittuna, se palaa vapautettaessa Min-arvoon.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Kertymän alaraja. -1 = täysi negatiivinen kaksinapaisille akselikohteille, 0 = yksinapainen.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Kertymän alaraja. -1 = täysi negatiivinen kaksinapaisille akselikohteille. 0 = yksinapainen.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Kertymän yläraja. 1 = täysi positiivinen.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramppi</value></data>
@@ -2083,6 +2088,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Asettaa liitetyn paikan valopalkin tilan tiettyyn arvoon. Säilyy Valaistus-kortilla tehdyn muutoksen tavoin, kunnes toinen toiminto tai käyttäjä muuttaa sen.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Vaihda valopalkin tiloja kierrossa</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Kierrätä valopalkin tiloja: {0}</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Kierrätä valopalkin tiloja: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Vaihtaa paikan valopalkin tilaa alla valittujen tilojen läpi. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan. Kierron kohta on toimintokohtainen ja nollautuu, kun sovellus käynnistetään uudelleen.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Pito</value></data>
@@ -2361,7 +2367,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Näytön osa, johon levy yltää</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Säätää kosketuslevyn osoitin X/Y -lähteitä, jotka siirtävät osoittimen sormen kohtaan levyllä (määritä ne hiiren X/Y-akseleille Näppäimistö / hiiri -virtuaaliohjaimessa). Koko 1.00 ja keskikohta 0.50 vastaavat koko näyttöä. Pienennä kokoa rajataksesi osoittimen osaan näytöstä ja siirrä keskikohtaa sijoittaaksesi sen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Alueen leveys</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Näytön alueen leveys, johon tämä levy kuvautuu, osuutena näytön leveydestä. 1.00 kattaa koko leveyden, 0.50 rajaa osoittimen puoleen näytöstä.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Näytön alueen leveys, johon tämä levy kuvautuu, osuutena näytön leveydestä. 1.00 kattaa koko leveyden. 0.50 rajaa osoittimen puoleen näytöstä.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Alueen korkeus</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Näytön alueen korkeus osuutena näytön korkeudesta.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Alueen keskikohta X</value></data>
@@ -2372,7 +2378,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Pyyhkäisyhaptiikka</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Naksahdukset sormen liikkuessa</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sykäyttää ohjaimen haptiikkaa, kun sormi liikkuu tämän kosketuslevyn poikki, kuten Steam Inputin ohjauslevyn naksahdukset. Steam Controller -ohjaimet ja Steam Deck naksauttavat levyn alla olevaa toimilaitetta, DualSense ja DualShock 4 sykäyttävät tärinämoottoreita.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sykäyttää ohjaimen haptiikkaa, kun sormi liikkuu tämän kosketuslevyn poikki, kuten Steam Inputin ohjauslevyn naksahdukset. Steam Controller -ohjaimet ja Steam Deck naksauttavat levyn alla olevaa toimilaitetta. DualSense ja DualShock 4 sykäyttävät tärinämoottoreita.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Ota pyyhkäisyhaptiikka käyttöön</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Antaa lyhyen haptisen naksahduksen aina, kun sormi liikkuu tietyn matkan tällä levyllä. Sormen laskeminen tai levyn napsautus ei koskaan naksahda. Oletuksena pois päältä.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulssin voimakkuus</value></data>
@@ -2480,6 +2486,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Kaikki näytteet tallennettu. Nimeä ele ja valitse Tallenna.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Näyte {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} näytettä</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} näytettä</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Tallennettavat näytteet</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Tallennettavat näytteet</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Vakiomäärä on 3. Useampi näyte antaa varmemman tunnistuksen, ja harvempi on nopeampi nauhoittaa.</value></data>
@@ -3585,6 +3592,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistooli näytön ulkopuolella</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Kierrätä osoitintiloja</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Kierrätä osoitintiloja: {0}</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Kierrätä osoitintiloja: {0}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Vaihtaa Wii-osoitintilaa alla valittujen tilojen läpi kaikille paikan IR-kykyisille ohjaimille. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan. Kierron kohta on toimintokohtainen ja nollautuu, kun sovellus käynnistetään uudelleen.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Valitse osoitintilat, joiden läpi makro kiertää. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ääni</value></data>
@@ -4007,7 +4015,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Päästä irti painikkeesta.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Vaihe {0}/{1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Muutosta ei havaittu. Valitse Aloita alusta ja paina sitten painiketta ja pidä se painettuna pyydettäessä.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Tarkkailtiin valmistajan raportteja: {0}, tapahtumaluokkia: {1}. Painalluksen aikana: raportteja {2}, tapahtumia {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Valmistajan raportteja tarkkailtu: {0}. Tapahtumaluokkia tarkkailtu: {1}. Raportteja painalluksen aikana: {2}. Tapahtumia painalluksen aikana: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Painike tallennettu. Kirjoita nimi ja valitse Rekisteröi.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Lähde</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nimi</value></data>
@@ -4043,12 +4051,17 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Unohda kaikki</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Poista kaikki tälle mallille opitut nimet.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Viety nimiä: {0}.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Viety nimiä: {0}.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Tuotu nimiä: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Tuotu nimiä: {0}.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Tuotu nimiä: {0}, toiselle mallille ({1}).</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Tuotu nimiä: {0}, toiselle mallille ({1}).</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Tiedostossa ei ole näppäinvalojen nimiä.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Tuo…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Painikkeita viety: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Painikkeita viety: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Painikkeita tuotu: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Painikkeita tuotu: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Käsikonsolin painikkeet</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Käsikonsoleissa ja kannettavissa tietokoneissa on painikkeita, joita käyttöjärjestelmä ei koskaan näytä ohjaimena: takapainikkeita, valikkonäppäimiä, rullia ja valmistajan pikanäppäimiä. Ota tämä käyttöön, niin voit opettaa ne kerran painamalla niitä ja määrittää ne sitten kuten minkä tahansa muun painikkeen. Lisää myös koneen oman gyroskoopin liikelaitteeksi.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ota käsikonsolin painikkeet käyttöön</value></data>
@@ -4212,9 +4225,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Nouseva</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Laskeva</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Sidontoja: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Sidontoja: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Löytyi: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Näytetään {0}/{1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Määrityksiä: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Määrityksiä: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>täysi ohjaintuki</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>osittainen ohjaintuki</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Hae pelejä</value></data>
@@ -4224,7 +4239,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} kk sitten</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} v sitten</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>tilaajia: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>tilaajia: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>ääniä: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>ääniä: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Kaikki</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Tälle pelille ei ole vielä määrityksiä</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshopissa ei ole yhteisön ohjainmäärityksiä peliin {0}. Voit olla ensimmäinen: luo määritys Steamissa, niin se näkyy täällä.</value></data>
@@ -4257,6 +4274,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>kerros: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>tälle syötteelle ei ole laitteesta riippumatonta laukaisinta</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0}: pelin sisäiset toiminnot, vain Steamissa, ei pelin puoleista koukkua</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0}: pelin sisäiset toiminnot, vain Steamissa, ei pelin puoleista koukkua</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-asiakasohjelman toiminto {0}, ei vastinetta</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ohjaintoimintoa {0} ei tueta</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tuntematon sidontatyyppi {0}</value></data>
@@ -4347,6 +4365,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Pyörävieritys päälle/pois</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Jokainen laukaisu lukitsee tai vapauttaa jatkuvan vierityksen. Lukittuna lähettää naksahdusmäärän kerran kunkin välin aikana seuraavaan laukaisuun asti tai kunnes makro poistetaan käytöstä.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Pyörävieritys päälle/pois ({0} naksahdusta {1} ms:n välein)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Pyörävieritys päälle/pois ({0} naksahdus {1} ms:n välein)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Sykytä lukittuna</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Lukittuna lähtö kytketään päälle ja pois toistovälein sen sijaan, että sitä pidettäisiin jatkuvasti päällä.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Akselin lisäys (suhteellinen)</value></data>
@@ -4368,6 +4387,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kun fyysinen liike vie kohteen kynnyksen yli, makro lopettaa akselin kirjoittamisen aktivoinnin loppuajaksi.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(väistyy fyysisen tieltä)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Kierrätä napautusluetteloa (vaiheita: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Kierrätä napautusluetteloa (vaiheita: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Vaiheet</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Kierto alusta</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Näppäimet {0} päälle/pois</value></data>
@@ -4451,6 +4471,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profiilinvaihdon peittokuva</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Näytä näytöllä rengas tai ruudukko, kun säteittäinen tai kosketusvalikko on aktiivinen. Valikot laukeavat myös peittokuvan ollessa pois päältä.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>näyttövalikko luotu (sidottuja soluja: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>näyttövalikko luotu (sidottuja soluja: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>valikossa ei ole sidottuja soluja</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>valikon isäntäpintaa ei tueta ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>valikon solun kuvaketta ei tunnistettu ({0}), joten solu säilyttää tekstinimensä</value></data>
@@ -4639,6 +4660,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Valitse AutoEq-sivustolta ladattu .txt-tiedosto. Tätä kannattaa käyttää: autoeq.app antaa tiedoston eikä kopioitavaa tekstiä.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Kuulokkeisiisi sovitettu korjaus: avaa autoeq.app, valitse mallisi, valitse Custom Parametric Eq ja lataa se ja valitse sitten Tuo tiedostosta. Graphic Eq -latauksessa ei ole suodatinrivejä, eikä sitä voi tuoda.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Tuotiin {0} kaistaa ja {1:0.#} dB:n esivahvistus ({2}).</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Tuotiin {0} kaista ja {1:0.#} dB:n esivahvistus ({2}).</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Profiilissa ei ole suodatinrivejä. AutoEq-sivuston Graphic Eq -vientiä ei voi lukea tässä. Lataa sen sijaan Custom Parametric Eq -versio. Nykyinen taajuuskorjain ei muuttunut.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Ei tuotavaa. Nykyinen taajuuskorjain ei muuttunut.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Tiedostoa ei voitu lukea: {0}</value></data>
@@ -5500,11 +5522,17 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Lopettaa tämän virtuaaliohjaimen käynnissä olevat Aseta näppäinvärit -toiminnot, jotka valaisevat jotakin tässä valituista näppäimistä, tai kaikki, jos mitään ei ole valittu.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Poista kaikki näppäinvärit</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Poista näppäinvärit: {0} valoa</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Poista näppäinvärit: {0} valo</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} valoa: {1}, {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} valo: {1}, {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} valoa: {1}, kun painettuna</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} valo: {1}, kun painettuna</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} valoa: {1}, kunnes poistetaan</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} valo: {1}, kunnes poistetaan</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} valoa: {1}, himmenee {2} ms aikana</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} valo: {1}, himmenee {2} ms aikana</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} valoa: {1}, laskee alas {2} ms aikana</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} valo: {1}, laskee alas {2} ms aikana</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Näppäimet</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Kaikki valot</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Näppäimiä ei ole valittu, joten toiminto ei valaise mitään.</value></data>

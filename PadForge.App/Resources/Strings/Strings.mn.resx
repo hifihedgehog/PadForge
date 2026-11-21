@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Цэвэрлэх</value></data>
   <data name="Common_None" xml:space="preserve"><value>Байхгүй</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>мин</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>секунд</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>минут (0 = хэзээ ч үгүй)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge-ийн нуусан төхөөрөмжид HidHide нь PadForge-ийг хандуулахгүй хаасан тул PadForge төхөөрөмж нуухаа зогсоолоо.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ын Inverse application cloak асаалттай тул PadForge ямар ч төхөөрөмж нуухгүй.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services-ийн ажиллах орчныг устгаж байна…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ажиллахгүй байгаа тул {0} эхэлж чадсангүй. Шалтгааныг Тохиргоо доторх Windows MIDI Services картаас харна уу.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ажиллахгүй байгаа тул {0} эхэлж чадсангүй. Тохиргоо доторх Драйверууд хэсгийн Windows MIDI Services мөрийг харна уу.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services порт үүсгээгүй тул {0} эхэлж чадсангүй.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} гаралтын портгүй байна. Түүний хуудаснаас нэгийг сонгоно уу.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}: “{1}” гаралтын порт холбогдоогүй байна. Порт эргэн холбогдмогц слот эхэлнэ.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK эхлэхээс татгалзлаа. Ихэвчлэн Logitech Gaming Software ажиллаагүй үед ингэдэг.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Холбогдсон, одоогоор товчлуур илрээгүй. Logitech Gaming Software-д PadForge профайлын товчлуур бүр дээр G-key командыг чирж тавиад, тэр профайлыг байнгын болгоно уу. G600 эсвэл G300 хулгана мөн дотоод санах ойн горимоос гарсан байх ёстой.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ажиллаж байна, товчлуурын {0} үйл явдал</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ажиллаж байна, товчлуурын {0} үйл явдал</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Аналог гарыг унших</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA болон бусад үйлдвэрлэгчийн аналог гар дээрх товчлуур бүр хэр гүн дарагдсаныг уншиж, тус бүрийг тусдаа төхөөрөмжийн мөр болгоно. Дэмжигдсэн бүх загварыг баримт бичигт жагсаасан. Razer гарт Razer Synapse ажиллаж байх шаардлагатай. Бусдын ихэнхийг өөрийн нь тохируулагч програмын ашигладаг сувгаар уншдаг тул энэ асаалттай үед тохируулагчийг хаана уу.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Дэмжигдсэн аналог гар олдсонгүй.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Шинэчлэл шалгах</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ийн орчин үеийн салбар хувилбар, SDL3, WPF, .NET 10 дээр шинээр бүтээсэн</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge аливаа оролтын төхөөрөмжийг аливаа виртуал контроллер болгоно. Геймпад, жойстик, гар, хулгана, мэдрэгч дэлгэцийг тоглоомууд жинхэнэ төхөөрөмж гэж хүлээн авдаг виртуал тоглоомын контроллерт (Xbox, PlayStation, нислэгийн жойстик, жолоо, гуравдагч талын геймпад) эсвэл гар+хулгана / MIDI гаралтад оноодог. HIDMaestro болон Windows MIDI Services дээр ажилладаг. Контроллерийн оролтод SDL3, гар ба хулганад Windows Raw Input, тоглоом тус бүрээр төхөөрөмж нуухад HidHide ашигладаг бөгөөд оноолт, үхсэн бүс, мэдрэмжийн муруй, хүчний эргэх холбоог тохируулах орчин үеийн Fluent Design интерфейстэй.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge аливаа оролтыг аливаа контроллер мэт харагдуулна. Геймпад, жойстик, жолоо, гар, хулгана, мэдрэгч дэлгэц, MIDI төхөөрөмж болон утас нь тоглоомууд жинхэнэ төхөөрөмж гэж хүлээн авдаг виртуал контроллеруудыг удирдана: Xbox, PlayStation, Nintendo болон Steam геймпад, SInput геймпад, VR гар контроллер, MIDI гаралт, гар ба хулгана, эсвэл нислэгийн жойстик, жолоо зэрэг тусгай төхөөрөмж. HIDMaestro виртуал геймпадуудыг үүсгэж, SDL3 контроллеруудыг уншиж, Windows Raw Input гар ба хулганыг уншиж, HidHide төхөөрөмжийг тоглоомоос нууж, Windows MIDI Services MIDI оролт гаралтыг дамжуулна.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Тойм</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Ашигласан технологи</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Талархал хайх</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Үсэг хоорондын саатал</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Бичих тэмдэгт хоорондын миллисекунд, 1000 хүртэл. 0 бол бүх текстийг нэг дор бичнэ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Сул үед салгах</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 бол хэзээ ч салгахгүй</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Дэлгэрэнгүй</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-ээр залгахад Bluetooth-ийг салгах</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Хурдан цэнэглэлт. Bluetooth-ээр холбогдсон байхдаа энэ контроллер цэнэглэгдэж байгаагаа мэдээлэхэд Bluetooth холболт тасарч, радиог тэжээлгүйгээр цэнэглэгдэнэ. Ханын цэнэглэгч зэрэг аливаа USB тэжээлийн эх үүсвэр тооцогдоно. Кабель залгаатай байхад та Bluetooth-ийг дахин асаавал дараагийн удаа салгах хүртэл түүнийг хөндөхгүй.</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Илгээх</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадр: {0}. Илгээхэд ойролцоогоор {1} зарцуулна.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Контроллер хамгийн ихдээ {0} кадр авдаг тул сүүлийн {1} кадрыг орхисон.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Контроллер хамгийн ихдээ {0} кадр авдаг тул сүүлийн нэг кадрыг орхисон.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Контроллерыг кабелиар холбоно уу. Зураг орсноос хойш ойролцоогоор 15 секундийн дараа контроллер өөрөө дахин эхэлнэ.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Контроллерыг кабелиар холбоно уу. Илгээхийн тулд PadForge түүнийг Xbox горимд шилжүүлж, Windows-ийн Xbox драйвераас WinUSB руу шилжүүлээд, дараа нь хоёуланг нь буцааж тавина.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge контроллерыг Xbox горимд шилжүүлж, илгээхийн тулд WinUSB руу шилжүүлээд, дараа нь Windows-ийн Xbox драйверт буцааж өгч, DInput горимд буцааж шилжүүлнэ. Эхлээд бусад бүх Xbox 360 контроллерыг салгана уу. Одоо илгээх үү?</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Хувилах</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Хувилах төхөөрөмжөө энэ слотоос сонгоно уу.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Сонгосон төхөөрөмжид хувилах тэнхлэг, товч, POV алга.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} төхөөрөмжийг энэ слот руу 1:1 шууд дамжуулалтаар хувилах уу? Бүтэц нь {1} тэнхлэг, {2} товч, {3} POV болж, слот дээрх энэ төхөөрөмжийн мөрүүд түүний өөрийн оролтуудаар солигдоно.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Энэ төхөөрөмж Өргөтгөсөн контроллерийн даах хэмжээнээс олон оролттой. Оноосон нь: тэнхлэг {0}/{1}, товч {2}/{3}, POV {4}/{5}. Үлдсэнийг оноогоогүй.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} төхөөрөмжийг энэ слот руу 1:1 шууд дамжуулалтаар хувилах уу? Бүтэц нь {1}, {2}, {3} болж, слот дээрх энэ төхөөрөмжийн мөрүүд түүний өөрийн оролтуудаар солигдоно.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Энэ төхөөрөмж Өргөтгөсөн контроллерийн даах хэмжээнээс олон оролттой. Оноосон нь: {1} дотроос {0}, {3} дотроос {2}, {5} дотроос {4}. Үлдсэнийг оноогоогүй.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Контроллерын бэлэн тохиргоо</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge-д ороогүй контроллерт зориулсан бэлэн тохиргоог файлаас эсвэл контроллероос нь нэмнэ үү.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Импортолсон</value></data>
@@ -1597,11 +1601,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Дарж барих үед хуримтлуулагчийг бууруулах товч</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Доош: дарж барих үед хуримтлуулагчийг бууруулах товч.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Хурд</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Секундэд нэгжээр илэрхийлсэн хурд. 0.5 = бүтэн мужийг 2 секундэд; 2 = бүтэн мужийг 0.5 секундэд.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Секундэд нэгжээр илэрхийлсэн хурд. 0.5 = бүтэн мужийг 2 секундэд. 2 = бүтэн мужийг 0.5 секундэд.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Тогтоох</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Чагтлагдсан үед хуримтлуулагч суллагдсаны дараа утгаа хадгална (круиз контрол). Чагтлаагүй үед суллахад Доод утга руу буцна.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Доод</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Хуримтлуулагчийн доод хязгаар. -1 = хоёр туйлт тэнхлэгт бүтэн сөрөг; 0 = нэг туйлт.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Хуримтлуулагчийн доод хязгаар. -1 = хоёр туйлт тэнхлэгт бүтэн сөрөг. 0 = нэг туйлт.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Дээд</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Хуримтлуулагчийн дээд хязгаар. 1 = бүтэн эерэг.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Аажим шилжилт</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Оноосон слотын гэрлийн зурвасын горимыг тодорхой утгад тохируулна. Өөр үйлдэл эсвэл хэрэглэгч өөрчлөх хүртэл “Гэрэлтүүлэг” карт дээр хийсэн засвар шиг хадгалагдана.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Гэрлийн зурвасын горимуудыг ээлжлэх</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Гэрлийн зурвасын {0} горимыг ээлжлэх</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Гэрлийн зурвасын {0} горимыг ээлжлэх</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Слотын гэрлийн зурвасын горимыг доор сонгосон горимуудаар ээлжлүүлнэ. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ. Ээлжийн байрлал үйлдэл тус бүрд тусдаа бөгөөд програмыг дахин эхлүүлэхэд анхны байдалд орно.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Барилт</value></data>
@@ -2172,7 +2177,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Самбарын хүрэх дэлгэцийн хэсэг</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Курсорыг самбар дээрх хурууны тань байрлал руу шууд шилжүүлдэг Мэдрэгч самбарын заагч X/Y эх үүсвэрүүдийг тохируулна (тэдгээрийг Гар / хулгана виртуал контроллер дээрх хулганы X/Y-д онооно уу). Хэмжээ 1.00, төв 0.50 бол самбарыг бүх дэлгэцэд буулгана. Курсорыг дэлгэцийн хэсэгт хязгаарлахын тулд хэмжээг багасгаж, байрлуулахын тулд төвийг зөөнө үү.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Мужийн өргөн</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Энэ самбарын буулгах дэлгэцийн хэсгийн өргөн, дэлгэцийн өргөний хувиар. 1.00 нь бүтэн өргөнийг хамарна; 0.50 нь курсорыг дэлгэцийн хагаст хязгаарлана.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Энэ самбарын буулгах дэлгэцийн хэсгийн өргөн, дэлгэцийн өргөний хувиар. 1.00 нь бүтэн өргөнийг хамарна. 0.50 нь курсорыг дэлгэцийн хагаст хязгаарлана.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Мужийн өндөр</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Дэлгэцийн хэсгийн өндөр, дэлгэцийн өндрийн хувиар.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Мужийн төв X</value></data>
@@ -2183,7 +2188,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Шудралтын хаптик</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Хуруу гулсахад тачигнана</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input-ийн трекпадын тачигнах мэдрэмжтэй адил, хуруу тань энэ мэдрэгч самбар дээгүүр гулсахад контроллерийн хаптикийг импульсээр ажиллуулна. Steam Controller болон Steam Deck самбарын доорх актуатороор тачигнуулдаг; DualSense болон DualShock 4 чичиргээний моторуудаар импульс өгнө.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input-ийн трекпадын тачигнах мэдрэмжтэй адил, хуруу тань энэ мэдрэгч самбар дээгүүр гулсахад контроллерийн хаптикийг импульсээр ажиллуулна. Steam Controller болон Steam Deck самбарын доорх актуатороор тачигнуулдаг. DualSense болон DualShock 4 чичиргээний моторуудаар импульс өгнө.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Шудралтын хаптикийг идэвхжүүлэх</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Хуруу энэ самбар дээр тогтоосон зайд шилжих бүрд богино хаптик тачигнал үүсгэнэ. Хуруу буулгах эсвэл самбарыг дарах үед хэзээ ч тачигнахгүй. Үндсэн тохиргоогоор унтраалттай.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Импульсийн эрчим</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Бүх дээжийг авлаа. Дохиодоо нэр өгөөд “Хадгалах” дээр дарна уу.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Дээж {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} дээж</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} дээж</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Авах дээжийн тоо</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Авах дээжийн тоо</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт нь 3. Олон дээж илүү найдвартай тааруулалт өгөх бөгөөд цөөн дээж хурдан бичигдэнэ.</value></data>
@@ -3395,6 +3401,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Буу дэлгэцээс гадуур</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Заагчийн горимуудыг ээлжлэх</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Заагчийн {0} горимыг ээлжлэх</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Заагчийн {0} горимыг ээлжлэх</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Слот дээрх IR чадвартай бүх удирдлагын Wii заагчийн горимыг доор сонгосон горимуудаар ээлжлүүлнэ. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ. Ээлжийн байрлал үйлдэл тус бүрд тусдаа бөгөөд програмыг дахин эхлүүлэхэд анхны байдалд орно.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Макро аль заагчийн горимуудыг ээлжлэхийг сонгоно уу. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
@@ -3813,7 +3820,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Товчийг суллана уу.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Алхам {0}/{1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Өөрчлөлт илрээгүй. Дахин эхлэх дээр дараад, асуух үед товчийг дарж барина уу.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Үйлдвэрлэгчийн {0} репорт ба үйл явдлын {1} ангиллыг ажигласан. Дарах үед: {2} репорт, {3} үйл явдал.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Ажигласан үйлдвэрлэгчийн репорт: {0}. Ажигласан үйл явдлын ангилал: {1}. Дарах үеийн репорт: {2}. Дарах үеийн үйл явдал: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Товч илэрлээ. Нэр оруулаад «Бүртгэх» дээр дарна уу.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Эх үүсвэр</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Нэр</value></data>
@@ -3829,7 +3836,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Экспортлох…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Импортлох…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} товч экспортлолоо.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} товч экспортлолоо.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} товч импортлолоо.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} товч импортлолоо.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Гар компьютерын товчнууд</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Гар тоглоомын компьютер ба зөөврийн компьютерт үйлдлийн систем контроллер гэж хэзээ ч харуулдаггүй товчнууд байдаг: арын товч, цэсний товчлуур, дугуй, үйлдвэрлэгчийн шуурхай товчлуур. Үүнийг асааж, нэг удаа дарж сургаад бусад товчны адил оноогоорой. Мөн компьютерын өөрийн гироскопыг хөдөлгөөний төхөөрөмж болгон нэмнэ.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Гар компьютерын товчнуудыг идэвхжүүлэх</value></data>
@@ -3993,9 +4002,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Өсөх</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Буурах</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} холбоос</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} холбоос</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} олдлоо</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} / {1} харуулж байна</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} тохиргоо</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} тохиргоо</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>контроллерын бүрэн дэмжлэгтэй</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>контроллерын хэсэгчилсэн дэмжлэгтэй</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Тоглоом хайх</value></data>
@@ -4005,7 +4016,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} сарын өмнө</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} жилийн өмнө</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} захиалагч</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} захиалагч</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} санал</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} санал</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Бүгд</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Энэ тоглоомд одоогоор тохиргоо алга</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop-д {0} тоглоомд зориулсан олон нийтийн контроллерын тохиргоо алга. Та анхных нь болж болно: Steam дээр нэгийг бүтээвэл энд гарч ирнэ.</value></data>
@@ -4038,6 +4051,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>давхарга: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>энэ оролтод төхөөрөмжөөс хамаарахгүй өдөөгч байхгүй</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>тоглоом доторх {0} үйлдэл, зөвхөн Steam-д ажилладаг, тоглоомын талд холболт байхгүй</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>тоглоом доторх {0} үйлдэл, зөвхөн Steam-д ажилладаг, тоглоомын талд холболт байхгүй</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam клиентийн үйлдэл {0}, дүйцэх зүйл байхгүй</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>контроллерын үйлдэл {0} дэмжигдээгүй</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>үл мэдэгдэх холбоосын төрөл {0}</value></data>
@@ -4128,6 +4142,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Дугуйн гүйлгэлтийг сэлгэх</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Ажиллах бүрд тасралтгүй гүйлгэлтийг түгжих эсвэл түгжээг тайлна. Түгжигдсэн үед дараагийн ажиллах хүртэл эсвэл макро идэвхгүй болох хүртэл интервал тутамд алхмын тоог нэг удаа илгээнэ.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Дугуйн гүйлгэлтийг сэлгэх ({1} мс тутамд {0} алхам)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Дугуйн гүйлгэлтийг сэлгэх ({1} мс тутамд {0} алхам)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Түгжигдсэн үед импульс</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Түгжигдсэн үед гаралтыг тогтмол барихын оронд давталтын интервалаар асааж унтраана.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Тэнхлэгт нэмэх (харьцангуй)</value></data>
@@ -4149,6 +4164,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Физик хөдөлгөөн зорилтыг босгоос давуулахад макро идэвхжилтийн үлдсэн хугацаанд тэнхлэгт бичихээ зогсооно.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(физик оролтод зам тавина)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Товшилтын жагсаалтыг ээлжлэх ({0} алхам)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Товшилтын жагсаалтыг ээлжлэх ({0} алхам)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Алхмууд</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Эхнээс давтах</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>{0} товчлууруудыг сэлгэх</value></data>
@@ -4232,6 +4248,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профайл солих оверлей</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиал эсвэл мэдрэгч цэс идэвхтэй үед дэлгэц дээрх цагираг эсвэл торыг харуулна. Оверлей унтраалттай байсан ч цэс ажилласаар байна.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>дэлгэц дээрх цэс үүсгэсэн ({0} холбоостой нүд)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>дэлгэц дээрх цэс үүсгэсэн ({0} холбоостой нүд)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>цэсэнд холбоостой нүд алга</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>цэсний эх гадаргуу дэмжигдээгүй ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>цэсний нүдний дүрс танигдаагүй ({0}) тул нүд текст шошгоо хадгална</value></data>
@@ -4399,6 +4416,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq-ээс татсан .txt файлыг сонгоно уу. Үүнийг ашиглана: autoeq.app хуулж болох текст биш, файл өгдөг.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Чихэвчиндээ тохирсон засвар авахын тулд autoeq.app-ыг нээж, загвараа сонгоод, Custom Parametric Eq-г сонгон татаж аваад, Файлаас импортлох-ыг дарна уу. Graphic Eq татацад шүүлтүүрийн мөр байхгүй тул импортлогдохгүй.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} зурвасыг {1:0.#} dB урьдчилсан өсгөлттэй импортлолоо. Эх сурвалж: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} зурвасыг {1:0.#} dB урьдчилсан өсгөлттэй импортлолоо. Эх сурвалж: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Энэ профайлд шүүлтүүрийн мөр алга. AutoEq-ийн Graphic Eq экспортыг энд унших боломжгүй. Оронд нь Custom Parametric Eq-г татаж авна уу. Одоогийн эквалайзер өөрчлөгдөөгүй.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Импортлох зүйл алга. Одоогийн эквалайзер өөрчлөгдөөгүй.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Файлыг уншиж чадсангүй: {0}</value></data>

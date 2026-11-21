@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Garbitu</value></data>
   <data name="Common_None" xml:space="preserve"><value>Bat ere ez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minutu (0 = inoiz ez)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide-k PadForge-ri blokeatu dio PadForge-k berak ezkutatutako gailu baterako sarbidea. Horregatik, PadForge-k gailuak ezkutatzeari utzi dio.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ren «Inverse application cloak» aukera aktibatuta dagoenez, PadForge-k ez du gailurik ezkutatzen.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services exekuzio-ingurunea desinstalatzen…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Ezin izan da {0} abiarazi, MIDI ez dagoelako exekutatzen. Ezarpenetako Windows MIDI Services txartelak azaltzen du zergatik.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Ezin izan da {0} abiarazi, MIDI ez dagoelako exekutatzen. Ikusi Windows MIDI Services Ezarpenetan, Kontrolatzaileak atalean.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Ezin izan da {0} abiarazi, Windows MIDI Services-ek ez duelako bere ataka sortu.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}: ez dago irteera-atakarik. Aukeratu bat bere orrian.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}: «{1}» irteera-ataka ez dago konektatuta. Zirrikitua ataka itzultzen denean abiaraziko da.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-ak ez du abiarazi nahi izan. Normalean, Logitech Gaming Software exekutatzen ez dagoelako gertatzen da.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Konektatuta, oraindik ez da teklarik ikusi. Logitech Gaming Software-n, arrastatu G-key komandoa PadForge profileko tekla bakoitzera, eta ezarri profil hori iraunkor gisa. Gainera, G600 edo G300 sagu batek barneko memoriaren modutik kanpo egon behar du.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Exekutatzen, {0} tekla-gertaera</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Exekutatzen, {0} tekla-gertaera</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Irakurri teklatu analogikoak</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Tekla bakoitza zenbateraino sakatzen den irakurtzen du Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA eta beste fabrikatzaile batzuen teklatu analogikoetan, bakoitza bere gailu-errenkadan. Dokumentazioak onartutako modelo guztiak zerrendatzen ditu. Razer teklatuek Razer Synapse exekutatzen egotea behar dute. Gainerako gehienak beren konfiguratzaileak erabiltzen duen kanalaren bidez irakurtzen dira. Beraz, itxi konfiguratzailea aukera hau aktibatuta dagoen bitartean.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Ez da onartutako teklatu analogikorik aurkitu.</value></data>
@@ -801,7 +803,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Bilatu eguneratzeak</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-tik eratorritako bertsio modernoa, SDL3, WPF eta .NET 10 erabiliz berreraikia</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge-k edozein sarrera-gailu edozein kontrolagailu birtual bihurtzen du. Gamepadak, joystickak, teklatuak, saguak eta ukipen-pantailak joko-kontrolagailu birtualetara (Xbox, PlayStation, hegaldi-palankak, bolanteak, hirugarrenen gamepadak) edo teklatu+sagu / MIDI irteerara esleitzen dira, eta jokoek benetako hardwaretzat hartzen dute hori. HIDMaestro eta Windows MIDI Services ditu oinarri. SDL3 erabiltzen du kontrolagailuen sarrerarako, Windows Raw Input teklaturako eta sagurako, eta HidHide joko bakoitzeko gailuak ezkutatzeko, eta Fluent Design interfaze modernoa eskaintzen du esleipenetarako, gune hiletarako, sentikortasun-kurbetarako eta indar-atzeraelikadurarako.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge-k edozein sarrera edozein kontrolagailu bihurtzen du. Gamepadak, joystickak, bolanteak, teklatuak, saguak, ukipen-pantailak, MIDI gailuak eta telefonoak kontrolagailu birtualak gidatzeko erabiltzen dira, eta jokoek benetako hardwaretzat hartzen dituzte: Xbox, PlayStation, Nintendo eta Steam kontrolagailuak, SInput kontrolagailuak, VR esku-kontrolagailuak, MIDI irteera, teklatu bat eta sagu bat, edo gailu pertsonalizatu bat, hala nola hegaldi-palanka bat edo bolante bat. HIDMaestro-k gamepad birtualak sortzen ditu, SDL3-k kontrolagailuak irakurtzen ditu, Windows Raw Input-ek teklatuak eta saguak irakurtzen ditu, HidHide-k gailu bat jokoetatik ezkutatzen du, eta Windows MIDI Services-ek MIDI sarrera eta irteera daramatza.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Ikuspegi orokorra</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Honekin eraikia</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Bilatu kredituak</value></data>
@@ -929,6 +931,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Hizkien arteko atzerapena</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Idatzitako karaktereen arteko milisegundoak, gehienez 1000. 0 balioarekin testu osoa batera idazten da.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Inaktibitateagatiko deskonexioa</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 balioak inoiz ez esan nahi du</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Xehetasunak</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deskonektatu Bluetooth USB bidez konektatzean</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karga azkarra. Kontrolagailu honek Bluetooth bidez konektatuta dagoela kargatzen ari dela jakinarazten duenean, Bluetooth lotura eten egiten da, irratia elikatu gabe karga dadin. USB bidezko edozein elikatze-iturrik balio du, hormako kargagailuak barne. Kablea konektatuta dagoela Bluetooth berriro aktibatzen baduzu, ez zaio ezer egingo hurrengo deskonexiora arte.</value></data>
@@ -993,6 +996,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Bidali</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogramak: {0}. Bidaltzeak {1} inguru behar ditu.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolagailuak gehienez {0} fotograma hartzen ditu, beraz azken {1} kanpoan utzi dira.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontrolagailuak gehienez {0} fotograma hartzen ditu, beraz azkena kanpoan utzi da.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektatu kontrolagailua kablez. Irudia sartu eta 15 segundo inguruara bere kabuz berrabiarazten da.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektatu kontrolagailua kablez. Bidalketarako, PadForge-k Xbox modura aldatzen du eta Windows-eko Xbox kontrolatzailetik WinUSB-ra mugitzen du, eta gero biak lehengoratzen ditu.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge-k kontrolagailua Xbox modura aldatuko du, bidalketarako WinUSB-ra mugituko du, gero Windows-eko Xbox kontrolatzaileari itzuliko dio eta DInput modura aldatuko du berriro. Deskonektatu aurrez beste Xbox 360 kontrolagailu guztiak. Orain bidali?</value></data>
@@ -1424,8 +1428,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonatu</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Hautatu zirrikitu honetako gailu bat klonatzeko.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Hautatutako gailuak ez du klonatzeko ardatzik, botoirik edo POV-rik.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} zirrikitu honetan klonatu nahi duzu, 1:1 igarotze zuzen gisa? Antolamenduak {1} ardatz, {2} botoi eta {3} POV izango ditu, eta zirrikituko gailu honen errenkadak bere sarrerekin ordeztuko dira.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Gailu honek kontrolagailu hedatu batek onar ditzakeen baino sarrera gehiago ditu. Esleitutakoak: {1} ardatzetatik {0}, {3} botoitatik {2} eta {5} POV-etatik {4}. Gainerakoak esleitu gabe geratu dira.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} zirrikitu honetan klonatu nahi duzu, 1:1 igarotze zuzen gisa? Antolamenduak {1}, {2} eta {3} izango ditu, eta zirrikituko gailu honen errenkadak bere sarrerekin ordeztuko dira.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Gailu honek kontrolagailu hedatu batek onar ditzakeen baino sarrera gehiago ditu. Esleitutakoak: {0} / {1}, {2} / {3} eta {4} / {5}. Gainerakoak esleitu gabe geratu dira.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Kontrolagailuaren aurrezarpenak</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Gehitu PadForge-k ekartzen ez duen kontrolagailu baten aurrezarpen bat, fitxategi batetik edo kontrolagailutik beretik.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Inportatuak</value></data>
@@ -1894,6 +1898,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Esleitutako zirrikituaren argi-barraren modua balio zehatz batean ezartzen du. Argiztapen txartelean egindako edizio bat bezala irauten du, beste ekintza batek edo erabiltzaileak aldatu arte.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Txandakatu argi-barraren moduak</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Txandakatu argi-barraren {0} modu</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Txandakatu argi-barraren {0} modu</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Zirrikituaren argi-barraren modua aurreratzen du behean hautatutako moduen artean. Abiarazte bakoitzak hurrengo modu markatura igarotzen da. Zikloaren posizioa ekintza bakoitzekoa da, eta aplikazioa berrabiaraztean berrezartzen da.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Eustea</value></data>
@@ -2291,6 +2296,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Lagin guztiak atzeman dira. Eman izena keinuari eta egin klik Gorde botoian.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Lagina: {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} lagin</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} lagin</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Atzemateko laginak</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Atzemateko laginak</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 da ohikoa. Lagin gehiagok parekatze sendoagoa ematen dute, eta gutxiagorekin azkarrago grabatzen da.</value></data>
@@ -3385,6 +3391,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistola pantailatik kanpo</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Txandakatu erakusle-moduak</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Txandakatu {0} erakusle-modu</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Txandakatu {0} erakusle-modu</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Wii erakusle-modua aurreratzen du behean hautatutako moduen artean, zirrikituko IR gaitasuna duen Wii Remote guztientzat. Abiarazte bakoitzak hurrengo modu markatura igarotzen da. Zikloaren posizioa ekintza bakoitzekoa da, eta aplikazioa berrabiaraztean berrezartzen da.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Aukeratu makroak zein erakusle-modu txandakatu behar dituen. Abiarazte bakoitzak hurrengo modu markatura aurreratzen du.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audioa</value></data>
@@ -3803,7 +3810,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Askatu botoia.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{0}/{1}. urratsa</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Ez da aldaketarik ikusi. Hautatu Hasi berriro, eta gero sakatu eta eutsi botoiari eskatzen zaizunean.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Behatutakoak: fabrikatzailearen {0} txosten eta {1} gertaera-klase. Sakatzean: {2} txosten, {3} gertaera.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Behatutako fabrikatzailearen txostenak: {0}. Behatutako gertaera-klaseak: {1}. Sakatzean izandako txostenak: {2}. Sakatzean izandako gertaerak: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Botoia atzeman da. Idatzi izen bat eta egin klik Erregistratu botoian.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Iturburua</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Izena</value></data>
@@ -3819,7 +3826,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Esportatu…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Inportatu…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Esportatutako botoiak: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Esportatutako botoiak: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Inportatutako botoiak: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Inportatutako botoiak: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Eskuko PCaren botoiak</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Jokoetarako eskuko PCek eta ordenagailu eramangarriek sistema eragileak inoiz kontrolagailu gisa erakusten ez dituen botoiak dituzte: atzeko palak, menu-teklak, gurpilak, fabrikatzailearen laster-teklak. Aktibatu hau behin sakatuz ikasteko, eta gero esleitu beste edozein botoi bezala. Makinaren beraren giroskopioa ere gehitzen du mugimendu-gailu gisa.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Gaitu eskuko PCaren botoiak</value></data>
@@ -3983,9 +3992,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Goranzkoa</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Beheranzkoa</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} esleipen</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} esleipen</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} aurkituta</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Erakusten: {0}/{1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurazio</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurazio</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>kontrolagailuen euskarri osoa</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>kontrolagailuen euskarri partziala</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Bilatu jokoak</value></data>
@@ -3995,7 +4006,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>duela {0} hilabete</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>duela {0} urte</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} harpidedun</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} harpidedun</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} boto</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} boto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Denak</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Oraindik ez dago konfiguraziorik joko honetarako</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop-ek ez du komunitatearen kontrolagailu-konfiguraziorik {0} jokorako. Zu izan zaitezke lehena: sortu bat Steam-en, eta hemen agertuko da.</value></data>
@@ -4028,6 +4041,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>geruza: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ez dago gailurik gabeko abiarazlerik sarrera honetarako</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} jokoko ekintza, Steam-ekoak soilik, jokoaren aldeko loturarik gabe</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} jokoko ekintza, Steam-ekoak soilik, jokoaren aldeko loturarik gabe</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>{0} Steam bezeroaren ekintza, baliokiderik gabe</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>{0} kontrolagailu-ekintza ez da onartzen</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>esleipen mota ezezaguna: {0}</value></data>
@@ -4118,6 +4132,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Txandakatu gurpilaren korritzea</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Abiarazte bakoitzak korritze jarraitu bat finkatzen edo askatzen du. Finkatuta dagoen bitartean, koska kopurua tarte bakoitzean behin bidaltzen du hurrengo abiarazte arte edo makroa desgaitu arte.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Txandakatu gurpilaren korritzea ({0} koska {1} ms-an behin)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Txandakatu gurpilaren korritzea ({0} koska {1} ms-an behin)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pultsatu finkatuta dagoen bitartean</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Finkatuta dagoen bitartean, aktibatu eta desaktibatu irteera errepikapen-tartearen arabera, etengabe eutsi beharrean.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Gehitu ardatzari (erlatiboa)</value></data>
@@ -4139,6 +4154,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Mugimendu fisikoak helburua atalasetik harago eramaten duenean, makroak ardatza idazteari uzten dio aktibazioaren gainerako denboran.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(lehentasuna sarrera fisikoari)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Ukituen zerrenda ziklikoa ({0} urrats)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Ukituen zerrenda ziklikoa ({0} urrats)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Urratsak</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Itzuli hasierara</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Txandakatu teklak {0}</value></data>
@@ -4222,6 +4238,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil-aldaketaren gainjartzea</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Erakutsi pantailako eraztuna edo sareta menu erradial edo ukitu bidezko bat aktibo dagoenean. Menuek gainjartzea desaktibatuta ere jarraitzen dute funtzionatzen.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>pantailako menua sortu da ({0} gelaxka esleituta)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>pantailako menua sortu da ({0} gelaxka esleituta)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menuak ez du esleitutako gelaxkarik</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menuaren ostalari-gainazala ez da onartzen ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menuko gelaxkaren ikonoa ez da ezagutu ({0}), beraz gelaxkak testu-etiketa mantentzen du</value></data>
@@ -4408,6 +4425,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Aukeratu AutoEq-ek deskargatutako .txt fitxategia. Hau da erabili beharrekoa: autoeq.app-ek fitxategi bat ematen dizu, ez kopiatu daitekeen testurik.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Zure aurikularretara egokitutako zuzenketa lortzeko: ireki autoeq.app, aukeratu zure eredua, hautatu Custom Parametric Eq eta deskargatu, gero Inportatu fitxategitik. Graphic Eq deskargak ez du iragazki-lerrorik eta ezin da inportatu.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} banda inportatu dira, {1:0.#} dB-ko aurre-anplifikazioarekin, hemendik: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} banda inportatu dira, {1:0.#} dB-ko aurre-anplifikazioarekin, hemendik: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Profil horrek ez du iragazki-lerrorik. AutoEq-en Graphic Eq esportazioa ezin da hemen irakurri. Deskargatu Custom Parametric Eq dena horren ordez. Uneko ekualizadorea ez da aldatu.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Ez dago inportatzeko ezer. Uneko ekualizadorea ez da aldatu.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Ezin izan da fitxategi hori irakurri: {0}</value></data>

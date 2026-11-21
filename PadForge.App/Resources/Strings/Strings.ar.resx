@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>مسح</value></data>
   <data name="Common_None" xml:space="preserve"><value>لا شيء</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>مللي ثانية</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>دقيقة</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ثانية</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>دقيقة (0 = أبدا)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>هرتز</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>حجب HidHide عن PadForge جهازا كان PadForge قد أخفاه، لذا توقف PadForge عن إخفاء الأجهزة.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>خيار «Inverse application cloak» في HidHide مفعل، لذا لا يخفي PadForge أي جهاز.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>جارٍ إلغاء تثبيت وقت تشغيل Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>تعذر بدء {0} لأن MIDI لا يعمل. تجد السبب في بطاقة Windows MIDI Services في الإعدادات.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>تعذر بدء {0} لأن MIDI لا يعمل. راجع Windows MIDI Services في الإعدادات ضمن برامج التشغيل.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>تعذر بدء {0} لأن Windows MIDI Services لم ينشئ منفذه.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>لا يوجد منفذ إخراج محدد في {0}. اختر منفذا من صفحة هذه الخانة.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>منفذ الإخراج «{1}» في {0} غير متصل. تبدأ الخانة العمل عند عودة المنفذ.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>رفض G-key SDK بدء التشغيل. السبب عادة أن Logitech Gaming Software لا يعمل.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>متصل، ولم يظهر أي مفتاح بعد. في Logitech Gaming Software، اسحب أمر G-key إلى كل مفتاح في ملف تعريف PadForge، واجعل ملف التعريف هذا دائما. ويجب كذلك إخراج ماوس G600 أو G300 من وضع الذاكرة المدمجة.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>قيد التشغيل، عدد أحداث المفاتيح: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>قيد التشغيل، عدد أحداث المفاتيح: {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>قراءة لوحات المفاتيح التناظرية</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>يقرأ مدى ضغط كل مفتاح في لوحات المفاتيح التناظرية من Wooting وRazer وSteelSeries وKeychron وNuPhy وDrunkDeer وAULA وغيرها من الشركات، وتظهر كل لوحة في صف جهاز خاص بها. تسرد الوثائق كل الطرازات المدعومة. لوحات مفاتيح Razer تتطلب تشغيل Razer Synapse. تتم قراءة معظم اللوحات الأخرى عبر القناة التي يستخدمها برنامج الإعداد الخاص بها، لذا أغلق برنامج الإعداد ما دام هذا الخيار مفعلا.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>لم يتم العثور على لوحة مفاتيح تناظرية مدعومة.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>التحقق من التحديثات</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>نسخة مشتقة حديثة من x360ce، أعيد بناؤها باستخدام SDL3 وWPF و.NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>يحوّل PadForge أي جهاز إدخال إلى أي وحدة تحكم ظاهرية. يتم تعيين أذرع التحكم وعصي التحكم ولوحات المفاتيح وأجهزة الماوس وشاشات اللمس إلى وحدات تحكم ألعاب ظاهرية (Xbox وPlayStation وعصي الطيران وعجلات القيادة وأذرع تحكم من شركات أخرى) أو إلى إخراج لوحة مفاتيح + ماوس / MIDI تعامله الألعاب كعتاد حقيقي. يعمل بتقنية HIDMaestro وWindows MIDI Services. يستخدم SDL3 لإدخال وحدات التحكم، وWindows Raw Input للوحة المفاتيح والماوس، وHidHide لإخفاء الأجهزة لكل لعبة على حدة، ويوفر واجهة Fluent Design حديثة للتعيين والمناطق الميتة ومنحنيات الحساسية وردود فعل القوة.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>يجعل PadForge أي إدخال يبدو كأي وحدة تحكم. تقود أذرع التحكم وعصي التحكم وعجلات القيادة ولوحات المفاتيح وأجهزة الماوس وشاشات اللمس وأجهزة MIDI والهواتف وحدات تحكم ظاهرية تعاملها الألعاب كعتاد حقيقي: أذرع Xbox وPlayStation وNintendo وSteam، وأذرع SInput، وأذرع التحكم اليدوية للواقع الافتراضي، وإخراج MIDI، ولوحة مفاتيح وماوس، أو جهاز مخصص مثل عصا طيران أو عجلة قيادة. ينشئ HIDMaestro أذرع التحكم الظاهرية، ويقرأ SDL3 وحدات التحكم، ويقرأ Windows Raw Input لوحات المفاتيح والماوس، ويخفي HidHide الجهاز عن الألعاب، وتنقل Windows MIDI Services بيانات MIDI دخولا وخروجا.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>نظرة عامة</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>مبني باستخدام</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>البحث في الاعتمادات</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>التأخير بين الأحرف</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>عدد المللي ثانية بين الأحرف المكتوبة، حتى 1000. القيمة 0 تكتب النص كله دفعة واحدة.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>قطع الاتصال عند الخمول</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 تعني أبدا</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>التفاصيل</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>قطع Bluetooth عند التوصيل عبر USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>شحن سريع. عندما تبلغ وحدة التحكم هذه بأنها تشحن وهي متصلة عبر Bluetooth، يتم قطع اتصال Bluetooth لتشحن دون تغذية الراديو. يشمل ذلك أي مصدر طاقة USB، ومنه شواحن الحائط. إذا أعدت تشغيل Bluetooth والكبل ما زال موصولا، فسيبقى الاتصال كما هو حتى فصل الكبل في المرة التالية.</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>إرسال</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>الإطارات: {0}. يستغرق الإرسال نحو {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>تستوعب وحدة التحكم {0} إطارا كحد أقصى، لذلك تم استبعاد آخر {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>تستوعب وحدة التحكم {0} إطارا كحد أقصى، لذلك تم استبعاد الإطار الأخير.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>وصّل وحدة التحكم بالكابل. تعيد التشغيل من تلقاء نفسها بعد نحو 15 ثانية من وصول الصورة.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>وصّل وحدة التحكم بالكابل. أثناء الإرسال يحوّلها PadForge إلى وضع Xbox وينقلها من برنامج تشغيل Xbox في Windows إلى WinUSB، ثم يعيد الاثنين كما كانا.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>سيحوّل PadForge وحدة التحكم إلى وضع Xbox وينقلها إلى WinUSB أثناء الإرسال، ثم يعيدها إلى برنامج تشغيل Xbox في Windows ويعيدها إلى وضع DInput. افصل كل وحدة تحكم Xbox 360 أخرى أولا. هل ترسل الآن؟</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>استنساخ</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>حدد جهازا في هذه الخانة لاستنساخه.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>لا يتيح الجهاز المحدد أي محاور أو أزرار أو قبعات لاستنساخها.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>هل تريد استنساخ {0} إلى هذه الخانة كتمرير مباشر 1:1؟ يصبح التخطيط: المحاور {1}، الأزرار {2}، مفاتيح POV {3}، ويتم استبدال صفوف هذا الجهاز في الخانة بمدخلاته هو.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>في هذا الجهاز مدخلات أكثر مما تستطيع وحدة تحكم موسعة حمله. تم تعيين {0} من {1} من المحاور، و{2} من {3} من الأزرار، و{4} من {5} من مفاتيح POV. بقي الباقي بلا تعيين.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>هل تريد استنساخ {0} إلى هذه الخانة كتمرير مباشر 1:1؟ يصبح التخطيط: {1}، {2}، {3}، ويتم استبدال صفوف هذا الجهاز في الخانة بمدخلاته هو.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>في هذا الجهاز مدخلات أكثر مما تستطيع وحدة تحكم موسعة حمله. تم تعيين {0} من {1}، و{2} من {3}، و{4} من {5}. بقي الباقي بلا تعيين.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>الإعدادات المسبقة لوحدة التحكم</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>أضف إعدادا مسبقا لوحدة تحكم لا يرفقها PadForge، من ملف أو من وحدة التحكم نفسها.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>المستوردة</value></data>
@@ -1597,11 +1601,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>زر ينقص القيمة التراكمية ما دام مضغوطا</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>أسفل: زر ينقص القيمة التراكمية ما دام مضغوطا.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>المعدل</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>سرعة المسح بالوحدات في الثانية. 0.5 = النطاق الكامل في ثانيتين؛ 2 = النطاق الكامل في 0.5 ثانية.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>سرعة المسح بالوحدات في الثانية. 0.5 = النطاق الكامل في ثانيتين. 2 = النطاق الكامل في 0.5 ثانية.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ثبات</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>عند التحديد، تحتفظ القيمة التراكمية بقيمتها بعد التحرير (مثبت السرعة). عند إلغاء التحديد، تعود فورا إلى الحد الأدنى عند التحرير.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>الأدنى</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>الحد الأدنى للقيمة التراكمية. -1 = السالب الكامل لأهداف المحاور ثنائية القطب؛ 0 = أحادي القطب.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>الحد الأدنى للقيمة التراكمية. -1 = السالب الكامل لأهداف المحاور ثنائية القطب. 0 = أحادي القطب.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>الأقصى</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>الحد الأقصى للقيمة التراكمية. 1 = الموجب الكامل.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>تصاعد</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>يضبط وضع شريط الإضاءة في الخانة المعينة على قيمة محددة. يبقى كأي تعديل في بطاقة «الإضاءة» إلى أن يغيّره إجراء آخر أو المستخدم.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>التنقل بين أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع شريط الإضاءة</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ينقل وضع شريط الإضاءة في الخانة بين الأوضاع المحددة أدناه. كل إطلاق ينتقل إلى الوضع المحدد التالي. موضع الدورة خاص بكل إجراء ويعاد ضبطه عند إعادة تشغيل التطبيق.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>الإبقاء</value></data>
@@ -2172,7 +2177,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>الجزء من الشاشة الذي تصل إليه اللوحة</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>يضبط مصدري «مؤشر لوحة اللمس X/Y»، اللذين ينقلان المؤشر إلى موضع إصبعك على اللوحة (عيّنهما إلى الماوس X/Y في وحدة تحكم ظاهرية من نوع لوحة مفاتيح / ماوس). الحجم 1.00 مع المركز 0.50 يطابق اللوحة مع الشاشة كلها. صغّر الحجم لحصر المؤشر في جزء من الشاشة، وحرّك المركز لتحديد موضعه.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>عرض المنطقة</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>عرض مساحة الشاشة التي تطابقها هذه اللوحة، كنسبة من عرض الشاشة. 1.00 تغطي العرض كله؛ 0.50 تحصر المؤشر في نصف الشاشة.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>عرض مساحة الشاشة التي تطابقها هذه اللوحة، كنسبة من عرض الشاشة. 1.00 تغطي العرض كله. 0.50 تحصر المؤشر في نصف الشاشة.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>ارتفاع المنطقة</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>ارتفاع مساحة الشاشة، كنسبة من ارتفاع الشاشة.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>مركز المنطقة X</value></data>
@@ -2183,7 +2188,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>ردود الفعل اللمسية للسحب</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>نقرات أثناء تحرك إصبعك</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>يشغّل نبضات لمسية في وحدة التحكم أثناء تحرك إصبعك على لوحة اللمس هذه، مثل نقرات لوحة التتبع في Steam Input. وحدات Steam Controller وجهاز Steam Deck تنقر المشغل الموجود تحت اللوحة؛ أما DualSense وDualShock 4 فتنبض محركات الاهتزاز.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>يشغّل نبضات لمسية في وحدة التحكم أثناء تحرك إصبعك على لوحة اللمس هذه، مثل نقرات لوحة التتبع في Steam Input. وحدات Steam Controller وجهاز Steam Deck تنقر المشغل الموجود تحت اللوحة. أما DualSense وDualShock 4 فتنبض محركات الاهتزاز.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>تفعيل ردود الفعل اللمسية للسحب</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>يطلق نقرة لمسية قصيرة كلما تحرك الإصبع مسافة محددة على هذه اللوحة. نزول الإصبع أو ضغط اللوحة لا يطلق نقرة أبدا. متوقف افتراضيا.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>شدة النبضة</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>تم التقاط كل العينات. أدخل اسما للإيماءة وانقر «حفظ».</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>العينة {0} من {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} عينات</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} عينات</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>عدد العينات المطلوب التقاطها</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>العينات المطلوب التقاطها</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 هو المعتاد. تعطي العينات الأكثر مطابقة أوثق، والأقل تسجيلا أسرع.</value></data>
@@ -3394,6 +3400,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>المسدس خارج الشاشة</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>التنقل بين أوضاع المؤشر</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع المؤشر</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع المؤشر</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ينقل وضع مؤشر Wii بين الأوضاع المحددة أدناه لكل جهاز Wii Remote يدعم IR في الخانة. كل إطلاق ينتقل إلى الوضع المحدد التالي. موضع الدورة خاص بكل إجراء ويعاد ضبطه عند إعادة تشغيل التطبيق.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>اختر أوضاع المؤشر التي يتنقل الماكرو بينها. كل إطلاق ينتقل إلى الوضع المحدد التالي.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>الصوت</value></data>
@@ -3721,7 +3728,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>لم يتم العثور على DualShock 3 على USB. وصّله بكبل USB وحاول مرة أخرى.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>لن يثبت Windows برنامج تشغيل USB الخاص ببرنامج PadForge لوحدة DualShock 3، لأن شهادة توقيعه غير موثوقة على هذا الكمبيوتر.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>تعذر تثبيت برنامج تشغيل Bluetooth لوحدات تحكم PlayStation.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>لا يتوفر راديو Bluetooth. شغّل Bluetooth وحاول مرة أخرى. الإقران مطلوب للعب اللاسلكي فقط؛ وحدة التحكم الموصولة بكبل تعمل بدونه.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>لا يتوفر راديو Bluetooth. شغّل Bluetooth وحاول مرة أخرى. الإقران مطلوب للعب اللاسلكي فقط. وحدة التحكم الموصولة بكبل تعمل بدونه.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>لم يكتمل الإقران. الخطوة التي فشلت معروضة أعلاه.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>إغلاق</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>علامات NFC</value></data>
@@ -3812,7 +3819,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>اترك الزر.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>الخطوة {0} من {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>لم يُرصد أي تغيير. اختر «ابدأ من جديد»، ثم اضغط الزر مع الاستمرار عند الطلب.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>تمت مراقبة تقارير الشركة المصنعة ({0}) وفئات الأحداث ({1}). أثناء الضغط: التقارير {2}، الأحداث {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>تقارير الشركة المصنعة التي تمت مراقبتها: {0}. فئات الأحداث التي تمت مراقبتها: {1}. التقارير أثناء الضغط: {2}. الأحداث أثناء الضغط: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>تم التقاط الزر. أدخل اسما وانقر «تسجيل».</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>المصدر</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>الاسم</value></data>
@@ -3828,7 +3835,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>تصدير…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>استيراد…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>عدد الأزرار المصدرة: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>عدد الأزرار المصدرة: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>عدد الأزرار المستوردة: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>عدد الأزرار المستوردة: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>أزرار الكمبيوتر المحمول باليد</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>أجهزة الألعاب المحمولة باليد والحواسيب المحمولة فيها أزرار لا يعرضها نظام التشغيل كوحدة تحكم أبدا: مجاديف خلفية، ومفاتيح قوائم، وعجلات، ومفاتيح اختصار خاصة بالشركة المصنعة. شغّل هذا الخيار لتعلمها مرة واحدة بضغطها، ثم عيّنها كأي زر آخر. يضيف كذلك جيروسكوب الجهاز نفسه كجهاز حركة.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>تفعيل أزرار الكمبيوتر المحمول باليد</value></data>
@@ -3992,9 +4001,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>تصاعدي</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>تنازلي</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>الارتباطات: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>الارتباطات: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>تم العثور على {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>عرض {0} من {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>التكوينات: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>التكوينات: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>دعم كامل لوحدات التحكم</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>دعم جزئي لوحدات التحكم</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>البحث في الألعاب</value></data>
@@ -4004,7 +4015,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>قبل {0} شهر</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>قبل {0} سنة</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>المشتركون: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>المشتركون: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>الأصوات: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>الأصوات: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>الكل</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>لا توجد تكوينات لهذه اللعبة بعد</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>لا توجد في ورشة عمل Steam تكوينات وحدات تحكم من المجتمع للعبة {0}. يمكنك أن تكون الأول: أنشئ تكوينا في Steam وسيظهر هنا.</value></data>
@@ -4037,6 +4050,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>الطبقة: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>لا يوجد مدخل تشغيل مستقل عن الجهاز لهذا المدخل</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>إجراءات داخل اللعبة: {0}، خاصة بخدمة Steam فقط، بلا خطاف من جهة اللعبة</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>إجراءات داخل اللعبة: {0}، خاصة بخدمة Steam فقط، بلا خطاف من جهة اللعبة</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>إجراء عميل Steam {0}، بلا مقابل</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>إجراء وحدة التحكم {0} غير مدعوم</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>نوع ارتباط غير معروف {0}</value></data>
@@ -4111,10 +4125,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>درجة عجلة الماوس</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>يرسل درجة واحدة منفصلة من عجلة الماوس في كل إطلاق. القيمة هي عدد الدرجات مع الإشارة (الموجب يمرر لأعلى أو لليمين).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>دفع المؤشر</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>يحرّك مؤشر الماوس عددا ثابتا من البكسلات في كل إطلاق. قيمة X الموجبة تحرّك يمينا، وقيمة Y الموجبة تحرّك لأسفل؛ القيم السالبة مسموحة.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>يحرّك مؤشر الماوس عددا ثابتا من البكسلات في كل إطلاق. قيمة X الموجبة تحرّك يمينا، وقيمة Y الموجبة تحرّك لأسفل. القيم السالبة مسموحة.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>دفع المؤشر بمقدار ({0}، {1}) بكسل</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>التنقل في قائمة الضغطات</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>كل إطلاق ينفذ الضغطة التالية في قائمة الخطوات ويتقدم. عند تفعيل الالتفاف تبدأ القائمة من جديد بعد الخطوة الأخيرة؛ وبدونه يتوقف الإطلاق عند النهاية.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>كل إطلاق ينفذ الضغطة التالية في قائمة الخطوات ويتقدم. عند تفعيل الالتفاف تبدأ القائمة من جديد بعد الخطوة الأخيرة. وبدونه يتوقف الإطلاق عند النهاية.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>تبديل زر الماوس</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>كل إطلاق يثبت زر الماوس أو يلغي تثبيته. الزر المثبت يبقى مضغوطا حتى الإطلاق التالي أو حتى تعطيل الماكرو.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>تبديل زر الماوس {0}</value></data>
@@ -4127,6 +4141,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>تبديل تمرير العجلة</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>كل إطلاق يثبت تمريرا مستمرا أو يلغي تثبيته. ما دام مثبتا، يرسل عدد الدرجات مرة في كل فاصل زمني حتى الإطلاق التالي أو حتى تعطيل الماكرو.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>تبديل تمرير العجلة ({0} درجات كل {1} مللي ثانية)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>تبديل تمرير العجلة ({0} درجات كل {1} مللي ثانية)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>النبض أثناء التثبيت</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ما دام مثبتا، ينبض المخرج تشغيلا وإيقافا بفاصل التكرار بدلا من إبقائه ثابتا.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>إضافة إلى المحور (نسبي)</value></data>
@@ -4148,6 +4163,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>عندما تدفع الحركة الفعلية الهدف إلى ما بعد العتبة، يتوقف الماكرو عن كتابة المحور لبقية مدة التفعيل.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(يتنازل للإدخال الفعلي)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>التنقل في قائمة الضغطات (الخطوات: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>التنقل في قائمة الضغطات (الخطوات: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>الخطوات</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>الالتفاف</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>تبديل المفاتيح {0}</value></data>
@@ -4231,6 +4247,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>تراكب تبديل ملف التعريف</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>إظهار الحلقة أو الشبكة على الشاشة ما دامت قائمة شعاعية أو قائمة لمس مفعلة. القوائم تظل تنطلق والتراكب متوقف.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>تم إنشاء قائمة على الشاشة (الخلايا المرتبطة: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>تم إنشاء قائمة على الشاشة (الخلايا المرتبطة: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>القائمة بلا خلايا مرتبطة</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>سطح فتح القائمة غير مدعوم ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>لم يتم التعرف على أيقونة خلية القائمة ({0})، لذا تحتفظ الخلية بتسميتها النصية</value></data>
@@ -4417,6 +4434,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>اختر ملف txt الذي نزّله AutoEq. هذا هو الخيار المناسب: autoeq.app يعطيك ملفا لا نصا يمكنك نسخه.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>للحصول على تصحيح مطابق لسماعات رأسك: افتح autoeq.app، واختر طرازك، ثم اختر Custom Parametric Eq ونزّله، ثم استخدم «استيراد من ملف». تنزيل Graphic Eq لا يحتوي على أسطر مرشحات ولن يتم استيراده.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>تم استيراد نطاقات عددها {0} بتضخيم أولي {1:0.#} dB من {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>تم استيراد نطاقات عددها {0} بتضخيم أولي {1:0.#} dB من {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>لا توجد أسطر مرشحات في ملف التعريف هذا. تصدير Graphic Eq من AutoEq لا يمكن قراءته هنا. نزّل تصدير Custom Parametric Eq بدلا منه. المعادل الحالي لم يتغير.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>لا يوجد شيء للاستيراد. المعادل الحالي لم يتغير.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>تعذرت قراءة هذا الملف: {0}</value></data>
@@ -4432,7 +4450,7 @@
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>إعادة ضبط السقف</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>اسحب نقطة لتغيير ترددها وكسبها. أدر العجلة فوق نقطة لتوسيعها أو تضييقها.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>مسار الإخراج</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>أين تشغّل وحدة التحكم صوتها. «افتراضي» يبقي توجيه البرنامج الثابت نفسه ويشغّل أصوات PadForge على مكبر الصوت. «سماعات الرأس + مكبر الصوت» يشغّل صوتا أحاديا في جهة السماعة، وهذا قيد في البرنامج الثابت. عبر Bluetooth يعمل هذا الوضع عبر سماعات الرأس فقط. «اتباع مقبس سماعة الرأس» يبدّل إلى سماعات الرأس عند توصيل شيء بوحدة التحكم ويعود إلى مكبر الصوت عند فصله؛ وإذا لم تتوفر قراءة للمقبس يتصرف مثل «افتراضي».</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>أين تشغّل وحدة التحكم صوتها. «افتراضي» يبقي توجيه البرنامج الثابت نفسه ويشغّل أصوات PadForge على مكبر الصوت. «سماعات الرأس + مكبر الصوت» يشغّل صوتا أحاديا في جهة السماعة، وهذا قيد في البرنامج الثابت. عبر Bluetooth يعمل هذا الوضع عبر سماعات الرأس فقط. «اتباع مقبس سماعة الرأس» يبدّل إلى سماعات الرأس عند توصيل شيء بوحدة التحكم ويعود إلى مكبر الصوت عند فصله. وإذا لم تتوفر قراءة للمقبس يتصرف مثل «افتراضي».</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>افتراضي</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>سماعات الرأس (ستيريو)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>سماعات الرأس (أحادي)</value></data>

@@ -77,6 +77,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Chotsani</value></data>
   <data name="Common_None" xml:space="preserve"><value>Palibe</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>mphindi</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>masekondi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -550,6 +551,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Zitsanzo zonse zatengedwa. Patsani gesture dzina ndipo dinani Sungani.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Chitsanzo {0} mwa {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Zitsanzo {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Chitsanzo {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Dzina</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Patsani manja awa dzina</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Dzina likufunika</value></data>
@@ -1485,6 +1487,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tumizani</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Mafelemu: {0}. Kutumiza kumatenga pafupifupi {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Chowongolera chimalandira mafelemu osapitirira {0}, choncho mafelemu omaliza asiyidwa: {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Chowongolera chimalandira mafelemu osapitirira {0}, choncho felemu lomaliza lasiyidwa.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Lumikizani chowongolera ndi chingwe. Chimayambiranso chokha patatha masekondi pafupifupi 15 chithunzi chitalowa.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Lumikizani chowongolera ndi chingwe. Pa kutumiza, PadForge imachisinthira ku Xbox mode ndi kuchichotsa pa dalaivala ya Xbox ya Windows kupita ku WinUSB, kenako imabwezeretsa zonse ziwiri.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge isinthira chowongolera ku Xbox mode, ichisamutsira ku WinUSB pa kutumiza, kenako ichibwezera ku dalaivala ya Xbox ya Windows ndi kuchibwezera ku DInput mode. Choyamba chotsani chowongolera china chilichonse cha Xbox 360. Tumizani tsopano?</value></data>

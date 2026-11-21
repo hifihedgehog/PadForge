@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>เลื่อนไปทางขวาหนึ่งหน้า</value></data>
   <data name="Common_None" xml:space="preserve"><value>ไม่มี</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>นาที</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>วินาที</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>นาที (0 = ไม่ตัดเลย)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide บล็อกไม่ให้ PadForge เข้าถึงอุปกรณ์ที่ PadForge ซ่อนไว้ PadForge จึงหยุดซ่อนอุปกรณ์</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide เปิดตัวเลือก Inverse application cloak อยู่ PadForge จึงไม่ซ่อนอุปกรณ์ใดเลย</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>กำลังถอนการติดตั้งรันไทม์ Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} เริ่มทำงานไม่ได้เพราะ MIDI ไม่ได้ทำงาน การ์ด Windows MIDI Services ในการตั้งค่าจะบอกสาเหตุ</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} เริ่มทำงานไม่ได้เพราะ MIDI ไม่ได้ทำงาน ดู Windows MIDI Services ในการตั้งค่า ภายใต้ไดรเวอร์</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} เริ่มทำงานไม่ได้เพราะ Windows MIDI Services ไม่ได้สร้างพอร์ตให้</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} ยังไม่มีพอร์ตเอาต์พุต โปรดเลือกในหน้าของคอนโทรลเลอร์นั้น</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>พอร์ตเอาต์พุต “{1}” ของ {0} ไม่ได้เชื่อมต่ออยู่ ช่องจะเริ่มทำงานเมื่อพอร์ตกลับมา</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ปฏิเสธการเริ่มทำงาน สาเหตุมักเป็นเพราะ Logitech Gaming Software ไม่ได้เปิดอยู่</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>เชื่อมต่อแล้ว แต่ยังไม่เห็นคีย์ใด ใน Logitech Gaming Software ให้ลากคำสั่ง G-key ไปวางบนแต่ละคีย์ในโปรไฟล์ PadForge และตั้งโปรไฟล์นั้นเป็นแบบถาวร (Persistent) เมาส์ G600 หรือ G300 ยังต้องออกจากโหมดหน่วยความจำในตัว (On-Board Memory) ด้วย</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>กำลังทำงาน เหตุการณ์คีย์ {0} ครั้ง</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>กำลังทำงาน เหตุการณ์คีย์ {0} ครั้ง</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>อ่านคีย์บอร์ดแอนะล็อก</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>อ่านระยะที่กดของทุกคีย์บนคีย์บอร์ดแอนะล็อกจาก Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA และผู้ผลิตรายอื่น โดยแต่ละตัวจะเป็นแถวอุปกรณ์ของตัวเอง เอกสารประกอบมีรายชื่อทุกรุ่นที่รองรับ คีย์บอร์ด Razer ต้องเปิด Razer Synapse ไว้ ส่วนใหญ่ที่เหลือจะอ่านผ่านช่องทางเดียวกับที่โปรแกรมตั้งค่าของคีย์บอร์ดนั้นใช้ จึงควรปิดโปรแกรมตั้งค่าขณะเปิดตัวเลือกนี้</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>ไม่พบคีย์บอร์ดแอนะล็อกที่รองรับ</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>ตรวจหาการอัปเดต</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>ฟอร์กสมัยใหม่ของ x360ce สร้างขึ้นใหม่ด้วย SDL3, WPF และ .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge เปลี่ยนอุปกรณ์อินพุตใดก็ได้ให้เป็นคอนโทรลเลอร์เสมือนแบบใดก็ได้ เกมแพด จอยสติ๊ก คีย์บอร์ด เมาส์ และหน้าจอสัมผัส จะถูกแมปไปยังคอนโทรลเลอร์เกมเสมือน (Xbox, PlayStation, จอยสติ๊กการบิน, พวงมาลัย, เกมแพดของผู้ผลิตรายอื่น) หรือเอาต์พุตคีย์บอร์ด+เมาส์ / MIDI ที่เกมมองว่าเป็นฮาร์ดแวร์จริง ขับเคลื่อนด้วย HIDMaestro และ Windows MIDI Services โปรแกรมใช้ SDL3 สำหรับอินพุตคอนโทรลเลอร์ ใช้ Windows Raw Input สำหรับคีย์บอร์ดและเมาส์ ใช้ HidHide สำหรับการซ่อนอุปกรณ์รายเกม และมีอินเทอร์เฟซ Fluent Design สมัยใหม่สำหรับการแมป เดดโซน เส้นโค้งความไว และฟอร์ซฟีดแบ็ก</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ทำให้อินพุตใดก็ได้ดูเหมือนคอนโทรลเลอร์ใดก็ได้ เกมแพด จอยสติ๊ก พวงมาลัย คีย์บอร์ด เมาส์ หน้าจอสัมผัส อุปกรณ์ MIDI และโทรศัพท์ สั่งงานคอนโทรลเลอร์เสมือนที่เกมมองว่าเป็นฮาร์ดแวร์จริง ได้แก่ แพด Xbox, PlayStation, Nintendo และ Steam, แพด SInput, คอนโทรลเลอร์มือสำหรับ VR, เอาต์พุต MIDI, คีย์บอร์ดและเมาส์ หรืออุปกรณ์กำหนดเองอย่างจอยสติ๊กการบินหรือพวงมาลัย HIDMaestro สร้างเกมแพดเสมือน SDL3 อ่านคอนโทรลเลอร์ Windows Raw Input อ่านคีย์บอร์ดและเมาส์ HidHide ซ่อนอุปกรณ์จากเกม และ Windows MIDI Services รับส่ง MIDI เข้าและออก</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ภาพรวม</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>สร้างด้วย</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ค้นหาเครดิต</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>หน่วงเวลาระหว่างตัวอักษร</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>จำนวนมิลลิวินาทีระหว่างอักขระที่พิมพ์ สูงสุด 1000 ค่า 0 จะพิมพ์ข้อความทั้งหมดในครั้งเดียว</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ตัดการเชื่อมต่อเมื่อไม่ได้ใช้งาน</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 หมายถึงไม่ตัดเลย</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>รายละเอียด</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ตัดการเชื่อมต่อ Bluetooth เมื่อเสียบสาย USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ชาร์จเร็ว เมื่อคอนโทรลเลอร์นี้รายงานว่ากำลังชาร์จขณะเชื่อมต่อผ่าน Bluetooth ระบบจะตัดการเชื่อมต่อ Bluetooth เพื่อให้ชาร์จได้โดยไม่ต้องจ่ายไฟให้ภาควิทยุ แหล่งจ่ายไฟ USB ทุกแบบนับรวมด้วย รวมถึงที่ชาร์จแบบเสียบผนัง หากคุณเปิด Bluetooth กลับมาขณะที่ยังเสียบสายอยู่ ระบบจะไม่ยุ่งกับการเชื่อมต่อนั้นจนกว่าจะถอดสายครั้งถัดไป</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>ส่ง</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>เฟรม: {0} การส่งใช้เวลาประมาณ {1}</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>คอนโทรลเลอร์รับได้สูงสุด {0} เฟรม จึงตัด {1} เฟรมสุดท้ายออก</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>คอนโทรลเลอร์รับได้สูงสุด {0} เฟรม จึงตัดเฟรมสุดท้ายออก</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>เชื่อมต่อคอนโทรลเลอร์ด้วยสายเคเบิล คอนโทรลเลอร์จะรีสตาร์ตเองประมาณ 15 วินาทีหลังจากรับรูปภาพเสร็จ</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>เชื่อมต่อคอนโทรลเลอร์ด้วยสายเคเบิล ระหว่างการส่ง PadForge จะสลับคอนโทรลเลอร์เป็นโหมด Xbox และย้ายจากไดรเวอร์ Xbox ของ Windows ไปเป็น WinUSB แล้วคืนทั้งสองอย่างกลับให้เหมือนเดิม</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge จะสลับคอนโทรลเลอร์เป็นโหมด Xbox ย้ายไปเป็น WinUSB ระหว่างการส่ง แล้วคืนให้ไดรเวอร์ Xbox ของ Windows และสลับกลับเป็นโหมด DInput โปรดถอดคอนโทรลเลอร์ Xbox 360 ตัวอื่นทั้งหมดออกก่อน ส่งเลยไหม?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} เลื่อนตัวชี้อีกต่อไป หากคุณไม่ได้ตั้งใจ ไม่ต้องทำอะไร มันจะกลับมาเอง</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows จะไม่ใช้ {0} เลื่อนตัวชี้อีกต่อไป หากคุณไม่ได้ตั้งใจ ไม่ต้องทำอะไร มันจะกลับมาเอง</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>คืนให้ใน {0} วินาที</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>คืนให้ใน {0} วินาที</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>ใช้ต่อ</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>คืนให้เดี๋ยวนี้</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ถอดคีย์บอร์ดรุ่นเดียวกันตัวอื่นออกก่อน Windows จะย้ายทุกตัวที่เสียบอยู่ไปใช้ไดรเวอร์ของ PadForge พร้อมกัน และหยุดใช้แต่ละตัวพิมพ์</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>โคลน</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>เลือกอุปกรณ์ในช่องนี้เพื่อโคลน</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>อุปกรณ์ที่เลือกไม่มีแกน ปุ่ม หรือแฮตให้โคลน</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>โคลน {0} ลงในช่องนี้เป็นการส่งผ่านแบบ 1:1 หรือไม่ เลย์เอาต์จะกลายเป็น {1} แกน {2} ปุ่ม และ {3} POV และแถวของอุปกรณ์นี้ในช่องจะถูกแทนที่ด้วยอินพุตของอุปกรณ์เอง</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>อุปกรณ์นี้มีอินพุตมากกว่าที่คอนโทรลเลอร์แบบขยายจะรองรับได้ แมปแล้ว {0} จาก {1} แกน, {2} จาก {3} ปุ่ม และ {4} จาก {5} POV ส่วนที่เหลือไม่ได้ถูกแมป</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>โคลน {0} ลงในช่องนี้เป็นการส่งผ่านแบบ 1:1 หรือไม่ เลย์เอาต์จะกลายเป็น {1} {2} และ {3} และแถวของอุปกรณ์นี้ในช่องจะถูกแทนที่ด้วยอินพุตของอุปกรณ์เอง</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>อุปกรณ์นี้มีอินพุตมากกว่าที่คอนโทรลเลอร์แบบขยายจะรองรับได้ แมปแล้ว {0} จาก {1}, {2} จาก {3} และ {4} จาก {5} ส่วนที่เหลือไม่ได้ถูกแมป</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>พรีเซ็ตคอนโทรลเลอร์</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>เพิ่มพรีเซ็ตสำหรับคอนโทรลเลอร์ที่ PadForge ไม่มีให้ จากไฟล์หรือจากตัวคอนโทรลเลอร์เอง</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>นำเข้าแล้ว</value></data>
@@ -1785,11 +1790,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>ปุ่มที่ไล่ค่าตัวสะสมลงขณะกดค้าง</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>ลง: ปุ่มที่ไล่ค่าตัวสะสมลงขณะกดค้าง</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>อัตรา</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>ความเร็วการกวาดเป็นหน่วยต่อวินาที 0.5 = เต็มช่วงใน 2 วินาที; 2 = เต็มช่วงใน 0.5 วินาที</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>ความเร็วการกวาดเป็นหน่วยต่อวินาที 0.5 = เต็มช่วงใน 2 วินาที 2 = เต็มช่วงใน 0.5 วินาที</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ค้างค่า</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>เมื่อเลือก ตัวสะสมจะคงค่าไว้หลังปล่อย (ครูซคอนโทรล) เมื่อไม่เลือก ค่าจะดีดกลับไปที่ค่าต่ำสุดเมื่อปล่อย</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>ต่ำสุด</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>ขอบเขตล่างของตัวสะสม -1 = ลบเต็มที่สำหรับเป้าหมายแกนแบบสองขั้ว; 0 = ขั้วเดียว</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>ขอบเขตล่างของตัวสะสม -1 = ลบเต็มที่สำหรับเป้าหมายแกนแบบสองขั้ว 0 = ขั้วเดียว</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>สูงสุด</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>ขอบเขตบนของตัวสะสม 1 = บวกเต็มที่</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>แรมป์</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ตั้งโหมดแถบไฟของช่องที่กำหนดเป็นค่าที่ระบุ คงอยู่เหมือนการแก้ไขบนการ์ดแสงไฟ จนกว่าแอ็กชันอื่นหรือผู้ใช้จะเปลี่ยน</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>วนโหมดแถบไฟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>วนผ่านโหมดแถบไฟ {0} โหมด</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>วนผ่านโหมดแถบไฟ {0} โหมด</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>เลื่อนโหมดแถบไฟของช่องไปตามโหมดที่เลือกด้านล่าง แต่ละครั้งที่ทำงานจะย้ายไปยังโหมดถัดไปที่เลือกไว้ ตำแหน่งในรอบวนแยกตามแอ็กชัน และรีเซ็ตเมื่อเริ่มแอปใหม่</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>การคงค่า</value></data>
@@ -2361,7 +2367,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ส่วนของหน้าจอที่แพดควบคุมถึง</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ปรับแหล่งที่มาตัวชี้ X/Y ของทัชแพด ซึ่งย้ายเคอร์เซอร์ไปยังตำแหน่งนิ้วของคุณบนแพดทันที (แมปไปยังเมาส์ X/Y บนคอนโทรลเลอร์เสมือนแบบคีย์บอร์ด / เมาส์) ขนาด 1.00 กับกึ่งกลาง 0.50 จะแมปแพดกับทั้งหน้าจอ ลดขนาดเพื่อจำกัดเคอร์เซอร์ให้อยู่ในบางส่วนของหน้าจอ และย้ายจุดกึ่งกลางเพื่อกำหนดตำแหน่ง</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>ความกว้างพื้นที่</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ความกว้างของพื้นที่หน้าจอที่แพดนี้แมปไป คิดเป็นสัดส่วนของความกว้างหน้าจอ 1.00 ครอบคลุมเต็มความกว้าง; 0.50 จำกัดเคอร์เซอร์ไว้ในครึ่งหน้าจอ</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ความกว้างของพื้นที่หน้าจอที่แพดนี้แมปไป คิดเป็นสัดส่วนของความกว้างหน้าจอ 1.00 ครอบคลุมเต็มความกว้าง 0.50 จำกัดเคอร์เซอร์ไว้ในครึ่งหน้าจอ</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>ความสูงพื้นที่</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>ความสูงของพื้นที่หน้าจอ คิดเป็นสัดส่วนของความสูงหน้าจอ</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>กึ่งกลางพื้นที่ X</value></data>
@@ -2372,7 +2378,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>แฮปติกเมื่อปัด</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>แรงสั่นเป็นจังหวะขณะนิ้วเลื่อน</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ส่งพัลส์แฮปติกของคอนโทรลเลอร์ขณะที่นิ้วของคุณเลื่อนผ่านทัชแพดนี้ คล้ายจังหวะติ๊กของแทร็กแพดใน Steam Input บน Steam Controller และ Steam Deck จะติ๊กที่แอคชูเอเตอร์ใต้แพด; ส่วน DualSense และ DualShock 4 จะส่งพัลส์ไปที่มอเตอร์การสั่น</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ส่งพัลส์แฮปติกของคอนโทรลเลอร์ขณะที่นิ้วของคุณเลื่อนผ่านทัชแพดนี้ คล้ายจังหวะติ๊กของแทร็กแพดใน Steam Input บน Steam Controller และ Steam Deck จะติ๊กที่แอคชูเอเตอร์ใต้แพด ส่วน DualSense และ DualShock 4 จะส่งพัลส์ไปที่มอเตอร์การสั่น</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>เปิดใช้แฮปติกเมื่อปัด</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ส่งแฮปติกติ๊กสั้น ๆ ทุกครั้งที่นิ้วเคลื่อนไปตามระยะที่กำหนดบนแพดนี้ การวางนิ้วลงหรือการคลิกแพดจะไม่ติ๊ก ค่าเริ่มต้นคือปิด</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>ความเข้มของพัลส์</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>เก็บตัวอย่างครบแล้ว ตั้งชื่อท่าทางสัมผัสแล้วคลิก “บันทึก”</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ตัวอย่างที่ {0} จาก {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ตัวอย่าง</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ตัวอย่าง</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>จำนวนตัวอย่างที่จะเก็บ</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>จำนวนตัวอย่างที่จะบันทึก</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 คือค่ามาตรฐาน ตัวอย่างมากขึ้นให้การจับคู่ที่แน่นอนกว่า และตัวอย่างน้อยลงบันทึกได้เร็วกว่า</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ปืนนอกหน้าจอ</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>วนโหมดตัวชี้</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>วนผ่านโหมดตัวชี้ {0} โหมด</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>วนผ่านโหมดตัวชี้ {0} โหมด</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>เลื่อนโหมดตัวชี้ Wii ไปตามโหมดที่เลือกด้านล่างสำหรับรีโมตทุกตัวในช่องที่รองรับ IR แต่ละครั้งที่ทำงานจะย้ายไปยังโหมดถัดไปที่เลือกไว้ ตำแหน่งในรอบวนแยกตามแอ็กชัน และรีเซ็ตเมื่อเริ่มแอปใหม่</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>เลือกโหมดตัวชี้ที่แมโครจะวนผ่าน แต่ละครั้งที่ทำงานจะเลื่อนไปยังโหมดถัดไปที่เลือกไว้</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>เสียง</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ปล่อยปุ่ม</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ขั้นที่ {0} จาก {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ไม่พบการเปลี่ยนแปลง เลือกเริ่มใหม่ แล้วกดปุ่มค้างไว้เมื่อได้รับแจ้ง</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>เฝ้าดูรายงานของผู้ผลิต {0} รายการและคลาสเหตุการณ์ {1} คลาส ระหว่างการกด: รายงาน {2} รายการ เหตุการณ์ {3} รายการ</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>รายงานของผู้ผลิตที่เฝ้าดู: {0} คลาสเหตุการณ์ที่เฝ้าดู: {1} รายงานระหว่างการกด: {2} เหตุการณ์ระหว่างการกด: {3}</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>บันทึกปุ่มแล้ว ป้อนชื่อแล้วคลิก “ลงทะเบียน”</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>แหล่งที่มา</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>ชื่อ</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>ลืมทั้งหมด</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>นำชื่อที่เรียนรู้ทั้งหมดของรุ่นนี้ออก</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>ส่งออก {0} ชื่อแล้ว</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>ส่งออก {0} ชื่อแล้ว</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>นำเข้า {0} ชื่อแล้ว</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>นำเข้า {0} ชื่อแล้ว</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>นำเข้า {0} ชื่อสำหรับรุ่นอื่น คือ {1}</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>นำเข้า {0} ชื่อสำหรับรุ่นอื่น คือ {1}</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>ไฟล์นั้นไม่มีชื่อไฟแป้น</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>นำเข้า…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>ส่งออก {0} ปุ่มแล้ว</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>ส่งออก {0} ปุ่มแล้ว</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>นำเข้า {0} ปุ่มแล้ว</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>นำเข้า {0} ปุ่มแล้ว</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>ปุ่มของพีซีพกพา</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>พีซีเกมแบบพกพาและแล็ปท็อปมีปุ่มที่ระบบปฏิบัติการไม่เคยแสดงเป็นคอนโทรลเลอร์: แพดเดิลด้านหลัง คีย์เมนู ล้อหมุน คีย์ลัดของผู้ผลิต เปิดตัวเลือกนี้เพื่อเรียนรู้ปุ่มเหล่านั้นหนึ่งครั้งด้วยการกด แล้วแมปได้เหมือนปุ่มอื่น ๆ และยังเพิ่มไจโรสโคปของตัวเครื่องเป็นอุปกรณ์การเคลื่อนไหวด้วย</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>เปิดใช้ปุ่มของพีซีพกพา</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>น้อยไปมาก</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>มากไปน้อย</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>การผูก {0} รายการ</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>การผูก {0} รายการ</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>พบ {0} รายการ</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>แสดง {0} จาก {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} คอนฟิก</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} คอนฟิก</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>รองรับคอนโทรลเลอร์เต็มรูปแบบ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>รองรับคอนโทรลเลอร์บางส่วน</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ค้นหาเกม</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} เดือนก่อน</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} ปีก่อน</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>ผู้สมัครรับ {0} คน</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>ผู้สมัครรับ {0} คน</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} โหวต</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} โหวต</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>ทั้งหมด</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ยังไม่มีคอนฟิกสำหรับเกมนี้</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>เวิร์กชอปของ Steam ยังไม่มีคอนฟิกคอนโทรลเลอร์จากชุมชนสำหรับ {0} คุณเป็นคนแรกได้: สร้างคอนฟิกใน Steam แล้วจะปรากฏที่นี่</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>เลเยอร์: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ไม่มีตัวเรียกใช้ที่ไม่ผูกกับอุปกรณ์สำหรับอินพุตนี้</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>แอ็กชันในเกม {0} รายการ ใช้ได้เฉพาะ Steam ไม่มีฮุกฝั่งเกม</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>แอ็กชันในเกม {0} รายการ ใช้ได้เฉพาะ Steam ไม่มีฮุกฝั่งเกม</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>แอ็กชันของไคลเอ็นต์ Steam {0} ไม่มีสิ่งเทียบเท่า</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ไม่รองรับแอ็กชันคอนโทรลเลอร์ {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ไม่รู้จักประเภทการผูก {0}</value></data>
@@ -4331,10 +4349,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>ขั้นล้อเมาส์</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>ส่งการเลื่อนล้อเมาส์หนึ่งขั้นต่อการทำงานหนึ่งครั้ง ค่านี้คือจำนวนขั้นแบบมีเครื่องหมาย (ค่าบวกเลื่อนขึ้นหรือไปทางขวา)</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>ขยับเคอร์เซอร์</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>เลื่อนเคอร์เซอร์เมาส์ตามจำนวนพิกเซลคงที่ต่อการทำงานหนึ่งครั้ง X บวกเลื่อนไปทางขวา Y บวกเลื่อนลง; ใช้ค่าลบได้</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>เลื่อนเคอร์เซอร์เมาส์ตามจำนวนพิกเซลคงที่ต่อการทำงานหนึ่งครั้ง X บวกเลื่อนไปทางขวา Y บวกเลื่อนลง ใช้ค่าลบได้</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>ขยับเคอร์เซอร์ ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>วนรายการแตะ</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>แต่ละครั้งที่ทำงานจะทำการแตะรายการถัดไปในรายการขั้นตอนแล้วเลื่อนต่อ เมื่อเปิดการวนกลับ รายการจะเริ่มใหม่หลังขั้นตอนสุดท้าย; หากไม่เปิด การทำงานจะหยุดที่ท้ายรายการ</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>แต่ละครั้งที่ทำงานจะทำการแตะรายการถัดไปในรายการขั้นตอนแล้วเลื่อนต่อ เมื่อเปิดการวนกลับ รายการจะเริ่มใหม่หลังขั้นตอนสุดท้าย หากไม่เปิด การทำงานจะหยุดที่ท้ายรายการ</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>สลับเปิด/ปิดปุ่มเมาส์</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>แต่ละครั้งที่ทำงานจะแลตช์หรือปลดแลตช์ปุ่มเมาส์ ปุ่มที่แลตช์อยู่จะถูกกดค้างจนกว่าจะทำงานครั้งถัดไป หรือจนกว่าแมโครจะถูกปิดใช้งาน</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>สลับเปิด/ปิดเมาส์ {0}</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>สลับเปิด/ปิดการเลื่อนล้อ</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>แต่ละครั้งที่ทำงานจะแลตช์หรือปลดแลตช์การเลื่อนต่อเนื่อง ขณะแลตช์อยู่ จะส่งจำนวนขั้นหนึ่งครั้งต่อช่วงเวลา จนกว่าจะทำงานครั้งถัดไป หรือจนกว่าแมโครจะถูกปิดใช้งาน</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>สลับเปิด/ปิดการเลื่อนล้อ ({0} ขั้นทุก {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>สลับเปิด/ปิดการเลื่อนล้อ ({0} ขั้นทุก {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>พัลส์ขณะแลตช์</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ขณะแลตช์อยู่ ให้เปิดและปิดเอาต์พุตสลับกันตามช่วงเวลาการทำซ้ำ แทนการคงค่าไว้ต่อเนื่อง</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>บวกค่าแกน (สัมพัทธ์)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>เมื่อการขยับจริงดันเป้าหมายเกินค่าเกณฑ์ แมโครจะหยุดเขียนค่าแกนตลอดช่วงที่เหลือของการทำงานครั้งนั้น</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(หลีกทางให้อินพุตจริง)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>วนรายการแตะ ({0} ขั้นตอน)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>วนรายการแตะ ({0} ขั้นตอน)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ขั้นตอน</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>วนกลับ</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>สลับเปิด/ปิดคีย์ {0}</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>โอเวอร์เลย์การสลับโปรไฟล์</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>แสดงวงแหวนหรือตารางบนหน้าจอขณะที่เมนูวงแหวนหรือเมนูสัมผัสทำงานอยู่ เมนูยังคงทำงานแม้ปิดโอเวอร์เลย์</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>สร้างเมนูบนหน้าจอแล้ว (เซลล์ที่ผูกไว้ {0} เซลล์)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>สร้างเมนูบนหน้าจอแล้ว (เซลล์ที่ผูกไว้ {0} เซลล์)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>เมนูไม่มีเซลล์ที่ผูกไว้</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ไม่รองรับพื้นผิวที่ใช้เปิดเมนู ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ไม่รู้จักไอคอนของเซลล์เมนู ({0}) เซลล์จึงใช้ป้ายข้อความตามเดิม</value></data>
@@ -4639,6 +4660,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>เลือกไฟล์ .txt ที่ AutoEq ดาวน์โหลดมา ควรใช้วิธีนี้ เพราะ autoeq.app ให้เป็นไฟล์ ไม่ใช่ข้อความที่คัดลอกได้</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>สำหรับการปรับแก้ที่ตรงกับหูฟังของคุณ: เปิด autoeq.app เลือกรุ่นของคุณ เลือก Custom Parametric Eq แล้วดาวน์โหลด จากนั้นใช้ “นำเข้าจากไฟล์” ไฟล์ดาวน์โหลดแบบ Graphic Eq ไม่มีบรรทัดฟิลเตอร์และจะนำเข้าไม่ได้</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>นำเข้า {0} แบนด์พร้อมปรีแอมป์ {1:0.#} dB จาก {2} แล้ว</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>นำเข้า {0} แบนด์พร้อมปรีแอมป์ {1:0.#} dB จาก {2} แล้ว</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>โปรไฟล์นั้นไม่มีบรรทัดฟิลเตอร์ ไฟล์ส่งออกแบบ Graphic Eq ของ AutoEq อ่านที่นี่ไม่ได้ ให้ดาวน์โหลดแบบ Custom Parametric Eq แทน EQ ปัจจุบันไม่เปลี่ยนแปลง</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>ไม่มีอะไรให้นำเข้า EQ ปัจจุบันไม่เปลี่ยนแปลง</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>อ่านไฟล์นั้นไม่ได้: {0}</value></data>
@@ -4654,7 +4676,7 @@
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>รีเซ็ตเพดาน</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>ลากจุดเพื่อเปลี่ยนความถี่และเกน หมุนล้อเมาส์เหนือจุดเพื่อทำให้กว้างขึ้นหรือแคบลง</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>เส้นทางเอาต์พุต</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>ตำแหน่งที่คอนโทรลเลอร์เล่นเสียง “ค่าเริ่มต้น” จะคงการกำหนดเส้นทางของเฟิร์มแวร์เอง และเล่นเสียงของ PadForge ทางลำโพง “หูฟัง + ลำโพง” จะเล่นแบบโมโนทางฝั่งชุดหูฟัง ซึ่งเป็นข้อจำกัดของเฟิร์มแวร์ เมื่อต่อผ่าน Bluetooth โหมดนี้จะเล่นทางหูฟังเท่านั้น “ตามแจ็กหูฟัง” จะสลับไปที่หูฟังเมื่อมีการเสียบอุปกรณ์เข้ากับคอนโทรลเลอร์ และกลับไปที่ลำโพงเมื่อถอดออก; เมื่ออ่านสถานะแจ็กไม่ได้ จะทำงานเหมือน “ค่าเริ่มต้น”</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>ตำแหน่งที่คอนโทรลเลอร์เล่นเสียง “ค่าเริ่มต้น” จะคงการกำหนดเส้นทางของเฟิร์มแวร์เอง และเล่นเสียงของ PadForge ทางลำโพง “หูฟัง + ลำโพง” จะเล่นแบบโมโนทางฝั่งชุดหูฟัง ซึ่งเป็นข้อจำกัดของเฟิร์มแวร์ เมื่อต่อผ่าน Bluetooth โหมดนี้จะเล่นทางหูฟังเท่านั้น “ตามแจ็กหูฟัง” จะสลับไปที่หูฟังเมื่อมีการเสียบอุปกรณ์เข้ากับคอนโทรลเลอร์ และกลับไปที่ลำโพงเมื่อถอดออก เมื่ออ่านสถานะแจ็กไม่ได้ จะทำงานเหมือน “ค่าเริ่มต้น”</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>ค่าเริ่มต้น</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>หูฟัง (สเตอริโอ)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>หูฟัง (โมโน)</value></data>
@@ -5500,11 +5522,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>สิ้นสุดการทำงานของ ตั้งสีแป้น บนคอนโทรลเลอร์เสมือนนี้ที่เปิดไฟแป้นใดแป้นหนึ่งที่เลือกไว้ที่นี่ หรือทั้งหมดเมื่อไม่ได้เลือกแป้นใดเลย</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>ล้างสีแป้นทั้งหมด</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>ล้างสีแป้นบนไฟ {0} ดวง</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>ล้างสีแป้นบนไฟ {0} ดวง</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} เป็นเวลา {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} เป็นเวลา {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} ขณะกดค้าง</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} ขณะกดค้าง</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} จนกว่าจะล้าง</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} จนกว่าจะล้าง</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} ค่อย ๆ ดับภายใน {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} ค่อย ๆ ดับภายใน {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} นับถอยหลังภายใน {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>ไฟ {0} ดวงเป็นสี {1} นับถอยหลังภายใน {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>แป้น</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>ไฟทุกดวง</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>ยังไม่ได้เลือกแป้น จึงไม่มีไฟที่ติด</value></data>

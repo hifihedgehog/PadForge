@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Lapozás jobbra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>perc</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>másodperc</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>perc (0 = soha)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>A HidHide elzárta a PadForge elől az egyik eszközt, amelyet a PadForge rejtett el, ezért a PadForge leállította az eszközök elrejtését.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>A HidHide „Inverse application cloak” beállítása be van kapcsolva, ezért a PadForge nem rejt el eszközöket.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>A Windows MIDI Services futtatókörnyezet eltávolítása…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nem tudott elindulni, mert a MIDI nem fut. Az okot a Beállítások Windows MIDI Services kártyája ismerteti.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nem tudott elindulni, mert a MIDI nem fut. Lásd a Windows MIDI Services sort a Beállítások Illesztőprogramok csoportjában.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} nem tudott elindulni, mert a Windows MIDI Services nem hozta létre a portját.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}: nincs kimeneti port megadva. Válasszon egyet az oldalán.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} kimeneti portja („{1}”) nincs csatlakoztatva. A foglalat elindul, amint a port újra elérhető.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>A G-key SDK nem volt hajlandó elindulni. Ilyenkor általában nem fut a Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Csatlakoztatva, de még nem érkezett billentyű. A Logitech Gaming Software programban húzza a „G-key” parancsot a PadForge-profil minden billentyűjére, és állítsa a profilt állandóra. A G600 és a G300 egeret emellett ki kell venni a beépített memóriás módból.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Fut, {0} billentyűesemény</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Fut, {0} billentyűesemény</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analóg billentyűzetek olvasása</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Beolvassa, hogy milyen mélyen van lenyomva az egyes billentyű a Wooting, a Razer, a SteelSeries, a Keychron, a NuPhy, a DrunkDeer, az AULA és más gyártók analóg billentyűzetein. Mindegyik külön eszközsorként jelenik meg. A támogatott modellek teljes listája a dokumentációban található. A Razer billentyűzetekhez futnia kell a Razer Synapse programnak. A többiek nagy részét a program ugyanazon a csatornán olvassa, amelyet a saját konfigurálóprogramjuk használ, ezért amíg ez be van kapcsolva, zárja be a konfigurálóprogramot.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nem található támogatott analóg billentyűzet.</value></data>
@@ -814,7 +816,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Frissítések keresése</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Az x360ce modern forkja, SDL3, WPF és .NET 10 alapokon újraépítve</value></data>
-  <data name="About_Description" xml:space="preserve"><value>A PadForge bármilyen beviteli eszközt bármilyen virtuális kontrollerré alakít. A gamepadeket, joystickokat, billentyűzeteket, egereket és érintőképernyőket virtuális kontrollerekhez (Xbox, PlayStation, botkormányok, kormányok, külső gyártók gamepadjei) vagy billentyűzet+egér, illetve MIDI-kimenethez rendeli, amelyet a játékok valódi hardverként kezelnek. A HIDMaestro és a Windows MIDI Services hajtja. A kontrollerek bemenetéhez az SDL3-at, a billentyűzethez és az egérhez a Windows Raw Input felületét, a játékonkénti eszközelrejtéshez a HidHide-ot használja, és modern Fluent Design felületet kínál a hozzárendelésekhez, a holtzónákhoz, az érzékenységi görbékhez és az erő-visszacsatoláshoz.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>A PadForge bármilyen bemenetet bármilyen kontrollernek láttat. A gamepadek, joystickok, kormányok, billentyűzetek, egerek, érintőképernyők, MIDI-eszközök és telefonok olyan virtuális kontrollereket vezérelnek, amelyeket a játékok valódi hardverként kezelnek: Xbox, PlayStation, Nintendo és Steam kontrollereket, SInput kontrollereket, VR kézi kontrollereket, MIDI-kimenetet, billentyűzetet és egeret, vagy egyéni eszközt, például botkormányt vagy kormányt. A HIDMaestro hozza létre a virtuális gamepadeket, az SDL3 olvassa a kontrollereket, a Windows Raw Input a billentyűzeteket és az egereket, a HidHide elrejt egy eszközt a játékok elől, a Windows MIDI Services pedig a MIDI be- és kimenetet szállítja.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Áttekintés</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Felhasznált technológiák</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Közreműködők keresése</value></data>
@@ -942,6 +944,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Betűk közötti késleltetés</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>A begépelt karakterek közötti idő ezredmásodpercben, legfeljebb 1000. 0 esetén a teljes szöveg egyszerre kerül begépelésre.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Leválasztás tétlenség esetén</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>A 0 jelentése: soha</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Részletek</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth leválasztása USB-csatlakoztatáskor</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Gyorstöltés. Ha a kontroller Bluetooth-kapcsolat közben töltést jelez, a Bluetooth-kapcsolat megszakad, így a rádió táplálása nélkül töltődik. Bármilyen USB-áramforrás számít, a fali töltőket is beleértve. Ha a kábel bedugva marad, és Ön visszakapcsolja a Bluetooth-kapcsolatot, a program a következő kihúzásig békén hagyja.</value></data>
@@ -1006,6 +1009,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Küldés</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Képkockák: {0}. A küldés körülbelül {1} ideig tart.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>A kontroller legfeljebb {0} képkockát fogad, ezért az utolsó {1} kimaradt.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>A kontroller legfeljebb {0} képkockát fogad, ezért az utolsó kimaradt.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Csatlakoztassa a kontrollert kábellel. A kép beírása után körülbelül 15 másodperccel magától újraindul.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Csatlakoztassa a kontrollert kábellel. A küldéshez a PadForge Xbox módba kapcsolja, és a Windows Xbox illesztőprogramjáról WinUSB-re helyezi át, majd mindkettőt visszaállítja.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>A PadForge Xbox módba kapcsolja a kontrollert, a küldés idejére WinUSB-re helyezi át, majd visszaadja a Windows Xbox illesztőprogramjának, és visszakapcsolja DInput módba. Előbb húzza ki az összes többi Xbox 360 kontrollert. Küldi most?</value></data>
@@ -1198,6 +1202,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>A Windows már nem mozgatja vele a mutatót: {0}. Ha nem ezt akarta, ne tegyen semmit, és visszatér.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>A Windows már nem mozgatja vele a mutatót: {0}. Ha nem ezt akarta, ne tegyen semmit, és visszatér.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Visszaadás {0} másodperc múlva</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Visszaadás {0} másodperc múlva</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Megtartás</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Visszaadás</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Előbb húzza ki a többi ilyen modellű billentyűzetet. A Windows az összes csatlakoztatottat egyszerre állítja át a PadForge illesztőprogramjára, és egyikkel sem gépel tovább.</value></data>
@@ -1612,8 +1617,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klónozás</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Válassza ki a foglalat egyik eszközét a klónozáshoz.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>A kiválasztott eszköznek nincs klónozható tengelye, gombja vagy POV-kapcsolója.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klónozza a következőt erre a foglalatra 1:1 átengedésként: {0}? A kiosztás {1} tengely, {2} gomb és {3} POV-kapcsoló lesz, az eszköz foglalaton lévő sorait pedig a saját bemenetei váltják fel.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Ennek az eszköznek több bemenete van, mint amennyit egy Bővített kontroller kezelni tud. Hozzárendelve: {1} tengelyből {0}, {3} gombból {2} és {5} POV-kapcsolóból {4}. A többi hozzárendelés nélkül maradt.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klónozza a következőt erre a foglalatra 1:1 átengedésként: {0}? A kiosztás {1}, {2} és {3} lesz, az eszköz foglalaton lévő sorait pedig a saját bemenetei váltják fel.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Ennek az eszköznek több bemenete van, mint amennyit egy Bővített kontroller kezelni tud. Hozzárendelve: {1} közül {0}, {3} közül {2} és {5} közül {4}. A többi hozzárendelés nélkül maradt.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Kontroller-előbeállítások</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Adjon hozzá előbeállítást egy olyan kontrollerhez, amelyet a PadForge nem tartalmaz, fájlból vagy magáról a kontrollerről.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importált</value></data>
@@ -1785,11 +1790,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Gomb, amely nyomva tartva lefelé lépteti a halmozott értéket</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Le: gomb, amely nyomva tartva lefelé lépteti a halmozott értéket.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Sebesség</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>A léptetés sebessége egység/másodpercben. 0.5 = a teljes tartomány 2 s alatt; 2 = a teljes tartomány 0.5 s alatt.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>A léptetés sebessége egység/másodpercben. 0.5 = a teljes tartomány 2 s alatt. 2 = a teljes tartomány 0.5 s alatt.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Beragadó</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Bejelölve a halmozott érték felengedés után is megmarad (tempomat). Jelölés nélkül felengedéskor visszaugrik a Min értékre.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>A halmozott érték alsó határa. -1 = teljes negatív a bipoláris tengelycéloknál; 0 = unipoláris.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>A halmozott érték alsó határa. -1 = teljes negatív a bipoláris tengelycéloknál. 0 = unipoláris.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>A halmozott érték felső határa. 1 = teljes pozitív.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rámpa</value></data>
@@ -2083,6 +2088,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>A hozzárendelt foglalat fénysávmódját egy adott értékre állítja. Úgy marad meg, mint a Világítás kártyán végzett módosítás, amíg egy másik művelet vagy a felhasználó meg nem változtatja.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Fénysávmódok léptetése</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Léptetés {0} fénysávmód között</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Léptetés {0} fénysávmód között</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>A foglalat fénysávmódját az alább kiválasztott módokon lépteti végig. Minden indítás a következő bejelölt módra lép. A léptetés állása műveletenként külön tárolódik, és az alkalmazás újraindításakor visszaáll.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tartás</value></data>
@@ -2361,7 +2367,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>A képernyő azon része, amelyet a pad elér</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Az Érintőpad mutató X/Y forrásait hangolja, amelyek az egérmutatót az ujja érintőpadon elfoglalt helyére ugratják (rendelje őket egy Billentyűzet / egér virtuális kontroller egér X/Y tengelyéhez). Az 1.00 méret és a 0.50 közép az érintőpadot a teljes képernyőre képezi le. A méret csökkentésével az egérmutató a képernyő egy részére korlátozható, a közép mozgatásával pedig elhelyezhető.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Terület szélessége</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Annak a képernyőterületnek a szélessége, amelyre az érintőpad leképeződik, a képernyő szélességének hányadában. Az 1.00 a teljes szélességet lefedi; a 0.50 a képernyő felére korlátozza az egérmutatót.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Annak a képernyőterületnek a szélessége, amelyre az érintőpad leképeződik, a képernyő szélességének hányadában. Az 1.00 a teljes szélességet lefedi. A 0.50 a képernyő felére korlátozza az egérmutatót.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Terület magassága</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>A képernyőterület magassága a képernyő magasságának hányadában.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Terület közepe X</value></data>
@@ -2372,7 +2378,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Csúsztatási haptika</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Kattanások, ahogy az ujja halad</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>A kontroller haptikája impulzusokat ad, ahogy az ujja végighalad az érintőpadon, a Steam Input trackpadkattanásaihoz hasonlóan. A Steam Controller és a Steam Deck a pad alatti aktuátort kattogtatja; a DualSense és a DualShock 4 a rezgőmotorokkal ad impulzusokat.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>A kontroller haptikája impulzusokat ad, ahogy az ujja végighalad az érintőpadon, a Steam Input trackpadkattanásaihoz hasonlóan. A Steam Controller és a Steam Deck a pad alatti aktuátort kattogtatja. A DualSense és a DualShock 4 a rezgőmotorokkal ad impulzusokat.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Csúsztatási haptika engedélyezése</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Rövid haptikus kattanást ad minden alkalommal, amikor az ujj egy meghatározott távolságot megtesz az érintőpadon. Az ujj ráhelyezése vagy az érintőpad lenyomása soha nem vált ki kattanást. Alapértelmezés szerint ki van kapcsolva.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Impulzus erőssége</value></data>
@@ -2480,6 +2486,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Recorder_Complete" xml:space="preserve"><value>Minden minta rögzítve. Nevezze el a kézmozdulatot, majd kattintson a Mentés gombra.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Minta: {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} minta</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} minta</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Rögzítendő minták</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Rögzítendő minták</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>A szokásos érték 3. Több minta megbízhatóbb egyezést ad, kevesebb pedig gyorsabban rögzíthető.</value></data>
@@ -3585,6 +3592,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pisztoly képernyőn kívül</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Mutató módok léptetése</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Léptetés {0} mutató mód között</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Léptetés {0} mutató mód között</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>A Wii mutató módját az alább kiválasztott módokon lépteti végig a foglalat minden IR-képes távirányítójánál. Minden indítás a következő bejelölt módra lép. A léptetés állása műveletenként külön tárolódik, és az alkalmazás újraindításakor visszaáll.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Válassza ki, mely mutató módokon lépkedjen végig a makró. Minden indítás a következő bejelölt módra lép.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Hang</value></data>
@@ -3916,7 +3924,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nem található DualShock 3 USB-n. Csatlakoztassa USB-kábellel, majd próbálja újra.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>A Windows nem telepíti a PadForge DualShock 3-hoz való USB-illesztőprogramját, mert az aláíró tanúsítványa nem megbízható ezen a számítógépen.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Nem sikerült telepíteni a PlayStation kontrollerek Bluetooth-illesztőprogramját.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nem érhető el Bluetooth-rádió. Kapcsolja be a Bluetooth-t, majd próbálja újra. Párosításra csak a vezeték nélküli játékhoz van szükség; a kábellel csatlakoztatott kontroller enélkül is működik.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nem érhető el Bluetooth-rádió. Kapcsolja be a Bluetooth-t, majd próbálja újra. Párosításra csak a vezeték nélküli játékhoz van szükség. A kábellel csatlakoztatott kontroller enélkül is működik.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>A párosítás nem fejeződött be. A sikertelen lépés fent látható.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Bezárás</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-címkék</value></data>
@@ -4007,7 +4015,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Engedje fel a gombot.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{0}. lépés / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nem észlelhető változás. Válassza az Újrakezdés gombot, majd nyomja és tartsa lenyomva a gombot, amikor a program kéri.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Megfigyelve: {0} gyártói jelentés és {1} eseményosztály. A lenyomás alatt: {2} jelentés, {3} esemény.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Megfigyelt gyártói jelentések: {0}. Megfigyelt eseményosztályok: {1}. Jelentések a lenyomás alatt: {2}. Események a lenyomás alatt: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Gomb rögzítve. Adjon meg egy nevet, majd kattintson a Regisztrálás gombra.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Forrás</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Név</value></data>
@@ -4043,12 +4051,17 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Összes elfelejtése</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>A típushoz megtanult összes név eltávolítása.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} név exportálva.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0} név exportálva.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} név importálva.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0} név importálva.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>{0} név importálva egy másik típushoz: {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>{0} név importálva egy másik típushoz: {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Ez a fájl nem tartalmaz billentyűfény-neveket.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importálás…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} gomb exportálva.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} gomb exportálva.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} gomb importálva.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} gomb importálva.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Kézi PC gombjai</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>A kézi játék-PC-ken és a laptopokon vannak olyan gombok, amelyeket az operációs rendszer soha nem mutat kontrollerként: hátsó lapátok, menübillentyűk, görgők, gyártói gyorsbillentyűk. Kapcsolja be, hogy egyszeri lenyomással betaníthassa őket, majd rendelje hozzá őket úgy, mint bármely más gombot. A gép saját giroszkópját is hozzáadja mozgáseszközként.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Kézi PC gombjainak engedélyezése</value></data>
@@ -4212,9 +4225,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Növekvő</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Csökkenő</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} hozzárendelés</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} hozzárendelés</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} találat</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Megjelenítve: {0} / {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfiguráció</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfiguráció</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>teljes kontrollertámogatás</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>részleges kontrollertámogatás</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Játékok keresése</value></data>
@@ -4224,7 +4239,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} hónapja</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} éve</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} feliratkozó</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} feliratkozó</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} szavazat</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} szavazat</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Mind</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Ehhez a játékhoz még nincs konfiguráció</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>A Steam Műhelyben nincs közösségi kontrollerkonfiguráció ehhez: {0}. Ön lehet az első: készítsen egyet a Steamben, és itt meg fog jelenni.</value></data>
@@ -4257,6 +4274,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>réteg: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ehhez a bemenethez nincs eszközfüggetlen kiváltó</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} játékon belüli művelet, csak Steam, nincs játékoldali csatlakozási pont</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} játékon belüli művelet, csak Steam, nincs játékoldali csatlakozási pont</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>{0} Steam-kliens művelet, nincs megfelelője</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>a(z) {0} kontrollerművelet nem támogatott</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ismeretlen hozzárendelési típus: {0}</value></data>
@@ -4331,10 +4349,10 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Egérgörgő-kattanás</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Indításonként egy különálló egérgörgő-kattanást küld. Az érték az előjeles kattanásszám (a pozitív felfelé, illetve jobbra görget).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Egérmutató léptetése</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Indításonként rögzített számú képponttal mozdítja el az egérmutatót. A pozitív X jobbra, a pozitív Y lefelé mozgat; negatív értékek is megengedettek.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Indításonként rögzített számú képponttal mozdítja el az egérmutatót. A pozitív X jobbra, a pozitív Y lefelé mozgat. Negatív értékek is megengedettek.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Egérmutató léptetése ennyivel: ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Koppintáslista léptetése</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Minden indítás végrehajtja a lépéslista következő koppintását, és továbblép. Bekapcsolt körbefordulásnál a lista az utolsó lépés után elölről kezdődik; enélkül a végén leáll.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Minden indítás végrehajtja a lépéslista következő koppintását, és továbblép. Bekapcsolt körbefordulásnál a lista az utolsó lépés után elölről kezdődik. Enélkül a végén leáll.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Egérgomb átkapcsolása</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Minden indítás bereteszeli vagy feloldja az egérgombot. A bereteszelt gomb a következő indításig vagy a makró letiltásáig lenyomva marad.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Egér átkapcsolása: {0}</value></data>
@@ -4347,6 +4365,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Görgetés átkapcsolása</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Minden indítás bereteszeli vagy feloldja a folyamatos görgetést. Bereteszelt állapotban a következő indításig vagy a makró letiltásáig időközönként egyszer elküldi a kattanásszámot.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Görgetés átkapcsolása ({0} kattanás {1} ms-onként)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Görgetés átkapcsolása ({0} kattanás {1} ms-onként)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulzálás bereteszelt állapotban</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Bereteszelt állapotban a kimenetet az ismétlési időközönként be- és kikapcsolja ahelyett, hogy folyamatosan tartaná.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Tengely növelése (relatív)</value></data>
@@ -4368,6 +4387,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Ha a fizikai mozgás a küszöbön túlra viszi a célt, a makró az aktiválás hátralévő részében nem írja tovább a tengelyt.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(enged a fizikai bemenetnek)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Koppintáslista léptetése ({0} lépés)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Koppintáslista léptetése ({0} lépés)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Lépések</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Körbefordulás</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Billentyűk átkapcsolása: {0}</value></data>
@@ -4451,6 +4471,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilváltási átfedés</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>A képernyőn megjelenő gyűrű vagy rács megjelenítése, amíg egy radiális vagy érintőmenü aktív. A menük az átfedés kikapcsolt állapotában is működnek.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>képernyős menü létrehozva ({0} hozzárendelt cella)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>képernyős menü létrehozva ({0} hozzárendelt cella)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>a menünek nincs hozzárendelt cellája</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>a menüt megnyitó felület nem támogatott ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>a menücella ikonja nem ismerhető fel ({0}), ezért a cella megtartja a szöveges feliratát</value></data>
@@ -4639,6 +4660,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Válassza ki az AutoEq-ből letöltött .txt fájlt. Ezt érdemes használni: az autoeq.app fájlt ad, nem másolható szöveget.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>A fejhallgatójához illesztett korrekcióhoz nyissa meg az autoeq.app oldalt, válassza ki a modelljét, válassza a Custom Parametric Eq lehetőséget, és töltse le, majd használja az Importálás fájlból gombot. A Graphic Eq letöltés nem tartalmaz szűrősorokat, ezért nem importálható.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} sáv importálva {1:0.#} dB-es előerősítéssel innen: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} sáv importálva {1:0.#} dB-es előerősítéssel innen: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>A profil nem tartalmaz szűrősorokat. Az AutoEq Graphic Eq exportja itt nem olvasható. Töltse le helyette a Custom Parametric Eq változatot. A jelenlegi EQ változatlan.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nincs mit importálni. A jelenlegi EQ változatlan.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Nem sikerült beolvasni a fájlt: {0}</value></data>
@@ -4654,7 +4676,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Plafon visszaállítása</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Egy pont húzásával a frekvenciáját és az erősítését módosíthatja. A pont fölött görgetve szélesítheti vagy szűkítheti.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Kimeneti útvonal</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hol játssza le a kontroller a hangot. Az Alapértelmezett megtartja a firmware saját útválasztását, és a PadForge hangjait a hangszórón játssza le. A Fejhallgató + hangszóró a headset oldalán monó hangot ad, ez a firmware korlátja. Bluetooth-on ez a mód csak a fejhallgatón keresztül szól. A Fejhallgató-csatlakozó követése fejhallgatóra vált, amikor valamit csatlakoztatnak a kontrollerhez, és visszavált a hangszóróra, amikor kihúzzák; ha a csatlakozó állapota nem olvasható, úgy viselkedik, mint az Alapértelmezett.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hol játssza le a kontroller a hangot. Az Alapértelmezett megtartja a firmware saját útválasztását, és a PadForge hangjait a hangszórón játssza le. A Fejhallgató + hangszóró a headset oldalán monó hangot ad, ez a firmware korlátja. Bluetooth-on ez a mód csak a fejhallgatón keresztül szól. A Fejhallgató-csatlakozó követése fejhallgatóra vált, amikor valamit csatlakoztatnak a kontrollerhez, és visszavált a hangszóróra, amikor kihúzzák. Ha a csatlakozó állapota nem olvasható, úgy viselkedik, mint az Alapértelmezett.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Alapértelmezett</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Fejhallgató (sztereó)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Fejhallgató (monó)</value></data>
@@ -5500,11 +5522,17 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Leállítja azokat a Billentyűszínek beállítása műveleteket ezen a virtuális vezérlőn, amelyek az itt kiválasztott billentyűk valamelyikét világítják, vagy mindet, ha nincs kiválasztva egy sem.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Az összes billentyűszín törlése</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Billentyűszínek törlése {0} fénynél</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Billentyűszínek törlése {0} fénynél</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} fény, szín: {1}, {2} ms-ig</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} fény, szín: {1}, {2} ms-ig</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} fény, szín: {1}, amíg nyomva van</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} fény, szín: {1}, amíg nyomva van</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} fény, szín: {1}, törlésig</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} fény, szín: {1}, törlésig</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} fény, szín: {1}, {2} ms alatt elhalványul</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} fény, szín: {1}, {2} ms alatt elhalványul</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} fény, szín: {1}, visszaszámlálás {2} ms alatt</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} fény, szín: {1}, visszaszámlálás {2} ms alatt</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Billentyűk</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Minden fény</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nincs kiválasztott billentyű, így a művelet semmit sem világít meg.</value></data>

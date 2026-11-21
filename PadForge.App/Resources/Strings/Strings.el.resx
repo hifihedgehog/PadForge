@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Σελίδα δεξιά</value></data>
   <data name="Common_None" xml:space="preserve"><value>Κανένα</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>δευτερόλεπτα</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>λεπτά (0 = ποτέ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>Το HidHide απέκλεισε το PadForge από μια συσκευή που είχε αποκρύψει το PadForge, επομένως το PadForge σταμάτησε να αποκρύπτει συσκευές.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Η επιλογή «Inverse application cloak» του HidHide είναι ενεργή, επομένως το PadForge δεν αποκρύπτει καμία συσκευή.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Απεγκατάσταση του περιβάλλοντος εκτέλεσης των Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η εκκίνηση, επειδή το MIDI δεν εκτελείται. Η κάρτα Windows MIDI Services στις Ρυθμίσεις εξηγεί τον λόγο.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η εκκίνηση, επειδή το MIDI δεν εκτελείται. Δείτε Windows MIDI Services στις Ρυθμίσεις, στα Προγράμματα οδήγησης.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η εκκίνηση, επειδή τα Windows MIDI Services δεν δημιούργησαν τη θύρα του.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}: δεν έχει οριστεί θύρα εξόδου. Επιλέξτε μία στη σελίδα του.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}: η θύρα εξόδου «{1}» δεν είναι συνδεδεμένη. Η υποδοχή ξεκινά μόλις επανέλθει η θύρα.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Το G-key SDK αρνήθηκε να ξεκινήσει. Συνήθως αυτό σημαίνει ότι το Logitech Gaming Software δεν εκτελείται.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Συνδέθηκε, δεν έχει εντοπιστεί ακόμη κανένα πλήκτρο. Στο Logitech Gaming Software, σύρετε την εντολή «G-key» σε κάθε πλήκτρο του προφίλ PadForge και ορίστε αυτό το προφίλ ως μόνιμο. Ένα ποντίκι G600 ή G300 πρέπει επίσης να μην είναι σε λειτουργία ενσωματωμένης μνήμης.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Εκτελείται, {0} συμβάντα πλήκτρων</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Εκτελείται, {0} συμβάν πλήκτρου</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Ανάγνωση αναλογικών πληκτρολογίων</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Διαβάζει πόσο βαθιά πατιέται κάθε πλήκτρο σε αναλογικά πληκτρολόγια των Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA και άλλων κατασκευαστών, το καθένα ως ξεχωριστή γραμμή συσκευής. Η τεκμηρίωση αναφέρει όλα τα υποστηριζόμενα μοντέλα. Τα πληκτρολόγια Razer χρειάζονται το Razer Synapse σε λειτουργία. Τα περισσότερα από τα υπόλοιπα διαβάζονται μέσω του καναλιού που χρησιμοποιεί το δικό τους πρόγραμμα ρύθμισης, γι' αυτό κλείστε το πρόγραμμα ρύθμισης όσο αυτή η επιλογή είναι ενεργή.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Δεν βρέθηκε υποστηριζόμενο αναλογικό πληκτρολόγιο.</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Έλεγχος για ενημερώσεις</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Σύγχρονη διακλάδωση (fork) του x360ce, ξαναχτισμένη με SDL3, WPF και .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>Το PadForge μετατρέπει οποιαδήποτε συσκευή εισόδου σε οποιοδήποτε εικονικό χειριστήριο. Χειριστήρια, joystick, πληκτρολόγια, ποντίκια και οθόνες αφής αντιστοιχίζονται σε εικονικά χειριστήρια παιχνιδιών (Xbox, PlayStation, χειριστήρια πτήσης, τιμονιέρες, χειριστήρια τρίτων κατασκευαστών) ή σε έξοδο πληκτρολογίου+ποντικιού / MIDI, που τα παιχνίδια αντιμετωπίζουν ως πραγματικό υλικό. Βασίζεται στο HIDMaestro και στα Windows MIDI Services. Χρησιμοποιεί το SDL3 για την είσοδο χειριστηρίων, το Windows Raw Input για πληκτρολόγιο και ποντίκι, το HidHide για την απόκρυψη συσκευών ανά παιχνίδι και παρέχει ένα σύγχρονο περιβάλλον Fluent Design για αντιστοιχίσεις, νεκρές ζώνες, καμπύλες ευαισθησίας και ανάδραση δύναμης.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>Το PadForge κάνει οποιαδήποτε είσοδο να μοιάζει με οποιοδήποτε χειριστήριο. Χειριστήρια, joystick, τιμονιέρες, πληκτρολόγια, ποντίκια, οθόνες αφής, συσκευές MIDI και τηλέφωνα οδηγούν εικονικά χειριστήρια που τα παιχνίδια αντιμετωπίζουν ως πραγματικό υλικό: χειριστήρια Xbox, PlayStation, Nintendo και Steam, χειριστήρια SInput, χειριστήρια χεριού VR, έξοδο MIDI, πληκτρολόγιο και ποντίκι ή μια προσαρμοσμένη συσκευή όπως ένα χειριστήριο πτήσης ή μια τιμονιέρα. Το HIDMaestro δημιουργεί τα εικονικά χειριστήρια, το SDL3 διαβάζει τα χειριστήρια, το Windows Raw Input διαβάζει πληκτρολόγια και ποντίκια, το HidHide κρύβει μια συσκευή από τα παιχνίδια και τα Windows MIDI Services μεταφέρουν το MIDI προς και από το σύστημα.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Επισκόπηση</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Δημιουργήθηκε με</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Αναζήτηση συντελεστών</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Καθυστέρηση μεταξύ γραμμάτων</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Χιλιοστά του δευτερολέπτου μεταξύ των χαρακτήρων που πληκτρολογούνται, έως 1000. Με 0, ολόκληρο το κείμενο πληκτρολογείται αμέσως.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Αποσύνδεση σε αδράνεια</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>Το 0 σημαίνει ποτέ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Λεπτομέρειες</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Αποσύνδεση Bluetooth κατά τη σύνδεση μέσω USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Γρήγορη φόρτιση. Όταν αυτό το χειριστήριο αναφέρει ότι φορτίζει ενώ είναι συνδεδεμένο μέσω Bluetooth, η σύνδεση Bluetooth διακόπτεται, ώστε να φορτίζει χωρίς να τροφοδοτεί τον πομποδέκτη. Μετρά κάθε πηγή τροφοδοσίας USB, ακόμη και οι φορτιστές τοίχου. Αν ενεργοποιήσετε ξανά το Bluetooth ενώ το καλώδιο παραμένει συνδεδεμένο, η σύνδεση δεν διακόπτεται μέχρι την επόμενη αποσύνδεση του καλωδίου.</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Αποστολή</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Καρέ: {0}. Η αποστολή διαρκεί περίπου {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Το χειριστήριο δέχεται το πολύ {0} καρέ, οπότε τα τελευταία {1} παραλείφθηκαν.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Το χειριστήριο δέχεται το πολύ {0} καρέ, οπότε το τελευταίο παραλείφθηκε.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Συνδέστε το χειριστήριο με καλώδιο. Επανεκκινείται από μόνο του περίπου 15 δευτερόλεπτα αφότου μπει η εικόνα.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Συνδέστε το χειριστήριο με καλώδιο. Για την αποστολή, το PadForge το περνά σε λειτουργία Xbox και το μετακινεί από το πρόγραμμα οδήγησης Xbox των Windows στο WinUSB και μετά επαναφέρει και τα δύο.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Το PadForge θα περάσει το χειριστήριο σε λειτουργία Xbox, θα το μετακινήσει στο WinUSB για την αποστολή, έπειτα θα το επιστρέψει στο πρόγραμμα οδήγησης Xbox των Windows και θα το περάσει ξανά σε λειτουργία DInput. Αποσυνδέστε πρώτα κάθε άλλο χειριστήριο Xbox 360. Να γίνει αποστολή τώρα?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Τα Windows δεν μετακινούν πλέον τον δείκτη με τη συσκευή {0}. Αν δεν το θέλατε αυτό, μην κάνετε τίποτα και επανέρχεται.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Τα Windows δεν μετακινούν πλέον τον δείκτη με τη συσκευή {0}. Αν δεν το θέλατε αυτό, μην κάνετε τίποτα και επανέρχεται.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Επιστροφή σε {0} δευτ.</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Επιστροφή σε {0} δευτερόλεπτο</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Διατήρηση</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Επιστροφή</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Αποσυνδέστε πρώτα τα άλλα πληκτρολόγια αυτού του μοντέλου. Τα Windows μεταφέρουν ταυτόχρονα όλα τα συνδεδεμένα στο πρόγραμμα οδήγησης του PadForge και παύουν να πληκτρολογούν με το καθένα.</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Κλωνοποίηση</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Επιλέξτε μια συσκευή αυτής της υποδοχής για κλωνοποίηση.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Η επιλεγμένη συσκευή δεν διαθέτει άξονες, κουμπιά ή POV για κλωνοποίηση.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Κλωνοποίηση της συσκευής {0} σε αυτή την υποδοχή ως διέλευση 1:1; Η διάταξη γίνεται {1} άξονες, {2} κουμπιά και {3} POV, και οι γραμμές αυτής της συσκευής στην υποδοχή αντικαθίστανται με τις δικές της εισόδους.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Αυτή η συσκευή έχει περισσότερες εισόδους από όσες χωρά ένα Εκτεταμένο χειριστήριο. Αντιστοιχίστηκαν {0} από {1} άξονες, {2} από {3} κουμπιά και {4} από {5} POV. Οι υπόλοιπες έμειναν χωρίς αντιστοίχιση.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Κλωνοποίηση της συσκευής {0} σε αυτή την υποδοχή ως διέλευση 1:1? Η διάταξη γίνεται {1}, {2} και {3}, και οι γραμμές αυτής της συσκευής στην υποδοχή αντικαθίστανται με τις δικές της εισόδους.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Αυτή η συσκευή έχει περισσότερες εισόδους από όσες χωρά ένα Εκτεταμένο χειριστήριο. Αντιστοιχίστηκαν {0} από {1}, {2} από {3} και {4} από {5}. Οι υπόλοιπες έμειναν χωρίς αντιστοίχιση.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Προεπιλογές χειριστηρίου</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Προσθέστε μια προεπιλογή για ένα χειριστήριο που το PadForge δεν περιλαμβάνει, από αρχείο ή από το ίδιο το χειριστήριο.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Εισηγμένα</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ορίζει τη λειτουργία φωτεινής μπάρας της ανατεθειμένης υποδοχής σε μια συγκεκριμένη τιμή. Παραμένει, όπως μια αλλαγή στην κάρτα «Φωτισμός», μέχρι να την αλλάξει άλλη ενέργεια ή ο χρήστης.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Κυκλική εναλλαγή λειτουργιών φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργίες φωτεινής μπάρας</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργία φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Προχωρά τη λειτουργία φωτεινής μπάρας της υποδοχής στις λειτουργίες που επιλέγονται παρακάτω. Κάθε εκτέλεση μεταβαίνει στην επόμενη επιλεγμένη λειτουργία. Η θέση στον κύκλο είναι ξεχωριστή για κάθε ενέργεια και μηδενίζεται όταν επανεκκινείται η εφαρμογή.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Κράτημα</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Όλα τα δείγματα καταγράφηκαν. Δώστε όνομα στη χειρονομία και κάντε κλικ στην «Αποθήκευση».</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Δείγμα {0} από {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} δείγματα</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} δείγμα</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Δείγματα προς καταγραφή</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Δείγματα προς καταγραφή</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Το 3 είναι το συνηθισμένο. Περισσότερα δείγματα δίνουν πιο σίγουρη ταύτιση και λιγότερα καταγράφονται πιο γρήγορα.</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Όπλο εκτός οθόνης</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Κυκλική εναλλαγή λειτουργιών δείκτη</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργίες δείκτη</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργία δείκτη</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Προχωρά τη λειτουργία δείκτη Wii στις λειτουργίες που επιλέγονται παρακάτω, για κάθε τηλεχειριστήριο με δυνατότητα IR στην υποδοχή. Κάθε εκτέλεση μεταβαίνει στην επόμενη επιλεγμένη λειτουργία. Η θέση στον κύκλο είναι ξεχωριστή για κάθε ενέργεια και μηδενίζεται όταν επανεκκινείται η εφαρμογή.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Επιλέξτε ανάμεσα σε ποιες λειτουργίες δείκτη θα εναλλάσσεται κυκλικά η μακροεντολή. Κάθε εκτέλεση προχωρά στην επόμενη επιλεγμένη λειτουργία.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ήχος</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Αφήστε το κουμπί.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Βήμα {0} από {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Δεν παρατηρήθηκε καμία αλλαγή. Επιλέξτε «Ξεκίνημα από την αρχή» και μετά πατήστε και κρατήστε το κουμπί όταν σας ζητηθεί.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Παρακολουθήθηκαν {0} αναφορές κατασκευαστή και {1} κλάσεις συμβάντων. Κατά το πάτημα: {2} αναφορές, {3} συμβάντα.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Αναφορές κατασκευαστή που παρακολουθήθηκαν: {0}. Κλάσεις συμβάντων που παρακολουθήθηκαν: {1}. Αναφορές κατά το πάτημα: {2}. Συμβάντα κατά το πάτημα: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Το κουμπί καταγράφηκε. Εισαγάγετε ένα όνομα και κάντε κλικ στην «Καταχώριση».</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Πηγή</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Όνομα</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Διαγραφή όλων</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Αφαιρέστε κάθε όνομα που έχει μάθει για αυτό το μοντέλο.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Εξήχθησαν {0} ονόματα.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Εξήχθη {0} όνομα.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Εισήχθησαν {0} ονόματα.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Εισήχθη {0} όνομα.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Εισήχθησαν {0} ονόματα για άλλο μοντέλο, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Εισήχθη {0} όνομα για άλλο μοντέλο, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Αυτό το αρχείο δεν περιέχει ονόματα φώτων πλήκτρων.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Εισαγωγή…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Εξήχθησαν {0} κουμπιά.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Εξήχθη {0} κουμπί.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Εισήχθησαν {0} κουμπιά.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Εισήχθη {0} κουμπί.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Κουμπιά υπολογιστή χειρός</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Οι υπολογιστές χειρός για παιχνίδια και οι φορητοί υπολογιστές έχουν κουμπιά που το λειτουργικό σύστημα δεν εμφανίζει ποτέ ως χειριστήριο: πίσω πτερύγια, πλήκτρα μενού, ροδέλες, πλήκτρα συντόμευσης του κατασκευαστή. Ενεργοποιήστε το για να τα μάθει μία φορά πατώντας τα και έπειτα αντιστοιχίστε τα όπως κάθε άλλο κουμπί. Προσθέτει επίσης το γυροσκόπιο του ίδιου του υπολογιστή ως συσκευή κίνησης.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ενεργοποίηση κουμπιών υπολογιστή χειρός</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Αύξουσα</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Φθίνουσα</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} αντιστοιχίσεις</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} αντιστοίχιση</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Βρέθηκαν {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Εμφανίζονται {0} από {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} διαμορφώσεις</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} διαμόρφωση</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>πλήρης υποστήριξη χειριστηρίου</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>μερική υποστήριξη χειριστηρίου</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Αναζήτηση παιχνιδιών</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>πριν από {0} μήν.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>πριν από {0} έτ.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} συνδρομητές</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} συνδρομητής</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ψήφοι</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ψήφος</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Όλα</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Δεν υπάρχουν ακόμη διαμορφώσεις για αυτό το παιχνίδι</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Το Εργαστήριο του Steam δεν έχει διαμορφώσεις χειριστηρίου της κοινότητας για το {0}. Μπορείτε να είστε οι πρώτοι: φτιάξτε μία στο Steam και θα εμφανιστεί εδώ.</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>επίπεδο: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>δεν υπάρχει έναυσμα ανεξάρτητο από συσκευή για αυτή την είσοδο</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ενέργειες εντός παιχνιδιού, μόνο για Steam, χωρίς σύνδεση από την πλευρά του παιχνιδιού</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ενέργεια εντός παιχνιδιού, μόνο για Steam, χωρίς σύνδεση από την πλευρά του παιχνιδιού</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>ενέργεια του προγράμματος-πελάτη Steam {0}, χωρίς αντίστοιχο</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>η ενέργεια χειριστηρίου {0} δεν υποστηρίζεται</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>άγνωστος τύπος αντιστοίχισης {0}</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Εναλλαγή κύλισης ροδέλας</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Κάθε εκτέλεση κλειδώνει ή ξεκλειδώνει μια συνεχή κύλιση. Όσο είναι κλειδωμένη, στέλνει τον αριθμό βημάτων μία φορά ανά διάστημα μέχρι την επόμενη εκτέλεση ή μέχρι να απενεργοποιηθεί η μακροεντολή.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Εναλλαγή κύλισης ροδέλας ({0} βήματα κάθε {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Εναλλαγή κύλισης ροδέλας ({0} βήμα κάθε {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Παλμός όσο είναι κλειδωμένο</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Όσο είναι κλειδωμένο, η έξοδος αναβοσβήνει με το διάστημα επανάληψης αντί να μένει σταθερά ενεργή.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Πρόσθεση σε άξονα (σχετική)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Όταν η φυσική κίνηση σπρώξει τον στόχο πέρα από το κατώφλι, η μακροεντολή σταματά να γράφει στον άξονα για το υπόλοιπο της ενεργοποίησης.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(παραχωρεί στη φυσική είσοδο)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Κυκλική λίστα πατημάτων ({0} βήματα)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Κυκλική λίστα πατημάτων ({0} βήμα)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Βήματα</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Επιστροφή στην αρχή</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Εναλλαγή πλήκτρων {0}</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Επικάλυψη αλλαγής προφίλ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Εμφανίζει τον δακτύλιο ή το πλέγμα στην οθόνη όσο είναι ενεργό ένα ακτινικό μενού ή μενού αφής. Τα μενού εκτελούνται ακόμη και με την επικάλυψη απενεργοποιημένη.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>δημιουργήθηκε μενού οθόνης ({0} κελιά με αντιστοίχιση)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>δημιουργήθηκε μενού οθόνης ({0} κελί με αντιστοίχιση)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>το μενού δεν έχει κελιά με αντιστοίχιση</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>η επιφάνεια που φιλοξενεί το μενού δεν υποστηρίζεται ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>το εικονίδιο του κελιού μενού δεν αναγνωρίστηκε ({0}), επομένως το κελί διατηρεί την ετικέτα κειμένου του</value></data>
@@ -4639,6 +4660,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Επιλέξτε το αρχείο .txt που κατέβασε το AutoEq. Αυτή είναι η επιλογή που πρέπει να χρησιμοποιήσετε: το autoeq.app σάς δίνει αρχείο και όχι κείμενο που μπορείτε να αντιγράψετε.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Για διόρθωση προσαρμοσμένη στα ακουστικά σας: ανοίξτε το autoeq.app, επιλέξτε το μοντέλο σας, διαλέξτε «Custom Parametric Eq» και κατεβάστε το, και έπειτα επιλέξτε «Εισαγωγή από αρχείο». Η λήψη «Graphic Eq» δεν έχει γραμμές φίλτρων και δεν εισάγεται.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Εισήχθησαν {0} ζώνες με προενίσχυση {1:0.#} dB από {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Εισήχθη {0} ζώνη με προενίσχυση {1:0.#} dB από {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Δεν υπάρχουν γραμμές φίλτρων σε αυτό το προφίλ. Η εξαγωγή «Graphic Eq» του AutoEq δεν μπορεί να διαβαστεί εδώ. Κατεβάστε αντί γι' αυτήν την «Custom Parametric Eq». Ο τρέχων ισοσταθμιστής δεν άλλαξε.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Δεν υπάρχει τίποτα για εισαγωγή. Ο τρέχων ισοσταθμιστής δεν άλλαξε.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η ανάγνωση αυτού του αρχείου: {0}</value></data>
@@ -5500,11 +5522,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Τερματίζει τις ενέργειες Ορισμός χρωμάτων πλήκτρων που εκτελούνται σε αυτόν τον εικονικό ελεγκτή και ανάβουν ένα από τα πλήκτρα που επιλέγονται εδώ, ή όλες αν δεν επιλεγεί κανένα.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Εκκαθάριση όλων των χρωμάτων πλήκτρων</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Εκκαθάριση χρωμάτων πλήκτρων σε {0} φώτα</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Εκκαθάριση χρωμάτων πλήκτρων σε {0} φως</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} φώτα ({1}) για {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} φως ({1}) για {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} φώτα ({1}) όσο κρατιέται</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} φως ({1}) όσο κρατιέται</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} φώτα ({1}) μέχρι την εκκαθάριση</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} φως ({1}) μέχρι την εκκαθάριση</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} φώτα ({1}), με εξασθένιση σε {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} φως ({1}), με εξασθένιση σε {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} φώτα ({1}), με αντίστροφη μέτρηση σε {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} φως ({1}), με αντίστροφη μέτρηση σε {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Πλήκτρα</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Κάθε φως</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Δεν έχουν επιλεγεί πλήκτρα, άρα η ενέργεια δεν ανάβει τίποτα.</value></data>

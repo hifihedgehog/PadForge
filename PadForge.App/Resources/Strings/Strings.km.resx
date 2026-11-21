@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>សម្អាត</value></data>
   <data name="Common_None" xml:space="preserve"><value>គ្មាន</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>នាទី</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>វិនាទី</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>នាទី (0 = មិនដែល)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide បានរារាំង PadForge ពីឧបករណ៍ដែល PadForge បានលាក់ ដូច្នេះ PadForge បានឈប់លាក់ឧបករណ៍។</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>មុខងារ Inverse application cloak របស់ HidHide កំពុងបើក ដូច្នេះ PadForge មិនលាក់ឧបករណ៍ណាមួយទេ។</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>កំពុងលុបការដំឡើងកម្មវិធីដំណើរការ Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} មិនអាចចាប់ផ្ដើមបានទេ ព្រោះ MIDI មិនដំណើរការ។ កាត Windows MIDI Services ក្នុងការកំណត់ប្រាប់ពីមូលហេតុ។</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} មិនអាចចាប់ផ្ដើមបានទេ ព្រោះ MIDI មិនដំណើរការ។ សូមមើល Windows MIDI Services ក្នុងការកំណត់ នៅក្រោមកម្មវិធីបញ្ជា។</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} មិនអាចចាប់ផ្ដើមបានទេ ព្រោះ Windows MIDI Services មិនបានបង្កើតច្រករបស់វា។</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} គ្មានច្រកបញ្ចេញទេ។ សូមជ្រើសមួយនៅលើទំព័ររបស់វា។</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>ច្រកបញ្ចេញ «{1}» របស់ {0} មិនបានភ្ជាប់ទេ។ រន្ធនឹងចាប់ផ្ដើម នៅពេលច្រកត្រឡប់មកវិញ។</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK បានបដិសេធមិនចាប់ផ្ដើម។ ជាធម្មតា Logitech Gaming Software មិនកំពុងដំណើរការ។</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>បានភ្ជាប់ ប៉ុន្តែមិនទាន់ឃើញគ្រាប់ចុចណាមួយនៅឡើយ។ នៅក្នុង Logitech Gaming Software សូមអូសពាក្យបញ្ជា G-key ទៅលើគ្រាប់ចុចនីមួយៗក្នុងប្រូហ្វាល់ PadForge ហើយកំណត់ប្រូហ្វាល់នោះឲ្យជាប់លាប់។ កណ្ដុរ G600 ឬ G300 ក៏ត្រូវតែចេញពីរបៀបអង្គចងចាំក្នុងឧបករណ៍ដែរ។</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>កំពុងដំណើរការ ព្រឹត្តិការណ៍គ្រាប់ចុច {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>កំពុងដំណើរការ ព្រឹត្តិការណ៍គ្រាប់ចុច {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>អានក្ដារចុចអាណាឡូក</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>អានថាគ្រាប់ចុចនីមួយៗត្រូវបានចុចជ្រៅប៉ុណ្ណា លើក្ដារចុចអាណាឡូកពី Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA និងក្រុមហ៊ុនផលិតផ្សេងទៀត ដោយនីមួយៗជាជួរឧបករណ៍ដាច់ដោយឡែក។ ឯកសារណែនាំរាយបញ្ជីម៉ូដែលទាំងអស់ដែលគាំទ្រ។ ក្ដារចុច Razer ត្រូវការ Razer Synapse កំពុងដំណើរការ។ ក្ដារចុចផ្សេងទៀតភាគច្រើនត្រូវបានអានតាមឆានែលដែលកម្មវិធីកំណត់រចនាសម្ព័ន្ធរបស់វាប្រើ ដូច្នេះសូមបិទកម្មវិធីកំណត់រចនាសម្ព័ន្ធនោះ ពេលមុខងារនេះបើក។</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>រកមិនឃើញក្ដារចុចអាណាឡូកដែលគាំទ្រទេ។</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>ពិនិត្យរកបច្ចុប្បន្នភាព</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>កំណែបំបែកទំនើបនៃ x360ce ដែលសាងសង់ឡើងវិញជាមួយ SDL3, WPF និង .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge បម្លែងឧបករណ៍បញ្ចូលណាមួយទៅជាឧបករណ៍បញ្ជានិម្មិតណាមួយ។ ហ្គេមផេដ យ៉យស្ទីក ក្ដារចុច កណ្ដុរ និងអេក្រង់ប៉ះ ត្រូវបានម៉ាបទៅឧបករណ៍បញ្ជាហ្គេមនិម្មិត (Xbox, PlayStation, ដងបញ្ជាហោះហើរ ចង្កូត ហ្គេមផេដភាគីទីបី) ឬលទ្ធផលក្ដារចុច+កណ្ដុរ / MIDI ដែលហ្គេមចាត់ទុកជាផ្នែករឹងពិត។ ដំណើរការដោយ HIDMaestro និង Windows MIDI Services។ វាប្រើ SDL3 សម្រាប់ការបញ្ចូលឧបករណ៍បញ្ជា Windows Raw Input សម្រាប់ក្ដារចុច និងកណ្ដុរ HidHide សម្រាប់ការលាក់ឧបករណ៍តាមហ្គេមនីមួយៗ ហើយផ្ដល់ចំណុចប្រទាក់ Fluent Design ទំនើបសម្រាប់ការម៉ាប តំបន់ងាប់ ខ្សែកោងភាពរសើប និងកម្លាំងតប។</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ធ្វើឲ្យការបញ្ចូលណាមួយមើលទៅដូចជាឧបករណ៍បញ្ជាណាមួយ។ ហ្គេមផេដ យ៉យស្ទីក ចង្កូត ក្ដារចុច កណ្ដុរ អេក្រង់ប៉ះ ឧបករណ៍ MIDI និងទូរសព្ទ បញ្ជាឧបករណ៍បញ្ជានិម្មិតដែលហ្គេមចាត់ទុកជាផ្នែករឹងពិត៖ ផេដ Xbox, PlayStation, Nintendo និង Steam ផេដ SInput ឧបករណ៍បញ្ជាដៃ VR លទ្ធផល MIDI ក្ដារចុច និងកណ្ដុរ ឬឧបករណ៍ផ្ទាល់ខ្លួនដូចជាដងបញ្ជាហោះហើរ ឬចង្កូត។ HIDMaestro បង្កើតហ្គេមផេដនិម្មិត SDL3 អានឧបករណ៍បញ្ជា Windows Raw Input អានក្ដារចុច និងកណ្ដុរ HidHide លាក់ឧបករណ៍ពីហ្គេម ហើយ Windows MIDI Services បញ្ជូន MIDI ចូល និងចេញ។</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ទិដ្ឋភាពទូទៅ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>បង្កើតឡើងដោយប្រើ</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ស្វែងរកការទទួលស្គាល់</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ពន្យារពេលរវាងតួអក្សរ</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>មីលីវិនាទីរវាងតួអក្សរដែលបានវាយ រហូតដល់ 1000។ 0 វាយអត្ថបទទាំងមូលក្នុងពេលតែមួយ។</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ផ្ដាច់ពេលទំនេរ</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 មានន័យថាមិនដែល</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ព័ត៌មានលម្អិត</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ផ្ដាច់ Bluetooth ពេលដោតតាម USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>សាកថ្មរហ័ស។ នៅពេលឧបករណ៍បញ្ជានេះរាយការណ៍ថាកំពុងសាកថ្ម ខណៈភ្ជាប់តាម Bluetooth តំណ Bluetooth ត្រូវបានផ្ដាច់ ដើម្បីឱ្យវាសាកថ្មដោយមិនផ្គត់ផ្គង់ថាមពលដល់វិទ្យុ។ ប្រភពថាមពល USB ណាមួយក៏រាប់ដែរ រួមទាំងឆ្នាំងសាកដោតជញ្ជាំង។ បើអ្នកបើក Bluetooth វិញខណៈខ្សែនៅដោត វានឹងមិនត្រូវប៉ះពាល់ទេ រហូតដល់ការដកខ្សែលើកក្រោយ។</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>ផ្ញើ</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ស៊ុម៖ {0}។ ការផ្ញើចំណាយពេលប្រហែល {1}។</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជាទទួលបានយ៉ាងច្រើន {0} ស៊ុម ដូច្នេះ {1} ស៊ុមចុងក្រោយត្រូវបានទុកចោល។</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជាទទួលបានយ៉ាងច្រើន {0} ស៊ុម ដូច្នេះស៊ុមចុងក្រោយត្រូវបានទុកចោល។</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជាដោយខ្សែ។ វាចាប់ផ្ដើមឡើងវិញដោយខ្លួនឯងប្រហែល 15 វិនាទីបន្ទាប់ពីរូបភាពបានចូល។</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជាដោយខ្សែ។ សម្រាប់ការផ្ញើ PadForge ប្ដូរវាទៅរបៀប Xbox ហើយផ្លាស់វាពីកម្មវិធីបញ្ជា Xbox របស់ Windows ទៅ WinUSB រួចដាក់ទាំងពីរមកវិញ។</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge នឹងប្ដូរឧបករណ៍បញ្ជាទៅរបៀប Xbox ផ្លាស់វាទៅ WinUSB សម្រាប់ការផ្ញើ រួចប្រគល់វាវិញទៅកម្មវិធីបញ្ជា Xbox របស់ Windows ហើយប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញ។ ដកឧបករណ៍បញ្ជា Xbox 360 ផ្សេងទៀតទាំងអស់ចេញជាមុនសិន។ ផ្ញើឥឡូវនេះ?</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ក្លូន</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ជ្រើសឧបករណ៍មួយនៅលើរន្ធនេះ ដើម្បីក្លូន។</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ឧបករណ៍ដែលបានជ្រើស មិនមានអ័ក្ស ប៊ូតុង ឬប៊ូតុង POV សម្រាប់ក្លូនទេ។</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ក្លូន {0} ទៅលើរន្ធនេះជាការបញ្ជូនផ្ទាល់ 1:1 ឬ? ប្លង់នឹងក្លាយជា {1} អ័ក្ស {2} ប៊ូតុង និង {3} POV ហើយជួររបស់ឧបករណ៍នេះនៅលើរន្ធ ត្រូវបានជំនួសដោយការបញ្ចូលផ្ទាល់របស់វា។</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ឧបករណ៍នេះមានការបញ្ចូលច្រើនជាងឧបករណ៍បញ្ជា Extended អាចផ្ទុកបាន។ បានម៉ាប {0} ក្នុងចំណោម {1} អ័ក្ស {2} ក្នុងចំណោម {3} ប៊ូតុង និង {4} ក្នុងចំណោម {5} POV។ ការបញ្ចូលដែលនៅសល់ មិនត្រូវបានម៉ាបទេ។</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ក្លូន {0} ទៅលើរន្ធនេះជាការបញ្ជូនផ្ទាល់ 1:1 ឬ? ប្លង់នឹងក្លាយជា {1} {2} និង {3} ហើយជួររបស់ឧបករណ៍នេះនៅលើរន្ធ ត្រូវបានជំនួសដោយការបញ្ចូលផ្ទាល់របស់វា។</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ឧបករណ៍នេះមានការបញ្ចូលច្រើនជាងឧបករណ៍បញ្ជា Extended អាចផ្ទុកបាន។ បានម៉ាប {0} ក្នុងចំណោម {1} {2} ក្នុងចំណោម {3} និង {4} ក្នុងចំណោម {5}។ ការបញ្ចូលដែលនៅសល់ មិនត្រូវបានម៉ាបទេ។</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>ការកំណត់ស្រាប់ឧបករណ៍បញ្ជា</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>បន្ថែមការកំណត់ស្រាប់សម្រាប់ឧបករណ៍បញ្ជាដែល PadForge មិនមានភ្ជាប់មកជាមួយ ពីឯកសារ ឬពីឧបករណ៍បញ្ជាខ្លួនវា។</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>បាននាំចូល</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>កំណត់របៀបរបារភ្លើងរបស់រន្ធដែលបានកំណត់ទៅតម្លៃជាក់លាក់មួយ។ នៅជាប់ដូចការកែលើកាត «ពន្លឺ» រហូតដល់សកម្មភាពផ្សេង ឬអ្នកប្រើប្ដូរវា។</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ប្ដូររបៀបរបារភ្លើងជាវដ្ត</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ប្ដូរជាវដ្តតាមរបៀបរបារភ្លើង {0} របៀប</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>ប្ដូរជាវដ្តតាមរបៀបរបារភ្លើង {0} របៀប</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ប្ដូររបៀបរបារភ្លើងរបស់រន្ធតាមរបៀបដែលបានជ្រើសខាងក្រោម។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។ ទីតាំងវដ្តគឺដាច់ដោយឡែកសម្រាប់សកម្មភាពនីមួយៗ ហើយកំណត់ឡើងវិញពេលចាប់ផ្ដើមកម្មវិធីឡើងវិញ។</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>រក្សា</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>បានចាប់យកគំរូទាំងអស់ហើយ។ ដាក់ឈ្មោះកាយវិការ ហើយចុច «រក្សាទុក»។</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>គំរូទី {0} នៃ {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} គំរូ</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} គំរូ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ចំនួនគំរូដែលត្រូវថត</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>គំរូដែលត្រូវចាប់យក</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ជាចំនួនស្តង់ដារ។ គំរូច្រើនជាងផ្ដល់ការស្គាល់ត្រឹមត្រូវជាង ហើយគំរូតិចជាងថតបានលឿនជាង។</value></data>
@@ -3390,6 +3396,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>កាំភ្លើងក្រៅអេក្រង់</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>វិលជុំរបៀបទ្រនិច</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>វិលជុំតាមរបៀបទ្រនិច {0}</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>វិលជុំតាមរបៀបទ្រនិច {0}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ប្ដូររបៀបទ្រនិច Wii ទៅមុខតាមរបៀបដែលបានជ្រើសខាងក្រោម សម្រាប់ឧបករណ៍បញ្ជាដែលមាន IR ទាំងអស់នៅលើរន្ធ។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។ ទីតាំងវិលជុំដាច់ដោយឡែកតាមសកម្មភាពនីមួយៗ ហើយកំណត់ឡើងវិញពេលកម្មវិធីចាប់ផ្ដើមឡើងវិញ។</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ជ្រើសរើសរបៀបទ្រនិចដែលម៉ាក្រូត្រូវវិលជុំ។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>សំឡេង</value></data>
@@ -3717,7 +3724,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>រកមិនឃើញ DualShock 3 តាម USB ទេ។ ភ្ជាប់វាដោយខ្សែ USB ហើយព្យាយាមម្ដងទៀត។</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows នឹងមិនដំឡើងដ្រាយវ័រ USB របស់ PadForge សម្រាប់ DualShock 3 ទេ ព្រោះវិញ្ញាបនបត្រចុះហត្ថលេខារបស់វាមិនត្រូវបានទុកចិត្តលើកុំព្យូទ័រនេះ។</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>មិនអាចដំឡើងដ្រាយវ័រ Bluetooth សម្រាប់ឧបករណ៍បញ្ជា PlayStation បានទេ។</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>មិនមានវិទ្យុ Bluetooth ទេ។ បើក Bluetooth ហើយព្យាយាមម្ដងទៀត។ ការផ្គូផ្គងត្រូវការតែសម្រាប់ការលេងឥតខ្សែប៉ុណ្ណោះ ឧបករណ៍បញ្ជាដែលភ្ជាប់ដោយខ្សែដំណើរការដោយគ្មានវា។</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>មិនមានវិទ្យុ Bluetooth ទេ។ បើក Bluetooth ហើយព្យាយាមម្ដងទៀត។ ការផ្គូផ្គងត្រូវការតែសម្រាប់ការលេងឥតខ្សែប៉ុណ្ណោះ។ ឧបករណ៍បញ្ជាដែលភ្ជាប់ដោយខ្សែដំណើរការដោយគ្មានវា។</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ការផ្គូផ្គងមិនបានបញ្ចប់ទេ។ ជំហានដែលបរាជ័យត្រូវបានបង្ហាញខាងលើ។</value></data>
   <data name="Common_Close" xml:space="preserve"><value>បិទ</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>ស្លាក NFC</value></data>
@@ -3808,7 +3815,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>លែងប៊ូតុង។</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ជំហាន {0} នៃ {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>មិនឃើញការផ្លាស់ប្ដូរទេ។ ជ្រើស ចាប់ផ្ដើមម្ដងទៀត រួចចុចប៊ូតុងឱ្យជាប់នៅពេលត្រូវបានស្នើ។</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>បានតាមដានរបាយការណ៍ក្រុមហ៊ុនផលិត {0} និងថ្នាក់ព្រឹត្តិការណ៍ {1}។ ក្នុងអំឡុងពេលចុច៖ របាយការណ៍ {2} ព្រឹត្តិការណ៍ {3}។</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>របាយការណ៍ក្រុមហ៊ុនផលិតដែលបានតាមដាន៖ {0}។ ថ្នាក់ព្រឹត្តិការណ៍ដែលបានតាមដាន៖ {1}។ របាយការណ៍ក្នុងអំឡុងពេលចុច៖ {2}។ ព្រឹត្តិការណ៍ក្នុងអំឡុងពេលចុច៖ {3}។</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>បានចាប់យកប៊ូតុង។ បញ្ចូលឈ្មោះ ហើយចុច «ចុះឈ្មោះ»។</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ប្រភព</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
@@ -3824,7 +3831,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>នាំចេញ…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>នាំចូល…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>បាននាំចេញប៊ូតុង {0}។</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>បាននាំចេញប៊ូតុង {0}។</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>បាននាំចូលប៊ូតុង {0}។</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>បាននាំចូលប៊ូតុង {0}។</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>ប៊ូតុង PC កាន់ដៃ</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC ហ្គេមកាន់ដៃ និងកុំព្យូទ័រយួរដៃ មានប៊ូតុងដែលប្រព័ន្ធប្រតិបត្តិការមិនដែលបង្ហាញជាឧបករណ៍បញ្ជា៖ ប៉ាដល់ខាងក្រោយ គ្រាប់ចុចម៉ឺនុយ កង់ គ្រាប់ចុចកាត់របស់ក្រុមហ៊ុនផលិត។ បើកមុខងារនេះដើម្បីរៀនពួកវាម្ដងដោយចុចពួកវា រួចម៉ាបពួកវាដូចប៊ូតុងផ្សេងទៀត។ វាក៏បន្ថែមហ្ស៊ីរ៉ូស្កុបរបស់ម៉ាស៊ីនផ្ទាល់ជាឧបករណ៍ចលនាផងដែរ។</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>បើកប៊ូតុង PC កាន់ដៃ</value></data>
@@ -3987,9 +3996,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>លំដាប់ឡើង</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>លំដាប់ចុះ</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>ការភ្ជាប់ {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>ការភ្ជាប់ {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>រកឃើញ {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>កំពុងបង្ហាញ {0} ក្នុងចំណោម {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធ {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធ {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>គាំទ្រឧបករណ៍បញ្ជាពេញលេញ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>គាំទ្រឧបករណ៍បញ្ជាមួយផ្នែក</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ស្វែងរកហ្គេម</value></data>
@@ -3999,7 +4010,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ខែមុន</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} ឆ្នាំមុន</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>អ្នកជាវ {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>អ្នកជាវ {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>សំឡេងគាំទ្រ {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>សំឡេងគាំទ្រ {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>ទាំងអស់</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>មិនទាន់មានការកំណត់រចនាសម្ព័ន្ធសម្រាប់ហ្គេមនេះទេ</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam វើកស៊បមិនមានការកំណត់រចនាសម្ព័ន្ធឧបករណ៍បញ្ជាពីសហគមន៍សម្រាប់ {0} ទេ។ អ្នកអាចជាអ្នកដំបូង៖ បង្កើតមួយនៅក្នុង Steam ហើយវានឹងបង្ហាញនៅទីនេះ។</value></data>
@@ -4032,6 +4045,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ស្រទាប់៖ {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>គ្មានការបញ្ចូលបង្កដែលមិនភ្ជាប់នឹងឧបករណ៍សម្រាប់ការបញ្ចូលនេះទេ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>សកម្មភាពក្នុងហ្គេម {0} សម្រាប់តែ Steam ប៉ុណ្ណោះ គ្មានចំណុចភ្ជាប់ខាងហ្គេម</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>សកម្មភាពក្នុងហ្គេម {0} សម្រាប់តែ Steam ប៉ុណ្ណោះ គ្មានចំណុចភ្ជាប់ខាងហ្គេម</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>សកម្មភាពកម្មវិធី Steam {0} គ្មានសមមូល</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>សកម្មភាពឧបករណ៍បញ្ជា {0} មិនត្រូវបានគាំទ្រ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ប្រភេទការភ្ជាប់មិនស្គាល់ {0}</value></data>
@@ -4122,6 +4136,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>បិទ/បើកការរំកិលកង់</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>ការដំណើរការនីមួយៗចាក់សោ ឬដោះសោការរំកិលជាបន្ត។ ខណៈចាក់សោ ផ្ញើចំនួនជំហានម្ដងក្នុងមួយចន្លោះពេល រហូតដល់ការដំណើរការបន្ទាប់ ឬរហូតដល់ម៉ាក្រូត្រូវបានបិទ។</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>បិទ/បើកការរំកិលកង់ ({0} ជំហានរៀងរាល់ {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>បិទ/បើកការរំកិលកង់ ({0} ជំហានរៀងរាល់ {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>បញ្ចេញចង្វាក់ពេលចាក់សោ</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ខណៈចាក់សោ បិទបើកលទ្ធផលជាចង្វាក់តាមចន្លោះពេលធ្វើម្ដងទៀត ជំនួសឱ្យការសង្កត់វាជាប់។</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>បូកអ័ក្ស (ទាក់ទង)</value></data>
@@ -4143,6 +4158,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>នៅពេលចលនារូបវន្តរុញគោលដៅលើសកម្រិតចាប់ផ្ដើម ម៉ាក្រូឈប់សរសេរអ័ក្សសម្រាប់ការធ្វើឱ្យសកម្មដែលនៅសល់។</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ផ្ដល់ផ្លូវឱ្យរូបវន្ត)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>បញ្ជីប៉ះវិលជុំ (ជំហាន {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>បញ្ជីប៉ះវិលជុំ (ជំហាន {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ជំហាន</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>វិលជុំ</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>បិទ/បើកគ្រាប់ចុច {0}</value></data>
@@ -4226,6 +4242,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតការប្ដូរប្រូហ្វាល់</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>បង្ហាញរង្វង់ ឬក្រឡាចត្រង្គលើអេក្រង់ ខណៈម៉ឺនុយរង្វង់ ឬម៉ឺនុយប៉ះកំពុងសកម្ម។ ម៉ឺនុយនៅតែដំណើរការពេលបិទផ្ទាំងត្រួត។</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>បានបង្កើតម៉ឺនុយលើអេក្រង់ (ក្រឡាដែលបានភ្ជាប់ {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>បានបង្កើតម៉ឺនុយលើអេក្រង់ (ក្រឡាដែលបានភ្ជាប់ {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ម៉ឺនុយគ្មានក្រឡាដែលបានភ្ជាប់ទេ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ផ្ទៃបើកម៉ឺនុយមិនត្រូវបានគាំទ្រ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>មិនស្គាល់រូបតំណាងក្រឡាម៉ឺនុយ ({0}) ដូច្នេះក្រឡារក្សាស្លាកអត្ថបទរបស់វា</value></data>
@@ -4411,6 +4428,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>ជ្រើសរើសឯកសារ .txt ដែលបានទាញយកពី AutoEq។ នេះជាជម្រើសដែលត្រូវប្រើ៖ autoeq.app ផ្ដល់ឯកសារមួយឱ្យអ្នក មិនមែនអត្ថបទដែលអ្នកអាចចម្លងបានទេ។</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>សម្រាប់ការកែតម្រូវដែលត្រូវនឹងកាសរបស់អ្នក៖ បើក autoeq.app ជ្រើសរើសម៉ូដែលរបស់អ្នក ជ្រើស Custom Parametric Eq ហើយទាញយកវា រួចចុច «នាំចូលពីឯកសារ»។ ការទាញយក Graphic Eq គ្មានបន្ទាត់តម្រងទេ ហើយមិនអាចនាំចូលបានទេ។</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>បាននាំចូលក្រុមប្រេកង់ {0} ជាមួយអំភ្លីមុន {1:0.#} dB ពី {2}។</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>បាននាំចូលក្រុមប្រេកង់ {0} ជាមួយអំភ្លីមុន {1:0.#} dB ពី {2}។</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>គ្មានបន្ទាត់តម្រងនៅក្នុងប្រូហ្វាល់នោះទេ។ ការនាំចេញ Graphic Eq របស់ AutoEq មិនអាចអាននៅទីនេះបានទេ។ សូមទាញយក Custom Parametric Eq ជំនួសវិញ។ EQ បច្ចុប្បន្ននៅដដែល។</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>គ្មានអ្វីត្រូវនាំចូលទេ។ EQ បច្ចុប្បន្ននៅដដែល។</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>មិនអាចអានឯកសារនោះបានទេ៖ {0}</value></data>

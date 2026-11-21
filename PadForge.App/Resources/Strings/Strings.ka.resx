@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>გასუფთავება</value></data>
   <data name="Common_None" xml:space="preserve"><value>არცერთი</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>მწმ</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>წთ</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>წამი</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>წუთი (0 = არასდროს)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>ჰც</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide-მა PadForge-ს დაუბლოკა წვდომა მოწყობილობაზე, რომელიც PadForge-მა დამალა, ამიტომ PadForge-მა მოწყობილობების დამალვა შეწყვიტა.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ის Inverse application cloak ჩართულია, ამიტომ PadForge არცერთ მოწყობილობას არ მალავს.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services-ის გაშვების გარემოს დეინსტალაცია…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ვერ გაეშვა, რადგან MIDI არ მუშაობს. მიზეზს პარამეტრებში Windows MIDI Services-ის ბარათი გვიჩვენებს.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ვერ გაეშვა, რადგან MIDI არ მუშაობს. იხილეთ პარამეტრებში Windows MIDI Services, განყოფილება „დრაივერები“.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} ვერ გაეშვა, რადგან Windows MIDI Services-მა მისი პორტი ვერ შექმნა.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}-ს გამოსასვლელი პორტი არ აქვს. აირჩიეთ ის მის გვერდზე.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}-ის გამოსასვლელი პორტი „{1}“ არ არის დაკავშირებული. სლოტი გაეშვება, როგორც კი პორტი დაბრუნდება.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-მ გაშვებაზე უარი თქვა. Logitech Gaming Software, როგორც წესი, გაშვებული არ არის.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>დაკავშირებულია, კლავიში ჯერ არ ჩანს. Logitech Gaming Software-ში გადაათრიეთ G-key ბრძანება PadForge-ის პროფილის თითოეულ კლავიშზე და ეს პროფილი გახადეთ მუდმივი. G600 ან G300 მაუსიც უნდა იყოს ჩაშენებული მეხსიერების რეჟიმიდან გამოსული.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>მუშაობს, {0} კლავიშის მოვლენა</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>მუშაობს, {0} კლავიშის მოვლენა</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>ანალოგური კლავიატურების წაკითხვა</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>კითხულობს, რამდენად არის დაჭერილი ყოველი კლავიში ანალოგურ კლავიატურებზე Wooting-ის, Razer-ის, SteelSeries-ის, Keychron-ის, NuPhy-ის, DrunkDeer-ის, AULA-ს და სხვა მწარმოებლებისგან, თითოეული საკუთარი მოწყობილობის რიგად. დოკუმენტაცია ჩამოთვლის ყველა მხარდაჭერილ მოდელს. Razer-ის კლავიატურებს სჭირდება გაშვებული Razer Synapse. დანარჩენთა უმეტესობა იკითხება არხით, რომელსაც მათი საკუთარი კონფიგურატორი იყენებს, ამიტომ ამის ჩართვისას დახურეთ კონფიგურატორი.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>მხარდაჭერილი ანალოგური კლავიატურა ვერ მოიძებნა.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>განახლებების შემოწმება</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ის ფორკი, ხელახლა აგებული SDL3-ზე, WPF-სა და .NET 10-ზე</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ნებისმიერ შეყვანის მოწყობილობას ნებისმიერ ვირტუალურ კონტროლერად აქცევს. გეიმპადები, ჯოისტიკები, კლავიატურები, მაუსები და სენსორული ეკრანები ეთანადება ვირტუალურ სათამაშო კონტროლერებს (Xbox, PlayStation, ფრენის ჯოისტიკები, საჭეები, მესამე მხარის გეიმპადები) ან კლავიატურა+მაუსის / MIDI გამოსვლას, რომელსაც თამაშები რეალურ აპარატურად აღიქვამენ. მუშაობს HIDMaestro-სა და Windows MIDI Services-ზე. კონტროლერის შეყვანისთვის იყენებს SDL3-ს, კლავიატურისა და მაუსისთვის Windows Raw Input-ს, თამაშის მიხედვით მოწყობილობების ნიღბვისთვის HidHide-ს, და გთავაზობთ Fluent Design ინტერფეისს მიბმების, მკვდარი ზონების, მგრძნობელობის მრუდებისა და ძალისმიერი უკუკავშირისთვის.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ნებისმიერ შეყვანას ნებისმიერ კონტროლერად აქცევს. გეიმპადები, ჯოისტიკები, საჭეები, კლავიატურები, მაუსები, სენსორული ეკრანები, MIDI მოწყობილობები და ტელეფონები მართავენ ვირტუალურ კონტროლერებს, რომლებსაც თამაშები რეალურ აპარატურად აღიქვამენ: Xbox, PlayStation, Nintendo და Steam პედები, SInput პედები, VR ხელის კონტროლერები, MIDI გამოსვლა, კლავიატურა და მაუსი, ან მორგებული მოწყობილობა, მაგალითად ფრენის ჯოისტიკი ან საჭე. HIDMaestro ქმნის ვირტუალურ გეიმპადებს, SDL3 კითხულობს კონტროლერებს, Windows Raw Input კითხულობს კლავიატურებსა და მაუსებს, HidHide მოწყობილობას თამაშებისგან მალავს, ხოლო Windows MIDI Services MIDI-ს შემავალ და გამავალ მონაცემებს გადასცემს.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>მიმოხილვა</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>აგებულია</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ავტორების ძებნა</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>დაყოვნება ასოებს შორის</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>მილიწამები აკრეფილ სიმბოლოებს შორის, 1000-მდე. 0 მთელ ტექსტს ერთდროულად კრეფს.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>უმოქმედობისას გამორთვა</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 ნიშნავს არასდროს</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>დეტალები</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth-ის გამორთვა USB-ით შეერთებისას</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>სწრაფი დატენვა. როცა ეს კონტროლერი Bluetooth-ით დაკავშირებულ მდგომარეობაში იტყობინება, რომ იტენება, Bluetooth კავშირი წყდება, რათა დაიტენოს რადიოს კვების გარეშე. ნებისმიერი USB კვების წყარო ითვლება, კედლის დამტენების ჩათვლით. თუ კაბელის ჩართულობისას Bluetooth-ს კვლავ ჩართავთ, ის კაბელის შემდეგ გამოღებამდე არ შეეხება.</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>გაგზავნა</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>კადრები: {0}. გაგზავნას დასჭირდება დაახლოებით {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>კონტროლერი მაქსიმუმ {0} კადრს იღებს, ამიტომ ბოლო {1} გამოტოვებულია.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>კონტროლერი მაქსიმუმ {0} კადრს იღებს, ამიტომ ბოლო გამოტოვებულია.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>შეაერთეთ კონტროლერი კაბელით. სურათის ჩაწერიდან დაახლოებით 15 წამში ის თავისით გადაიტვირთება.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>შეაერთეთ კონტროლერი კაბელით. გაგზავნისთვის PadForge გადართავს მას Xbox რეჟიმზე და Windows-ის Xbox დრაივერიდან გადაიყვანს WinUSB-ზე, შემდეგ კი ორივეს უკან დააბრუნებს.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge გადართავს კონტროლერს Xbox რეჟიმზე, გაგზავნისთვის გადაიყვანს WinUSB-ზე, შემდეგ დაუბრუნებს Windows-ის Xbox დრაივერს და უკან გადართავს DInput რეჟიმზე. ჯერ გამორთეთ ყველა სხვა Xbox 360 კონტროლერი. გავაგზავნო ახლა?</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>კლონირება</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>კლონირებისთვის აირჩიეთ მოწყობილობა ამ სლოტზე.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>არჩეულ მოწყობილობას კლონირებისთვის ღერძები, ღილაკები ან POV-ები არ აქვს.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ამ სლოტზე 1:1 გატარებით დაიკლონოს? განლაგება გახდება {1} ღერძი, {2} ღილაკი და {3} POV, ხოლო ამ მოწყობილობის რიგები სლოტზე მისი საკუთარი შეყვანებით ჩანაცვლდება.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ამ მოწყობილობას უფრო მეტი შეყვანა აქვს, ვიდრე გაფართოებულ კონტროლერს შეუძლია გადაიტანოს. მიბმულია {1}-დან {0} ღერძი, {3}-დან {2} ღილაკი და {5}-დან {4} POV. დანარჩენი მიუბმელი დარჩა.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ამ სლოტზე 1:1 გატარებით დაიკლონოს? განლაგება გახდება {1}, {2} და {3}, ხოლო ამ მოწყობილობის რიგები სლოტზე მისი საკუთარი შეყვანებით ჩანაცვლდება.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ამ მოწყობილობას უფრო მეტი შეყვანა აქვს, ვიდრე გაფართოებულ კონტროლერს შეუძლია გადაიტანოს. მიბმულია {0} / {1}, {2} / {3} და {4} / {5}. დანარჩენი მიუბმელი დარჩა.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>კონტროლერის პრესეტები</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>დაამატეთ პრესეტი კონტროლერისთვის, რომელსაც PadForge არ აწვდის, ფაილიდან ან თვით კონტროლერიდან.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>იმპორტირებული</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>სლოტის შუქის ზოლის რეჟიმს ადგენს კონკრეტულ მნიშვნელობაზე. ძალაში რჩება „განათება“ ბარათზე შეტანილი ცვლილების მსგავსად, სანამ სხვა მოქმედება ან მომხმარებელი არ შეცვლის.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>შუქის ზოლის რეჟიმების ციკლი</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ციკლი {0} შუქის ზოლის რეჟიმზე</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>ციკლი {0} შუქის ზოლის რეჟიმზე</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>სლოტის შუქის ზოლის რეჟიმს გადაჰყავს ქვემოთ არჩეულ რეჟიმებზე. ყოველი გააქტიურება შემდეგ მონიშნულ რეჟიმზე გადადის. ციკლის პოზიცია თითოეულ მოქმედებას ცალკე აქვს და აპის გადატვირთვისას ნულდება.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>შენარჩუნება</value></data>
@@ -2172,7 +2177,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ეკრანის ნაწილი, რომელსაც პედი სწვდება</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ამუშავებს ტაჩპედის მაჩვენებლის X/Y წყაროებს, რომლებიც კურსორს თქვენი თითის მდებარეობაზე გადაიყვანს ტაჩპედზე (მიაბით ისინი მაუსის X/Y-ს კლავიატურა / მაუსის ვირტუალურ კონტროლერზე). ზომა 1.00 ცენტრით 0.50 ტაჩპედს მთელ ეკრანზე გაშლის. შეამცირეთ ზომა, რომ კურსორი ეკრანის ნაწილში შეზღუდოთ, და ცენტრი გადაანაცვლეთ მის განსალაგებლად.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>არეს სიგანე</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ეკრანის იმ არეს სიგანე, რომელზეც ეს ტაჩპედი აისახება, ეკრანის სიგანის წილად. 1.00 მთელ სიგანეს ფარავს, 0.50 კურსორს ეკრანის ნახევარზე ზღუდავს.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ეკრანის იმ არეს სიგანე, რომელზეც ეს ტაჩპედი აისახება, ეკრანის სიგანის წილად. 1.00 მთელ სიგანეს ფარავს. 0.50 კურსორს ეკრანის ნახევარზე ზღუდავს.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>არეს სიმაღლე</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>ეკრანის არეს სიმაღლე, ეკრანის სიმაღლის წილად.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>არეს ცენტრი X</value></data>
@@ -2183,7 +2188,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>სვაიპის ჰაპტიკა</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>დაწკაპუნებები თითის მოძრაობისას</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>აპულსირებს კონტროლერის ჰაპტიკას, სანამ თითი ამ ტაჩპედზე მოძრაობს, Steam Input-ის ტრექპედის ტკაცუნების მსგავსად. Steam Controller-ები და Steam Deck ტკაცუნებენ ტაჩპედის ქვეშ მდებარე აქტუატორით, DualSense და DualShock 4 კი ვიბრაციის ძრავებს ააქტიურებენ.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>აპულსირებს კონტროლერის ჰაპტიკას, სანამ თითი ამ ტაჩპედზე მოძრაობს, Steam Input-ის ტრექპედის ტკაცუნების მსგავსად. Steam Controller-ები და Steam Deck ტკაცუნებენ ტაჩპედის ქვეშ მდებარე აქტუატორით. DualSense და DualShock 4 კი ვიბრაციის ძრავებს ააქტიურებენ.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>სვაიპის ჰაპტიკის ჩართვა</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>თითის ყოველ დადგენილ მანძილზე გადაადგილებაზე ამ ტაჩპედზე ხანმოკლე ჰაპტიკურ ტკაცუნს ახორციელებს. თითის დადება ან ტაჩპედის დაჭერა ტკაცუნს არასდროს იძლევა. ნაგულისხმევად გამორთულია.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>იმპულსის სიძლიერე</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>ყველა ნიმუში აღებულია. დაარქვით ჟესტს სახელი და დააწკაპუნეთ „შენახვა“.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ნიმუში {0} {1}-დან</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ნიმუში</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ნიმუში</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>აღსაღები ნიმუშები</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>აღსაღები ნიმუშები</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 სტანდარტულია. მეტი ნიმუში უფრო საიმედო დამთხვევას იძლევა, ნაკლები უფრო სწრაფად იწერება.</value></data>
@@ -3391,6 +3397,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>იარაღი ეკრანს გარეთ</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>მაჩვენებლის რეჟიმების ციკლი</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>ციკლი {0} მაჩვენებლის რეჟიმზე</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>ციკლი {0} მაჩვენებლის რეჟიმზე</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Wii-ს მაჩვენებლის რეჟიმს ქვემოთ არჩეულ რეჟიმებში გადაჰყავს სლოტზე ყველა IR-ის მქონე კონტროლერისთვის. ყოველი გააქტიურება შემდეგ მონიშნულ რეჟიმზე გადადის. ციკლის პოზიცია თითოეული მოქმედებისთვის ცალკეა და აპლიკაციის გადატვირთვისას ნულდება.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>აირჩიეთ, რომელ მაჩვენებლის რეჟიმებზე უნდა გაიაროს მაკრომ. ყოველი გააქტიურება შემდეგ მონიშნულ რეჟიმზე გადადის.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>აუდიო</value></data>
@@ -3718,7 +3725,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB-ზე DualShock 3 ვერ მოიძებნა. დააკავშირეთ USB კაბელით და სცადეთ ხელახლა.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows არ დააყენებს PadForge-ის USB დრაივერს DualShock 3-ისთვის, რადგან მისი ხელმოწერის სერტიფიკატი ამ კომპიუტერზე სანდო არ არის.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation-ის კონტროლერების Bluetooth დრაივერი ვერ დაყენდა.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetooth რადიო მიუწვდომელია. ჩართეთ Bluetooth და სცადეთ ხელახლა. დაწყვილება საჭიროა მხოლოდ უსადენო თამაშისთვის, სადენით დაკავშირებული კონტროლერი მის გარეშეც მუშაობს.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetooth რადიო მიუწვდომელია. ჩართეთ Bluetooth და სცადეთ ხელახლა. დაწყვილება საჭიროა მხოლოდ უსადენო თამაშისთვის. სადენით დაკავშირებული კონტროლერი მის გარეშეც მუშაობს.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>დაწყვილება არ დასრულდა. ვერშესრულებული ნაბიჯი ზემოთ არის ნაჩვენები.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>დახურვა</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ტეგები</value></data>
@@ -3809,7 +3816,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>გაუშვით ღილაკი.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ნაბიჯი {0}, სულ {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ცვლილება არ დაფიქსირდა. აირჩიეთ „თავიდან დაწყება“, შემდეგ დააჭირეთ ღილაკს და გეჭიროთ, როცა მოგთხოვენ.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>დაკვირვებული იყო {0} მწარმოებლის ანგარიში და {1} მოვლენის კლასი. დაჭერისას: {2} ანგარიში, {3} მოვლენა.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>დაკვირვებული მწარმოებლის ანგარიშები: {0}. დაკვირვებული მოვლენის კლასები: {1}. ანგარიშები დაჭერისას: {2}. მოვლენები დაჭერისას: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ღილაკი დაფიქსირდა. შეიყვანეთ სახელი და დააწკაპუნეთ „რეგისტრაცია“.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>წყარო</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>სახელი</value></data>
@@ -3825,7 +3832,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>ექსპორტი…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>იმპორტი…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>ექსპორტირებულია {0} ღილაკი.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>ექსპორტირებულია {0} ღილაკი.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>იმპორტირებულია {0} ღილაკი.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>იმპორტირებულია {0} ღილაკი.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>პორტატული PC-ის ღილაკები</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>პორტატულ სათამაშო კომპიუტერებსა და ლეპტოპებს აქვთ ღილაკები, რომლებსაც ოპერაციული სისტემა არასდროს აჩვენებს კონტროლერად: უკანა ღილაკები, მენიუს კლავიშები, ბორბლები, მწარმოებლის ცხელი კლავიშები. ჩართეთ, რომ ერთხელ ისწავლოთ ისინი დაჭერით, შემდეგ მიაბით ისე, როგორც ნებისმიერ სხვა ღილაკს. ასევე ამატებს კომპიუტერის საკუთარ გიროსკოპს როგორც მოძრაობის მოწყობილობას.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>პორტატული PC-ის ღილაკების ჩართვა</value></data>
@@ -3989,9 +3998,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ზრდადობით</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>კლებადობით</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} მიბმა</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} მიბმა</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>ნაპოვნია {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>ნაჩვენებია {0} {1}-დან</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} კონფიგურაცია</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} კონფიგურაცია</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>კონტროლერის სრული მხარდაჭერა</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>კონტროლერის ნაწილობრივი მხარდაჭერა</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>თამაშების ძებნა</value></data>
@@ -4001,7 +4012,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} თვის წინ</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} წლის წინ</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} გამომწერი</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} გამომწერი</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ხმა</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ხმა</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>ყველა</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ამ თამაშისთვის კონფიგურაციები ჯერ არ არის</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop-ში {0}-სთვის საზოგადოების კონტროლერის კონფიგურაციები არ არის. შეგიძლიათ პირველი იყოთ: შექმენით ერთი Steam-ში და ის აქ გამოჩნდება.</value></data>
@@ -4034,6 +4047,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>შრე: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ამ შეყვანისთვის მოწყობილობაზე დამოუკიდებელი გამშვები არ არსებობს</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} თამაშში მოქმედება, მხოლოდ Steam-ისთვის, თამაშის მხარეს კაუჭი არ არის</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} თამაშში მოქმედება, მხოლოდ Steam-ისთვის, თამაშის მხარეს კაუჭი არ არის</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-კლიენტის მოქმედება {0}, ანალოგი არ არსებობს</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>კონტროლერის მოქმედება {0} მხარდაჭერილი არ არის</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>უცნობი მიბმის ტიპი {0}</value></data>
@@ -4108,10 +4122,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>მაუსის ბორბლის ბიჯი</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>თითო გაშვებაზე აგზავნის მაუსის ბორბლის ერთ დისკრეტულ ბიჯს. მნიშვნელობა არის ნიშნიანი ბიჯების რაოდენობა (დადებითი ადის ზემოთ ან მარჯვნივ).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>კურსორის გადაწევა</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>კურსორს თითო გაშვებაზე პიქსელების ფიქსირებული რაოდენობით ამოძრავებს. დადებითი X მარჯვნივ მოძრაობს, დადებითი Y ქვემოთ, უარყოფითი მნიშვნელობები დასაშვებია.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>კურსორს თითო გაშვებაზე პიქსელების ფიქსირებული რაოდენობით ამოძრავებს. დადებითი X მარჯვნივ მოძრაობს, დადებითი Y ქვემოთ. უარყოფითი მნიშვნელობები დასაშვებია.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>კურსორის გადაწევა ({0}, {1}) px-ით</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>დაჭერების სიის ციკლი</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>თითოეული გაშვება ასრულებს ნაბიჯების სიის მომდევნო დაჭერას და გადადის. ციკლის ჩართვისას სია ბოლო ნაბიჯის შემდეგ თავიდან იწყება, გამორთვისას გაშვება ბოლოს ჩერდება.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>თითოეული გაშვება ასრულებს ნაბიჯების სიის მომდევნო დაჭერას და გადადის. ციკლის ჩართვისას სია ბოლო ნაბიჯის შემდეგ თავიდან იწყება. გამორთვისას გაშვება ბოლოს ჩერდება.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>მაუსის ღილაკის გადართვა</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>თითოეული გაშვება ჩაკეტავს ან გახსნის მაუსის ღილაკს. ჩაკეტილი ღილაკი დაჭერილი რჩება მომდევნო გაშვებამდე ან მაკროს გამორთვამდე.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>მაუსის {0}-ის გადართვა</value></data>
@@ -4124,6 +4138,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ბორბლით გადახვევის გადართვა</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>თითოეული გაშვება ჩაკეტავს ან გახსნის უწყვეტ გადახვევას. ჩაკეტილისას ინტერვალში ერთხელ აგზავნის ბიჯების რაოდენობას მომდევნო გაშვებამდე ან მაკროს გამორთვამდე.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ბორბლით გადახვევის გადართვა ({0} ბიჯი ყოველ {1} მწ-ში)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>ბორბლით გადახვევის გადართვა ({0} ბიჯი ყოველ {1} მწ-ში)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>პულსირება ჩაკეტილისას</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ჩაკეტილისას გამოსავალი გამეორების ინტერვალით ირთვება და ითიშება და არა მუდმივად რჩება ჩართული.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>ღერძის დამატება (ფარდობითი)</value></data>
@@ -4145,6 +4160,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>როცა ფიზიკური მოძრაობა სამიზნეს ზღვარს გადაატარებს, მაკრო ღერძის ჩაწერას აქტივაციის დარჩენილი დროით წყვეტს.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ფიზიკურს თმობს)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>დაჭერების სიის ციკლი ({0} ნაბიჯი)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>დაჭერების სიის ციკლი ({0} ნაბიჯი)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ნაბიჯები</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>თავიდან დაწყება</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>კლავიშების გადართვა {0}</value></data>
@@ -4228,6 +4244,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>პროფილის გადართვის გადაფარვა</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>აჩვენებს ეკრანულ რგოლს ან ბადეს, სანამ რადიალური ან სენსორული მენიუ ჩართულია. გადაფარვის გამორთვისასაც მენიუები მუშაობს.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ეკრანული მენიუ შეიქმნა ({0} მიბმული უჯრა)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ეკრანული მენიუ შეიქმნა ({0} მიბმული უჯრა)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>მენიუს მიბმული უჯრა არ აქვს</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>მენიუს წყარო ზედაპირი მხარდაჭერილი არ არის ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>მენიუს უჯრის ხატულა არ ამოიცნო ({0}), ამიტომ უჯრა ტექსტურ წარწერას ინარჩუნებს</value></data>
@@ -4414,6 +4431,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>აირჩიეთ AutoEq-დან ჩამოტვირთული .txt ფაილი. სწორედ ეს გამოიყენეთ: autoeq.app გაძლევთ ფაილს და არა დასაკოპირებელ ტექსტს.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>თქვენს ყურსასმენზე მორგებული კორექციისთვის: გახსენით autoeq.app, აირჩიეთ თქვენი მოდელი, აირჩიეთ Custom Parametric Eq და ჩამოტვირთეთ, შემდეგ იმპორტი ფაილიდან. Graphic Eq-ის ჩამოტვირთვას ფილტრის ხაზები არ აქვს და ვერ დაიმპორტდება.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>დაიმპორტდა {0} ზოლი {1:0.#} dB პრეამპით, წყარო: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>დაიმპორტდა {0} ზოლი {1:0.#} dB პრეამპით, წყარო: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ამ პროფილში ფილტრის ხაზები არ არის. AutoEq-ის Graphic Eq ექსპორტი აქ ვერ იკითხება. ჩამოტვირთეთ ამის ნაცვლად Custom Parametric Eq. მიმდინარე EQ უცვლელია.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>დასაიმპორტებელი არაფერია. მიმდინარე EQ უცვლელია.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ფაილის წაკითხვა ვერ მოხერხდა: {0}</value></data>

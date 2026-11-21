@@ -99,6 +99,7 @@
   <data name="Common_Recording" xml:space="preserve"><value>Ń gbà sílẹ̀…</value></data>
   <data name="Common_None" xml:space="preserve"><value>Kò sí</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>ìṣẹ́jú</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ìṣẹ́jú-àáyá</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -779,6 +780,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Gbogbo àpẹẹrẹ ti wọlé. Fún ìfarajúwe náà ní orúkọ kí o sì tẹ Fi pamọ́.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Àpẹẹrẹ {0} nínú {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Àpẹẹrẹ {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Àpẹẹrẹ {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Fún ìfarajúwe yìí ní orúkọ</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>A nílò orúkọ</value></data>
@@ -1425,7 +1427,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Gbé jáde…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Gbé wọlé…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} jáde.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} jáde.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} wọlé.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} wọlé.</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ìfarajúwe máòsì</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mú ìfarajúwe máòsì ṣiṣẹ́</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Àwọn bọ́tìnnì ìfarajúwe</value></data>
@@ -1483,6 +1487,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>oṣù {0} sẹ́yìn</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>ọdún {0} sẹ́yìn</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Ìbò {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Ìbò {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Gbogbo</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>A kò lè dé Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>A kò lè dé Steam. Ṣàyẹ̀wò àsopọ̀ íntánẹ́ẹ̀tì rẹ. Àwọn profaili tí o ti gbé wọlé ṣì ń ṣiṣẹ́: wọ́n wà lórí PC yìí.</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Esborra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Cap</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segons</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuts (0 = mai)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide ha bloquejat l'accés de PadForge a un dispositiu que PadForge havia amagat, així que PadForge ha deixat d'amagar dispositius.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>L'opció «Inverse application cloak» de HidHide està activada, així que PadForge no amaga cap dispositiu.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>S'està desinstal·lant l'entorn d'execució de Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} no s'ha pogut iniciar perquè MIDI no s'està executant. La targeta Windows MIDI Services de Configuració n'indica el motiu.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} no s'ha pogut iniciar perquè MIDI no s'està executant. Consulta Windows MIDI Services a Configuració, dins de Controladors.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} no s'ha pogut iniciar perquè Windows MIDI Services no ha creat el seu port.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} no té cap port de sortida. Tria'n un a la seva pàgina.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>El port de sortida «{1}» de {0} no està connectat. La ranura s'iniciarà quan el port torni a estar disponible.</value></data>
@@ -558,6 +559,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>L'SDK G-key no s'ha volgut iniciar. Normalment és perquè Logitech Gaming Software no s'està executant.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connectat, encara no s'ha detectat cap tecla. A Logitech Gaming Software, arrossega l'ordre G-key a cada tecla del perfil de PadForge i fes que aquest perfil sigui persistent. A més, un ratolí G600 o G300 no ha d'estar en mode de memòria integrada.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>En execució, {0} esdeveniments de tecla</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>En execució, {0} esdeveniment de tecla</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Llegeix els teclats analògics</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Llegeix fins a quin punt es prem cada tecla als teclats analògics de Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA i altres fabricants, cadascun com a fila de dispositiu pròpia. La documentació indica tots els models compatibles. Els teclats Razer necessiten que Razer Synapse s'estigui executant. La majoria dels altres es llegeixen pel mateix canal que fa servir el seu configurador, així que tanca el configurador mentre això estigui activat.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No s'ha trobat cap teclat analògic compatible.</value></data>
@@ -795,7 +797,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Cerca actualitzacions</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Bifurcació moderna d'x360ce, reconstruïda amb SDL3, WPF i .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge converteix qualsevol dispositiu d'entrada en qualsevol comandament virtual. Els comandaments, joysticks, teclats, ratolins i pantalles tàctils s'assignen a comandaments de joc virtuals (Xbox, PlayStation, joysticks de vol, volants, comandaments de tercers) o a una sortida de teclat+ratolí / MIDI que els jocs tracten com a maquinari real. Funciona amb HIDMaestro i Windows MIDI Services. Fa servir SDL3 per a l'entrada dels comandaments, Windows Raw Input per al teclat i el ratolí i HidHide per amagar dispositius per joc, i ofereix una interfície moderna Fluent Design per a l'assignació, les zones mortes, les corbes de sensibilitat i la retroacció de força.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge fa que qualsevol entrada sembli qualsevol comandament. Els comandaments, joysticks, volants, teclats, ratolins, pantalles tàctils, dispositius MIDI i telèfons mouen comandaments virtuals que els jocs tracten com a maquinari real: comandaments Xbox, PlayStation, Nintendo i Steam, comandaments SInput, comandaments de mà per a RV, sortida MIDI, un teclat i un ratolí, o un dispositiu personalitzat com un joystick de vol o un volant. HIDMaestro crea els comandaments virtuals, SDL3 llegeix els comandaments, Windows Raw Input llegeix els teclats i els ratolins, HidHide amaga un dispositiu als jocs i Windows MIDI Services transporta el MIDI d'entrada i de sortida.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Visió general</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Creat amb</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Cerca als crèdits</value></data>
@@ -923,6 +925,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Retard entre lletres</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Mil·lisegons entre caràcters escrits, fins a 1000. Amb 0, s'escriu tot el text de cop.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconnexió per inactivitat</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 vol dir mai</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalls</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconnecta el Bluetooth quan es connecti per USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Càrrega ràpida. Quan aquest comandament indica que s'està carregant mentre està connectat per Bluetooth, es talla l'enllaç Bluetooth perquè es carregui sense alimentar la ràdio. Compta qualsevol font d'alimentació USB, inclosos els carregadors de paret. Si tornes a activar el Bluetooth amb el cable connectat, no s'hi torna a actuar fins que el desconnectis.</value></data>
@@ -987,6 +990,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Envia</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogrames: {0}. L'enviament triga aproximadament {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>El comandament admet {0} fotogrames com a màxim, de manera que els últims {1} s'han deixat fora.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>El comandament admet {0} fotogrames com a màxim, de manera que l'últim s'ha deixat fora.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Connecta el comandament amb un cable. Es reinicia sol uns 15 segons després que la imatge hi sigui.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Connecta el comandament amb un cable. Per a l'enviament, PadForge el canvia al mode Xbox i el passa del controlador Xbox de Windows a WinUSB, i després ho torna tot a com estava.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge canviarà el comandament al mode Xbox, el passarà a WinUSB per a l'enviament, després el retornarà al controlador Xbox de Windows i el canviarà de nou al mode DInput. Desconnecta abans qualsevol altre comandament Xbox 360. Vols enviar ara?</value></data>
@@ -1418,8 +1422,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clona</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecciona un dispositiu d'aquesta ranura per clonar-lo.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>El dispositiu seleccionat no ofereix eixos, botons ni POV per clonar.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Vols clonar {0} en aquesta ranura com a transmissió directa 1:1? La disposició passarà a tenir {1} eixos, {2} botons i {3} POV, i les files d'aquest dispositiu a la ranura se substituiran per les seves pròpies entrades.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Aquest dispositiu té més entrades de les que pot admetre un comandament ampliat. S'han assignat {0} de {1} eixos, {2} de {3} botons i {4} de {5} POV. La resta s'han deixat sense assignar.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Vols clonar {0} en aquesta ranura com a transmissió directa 1:1? La disposició passarà a tenir {1}, {2} i {3}, i les files d'aquest dispositiu a la ranura se substituiran per les seves pròpies entrades.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Aquest dispositiu té més entrades de les que pot admetre un comandament ampliat. S'han assignat {0} de {1}, {2} de {3} i {4} de {5}. La resta s'han deixat sense assignar.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Predefinits de comandament</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Afegeix un predefinit per a un comandament que PadForge no inclou, des d'un fitxer o del mateix comandament.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importats</value></data>
@@ -1591,11 +1595,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botó que fa baixar l'acumulador mentre es manté premut</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Avall: botó que fa baixar l'acumulador mentre es manté premut.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Velocitat</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocitat d'escombratge en unitats per segon. 0.5 = rang complet en 2 s; 2 = rang complet en 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velocitat d'escombratge en unitats per segon. 0.5 = rang complet en 2 s. 2 = rang complet en 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Persistent</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Si està marcat, l'acumulador conserva el valor després de deixar anar el botó (control de creuer). Si no està marcat, torna a Mín. en deixar-lo anar.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Mín.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Límit inferior de l'acumulador. -1 = negatiu complet per a eixos de destinació bipolars; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Límit inferior de l'acumulador. -1 = negatiu complet per a eixos de destinació bipolars. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Màx.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Límit superior de l'acumulador. 1 = positiu complet.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -1888,6 +1892,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Defineix el mode de la barra de llum de la ranura assignada a un valor concret. Es conserva com un canvi fet a la targeta Il·luminació fins que una altra acció o l'usuari el canvia.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Canvia cíclicament els modes de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Recorre cíclicament {0} modes de la barra de llum</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Recorre cíclicament {0} mode de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Fa avançar el mode de la barra de llum de la ranura pels modes seleccionats a sota. Cada activació passa al mode marcat següent. La posició del cicle és pròpia de cada acció i es restableix quan es reinicia l'aplicació.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Retenció</value></data>
@@ -2166,7 +2171,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>La part de la pantalla que arriba a cobrir el comandament</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta les fonts Punter X/Y del panell tàctil, que porten el cursor a la posició del dit al panell (assigna-les a X/Y del ratolí en un comandament virtual de teclat / ratolí). Una mida d'1.00 amb el centre a 0.50 fa correspondre el panell a tota la pantalla. Redueix la mida per limitar el cursor a una part de la pantalla i mou el centre per situar-la.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Amplada de la regió</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Amplada de l'àrea de la pantalla a la qual correspon aquest panell, com a fracció de l'amplada de la pantalla. 1.00 cobreix tota l'amplada i 0.50 limita el cursor a la meitat de la pantalla.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Amplada de l'àrea de la pantalla a la qual correspon aquest panell, com a fracció de l'amplada de la pantalla. 1.00 cobreix tota l'amplada. 0.50 limita el cursor a la meitat de la pantalla.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Alçada de la regió</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Alçada de l'àrea de la pantalla, com a fracció de l'alçada de la pantalla.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Centre X de la regió</value></data>
@@ -2177,7 +2182,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Resposta hàptica en lliscar</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tics mentre mous el dit</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fa polsar la resposta hàptica del comandament mentre el dit recorre aquest panell tàctil, com els tics de trackpad de Steam Input. Als Steam Controller i a la Steam Deck, els tics els fa l'actuador de sota el panell, i al DualSense i al DualShock 4, els motors de vibració.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Fa polsar la resposta hàptica del comandament mentre el dit recorre aquest panell tàctil, com els tics de trackpad de Steam Input. Als Steam Controller i a la Steam Deck, els tics els fa l'actuador de sota el panell. Al DualSense i al DualShock 4, els motors de vibració.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Activa la resposta hàptica en lliscar</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Emet un tic hàptic breu cada vegada que el dit es mou una distància determinada en aquest panell. Posar-hi un dit o fer-hi clic no fa mai cap tic. Desactivat per defecte.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensitat del pols</value></data>
@@ -2285,6 +2290,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>S'han capturat totes les mostres. Posa un nom al gest i fes clic a Desa.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Mostra {0} de {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} mostres</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} mostra</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Mostres que cal capturar</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Mostres per capturar</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>El valor estàndard és 3. Més mostres donen una coincidència més segura, i menys es graven més de pressa.</value></data>
@@ -3389,6 +3395,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistola fora de la pantalla</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Canvia cíclicament els modes del punter</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Recorre cíclicament {0} modes del punter</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Recorre cíclicament {0} mode del punter</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fa avançar el mode del punter de la Wii pels modes seleccionats a sota per a cada comandament amb IR de la ranura. Cada activació passa al mode marcat següent. La posició del cicle és pròpia de cada acció i es restableix quan es reinicia l'aplicació.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Tria per quins modes del punter ha de passar la macro. Cada activació avança al mode marcat següent.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Àudio</value></data>
@@ -3807,7 +3814,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Deixa anar el botó.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Pas {0} de {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>No s'ha detectat cap canvi. Selecciona Torna a començar i després mantén premut el botó quan se't demani.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>S'han vigilat {0} informes del fabricant i {1} classes d'esdeveniments. Durant la pulsació: {2} informes, {3} esdeveniments.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Informes del fabricant vigilats: {0}. Classes d'esdeveniments vigilades: {1}. Informes durant la pulsació: {2}. Esdeveniments durant la pulsació: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>S'ha capturat el botó. Introdueix un nom i fes clic a Registra.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Font</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nom</value></data>
@@ -3823,7 +3830,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Exporta…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importa…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Botons exportats: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Botó exportat: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Botons importats: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Botó importat: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botons del PC de mà</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Els PC de joc de mà i els portàtils tenen botons que el sistema operatiu no mostra mai com a comandament: paletes posteriors, tecles de menú, rodes, dreceres del fabricant. Activa-ho per aprendre'ls un cop prement-los i després assigna'ls com qualsevol altre botó. També afegeix el giroscopi del mateix equip com a dispositiu de moviment.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Activa els botons del PC de mà</value></data>
@@ -3987,9 +3996,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Ascendent</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Descendent</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} vinculacions</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} vinculació</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} trobades</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Se'n mostren {0} de {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuracions</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} configuració</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>compatibilitat total amb comandaments</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>compatibilitat parcial amb comandaments</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Cerca jocs</value></data>
@@ -3999,7 +4010,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>fa {0} mes(os)</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>fa {0} any(s)</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subscriptors</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} subscriptor</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} vots</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} vot</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tots</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Encara no hi ha configuracions per a aquest joc</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop no té cap configuració de comandament de la comunitat per a {0}. Pots ser el primer: crea'n una a Steam i apareixerà aquí.</value></data>
@@ -4032,6 +4045,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>capa: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no hi ha cap activador independent del dispositiu per a aquesta entrada</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} accions dins del joc, exclusives de Steam, sense cap ganxo al joc</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} acció dins del joc, exclusiva de Steam, sense cap ganxo al joc</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>acció del client de Steam {0}, sense equivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>acció de comandament {0} no admesa</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tipus de vinculació desconegut {0}</value></data>
@@ -4122,6 +4136,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Commuta el desplaçament de la roda</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Cada activació bloqueja o desbloqueja un desplaçament continu. Mentre està bloquejat, envia el nombre de passos un cop per interval fins a l'activació següent o fins que es desactiva la macro.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Commuta el desplaçament de la roda ({0} passos cada {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Commuta el desplaçament de la roda ({0} pas cada {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Polsos mentre està bloquejat</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mentre està bloquejat, activa i desactiva la sortida amb l'interval de repetició en lloc de mantenir-la fixa.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Suma a l'eix (relatiu)</value></data>
@@ -4143,6 +4158,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Quan el moviment físic porta la destinació més enllà del llindar, la macro deixa d'escriure l'eix durant la resta de l'activació.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(cedeix a l'entrada física)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Llista de tocs cíclica (passos: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Llista de tocs cíclica (passos: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passos</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Repetició circular</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Commuta les tecles {0}</value></data>
@@ -4226,6 +4242,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Superposició de canvi de perfil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anell o la graella en pantalla mentre hi ha actiu un menú radial o tàctil. Els menús continuen funcionant amb la superposició desactivada.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menú en pantalla creat ({0} cel·les vinculades)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menú en pantalla creat ({0} cel·la vinculada)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>el menú no té cap cel·la vinculada</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>no s'admet la superfície d'entrada del menú ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>no s'ha reconegut la icona de la cel·la del menú ({0}), així que la cel·la conserva l'etiqueta de text</value></data>
@@ -4412,6 +4429,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Tria el fitxer .txt que has baixat d'AutoEq. Aquesta és l'opció que cal fer servir: autoeq.app et dona un fitxer en lloc de text que es pugui copiar.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Per a una correcció adaptada als teus auriculars: obre autoeq.app, tria el teu model, selecciona Custom Parametric Eq i baixa-la, i després fes servir Importa d'un fitxer. La baixada Graphic Eq no té línies de filtre i no s'importarà.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>S'han importat {0} bandes amb una preamplificació de {1:0.#} dB de {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>S'ha importat {0} banda amb una preamplificació de {1:0.#} dB de {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Aquest perfil no té línies de filtre. L'exportació Graphic Eq d'AutoEq no es pot llegir aquí. Baixa la de Custom Parametric Eq. L'equalitzador actual no ha canviat.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>No hi ha res per importar. L'equalitzador actual no ha canviat.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>No s'ha pogut llegir aquest fitxer: {0}</value></data>

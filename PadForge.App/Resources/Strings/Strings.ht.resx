@@ -108,6 +108,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Efase</value></data>
   <data name="Common_None" xml:space="preserve"><value>Okenn</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segonn</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minit (0 = janm)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -192,7 +193,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide bloke PadForge sou yon aparèy PadForge te kache, kidonk PadForge sispann kache aparèy.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Opsyon Inverse application cloak HidHide la aktive, kidonk PadForge pa kache okenn aparèy.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Ap dezenstale runtime Windows MIDI Services la…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} pa t ka demare paske MIDI pa ap mache. Kat Windows MIDI Services la nan Paramèt di poukisa.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} pa t ka demare paske MIDI pa ap mache. Gade Windows MIDI Services nan Paramèt, anba Pilòt.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} pa t ka demare paske Windows MIDI Services pa t kreye pò li.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} pa gen pò sòti. Chwazi youn sou paj li.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Pò sòti “{1}” pou {0} pa konekte. Plas la ap demare lè pò a tounen.</value></data>
@@ -445,6 +446,7 @@
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Yon lòt pwogram, tankou DSX, ap itilize pò {0}. Fèmen l oswa chwazi yon lòt pò.</value></data>
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Yon mod jwèt</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Ap mache, {0} evènman touch</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Li klavye analòg yo</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Pa jwenn okenn klavye analòg ki sipòte.</value></data>
   <data name="AnalogKeyboard_Synapse_Format" xml:space="preserve"><value>Lanse Razer Synapse pou li {0}.</value></data>
@@ -742,6 +744,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Reta ant lèt yo</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisegonn ant chak karaktè ki tape, jiska 1000. 0 tape tout tèks la yon sèl kou.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Dekoneksyon lè l pa itilize</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 vle di janm</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detay</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Dekonekte Bluetooth lè l branche sou USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Lè kontwolè sa a di l ap chaje pandan l konekte ak Bluetooth, koneksyon Bluetooth la koupe pou l ka chaje san l pa bay radyo a kouran. Nenpòt sous kouran USB konte, menm chajè ki branche nan miray. Si ou limen Bluetooth ankò pandan kab la toujou branche, li kite l jan l ye jiskaske ou debranche l yon lòt fwa.</value></data>
@@ -804,6 +807,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Voye</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ankadreman: {0}. Voye a pran anviwon {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontwolè a pran {0} ankadreman pou pi plis, kidonk dènye {1} yo te rete deyò.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontwolè a pran {0} ankadreman pou pi plis, kidonk dènye a te rete deyò.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konekte kontwolè a ak yon kab. Li rekòmanse pou kont li anviwon 15 segonn apre imaj la fin rive.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konekte kontwolè a ak yon kab. Pou voye a, PadForge mete l nan mòd Xbox epi li fè l pase soti nan drayvè Xbox Windows lan rive nan WinUSB, apre sa li remete tou de jan yo te ye.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge pral mete kontwolè a nan mòd Xbox, fè l pase sou WinUSB pou voye a, apre sa remèt li bay drayvè Xbox Windows lan epi remete l nan mòd DInput. Debranche tout lòt kontwolè Xbox 360 anvan. Voye kounye a?</value></data>
@@ -1214,8 +1218,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klone</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Chwazi yon aparèy sou plas sa a pou klone.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Aparèy ou chwazi a pa gen okenn aks, bouton oswa POV pou klone.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klone {0} sou plas sa a kòm yon pasaj dirèk 1:1? Dispozisyon an ap gen {1} aks, {2} bouton ak {3} POV, epi liy aparèy sa a sou plas la ap ranplase ak pwòp antre li yo.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Aparèy sa a gen plis antre pase yon kontwolè Extended ka pote. {0} aks sou {1}, {2} bouton sou {3} ak {4} POV sou {5} asiyen. Rès yo pa asiyen.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klone {0} sou plas sa a kòm yon pasaj dirèk 1:1? Dispozisyon an ap gen {1}, {2} ak {3}, epi liy aparèy sa a sou plas la ap ranplase ak pwòp antre li yo.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Aparèy sa a gen plis antre pase yon kontwolè Extended ka pote. {0} sou {1}, {2} sou {3} ak {4} sou {5} asiyen. Rès yo pa asiyen.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Prereglaj kontwolè</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Ajoute yon prereglaj pou yon kontwolè PadForge pa enkli, apati yon fichye oswa apati kontwolè a menm.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Enpòte</value></data>
@@ -1364,7 +1368,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Konbyen antre a dwe monte pou l lage, oswa desann ankò pou l peze ankò, an pousantaj tout kous li. Sa aplike pandan antre a rete pi lwen pase zòn mò a.</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Envèse lè ou kenbe</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Vitès</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Vitès balayaj an inite pa segonn. 0.5 = tout plaj la nan 2 s, 2 = tout plaj la nan 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Vitès balayaj an inite pa segonn. 0.5 = tout plaj la nan 2 s. 2 = tout plaj la nan 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Fiks</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
@@ -1977,6 +1981,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Tout echantiyon yo kaptire. Bay jès la yon non epi klike sou Anrejistre.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Echantiyon {0} sou {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} echantiyon</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} echantiyon</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Echantiyon pou kaptire</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Echantiyon pou kaptire</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 se nòmal. Plis echantiyon bay yon rekonesans pi sèten, e mwens anrejistre pi vit.</value></data>
@@ -2859,6 +2864,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Zam andeyò ekran</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Fè sik mòd pwentè</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Fè sik nan {0} mòd pwentè</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Fè sik nan {0} mòd pwentè</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fè mòd pwentè Wii a avanse nan mòd ou chwazi anba yo pou chak Wii Remote ki gen IR sou plas la. Chak deklanchman pase nan pwochen mòd ki koche. Pozisyon sik la separe pou chak aksyon epi li reyinisyalize lè aplikasyon an rekòmanse.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Chwazi ki mòd pwentè makwo a dwe fè sik ladan yo. Chak deklanchman avanse nan pwochen mòd ki koche.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Odyo</value></data>
@@ -3255,7 +3261,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Ekspòte…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Enpòte…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} bouton ekspòte.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} bouton ekspòte.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} bouton enpòte.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} bouton enpòte.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Bouton PC pòtab</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC pòtab pou jwe ak laptop gen bouton sistèm operasyon an pa janm montre kòm yon kontwolè: pal dèyè, touch meni, wou, rakousi manifakti a. Aktive sa pou aprann yo yon sèl fwa lè ou peze yo, epi fè asiyasyon pou yo tankou nenpòt lòt bouton. Li ajoute jiwoskòp machin nan tou kòm yon aparèy mouvman.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktive bouton PC pòtab</value></data>
@@ -3347,6 +3355,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Workshop_Sort_Subscribers" xml:space="preserve"><value>Abòne</value></data>
   <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Plis vòt</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigirasyon</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigirasyon</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>sipò konplè pou kontwolè</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>sipò pasyèl pou kontwolè</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Chèche jwèt</value></data>
@@ -3356,7 +3365,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mwa de sa</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} an de sa</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abòne</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} abòne</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} vòt</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} vòt</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tout</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Poko gen konfigirasyon pou jwèt sa a</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop pa gen okenn konfigirasyon kontwolè kominote pou {0}. Ou ka premye a: kreye youn nan Steam, epi l ap parèt isit la.</value></data>
@@ -3624,6 +3635,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Chwazi fichye .txt AutoEq ou te telechaje a. Se sa pou w itilize: autoeq.app ba ou yon fichye, pa yon tèks ou ka kopye.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Pou yon koreksyon ki adapte ak ekoutè ou: louvri autoeq.app, chwazi modèl ou, chwazi Custom Parametric Eq epi telechaje l, apre sa itilize Enpòte nan yon fichye. Telechajman Graphic Eq la pa gen liy filtè e li p ap enpòte.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Enpòte {0} bann ak yon preanpli {1:0.#} dB soti nan {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Enpòte {0} bann ak yon preanpli {1:0.#} dB soti nan {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Pa gen liy filtè nan pwofil sa a. Ekspòtasyon Graphic Eq AutoEq la pa ka li isit la. Telechaje Custom Parametric Eq la pito. Egalizè aktyèl la pa chanje.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Pa gen anyen pou enpòte. Egalizè aktyèl la pa chanje.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Pa t kapab li fichye sa a: {0}</value></data>

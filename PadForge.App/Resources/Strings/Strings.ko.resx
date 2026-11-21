@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>오른쪽으로 한 페이지</value></data>
   <data name="Common_None" xml:space="preserve"><value>없음</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>분</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>초</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>분 (0 = 사용 안 함)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -203,7 +204,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge가 숨긴 장치에 대한 접근을 HidHide가 차단했으므로 PadForge는 장치 숨기기를 중단했습니다.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide의 ‘Inverse application cloak’이 켜져 있어 PadForge는 장치를 숨기지 않습니다.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services 런타임 제거 중…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI가 실행되지 않아 {0}을(를) 시작하지 못했습니다. 이유는 설정의 Windows MIDI Services 카드에서 확인할 수 있습니다.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI가 실행되지 않아 {0}을(를) 시작하지 못했습니다. 설정의 드라이버에서 Windows MIDI Services를 확인하세요.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services가 포트를 만들지 않아 {0}을(를) 시작하지 못했습니다.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}에 출력 포트가 없습니다. 해당 페이지에서 출력 포트를 고르세요.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}의 출력 포트 “{1}”이(가) 연결되어 있지 않습니다. 포트가 돌아오면 슬롯이 시작됩니다.</value></data>
@@ -378,6 +379,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK가 시작되지 않았습니다. 보통 Logitech Gaming Software가 실행 중이 아닙니다.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>연결됨, 아직 감지된 키가 없습니다. Logitech Gaming Software에서 PadForge 프로필의 각 키에 G-key 명령을 끌어다 놓고, 그 프로필을 상시 프로필로 지정하세요. 또한 G600 또는 G300 마우스는 온보드 모드가 아니어야 합니다.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>실행 중, 키 이벤트 {0}건</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>실행 중, 키 이벤트 {0}건</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>아날로그 키보드 읽기</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA 등 여러 제조사의 아날로그 키보드에서 각 키가 눌린 깊이를 읽어 각각 별도의 장치 행으로 표시합니다. 지원되는 모든 모델은 설명서에 나와 있습니다. Razer 키보드는 Razer Synapse가 실행 중이어야 합니다. 그 밖의 대부분은 자체 설정 소프트웨어가 쓰는 채널로 요청해 읽으므로, 이 옵션이 켜져 있는 동안에는 설정 소프트웨어를 닫으세요.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>지원되는 아날로그 키보드를 찾지 못했습니다.</value></data>
@@ -583,7 +585,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>업데이트 확인</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce의 현대적 포크. SDL3, WPF, .NET 10으로 재구축</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임이 실제 하드웨어로 인식하게 합니다. HIDMaestro와 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에는 SDL3, 키보드와 마우스 입력에는 Windows Raw Input, 게임별 장치 숨김에는 HidHide를 사용하며, 매핑, 데드존, 감도 곡선, 포스 피드백을 위한 Fluent Design 인터페이스를 제공합니다.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge는 어떤 입력이든 원하는 컨트롤러처럼 보이게 합니다. 게임패드, 조이스틱, 휠, 키보드, 마우스, 터치스크린, MIDI 장치, 휴대폰으로 가상 컨트롤러를 조작하면 게임이 이를 실제 하드웨어로 인식합니다. 가상 컨트롤러는 Xbox, PlayStation, Nintendo, Steam 패드, SInput 패드, VR 핸드 컨트롤러, MIDI 출력, 키보드와 마우스, 또는 플라이트 스틱이나 휠 같은 맞춤 장치로 만들 수 있습니다. HIDMaestro는 가상 게임패드를 만들고, SDL3는 컨트롤러를 읽고, Windows Raw Input은 키보드와 마우스를 읽고, HidHide는 게임에서 장치를 숨기고, Windows MIDI Services는 MIDI 입출력을 전달합니다.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>개요</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>사용 기술</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>크레딧 검색</value></data>
@@ -730,6 +732,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows는 더 이상 {0}(으)로 포인터를 움직이지 않습니다. 의도한 것이 아니라면 아무것도 하지 마세요. 그러면 다시 돌아옵니다.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows는 더 이상 {0}(으)로 포인터를 움직이지 않습니다. 의도한 것이 아니라면 아무것도 하지 마세요. 그러면 다시 돌아옵니다.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0}초 후 되돌립니다</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>{0}초 후 되돌립니다</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>유지</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>되돌리기</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>먼저 이 모델의 다른 키보드를 분리하세요. Windows는 연결된 이 모델의 키보드를 모두 한꺼번에 PadForge 드라이버로 옮기고, 그 키보드들로 입력하지 않게 됩니다.</value></data>
@@ -909,11 +912,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 누산기를 아래로 감소시키는 버튼</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>아래: 누르고 있는 동안 누산기를 아래로 감소시키는 버튼.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>속도</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>초당 단위의 스윕 속도. 0.5 = 2초 내 전체 범위; 2 = 0.5초 내 전체 범위.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>초당 단위의 스윕 속도. 0.5 = 2초 내 전체 범위. 2 = 0.5초 내 전체 범위.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>고정</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>선택하면 누산기가 해제 후에도 값을 유지합니다 (크루즈 컨트롤). 해제하면 놓을 때 최솟값으로 돌아갑니다.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>최솟값</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>누산기의 하한. -1 = 양극 축 대상의 전체 음수; 0 = 단극.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>누산기의 하한. -1 = 양극 축 대상의 전체 음수. 0 = 단극.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>최댓값</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>누산기의 상한. 1 = 전체 양수.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>램프</value></data>
@@ -1207,6 +1210,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>할당된 슬롯의 라이트바 모드를 특정 값으로 설정합니다. 다른 동작이나 사용자가 바꿀 때까지 조명 카드 편집과 동일하게 유지됩니다.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>라이트바 모드 순환</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}개의 라이트바 모드 순환</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0}개의 라이트바 모드 순환</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>아래에서 선택한 모드들로 슬롯의 라이트바 모드를 진행합니다. 발화할 때마다 다음 체크된 모드로 이동합니다. 위치는 동작별이며 앱 재시작 시 초기화됩니다.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>유지</value></data>
@@ -2667,6 +2671,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>모든 샘플이 캡처되었습니다. 제스처 이름을 지정하고 저장을 클릭하세요.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>샘플 {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} 샘플</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} 샘플</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>캡처할 샘플 수</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>캡처할 샘플 수</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3개가 표준입니다. 샘플이 많을수록 매칭이 더 확실하고, 적을수록 녹화가 더 빠릅니다.</value></data>
@@ -2851,6 +2856,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>건 화면 밖</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>포인터 모드 순환</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0}개 포인터 모드 순환</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0}개 포인터 모드 순환</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>슬롯의 IR 지원 리모컨 전체에서 아래에 선택한 모드 사이를 순환합니다. 실행할 때마다 다음 체크된 모드로 넘어갑니다. 위치는 동작별이며 재시작 시 초기화됩니다.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 포인터 모드를 선택하세요. 실행할 때마다 다음 체크된 모드로 넘어갑니다.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>오디오</value></data>
@@ -3271,7 +3277,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>버튼에서 손을 떼세요.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{0} / {1}단계</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>변화가 감지되지 않았습니다. 처음부터 다시를 선택한 뒤 요청 시 버튼을 누르고 계세요.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>제조사 보고서 {0}개와 이벤트 클래스 {1}개를 관찰했습니다. 누르는 동안: 보고서 {2}개, 이벤트 {3}개.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>관찰한 제조사 보고서: {0}. 관찰한 이벤트 클래스: {1}. 누르는 동안의 보고서: {2}. 누르는 동안의 이벤트: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>버튼을 캡처했습니다. 이름을 입력하고 등록을 클릭하세요.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>소스</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>이름</value></data>
@@ -3307,12 +3313,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>모두 삭제</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>이 모델에 학습된 모든 이름을 제거합니다.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>이름 {0}개를 내보냈습니다.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>이름 {0}개를 내보냈습니다.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>이름 {0}개를 가져왔습니다.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>이름 {0}개를 가져왔습니다.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>다른 모델 {1}의 이름 {0}개를 가져왔습니다.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>다른 모델 {1}의 이름 {0}개를 가져왔습니다.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>이 파일에는 키 조명 이름이 없습니다.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>가져오기…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>버튼 {0}개를 내보냈습니다.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>버튼 {0}개를 내보냈습니다.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>버튼 {0}개를 가져왔습니다.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>버튼 {0}개를 가져왔습니다.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>휴대용 PC 버튼</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>휴대용 게이밍 PC와 노트북에는 운영 체제가 컨트롤러로 표시하지 않는 버튼이 있습니다. 후면 패들, 메뉴 키, 휠, 제조사 핫키 등입니다. 켜면 한 번 눌러서 학습한 뒤 다른 버튼처럼 매핑할 수 있습니다. 컴퓨터 자체의 자이로스코프도 모션 장치로 추가됩니다.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>휴대용 PC 버튼 사용</value></data>
@@ -3338,6 +3349,7 @@
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>작업 디렉터리</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>선택 사항. 프로그램이 현재 디렉터리로 사용하는 폴더입니다. 프로그램 파일이 있는 폴더가 아닙니다. 비워 두면 기본값이 사용됩니다.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>유휴 연결 해제</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0은 사용 안 함</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>세부 정보</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB 연결 시 Bluetooth 연결 해제</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>퀵 차지. 이 컨트롤러가 Bluetooth로 연결된 상태에서 충전 중이라고 보고하면 Bluetooth 링크를 끊어 무선에 전력을 쓰지 않고 충전합니다. 벽 충전기를 포함한 모든 USB 전원이 해당됩니다. 케이블을 꽂은 채 Bluetooth를 다시 연결하면 다음에 케이블을 뽑을 때까지 그대로 둡니다.</value></data>
@@ -3402,6 +3414,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>보내기</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>프레임: {0}개. 보내는 데 약 {1} 걸립니다.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>컨트롤러는 최대 {0}개 프레임만 받으므로 마지막 {1}개는 제외했습니다.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>컨트롤러는 최대 {0}개 프레임만 받으므로 마지막 1개는 제외했습니다.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>컨트롤러를 케이블로 연결하세요. 그림이 들어가고 약 15초 뒤에 컨트롤러가 저절로 다시 시작됩니다.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>컨트롤러를 케이블로 연결하세요. 보내는 동안 PadForge가 컨트롤러를 Xbox 모드로 바꾸고 Windows의 Xbox 드라이버에서 WinUSB로 옮겼다가 둘 다 원래대로 되돌립니다.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge가 컨트롤러를 Xbox 모드로 바꾸고 보내는 동안 WinUSB로 옮긴 다음, Windows의 Xbox 드라이버로 돌려주고 DInput 모드로 되돌립니다. 먼저 다른 Xbox 360 컨트롤러를 모두 분리하세요. 지금 보낼까요?</value></data>
@@ -3560,7 +3573,7 @@
   <data name="Dashboard_Slot" xml:space="preserve"><value>슬롯</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>꺼짐</value></data>
   <data name="Devices_EmptyHint" xml:space="preserve"><value>장치를 선택하면 설정을 보고 입력을 테스트할 수 있습니다.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>사용 가능한 블루투스 어댑터가 없습니다. 블루투스를 켜고 다시 시도하세요. 페어링은 무선 연결에만 필요하며, 케이블로 연결하면 없어도 작동합니다.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>사용 가능한 블루투스 어댑터가 없습니다. 블루투스를 켜고 다시 시도하세요. 페어링은 무선 연결에만 필요합니다. 케이블로 연결하면 없어도 작동합니다.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>페어링이 완료되지 않았습니다. 실패한 단계는 위에 표시됩니다.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation 컨트롤러용 Bluetooth 드라이버를 설치할 수 없습니다.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3를 USB 케이블로 연결한 다음 페어링을 클릭하세요. PadForge가 이 PC 정보를 컨트롤러에 기록하고 등록합니다. 완료되면 컨트롤러를 분리하고 PS 버튼을 눌러 Bluetooth로 연결하세요.</value></data>
@@ -3791,8 +3804,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>복제</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>복제하려면 이 슬롯의 장치를 선택하세요.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>선택한 장치에는 복제할 축, 버튼, 해트가 없습니다.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0}을(를) 1:1 패스스루로 이 슬롯에 복제할까요? 레이아웃이 축 {1}개, 버튼 {2}개, POV {3}개가 되며, 슬롯에서 이 장치의 행이 해당 장치의 입력으로 대체됩니다.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>이 장치의 입력이 Extended 컨트롤러가 수용할 수 있는 수보다 많습니다. 축 {1}개 중 {0}개, 버튼 {3}개 중 {2}개, POV {5}개 중 {4}개를 매핑했습니다. 나머지는 매핑되지 않았습니다.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0}을(를) 1:1 패스스루로 이 슬롯에 복제할까요? 레이아웃은 {1}, {2}, {3} 구성이 되며, 슬롯에서 이 장치의 행이 해당 장치의 입력으로 대체됩니다.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>이 장치의 입력이 Extended 컨트롤러가 수용할 수 있는 수보다 많습니다. {1} 중 {0}, {3} 중 {2}, {5} 중 {4}를 매핑했습니다. 나머지는 매핑되지 않았습니다.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>텍스트 블록</value></data>
   <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>매크로가 실행될 때 텍스트를 키 입력으로 타이핑합니다. 악센트, CJK, 이모지를 포함한 모든 문자를 지원합니다. 줄바꿈은 Enter를 누릅니다. 붙여넣은 탭 문자는 Tab을 누릅니다(이 입력란에서 Tab 키는 다음 필드로 이동합니다). 키 조합에는 계속 "키 누르기"를 사용하세요.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" 입력</value></data>
@@ -4033,9 +4046,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>오름차순</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>내림차순</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>할당 {0}개</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>할당 {0}개</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0}개 발견</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1}개 중 {0}개 표시</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>구성 {0}개</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>구성 {0}개</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>완전한 컨트롤러 지원</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>부분적 컨트롤러 지원</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>게임 검색</value></data>
@@ -4045,7 +4060,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0}개월 전</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0}년 전</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>구독 {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>구독 {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>투표 {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>투표 {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>전체</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>이 게임의 구성이 아직 없습니다</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam 창작마당에 {0}의 커뮤니티 컨트롤러 구성이 없습니다. 첫 번째 제작자가 될 수 있습니다. Steam에서 만들면 여기에 표시됩니다.</value></data>
@@ -4078,6 +4095,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>레이어: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>이 입력에는 장치 독립 트리거가 없습니다</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>게임 내 동작 {0}개, Steam 전용, 게임 측 후크 없음</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>게임 내 동작 {0}개, Steam 전용, 게임 측 후크 없음</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 클라이언트 동작 {0}, 대응 없음</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>컨트롤러 동작 {0} 미지원</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>알 수 없는 바인딩 유형 {0}</value></data>
@@ -4292,6 +4310,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>휠 스크롤 토글</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>발동할 때마다 연속 스크롤을 고정하거나 해제합니다. 고정된 동안 다음 발동 또는 매크로 비활성화까지 간격마다 틱 수를 한 번씩 보냅니다.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>휠 토글({1}ms마다 {0}틱)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>휠 토글({1}ms마다 {0}틱)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>고정 중 펄스</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>고정된 동안 출력을 계속 유지하는 대신 반복 간격에 맞춰 켰다 껐다 합니다.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>축 더하기 (상대)</value></data>
@@ -4313,6 +4332,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>물리 입력이 임계값을 넘어 대상을 움직이면 이번 작동이 끝날 때까지 매크로가 축 기록을 중단합니다.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(물리 입력에 양보)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>탭 목록 순환({0}단계)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>탭 목록 순환({0}단계)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>단계</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>순환</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>키 {0} 토글</value></data>
@@ -4395,6 +4415,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>프로필 전환 오버레이</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>메뉴에 할당된 셀이 없음</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>메뉴 호스트 표면 미지원({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
@@ -4583,6 +4604,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq가 내려받은 .txt를 선택합니다. autoeq.app은 복사할 수 있는 텍스트가 아니라 파일을 제공하므로 보통 이쪽을 사용합니다.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>헤드폰에 맞춘 보정을 적용하려면 autoeq.app을 열어 모델을 고르고 Custom Parametric Eq를 내려받은 다음 파일에서 가져오기를 실행합니다. Graphic Eq 내려받기에는 필터 줄이 없어 가져올 수 없습니다.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2}에서 밴드 {0}개와 프리앰프 {1:0.#} dB를 가져왔습니다.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2}에서 밴드 {0}개와 프리앰프 {1:0.#} dB를 가져왔습니다.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>해당 프로필에 필터 줄이 없습니다. AutoEq의 Graphic Eq 형식은 여기서 읽을 수 없습니다. 대신 Custom Parametric Eq를 내려받으세요. 현재 EQ는 변경되지 않았습니다.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>가져올 것이 없습니다. 현재 EQ는 변경되지 않았습니다.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>파일을 읽을 수 없습니다: {0}</value></data>
@@ -5455,11 +5477,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러에서 실행 중인 키 색상 설정 동작 중 여기서 고른 키를 밝히는 동작을 종료합니다. 고른 키가 없으면 모두 종료합니다.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>모든 키 색상 해제</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>조명 {0}개의 키 색상 해제</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>조명 {0}개의 키 색상 해제</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms 동안</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms 동안</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>조명 {0}개, {1}, 누르는 동안</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>조명 {0}개, {1}, 누르는 동안</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>조명 {0}개, {1}, 해제할 때까지</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>조명 {0}개, {1}, 해제할 때까지</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 페이드 아웃</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 페이드 아웃</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 카운트다운</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>조명 {0}개, {1}, {2} ms에 걸쳐 카운트다운</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>키</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>모든 조명</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>선택한 키가 없어 아무 조명도 켜지지 않습니다.</value></data>

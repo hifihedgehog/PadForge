@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Pagina naar rechts</value></data>
   <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>seconden</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuten (0 = nooit)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -203,7 +204,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide blokkeerde de toegang van PadForge tot een apparaat dat PadForge had verborgen, dus PadForge is gestopt met het verbergen van apparaten.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>In HidHide staat ‘Inverse application cloak’ aan, dus PadForge verbergt geen apparaten.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services-runtime wordt verwijderd…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kon niet starten omdat MIDI niet actief is. De kaart Windows MIDI Services in Instellingen geeft de reden.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kon niet starten omdat MIDI niet actief is. Zie Windows MIDI Services in Instellingen, onder Stuurprogramma's.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} kon niet starten omdat Windows MIDI Services de poort niet heeft gemaakt.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} heeft geen uitvoerpoort. Kies er een op de pagina van het slot.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>De uitvoerpoort “{1}” van {0} is niet verbonden. Het slot start zodra de poort terug is.</value></data>
@@ -378,6 +379,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>De G-key SDK startte niet. Meestal draait Logitech Gaming Software niet.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonden, nog geen toets gezien. Sleep in Logitech Gaming Software de opdracht G-key naar elke toets in het PadForge-profiel en maak dat profiel permanent. Een G600- of G300-muis mag bovendien niet in de onboardmodus staan.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Actief, {0} toetsgebeurtenissen</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Actief, {0} toetsgebeurtenis</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analoge toetsenborden lezen</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leest hoe ver elke toets is ingedrukt op analoge toetsenborden van Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA en andere fabrikanten, elk als eigen apparaatregel. De documentatie noemt elk ondersteund model. Razer-toetsenborden vereisen dat Razer Synapse draait. De meeste andere worden uitgelezen via het kanaal dat hun eigen configuratiesoftware gebruikt, dus sluit die software zolang dit aan staat.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Geen ondersteund analoog toetsenbord gevonden.</value></data>
@@ -583,7 +585,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Op updates controleren</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderne fork van x360ce, opnieuw gebouwd met SDL3, WPF en .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen. Mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge laat elke invoer zich gedragen als elke controller. Gamepads, joysticks, stuurwielen, toetsenborden, muizen, touchscreens, MIDI-apparaten en telefoons sturen virtuele controllers aan die games als echte hardware behandelen: Xbox-, PlayStation-, Nintendo- en Steam-pads, SInput-pads, VR-handcontrollers, MIDI-uitvoer, een toetsenbord en muis, of een eigen apparaat zoals een flightstick of een stuurwiel. HIDMaestro maakt de virtuele gamepads, SDL3 leest controllers, Windows Raw Input leest toetsenborden en muizen, HidHide verbergt een apparaat voor games en Windows MIDI Services verzorgt MIDI-invoer en -uitvoer.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Overzicht</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Credits zoeken</value></data>
@@ -730,6 +732,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows beweegt de aanwijzer niet meer met {0}. Als je dat niet bedoelde, doe dan niets en het komt terug.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows beweegt de aanwijzer niet meer met {0}. Als je dat niet bedoelde, doe dan niets en het komt terug.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Terug over {0} s</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Terug over {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behouden</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Teruggeven</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppel eerst de andere toetsenborden van dit model los. Windows zet alle aangesloten toetsenborden van dit model tegelijk over op het PadForge-stuurprogramma en typt daarna met geen ervan meer.</value></data>
@@ -909,11 +912,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knop die de accumulator omlaag stuurt zolang ingedrukt</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Omlaag: knop die de accumulator omlaag stuurt zolang ingedrukt.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Snelheid</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Veegsnelheid in eenheden per seconde. 0.5 = volledig bereik in 2 s; 2 = volledig bereik in 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Veegsnelheid in eenheden per seconde. 0.5 = volledig bereik in 2 s. 2 = volledig bereik in 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Vasthouden</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Als aangevinkt, behoudt de accumulator zijn waarde na loslaten (cruise control). Als uitgevinkt, springt hij terug naar Min bij loslaten.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ondergrens van de accumulator. -1 = volledig negatief voor bipolaire asdoelen; 0 = unipolair.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ondergrens van de accumulator. -1 = volledig negatief voor bipolaire asdoelen. 0 = unipolair.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Bovengrens van de accumulator. 1 = volledig positief.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Verloop</value></data>
@@ -1207,6 +1210,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stelt de lightbar-modus van het toegewezen slot in op een specifieke waarde. Blijft net als een bewerking op de kaart Verlichting bestaan totdat een andere actie of de gebruiker hem wijzigt.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Lightbar-modi doorlopen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} lightbar-modi doorlopen</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} lightbar-modus doorlopen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de lightbar-modus van het slot door de hieronder geselecteerde modi. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en wordt gereset bij herstart van de app.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Houden</value></data>
@@ -2687,6 +2691,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Alle opnames vastgelegd. Geef het gebaar een naam en klik op Opslaan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Opname {0} van {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} opnames</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} opname</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Op te nemen opnames</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Op te nemen samples</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 is standaard. Meer opnames geven een zekerdere match en minder is sneller op te nemen.</value></data>
@@ -2871,6 +2876,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistool buiten beeld</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Aanwijzermodi doorlopen</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} aanwijzermodi doorlopen</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} aanwijzermodus doorlopen</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de Wii-aanwijzermodus door de hieronder aangevinkte modi voor elke IR-remote op het slot. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en reset bij herstart.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Kies welke aanwijzermodi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3291,7 +3297,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Laat de knop los.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Stap {0} van {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Geen verandering gezien. Kies Opnieuw beginnen en houd de knop ingedrukt wanneer erom wordt gevraagd.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} fabrikantrapporten en {1} gebeurtenisklassen bekeken. Tijdens het indrukken: {2} rapporten, {3} gebeurtenissen.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Fabrikantrapporten bekeken: {0}. Gebeurtenisklassen bekeken: {1}. Rapporten tijdens het indrukken: {2}. Gebeurtenissen tijdens het indrukken: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Knop vastgelegd. Voer een naam in en klik op Registreren.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Bron</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Naam</value></data>
@@ -3327,12 +3333,17 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Alles vergeten</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Alle geleerde namen voor dit model verwijderen.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} namen geëxporteerd.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0} naam geëxporteerd.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} namen geïmporteerd.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0} naam geïmporteerd.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>{0} namen geïmporteerd voor een ander model, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>{0} naam geïmporteerd voor een ander model, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Dat bestand bevat geen namen van toetsleds.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importeren…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} knoppen geëxporteerd.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} knop geëxporteerd.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} knoppen geïmporteerd.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} knop geïmporteerd.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld-pc-knoppen</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming-pc's en laptops hebben knoppen die het besturingssysteem nooit als controller toont: achterste paddles, menutoetsen, wieltjes, sneltoetsen van de fabrikant. Schakel dit in om ze eenmalig te leren door erop te drukken en ze daarna als elke andere knop toe te wijzen. Voegt ook de eigen gyroscoop van de machine toe als bewegingsapparaat.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Handheld-pc-knoppen inschakelen</value></data>
@@ -3358,6 +3369,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>Werkmap</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>Optioneel. De map die het programma als huidige map gebruikt. Niet de map waarin het programmabestand staat. Laat leeg voor de standaardwaarde.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Loskoppelen bij inactiviteit</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 betekent nooit</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Details</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth loskoppelen bij aansluiten via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wanneer deze controller meldt dat hij oplaadt terwijl hij via Bluetooth is verbonden, wordt de Bluetooth-verbinding verbroken zodat hij oplaadt zonder de radio te voeden. Elke USB-voedingsbron telt, ook wandladers. Zet je Bluetooth weer aan terwijl de kabel erin zit, dan blijft het met rust tot de volgende keer dat je de kabel lostrekt.</value></data>
@@ -3422,6 +3434,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Versturen</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Frames: {0}. Versturen duurt ongeveer {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>De controller neemt maximaal {0} frames aan, dus de laatste {1} zijn weggelaten.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>De controller neemt maximaal {0} frames aan, dus de laatste is weggelaten.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sluit de controller met een kabel aan. Hij herstart zichzelf ongeveer 15 seconden nadat de afbeelding binnen is.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sluit de controller met een kabel aan. Voor het versturen zet PadForge hem in Xbox-modus en verplaatst hem van het Xbox-stuurprogramma van Windows naar WinUSB, en zet daarna beide terug.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge zet de controller in Xbox-modus, verplaatst hem voor het versturen naar WinUSB, geeft hem daarna terug aan het Xbox-stuurprogramma van Windows en zet hem terug in DInput-modus. Koppel eerst alle andere Xbox 360-controllers los. Nu versturen?</value></data>
@@ -3811,8 +3824,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonen</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecteer een apparaat op dit slot om te klonen.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen assen, knoppen of hoedschakelaars om te klonen.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} op dit slot klonen als een 1:1-passthrough? De indeling wordt {1} assen, {2} knoppen en {3} POVs, en de rijen van dit apparaat op het slot worden vervangen door zijn eigen invoer.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dit apparaat heeft meer invoer dan een Extended-controller kan bevatten. {0} van {1} assen, {2} van {3} knoppen en {4} van {5} POVs toegewezen. De rest bleef ongemapt.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} op dit slot klonen als een 1:1-passthrough? De indeling wordt {1}, {2} en {3}, en de rijen van dit apparaat op het slot worden vervangen door zijn eigen invoer.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dit apparaat heeft meer invoer dan een Extended-controller kan bevatten. {0} van {1}, {2} van {3} en {4} van {5} toegewezen. De rest bleef ongemapt.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Tekstblok</value></data>
   <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Typt de tekst als toetsaanslagen wanneer de macro draait. Alle tekens werken, inclusief accenten, CJK en emoji. Regeleinden drukken op Enter. Geplakte tabtekens drukken op Tab (de Tab-toets zelf gaat hier naar het volgende veld). Gebruik "Toets indrukken" voor toetscombinaties.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" typen</value></data>
@@ -4053,9 +4066,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Oplopend</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Aflopend</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} toewijzingen</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} toewijzing</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} gevonden</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} van {1} weergegeven</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuraties</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} configuratie</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>volledige controllerondersteuning</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>gedeeltelijke controllerondersteuning</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Spellen zoeken</value></data>
@@ -4065,7 +4080,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mnd geleden</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} jr geleden</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnees</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} abonnee</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} stemmen</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} stem</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Alle</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Nog geen configuraties voor dit spel</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>De Steam Workshop heeft geen community-controllerconfiguraties voor {0}. U kunt de eerste zijn: maak er een in Steam, en hij verschijnt hier.</value></data>
@@ -4098,6 +4115,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen apparaatvrije trigger voor deze invoer</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game acties, alleen Steam, geen koppeling aan spelzijde</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} in-game actie, alleen Steam, geen koppeling aan spelzijde</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-clientactie {0}, geen equivalent</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controlleractie {0} niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekend bindingstype {0}</value></data>
@@ -4171,7 +4189,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Het deel van het scherm dat het touchpad bereikt</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stelt de Touchpad Pointer X/Y-bronnen in, die de cursor naar de vingerpositie op het pad brengen (koppel ze aan muis X/Y op een toetsenbord- / muis-controller). Grootte 1.00 met centrum 0.50 beeldt het pad af op het hele scherm. Verklein de grootte om de cursor tot een deel te beperken en verplaats het centrum om dat deel te kiezen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Gebiedsbreedte</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breedte van het schermgebied waarop dit pad wordt afgebeeld, als fractie van de schermbreedte. 1.00 beslaat de volle breedte; 0.50 beperkt de cursor tot de helft.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breedte van het schermgebied waarop dit pad wordt afgebeeld, als fractie van de schermbreedte. 1.00 beslaat de volle breedte. 0.50 beperkt de cursor tot de helft.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Gebiedshoogte</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Hoogte van het schermgebied, als fractie van de schermhoogte.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Gebiedscentrum X</value></data>
@@ -4180,7 +4198,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterY_Tooltip" xml:space="preserve"><value>Verticale plaatsing. 0.00 is de bovenrand, 0.50 het midden, 1.00 de onderrand.</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Veeghaptiek</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tikjes terwijl je vinger beweegt</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Laat de haptiek van de controller pulseren terwijl je vinger over dit touchpad beweegt, zoals de trackpad-tikken van Steam Input. Steam Controllers en de Steam Deck tikken met de actuator onder het pad; DualSense en DualShock 4 pulseren de trilmotoren.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Laat de haptiek van de controller pulseren terwijl je vinger over dit touchpad beweegt, zoals de trackpad-tikken van Steam Input. Steam Controllers en de Steam Deck tikken met de actuator onder het pad. DualSense en DualShock 4 pulseren de trilmotoren.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Veeghaptiek inschakelen</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Geeft een korte haptische tik telkens wanneer de vinger een ingestelde afstand op dit pad aflegt. Een vinger neerzetten of op het pad klikken tikt nooit. Standaard uit.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit</value></data>
@@ -4312,6 +4330,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Wielscrollen omschakelen</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Elke activering vergrendelt of ontgrendelt doorlopend scrollen. Zolang vergrendeld worden de klikken eenmaal per interval verstuurd, tot de volgende activering of tot de macro wordt uitgeschakeld.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Wiel omschakelen ({0} klikken elke {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Wiel omschakelen ({0} klik elke {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulseren zolang vergrendeld</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Zolang vergrendeld schakelt de uitvoer aan en uit op het herhaalinterval in plaats van vast te houden.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>As optellen (relatief)</value></data>
@@ -4333,6 +4352,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Zodra fysieke beweging het doel voorbij de drempel brengt, schrijft de macro de as niet meer voor de rest van de activering.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(wijkt voor fysieke invoer)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Taplijst doorlopen ({0} stappen)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Taplijst doorlopen ({0} stap)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Stappen</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Herhalen</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toetsen {0} schakelen</value></data>
@@ -4415,6 +4435,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profielwissel-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cellen)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cel)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
@@ -4603,6 +4624,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Kies de .txt die AutoEq heeft gedownload. Dit is de juiste optie: autoeq.app levert een bestand in plaats van tekst die u kunt kopiëren.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Voor een correctie die bij uw koptelefoon past: open autoeq.app, kies uw model, download Custom Parametric Eq en gebruik daarna Uit bestand importeren. De download Graphic Eq bevat geen filterregels en kan niet worden geïmporteerd.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} banden met {1:0.#} dB voorversterking geïmporteerd uit {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} band met {1:0.#} dB voorversterking geïmporteerd uit {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Geen filterregels in dat profiel. De Graphic Eq-export van AutoEq is hier niet leesbaar. Download in plaats daarvan Custom Parametric Eq. De huidige EQ is ongewijzigd.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Niets te importeren. De huidige EQ is ongewijzigd.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Kan dat bestand niet lezen: {0}</value></data>
@@ -4618,7 +4640,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Plafond herstellen</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Sleep een punt om de frequentie en versterking te verplaatsen. Rol met het wiel over een punt om het breder of smaller te maken.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Uitvoerpad</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon. Koptelefoonaansluiting volgen schakelt naar de koptelefoon zodra er iets wordt aangesloten en terug naar de luidspreker bij loskoppelen; zonder aansluitingsstatus gedraagt het zich als Standaard.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon. Koptelefoonaansluiting volgen schakelt naar de koptelefoon zodra er iets wordt aangesloten en terug naar de luidspreker bij loskoppelen. Zonder aansluitingsstatus gedraagt het zich als Standaard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standaard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Koptelefoon (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Koptelefoon (mono)</value></data>
@@ -5475,11 +5497,17 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Beëindigt de acties Toetskleuren instellen die op deze virtuele controller draaien en een van de hier gekozen toetsen verlichten, of alle als er geen is gekozen.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Alle toetskleuren wissen</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Toetskleuren wissen op {0} leds</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Toetskleuren wissen op {0} led</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} leds in {1} gedurende {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} led in {1} gedurende {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} leds in {1} zolang ingedrukt</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} led in {1} zolang ingedrukt</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} leds in {1} tot gewist</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} led in {1} tot gewist</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} leds in {1}, vervagend gedurende {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} led in {1}, vervagend gedurende {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} leds in {1}, aftellend gedurende {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} led in {1}, aftellend gedurende {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Toetsen</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Alle leds</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Geen toetsen gekozen, dus de actie verlicht niets.</value></data>

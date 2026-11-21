@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Síða til hægri</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ekkert</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>mín</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>s</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>mín (0 = aldrei)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide lokaði á aðgang PadForge að tæki sem PadForge hafði falið, svo PadForge hætti að fela tæki.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Kveikt er á „Inverse application cloak“ í HidHide, svo PadForge felur engin tæki.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Fjarlægir keyrsluumhverfi Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} gat ekki ræst því MIDI er ekki í gangi. Windows MIDI Services-spjaldið í stillingum segir hvers vegna.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} gat ekki ræst því MIDI er ekki í gangi. Sjá Windows MIDI Services í Stillingum, undir Reklar.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} gat ekki ræst því Windows MIDI Services bjó ekki til gáttina.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} hefur enga úttaksgátt. Veldu eina á síðunni fyrir {0}.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Úttaksgáttin „{1}“ fyrir {0} er ekki tengd. Raufin ræsist þegar gáttin kemur aftur.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK neitaði að ræsa. Yfirleitt er það vegna þess að Logitech Gaming Software er ekki í gangi.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Tengt, enginn lykill hefur sést enn. Í Logitech Gaming Software skaltu draga skipunina „G-key“ á hvern lykil í PadForge-sniðinu og gera sniðið varanlegt. Einnig þarf að taka G600- eða G300-mús úr ham innbyggðs minnis.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Í gangi, {0} lyklaatburðir</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Í gangi, {0} lyklaatburður</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lesa hliðræn lyklaborð</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Les hversu langt hverjum lykli er ýtt niður á hliðrænum lyklaborðum frá Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA og öðrum framleiðendum, hvert sem sína eigin línu í tækjalistanum. Hjálparskjölin telja upp allar studdar gerðir. Razer-lyklaborð þurfa að hafa Razer Synapse í gangi. Flest hinna eru lesin um sömu rás og eigið stillingaforrit þeirra notar, svo lokaðu stillingaforritinu á meðan kveikt er á þessu.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Ekkert stutt hliðrænt lyklaborð fannst.</value></data>
@@ -814,7 +816,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Leita að uppfærslum</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Nútímalegt afsprengi x360ce, endursmíðað með SDL3, WPF og .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge breytir hvaða inntakstæki sem er í hvaða sýndarstýringu sem er. Leikjastýringum, stýripinnum, lyklaborðum, músum og snertiskjám er varpað á sýndarleikjastýringar (Xbox, PlayStation, flugstýripinna, stýri, leikjastýringar frá öðrum framleiðendum) eða á lyklaborðs- og músarúttak / MIDI-úttak sem leikir líta á sem raunverulegan vélbúnað. Knúið af HIDMaestro og Windows MIDI Services. Það notar SDL3 fyrir inntak leikjastýringa, Windows Raw Input fyrir lyklaborð og mús, HidHide til að fela tæki fyrir einstökum leikjum og býður upp á nútímalegt Fluent Design-viðmót fyrir varpanir, dauð svæði, næmiferla og kraftsvörun.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge lætur hvaða inntak sem er líta út eins og hvaða stýring sem er. Leikjastýringar, stýripinnar, stýri, lyklaborð, mýs, snertiskjáir, MIDI-tæki og símar stjórna sýndarstýringum sem leikir líta á sem raunverulegan vélbúnað: Xbox-, PlayStation-, Nintendo- og Steam-stýringar, SInput-stýringar, VR-handstýringar, MIDI-úttak, lyklaborð og mús eða sérsniðið tæki á borð við flugstýripinna eða stýri. HIDMaestro býr til sýndarleikjastýringarnar, SDL3 les leikjastýringar, Windows Raw Input les lyklaborð og mýs, HidHide felur tæki fyrir leikjum og Windows MIDI Services flytur MIDI inn og út.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Yfirlit</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Smíðað með</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Leita í þökkum</value></data>
@@ -942,6 +944,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Töf milli stafa</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekúndur milli innsleginna stafa, allt að 1000. 0 slær allan textann inn í einu.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Aftenging við aðgerðaleysi</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 þýðir aldrei</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Upplýsingar</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Aftengja Bluetooth þegar tengt er með USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hraðhleðsla. Þegar þessi leikjastýring tilkynnir að hún sé í hleðslu á meðan hún er tengd með Bluetooth er Bluetooth-tengingin rofin svo hún hlaðist án þess að halda þráðlausa sendinum gangandi. Allir USB-aflgjafar teljast með, þar á meðal hleðslutæki í vegginnstungu. Ef þú kveikir aftur á Bluetooth á meðan snúran er enn í sambandi er hún látin í friði þar til hún er næst tekin úr sambandi.</value></data>
@@ -1006,6 +1009,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Senda</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Rammar: {0}. Sendingin tekur um {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Leikjastýringin tekur í mesta lagi {0} ramma. Römmum sem sleppt var aftast: {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Leikjastýringin tekur í mesta lagi {0} ramma, svo síðasta rammanum var sleppt.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Tengdu leikjastýringuna með snúru. Hún endurræsir sig sjálf um 15 sekúndum eftir að myndin er komin inn.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Tengdu leikjastýringuna með snúru. Fyrir sendinguna skiptir PadForge henni yfir í Xbox-ham og flytur hana úr Xbox-rekli Windows yfir í WinUSB, og setur síðan hvort tveggja aftur til baka.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge skiptir leikjastýringunni yfir í Xbox-ham, flytur hana yfir í WinUSB fyrir sendinguna, skilar henni síðan til Xbox-rekils Windows og skiptir henni aftur í DInput-ham. Taktu fyrst úr sambandi allar aðrar leikjastýringar af gerðinni Xbox 360. Senda núna?</value></data>
@@ -1198,6 +1202,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows færir ekki lengur bendilinn með {0}. Ef þú ætlaðir þér það ekki skaltu ekkert gera og hún kemur aftur.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows færir ekki lengur bendilinn með {0}. Ef þú ætlaðir þér það ekki skaltu ekkert gera og hann kemur aftur.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Skilað eftir {0} sekúndur</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Skilað eftir {0} sekúndu</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Halda</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Skila</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Taktu fyrst hin lyklaborðin af þessari gerð úr sambandi. Windows færir öll tengd lyklaborð yfir á rekil PadForge í einu og hættir að nota hvert þeirra til innsláttar.</value></data>
@@ -1612,8 +1617,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klóna</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Veldu tæki í þessari rauf til að klóna.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Valda tækið hefur enga ása, hnappa eða hattrofa til að klóna.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klóna {0} í þessa rauf sem 1:1-gegnumstreymi? Uppsetningin verður {1} ásar, {2} hnappar og {3} POV-rofar, og línum þessa tækis í raufinni er skipt út fyrir eigin inntök þess.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Þetta tæki hefur fleiri inntök en útvíkkuð leikjastýring getur borið. Varpað var {0} af {1} ásum, {2} af {3} hnöppum og {4} af {5} POV-rofum. Afgangurinn var látinn óvarpaður.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klóna {0} í þessa rauf sem 1:1-gegnumstreymi? Uppsetningin verður {1}, {2} og {3}, og línum þessa tækis í raufinni er skipt út fyrir eigin inntök þess.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Þetta tæki hefur fleiri inntök en útvíkkuð leikjastýring getur borið. Varpað var {0} af {1}, {2} af {3} og {4} af {5}. Afgangurinn var látinn óvarpaður.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Forstillingar leikjastýringa</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Bættu við forstillingu fyrir leikjastýringu sem PadForge fylgir ekki með, úr skrá eða frá stýringunni sjálfri.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Innflutt</value></data>
@@ -1785,11 +1790,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Hnappur sem lækkar safngildið á meðan honum er haldið inni</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Niður: hnappur sem lækkar safngildið á meðan honum er haldið inni.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hraði</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Breytingarhraði í einingum á sekúndu. 0.5 = fullt svið á 2 s; 2 = fullt svið á 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Breytingarhraði í einingum á sekúndu. 0.5 = fullt svið á 2 s. 2 = fullt svið á 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Heldur gildi</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Þegar hakað er við heldur safngildið gildi sínu eftir að sleppt er (eins og hraðastillir). Þegar ekki er hakað við fer það aftur í lágmark þegar sleppt er.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Lágm.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Neðri mörk safngildisins. -1 = fullt neikvætt fyrir tvískauta ása; 0 = einskauta.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Neðri mörk safngildisins. -1 = fullt neikvætt fyrir tvískauta ása. 0 = einskauta.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Hám.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Efri mörk safngildisins. 1 = fullt jákvætt.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampur</value></data>
@@ -2083,6 +2088,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stillir ham ljósrandar úthlutuðu raufarinnar á tiltekið gildi. Helst eins og breyting á spjaldinu „Lýsing“ þar til önnur aðgerð eða notandinn breytir honum.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Fara í hring um hami ljósrandar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Fara í hring um {0} hami ljósrandar</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Fara í hring um {0} ham ljósrandar</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Færir ham ljósrandar raufarinnar áfram í gegnum hamina sem valdir eru hér fyrir neðan. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham. Staðan í hringnum er fyrir hverja aðgerð og núllstillist þegar forritið er endurræst.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hald</value></data>
@@ -2361,7 +2367,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Sá hluti skjásins sem flöturinn nær yfir</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stillir uppspretturnar „Bendill X/Y“ snertiflatar, sem færa bendilinn samstundis á staðsetningu fingursins á fletinum (varpaðu þeim á X/Y músar á sýndarstýringu af gerðinni lyklaborð / mús). Stærð 1.00 með miðju 0.50 varpar fletinum á allan skjáinn. Minnkaðu stærðina til að halda bendlinum á hluta skjásins og færðu miðjuna til að staðsetja hann.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Breidd svæðis</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breidd skjásvæðisins sem þessum fleti er varpað á, sem hlutfall af breidd skjásins. 1.00 nær yfir alla breiddina; 0.50 heldur bendlinum á hálfum skjánum.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breidd skjásvæðisins sem þessum fleti er varpað á, sem hlutfall af breidd skjásins. 1.00 nær yfir alla breiddina. 0.50 heldur bendlinum á hálfum skjánum.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Hæð svæðis</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Hæð skjásvæðisins, sem hlutfall af hæð skjásins.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Miðja svæðis X</value></data>
@@ -2372,7 +2378,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Snertisvörun við strok</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Smellir þegar fingurinn ferðast</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sendir púlsa í snertisvörun leikjastýringarinnar þegar fingurinn ferðast yfir þennan snertiflöt, eins og smellir snertiflatar í Steam Input. Steam Controller og Steam Deck láta búnaðinn undir fletinum smella; DualSense og DualShock 4 láta titringsmótorana púlsa.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Sendir púlsa í snertisvörun leikjastýringarinnar þegar fingurinn ferðast yfir þennan snertiflöt, eins og smellir snertiflatar í Steam Input. Steam Controller og Steam Deck láta búnaðinn undir fletinum smella. DualSense og DualShock 4 láta titringsmótorana púlsa.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Virkja snertisvörun við strok</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Sendir stuttan snertisvörunarsmell í hvert sinn sem fingurinn færist ákveðna vegalengd á þessum fleti. Þegar fingur lendir eða smellt er á flötinn kemur aldrei smellur. Sjálfgefið slökkt.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Styrkur púls</value></data>
@@ -2480,6 +2486,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Öll sýni gripin. Gefðu bendingunni heiti og smelltu á „Vista“.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sýni {0} af {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} sýni</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} sýni</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Fjöldi sýna</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Sýni til að taka upp</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 er staðallinn. Fleiri sýni gefa öruggari samsvörun og færri eru fljótlegri í upptöku.</value></data>
@@ -3585,6 +3592,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Byssa utan skjás</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Fara í hring um hami bendils</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Fara í hring um {0} hami bendils</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Fara í hring um {0} ham bendils</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Færir ham Wii-bendilsins áfram í gegnum hamina sem valdir eru hér fyrir neðan, fyrir allar fjarstýringar með IR í raufinni. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham. Staðan í hringnum er fyrir hverja aðgerð og núllstillist þegar forritið er endurræst.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Veldu hvaða hami bendils fjölvinn á að fara í hring um. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Hljóð</value></data>
@@ -3916,7 +3924,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Engin DualShock 3 fannst á USB. Tengdu hana með USB-snúru og reyndu aftur.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows vill ekki setja upp USB-rekil PadForge fyrir DualShock 3, því undirritunarskilríki hans er ekki treyst á þessari tölvu.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Ekki tókst að setja upp Bluetooth-rekilinn fyrir PlayStation-leikjastýringar.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Enginn Bluetooth-sendir er tiltækur. Kveiktu á Bluetooth og reyndu aftur. Pörun þarf aðeins fyrir þráðlausa spilun; leikjastýring tengd með snúru virkar án hennar.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Enginn Bluetooth-sendir er tiltækur. Kveiktu á Bluetooth og reyndu aftur. Pörun þarf aðeins fyrir þráðlausa spilun. Leikjastýring tengd með snúru virkar án hennar.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pörun lauk ekki. Skrefið sem mistókst er sýnt hér fyrir ofan.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Loka</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-merki</value></data>
@@ -4007,7 +4015,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Slepptu hnappnum.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Skref {0} af {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Engin breyting sást. Veldu Byrja upp á nýtt og ýttu svo á hnappinn og haltu honum inni þegar beðið er um það.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Fylgst var með {0} skýrslum framleiðanda og {1} atburðaflokkum. Á meðan ýtt var: {2} skýrslur, {3} atburðir.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Skýrslur framleiðanda sem fylgst var með: {0}. Atburðaflokkar sem fylgst var með: {1}. Skýrslur meðan ýtt var: {2}. Atburðir meðan ýtt var: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Hnappur gripinn. Sláðu inn heiti og smelltu á „Skrá“.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Uppspretta</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Heiti</value></data>
@@ -4043,12 +4051,17 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Gleyma öllu</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Fjarlægja öll nöfn sem lærð voru fyrir þessa gerð.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Flutti út {0} nöfn.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Flutti út {0} nafn.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Flutti inn {0} nöfn.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Flutti inn {0} nafn.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Flutti inn {0} nöfn fyrir aðra gerð, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Flutti inn {0} nafn fyrir aðra gerð, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Þessi skrá geymir engin nöfn lyklaljósa.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Flytja inn…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Hnappar fluttir út: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Hnappur fluttur út: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Hnappar fluttir inn: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Hnappur fluttur inn: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Hnappar handtölvu</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Leikjahandtölvur og fartölvur hafa hnappa sem stýrikerfið sýnir aldrei sem leikjastýringu: bakspaða, valmyndarlykla, hjól, flýtilykla framleiðanda. Kveiktu á þessu til að læra þá einu sinni með því að ýta á þá og varpa þeim svo eins og hverjum öðrum hnappi. Bætir einnig við eigin snúningsskynjara vélarinnar sem hreyfitæki.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Virkja hnappa handtölvu</value></data>
@@ -4212,9 +4225,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Hækkandi</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Lækkandi</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Bindingar: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Binding: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Fundust: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Sýnir {0} af {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Stillingar: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Stilling: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>fullur stuðningur við leikjastýringar</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>takmarkaður stuðningur við leikjastýringar</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Leita að leikjum</value></data>
@@ -4224,7 +4239,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>fyrir {0} mán.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>fyrir {0} ár.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>áskrifendur: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>áskrifandi: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>atkvæði: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>atkvæði: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Allt</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Engar stillingar fyrir þennan leik enn</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop hefur engar stillingar frá samfélaginu fyrir {0}. Þú getur riðið á vaðið: búðu til stillingu í Steam og hún birtist hér.</value></data>
@@ -4257,6 +4274,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lag: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>enginn tækjaóháður ræsir fyrir þetta inntak</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} aðgerðir í leik, aðeins í Steam, enginn krókur leikjamegin</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} aðgerð í leik, aðeins í Steam, enginn krókur leikjamegin</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Aðgerð Steam-forritsins {0}, engin samsvörun</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>aðgerð leikjastýringar {0} ekki studd</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>óþekkt gerð bindingar {0}</value></data>
@@ -4331,10 +4349,10 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Hak í skrunhjóli</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sendir eitt stakt hak í skrunhjóli í hverri keyrslu. Gildið er fjöldi haka með formerki (jákvætt skrunar upp eða til hægri).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Hnika bendli</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Færir músarbendilinn um fastan fjölda díla í hverri keyrslu. Jákvætt X færir til hægri, jákvætt Y færir niður; neikvæð gildi eru leyfð.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Færir músarbendilinn um fastan fjölda díla í hverri keyrslu. Jákvætt X færir til hægri, jákvætt Y færir niður. Neikvæð gildi eru leyfð.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Hnika bendli um ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Fara í hring um ýtingalista</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Hver keyrsla framkvæmir næstu ýtingu í skrefalistanum og færist áfram. Þegar „Fara hringinn“ er virkt byrjar listinn aftur eftir síðasta skrefið; annars hættir keyrslan við endann.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Hver keyrsla framkvæmir næstu ýtingu í skrefalistanum og færist áfram. Þegar „Fara hringinn“ er virkt byrjar listinn aftur eftir síðasta skrefið. Annars hættir keyrslan við endann.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Víxla músarhnappi</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Hver keyrsla læsir eða losar músarhnappinn. Læstur hnappur helst niðri fram að næstu keyrslu eða þar til fjölvinn er gerður óvirkur.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Víxla mús {0}</value></data>
@@ -4347,6 +4365,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Víxla skruni með hjóli</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Hver keyrsla læsir eða losar samfellt skrun. Á meðan læst er sendir þetta fjölda haka einu sinni á hverju bili fram að næstu keyrslu eða þar til fjölvinn er gerður óvirkur.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Víxla skruni með hjóli ({0} hök á {1} ms fresti)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Víxla skruni með hjóli ({0} hak á {1} ms fresti)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Púlsa á meðan læst er</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Á meðan læst er, kveikja og slökkva á úttakinu með endurtekningarbilinu í stað þess að halda því stöðugu.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Bæta við ás (hlutfallslegt)</value></data>
@@ -4368,6 +4387,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Þegar raunveruleg hreyfing ýtir markinu yfir þröskuldinn hættir fjölvinn að skrifa á ásinn það sem eftir er virkjunarinnar.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(víkur fyrir raunverulegu)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Fara í hring um ýtingalista (skref: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Fara í hring um ýtingalista (skref: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Skref</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Fara hringinn</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Víxla lyklum {0}</value></data>
@@ -4451,6 +4471,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Yfirlag við sniðaskipti</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Sýna hringinn eða hnitanetið á skjánum á meðan hring- eða snertivalmynd er virk. Valmyndir virkjast samt þótt slökkt sé á yfirlaginu.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>valmynd á skjá búin til ({0} bundnir reitir)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>valmynd á skjá búin til ({0} bundinn reitur)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>valmyndin hefur enga bundna reiti</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hýsilflötur valmyndar ekki studdur ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>tákn valmyndarreits ekki þekkt ({0}), svo reiturinn heldur textamerkingu sinni</value></data>
@@ -4639,6 +4660,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Veldu .txt-skrána sem AutoEq sótti. Þetta er leiðin sem á að nota: autoeq.app afhendir skrá frekar en texta sem hægt er að afrita.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Fyrir leiðréttingu sem passar við heyrnartólin þín: opnaðu autoeq.app, veldu gerðina þína, veldu „Custom Parametric Eq“ og sæktu hana, og notaðu svo „Flytja inn úr skrá“. „Graphic Eq“-niðurhalið hefur engar síulínur og verður ekki flutt inn.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Flutti inn {0} tíðnisvið með {1:0.#} dB formögnun úr {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Flutti inn {0} tíðnisvið með {1:0.#} dB formögnun úr {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Engar síulínur í þessu sniði. Ekki er hægt að lesa „Graphic Eq“-útflutning AutoEq hér. Sæktu „Custom Parametric Eq“ í staðinn. Núverandi tónjafnari er óbreyttur.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Ekkert til að flytja inn. Núverandi tónjafnari er óbreyttur.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Ekki tókst að lesa skrána: {0}</value></data>
@@ -4654,7 +4676,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Endurstilla þak</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Dragðu punkt til að breyta tíðni hans og mögnun. Snúðu skrunhjólinu yfir punkti til að breikka hann eða þrengja.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Úttaksleið</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hvar leikjastýringin spilar hljóð sitt. „Sjálfgefið“ heldur eigin beiningu fastbúnaðarins og spilar hljóð PadForge í hátalaranum. „Heyrnartól + hátalari“ spilar mónó heyrnartólamegin, sem eru takmörk fastbúnaðarins. Um Bluetooth spilar þessi hamur aðeins í heyrnartólunum. „Fylgja heyrnartólatengi“ skiptir yfir í heyrnartól þegar eitthvað er tengt við leikjastýringuna og aftur í hátalarann þegar það er tekið úr sambandi; ef engin mæling fæst frá tenginu hegðar það sér eins og „Sjálfgefið“.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Hvar leikjastýringin spilar hljóð sitt. „Sjálfgefið“ heldur eigin beiningu fastbúnaðarins og spilar hljóð PadForge í hátalaranum. „Heyrnartól + hátalari“ spilar mónó heyrnartólamegin, sem eru takmörk fastbúnaðarins. Um Bluetooth spilar þessi hamur aðeins í heyrnartólunum. „Fylgja heyrnartólatengi“ skiptir yfir í heyrnartól þegar eitthvað er tengt við leikjastýringuna og aftur í hátalarann þegar það er tekið úr sambandi. Ef engin mæling fæst frá tenginu hegðar það sér eins og „Sjálfgefið“.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Sjálfgefið</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Heyrnartól (steríó)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Heyrnartól (mónó)</value></data>
@@ -5500,11 +5522,17 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Lýkur þeim Stilla liti takka aðgerðum á þessum sýndarstýripinna sem lýsa einhvern af völdum tökkum hér, eða öllum þegar enginn er valinn.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Hreinsa alla liti takka</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Hreinsa liti takka á {0} ljósum</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Hreinsa liti takka á {0} ljósi</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} ljós í lit {1} í {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} ljós í lit {1} í {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} ljós í lit {1} meðan haldið er inni</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} ljós í lit {1} meðan haldið er inni</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} ljós í lit {1} þar til hreinsað</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} ljós í lit {1} þar til hreinsað</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} ljós í lit {1}, dofna á {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} ljós í lit {1}, dofna á {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} ljós í lit {1}, niðurtalning á {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} ljós í lit {1}, niðurtalning á {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Takkar</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Öll ljós</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Enginn takki valinn, því lýsir aðgerðin engu.</value></data>

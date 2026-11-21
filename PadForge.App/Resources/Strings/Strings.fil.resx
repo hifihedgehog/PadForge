@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>I-clear</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuto (0 = hindi kailanman)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>Hinarang ng HidHide ang PadForge sa isang device na itinago nito, kaya tumigil ang PadForge sa pagtatago ng mga device.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Naka-on ang Inverse application cloak ng HidHide, kaya walang itinatago na device ang PadForge.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Ina-uninstall ang runtime ng Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Hindi masimulan ang {0} dahil hindi tumatakbo ang MIDI. Nasa card ng Windows MIDI Services sa Settings ang dahilan.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>Hindi masimulan ang {0} dahil hindi tumatakbo ang MIDI. Tingnan ang Windows MIDI Services sa Settings, sa ilalim ng Mga Driver.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Hindi masimulan ang {0} dahil hindi nakagawa ng port nito ang Windows MIDI Services.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>Walang output port ang {0}. Pumili ng isa sa page nito.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Hindi nakakonekta ang output port na “{1}” ng {0}. Magsisimula ang slot kapag bumalik ang port.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Tumangging magsimula ang G-key SDK. Kadalasan, hindi tumatakbo ang Logitech Gaming Software.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Nakakonekta, wala pang nakitang key. Sa Logitech Gaming Software, i-drag ang G-key command papunta sa bawat key sa profile ng PadForge, at gawing persistent ang profile na iyon. Kailangan ding wala sa on-board memory mode ang mouse na G600 o G300.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Tumatakbo, {0} key event</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Tumatakbo, {0} key event</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Basahin ang mga analog keyboard</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Binabasa kung gaano kalalim ang pagkakapindot ng bawat key sa mga analog keyboard mula sa Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA, at iba pang gumagawa, bawat isa bilang sariling hilera ng device. Nakalista sa dokumentasyon ang bawat sinusuportahang modelo. Kailangang tumatakbo ang Razer Synapse para sa mga Razer keyboard. Karamihan sa iba ay binabasa sa channel na ginagamit ng sarili nilang configurator, kaya isara ang configurator habang naka-on ito.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Walang nakitang sinusuportahang analog keyboard.</value></data>
@@ -801,7 +803,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Tingnan ang Update</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Bagong fork ng x360ce, binuo muli gamit ang SDL3, WPF, at .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>Ginagawa ng PadForge na anumang virtual controller ang anumang input device. Ang mga gamepad, joystick, keyboard, mouse, at touchscreen ay ima-map sa mga virtual game controller (Xbox, PlayStation, flight stick, wheel, third-party na gamepad) o sa keyboard+mouse / MIDI output na itinuturing ng mga laro bilang totoong hardware. Pinapagana ng HIDMaestro at Windows MIDI Services. Gumagamit ito ng SDL3 para sa input ng controller, Windows Raw Input para sa keyboard at mouse, at HidHide para sa pagtatago ng device sa bawat laro, at may interface na Fluent Design para sa mapping, deadzone, sensitivity curve, at force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>Ginagawa ng PadForge na magmukhang anumang controller ang anumang input. Ang mga gamepad, joystick, wheel, keyboard, mouse, touch screen, MIDI device at telepono ay nagpapatakbo ng mga virtual controller na itinuturing ng mga laro bilang totoong hardware: mga pad ng Xbox, PlayStation, Nintendo at Steam, mga SInput pad, mga VR hand controller, MIDI output, keyboard at mouse, o custom na device gaya ng flight stick o wheel. Ang HIDMaestro ang gumagawa ng mga virtual gamepad, ang SDL3 ang bumabasa ng mga controller, ang Windows Raw Input ang bumabasa ng mga keyboard at mouse, ang HidHide ang nagtatago ng device sa mga laro, at ang Windows MIDI Services ang nagdadala ng MIDI papasok at palabas.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Pangkalahatang-ideya</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Binuo gamit ang</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Maghanap ng credit</value></data>
@@ -929,6 +931,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Pagitan ng mga Letra</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Mga millisecond sa pagitan ng mga na-type na character, hanggang 1000. Ang 0 ay tina-type ang buong text nang sabay-sabay.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>I-disconnect Kapag Idle</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>Ang 0 ay nangangahulugang hindi kailanman</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalye</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>I-disconnect ang Bluetooth Kapag Nakasaksak sa USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Kapag iniulat ng controller na ito na nagcha-charge ito habang nakakonekta sa Bluetooth, ibinababa ang Bluetooth link para mag-charge ito nang hindi pinapagana ang radio. Kasama ang anumang pinagmumulan ng USB power, pati ang mga wall charger. Kung ibabalik mo ang Bluetooth habang nakasaksak pa rin ang cable, hindi ito gagalawin hanggang sa susunod na pagtanggal.</value></data>
@@ -993,6 +996,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ipadala</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Mga frame: {0}. Aabutin nang humigit kumulang {1} ang pagpapadala.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>{0} frame lang ang kayang tanggapin ng controller, kaya iniwan ang huling {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>{0} frame lang ang kayang tanggapin ng controller, kaya iniwan ang huling isa.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ikonekta ang controller gamit ang cable. Kusa itong magre-restart mga 15 segundo matapos mailagay ang larawan.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ikonekta ang controller gamit ang cable. Para sa pagpapadala, inilalagay ito ng PadForge sa Xbox mode at inililipat mula sa Xbox driver ng Windows papunta sa WinUSB, saka ibinabalik ang dalawa.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Ililipat ng PadForge ang controller sa Xbox mode, ilalagay ito sa WinUSB para sa pagpapadala, saka ibabalik sa Xbox driver ng Windows at ibabalik sa DInput mode. Tanggalin muna sa saksakan ang bawat ibang Xbox 360 controller. Magpadala na ngayon?</value></data>
@@ -1424,8 +1428,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>I-clone</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Pumili ng device sa slot na ito na iku-clone.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Walang axis, button, o hat na maaaring i-clone sa napiling device.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>I-clone ang {0} sa slot na ito bilang 1:1 passthrough? Magiging {1} axis, {2} button, at {3} POV ang layout, at papalitan ng sarili nitong mga input ang mga row ng device na ito sa slot.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Mas marami ang input ng device na ito kaysa kayang dalhin ng isang Extended controller. Na-map ang {0} sa {1} axis, {2} sa {3} button, at {4} sa {5} POV. Hindi na-map ang natira.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>I-clone ang {0} sa slot na ito bilang 1:1 passthrough? Magiging {1}, {2}, at {3} ang layout, at papalitan ng sarili nitong mga input ang mga row ng device na ito sa slot.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Mas marami ang input ng device na ito kaysa kayang dalhin ng isang Extended controller. Na-map ang {0} sa {1}, {2} sa {3}, at {4} sa {5}. Hindi na-map ang natira.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Mga Preset ng Controller</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Magdagdag ng preset para sa controller na hindi kasama sa PadForge, mula sa file o sa mismong controller.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Na-import</value></data>
@@ -1597,11 +1601,11 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Button na unti-unting nagbababa ng accumulator habang hawak</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Down: button na unti-unting nagbababa ng accumulator habang hawak.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rate</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Bilis ng sweep sa unit kada segundo. 0.5 = buong range sa 2 s; 2 = buong range sa 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Bilis ng sweep sa unit kada segundo. 0.5 = buong range sa 2 s. 2 = buong range sa 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Sticky</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kapag may check, nananatili ang value ng accumulator pagkabitaw (cruise control). Kapag walang check, bumabalik ito sa Min pagkabitaw.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Pinakamababang hangganan ng accumulator. -1 = buong negatibo para sa bipolar axis target; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Pinakamababang hangganan ng accumulator. -1 = buong negatibo para sa bipolar axis target. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Pinakamataas na hangganan ng accumulator. 1 = buong positibo.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
@@ -1894,6 +1898,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Itinatakda ang lightbar mode ng nakatalagang slot sa isang tiyak na value. Nananatili ito tulad ng pag-edit sa card na Ilaw hanggang may ibang action o ang user ang magbago nito.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>I-cycle ang mga Lightbar Mode</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>I-cycle sa {0} lightbar mode</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>I-cycle sa {0} lightbar mode</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Isinusulong ang lightbar mode ng slot sa mga mode na napili sa ibaba. Bawat fire ay lilipat sa susunod na mode na may check. Kada-action ang posisyon ng cycle at nare-reset ito kapag nag-restart ang app.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Paghawak</value></data>
@@ -2291,6 +2296,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Nakuha na ang lahat ng sample. Pangalanan ang gesture at i-click ang Save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} sa {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} sample</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} sample</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Bilang ng Sample na Kukunin</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Mga sample na kukunin</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Ang 3 ang pamantayan. Mas maraming sample ay mas tiyak na tugma, at mas mabilis i-record ang mas kaunti.</value></data>
@@ -3193,6 +3199,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Gun Offscreen</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>I-cycle ang mga Pointer Mode</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>I-cycle sa {0} pointer mode</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>I-cycle sa {0} pointer mode</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Inuusad ang pointer mode ng Wii sa mga mode na napili sa ibaba para sa bawat remote na may IR sa slot. Bawat fire ay lilipat sa susunod na mode na may check. Per-action ang posisyon ng cycle at nagre-reset kapag nag-restart ang app.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Piliin kung aling mga pointer mode ang dapat i-cycle ng macro. Bawat fire ay uusad sa susunod na mode na may check.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3611,7 +3618,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Bitawan ang button.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Hakbang {0} sa {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Walang nakitang pagbabago. Piliin ang Magsimulang Muli, saka pindutin at hawakan ang button kapag hiniling.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Binantayan ang {0} vendor report at {1} event class. Habang pinipindot: {2} report, {3} event.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Mga vendor report na binantayan: {0}. Mga event class na binantayan: {1}. Mga report habang pinipindot: {2}. Mga event habang pinipindot: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Nakuha ang button. Maglagay ng pangalan at i-click ang I-register.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Pinagmulan</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Pangalan</value></data>
@@ -3627,7 +3634,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Na-export ang {0} button.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Na-export ang {0} button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Na-import ang {0} button.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Na-import ang {0} button.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld PC Buttons</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Ang mga handheld gaming PC at laptop ay may mga button na hindi kailanman ipinapakita ng operating system bilang controller: rear paddle, menu key, gulong, vendor hotkey. I-on ito para matutunan ang mga ito nang minsanan sa pagpindot, saka i-map ang mga ito tulad ng anumang ibang button. Idinaragdag din nito ang sariling gyroscope ng makina bilang motion device.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>I-enable ang Handheld PC Buttons</value></data>
@@ -3791,9 +3800,11 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Pataas</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Pababa</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} binding</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} binding</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ang nahanap</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ipinapakita ang {0} sa {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} config</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} config</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>buong suporta sa controller</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>bahagyang suporta sa controller</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Maghanap ng Laro</value></data>
@@ -3803,7 +3814,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} buwan ang nakalipas</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} taon ang nakalipas</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} subscriber</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} subscriber</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} boto</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} boto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Lahat</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Wala Pang Config para sa Larong Ito</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Walang community controller config ang Steam Workshop para sa {0}. Ikaw ang maaaring maging una: gumawa ng isa sa Steam at lalabas ito rito.</value></data>
@@ -3836,6 +3849,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>layer: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>walang device-free na trigger para sa input na ito</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game na aksyon, Steam lamang, walang game-side hook</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} in-game na aksyon, Steam lamang, walang game-side hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>aksyon ng Steam client na {0}, walang katumbas</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>hindi sinusuportahan ang controller action na {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>hindi kilalang uri ng binding na {0}</value></data>
@@ -3926,6 +3940,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>I-toggle ang Wheel Scroll</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Bawat pagpapagana ay nag-la-latch o nag-a-unlatch ng tuloy-tuloy na scroll. Habang naka-latch, nagpapadala ng bilang ng tick isang beses kada interval hanggang sa susunod na pagpapagana o hanggang i-disable ang macro.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>I-toggle ang wheel scroll ({0} tick kada {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>I-toggle ang wheel scroll ({0} tick kada {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Mag-pulse Habang Naka-latch</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Habang naka-latch, i-pulse on at off ang output sa repeat interval sa halip na hawakan ito nang tuloy.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axis Add (Relative)</value></data>
@@ -3947,6 +3962,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kapag nilampas ng pisikal na galaw ang threshold ng target, humihinto ang macro sa pagsulat sa axis sa natitirang bahagi ng activation.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(sumusuko sa pisikal)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cycle tap list ({0} step)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Cycle tap list ({0} step)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Mga Step</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>I-toggle ang mga key na {0}</value></data>
@@ -4030,6 +4046,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ipakita ang on-screen ring o grid habang naka-engage ang radial o touch menu. Gumagana pa rin ang mga menu kahit naka-off ang overlay.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>nagawa ang on-screen menu ({0} naka-bind na cell)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>nagawa ang on-screen menu ({0} naka-bind na cell)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>walang naka-bind na cell ang menu</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hindi sinusuportahan ang menu host surface ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>hindi nakilala ang icon ng menu cell ({0}), kaya pinananatili ng cell ang text label nito</value></data>
@@ -4216,6 +4233,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Piliin ang .txt na na-download mula sa AutoEq. Ito ang dapat gamitin: file ang ibinibigay ng autoeq.app at hindi tekstong makokopya mo.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para sa correction na tugma sa iyong mga headphone: buksan ang autoeq.app, piliin ang iyong modelo, piliin ang Custom Parametric Eq at i-download ito, saka I-import mula sa File. Walang filter line ang download na Graphic Eq at hindi ito maii-import.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Nag-import ng {0} band na may {1:0.#} dB na preamp mula sa {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Nag-import ng {0} band na may {1:0.#} dB na preamp mula sa {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Walang filter line sa profile na iyon. Hindi mababasa rito ang Graphic Eq export ng AutoEq. I-download na lang ang Custom Parametric Eq. Hindi nagalaw ang kasalukuyang EQ.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Walang mai-import. Hindi nagalaw ang kasalukuyang EQ.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Hindi mabasa ang file na iyon: {0}</value></data>

@@ -83,6 +83,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Mopotĩ</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mba'eve</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -909,6 +910,7 @@
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Eheka ñembosarái</value></data>
   <data name="Workshop_Games" xml:space="preserve"><value>Ñembosarái</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} asignación</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} asignación</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Eheka ñembosarái</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Opaite</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Eha'ã jey</value></data>

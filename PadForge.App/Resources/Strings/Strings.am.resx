@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>አጽዳ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ምንም</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>ደቂቃ</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ሰከንድ</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>ደቂቃ (0 = በጭራሽ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide PadForgeን PadForge ከደበቀው መሣሪያ ስላገደው PadForge መሣሪያዎችን መደበቅ አቁሟል።</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>የHidHide «Inverse application cloak» በርቷል፣ ስለዚህ PadForge ምንም መሣሪያ አይደብቅም።</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>የWindows MIDI Services ራንታይምን በማራገፍ ላይ…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI እየሄደ ስላልሆነ {0} መጀመር አልቻለም። ምክንያቱን በቅንብሮች ውስጥ ያለው የWindows MIDI Services ካርድ ይገልጻል።</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI እየሄደ ስላልሆነ {0} መጀመር አልቻለም። በቅንብሮች ውስጥ በአሽከርካሪዎች ስር Windows MIDI Servicesን ይመልከቱ።</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services ወደቡን ስላልፈጠረ {0} መጀመር አልቻለም።</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} የውጽዓት ወደብ የለውም። በገጹ ላይ አንዱን ይምረጡ።</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>የ{0} የውጽዓት ወደብ «{1}» አልተገናኘም። ወደቡ ሲመለስ ቦታው ይጀምራል።</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ለመጀመር እምቢ አለ። ብዙውን ጊዜ Logitech Gaming Software እየሄደ አይደለም።</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ተገናኝቷል፣ እስካሁን ምንም ቁልፍ አልታየም። በLogitech Gaming Software ውስጥ የG-key ትዕዛዙን በPadForge መገለጫ ውስጥ ባለው በእያንዳንዱ ቁልፍ ላይ ይጎትቱ፣ እና ያንን መገለጫ ቋሚ ያድርጉት። G600 ወይም G300 መዳፊት ደግሞ ከውስጠ-መሣሪያ ማህደረ ትውስታ ሁነታ መውጣት አለበት።</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>እየሄደ ነው፣ {0} የቁልፍ ክስተቶች</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>እየሄደ ነው፣ {0} የቁልፍ ክስተት</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>አናሎግ የቁልፍ ሰሌዳዎችን አንብብ</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>ከWooting፣ Razer፣ SteelSeries፣ Keychron፣ NuPhy፣ DrunkDeer፣ AULA እና ከሌሎች አምራቾች በሚመጡ አናሎግ የቁልፍ ሰሌዳዎች ላይ እያንዳንዱ ቁልፍ ምን ያህል እንደተጫነ ያነባል፣ እያንዳንዱንም እንደ የራሱ የመሣሪያ ረድፍ። ሰነዱ የሚደገፉትን ሞዴሎች ሁሉ ይዘረዝራል። የRazer የቁልፍ ሰሌዳዎች Razer Synapse እየሄደ እንዲሆን ይፈልጋሉ። አብዛኞቹ ሌሎች የሚነበቡት የራሳቸው ማዋቀሪያ በሚጠቀምበት ቻናል ስለሆነ፣ ይህ በርቶ ሳለ ማዋቀሪያውን ይዝጉ።</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>የሚደገፍ አናሎግ የቁልፍ ሰሌዳ አልተገኘም።</value></data>
@@ -800,7 +802,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>ዝማኔዎችን ፈትሽ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>በSDL3፣ WPF እና .NET 10 እንደገና የተገነባ የx360ce ዘመናዊ ቅርንጫፍ</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ማንኛውንም የግብዓት መሣሪያ ወደ ማንኛውም ምናባዊ መቆጣጠሪያ ይቀይራል። ጌምፓዶች፣ ጆይስቲኮች፣ የቁልፍ ሰሌዳዎች፣ መዳፊቶች እና የንክኪ ማያ ገጾች ጨዋታዎች እንደ እውነተኛ ሃርድዌር ወደሚያዩአቸው ምናባዊ የጨዋታ መቆጣጠሪያዎች (Xbox፣ PlayStation፣ የበረራ ስቲኮች፣ መሪዎች፣ የሶስተኛ ወገን ጌምፓዶች) ወይም ወደ የቁልፍ ሰሌዳ+መዳፊት / MIDI ውጽዓት ይዛመዳሉ። በHIDMaestro እና በWindows MIDI Services ይሠራል። ለመቆጣጠሪያ ግብዓት SDL3ን፣ ለቁልፍ ሰሌዳ እና ለመዳፊት Windows Raw Inputን፣ ለእያንዳንዱ ጨዋታ መሣሪያን ለመደበቅ HidHideን ይጠቀማል፣ እንዲሁም ለማዛመጃ፣ ለየሞተ ቀጠናዎች፣ ለትብነት ኩርባዎች እና ለኃይል ግብረመልስ ዘመናዊ የFluent Design በይነገጽ ያቀርባል።</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ማንኛውንም ግብዓት እንደ ማንኛውም መቆጣጠሪያ እንዲታይ ያደርጋል። ጌምፓዶች፣ ጆይስቲኮች፣ መሪዎች፣ የቁልፍ ሰሌዳዎች፣ መዳፊቶች፣ የንክኪ ማያ ገጾች፣ የMIDI መሣሪያዎች እና ስልኮች ጨዋታዎች እንደ እውነተኛ ሃርድዌር የሚያዩአቸውን ምናባዊ መቆጣጠሪያዎች ያንቀሳቅሳሉ፦ Xbox፣ PlayStation፣ Nintendo እና Steam ፓዶች፣ SInput ፓዶች፣ የVR የእጅ መቆጣጠሪያዎች፣ MIDI ውጽዓት፣ የቁልፍ ሰሌዳ እና መዳፊት፣ ወይም እንደ የበረራ ስቲክ ወይም መሪ ያለ ብጁ መሣሪያ። HIDMaestro ምናባዊ ጌምፓዶቹን ይፈጥራል፣ SDL3 መቆጣጠሪያዎችን ያነባል፣ Windows Raw Input የቁልፍ ሰሌዳዎችንና መዳፊቶችን ያነባል፣ HidHide መሣሪያን ከጨዋታዎች ይደብቃል፣ Windows MIDI Services ደግሞ MIDIን ወደ ውስጥና ወደ ውጭ ያስተላልፋል።</value></data>
   <data name="About_Overview" xml:space="preserve"><value>አጠቃላይ እይታ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>የተገነባበት</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ምስጋናዎችን ፈልግ</value></data>
@@ -928,6 +930,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>በፊደላት መካከል ያለ መዘግየት</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>በሚተየቡ ቁምፊዎች መካከል ያሉ ሚሊሰከንዶች፣ እስከ 1000። 0 ሙሉውን ጽሑፍ በአንድ ጊዜ ይተይባል።</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ሥራ ሲፈታ ግንኙነት ማቋረጥ</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 በጭራሽ ማለት ነው</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ዝርዝሮች</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>በUSB ሲሰካ Bluetooth አቋርጥ</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ፈጣን ኃይል መሙላት። ይህ መቆጣጠሪያ በBluetooth ተገናኝቶ ሳለ ኃይል እየሞላ መሆኑን ሲያሳውቅ፣ ሬዲዮውን ሳያንቀሳቅስ እንዲሞላ የBluetooth ግንኙነቱ ይቋረጣል። የግድግዳ ቻርጀሮችን ጨምሮ ማንኛውም የUSB ኃይል ምንጭ ይቆጠራል። ገመዱ እንደተሰካ Bluetooth መልሰህ ካበራህ፣ እስከሚቀጥለው መንቀል ድረስ አይነካም።</value></data>
@@ -992,6 +995,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>ላክ</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ፍሬሞች: {0}። መላኩ {1} ገደማ ይወስዳል።</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>መቆጣጠሪያው የሚቀበለው የፍሬም ብዛት ቢበዛ {0} ነው፣ ስለዚህ የመጨረሻዎቹ {1} ቀርተዋል።</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>መቆጣጠሪያው የሚቀበለው የፍሬም ብዛት ቢበዛ {0} ነው፣ ስለዚህ የመጨረሻው ቀርቷል።</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>መቆጣጠሪያውን በገመድ አገናኝ። ምስሉ ከገባ ከ15 ሰከንድ ገደማ በኋላ በራሱ እንደገና ይጀምራል።</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>መቆጣጠሪያውን በገመድ አገናኝ። ለመላኩ PadForge ወደ Xbox ሁነታ ይቀይረዋል፣ ከWindows የXbox ሾፌር ወደ WinUSB ያዛውረዋል፣ ከዚያም ሁለቱንም ይመልሳል።</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge መቆጣጠሪያውን ወደ Xbox ሁነታ ይቀይረዋል፣ ለመላኩ ወደ WinUSB ያዛውረዋል፣ ከዚያም ለWindows የXbox ሾፌር ይመልሰዋል፣ ወደ DInput ሁነታም መልሶ ይቀይረዋል። መጀመሪያ ሌሎች Xbox 360 መቆጣጠሪያዎችን ሁሉ ንቀል። አሁን ይላክ?</value></data>
@@ -1423,8 +1427,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ቅዳ</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ለመቅዳት በዚህ ቦታ ላይ መሣሪያ ምረጥ።</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>የተመረጠው መሣሪያ የሚቀዳ ዘንግ፣ አዝራር ወይም ሃት የለውም።</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} በዚህ ቦታ ላይ እንደ 1:1 ማሳለፍ ይቀዳ? አቀማመጡ {1} ዘንጎች፣ {2} አዝራሮች እና {3} POV ይሆናል፣ በቦታው ላይ ያሉት የዚህ መሣሪያ ረድፎችም በራሱ ግብዓቶች ይተካሉ።</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ይህ መሣሪያ የተራዘመ መቆጣጠሪያ ሊይዘው ከሚችለው በላይ ግብዓቶች አሉት። ከ{1} ዘንጎች {0}፣ ከ{3} አዝራሮች {2}፣ እና ከ{5} POV {4} ተዛምደዋል። የተቀሩት ሳይዛመዱ ቀርተዋል።</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} በዚህ ቦታ ላይ እንደ 1:1 ማሳለፍ ይቀዳ? አቀማመጡ {1}፣ {2} እና {3} ይሆናል፣ በቦታው ላይ ያሉት የዚህ መሣሪያ ረድፎችም በራሱ ግብዓቶች ይተካሉ።</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ይህ መሣሪያ የተራዘመ መቆጣጠሪያ ሊይዘው ከሚችለው በላይ ግብዓቶች አሉት። ከ{1} {0}፣ ከ{3} {2}፣ እና ከ{5} {4} ተዛምደዋል። የተቀሩት ሳይዛመዱ ቀርተዋል።</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>የመቆጣጠሪያ ቅድመ-ቅንብሮች</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge ይዞ ለማይመጣው መቆጣጠሪያ ቅድመ-ቅንብር ያክሉ፣ ከፋይል ወይም ከመቆጣጠሪያው ራሱ።</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>የገቡ</value></data>
@@ -1596,11 +1600,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>ሲያዝ አከማቹን ወደ ታች የሚቀንስ አዝራር</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>ታች፦ ሲያዝ አከማቹን ወደ ታች የሚቀንስ አዝራር።</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>ፍጥነት</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>የለውጥ ፍጥነት በሰከንድ በአሃዶች። 0.5 = ሙሉ ክልል በ2 ሰከንድ፤ 2 = ሙሉ ክልል በ0.5 ሰከንድ።</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>የለውጥ ፍጥነት በሰከንድ በአሃዶች። 0.5 = ሙሉ ክልል በ2 ሰከንድ። 2 = ሙሉ ክልል በ0.5 ሰከንድ።</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ተጣባቂ</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>ሲመረጥ፣ አከማቹ ከተለቀቀ በኋላ እሴቱን ይይዛል (የክሩዝ መቆጣጠሪያ)። ሳይመረጥ፣ ሲለቀቅ ወደ ዝቅተኛው ይመለሳል።</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>ዝቅተኛ</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>የአከማቹ ዝቅተኛ ወሰን። -1 = ለባለሁለት አቅጣጫ ዘንግ ዒላማዎች ሙሉ አሉታዊ፤ 0 = ባለአንድ አቅጣጫ።</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>የአከማቹ ዝቅተኛ ወሰን። -1 = ለባለሁለት አቅጣጫ ዘንግ ዒላማዎች ሙሉ አሉታዊ። 0 = ባለአንድ አቅጣጫ።</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>ከፍተኛ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>የአከማቹ ከፍተኛ ወሰን። 1 = ሙሉ አዎንታዊ።</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ማሳደጊያ</value></data>
@@ -1893,6 +1897,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>የተመደበውን ቦታ የብርሃን አሞሌ ሁነታ ወደ አንድ የተወሰነ እሴት ያዘጋጃል። ሌላ ድርጊት ወይም ተጠቃሚው እስኪቀይረው ድረስ በ«መብራት» ካርድ ላይ እንደተደረገ ለውጥ ይቆያል።</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>የብርሃን አሞሌ ሁነታዎችን አዟዙር</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>በ{0} የብርሃን አሞሌ ሁነታዎች መካከል አዟዙር</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>በ{0} የብርሃን አሞሌ ሁነታ ውስጥ አዟዙር</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>የቦታውን የብርሃን አሞሌ ሁነታ ከታች በተመረጡት ሁነታዎች ውስጥ ያሳልፋል። እያንዳንዱ ሥራ ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ይሄዳል። የዙሩ ቦታ ለእያንዳንዱ ድርጊት የተለየ ነው፣ መተግበሪያው እንደገና ሲጀመርም ዳግም ይጀምራል።</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>መያዝ</value></data>
@@ -2171,7 +2176,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>ሰሌዳው የሚደርስበት የማያ ገጽ ክፍል</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ጠቋሚውን በሰሌዳው ላይ ወዳለው የጣትህ አቀማመጥ የሚያዘልሉትን የመዳሰሻ ሰሌዳ ጠቋሚ X/Y ምንጮችን ያስተካክላል (በቁልፍ ሰሌዳ / መዳፊት ምናባዊ መቆጣጠሪያ ላይ ከመዳፊት X/Y ጋር አዛምዳቸው)። መጠን 1.00 ከመሃል 0.50 ጋር ሰሌዳውን ከመላው ማያ ገጽ ጋር ያዛምዳል። ጠቋሚውን በማያ ገጹ ክፍል ውስጥ ለመገደብ መጠኑን አሳንስ፣ ለማስቀመጥ ደግሞ መሃሉን አንቀሳቅስ።</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>የአካባቢ ስፋት</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ይህ ሰሌዳ የሚዛመድበት የማያ ገጽ አካባቢ ስፋት፣ ከማያ ገጹ ስፋት እንደ ክፍልፋይ። 1.00 ሙሉውን ስፋት ይሸፍናል፤ 0.50 ጠቋሚውን በግማሹ ማያ ገጽ ይገድባል።</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ይህ ሰሌዳ የሚዛመድበት የማያ ገጽ አካባቢ ስፋት፣ ከማያ ገጹ ስፋት እንደ ክፍልፋይ። 1.00 ሙሉውን ስፋት ይሸፍናል። 0.50 ጠቋሚውን በግማሹ ማያ ገጽ ይገድባል።</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>የአካባቢ ቁመት</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>የማያ ገጹ አካባቢ ቁመት፣ ከማያ ገጹ ቁመት እንደ ክፍልፋይ።</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>የአካባቢ መሃል X</value></data>
@@ -2182,7 +2187,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>የማንሸራተት ሃፕቲክስ</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>ጣትዎ ሲጓዝ የሚሰሙ ምቶች</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ጣትህ በዚህ የመዳሰሻ ሰሌዳ ላይ ሲጓዝ የመቆጣጠሪያውን ሃፕቲክስ ያስመታል፣ ልክ እንደ Steam Input የትራክፓድ ምቶች። Steam Controller እና Steam Deck ከሰሌዳው ስር ያለውን አንቀሳቃሽ ያስመታሉ፤ DualSense እና DualShock 4 የንዝረት ሞተሮችን ያስመታሉ።</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ጣትህ በዚህ የመዳሰሻ ሰሌዳ ላይ ሲጓዝ የመቆጣጠሪያውን ሃፕቲክስ ያስመታል፣ ልክ እንደ Steam Input የትራክፓድ ምቶች። Steam Controller እና Steam Deck ከሰሌዳው ስር ያለውን አንቀሳቃሽ ያስመታሉ። DualSense እና DualShock 4 የንዝረት ሞተሮችን ያስመታሉ።</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>የማንሸራተት ሃፕቲክስን አንቃ</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ጣቱ በዚህ ሰሌዳ ላይ የተወሰነ ርቀት በተንቀሳቀሰ ቁጥር አጭር የሃፕቲክ ምት ይልካል። ጣት ማሳረፍ ወይም ሰሌዳውን ጠቅ ማድረግ ምንም ምት አያስከትልም። በነባሪ ጠፍቷል።</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>የምት ጥንካሬ</value></data>
@@ -2290,6 +2295,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>ሁሉም ናሙናዎች ተቀርጸዋል። ለእጅ ምልክቱ ስም ስጥና አስቀምጥን ጠቅ አድርግ።</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ናሙና {0} ከ{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ናሙናዎች</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ናሙና</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>የሚቀረጹ ናሙናዎች</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>የሚቀረጹ ናሙናዎች</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 መደበኛው ነው። ብዙ ናሙናዎች ይበልጥ አስተማማኝ ተዛማጅነት ይሰጣሉ፣ ጥቂቶቹ ደግሞ በፍጥነት ይቀረጻሉ።</value></data>
@@ -3356,6 +3362,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ሽጉጥ ከማያ ገጽ ውጭ</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>የጠቋሚ ሁነታዎችን በዙር ቀያይር</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>በ{0} የጠቋሚ ሁነታዎች መካከል በዙር ቀያይር</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>በ{0} የጠቋሚ ሁነታ ውስጥ በዙር ቀያይር</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>በቦታው ላይ IR ለሚደግፉ ሁሉም ሪሞቶች የWii ጠቋሚ ሁነታን ከታች በተመረጡት ሁነታዎች ውስጥ ወደፊት ያራምዳል። እያንዳንዱ ተግባር ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ይሸጋገራል። የዑደቱ ቦታ ለእያንዳንዱ እርምጃ የተለየ ነው፣ መተግበሪያው እንደገና ሲጀምርም ዳግም ይጀመራል።</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ማክሮው በየትኞቹ የጠቋሚ ሁነታዎች መካከል መቀያየር እንዳለበት ይምረጡ። እያንዳንዱ ተግባር ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ያራምዳል።</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ድምጽ</value></data>
@@ -3774,7 +3781,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>አዝራሩን ይልቀቁ።</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ደረጃ {0} ከ{1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ምንም ለውጥ አልታየም። «እንደገና ጀምር»ን ይምረጡ፣ ከዚያ ሲጠየቁ አዝራሩን ተጭነው ይያዙ።</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} የአምራች ሪፖርቶችና {1} የክስተት ክፍሎች ተከታትለዋል። በመጫኑ ወቅት፦ {2} ሪፖርቶች፣ {3} ክስተቶች።</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>ክትትል የተደረገባቸው የአምራች ሪፖርቶች፦ {0}። ክትትል የተደረገባቸው የክስተት ክፍሎች፦ {1}። በመጫኑ ወቅት የነበሩ ሪፖርቶች፦ {2}። በመጫኑ ወቅት የነበሩ ክስተቶች፦ {3}።</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>አዝራሩ ተይዟል። ስም ያስገቡና «መዝግብ»ን ጠቅ ያድርጉ።</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ምንጭ</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>ስም</value></data>
@@ -3790,7 +3797,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>ወደ ውጪ ላክ…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>አስገባ…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} አዝራሮች ወደ ውጪ ተልከዋል።</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} አዝራር ወደ ውጪ ተልኳል።</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} አዝራሮች ገብተዋል።</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} አዝራር ገብቷል።</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>የእጅ ኮምፒውተር አዝራሮች</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>በእጅ የሚያዙ የጨዋታ ኮምፒውተሮችና ላፕቶፖች ስርዓተ ክወናው እንደ መቆጣጠሪያ የማያሳያቸው አዝራሮች አሏቸው፦ የኋላ ፓድሎች፣ የምናሌ ቁልፎች፣ ጎማዎች፣ የአምራች አቋራጭ ቁልፎች። አንድ ጊዜ በመጫን እንዲማራቸው ይህን ያብሩ፣ ከዚያ እንደማንኛውም አዝራር ያዛምዷቸው። የማሽኑን የራሱን ጋይሮስኮፕም እንደ እንቅስቃሴ መሣሪያ ያክላል።</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>የእጅ ኮምፒውተር አዝራሮችን አንቃ</value></data>
@@ -3954,9 +3963,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ከትንሽ ወደ ትልቅ</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>ከትልቅ ወደ ትንሽ</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} ማሰሪያዎች</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} ማሰሪያ</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ተገኝተዋል</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>ከ{1} ውስጥ {0} በማሳየት ላይ</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} ውቅሮች</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} ውቅር</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>ሙሉ የመቆጣጠሪያ ድጋፍ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>ከፊል የመቆጣጠሪያ ድጋፍ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ጨዋታዎችን ፈልግ</value></data>
@@ -3966,7 +3977,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>ከ{0} ወር በፊት</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>ከ{0} ዓመት በፊት</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} ተመዝጋቢዎች</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} ተመዝጋቢ</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ድምጾች</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ድምጽ</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>ሁሉም</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ለዚህ ጨዋታ እስካሁን ምንም ውቅር የለም</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ወርክሾፕ ለ{0} ምንም የማኅበረሰብ መቆጣጠሪያ ውቅር የለውም። የመጀመሪያው መሆን ይችላሉ፦ በSteam ውስጥ አንድ ይገንቡ፣ እዚህም ይታያል።</value></data>
@@ -3999,6 +4012,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ንብርብር፦ {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ለዚህ ግብዓት ከመሣሪያ ነፃ የሆነ ማስጀመሪያ የለም</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} የጨዋታ ውስጥ ተግባራት፣ የSteam ብቻ፣ በጨዋታው በኩል ምንም መንጠቆ የለም</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} የጨዋታ ውስጥ ተግባር፣ የSteam ብቻ፣ በጨዋታው በኩል ምንም መንጠቆ የለም</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>የSteam ደንበኛ ተግባር {0}፣ አቻ የለውም</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>የመቆጣጠሪያ ተግባር {0} አይደገፍም</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ያልታወቀ የማሰሪያ ዓይነት {0}</value></data>
@@ -4089,6 +4103,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>የጎማ ማሸብለልን ቀያይር</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>እያንዳንዱ መፈጸም ቀጣይነት ያለው ማሸብለልን ይቆልፋል ወይም ይፈታል። ተቆልፎ እያለ እስከ ቀጣዩ መፈጸም ወይም ማክሮው እስኪሰናከል ድረስ የእርምጃ ብዛቱን በእያንዳንዱ የጊዜ ልዩነት አንድ ጊዜ ይልካል።</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>የጎማ ማሸብለልን ቀያይር (በየ{1} ms {0} እርምጃዎች)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>የጎማ ማሸብለልን ቀያይር (በየ{1} ms {0} እርምጃ)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>ተቆልፎ እያለ አብራ-አጥፋ</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ተቆልፎ እያለ ውፅዓቱ ያለማቋረጥ ከመያዝ ይልቅ በድግግሞሽ የጊዜ ልዩነቱ ይበራል ይጠፋል።</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>ዘንግ ጨምር (አንጻራዊ)</value></data>
@@ -4110,6 +4125,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>አካላዊ እንቅስቃሴ ዒላማውን ከገደቡ በላይ ሲገፋው ማክሮው ለቀሪው የማንቃት ጊዜ ዘንጉን መጻፍ ያቆማል።</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ለአካላዊ ግብዓት ቅድሚያ ይሰጣል)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>የመታ ዝርዝር ዑደት ({0} ደረጃዎች)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>የመታ ዝርዝር ዑደት ({0} ደረጃ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ደረጃዎች</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>መጠቅለል</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ቁልፎችን {0} ቀያይር</value></data>
@@ -4193,6 +4209,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>የመገለጫ መቀየሪያ ተደራቢ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ክብ ወይም የመንካት ምናሌ ሲነቃ የማያ ላይ ቀለበቱን ወይም ፍርግርጉን አሳይ። ተደራቢው ጠፍቶም ምናሌዎች ይፈጸማሉ።</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>የማያ ላይ ምናሌ ተፈጥሯል ({0} የተያያዙ ሕዋሶች)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>የማያ ላይ ምናሌ ተፈጥሯል ({0} የተያያዘ ሕዋስ)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ምናሌው የተያያዙ ሕዋሶች የሉትም</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>የምናሌ አስተናጋጅ ወለል አይደገፍም ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>የምናሌ ሕዋስ አዶ አልታወቀም ({0})፣ ስለዚህ ሕዋሱ የጽሑፍ መለያውን ይይዛል</value></data>
@@ -4379,6 +4396,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>ከAutoEq የወረደውን .txt ፋይል ይምረጡ። መጠቀም ያለብዎት ይህንን ነው: autoeq.app የሚሰጥዎት ሊቀዱት የሚችሉት ጽሑፍ ሳይሆን ፋይል ነው።</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>ለጆሮ ማዳመጫዎ የተስማማ ማስተካከያ ለማግኘት: autoeq.app ይክፈቱ፣ ሞዴልዎን ይምረጡ፣ Custom Parametric Eq መርጠው ያውርዱት፣ ከዚያ «ከፋይል አስገባ» ይጫኑ። የGraphic Eq ማውረጃ የማጣሪያ መስመሮች የሉትም እና አይገባም።</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} ባንዶች ከ{1:0.#} dB ቅድመ-ማጉያ ጋር ከ{2} ገብተዋል።</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} ባንድ ከ{1:0.#} dB ቅድመ-ማጉያ ጋር ከ{2} ገብቷል።</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>በዚያ መገለጫ ውስጥ የማጣሪያ መስመሮች የሉም። የAutoEq Graphic Eq ፋይል እዚህ ሊነበብ አይችልም። በምትኩ Custom Parametric Eq ያውርዱ። የአሁኑ EQ አልተቀየረም።</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>የሚገባ ነገር የለም። የአሁኑ EQ አልተቀየረም።</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ያንን ፋይል ማንበብ አልተቻለም: {0}</value></data>

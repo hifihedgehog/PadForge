@@ -78,6 +78,7 @@
   <data name="Common_Recording" xml:space="preserve"><value>Na-edekọ…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Kpochapụ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekọnd</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -958,7 +959,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Bupụ…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Bubata…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Ebupụla bọtịn {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Ebupụla bọtịn {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Ebubatala bọtịn {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Ebubatala bọtịn {0}.</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Aka ekpe</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Aka nri</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Elu</value></data>
@@ -1452,6 +1455,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Zipu</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fremu: {0}. Izipu na-ewe ihe dịka {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Njikwa ahụ na-anabata fremu {0} kacha, ya mere a hapụrụ {1} ikpeazụ.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Njikwa ahụ na-anabata fremu {0} kacha, ya mere a hapụrụ nke ikpeazụ.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Jikọọ njikwa ahụ site na eriri. Ọ na-amalitegharị onwe ya ihe dịka sekọnd 15 mgbe foto ahụ banyere.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Jikọọ njikwa ahụ site na eriri. Maka izipu, PadForge na-agbanwe ya gaa na ọnọdụ Xbox ma bufee ya site na draịva Xbox nke Windows gaa na WinUSB, wee weghachi ha abụọ.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ga-agbanwe njikwa ahụ gaa na ọnọdụ Xbox, bufee ya na WinUSB maka izipu, wee weghachi ya na draịva Xbox nke Windows ma gbanwee ya laghachi na ọnọdụ DInput. Buru ụzọ wepụ njikwa Xbox 360 ọ bụla ọzọ. Zipu ugbu a?</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Тазалау</value></data>
   <data name="Common_None" xml:space="preserve"><value>Жоқ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>мин</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>секунд</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>минут (0 = ешқашан)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide PadForge жасырған құрылғыға PadForge бағдарламасының өзін жібермеді, сондықтан PadForge құрылғыларды жасыруды тоқтатты.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide бағдарламасындағы «Inverse application cloak» параметрі қосулы, сондықтан PadForge ешбір құрылғыны жасырмайды.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services орындау ортасы жойылуда…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI жұмыс істемегендіктен, {0} іске қосылмады. Себебі «Параметрлер» бөліміндегі Windows MIDI Services карточкасында көрсетілген.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI жұмыс істемегендіктен, {0} іске қосылмады. «Параметрлер» бөліміндегі «Драйверлер» тобынан Windows MIDI Services қызметін қараңыз.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services өз портын жасамағандықтан, {0} іске қосылмады.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} үшін шығыс порты таңдалмаған. Оның бетінде портты таңдаңыз.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} үшін «{1}» шығыс порты қосылмаған. Порт қайта қосылғанда ұяшық іске қосылады.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK іске қосылудан бас тартты. Әдетте бұл Logitech Gaming Software жұмыс істемей тұрғанда болады.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Қосылды, әзірге ешбір перне байқалмады. Logitech Gaming Software бағдарламасында G-key командасын PadForge профиліндегі әр пернеге сүйреп апарыңыз және ол профильді тұрақты етіңіз. G600 не G300 тінтуірін де кірістірілген жад режимінен шығару керек.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Жұмыс істеп тұр, {0} перне оқиғасы</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Жұмыс істеп тұр, {0} перне оқиғасы</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Аналогтық пернетақталарды оқу</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA және басқа өндірушілердің аналогтық пернетақталарында әр перненің қаншалықты басылғанын оқиды, әрқайсысы жеке құрылғы жолы ретінде шығады. Қолдау көрсетілетін барлық модельдер құжаттамада келтірілген. Razer пернетақталары үшін Razer Synapse іске қосулы болуы керек. Қалғандарының көбі өз конфигураторы пайдаланатын арна арқылы оқылады, сондықтан бұл параметр қосулы кезде конфигураторды жабыңыз.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Қолдау көрсетілетін аналогтық пернетақта табылмады.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Жаңартуларды тексеру</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>SDL3, WPF және .NET 10 негізінде қайта құрылған x360ce жобасының заманауи тармағы</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge кез келген енгізу құрылғысын кез келген виртуалды контроллерге айналдырады. Геймпадтар, джойстиктер, пернетақталар, тінтуірлер және сенсорлы экрандар ойындар нақты құрылғы ретінде қабылдайтын виртуалды ойын контроллерлеріне (Xbox, PlayStation, ұшу джойстиктері, рөлдер, үшінші тарап геймпадтары) немесе пернетақта+тінтуір / MIDI шығысына тағайындалады. HIDMaestro және Windows MIDI Services негізінде жұмыс істейді. Контроллер кірісі үшін SDL3, пернетақта мен тінтуір үшін Windows Raw Input, әр ойын үшін құрылғыларды жасыру үшін HidHide пайдаланады және тағайындауларға, өлі аймақтарға, сезімталдық қисықтарына және күштік кері байланысқа арналған заманауи Fluent Design интерфейсін ұсынады.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge кез келген енгізуді кез келген контроллер етіп көрсетеді. Геймпадтар, джойстиктер, рөлдер, пернетақталар, тінтуірлер, сенсорлы экрандар, MIDI құрылғылары және телефондар ойындар нақты құрылғы ретінде қабылдайтын виртуалды контроллерлерді басқарады: Xbox, PlayStation, Nintendo және Steam геймпадтары, SInput геймпадтары, VR қол контроллерлері, MIDI шығысы, пернетақта мен тінтуір немесе ұшу джойстигі не рөл сияқты арнайы құрылғы. HIDMaestro виртуалды геймпадтарды жасайды, SDL3 контроллерлерді оқиды, Windows Raw Input пернетақталар мен тінтуірлерді оқиды, HidHide құрылғыны ойындардан жасырады, ал Windows MIDI Services MIDI кірісі мен шығысын тасымалдайды.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Шолу</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Пайдаланылған технологиялар</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Алғыстарды іздеу</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Әріптер арасындағы кідіріс</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Терілетін таңбалар арасындағы миллисекунд саны, 1000-ға дейін. 0 мәні бүкіл мәтінді бірден тереді.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Әрекетсіз кезде ажырату</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 мәні ешқашан дегенді білдіреді</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Мәліметтер</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB арқылы қосылғанда Bluetooth байланысын ажырату</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Жылдам зарядтау. Bluetooth арқылы қосылған контроллер зарядталып жатқанын хабарласа, Bluetooth байланысы үзіледі, сонда ол радионы қоректендірмей зарядталады. Кез келген USB қуат көзі, соның ішінде розеткаға қосылатын зарядтағыштар да есепке алынады. Кабель қосулы тұрғанда Bluetooth байланысын қайта қоссаңыз, кабель келесі рет ажыратылғанға дейін оған тиіспейді.</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Жіберу</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадрлар: {0}. Жіберу шамамен {1} алады.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Контроллер ең көбі {0} кадр қабылдайды, сондықтан соңғы {1} кадр қалдырылды.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Контроллер ең көбі {0} кадр қабылдайды, сондықтан соңғы кадр қалдырылды.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Контроллерді кабельмен қосыңыз. Сурет түскеннен кейін шамамен 15 секундтан соң ол өздігінен қайта іске қосылады.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Контроллерді кабельмен қосыңыз. Жіберу үшін PadForge оны Xbox режиміне ауыстырып, Windows жүйесінің Xbox драйверінен WinUSB драйверіне көшіреді, содан кейін екеуін де орнына қайтарады.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge контроллерді Xbox режиміне ауыстырады, жіберу үшін WinUSB драйверіне көшіреді, содан кейін оны Windows жүйесінің Xbox драйверіне қайтарып, DInput режиміне қайта ауыстырады. Алдымен басқа Xbox 360 контроллерлерінің бәрін ажыратыңыз. Қазір жіберейін бе?</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Клондау</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Клондау үшін осы ұяшықтағы құрылғыны таңдаңыз.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Таңдалған құрылғыда клондауға болатын ось, түйме немесе POV қосқышы жоқ.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} осы ұяшыққа 1:1 тікелей өткізу ретінде клондалсын ба? Схема {1} ось, {2} түйме және {3} POV болады, ал ұяшықтағы осы құрылғының жолдары оның өз кірістерімен ауыстырылады.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Бұл құрылғыда кеңейтілген контроллер көтере алатыннан көп кіріс бар. Тағайындалғаны: ось {0}/{1}, түйме {2}/{3}, POV {4}/{5}. Қалғандары тағайындалмай қалды.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} осы ұяшыққа 1:1 тікелей өткізу ретінде клондалсын ба? Схема {1}, {2} және {3} болады, ал ұяшықтағы осы құрылғының жолдары оның өз кірістерімен ауыстырылады.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Бұл құрылғыда кеңейтілген контроллер көтере алатыннан көп кіріс бар. Тағайындалғаны: {1} ішінен {0}, {3} ішінен {2}, {5} ішінен {4}. Қалғандары тағайындалмай қалды.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Контроллер алдын ала баптаулары</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge жеткізбейтін контроллер үшін алдын ала баптауды файлдан немесе контроллердің өзінен қосыңыз.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Импортталған</value></data>
@@ -1597,11 +1601,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Ұсталып тұрғанда жинақтағышты төмен қарай өзгертетін түйме</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Төмен: ұсталып тұрғанда жинақтағышты төмен қарай өзгертетін түйме.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Жылдамдық</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Секундына бірлікпен берілген өзгеру жылдамдығы. 0.5 = толық ауқым 2 с ішінде, 2 = толық ауқым 0.5 с ішінде.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Секундына бірлікпен берілген өзгеру жылдамдығы. 0.5 = толық ауқым 2 с ішінде. 2 = толық ауқым 0.5 с ішінде.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Жабысқақ</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Белгіленсе, жинақтағыш жібергеннен кейін мәнін сақтайды (круиз-бақылау). Белгіленбесе, жібергенде «Ең аз» мәніне қайтады.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Ең аз</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Жинақтағыштың төменгі шегі. -1 = биполярлы ось нысаналары үшін толық теріс мән, 0 = униполярлы.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Жинақтағыштың төменгі шегі. -1 = биполярлы ось нысаналары үшін толық теріс мән. 0 = униполярлы.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Ең көп</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Жинақтағыштың жоғарғы шегі. 1 = толық оң мән.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Біркелкі өсу</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтың жарық жолағы режимін белгілі бір мәнге орнатады. Басқа әрекет немесе пайдаланушы өзгерткенше «Жарықтандыру» карточкасындағы өзгеріс сияқты сақталады.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Жарық жолағы режимдерін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} жарық жолағы режимін кезектеу</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} жарық жолағы режимін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Ұяшықтың жарық жолағы режимін төменде таңдалған режимдер бойынша ауыстырады. Әр іске қосылу келесі белгіленген режимге өтеді. Цикл орны әр әрекет үшін бөлек және қолданба қайта іске қосылғанда басынан басталады.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Ұстау</value></data>
@@ -2172,7 +2177,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Тақта қамтитын экран бөлігі</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>«Сенсорлық тақта меңзер X/Y» көздерін баптайды, олар меңзерді саусағыңыздың тақтадағы орнына лезде апарады (оларды «Пернетақта / тінтуір» виртуалды контроллеріндегі тінтуір X/Y осіне тағайындаңыз). Өлшем 1.00 және орталық 0.50 болғанда тақта бүкіл экранға сәйкестендіріледі. Меңзерді экранның бір бөлігімен шектеу үшін өлшемді кішірейтіңіз, ал оны орналастыру үшін орталықты жылжытыңыз.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Аймақ ені</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Бұл тақта сәйкестендірілетін экран аумағының ені, экран енінің үлесімен. 1.00 толық енді қамтиды, 0.50 меңзерді экранның жартысымен шектейді.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Бұл тақта сәйкестендірілетін экран аумағының ені, экран енінің үлесімен. 1.00 толық енді қамтиды. 0.50 меңзерді экранның жартысымен шектейді.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Аймақ биіктігі</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Экран аумағының биіктігі, экран биіктігінің үлесімен.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Аймақ орталығы X</value></data>
@@ -2183,7 +2188,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Сырғыту хаптикасы</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Саусақ жылжыған сайын тықылдау</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input трекпад тықылдары сияқты, саусағыңыз осы сенсорлық тақта бойымен жылжығанда контроллер хаптикасын импульстейді. Steam Controller және Steam Deck тақта астындағы жетекті тықылдатады, ал DualSense мен DualShock 4 діріл моторларын импульстейді.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input трекпад тықылдары сияқты, саусағыңыз осы сенсорлық тақта бойымен жылжығанда контроллер хаптикасын импульстейді. Steam Controller және Steam Deck тақта астындағы жетекті тықылдатады. DualSense мен DualShock 4 діріл моторларын импульстейді.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Сырғыту хаптикасын қосу</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Саусақ осы тақтада белгіленген қашықтыққа жылжыған сайын қысқа хаптикалық тықыл береді. Саусақты қою немесе тақтаны басу ешқашан тықылдатпайды. Әдепкі бойынша өшірулі.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Импульс қарқындылығы</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Барлық үлгілер түсірілді. Қимылға ат беріп, «Сақтау» түймесін басыңыз.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Үлгі: {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} үлгі</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} үлгі</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Түсірілетін үлгілер саны</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Алынатын үлгілер</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт мәні 3. Үлгілер көп болса, сәйкестік сенімдірек, ал аз болса, жазу жылдамырақ.</value></data>
@@ -3390,6 +3396,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Тапанша экраннан тыс</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Меңзер режимдерін кезектеу</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} меңзер режимін кезектеу</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} меңзер режимін кезектеу</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Ұяшықтағы IR қолдайтын әр пульт үшін Wii меңзер режимін төменде таңдалған режимдер бойынша ауыстырады. Әр іске қосылу келесі белгіленген режимге өтеді. Цикл орны әр әрекет үшін бөлек және қолданба қайта іске қосылғанда басынан басталады.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Макрос қай меңзер режимдерін кезектейтінін таңдаңыз. Әр іске қосылу келесі белгіленген режимге өтеді.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Дыбыс</value></data>
@@ -3717,7 +3724,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB арқылы DualShock 3 табылмады. Оны USB кабелімен қосып, қайталап көріңіз.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows DualShock 3 үшін PadForge USB драйверін орнатпайды, себебі оның қолтаңба сертификатына бұл компьютерде сенім жоқ.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation контроллерлеріне арналған Bluetooth драйверін орнату мүмкін болмады.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetooth радиосы қолжетімсіз. Bluetooth қосып, қайталап көріңіз. Жұптастыру тек сымсыз ойын үшін қажет, кабельмен қосылған контроллер онсыз да жұмыс істейді.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetooth радиосы қолжетімсіз. Bluetooth қосып, қайталап көріңіз. Жұптастыру тек сымсыз ойын үшін қажет. Кабельмен қосылған контроллер онсыз да жұмыс істейді.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Жұптастыру аяқталмады. Сәтсіз аяқталған қадам жоғарыда көрсетілген.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Жабу</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC белгілері</value></data>
@@ -3808,7 +3815,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Түймені жіберіңіз.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{1} ішінен {0}-қадам</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Ешқандай өзгеріс байқалмады. Қайта бастау түймесін басып, сұралғанда түймені басып ұстап тұрыңыз.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Өндірушінің {0} есебі және {1} оқиға класы бақыланды. Басу кезінде: {2} есеп, {3} оқиға.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Бақыланған өндіруші есептері: {0}. Бақыланған оқиға кластары: {1}. Басу кезіндегі есептер: {2}. Басу кезіндегі оқиғалар: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Түйме түсірілді. Атау енгізіп, «Тіркеу» түймесін басыңыз.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Көз</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Атауы</value></data>
@@ -3824,7 +3831,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Экспорттау…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Импорттау…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} түйме экспортталды.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} түйме экспортталды.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} түйме импортталды.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} түйме импортталды.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Портативті компьютер түймелері</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Портативті ойын компьютерлері мен ноутбуктерде амалдық жүйе ешқашан контроллер ретінде көрсетпейтін түймелер болады: артқы қалақшалар, мәзір пернелері, дөңгелектер, өндірушінің жылдам пернелері. Оларды бір рет басып үйрену үшін мұны қосыңыз, содан кейін оларды кез келген басқа түйме сияқты тағайындаңыз. Сондай-ақ компьютердің өз гироскопын қозғалыс құрылғысы ретінде қосады.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Портативті компьютер түймелерін қосу</value></data>
@@ -3988,9 +3997,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Өсу бойынша</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Кему бойынша</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} байланыстыру</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} байланыстыру</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} табылды</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} ішінен {0} көрсетілген</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} конфигурация</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} конфигурация</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>контроллерге толық қолдау</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>контроллерге ішінара қолдау</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Ойындарды іздеу</value></data>
@@ -4000,7 +4011,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ай бұрын</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} жыл бұрын</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} жазылушы</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} жазылушы</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} дауыс</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} дауыс</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Барлығы</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Бұл ойын үшін әзірге конфигурациялар жоқ</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam шеберханасында {0} үшін қауымдастық контроллер конфигурациялары жоқ. Сіз бірінші бола аласыз: Steam ішінде біреуін жасаңыз, сонда ол осында пайда болады.</value></data>
@@ -4033,6 +4046,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>қабат: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>бұл кіріс үшін құрылғыға байланбаған іске қосқыш жоқ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ойын ішіндегі әрекет, тек Steam үшін, ойын жағында ілмек жоқ</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ойын ішіндегі әрекет, тек Steam үшін, ойын жағында ілмек жоқ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam клиентінің {0} әрекеті, баламасы жоқ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>{0} контроллер әрекетіне қолдау жоқ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>белгісіз байланыстыру түрі {0}</value></data>
@@ -4107,10 +4121,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Тінтуір дөңгелегінің бір қадамы</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Әр іске қосылуда тінтуір дөңгелегінің бір дискретті қадамын жібереді. Мән таңбалы қадам саны (оң мән жоғары немесе оңға айналдырады).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Меңзерді жылжыту</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Әр іске қосылуда тінтуір меңзерін белгіленген пиксель санына жылжытады. Оң X оңға, оң Y төмен жылжытады, теріс мәндерге рұқсат етілген.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Әр іске қосылуда тінтуір меңзерін белгіленген пиксель санына жылжытады. Оң X оңға, оң Y төмен жылжытады. Теріс мәндерге рұқсат етілген.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Меңзерді ({0}, {1}) пиксельге жылжыту</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Түрту тізімін кезектеу</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Әр іске қосылу қадамдар тізіміндегі келесі түртуді орындап, алға жылжиды. Айналым қосулы болса, тізім соңғы қадамнан кейін қайта басталады, ал өшірулі болса, соңында іске қосылу тоқтайды.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Әр іске қосылу қадамдар тізіміндегі келесі түртуді орындап, алға жылжиды. Айналым қосулы болса, тізім соңғы қадамнан кейін қайта басталады. Өшірулі болса, соңында іске қосылу тоқтайды.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Тінтуір түймесін ауыстыру</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Әр іске қосылу тінтуір түймесін бекітеді немесе босатады. Бекітілген түйме келесі іске қосылуға немесе макрос өшірілгенге дейін басулы қалады.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Тінтуірді ауыстыру: {0}</value></data>
@@ -4123,6 +4137,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Дөңгелекпен айналдыруды ауыстыру</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Әр іске қосылу үздіксіз айналдыруды бекітеді немесе босатады. Бекітулі кезде келесі іске қосылуға немесе макрос өшірілгенге дейін әр аралықта қадам санын бір рет жібереді.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Дөңгелекпен айналдыруды ауыстыру (әр {1} мс сайын {0} қадам)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Дөңгелекпен айналдыруды ауыстыру (әр {1} мс сайын {0} қадам)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Бекітулі кезде импульстеу</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Бекітулі кезде шығысты тұрақты ұстамай, қайталау аралығымен қосып-өшіру.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Оське қосу (салыстырмалы)</value></data>
@@ -4144,6 +4159,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Физикалық қозғалыс нысананы шектен асырғанда, макрос белсендірудің қалған уақытында осьті жазуды тоқтатады.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(физикалық кіріске жол береді)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Түрту тізімін кезектеу ({0} қадам)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Түрту тізімін кезектеу ({0} қадам)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Қадамдар</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Айналым</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Пернелерді ауыстыру: {0}</value></data>
@@ -4227,6 +4243,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профильді ауыстыру оверлейі</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиалды немесе сенсорлық мәзір белсенді болғанда экрандағы сақинаны немесе торды көрсету. Оверлей өшірулі болса да мәзірлер жұмыс істейді.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>экрандағы мәзір жасалды (байланған ұяшықтар: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>экрандағы мәзір жасалды (байланған ұяшықтар: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>мәзірде байланған ұяшық жоқ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>мәзір орналастырылатын бетке қолдау жоқ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>мәзір ұяшығының белгішесі танылмады ({0}), сондықтан ұяшық мәтіндік белгісін сақтайды</value></data>
@@ -4411,6 +4428,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq жүктеген .txt файлын таңдаңыз. Дәл осыны қолдану керек: autoeq.app көшіруге болатын мәтіннің орнына файл береді.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Құлаққабыңызға сәйкес түзету үшін: autoeq.app ашыңыз, үлгіңізді таңдаңыз, Custom Parametric Eq таңдап жүктеңіз, содан кейін Файлдан импорттау түймесін басыңыз. Graphic Eq жүктемесінде сүзгі жолдары жоқ, сондықтан импортталмайды.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} көзінен {1:0.#} dB преампты {0} жолақ импортталды.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} көзінен {1:0.#} dB преампты {0} жолақ импортталды.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Бұл профильде сүзгі жолдары жоқ. AutoEq-тің Graphic Eq экспортын мұнда оқу мүмкін емес. Оның орнына Custom Parametric Eq нұсқасын жүктеңіз. Ағымдағы EQ өзгертілмеді.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Импорттайтын ештеңе жоқ. Ағымдағы EQ өзгертілмеді.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Бұл файлды оқу мүмкін болмады: {0}</value></data>

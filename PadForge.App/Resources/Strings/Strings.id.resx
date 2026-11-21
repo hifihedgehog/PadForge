@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Satu Halaman ke Kanan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tidak ada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>mnt</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>detik</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>menit (0 = tidak pernah)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide memblokir PadForge dari perangkat yang telah disembunyikan PadForge, sehingga PadForge berhenti menyembunyikan perangkat.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Opsi Inverse application cloak di HidHide aktif, sehingga PadForge tidak menyembunyikan perangkat apa pun.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Menghapus instalan runtime Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} tidak dapat dimulai karena MIDI tidak berjalan. Kartu Windows MIDI Services di Pengaturan menjelaskan sebabnya.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} tidak dapat dimulai karena MIDI tidak berjalan. Lihat Windows MIDI Services di Pengaturan, di bawah Driver.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} tidak dapat dimulai karena Windows MIDI Services tidak membuat port-nya.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} belum memiliki Port output. Pilih salah satu di halamannya.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Port output “{1}” milik {0} tidak tersambung. Slot dimulai setelah port tersebut kembali.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>SDK G-key menolak untuk mulai. Biasanya ini karena Logitech Gaming Software tidak berjalan.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Tersambung, belum ada tombol yang terdeteksi. Di Logitech Gaming Software, seret perintah G-key ke setiap tombol dalam profil PadForge, lalu jadikan profil itu persisten. Mouse G600 atau G300 juga harus keluar dari mode memori on-board.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Berjalan, {0} peristiwa tombol</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Berjalan, {0} peristiwa tombol</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Baca keyboard analog</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Membaca seberapa dalam setiap tombol ditekan pada keyboard analog dari Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA, dan produsen lain, masing-masing sebagai baris perangkat tersendiri. Dokumentasi memuat daftar setiap model yang didukung. Keyboard Razer memerlukan Razer Synapse yang sedang berjalan. Sebagian besar lainnya dibaca melalui saluran yang dipakai konfiguratornya sendiri, jadi tutup konfigurator itu selama opsi ini aktif.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Tidak ditemukan keyboard analog yang didukung.</value></data>
@@ -814,7 +816,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Periksa pembaruan</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork modern dari x360ce, dibangun ulang dengan SDL3, WPF, dan .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge mengubah perangkat input apa pun menjadi kontroler virtual apa pun. Gamepad, joystick, keyboard, mouse, dan layar sentuh dipetakan ke kontroler game virtual (Xbox, PlayStation, joystick penerbangan, setir, gamepad pihak ketiga) atau output keyboard+mouse / MIDI yang diperlakukan game sebagai perangkat keras asli. Didukung oleh HIDMaestro dan Windows MIDI Services. PadForge memakai SDL3 untuk input kontroler, Windows Raw Input untuk keyboard dan mouse, HidHide untuk penyembunyian perangkat per game, serta menyediakan antarmuka Fluent Design modern untuk pemetaan, zona mati, kurva sensitivitas, dan force feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge membuat input apa pun tampil sebagai kontroler apa pun. Gamepad, joystick, setir, keyboard, mouse, layar sentuh, perangkat MIDI, dan ponsel menggerakkan kontroler virtual yang diperlakukan game sebagai perangkat keras asli: gamepad Xbox, PlayStation, Nintendo, dan Steam, gamepad SInput, kontroler tangan VR, output MIDI, keyboard dan mouse, atau perangkat kustom seperti joystick penerbangan atau setir. HIDMaestro membuat gamepad virtual, SDL3 membaca kontroler, Windows Raw Input membaca keyboard dan mouse, HidHide menyembunyikan perangkat dari game, dan Windows MIDI Services membawa MIDI masuk dan keluar.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Ikhtisar</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Dibangun dengan</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Cari kredit</value></data>
@@ -942,6 +944,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Jeda antarhuruf</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milidetik di antara karakter yang diketik, hingga 1000. 0 mengetik seluruh teks sekaligus.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Putuskan saat tidak aktif</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 berarti tidak pernah</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detail</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Putuskan Bluetooth saat dicolokkan lewat USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Pengisian cepat. Saat kontroler ini melaporkan sedang mengisi daya ketika tersambung lewat Bluetooth, sambungan Bluetooth diputus agar pengisian berlangsung tanpa menyalakan radio. Sumber daya USB apa pun dihitung, termasuk pengisi daya dinding. Jika Anda menyalakan Bluetooth lagi selagi kabel masih tercolok, sambungan itu dibiarkan sampai kabel dicabut berikutnya.</value></data>
@@ -1006,6 +1009,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Kirim</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bingkai: {0}. Pengiriman memakan waktu sekitar {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroler hanya menerima maksimal {0} bingkai, jadi {1} bingkai terakhir dihilangkan.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontroler hanya menerima maksimal {0} bingkai, jadi bingkai terakhir dihilangkan.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sambungkan kontroler dengan kabel. Kontroler restart sendiri sekitar 15 detik setelah gambar masuk.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sambungkan kontroler dengan kabel. Untuk pengiriman, PadForge mengalihkannya ke mode Xbox dan memindahkannya dari driver Xbox Windows ke WinUSB, lalu mengembalikan keduanya.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge akan mengalihkan kontroler ke mode Xbox, memindahkannya ke WinUSB untuk pengiriman, lalu mengembalikannya ke driver Xbox Windows dan mengalihkannya kembali ke mode DInput. Cabut dulu semua kontroler Xbox 360 lainnya. Kirim sekarang?</value></data>
@@ -1198,6 +1202,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows tidak lagi menggerakkan penunjuk dengan {0}. Jika itu tidak Anda maksudkan, diamkan saja dan perangkat itu kembali.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows tidak lagi menggerakkan penunjuk dengan {0}. Jika itu tidak Anda maksudkan, diamkan saja dan perangkat itu kembali.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Dikembalikan dalam {0} detik</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Dikembalikan dalam {0} detik</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Pertahankan</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Kembalikan</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Cabut dahulu keyboard lain dengan model ini. Windows memindahkan semua yang tercolok ke driver PadForge sekaligus, dan berhenti mengetik dengan masing-masing.</value></data>
@@ -1612,8 +1617,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klon</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Pilih perangkat di slot ini untuk diklon.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Perangkat yang dipilih tidak memiliki sumbu, tombol, atau hat untuk diklon.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klon {0} ke slot ini sebagai penerusan 1:1? Tata letak menjadi {1} sumbu, {2} tombol, dan {3} POV, dan baris perangkat ini di slot diganti dengan inputnya sendiri.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Perangkat ini memiliki lebih banyak input daripada yang dapat ditampung kontroler Diperluas. Dipetakan {0} dari {1} sumbu, {2} dari {3} tombol, dan {4} dari {5} POV. Sisanya dibiarkan tidak dipetakan.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klon {0} ke slot ini sebagai penerusan 1:1? Tata letak menjadi {1}, {2}, dan {3}, dan baris perangkat ini di slot diganti dengan inputnya sendiri.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Perangkat ini memiliki lebih banyak input daripada yang dapat ditampung kontroler Diperluas. Dipetakan {0} dari {1}, {2} dari {3}, dan {4} dari {5}. Sisanya dibiarkan tidak dipetakan.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Preset kontroler</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Tambahkan preset untuk kontroler yang tidak disertakan PadForge, dari file atau dari kontroler itu sendiri.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Diimpor</value></data>
@@ -1785,11 +1790,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Tombol yang menurunkan akumulator secara bertahap selama ditahan</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Turun: tombol yang menurunkan akumulator secara bertahap selama ditahan.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Laju</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kecepatan sapuan dalam satuan per detik. 0.5 = rentang penuh dalam 2 s; 2 = rentang penuh dalam 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kecepatan sapuan dalam satuan per detik. 0.5 = rentang penuh dalam 2 s. 2 = rentang penuh dalam 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Lekat</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Jika dicentang, akumulator mempertahankan nilainya setelah dilepas (cruise control). Jika tidak dicentang, akumulator langsung kembali ke Min saat dilepas.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Batas bawah akumulator. -1 = negatif penuh untuk target sumbu bipolar; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Batas bawah akumulator. -1 = negatif penuh untuk target sumbu bipolar. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Batas atas akumulator. 1 = positif penuh.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
@@ -2083,6 +2088,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Mengatur mode bilah lampu slot yang ditetapkan ke nilai tertentu. Bertahan seperti perubahan di kartu Pencahayaan sampai tindakan lain atau pengguna mengubahnya.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Gilir mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Bergilir melalui {0} mode bilah lampu</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Bergilir melalui {0} mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mode bilah lampu slot melalui mode-mode yang dipilih di bawah. Setiap kali terpicu, mode berpindah ke mode tercentang berikutnya. Posisi giliran berlaku per tindakan dan diatur ulang saat aplikasi dimulai ulang.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tahan</value></data>
@@ -2361,7 +2367,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Bagian layar yang dijangkau panel sentuh</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Menyetel sumber Penunjuk X/Y panel sentuh, yang memindahkan kursor seketika ke posisi jari Anda pada panel (petakan ke mouse X/Y pada kontroler virtual Keyboard + mouse). Ukuran 1.00 dengan tengah 0.50 memetakan panel ke seluruh layar. Perkecil ukuran untuk membatasi kursor pada sebagian layar, dan geser tengahnya untuk menempatkannya.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Lebar wilayah</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Lebar area layar yang menjadi tujuan pemetaan panel ini, sebagai pecahan dari lebar layar. 1.00 mencakup seluruh lebar; 0.50 membatasi kursor pada separuh layar.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Lebar area layar yang menjadi tujuan pemetaan panel ini, sebagai pecahan dari lebar layar. 1.00 mencakup seluruh lebar. 0.50 membatasi kursor pada separuh layar.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Tinggi wilayah</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Tinggi area layar, sebagai pecahan dari tinggi layar.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Tengah wilayah X</value></data>
@@ -2372,7 +2378,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptik usapan</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Denyut saat jari bergerak</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Mendenyutkan haptik kontroler saat jari Anda bergerak melintasi panel sentuh ini, seperti detak trackpad di Steam Input. Steam Controller dan Steam Deck mendetakkan aktuator di bawah panel; DualSense dan DualShock 4 mendenyutkan motor getaran.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Mendenyutkan haptik kontroler saat jari Anda bergerak melintasi panel sentuh ini, seperti detak trackpad di Steam Input. Steam Controller dan Steam Deck mendetakkan aktuator di bawah panel. DualSense dan DualShock 4 mendenyutkan motor getaran.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktifkan haptik usapan</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Memicu detak haptik singkat setiap kali jari bergerak sejauh jarak tertentu pada panel ini. Mendaratkan jari atau mengeklik panel tidak pernah memicu detak. Nonaktif secara default.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensitas denyut</value></data>
@@ -2480,6 +2486,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Semua sampel telah ditangkap. Beri nama gestur dan klik Simpan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sampel {0} dari {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} sampel</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} sampel</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Jumlah sampel</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Sampel yang direkam</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 adalah standar. Lebih banyak sampel memberi pencocokan lebih pasti, dan lebih sedikit lebih cepat direkam.</value></data>
@@ -3585,6 +3592,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Light gun di luar layar</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Gilir mode penunjuk</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Bergilir melalui {0} mode penunjuk</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Bergilir melalui {0} mode penunjuk</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mode penunjuk Wii melalui mode-mode yang dipilih di bawah untuk setiap remote berkemampuan IR pada slot. Setiap kali terpicu, mode berpindah ke mode tercentang berikutnya. Posisi giliran berlaku per tindakan dan diatur ulang saat aplikasi dimulai ulang.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pilih mode penunjuk mana saja yang akan digilir makro. Setiap kali terpicu, makro maju ke mode tercentang berikutnya.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3916,7 +3924,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Tidak ditemukan DualShock 3 di USB. Sambungkan dengan kabel USB dan coba lagi.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows tidak mau menginstal driver USB PadForge untuk DualShock 3, karena sertifikat penandatanganannya tidak dipercaya di PC ini.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Driver Bluetooth untuk kontroler PlayStation tidak dapat diinstal.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Tidak ada radio Bluetooth yang tersedia. Nyalakan Bluetooth dan coba lagi. Penyandingan hanya diperlukan untuk bermain nirkabel; kontroler yang tersambung dengan kabel berfungsi tanpa penyandingan.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Tidak ada radio Bluetooth yang tersedia. Nyalakan Bluetooth dan coba lagi. Penyandingan hanya diperlukan untuk bermain nirkabel. Kontroler yang tersambung dengan kabel berfungsi tanpa penyandingan.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Penyandingan tidak selesai. Langkah yang gagal ditampilkan di atas.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tutup</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Tag NFC</value></data>
@@ -4007,7 +4015,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lepaskan tombol.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Langkah {0} dari {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Tidak ada perubahan yang terlihat. Pilih Mulai ulang, lalu tekan dan tahan tombol saat diminta.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Mengamati {0} laporan vendor dan {1} kelas peristiwa. Selama penekanan: {2} laporan, {3} peristiwa.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Laporan vendor yang diamati: {0}. Kelas peristiwa yang diamati: {1}. Laporan selama penekanan: {2}. Peristiwa selama penekanan: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Tombol ditangkap. Masukkan nama dan klik Daftarkan.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Sumber</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nama</value></data>
@@ -4043,12 +4051,17 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Lupakan semua</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Hapus semua nama yang dipelajari untuk model ini.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} nama diekspor.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0} nama diekspor.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} nama diimpor.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0} nama diimpor.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>{0} nama diimpor untuk model lain, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>{0} nama diimpor untuk model lain, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>File itu tidak berisi nama lampu tombol.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Impor…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} tombol diekspor.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} tombol diekspor.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} tombol diimpor.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} tombol diimpor.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Tombol PC genggam</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC gaming genggam dan laptop memiliki tombol yang tidak pernah ditampilkan sistem operasi sebagai kontroler: paddle belakang, tombol menu, roda, tombol pintas vendor. Aktifkan ini untuk mempelajarinya sekali dengan menekannya, lalu petakan seperti tombol lain. Juga menambahkan giroskop milik komputer itu sendiri sebagai perangkat gerakan.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktifkan Tombol PC genggam</value></data>
@@ -4212,9 +4225,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Naik</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Turun</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} ikatan</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} ikatan</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ditemukan</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Menampilkan {0} dari {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurasi</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurasi</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>dukungan kontroler penuh</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>dukungan kontroler sebagian</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Cari game</value></data>
@@ -4224,7 +4239,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} bln lalu</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} thn lalu</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} pelanggan</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} pelanggan</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} suara</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} suara</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Semua</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Belum ada konfigurasi untuk game ini</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Workshop Steam belum memiliki konfigurasi kontroler komunitas untuk {0}. Anda bisa menjadi yang pertama: buat satu di Steam, dan konfigurasi itu akan muncul di sini.</value></data>
@@ -4257,6 +4274,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lapisan: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>tidak ada pemicu bebas perangkat untuk input ini</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} tindakan dalam game, khusus Steam, tanpa hook di sisi game</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} tindakan dalam game, khusus Steam, tanpa hook di sisi game</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>tindakan klien Steam {0}, tidak ada padanannya</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>tindakan kontroler {0} tidak didukung</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>jenis ikatan tidak dikenal {0}</value></data>
@@ -4331,10 +4349,10 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Takik roda mouse</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Mengirim satu takik roda mouse per pemicuan. Nilainya adalah jumlah takik bertanda (positif menggulir ke atas atau ke kanan).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Geser kursor</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Menggerakkan kursor mouse sejauh jumlah piksel tetap per pemicuan. X positif bergerak ke kanan, Y positif bergerak ke bawah; nilai negatif diperbolehkan.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Menggerakkan kursor mouse sejauh jumlah piksel tetap per pemicuan. X positif bergerak ke kanan, Y positif bergerak ke bawah. Nilai negatif diperbolehkan.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Geser kursor sejauh ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Gilir daftar ketukan</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Setiap pemicuan menjalankan ketukan berikutnya dalam daftar langkah lalu maju. Dengan Berputar kembali aktif, daftar dimulai lagi setelah langkah terakhir; tanpa itu, pemicuan berhenti di akhir.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Setiap pemicuan menjalankan ketukan berikutnya dalam daftar langkah lalu maju. Dengan Berputar kembali aktif, daftar dimulai lagi setelah langkah terakhir. Tanpa itu, pemicuan berhenti di akhir.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Alihkan tombol mouse</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Setiap kali terpicu, tombol mouse dikunci atau dilepas kuncinya. Tombol yang terkunci tetap ditekan sampai pemicuan berikutnya atau sampai makro dinonaktifkan.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Alihkan mouse {0}</value></data>
@@ -4347,6 +4365,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Alihkan gulir roda</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Setiap kali terpicu, guliran kontinu dikunci atau dilepas kuncinya. Selama terkunci, jumlah takik dikirim sekali per interval sampai pemicuan berikutnya atau sampai makro dinonaktifkan.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alihkan gulir roda ({0} takik setiap {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Alihkan gulir roda ({0} takik setiap {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Denyut selama terkunci</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Selama terkunci, denyutkan output hidup dan mati pada interval pengulangan alih-alih menahannya terus.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Tambah sumbu (relatif)</value></data>
@@ -4368,6 +4387,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Saat gerakan fisik mendorong target melewati ambang batas, makro berhenti menulis sumbu selama sisa aktivasi.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(mengalah pada input fisik)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Gilir daftar ketukan ({0} langkah)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Gilir daftar ketukan ({0} langkah)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Langkah</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Berputar kembali</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alihkan tombol {0}</value></data>
@@ -4451,6 +4471,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay pergantian profil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tampilkan cincin atau kisi di layar selama menu radial atau menu sentuh aktif. Menu tetap berfungsi saat overlay nonaktif.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu di layar dibuat ({0} sel terikat)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>menu di layar dibuat ({0} sel terikat)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu tidak memiliki sel terikat</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>permukaan pembuka menu tidak didukung ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), sehingga sel tetap memakai label teksnya</value></data>
@@ -4639,6 +4660,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pilih file .txt yang diunduh dari AutoEq. Inilah yang perlu dipakai: autoeq.app memberi Anda file, bukan teks yang dapat disalin.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Untuk koreksi yang cocok dengan headphone Anda: buka autoeq.app, pilih model Anda, pilih Custom Parametric Eq dan unduh, lalu Impor dari file. Unduhan Graphic Eq tidak memiliki baris filter dan tidak akan dapat diimpor.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} pita diimpor dengan preamp {1:0.#} dB dari {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} pita diimpor dengan preamp {1:0.#} dB dari {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Tidak ada baris filter dalam profil itu. Ekspor Graphic Eq dari AutoEq tidak dapat dibaca di sini. Unduh versi Custom Parametric Eq sebagai gantinya. EQ saat ini tidak berubah.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Tidak ada yang dapat diimpor. EQ saat ini tidak berubah.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Tidak dapat membaca file itu: {0}</value></data>
@@ -4654,7 +4676,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Atur ulang batas atas</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Seret sebuah titik untuk memindahkan frekuensi dan gain-nya. Putar roda gulir di atas sebuah titik untuk melebarkan atau menyempitkannya.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Jalur output</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Tempat kontroler memutar audionya. Default mempertahankan perutean firmware sendiri dan memutar suara PadForge di speaker. Headphone + speaker memutar mono di sisi headset, sebuah batasan firmware. Lewat Bluetooth, mode ini hanya memutar melalui headphone. Ikuti jack headphone beralih ke headphone saat ada yang dicolokkan ke kontroler dan kembali ke speaker saat dicabut; jika pembacaan jack tidak tersedia, perilakunya sama seperti Default.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Tempat kontroler memutar audionya. Default mempertahankan perutean firmware sendiri dan memutar suara PadForge di speaker. Headphone + speaker memutar mono di sisi headset, sebuah batasan firmware. Lewat Bluetooth, mode ini hanya memutar melalui headphone. Ikuti jack headphone beralih ke headphone saat ada yang dicolokkan ke kontroler dan kembali ke speaker saat dicabut. Jika pembacaan jack tidak tersedia, perilakunya sama seperti Default.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Default</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Headphone (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Headphone (mono)</value></data>
@@ -5500,11 +5522,17 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Mengakhiri aksi Atur warna tombol yang berjalan pada kontroler virtual ini yang menyalakan salah satu tombol yang dipilih di sini, atau semuanya jika tidak ada yang dipilih.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Hapus semua warna tombol</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Hapus warna tombol pada {0} lampu</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Hapus warna tombol pada {0} lampu</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} lampu dalam {1} selama {2} md</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} lampu dalam {1} selama {2} md</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} lampu dalam {1} selama ditahan</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} lampu dalam {1} selama ditahan</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} lampu dalam {1} sampai dihapus</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} lampu dalam {1} sampai dihapus</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} lampu dalam {1}, memudar selama {2} md</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} lampu dalam {1}, memudar selama {2} md</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} lampu dalam {1}, menghitung mundur selama {2} md</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} lampu dalam {1}, menghitung mundur selama {2} md</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Tombol</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Setiap lampu</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Tidak ada tombol yang dipilih, jadi aksi ini tidak menyalakan apa pun.</value></data>

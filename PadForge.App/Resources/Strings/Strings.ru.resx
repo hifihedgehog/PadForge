@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Страница вправо</value></data>
   <data name="Common_None" xml:space="preserve"><value>Нет</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>мин</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>с</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>мин (0 = никогда)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide закрыл для PadForge доступ к устройству, которое скрыл сам PadForge, поэтому PadForge больше не скрывает устройства.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>В HidHide включен режим «Inverse application cloak», поэтому PadForge не скрывает устройства.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Удаление среды выполнения Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} не удалось запустить, так как MIDI не работает. Причина указана на карточке Windows MIDI Services в настройках.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} не удалось запустить, так как MIDI не работает. См. Windows MIDI Services в разделе «Драйверы» в настройках.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} не удалось запустить, так как в Windows MIDI Services не был создан нужный порт.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}: не выбран выходной порт. Выберите его на странице этого контроллера.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}: выходной порт «{1}» не подключен. Слот запустится, когда порт снова появится.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK отказался запускаться. Обычно это значит, что Logitech Gaming Software не запущена.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Подключено, нажатий пока не было. В Logitech Gaming Software перетащите команду «G-key» на каждую клавишу в профиле PadForge и сделайте этот профиль постоянным. Мышь G600 или G300 также нужно вывести из режима встроенной памяти.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Работает, событий клавиш: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Работает, {0} событие клавиши</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Считывать аналоговые клавиатуры</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Считывает глубину нажатия каждой клавиши на аналоговых клавиатурах Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA и других производителей. Каждая клавиатура идет отдельной строкой устройства. Все поддерживаемые модели перечислены в документации. Клавиатурам Razer нужна запущенная программа Razer Synapse. Большинство остальных читается по тому же каналу, что и их собственный конфигуратор, поэтому закройте конфигуратор, пока этот параметр включен.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Поддерживаемые аналоговые клавиатуры не найдены.</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Проверить обновления</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Современный форк x360ce, пересобранный на SDL3, WPF и .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge превращает любое устройство ввода в любой виртуальный контроллер. Геймпады, джойстики, клавиатуры, мыши и сенсорные экраны назначаются на виртуальные игровые контроллеры (Xbox, PlayStation, авиаджойстики, рули, геймпады сторонних производителей) либо на выход клавиатуры и мыши или MIDI, и игры принимают их за настоящие устройства. Работает на HIDMaestro и Windows MIDI Services. Использует SDL3 для ввода с контроллеров, Windows Raw Input для клавиатуры и мыши, HidHide для скрытия устройств от отдельных игр и предлагает современный интерфейс в стиле Fluent Design для назначений, мертвых зон, кривых чувствительности и силовой обратной связи.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge делает любой ввод похожим на любой контроллер. Геймпады, джойстики, рули, клавиатуры, мыши, сенсорные экраны, устройства MIDI и телефоны управляют виртуальными контроллерами, которые игры принимают за настоящие устройства: геймпадами Xbox, PlayStation, Nintendo и Steam, геймпадами SInput, ручными контроллерами VR, выходом MIDI, клавиатурой и мышью или собственным устройством, например авиаджойстиком или рулем. HIDMaestro создает виртуальные геймпады, SDL3 считывает контроллеры, Windows Raw Input считывает клавиатуры и мыши, HidHide скрывает устройство от игр, а Windows MIDI Services передает MIDI на вход и выход.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Обзор</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Создано на основе</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Поиск по благодарностям</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Задержка между символами</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Миллисекунды между набираемыми символами, до 1000. При 0 весь текст набирается сразу.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Отключение при бездействии</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 означает «никогда»</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Сведения</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Отключать Bluetooth при подключении по USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Быстрая зарядка. Когда этот контроллер сообщает, что заряжается при подключении по Bluetooth, соединение Bluetooth разрывается, чтобы он заряжался, не тратя энергию на радиомодуль. Считается любой источник питания USB, включая сетевые зарядные устройства. Если вы снова включите Bluetooth, не вынимая кабель, соединение не будет разрываться, пока вы не отсоедините кабель.</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Отправить</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадров: {0}. Отправка займет около {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Контроллер принимает не больше кадров: {0}, поэтому последние кадры ({1}) пропущены.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Контроллер принимает не больше кадров: {0}, поэтому последний кадр пропущен.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Подключите контроллер кабелем. Примерно через 15 секунд после загрузки картинки он перезапустится сам.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Подключите контроллер кабелем. На время отправки PadForge переключает его в режим Xbox и переводит с драйвера Xbox от Windows на WinUSB, а потом возвращает все обратно.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge переключит контроллер в режим Xbox, переведет его на WinUSB на время отправки, затем вернет драйверу Xbox от Windows и переключит обратно в режим DInput. Сначала отключите все остальные контроллеры Xbox 360. Отправить сейчас?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows больше не двигает курсор с помощью устройства {0}. Если вы этого не хотели, ничего не делайте, и оно вернется.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows больше не двигает курсор с помощью устройства {0}. Если вы этого не хотели, ничего не делайте, и оно вернется.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Возврат через {0} с</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Возврат через {0} с</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Оставить</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Вернуть</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Сначала отключите остальные клавиатуры этой модели. Windows переводит на драйвер PadForge сразу все подключенные и перестает набирать текст с каждой из них.</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Клонировать</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Выберите в этом слоте устройство для клонирования.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>У выбранного устройства нет осей, кнопок и переключателей POV, которые можно клонировать.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Клонировать {0} в этот слот как сквозную передачу 1:1? В раскладке станет осей: {1}, кнопок: {2}, переключателей POV: {3}, а строки этого устройства в слоте будут заменены его собственным вводом.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>У этого устройства больше элементов ввода, чем вмещает расширенный контроллер. Назначено осей: {0} из {1}, кнопок: {2} из {3}, переключателей POV: {4} из {5}. Остальное осталось без назначения.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Клонировать {0} в этот слот как сквозную передачу 1:1? В раскладке станет: {1}, {2}, {3}, а строки этого устройства в слоте будут заменены его собственным вводом.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>У этого устройства больше элементов ввода, чем вмещает расширенный контроллер. Назначено {0} из {1}, {2} из {3}, {4} из {5}. Остальное осталось без назначения.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Пресеты контроллеров</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Добавьте пресет для контроллера, которого нет в PadForge, из файла или с самого контроллера.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Импортированные</value></data>
@@ -1785,11 +1790,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Кнопка, которая уменьшает накопитель, пока ее удерживают</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Вниз: кнопка, которая уменьшает накопитель, пока ее удерживают.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Скорость</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Скорость изменения в единицах в секунду. 0.5 = полный диапазон за 2 с; 2 = полный диапазон за 0.5 с.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Скорость изменения в единицах в секунду. 0.5 = полный диапазон за 2 с. 2 = полный диапазон за 0.5 с.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Фиксация</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Когда отмечено, накопитель сохраняет значение после отпускания (круиз-контроль). Когда не отмечено, при отпускании он сразу возвращается к минимуму.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Мин.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Нижняя граница накопителя. -1 = полный минус для двуполярных осей; 0 = однополярная.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Нижняя граница накопителя. -1 = полный минус для двуполярных осей. 0 = однополярная.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Макс.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Верхняя граница накопителя. 1 = полный плюс.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Нарастание</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задает конкретный режим световой панели назначенного слота. Сохраняется, как изменение в карточке «Подсветка», пока его не изменит другое действие или пользователь.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Перебирать режимы световой панели</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Перебор режимов световой панели: {0}</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Перебор режимов световой панели: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Переключает режим световой панели слота по режимам, выбранным ниже. Каждое срабатывание переходит к следующему отмеченному режиму. Позиция в цикле своя у каждого действия и сбрасывается при перезапуске приложения.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Удержание</value></data>
@@ -2361,7 +2367,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Область экрана, которую охватывает тачпад</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Настраивает источники тачпада «Указатель X/Y», которые переносят курсор в точку, где палец касается тачпада (назначьте их на оси мыши X/Y виртуального контроллера «Клавиатура + мышь»). Размер 1.00 при центре 0.50 растягивает тачпад на весь экран. Уменьшите размер, чтобы ограничить курсор частью экрана, и сдвиньте центр, чтобы выбрать ее место.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ширина области</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ширина области экрана, на которую отображается этот тачпад, в долях ширины экрана. 1.00 охватывает всю ширину; 0.50 ограничивает курсор половиной экрана.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ширина области экрана, на которую отображается этот тачпад, в долях ширины экрана. 1.00 охватывает всю ширину. 0.50 ограничивает курсор половиной экрана.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Высота области</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Высота области экрана в долях высоты экрана.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Центр области по X</value></data>
@@ -2372,7 +2378,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Тактильная отдача при свайпе</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Щелчки под пальцем при движении</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Подает импульсы тактильной отдачи контроллера, пока палец движется по этому тачпаду, как щелчки трекпада в Steam Input. На Steam Controller и Steam Deck щелкает привод под панелью; на DualSense и DualShock 4 импульсы подаются моторами вибрации.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Подает импульсы тактильной отдачи контроллера, пока палец движется по этому тачпаду, как щелчки трекпада в Steam Input. На Steam Controller и Steam Deck щелкает привод под панелью. На DualSense и DualShock 4 импульсы подаются моторами вибрации.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Включить тактильную отдачу при свайпе</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Дает короткий тактильный щелчок каждый раз, когда палец проходит по этому тачпаду заданное расстояние. Касание пальцем и нажатие тачпада щелчков не вызывают. По умолчанию выключено.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Интенсивность импульса</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Все образцы записаны. Дайте жесту название и нажмите «Сохранить».</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Образец {0} из {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Образцов: {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} образец</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Сколько образцов записать</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Число записываемых образцов</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт: 3. Больше образцов дают более надежное распознавание, меньше записываются быстрее.</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Пистолет за экраном</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Перебирать режимы указателя</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Перебор режимов указателя: {0}</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Перебор режимов указателя: {0}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Переключает режим указателя Wii по режимам, выбранным ниже, для каждого пульта с ИК-камерой в этом слоте. Каждое срабатывание переходит к следующему отмеченному режиму. Позиция в цикле своя у каждого действия и сбрасывается при перезапуске приложения.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Выберите, какие режимы указателя должен перебирать макрос. Каждое срабатывание переходит к следующему отмеченному режиму.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Звук</value></data>
@@ -3916,7 +3924,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>DualShock 3 на USB не найден. Подключите его кабелем USB и повторите попытку.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows не установит драйвер USB от PadForge для DualShock 3, потому что сертификат его подписи не считается доверенным на этом ПК.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Не удалось установить драйвер Bluetooth для контроллеров PlayStation.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Радиомодуль Bluetooth недоступен. Включите Bluetooth и повторите попытку. Сопряжение нужно только для беспроводной игры; контроллер, подключенный кабелем, работает и без него.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Радиомодуль Bluetooth недоступен. Включите Bluetooth и повторите попытку. Сопряжение нужно только для беспроводной игры. Контроллер, подключенный кабелем, работает и без него.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Сопряжение не завершилось. Шаг, на котором произошел сбой, показан выше.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Закрыть</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Метки NFC</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Отпустите кнопку.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Шаг {0} из {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Изменений не замечено. Выберите «Начать заново», затем нажмите и удерживайте кнопку, когда появится запрос.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Отслеживалось отчетов производителя: {0}, классов событий: {1}. За время нажатия: отчетов {2}, событий {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Отслежено отчетов производителя: {0}. Отслежено классов событий: {1}. Отчетов за время нажатия: {2}. Событий за время нажатия: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Кнопка распознана. Введите название и нажмите «Зарегистрировать».</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Источник</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Название</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Забыть все</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Удалить все названия, запомненные для этой модели.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Экспортировано названий: {0}.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Экспортировано названий: {0}.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Импортировано названий: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Импортировано названий: {0}.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Импортировано названий для другой модели ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Импортировано названий для другой модели ({1}): {0}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>В этом файле нет названий подсветки клавиш.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Импорт…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Экспортировано кнопок: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Экспортировано кнопок: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Импортировано кнопок: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Импортировано кнопок: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Кнопки портативного ПК</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>У портативных игровых ПК и ноутбуков есть кнопки, которые операционная система никогда не показывает как контроллер: задние лепестки, клавиши меню, колесики, фирменные горячие клавиши. Включите этот параметр, чтобы один раз распознать их нажатием, а потом назначать как любые другие кнопки. Также добавляет собственный гироскоп компьютера как устройство движения.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Включить кнопки портативного ПК</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>По возрастанию</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>По убыванию</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Привязок: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} привязка</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Найдено: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Показано {0} из {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Конфигураций: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} конфигурация</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>полная поддержка контроллера</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>частичная поддержка контроллера</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Поиск игр</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} мес. назад</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} г. назад</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Подписчиков: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} подписчик</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Голосов: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} голос</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Все</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Для этой игры пока нет конфигураций</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>В Мастерской Steam нет конфигураций контроллера от сообщества для {0}. Вы можете стать первым: создайте конфигурацию в Steam, и она появится здесь.</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>слой: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>для этого ввода нет запуска без привязки к устройству</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>внутриигровых действий: {0}, только Steam, со стороны игры доступа нет</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} внутриигровое действие, только Steam, со стороны игры доступа нет</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>действие клиента Steam {0}, аналога нет</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>действие контроллера {0} не поддерживается</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>неизвестный тип привязки {0}</value></data>
@@ -4331,10 +4349,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Щелчок колеса мыши</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Отправляет один дискретный щелчок колеса мыши за срабатывание. Значение задает число щелчков со знаком (положительное прокручивает вверх или вправо).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Сдвинуть курсор</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Сдвигает курсор мыши на заданное число пикселей за срабатывание. Положительный X сдвигает вправо, положительный Y вниз; отрицательные значения допустимы.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Сдвигает курсор мыши на заданное число пикселей за срабатывание. Положительный X сдвигает вправо, положительный Y вниз. Отрицательные значения допустимы.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Сдвинуть курсор на ({0}, {1}) пикс.</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Перебор списка нажатий</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Каждое срабатывание выполняет следующее нажатие из списка шагов и переходит дальше. Если включен повтор по кругу, после последнего шага список начинается заново; без него срабатывания прекращаются в конце.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Каждое срабатывание выполняет следующее нажатие из списка шагов и переходит дальше. Если включен повтор по кругу, после последнего шага список начинается заново. Без него срабатывания прекращаются в конце.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Переключить кнопку мыши</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Каждое срабатывание фиксирует кнопку мыши или снимает фиксацию. Зафиксированная кнопка остается нажатой до следующего срабатывания или до отключения макроса.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Переключить кнопку мыши: {0}</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Переключить прокрутку колесом</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Каждое срабатывание включает или выключает непрерывную прокрутку. Пока она включена, заданное число щелчков отправляется раз в интервал до следующего срабатывания или до отключения макроса.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Переключить прокрутку колесом (щелчков: {0}, каждые {1} мс)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Переключить прокрутку колесом ({0} щелчок каждые {1} мс)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Пульсировать при фиксации</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Пока фиксация включена, выход включается и выключается с интервалом повтора, а не удерживается постоянно.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Прибавить к оси (относительно)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Когда физическое движение уводит цель за порог, макрос перестает записывать ось до конца этой активации.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(уступает физическому вводу)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Перебор списка нажатий (шагов: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Перебор списка нажатий ({0} шаг)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Шаги</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>По кругу</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Переключить клавиши {0}</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Оверлей переключения профиля</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показывать экранное кольцо или сетку, пока активно радиальное или сенсорное меню. С выключенным оверлеем меню все равно срабатывают.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>создано экранное меню (ячеек с привязкой: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>создано экранное меню ({0} ячейка с привязкой)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>в меню нет ячеек с привязкой</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>поверхность, открывающая меню, не поддерживается ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячейки меню не распознан ({0}), поэтому у ячейки остается текстовая подпись</value></data>
@@ -4639,6 +4660,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Выберите файл .txt, загруженный с AutoEq. Пользуйтесь именно этим способом: autoeq.app выдает файл, а не текст, который можно скопировать.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Чтобы получить коррекцию под ваши наушники, откройте autoeq.app, выберите свою модель, укажите «Custom Parametric Eq» и скачайте файл, затем нажмите «Импорт из файла». В загрузке «Graphic Eq» нет строк фильтров, и она не импортируется.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Импортировано полос: {0}, предусиление {1:0.#} dB, источник: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Импортирована {0} полоса, предусиление {1:0.#} dB, источник: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>В этом профиле нет строк фильтров. Экспорт «Graphic Eq» из AutoEq здесь прочитать нельзя. Скачайте вместо него вариант «Custom Parametric Eq». Текущий эквалайзер не изменен.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Импортировать нечего. Текущий эквалайзер не изменен.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Не удалось прочитать этот файл: {0}</value></data>
@@ -4654,7 +4676,7 @@
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Сбросить потолок</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Перетащите точку, чтобы изменить ее частоту и усиление. Прокрутите колесо над точкой, чтобы расширить или сузить полосу.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Путь вывода</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Куда контроллер выводит звук. «По умолчанию» сохраняет собственную маршрутизацию прошивки и воспроизводит звуки PadForge на динамике. «Наушники + динамик» дает моно на стороне гарнитуры, это ограничение прошивки. По Bluetooth этот режим воспроизводит только через наушники. «Следовать за разъемом наушников» переключает на наушники, когда в контроллер что-то подключено, и обратно на динамик, когда отключено; если состояние разъема прочитать нельзя, режим ведет себя как «По умолчанию».</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Куда контроллер выводит звук. «По умолчанию» сохраняет собственную маршрутизацию прошивки и воспроизводит звуки PadForge на динамике. «Наушники + динамик» дает моно на стороне гарнитуры, это ограничение прошивки. По Bluetooth этот режим воспроизводит только через наушники. «Следовать за разъемом наушников» переключает на наушники, когда в контроллер что-то подключено, и обратно на динамик, когда отключено. Если состояние разъема прочитать нельзя, режим ведет себя как «По умолчанию».</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>По умолчанию</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Наушники (стерео)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Наушники (моно)</value></data>
@@ -5500,11 +5522,17 @@
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Завершает действия «Задать цвета клавиш», запущенные на этом виртуальном контроллере и подсвечивающие любую из выбранных здесь клавиш, а если ни одна не выбрана, то все.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Снять все цвета клавиш</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Снять цвета клавиш, светодиодов: {0}</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Снять цвета клавиш, {0} светодиод</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} светодиод, цвет {1}, {2} мс</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, при удержании</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} светодиод, цвет {1}, при удержании</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, до снятия</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} светодиод, цвет {1}, до снятия</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, затухание {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} светодиод, цвет {1}, затухание {2} мс</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Светодиодов: {0}, цвет {1}, отсчёт {2} мс</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} светодиод, цвет {1}, отсчёт {2} мс</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Клавиши</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Каждый светодиод</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Клавиши не выбраны, поэтому действие ничего не подсвечивает.</value></data>

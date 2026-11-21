@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Išvalyti</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nėra</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>s</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>min (0 = niekada)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>„HidHide“ užblokavo „PadForge“ prieigą prie įrenginio, kurį „PadForge“ paslėpė, todėl „PadForge“ nebeslepia įrenginių.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>„HidHide“ parinktis „Inverse application cloak“ įjungta, todėl „PadForge“ neslepia jokių įrenginių.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Šalinama „Windows MIDI Services“ vykdymo aplinka…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nepasileido, nes MIDI neveikia. Priežastį nurodo „Windows MIDI Services“ kortelė skiltyje „Nustatymai“.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} nepasileido, nes MIDI neveikia. Žr. „Windows MIDI Services“ skiltyje „Nustatymai“, grupėje „Tvarkyklės“.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} nepasileido, nes „Windows MIDI Services“ nesukūrė jo prievado.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} neturi išvesties prievado. Pasirinkite prievadą jo puslapyje.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Išvesties prievadas „{1}“ ({0}) neprijungtas. Lizdas pasileis, kai prievadas vėl atsiras.</value></data>
@@ -558,6 +559,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK atsisakė pasileisti. Dažniausiai taip būna, kai neveikia „Logitech Gaming Software“.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Prisijungta, bet dar negautas nė vienas klavišas. „Logitech Gaming Software“ programoje nuvilkite komandą „G-key“ ant kiekvieno klavišo „PadForge“ profilyje ir nustatykite tą profilį kaip nuolatinį. Pelė G600 arba G300 taip pat turi būti išjungta iš vidinės atminties režimo.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Veikia, klavišų įvykių: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Veikia, klavišo įvykis: {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Skaityti analogines klaviatūras</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Skaito, kaip giliai paspaustas kiekvienas klavišas „Wooting“, „Razer“, „SteelSeries“, „Keychron“, „NuPhy“, „DrunkDeer“, „AULA“ ir kitų gamintojų analoginėse klaviatūrose. Kiekviena klaviatūra rodoma kaip atskira įrenginio eilutė. Visi palaikomi modeliai išvardyti dokumentacijoje. „Razer“ klaviatūroms reikia veikiančios „Razer Synapse“. Daugumos kitų duomenys skaitomi tuo pačiu kanalu, kurį naudoja jų konfigūravimo programa, todėl, kol ši parinktis įjungta, konfigūravimo programą uždarykite.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nerasta palaikomos analoginės klaviatūros.</value></data>
@@ -795,7 +797,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Tikrinti naujinimus</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Šiuolaikinė x360ce atšaka, perkurta naudojant SDL3, WPF ir .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>„PadForge“ bet kurį įvesties įrenginį paverčia bet kuriuo virtualiu valdikliu. Žaidimų pultai, vairalazdės, klaviatūros, pelės ir jutikliniai ekranai priskiriami virtualiems žaidimų valdikliams („Xbox“, „PlayStation“, skrydžio vairalazdėms, vairams, trečiųjų šalių žaidimų pultams) arba klaviatūros ir pelės / MIDI išvesčiai, kurią žaidimai laiko tikra aparatine įranga. Veikia su „HIDMaestro“ ir „Windows MIDI Services“. Valdiklių įvestį skaito per SDL3, klaviatūrą ir pelę – per „Windows Raw Input“, įrenginius nuo atskirų žaidimų slepia per „HidHide“, o priskyrimams, nejautros zonoms, jautrumo kreivėms ir jėgos grįžtamajam ryšiui siūlo šiuolaikišką „Fluent Design“ sąsają.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>„PadForge“ padaro bet kurią įvestį panašią į bet kurį valdiklį. Žaidimų pultai, vairalazdės, vairai, klaviatūros, pelės, jutikliniai ekranai, MIDI įrenginiai ir telefonai valdo virtualius valdiklius, kuriuos žaidimai laiko tikra aparatine įranga: „Xbox“, „PlayStation“, „Nintendo“ ir „Steam“ pultus, „SInput“ pultus, VR rankų valdiklius, MIDI išvestį, klaviatūrą ir pelę arba pasirinktinį įrenginį, pavyzdžiui, skrydžio vairalazdę ar vairą. „HIDMaestro“ sukuria virtualius žaidimų pultus, SDL3 skaito valdiklius, „Windows Raw Input“ skaito klaviatūras ir peles, „HidHide“ slepia įrenginį nuo žaidimų, o „Windows MIDI Services“ perduoda MIDI įvestį ir išvestį.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Apžvalga</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Sukurta naudojant</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Ieškoti autorių</value></data>
@@ -923,6 +925,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Delsa tarp raidžių</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekundės tarp įvedamų simbolių, daugiausia 1000. 0 įveda visą tekstą iš karto.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Atjungimas neveikiant</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 reiškia niekada</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Išsami informacija</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Atjungti „Bluetooth“, kai prijungtas USB kabeliu</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Greitas įkrovimas. Kai šis valdiklis, prijungtas per „Bluetooth“, praneša, kad kraunasi, „Bluetooth“ ryšys nutraukiamas, kad jis krautųsi nemaitindamas radijo modulio. Tinka bet koks USB maitinimo šaltinis, įskaitant sieninius įkroviklius. Jei vėl įjungsite „Bluetooth“, kol kabelis prijungtas, ryšys nebus liečiamas iki kito atjungimo.</value></data>
@@ -987,6 +990,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Siųsti</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kadrų: {0}. Siuntimas užtrunka apie {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Valdiklis priima daugiausia {0} kadrų, todėl paskutiniai {1} buvo praleisti.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Valdiklis priima daugiausia {0} kadrų, todėl paskutinis buvo praleistas.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Prijunkite valdiklį laidu. Praėjus maždaug 15 sekundžių po paveikslėlio įkėlimo jis pats persikrauna.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Prijunkite valdiklį laidu. Siuntimui „PadForge“ perjungia jį į „Xbox“ režimą ir perkelia iš „Windows“ „Xbox“ tvarkyklės į „WinUSB“, paskui abu grąžina atgal.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>„PadForge“ perjungs valdiklį į „Xbox“ režimą, siuntimui perkels jį į „WinUSB“, paskui grąžins „Windows“ „Xbox“ tvarkyklei ir perjungs atgal į „DInput“ režimą. Pirmiausia atjunkite visus kitus „Xbox 360“ valdiklius. Siųsti dabar?</value></data>
@@ -1418,8 +1422,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonuoti</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Pasirinkite šio lizdo įrenginį, kurį norite klonuoti.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Pasirinktas įrenginys neturi ašių, mygtukų ar POV jungiklių, kuriuos būtų galima klonuoti.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonuoti {0} į šį lizdą kaip tiesioginį 1:1 perdavimą? Išdėstymas bus toks: ašių – {1}, mygtukų – {2}, POV jungiklių – {3}, o šio įrenginio eilutės lizde bus pakeistos jo paties įvestimis.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Šis įrenginys turi daugiau įvesčių, nei gali perduoti išplėstinis valdiklis. Priskirta ašių: {0} iš {1}, mygtukų: {2} iš {3}, POV jungiklių: {4} iš {5}. Likusios liko nepriskirtos.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonuoti {0} į šį lizdą kaip tiesioginį 1:1 perdavimą? Išdėstymas bus toks: {1}, {2}, {3}, o šio įrenginio eilutės lizde bus pakeistos jo paties įvestimis.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Šis įrenginys turi daugiau įvesčių, nei gali perduoti išplėstinis valdiklis. Priskirta: {0} iš {1}, {2} iš {3}, {4} iš {5}. Likusios liko nepriskirtos.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Valdiklių šablonai</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Pridėkite šabloną valdikliui, kurio „PadForge“ nepateikia, iš failo arba iš paties valdiklio.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importuoti</value></data>
@@ -1591,11 +1595,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Mygtukas, kurį laikant kaupiklio reikšmė mažėja</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Žemyn: mygtukas, kurį laikant kaupiklio reikšmė mažėja.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Sparta</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kitimo greitis vienetais per sekundę. 0.5 = visas diapazonas per 2 s, 2 = visas diapazonas per 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Kitimo greitis vienetais per sekundę. 0.5 = visas diapazonas per 2 s. 2 = visas diapazonas per 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Fiksuojamas</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Pažymėjus, kaupiklis po atleidimo išlaiko savo reikšmę (kaip pastovaus greičio palaikymas). Nepažymėjus, atleidus iškart grįžta į minimumą.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Apatinė kaupiklio riba. -1 = visiškai neigiama dvipolėms ašims, 0 = vienpolė.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Apatinė kaupiklio riba. -1 = visiškai neigiama dvipolėms ašims. 0 = vienpolė.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Viršutinė kaupiklio riba. 1 = visiškai teigiama.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Laipsniškas</value></data>
@@ -1888,6 +1892,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nustato priskirto lizdo šviesos juostos režimą į konkrečią reikšmę. Išlieka kaip pakeitimas kortelėje „Apšvietimas“, kol jį pakeis kitas veiksmas ar naudotojas.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Perjunginėti šviesos juostos režimus</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Perjunginėti šviesos juostos režimus (režimų: {0})</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Perjunginėti šviesos juostos režimą (režimas: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Perjungia lizdo šviesos juostos režimą per toliau pasirinktus režimus. Kiekvienas suveikimas pereina prie kito pažymėto režimo. Ciklo padėtis saugoma kiekvienam veiksmui atskirai, o paleidus programą iš naujo pradedama nuo pradžių.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Laikymas</value></data>
@@ -2166,7 +2171,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Ekrano dalis, kurią pasiekia skydelis</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Reguliuoja jutiklinio skydelio žymeklio X/Y šaltinius, kurie perkelia žymeklį į piršto padėtį skydelyje (priskirkite juos pelės X/Y virtualiame valdiklyje „Klaviatūra / pelė“). Dydis 1.00 su centru 0.50 atvaizduoja skydelį į visą ekraną. Sumažinkite dydį, kad žymeklis būtų apribotas ekrano dalimi, ir perkelkite centrą, kad nustatytumėte jos vietą.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Srities plotis</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekrano srities, į kurią atvaizduojamas šis skydelis, plotis ekrano pločio dalimis. 1.00 apima visą plotį, 0.50 apriboja žymeklį puse ekrano.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ekrano srities, į kurią atvaizduojamas šis skydelis, plotis ekrano pločio dalimis. 1.00 apima visą plotį. 0.50 apriboja žymeklį puse ekrano.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Srities aukštis</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Ekrano srities aukštis ekrano aukščio dalimis.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Srities centras X</value></data>
@@ -2177,7 +2182,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Perbraukimo haptika</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiksėjimai, kai pirštas slenka</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Kai pirštas slenka šiuo jutikliniu skydeliu, valdiklio haptika siunčia impulsus, kaip „Steam Input“ jutiklinio kilimėlio tiksėjimai. „Steam Controller“ ir „Steam Deck“ tiksi po skydeliu esančiu vykdikliu, o „DualSense“ ir „DualShock 4“ – vibracijos varikliais.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Kai pirštas slenka šiuo jutikliniu skydeliu, valdiklio haptika siunčia impulsus, kaip „Steam Input“ jutiklinio kilimėlio tiksėjimai. „Steam Controller“ ir „Steam Deck“ tiksi po skydeliu esančiu vykdikliu. „DualSense“ ir „DualShock 4“ siunčia impulsus vibracijos varikliais.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Įjungti perbraukimo haptiką</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Kaskart pirštui pasislinkus nustatytu atstumu šiame skydelyje, siunčiamas trumpas haptinis tiksėjimas. Piršto prisilietimas ar skydelio paspaudimas tiksėjimo nesukelia. Pagal numatytuosius nustatymus išjungta.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Impulso intensyvumas</value></data>
@@ -2285,6 +2290,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Visi pavyzdžiai užfiksuoti. Pavadinkite gestą ir spustelėkite „Išsaugoti“.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Pavyzdys {0} iš {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Pavyzdžiai: {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Pavyzdys: {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Fiksuojamų pavyzdžių skaičius</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Fiksuojami pavyzdžiai</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Įprastai 3. Daugiau pavyzdžių duoda tikslesnį atpažinimą, mažiau įrašoma greičiau.</value></data>
@@ -3384,6 +3390,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistoletas už ekrano</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Perjunginėti žymeklio režimus</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Perjunginėti žymeklio režimus (režimų: {0})</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Perjunginėti žymeklio režimą (režimas: {0})</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Visiems lizdo pulteliams su IR perjungia „Wii“ žymeklio režimą per toliau pasirinktus režimus. Kiekvienas suveikimas pereina prie kito pažymėto režimo. Ciklo padėtis saugoma kiekvienam veiksmui atskirai, o paleidus programą iš naujo pradedama nuo pradžių.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pasirinkite, kuriuos žymeklio režimus makrokomanda turi perjunginėti. Kiekvienas suveikimas pereina prie kito pažymėto režimo.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Garsas</value></data>
@@ -3711,7 +3718,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Per USB nerastas „DualShock 3“. Prijunkite jį USB kabeliu ir bandykite dar kartą.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>„Windows“ neįdiegs „PadForge“ USB tvarkyklės „DualShock 3“ valdikliui, nes jos pasirašymo sertifikatas šiame kompiuteryje nelaikomas patikimu.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Nepavyko įdiegti „PlayStation“ valdiklių „Bluetooth“ tvarkyklės.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nėra pasiekiamo „Bluetooth“ radijo modulio. Įjunkite „Bluetooth“ ir bandykite dar kartą. Susieti reikia tik žaidžiant belaidžiu ryšiu, o kabeliu prijungtas valdiklis veikia ir be to.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nėra pasiekiamo „Bluetooth“ radijo modulio. Įjunkite „Bluetooth“ ir bandykite dar kartą. Susieti reikia tik žaidžiant belaidžiu ryšiu. Kabeliu prijungtas valdiklis veikia ir be to.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Susiejimas nebaigtas. Nepavykęs veiksmas rodomas aukščiau.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Uždaryti</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC žymos</value></data>
@@ -3802,7 +3809,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Atleiskite mygtuką.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{0} žingsnis iš {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Pokyčių nepastebėta. Pasirinkite „Pradėti iš naujo“, tada paspauskite ir laikykite mygtuką, kai bus paprašyta.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Stebėta gamintojo ataskaitų: {0}, įvykių klasių: {1}. Paspaudimo metu: ataskaitų {2}, įvykių {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Stebėtos gamintojo ataskaitos: {0}. Stebėtos įvykių klasės: {1}. Ataskaitos paspaudimo metu: {2}. Įvykiai paspaudimo metu: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Mygtukas užfiksuotas. Įveskite pavadinimą ir spustelėkite „Užregistruoti“.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Šaltinis</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Pavadinimas</value></data>
@@ -3818,7 +3825,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Eksportuoti…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importuoti…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Eksportuota mygtukų: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Eksportuotas mygtukas: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importuota mygtukų: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Importuotas mygtukas: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Rankinių kompiuterių mygtukai</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Rankiniai žaidimų kompiuteriai ir nešiojamieji kompiuteriai turi mygtukų, kurių operacinė sistema niekada nerodo kaip valdiklio: galinės mentelės, meniu klavišai, ratukai, gamintojo spartieji klavišai. Įjunkite, kad juos vieną kartą išmoktumėte juos paspausdami, o tada priskirtumėte kaip bet kurį kitą mygtuką. Taip pat prideda paties kompiuterio giroskopą kaip judesio įrenginį.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Įjungti rankinių kompiuterių mygtukus</value></data>
@@ -3982,9 +3991,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Didėjančiai</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Mažėjančiai</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Priskyrimų: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Priskyrimas: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Rasta: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Rodoma {0} iš {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Konfigūracijų: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Konfigūracija: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>visas valdiklių palaikymas</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>dalinis valdiklių palaikymas</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Ieškoti žaidimų</value></data>
@@ -3994,7 +4005,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>prieš {0} mėn.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>prieš {0} m.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Prenumeratorių: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Prenumeratorius: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Balsų: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Balsas: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Visos</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Šiam žaidimui konfigūracijų dar nėra</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>„Steam“ dirbtuvėse nėra bendruomenės valdiklių konfigūracijų žaidimui {0}. Galite būti pirmieji: sukurkite konfigūraciją „Steam“, ir ji atsiras čia.</value></data>
@@ -4027,6 +4040,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>sluoksnis: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>šiai įvesčiai nėra nuo įrenginio nepriklausančio paleidiklio</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>žaidimo veiksmų: {0} (tik „Steam“, žaidime nėra prieigos)</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>žaidimo veiksmas: {0} (tik „Steam“, žaidime nėra prieigos)</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>„Steam“ kliento veiksmas {0}, atitikmens nėra</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>valdiklio veiksmas {0} nepalaikomas</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>nežinomas priskyrimo tipas {0}</value></data>
@@ -4101,10 +4115,10 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Pelės ratuko žingsnis</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Kiekvieno suveikimo metu siunčia vieną atskirą pelės ratuko žingsnį. Reikšmė yra žingsnių skaičius su ženklu (teigiama slenka aukštyn arba dešinėn).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Pastumti žymeklį</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Kiekvieno suveikimo metu perkelia pelės žymeklį nustatytu pikselių skaičiumi. Teigiamas X perkelia dešinėn, teigiamas Y – žemyn. Leidžiamos ir neigiamos reikšmės.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Kiekvieno suveikimo metu perkelia pelės žymeklį nustatytu pikselių skaičiumi. Teigiamas X perkelia dešinėn, teigiamas Y perkelia žemyn. Leidžiamos ir neigiamos reikšmės.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Pastumti žymeklį per ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Bakstelėjimų sąrašas ratu</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Kiekvienas suveikimas atlieka kitą žingsnių sąrašo bakstelėjimą ir pereina toliau. Kai įjungtas kartojimas ratu, po paskutinio žingsnio sąrašas pradedamas iš naujo, o kai išjungtas, ties pabaiga suveikimai sustoja.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Kiekvienas suveikimas atlieka kitą žingsnių sąrašo bakstelėjimą ir pereina toliau. Kai įjungtas kartojimas ratu, po paskutinio žingsnio sąrašas pradedamas iš naujo. Kai išjungtas, ties pabaiga suveikimai sustoja.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Perjungti pelės mygtuką</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Kiekvienas suveikimas užfiksuoja arba atlaisvina pelės mygtuką. Užfiksuotas mygtukas lieka nuspaustas iki kito suveikimo arba kol makrokomanda išjungiama.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Perjungti pelės {0}</value></data>
@@ -4117,6 +4131,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Perjungti ratuko slinkimą</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Kiekvienas suveikimas užfiksuoja arba atlaisvina nuolatinį slinkimą. Kol užfiksuota, kas intervalą siunčiamas žingsnių skaičius iki kito suveikimo arba kol makrokomanda išjungiama.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Perjungti ratuko slinkimą (žingsnių: {0} kas {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Perjungti ratuko slinkimą (žingsnis: {0} kas {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsuoti, kol užfiksuota</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Kol užfiksuota, išvestis įjungiama ir išjungiama kartojimo intervalu, o ne laikoma nuolat.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Pridėti prie ašies (santykinai)</value></data>
@@ -4138,6 +4153,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Kai fizinis judesys nustumia tikslą už slenksčio, makrokomanda iki aktyvinimo pabaigos nebeįrašo ašies.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(užleidžia fizinei)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Bakstelėjimų sąrašas ratu (žingsnių: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Bakstelėjimų sąrašas ratu (žingsnis: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Žingsniai</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ratu</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Perjungti klavišus {0}</value></data>
@@ -4221,6 +4237,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilio perjungimo perdanga</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Rodyti ekrane žiedą arba tinklelį, kol įjungtas radialinis ar lietimo meniu. Meniu suveikia ir išjungus perdangą.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>sukurtas ekrano meniu (priskirtų langelių: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>sukurtas ekrano meniu (priskirtas langelis: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>meniu neturi priskirtų langelių</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>meniu pagrindinis paviršius nepalaikomas ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>meniu langelio piktograma neatpažinta ({0}), todėl langelyje lieka tekstinis užrašas</value></data>
@@ -4407,6 +4424,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pasirinkite AutoEq atsisiųstą .txt failą. Naudokite būtent jį: autoeq.app pateikia failą, o ne tekstą, kurį galima nukopijuoti.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Norėdami gauti korekciją, pritaikytą jūsų ausinėms: atidarykite autoeq.app, pasirinkite savo modelį, pasirinkite „Custom Parametric Eq“ ir atsisiųskite, tada spustelėkite „Importuoti iš failo“. Atsisiuntime „Graphic Eq“ nėra filtrų eilučių, todėl jo importuoti nepavyks.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importuota juostų: {0}, pirminis stiprinimas {1:0.#} dB, šaltinis: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Importuota juosta: {0}, pirminis stiprinimas {1:0.#} dB, šaltinis: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Tame profilyje nėra filtrų eilučių. AutoEq „Graphic Eq“ eksporto čia perskaityti negalima. Vietoj jo atsisiųskite „Custom Parametric Eq“. Dabartinis ekvalaizeris nepakeistas.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nėra ką importuoti. Dabartinis ekvalaizeris nepakeistas.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Nepavyko perskaityti to failo: {0}</value></data>
@@ -4422,7 +4440,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Nustatyti viršutinę ribą iš naujo</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Vilkite tašką, kad pakeistumėte jo dažnį ir stiprinimą. Sukite ratuką virš taško, kad jį praplatintumėte ar susiaurintumėte.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Išvesties kelias</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Kur valdiklis leidžia garsą. „Numatytasis“ išlaiko pačios programinės aparatinės įrangos nukreipimą, o „PadForge“ garsus leidžia garsiakalbyje. „Ausinės + garsiakalbis“ ausinių pusėje leidžia mono – tai programinės aparatinės įrangos apribojimas. Per „Bluetooth“ šis režimas leidžia garsą tik per ausines. „Pagal ausinių jungtį“ persijungia į ausines, kai kas nors prijungiama prie valdiklio, ir grįžta į garsiakalbį atjungus. Jei jungties būsenos nuskaityti negalima, veikia kaip „Numatytasis“.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Kur valdiklis leidžia garsą. „Numatytasis“ išlaiko pačios programinės aparatinės įrangos nukreipimą, o „PadForge“ garsus leidžia garsiakalbyje. „Ausinės + garsiakalbis“ ausinių pusėje leidžia mono, tai yra programinės aparatinės įrangos apribojimas. Per „Bluetooth“ šis režimas leidžia garsą tik per ausines. „Pagal ausinių jungtį“ persijungia į ausines, kai kas nors prijungiama prie valdiklio, ir grįžta į garsiakalbį atjungus. Jei jungties būsenos nuskaityti negalima, veikia kaip „Numatytasis“.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Numatytasis</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Ausinės (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Ausinės (mono)</value></data>

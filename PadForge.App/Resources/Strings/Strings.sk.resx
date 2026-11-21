@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Strana doprava</value></data>
   <data name="Common_None" xml:space="preserve"><value>Žiadne</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekúnd</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minút (0 = nikdy)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide zablokoval programu PadForge prístup k zariadeniu, ktoré PadForge skryl, preto PadForge prestal skrývať zariadenia.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>V HidHide je zapnutá možnosť „Inverse application cloak“, preto PadForge neskrýva žiadne zariadenia.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Odinštalováva sa modul runtime Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} sa nepodarilo spustiť, pretože MIDI nebeží. Dôvod nájdete na karte Windows MIDI Services v časti Nastavenia.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} sa nepodarilo spustiť, pretože MIDI nebeží. Pozrite si Windows MIDI Services v časti Nastavenia, v skupine Ovládače zariadení.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} sa nepodarilo spustiť, pretože Windows MIDI Services nevytvoril port.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} nemá výstupný port. Vyberte ho na jeho stránke.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Výstupný port „{1}“ pre {0} nie je pripojený. Slot sa spustí, keď bude port opäť dostupný.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK sa odmietol spustiť. Zvyčajne to znamená, že Logitech Gaming Software nie je spustený.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Pripojené, zatiaľ nebol zachytený žiadny kláves. V Logitech Gaming Software presuňte príkaz G-key na každý kláves v profile PadForge a nastavte tento profil ako trvalý. Myš G600 alebo G300 tiež nesmie byť v režime vstavanej pamäte.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Beží, udalosti klávesov: {0}</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Beží, udalosti klávesov: {0}</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Čítať analógové klávesnice</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Číta, ako hlboko je stlačený každý kláves na analógových klávesniciach od výrobcov Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA a ďalších, každú ako samostatný riadok zariadenia. Dokumentácia uvádza všetky podporované modely. Klávesnice Razer vyžadujú spustený Razer Synapse. Väčšina ostatných sa číta cez kanál, ktorý používa ich vlastný konfigurátor, preto konfigurátor počas zapnutia tejto možnosti zatvorte.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nenašla sa žiadna podporovaná analógová klávesnica.</value></data>
@@ -814,7 +816,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Skontrolovať aktualizácie</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Moderný fork projektu x360ce, prestavaný na SDL3, WPF a .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge premení akékoľvek vstupné zariadenie na akýkoľvek virtuálny ovládač. Gamepady, joysticky, klávesnice, myši a dotykové obrazovky sa mapujú na virtuálne herné ovládače (Xbox, PlayStation, letecké joysticky, volanty, gamepady tretích strán) alebo na výstup klávesnice a myši či MIDI, ktorý hry považujú za skutočný hardvér. Využíva HIDMaestro a Windows MIDI Services. Na vstup z ovládačov používa SDL3, na klávesnicu a myš Windows Raw Input, na skrývanie zariadení pred jednotlivými hrami HidHide a ponúka moderné rozhranie Fluent Design na mapovanie, mŕtve zóny, krivky citlivosti a silovú spätnú väzbu.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge zariadí, aby sa akýkoľvek vstup tváril ako akýkoľvek ovládač. Gamepady, joysticky, volanty, klávesnice, myši, dotykové obrazovky, zariadenia MIDI a telefóny ovládajú virtuálne ovládače, ktoré hry považujú za skutočný hardvér: gamepady Xbox, PlayStation, Nintendo a Steam, gamepady SInput, ručné ovládače pre VR, výstup MIDI, klávesnicu a myš alebo vlastné zariadenie, napríklad letecký joystick či volant. HIDMaestro vytvára virtuálne gamepady, SDL3 číta ovládače, Windows Raw Input číta klávesnice a myši, HidHide skrýva zariadenie pred hrami a Windows MIDI Services prenáša MIDI na vstupe aj výstupe.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Prehľad</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Vytvorené pomocou</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Hľadať v poďakovaniach</value></data>
@@ -942,6 +944,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Oneskorenie medzi znakmi</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekundy medzi napísanými znakmi, najviac 1000. Pri hodnote 0 sa napíše celý text naraz.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Odpojenie pri nečinnosti</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 znamená nikdy</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Podrobnosti</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Odpojiť Bluetooth po pripojení cez USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Rýchle nabíjanie. Keď tento ovládač pri pripojení cez Bluetooth hlási, že sa nabíja, pripojenie cez Bluetooth sa preruší, aby sa nabíjal bez napájania rádia. Počíta sa akýkoľvek zdroj napájania cez USB vrátane nabíjačiek do zásuvky. Ak Bluetooth znova zapnete, kým kábel zostáva pripojený, ovládač sa nechá tak až do ďalšieho odpojenia kábla.</value></data>
@@ -1006,6 +1009,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Odoslať</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Snímky: {0}. Odoslanie potrvá približne {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ovládač prijme najviac snímok: {0}. Vynechané snímky na konci: {1}.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Ovládač prijme najviac snímok: {0}. Vynechaný bol posledný snímok.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Pripojte ovládač káblom. Po nahraní obrázka sa asi po 15 sekundách sám reštartuje.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Pripojte ovládač káblom. Na odoslanie ho PadForge prepne do režimu Xbox a presunie z ovládača Xbox vo Windowse na WinUSB, potom oboje vráti späť.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge prepne ovládač do režimu Xbox, na odoslanie ho presunie na WinUSB, potom ho vráti ovládaču Xbox vo Windowse a prepne späť do režimu DInput. Najprv odpojte všetky ostatné ovládače Xbox 360. Odoslať teraz?</value></data>
@@ -1198,6 +1202,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Systém Windows už nepoužíva zariadenie {0} na pohyb ukazovateľa. Ak ste to nechceli, nerobte nič a vráti sa.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Systém Windows už nepoužíva zariadenie {0} na pohyb ukazovateľa. Ak ste to nechceli, nerobte nič a vráti sa.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Vrátenie o {0} s</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Vrátenie o {0} s</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Ponechať</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Vrátiť</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Najprv odpojte ostatné klávesnice tohto modelu. Systém Windows prepne naraz všetky pripojené na ovládač zariadenia programu PadForge a žiadnu z nich nebude používať na písanie.</value></data>
@@ -1612,8 +1617,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonovať</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Vyberte zariadenie v tomto slote, ktoré chcete klonovať.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Vybraté zariadenie nemá žiadne osi, tlačidlá ani prepínače POV, ktoré by sa dali klonovať.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonovať {0} do tohto slotu ako priame prepúšťanie 1:1? Rozloženie bude mať osi: {1}, tlačidlá: {2} a POV: {3} a riadky tohto zariadenia v slote sa nahradia jeho vlastnými vstupmi.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Toto zariadenie má viac vstupov, než dokáže rozšírený ovládač obsiahnuť. Namapované osi: {0} z {1}, tlačidlá: {2} z {3} a POV: {4} z {5}. Zvyšok zostal nenamapovaný.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klonovať {0} do tohto slotu ako priame prepúšťanie 1:1? Rozloženie bude: {1}, {2} a {3}. Riadky tohto zariadenia v slote sa nahradia jeho vlastnými vstupmi.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Toto zariadenie má viac vstupov, než dokáže rozšírený ovládač obsiahnuť. Namapované: {0} z {1}, {2} z {3} a {4} z {5}. Zvyšok zostal nenamapovaný.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Predvoľby ovládača</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Pridajte predvoľbu pre ovládač, ktorý PadForge nedodáva, zo súboru alebo z ovládača samotného.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importované</value></data>
@@ -1785,11 +1790,11 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Tlačidlo, ktoré pri podržaní postupne znižuje akumulátor</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Dole: tlačidlo, ktoré pri podržaní postupne znižuje akumulátor.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Rýchlosť</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Rýchlosť zmeny v jednotkách za sekundu. 0.5 = celý rozsah za 2 s, 2 = celý rozsah za 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Rýchlosť zmeny v jednotkách za sekundu. 0.5 = celý rozsah za 2 s. 2 = celý rozsah za 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Držať hodnotu</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Keď je začiarknuté, akumulátor si po uvoľnení podrží hodnotu (ako tempomat). Keď nie je začiarknuté, po uvoľnení sa vráti na hodnotu Min.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Dolná hranica akumulátora. -1 = plne záporná hodnota pre bipolárne cieľové osi, 0 = unipolárne.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Dolná hranica akumulátora. -1 = plne záporná hodnota pre bipolárne cieľové osi. 0 = unipolárne.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Horná hranica akumulátora. 1 = plne kladná hodnota.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -2083,6 +2088,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim svetelnej lišty priradeného slotu na konkrétnu hodnotu. Zachová sa ako úprava na karte Osvetlenie, kým ho nezmení iná akcia alebo používateľ.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Striedať režimy svetelnej lišty</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Striedať režimy svetelnej lišty (počet: {0})</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Striedať režimy svetelnej lišty (počet: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Prepína režim svetelnej lišty slotu cez režimy vybraté nižšie. Každé spustenie prejde na ďalší začiarknutý režim. Pozícia v cykle sa uchováva pre každú akciu zvlášť a po reštarte aplikácie sa resetuje.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Držanie</value></data>
@@ -2361,7 +2367,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Časť obrazovky, ktorú touchpad pokrýva</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ladí zdroje Ukazovateľ touchpadu X/Y, ktoré presúvajú kurzor na polohu prsta na touchpade (namapujte ich na X/Y myši na virtuálnom ovládači Klávesnica / myš). Veľkosť 1.00 so stredom 0.50 mapuje touchpad na celú obrazovku. Zmenšením veľkosti obmedzíte kurzor na časť obrazovky a posunutím stredu ju umiestnite.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Šírka oblasti</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Šírka oblasti obrazovky, na ktorú sa touchpad mapuje, ako podiel šírky obrazovky. 1.00 pokrýva celú šírku, 0.50 obmedzí kurzor na polovicu obrazovky.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Šírka oblasti obrazovky, na ktorú sa touchpad mapuje, ako podiel šírky obrazovky. 1.00 pokrýva celú šírku. 0.50 obmedzí kurzor na polovicu obrazovky.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Výška oblasti</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Výška oblasti obrazovky ako podiel výšky obrazovky.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Stred oblasti X</value></data>
@@ -2372,7 +2378,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Haptika pri potiahnutí</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tiknutia pri pohybe prsta</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pri pohybe prsta po tomto touchpade vysiela haptické impulzy ovládača, podobne ako tiknutia trackpadu v Steam Input. Ovládače Steam Controller a Steam Deck tikajú aktuátorom pod touchpadom, DualSense a DualShock 4 pulzujú vibračnými motormi.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pri pohybe prsta po tomto touchpade vysiela haptické impulzy ovládača, podobne ako tiknutia trackpadu v Steam Input. Ovládače Steam Controller a Steam Deck tikajú aktuátorom pod touchpadom. DualSense a DualShock 4 pulzujú vibračnými motormi.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Povoliť haptiku pri potiahnutí</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Vyšle krátke haptické tiknutie zakaždým, keď sa prst na tomto touchpade posunie o nastavenú vzdialenosť. Dotyk prstom ani kliknutie touchpadu tiknutie nikdy nespustia. Predvolene vypnuté.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intenzita impulzu</value></data>
@@ -2480,6 +2486,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Všetky vzorky sú zachytené. Pomenujte gesto a kliknite na Uložiť.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Vzorka {0} z {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Vzorky: {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Vzorky: {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Počet vzoriek na zachytenie</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Počet vzoriek na zachytenie</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Štandard je 3. Viac vzoriek dá istejšiu zhodu a menej sa nahráva rýchlejšie.</value></data>
@@ -3585,6 +3592,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pištoľ mimo obrazovky</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Striedať režimy ukazovateľa</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Striedať režimy ukazovateľa (počet: {0})</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Striedať režimy ukazovateľa (počet: {0})</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Prepína režim ukazovateľa Wii cez režimy vybraté nižšie pre každý ovládač s IR v slote. Každé spustenie prejde na ďalší začiarknutý režim. Pozícia v cykle sa uchováva pre každú akciu zvlášť a po reštarte aplikácie sa resetuje.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Vyberte, ktoré režimy ukazovateľa má makro striedať. Každé spustenie prejde na ďalší začiarknutý režim.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
@@ -3916,7 +3924,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Na USB sa nenašiel žiadny DualShock 3. Pripojte ho káblom USB a skúste to znova.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Systém Windows nenainštaluje ovládač zariadenia USB programu PadForge pre DualShock 3, pretože jeho podpisový certifikát nie je na tomto počítači dôveryhodný.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Ovládač zariadenia Bluetooth pre ovládače PlayStation sa nepodarilo nainštalovať.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nie je k dispozícii žiadne rádio Bluetooth. Zapnite Bluetooth a skúste to znova. Párovanie je potrebné iba na bezdrôtové hranie, ovládač pripojený káblom funguje aj bez neho.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nie je k dispozícii žiadne rádio Bluetooth. Zapnite Bluetooth a skúste to znova. Párovanie je potrebné iba na bezdrôtové hranie. Ovládač pripojený káblom funguje aj bez neho.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Párovanie sa nedokončilo. Krok, ktorý zlyhal, je uvedený vyššie.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Zavrieť</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Štítky NFC</value></data>
@@ -4007,7 +4015,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Pustite tlačidlo.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Krok {0} z {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nezaznamenala sa žiadna zmena. Vyberte Začať odznova a keď budete vyzvaní, stlačte a podržte tlačidlo.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Sledované hlásenia výrobcu: {0}, triedy udalostí: {1}. Počas stlačenia: hlásenia {2}, udalosti {3}.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Sledované hlásenia výrobcu: {0}. Sledované triedy udalostí: {1}. Hlásenia počas stlačenia: {2}. Udalosti počas stlačenia: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Tlačidlo je zachytené. Zadajte názov a kliknite na Zaregistrovať.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Zdroj</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Názov</value></data>
@@ -4043,12 +4051,17 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Zabudnúť všetko</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Odstrániť všetky naučené názvy pre tento model.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Exportované názvy: {0}.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Exportované názvy: {0}.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importované názvy: {0}.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Importované názvy: {0}.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importované názvy pre iný model ({1}): {0}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Importované názvy pre iný model ({1}): {0}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Tento súbor neobsahuje žiadne názvy svetiel klávesov.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importovať…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Exportované tlačidlá: {0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Exportované tlačidlá: {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importované tlačidlá: {0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Importované tlačidlá: {0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Tlačidlá handheldov</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Prenosné herné počítače a notebooky majú tlačidlá, ktoré operačný systém nikdy nezobrazí ako ovládač: zadné pádla, klávesy ponuky, kolieska, klávesové skratky výrobcu. Zapnite túto možnosť, raz ich naučte stlačením a potom ich mapujte ako ktorékoľvek iné tlačidlo. Pridá aj vlastný gyroskop počítača ako pohybové zariadenie.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Povoliť tlačidlá handheldov</value></data>
@@ -4212,9 +4225,11 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Vzostupne</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Zostupne</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>Väzby: {0}</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>Väzby: {0}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Nájdené: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Zobrazuje sa {0} z {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Konfigurácie: {0}</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>Konfigurácie: {0}</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>plná podpora ovládača</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>čiastočná podpora ovládača</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Hľadať hry</value></data>
@@ -4224,7 +4239,9 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>pred {0} mes.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>pred {0} r.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Odberatelia: {0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Odberatelia: {0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Hlasy: {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Hlasy: {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Všetko</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Pre túto hru zatiaľ nie sú žiadne konfigurácie</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop nemá pre {0} žiadne komunitné konfigurácie ovládačov. Môžete byť prví: vytvorte konfiguráciu v Steame a zobrazí sa tu.</value></data>
@@ -4257,6 +4274,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>vrstva: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>pre tento vstup neexistuje spúšťač nezávislý od zariadenia</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>akcie v hre: {0}, iba pre Steam, bez napojenia na strane hry</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>akcie v hre: {0}, iba pre Steam, bez napojenia na strane hry</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>akcia klienta Steam {0}, bez ekvivalentu</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>akcia ovládača {0} nie je podporovaná</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>neznámy typ väzby {0}</value></data>
@@ -4334,7 +4352,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Pri každom spustení posunie kurzor myši o pevný počet pixelov. Kladné X posúva doprava, kladné Y nadol. Záporné hodnoty sú povolené.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Posunúť kurzor o ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Cyklický zoznam ťuknutí</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Každé spustenie vykoná ďalšie ťuknutie zo zoznamu krokov a posunie sa. So zapnutým opakovaním dookola zoznam po poslednom kroku začne znova, bez neho sa spúšťanie na konci zastaví.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Každé spustenie vykoná ďalšie ťuknutie zo zoznamu krokov a posunie sa. So zapnutým opakovaním dookola zoznam po poslednom kroku začne znova. Bez neho sa spúšťanie na konci zastaví.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Prepnúť tlačidlo myši</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Každé spustenie zaistí alebo uvoľní tlačidlo myši. Zaistené tlačidlo zostane stlačené do ďalšieho spustenia alebo do zakázania makra.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Prepnúť tlačidlo myši {0}</value></data>
@@ -4347,6 +4365,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Prepnúť posúvanie kolieskom</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Každé spustenie zaistí alebo uvoľní nepretržité posúvanie. Kým je zaistené, posiela počet krokov raz za interval do ďalšieho spustenia alebo do zakázania makra.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Prepnúť posúvanie kolieskom (kroky: {0} každých {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Prepnúť posúvanie kolieskom (kroky: {0} každých {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulzovať počas zaistenia</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Kým je zaistené, výstup sa v intervale opakovania zapína a vypína namiesto stáleho držania.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Pripočítať k osi (relatívne)</value></data>
@@ -4368,6 +4387,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Keď fyzický pohyb posunie cieľ za prah, makro prestane do osi zapisovať až do konca aktivácie.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ustupuje fyzickému vstupu)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cyklický zoznam ťuknutí (kroky: {0})</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Cyklický zoznam ťuknutí (kroky: {0})</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Kroky</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Dookola</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Prepnúť klávesy {0}</value></data>
@@ -4451,6 +4471,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Prekrytie prepnutia profilu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zobrazuje kruh alebo mriežku na obrazovke, kým je aktívna kruhová alebo dotyková ponuka. Ponuky sa spúšťajú aj pri vypnutom prekrytí.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ponuka na obrazovke vytvorená (priradené bunky: {0})</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ponuka na obrazovke vytvorená (priradené bunky: {0})</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ponuka nemá žiadne priradené bunky</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>plocha hostiteľa ponuky nie je podporovaná ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona bunky ponuky nebola rozpoznaná ({0}), preto si bunka ponechá textový popisok</value></data>
@@ -4639,6 +4660,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Vyberte súbor .txt stiahnutý z AutoEq. Toto je správna voľba: autoeq.app vám poskytne súbor, nie text na skopírovanie.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Korekcia prispôsobená vašim slúchadlám: otvorte autoeq.app, vyberte svoj model, zvoľte Custom Parametric Eq a stiahnite ho, potom použite Importovať zo súboru. Súbor Graphic Eq neobsahuje riadky filtrov a nedá sa importovať.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importované pásma: {0}, predzosilnenie {1:0.#} dB, zdroj: {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Importované pásma: {0}, predzosilnenie {1:0.#} dB, zdroj: {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Tento profil neobsahuje riadky filtrov. Export Graphic Eq z AutoEq sa tu nedá prečítať. Namiesto neho stiahnite Custom Parametric Eq. Aktuálny ekvalizér zostal bez zmeny.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nie je čo importovať. Aktuálny ekvalizér zostal bez zmeny.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Súbor sa nepodarilo prečítať: {0}</value></data>
@@ -5500,11 +5522,17 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Ukončí akcie Nastaviť farby klávesov spustené na tomto virtuálnom ovládači, ktoré rozsvecujú niektorý z tu vybraných klávesov, alebo všetky, ak nie je vybraný žiadny.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Zrušiť všetky farby klávesov</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Zrušiť farby klávesov (svetlá: {0})</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Zrušiť farby klávesov (svetlá: {0})</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, {2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, {2} ms)</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, kým je držaná)</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, kým je držaná)</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, do zrušenia)</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, do zrušenia)</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, postupné zhasnutie {2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, postupné zhasnutie {2} ms)</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, odpočet {2} ms)</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>Svetlá: {0} ({1}, odpočet {2} ms)</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Klávesy</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Každé svetlo</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Nie sú vybrané žiadne klávesy, takže akcia nič nerozsvieti.</value></data>

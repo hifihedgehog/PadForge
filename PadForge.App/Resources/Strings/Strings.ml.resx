@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>മായ്ക്കുക</value></data>
   <data name="Common_None" xml:space="preserve"><value>ഒന്നുമില്ല</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>മിനിറ്റ്</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>സെക്കൻഡ്</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>മിനിറ്റ് (0 = ഒരിക്കലും വേണ്ട)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge മറച്ചിരുന്ന ഒരു ഉപകരണത്തിൽ നിന്ന് HidHide PadForge-നെ തടഞ്ഞു, അതിനാൽ PadForge ഉപകരണങ്ങൾ മറയ്ക്കുന്നത് നിർത്തി.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ന്റെ Inverse application cloak ഓണാണ്, അതിനാൽ PadForge ഒരു ഉപകരണവും മറയ്ക്കുന്നില്ല.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services റൺടൈം അൺഇൻസ്റ്റാൾ ചെയ്യുന്നു…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI പ്രവർത്തിക്കാത്തതിനാൽ {0} ആരംഭിക്കാനായില്ല. കാരണം ക്രമീകരണങ്ങളിലെ Windows MIDI Services കാർഡിൽ കാണാം.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI പ്രവർത്തിക്കാത്തതിനാൽ {0} ആരംഭിക്കാനായില്ല. ക്രമീകരണങ്ങളിൽ ഡ്രൈവറുകൾക്ക് കീഴിലുള്ള Windows MIDI Services കാണുക.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services അതിന്റെ പോർട്ട് സൃഷ്ടിക്കാത്തതിനാൽ {0} ആരംഭിക്കാനായില്ല.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}-ന് ഔട്ട്പുട്ട് പോർട്ട് ഇല്ല. അതിന്റെ പേജിൽ ഒന്ന് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}-ന്റെ ഔട്ട്പുട്ട് പോർട്ട് “{1}” കണക്റ്റ് ചെയ്തിട്ടില്ല. പോർട്ട് തിരിച്ചെത്തിയാൽ സ്ലോട്ട് ആരംഭിക്കും.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ആരംഭിക്കാൻ വിസമ്മതിച്ചു. Logitech Gaming Software സാധാരണയായി പ്രവർത്തിക്കുന്നില്ല.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തു, ഇതുവരെ കീ ഒന്നും കണ്ടിട്ടില്ല. Logitech Gaming Software-ൽ, PadForge പ്രൊഫൈലിലെ ഓരോ കീയിലേക്കും G-key കമാൻഡ് വലിച്ചിടുക, ആ പ്രൊഫൈൽ സ്ഥിരമാക്കുക. G600 അല്ലെങ്കിൽ G300 മൗസും ഓൺ-ബോർഡ് മെമ്മറി മോഡിൽ നിന്ന് പുറത്തായിരിക്കണം.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു, {0} കീ ഇവന്റുകൾ</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു, {0} കീ ഇവന്റ്</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>അനലോഗ് കീബോർഡുകൾ വായിക്കുക</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA, മറ്റ് നിർമ്മാതാക്കൾ എന്നിവരുടെ അനലോഗ് കീബോർഡുകളിൽ ഓരോ കീയും എത്ര അമർത്തിയെന്ന് വായിക്കുന്നു, ഓരോന്നും അതിന്റേതായ ഉപകരണ വരിയായി. പിന്തുണയ്ക്കുന്ന എല്ലാ മോഡലുകളും ഡോക്യുമെന്റേഷനിൽ ഉണ്ട്. Razer കീബോർഡുകൾക്ക് Razer Synapse പ്രവർത്തിക്കണം. മറ്റുള്ളവയിൽ മിക്കതും അവയുടെ സ്വന്തം കോൺഫിഗറേറ്റർ ഉപയോഗിക്കുന്ന ചാനലിലൂടെയാണ് വായിക്കുന്നത്, അതിനാൽ ഇത് ഓണായിരിക്കുമ്പോൾ കോൺഫിഗറേറ്റർ അടയ്ക്കുക.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>പിന്തുണയ്ക്കുന്ന അനലോഗ് കീബോർഡ് കണ്ടെത്തിയില്ല.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ പരിശോധിക്കുക</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ന്റെ ഫോർക്ക്, SDL3, WPF, .NET 10 ഉപയോഗിച്ച് പുനർനിർമ്മിച്ചത്</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ഏത് ഇൻപുട്ട് ഉപകരണത്തെയും ഏത് വെർച്വൽ കൺട്രോളറാക്കി മാറ്റുന്നു. ഗെയിംപാഡുകൾ, ജോയ്സ്റ്റിക്കുകൾ, കീബോർഡുകൾ, മൗസുകൾ, ടച്ച്സ്ക്രീനുകൾ എന്നിവ വെർച്വൽ ഗെയിം കൺട്രോളറുകളിലേക്ക് (Xbox, PlayStation, ഫ്ലൈറ്റ് സ്റ്റിക്കുകൾ, വീലുകൾ, മൂന്നാം കക്ഷി ഗെയിംപാഡുകൾ) അല്ലെങ്കിൽ ഗെയിമുകൾ യഥാർത്ഥ ഹാർഡ്വെയറായി കാണുന്ന കീബോർഡ്+മൗസ് / MIDI ഔട്ട്പുട്ടിലേക്ക് മാപ്പ് ചെയ്യുന്നു. HIDMaestro, Windows MIDI Services എന്നിവയാണ് ഇതിന് കരുത്തേകുന്നത്. കൺട്രോളർ ഇൻപുട്ടിന് SDL3, കീബോർഡിനും മൗസിനും Windows Raw Input, ഓരോ ഗെയിമിനും ഉപകരണം മറയ്ക്കാൻ HidHide എന്നിവ ഉപയോഗിക്കുന്നു, മാപ്പിംഗ്, ഡെഡ് സോണുകൾ, സെൻസിറ്റിവിറ്റി കർവുകൾ, ഫോഴ്സ് ഫീഡ്ബാക്ക് എന്നിവയ്ക്കായി Fluent Design ഇന്റർഫേസും നൽകുന്നു.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ഏത് ഇൻപുട്ടിനെയും ഏത് കൺട്രോളറായും കാണിക്കുന്നു. ഗെയിംപാഡുകൾ, ജോയ്സ്റ്റിക്കുകൾ, വീലുകൾ, കീബോർഡുകൾ, മൗസുകൾ, ടച്ച് സ്ക്രീനുകൾ, MIDI ഉപകരണങ്ങൾ, ഫോണുകൾ എന്നിവ ഗെയിമുകൾ യഥാർത്ഥ ഹാർഡ്വെയറായി കാണുന്ന വെർച്വൽ കൺട്രോളറുകളെ നിയന്ത്രിക്കുന്നു: Xbox, PlayStation, Nintendo, Steam പാഡുകൾ, SInput പാഡുകൾ, VR ഹാൻഡ് കൺട്രോളറുകൾ, MIDI ഔട്ട്പുട്ട്, ഒരു കീബോർഡും മൗസും, അല്ലെങ്കിൽ ഫ്ലൈറ്റ് സ്റ്റിക്കോ വീലോ പോലുള്ള ഇഷ്ടാനുസൃത ഉപകരണം. വെർച്വൽ ഗെയിംപാഡുകൾ HIDMaestro സൃഷ്ടിക്കുന്നു, കൺട്രോളറുകളെ SDL3 വായിക്കുന്നു, കീബോർഡുകളെയും മൗസുകളെയും Windows Raw Input വായിക്കുന്നു, ഗെയിമുകളിൽ നിന്ന് ഉപകരണത്തെ HidHide മറയ്ക്കുന്നു, MIDI ഇൻപുട്ടും ഔട്ട്പുട്ടും Windows MIDI Services വഹിക്കുന്നു.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>അവലോകനം</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>നിർമ്മിച്ചത് ഇവ ഉപയോഗിച്ച്</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ക്രെഡിറ്റുകൾ തിരയുക</value></data>
@@ -927,6 +929,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>അക്ഷരങ്ങൾക്കിടയിലെ കാലതാമസം</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ടൈപ്പ് ചെയ്യുന്ന അക്ഷരങ്ങൾക്കിടയിലെ മില്ലിസെക്കൻഡുകൾ, പരമാവധി 1000. 0 ആയാൽ മുഴുവൻ ടെക്സ്റ്റും ഒരുമിച്ച് ടൈപ്പ് ചെയ്യും.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>നിഷ്ക്രിയമാകുമ്പോൾ വിച്ഛേദിക്കുക</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 എന്നാൽ ഒരിക്കലും വേണ്ട</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>വിശദാംശങ്ങൾ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB വഴി പ്ലഗ് ചെയ്യുമ്പോൾ ബ്ലൂടൂത്ത് വിച്ഛേദിക്കുക</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ക്വിക്ക് ചാർജ്. ഈ കൺട്രോളർ ബ്ലൂടൂത്ത് വഴി കണക്റ്റ് ചെയ്തിരിക്കെ ചാർജ് ചെയ്യുന്നതായി റിപ്പോർട്ട് ചെയ്യുമ്പോൾ, റേഡിയോ പ്രവർത്തിപ്പിക്കാതെ ചാർജ് ആകാൻ ബ്ലൂടൂത്ത് ലിങ്ക് വിച്ഛേദിക്കുന്നു. വാൾ ചാർജറുകൾ ഉൾപ്പെടെ ഏത് USB പവർ സ്രോതസ്സും കണക്കാക്കും. കേബിൾ ഘടിപ്പിച്ചിരിക്കെ ബ്ലൂടൂത്ത് വീണ്ടും ഓണാക്കിയാൽ, അടുത്ത തവണ അൺപ്ലഗ് ചെയ്യുന്നതുവരെ അതിൽ തൊടില്ല.</value></data>
@@ -991,6 +994,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>അയയ്ക്കുക</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ഫ്രെയിമുകൾ: {0}. അയയ്ക്കാൻ ഏകദേശം {1} എടുക്കും.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>കൺട്രോളർ പരമാവധി {0} ഫ്രെയിമുകൾ മാത്രം സ്വീകരിക്കുന്നതിനാൽ അവസാനത്തെ {1} ഒഴിവാക്കി.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>കൺട്രോളർ പരമാവധി {0} ഫ്രെയിമുകൾ മാത്രം സ്വീകരിക്കുന്നതിനാൽ അവസാനത്തെ ഒന്ന് ഒഴിവാക്കി.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>കൺട്രോളർ കേബിൾ വഴി ബന്ധിപ്പിക്കുക. ചിത്രം കയറി ഏകദേശം 15 സെക്കൻഡിനു ശേഷം അത് സ്വയം റീസ്റ്റാർട്ട് ആകും.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>കൺട്രോളർ കേബിൾ വഴി ബന്ധിപ്പിക്കുക. അയയ്ക്കാൻ PadForge അതിനെ Xbox മോഡിലേക്ക് മാറ്റുകയും Windows-ന്റെ Xbox ഡ്രൈവറിൽ നിന്ന് WinUSB-യിലേക്ക് മാറ്റുകയും ചെയ്യുന്നു, പിന്നീട് രണ്ടും തിരികെ വയ്ക്കുന്നു.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge കൺട്രോളറിനെ Xbox മോഡിലേക്ക് മാറ്റും, അയയ്ക്കാനായി WinUSB-യിലേക്ക് മാറ്റും, പിന്നീട് Windows-ന്റെ Xbox ഡ്രൈവറിനു തിരികെ നൽകി DInput മോഡിലേക്ക് മാറ്റും. ആദ്യം മറ്റെല്ലാ Xbox 360 കൺട്രോളറുകളും അൺപ്ലഗ് ചെയ്യുക. ഇപ്പോൾ അയയ്ക്കട്ടേ?</value></data>
@@ -1422,8 +1426,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ക്ലോൺ ചെയ്യുക</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ക്ലോൺ ചെയ്യാൻ ഈ സ്ലോട്ടിൽ ഒരു ഉപകരണം തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഉപകരണം ക്ലോൺ ചെയ്യാൻ ആക്സിസുകളോ ബട്ടണുകളോ ഹാറ്റുകളോ നൽകുന്നില്ല.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ഈ സ്ലോട്ടിലേക്ക് 1:1 പാസ്ത്രൂ ആയി ക്ലോൺ ചെയ്യണോ? ലേഔട്ട് {1} ആക്സിസുകൾ, {2} ബട്ടണുകൾ, {3} POV എന്നിവയാകും, സ്ലോട്ടിലെ ഈ ഉപകരണത്തിന്റെ വരികൾ അതിന്റെ സ്വന്തം ഇൻപുട്ടുകൾ കൊണ്ട് മാറ്റിസ്ഥാപിക്കും.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ഒരു എക്സ്റ്റെൻഡഡ് കൺട്രോളറിന് വഹിക്കാവുന്നതിലധികം ഇൻപുട്ടുകൾ ഈ ഉപകരണത്തിനുണ്ട്. {1} ആക്സിസുകളിൽ {0}, {3} ബട്ടണുകളിൽ {2}, {5} POV-കളിൽ {4} എന്നിവ മാപ്പ് ചെയ്തു. ബാക്കിയുള്ളവ മാപ്പ് ചെയ്യാതെ വിട്ടു.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ഈ സ്ലോട്ടിലേക്ക് 1:1 പാസ്ത്രൂ ആയി ക്ലോൺ ചെയ്യണോ? ലേഔട്ട് {1}, {2}, {3} എന്നിവയാകും, സ്ലോട്ടിലെ ഈ ഉപകരണത്തിന്റെ വരികൾ അതിന്റെ സ്വന്തം ഇൻപുട്ടുകൾ കൊണ്ട് മാറ്റിസ്ഥാപിക്കും.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ഒരു എക്സ്റ്റെൻഡഡ് കൺട്രോളറിന് വഹിക്കാവുന്നതിലധികം ഇൻപുട്ടുകൾ ഈ ഉപകരണത്തിനുണ്ട്. {1}-ൽ {0}, {3}-ൽ {2}, {5}-ൽ {4} എന്നിവ മാപ്പ് ചെയ്തു. ബാക്കിയുള്ളവ മാപ്പ് ചെയ്യാതെ വിട്ടു.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>കൺട്രോളർ പ്രീസെറ്റുകൾ</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge നൽകാത്ത ഒരു കൺട്രോളറിനുള്ള പ്രീസെറ്റ് ഒരു ഫയലിൽ നിന്നോ കൺട്രോളറിൽ നിന്നോ ചേർക്കുക.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>ഇറക്കുമതി ചെയ്തവ</value></data>
@@ -1595,11 +1599,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ അക്യുമുലേറ്ററിനെ താഴേക്ക് ഇറക്കുന്ന ബട്ടൺ</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>താഴേക്ക്: അമർത്തിപ്പിടിക്കുമ്പോൾ അക്യുമുലേറ്ററിനെ താഴേക്ക് ഇറക്കുന്ന ബട്ടൺ.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>നിരക്ക്</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>സെക്കൻഡിലെ യൂണിറ്റുകളിൽ സ്വീപ്പ് വേഗത. 0.5 = 2 സെക്കൻഡിൽ പൂർണ്ണ പരിധി; 2 = 0.5 സെക്കൻഡിൽ പൂർണ്ണ പരിധി.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>സെക്കൻഡിലെ യൂണിറ്റുകളിൽ സ്വീപ്പ് വേഗത. 0.5 = 2 സെക്കൻഡിൽ പൂർണ്ണ പരിധി. 2 = 0.5 സെക്കൻഡിൽ പൂർണ്ണ പരിധി.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>സ്റ്റിക്കി</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>ചെക്ക് ചെയ്താൽ, വിട്ടതിനുശേഷവും അക്യുമുലേറ്റർ അതിന്റെ മൂല്യം നിലനിർത്തുന്നു (ക്രൂയിസ് കൺട്രോൾ). ചെക്ക് ചെയ്തിട്ടില്ലെങ്കിൽ, വിടുമ്പോൾ അത് കുറഞ്ഞതിലേക്ക് തിരികെ പോകുന്നു.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>കുറഞ്ഞത്</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>അക്യുമുലേറ്ററിന്റെ താഴ്ന്ന പരിധി. -1 = ബൈപോളാർ ആക്സിസ് ലക്ഷ്യങ്ങൾക്ക് പൂർണ്ണ നെഗറ്റീവ്; 0 = യൂണിപോളാർ.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>അക്യുമുലേറ്ററിന്റെ താഴ്ന്ന പരിധി. -1 = ബൈപോളാർ ആക്സിസ് ലക്ഷ്യങ്ങൾക്ക് പൂർണ്ണ നെഗറ്റീവ്. 0 = യൂണിപോളാർ.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>കൂടിയത്</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>അക്യുമുലേറ്ററിന്റെ ഉയർന്ന പരിധി. 1 = പൂർണ്ണ പോസിറ്റീവ്.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>റാമ്പ്</value></data>
@@ -1892,6 +1896,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>നിയുക്ത സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ മോഡ് ഒരു നിശ്ചിത മൂല്യത്തിലേക്ക് സജ്ജമാക്കുന്നു. മറ്റൊരു പ്രവർത്തനമോ ഉപയോക്താവോ മാറ്റുന്നതുവരെ ലൈറ്റിംഗ് കാർഡിലെ മാറ്റം പോലെ നിലനിൽക്കുന്നു.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ലൈറ്റ്ബാർ മോഡുകൾ മാറിമാറി ഉപയോഗിക്കുക</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ മോഡുകളിലൂടെ മാറിമാറി പോകുക</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ മോഡിലൂടെ മാറിമാറി പോകുക</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>താഴെ തിരഞ്ഞെടുത്ത മോഡുകളിലൂടെ സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ മോഡ് മുന്നോട്ട് നീക്കുന്നു. ഓരോ പ്രവർത്തനവും അടുത്ത ചെക്ക് ചെയ്ത മോഡിലേക്ക് നീങ്ങുന്നു. ചക്രത്തിലെ സ്ഥാനം ഓരോ പ്രവർത്തനത്തിനും വെവ്വേറെയാണ്, ആപ്പ് പുനരാരംഭിക്കുമ്പോൾ പുനഃസജ്ജമാകും.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുക</value></data>
@@ -2170,7 +2175,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>പാഡ് എത്തുന്ന സ്ക്രീനിന്റെ ഭാഗം</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>ടച്ച്പാഡ് പോയിന്റർ X/Y ഉറവിടങ്ങൾ ക്രമീകരിക്കുന്നു. ഇവ പാഡിലെ വിരലിന്റെ സ്ഥാനത്തേക്ക് കഴ്സറിനെ നേരിട്ട് എത്തിക്കുന്നു (കീബോർഡ് / മൗസ് വെർച്വൽ കൺട്രോളറിൽ മൗസ് X/Y-ലേക്ക് മാപ്പ് ചെയ്യുക). വലുപ്പം 1.00, മധ്യം 0.50 എന്നിവ പാഡിനെ മുഴുവൻ സ്ക്രീനിലേക്കും മാപ്പ് ചെയ്യുന്നു. കഴ്സറിനെ സ്ക്രീനിന്റെ ഒരു ഭാഗത്ത് ഒതുക്കാൻ വലുപ്പം കുറയ്ക്കുക, അതിന്റെ സ്ഥാനം നിശ്ചയിക്കാൻ മധ്യം നീക്കുക.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>മേഖലയുടെ വീതി</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ഈ പാഡ് മാപ്പ് ചെയ്യുന്ന സ്ക്രീൻ ഭാഗത്തിന്റെ വീതി, സ്ക്രീൻ വീതിയുടെ അംശമായി. 1.00 മുഴുവൻ വീതിയും ഉൾക്കൊള്ളുന്നു, 0.50 കഴ്സറിനെ പകുതി സ്ക്രീനിൽ ഒതുക്കുന്നു.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>ഈ പാഡ് മാപ്പ് ചെയ്യുന്ന സ്ക്രീൻ ഭാഗത്തിന്റെ വീതി, സ്ക്രീൻ വീതിയുടെ അംശമായി. 1.00 മുഴുവൻ വീതിയും ഉൾക്കൊള്ളുന്നു. 0.50 കഴ്സറിനെ പകുതി സ്ക്രീനിൽ ഒതുക്കുന്നു.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>മേഖലയുടെ ഉയരം</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>സ്ക്രീൻ ഭാഗത്തിന്റെ ഉയരം, സ്ക്രീൻ ഉയരത്തിന്റെ അംശമായി.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>മേഖലയുടെ മധ്യം X</value></data>
@@ -2181,7 +2186,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>സ്വൈപ്പ് ഹാപ്റ്റിക്സ്</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>വിരൽ നീങ്ങുമ്പോൾ ടിക്കുകൾ</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ഈ ടച്ച്പാഡിലൂടെ വിരൽ നീങ്ങുമ്പോൾ കൺട്രോളറിന്റെ ഹാപ്റ്റിക്സ് സ്പന്ദിപ്പിക്കുന്നു, Steam Input-ന്റെ ട്രാക്ക്പാഡ് ടിക്കുകൾ പോലെ. Steam Controller-കളും Steam Deck-ഉം പാഡിനടിയിലെ ആക്ച്വേറ്റർ ടിക്ക് ചെയ്യുന്നു, DualSense-ഉം DualShock 4-ഉം റംബിൾ മോട്ടോറുകൾ സ്പന്ദിപ്പിക്കുന്നു.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>ഈ ടച്ച്പാഡിലൂടെ വിരൽ നീങ്ങുമ്പോൾ കൺട്രോളറിന്റെ ഹാപ്റ്റിക്സ് സ്പന്ദിപ്പിക്കുന്നു, Steam Input-ന്റെ ട്രാക്ക്പാഡ് ടിക്കുകൾ പോലെ. Steam Controller-കളും Steam Deck-ഉം പാഡിനടിയിലെ ആക്ച്വേറ്റർ ടിക്ക് ചെയ്യുന്നു. DualSense-ഉം DualShock 4-ഉം റംബിൾ മോട്ടോറുകൾ സ്പന്ദിപ്പിക്കുന്നു.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>സ്വൈപ്പ് ഹാപ്റ്റിക്സ് പ്രവർത്തനക്ഷമമാക്കുക</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>ഈ പാഡിൽ വിരൽ ഒരു നിശ്ചിത ദൂരം നീങ്ങുമ്പോഴെല്ലാം ഒരു ചെറിയ ഹാപ്റ്റിക് ടിക്ക് നൽകുന്നു. വിരൽ തൊടുമ്പോഴോ പാഡ് ക്ലിക്ക് ചെയ്യുമ്പോഴോ ടിക്ക് ഉണ്ടാകില്ല. സ്ഥിരസ്ഥിതിയായി ഓഫ്.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>സ്പന്ദന തീവ്രത</value></data>
@@ -2289,6 +2294,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>എല്ലാ സാമ്പിളുകളും പകർത്തി. ജെസ്ചറിന് പേര് നൽകി സേവ് ചെയ്യുക ക്ലിക്ക് ചെയ്യുക.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>സാമ്പിൾ {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} സാമ്പിളുകൾ</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} സാമ്പിൾ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>പകർത്തേണ്ട സാമ്പിളുകൾ</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>പകർത്താനുള്ള സാമ്പിളുകൾ</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ആണ് സ്റ്റാൻഡേർഡ്. കൂടുതൽ സാമ്പിളുകൾ ഉറപ്പുള്ള പൊരുത്തം തരും, കുറവ് റെക്കോർഡ് ചെയ്യാൻ വേഗത്തിലാണ്.</value></data>
@@ -3358,6 +3364,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ഗൺ സ്ക്രീനിന് പുറത്ത്</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>പോയിന്റർ മോഡുകൾ സൈക്കിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} പോയിന്റർ മോഡുകളിലൂടെ സൈക്കിൾ ചെയ്യുക</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} പോയിന്റർ മോഡിലൂടെ സൈക്കിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>സ്ലോട്ടിലെ IR ശേഷിയുള്ള എല്ലാ റിമോട്ടുകൾക്കുമായി, താഴെ തിരഞ്ഞെടുത്ത മോഡുകളിലൂടെ Wii പോയിന്റർ മോഡ് മുന്നോട്ടു നീക്കുന്നു. ഓരോ പ്രവർത്തനവും ടിക്ക് ചെയ്ത അടുത്ത മോഡിലേക്ക് മാറ്റും. സൈക്കിൾ സ്ഥാനം ഓരോ പ്രവർത്തനത്തിനും പ്രത്യേകമാണ്, ആപ്പ് പുനരാരംഭിക്കുമ്പോൾ പുനഃസജ്ജമാകും.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>മാക്രോ ഏതൊക്കെ പോയിന്റർ മോഡുകളിലൂടെ സൈക്കിൾ ചെയ്യണമെന്ന് തിരഞ്ഞെടുക്കുക. ഓരോ പ്രവർത്തനവും ടിക്ക് ചെയ്ത അടുത്ത മോഡിലേക്ക് നീങ്ങും.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ഓഡിയോ</value></data>
@@ -3776,7 +3783,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ബട്ടൺ വിടുക.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ഘട്ടം {0}, ആകെ {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>മാറ്റമൊന്നും കണ്ടില്ല. വീണ്ടും തുടങ്ങുക തിരഞ്ഞെടുക്കുക, ആവശ്യപ്പെടുമ്പോൾ ബട്ടൺ അമർത്തിപ്പിടിക്കുക.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} വെണ്ടർ റിപ്പോർട്ടുകളും {1} ഇവന്റ് ക്ലാസുകളും നിരീക്ഷിച്ചു. അമർത്തുമ്പോൾ: {2} റിപ്പോർട്ടുകൾ, {3} ഇവന്റുകൾ.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>നിരീക്ഷിച്ച വെണ്ടർ റിപ്പോർട്ടുകൾ: {0}. നിരീക്ഷിച്ച ഇവന്റ് ക്ലാസുകൾ: {1}. അമർത്തുമ്പോഴുള്ള റിപ്പോർട്ടുകൾ: {2}. അമർത്തുമ്പോഴുള്ള ഇവന്റുകൾ: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ബട്ടൺ പിടിച്ചെടുത്തു. ഒരു പേര് നൽകി രജിസ്റ്റർ ചെയ്യുക ക്ലിക്ക് ചെയ്യുക.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ഉറവിടം</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>പേര്</value></data>
@@ -3792,7 +3799,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>എക്സ്പോർട്ട്…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>ഇംപോർട്ട്…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} ബട്ടണുകൾ എക്സ്പോർട്ട് ചെയ്തു.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} ബട്ടൺ എക്സ്പോർട്ട് ചെയ്തു.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} ബട്ടണുകൾ ഇംപോർട്ട് ചെയ്തു.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} ബട്ടൺ ഇംപോർട്ട് ചെയ്തു.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>ഹാൻഡ്ഹെൽഡ് PC ബട്ടണുകൾ</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>ഹാൻഡ്ഹെൽഡ് ഗെയിമിംഗ് PC-കളിലും ലാപ്ടോപ്പുകളിലും ഓപ്പറേറ്റിംഗ് സിസ്റ്റം ഒരിക്കലും കൺട്രോളറായി കാണിക്കാത്ത ബട്ടണുകളുണ്ട്: പിൻ പാഡിലുകൾ, മെനു കീകൾ, വീലുകൾ, വെണ്ടർ ഹോട്ട്കീകൾ. അവ അമർത്തി ഒരിക്കൽ പഠിപ്പിക്കാൻ ഇത് ഓണാക്കുക, പിന്നീട് മറ്റേതൊരു ബട്ടണും പോലെ മാപ്പ് ചെയ്യുക. മെഷീന്റെ സ്വന്തം ഗൈറോസ്കോപ്പും ഒരു മോഷൻ ഉപകരണമായി ചേർക്കുന്നു.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>ഹാൻഡ്ഹെൽഡ് PC ബട്ടണുകൾ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
@@ -3956,9 +3965,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ആരോഹണം</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>അവരോഹണം</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} ബൈൻഡിംഗുകൾ</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} ബൈൻഡിംഗ്</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} കണ്ടെത്തി</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1}-ൽ {0} കാണിക്കുന്നു</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} കോൺഫിഗുകൾ</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} കോൺഫിഗ്</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>പൂർണ്ണ കൺട്രോളർ പിന്തുണ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>ഭാഗിക കൺട്രോളർ പിന്തുണ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ഗെയിമുകൾ തിരയുക</value></data>
@@ -3968,7 +3979,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} മാസം മുമ്പ്</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} വർഷം മുമ്പ്</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} സബ്സ്ക്രൈബർമാർ</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} സബ്സ്ക്രൈബർ</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} വോട്ടുകൾ</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} വോട്ട്</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>എല്ലാം</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ഈ ഗെയിമിന് ഇതുവരെ കോൺഫിഗുകളില്ല</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>{0}-ന് Steam Workshop-ൽ കമ്മ്യൂണിറ്റി കൺട്രോളർ കോൺഫിഗുകളില്ല. നിങ്ങൾക്ക് ആദ്യത്തെയാളാകാം: Steam-ൽ ഒന്ന് നിർമ്മിക്കുക, അത് ഇവിടെ കാണിക്കും.</value></data>
@@ -4001,6 +4014,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ലെയർ: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ഈ ഇൻപുട്ടിന് ഉപകരണരഹിത ട്രിഗർ ഇല്ല</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ഗെയിമിലെ പ്രവർത്തനങ്ങൾ, Steam-ൽ മാത്രം, ഗെയിം വശത്ത് ഹുക്ക് ഇല്ല</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ഗെയിമിലെ പ്രവർത്തനം, Steam-ൽ മാത്രം, ഗെയിം വശത്ത് ഹുക്ക് ഇല്ല</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-ക്ലയന്റ് പ്രവർത്തനം {0}, തത്തുല്യമായത് ഇല്ല</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>കൺട്രോളർ പ്രവർത്തനം {0} പിന്തുണയ്ക്കുന്നില്ല</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>അജ്ഞാത ബൈൻഡിംഗ് തരം {0}</value></data>
@@ -4075,10 +4089,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>മൗസ് വീൽ ടിക്ക്</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനത്തിനും ഒരു മൗസ് വീൽ ഡീറ്റന്റ് അയയ്ക്കുന്നു. മൂല്യം ചിഹ്നമുള്ള ടിക്ക് എണ്ണമാണ് (പോസിറ്റീവ് മുകളിലേക്കോ വലത്തേക്കോ സ്ക്രോൾ ചെയ്യുന്നു).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>കഴ്സർ നീക്കുക</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനത്തിനും മൗസ് കഴ്സറിനെ നിശ്ചിത പിക്സൽ എണ്ണം നീക്കുന്നു. പോസിറ്റീവ് X വലത്തേക്കും പോസിറ്റീവ് Y താഴേക്കും നീക്കുന്നു, നെഗറ്റീവ് മൂല്യങ്ങൾ അനുവദനീയമാണ്.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനത്തിനും മൗസ് കഴ്സറിനെ നിശ്ചിത പിക്സൽ എണ്ണം നീക്കുന്നു. പോസിറ്റീവ് X വലത്തേക്കും പോസിറ്റീവ് Y താഴേക്കും നീക്കുന്നു. നെഗറ്റീവ് മൂല്യങ്ങൾ അനുവദനീയമാണ്.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>കഴ്സർ ({0}, {1}) px നീക്കുക</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>ടാപ്പ് ലിസ്റ്റ് സൈക്കിൾ ചെയ്യുക</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനവും സ്റ്റെപ്പ് ലിസ്റ്റിലെ അടുത്ത ടാപ്പ് ചെയ്ത് മുന്നോട്ട് പോകുന്നു. വ്രാപ്പ് പ്രവർത്തനക്ഷമമാണെങ്കിൽ അവസാന സ്റ്റെപ്പിന് ശേഷം ലിസ്റ്റ് വീണ്ടും തുടങ്ങും, അല്ലെങ്കിൽ അവസാനം പ്രവർത്തനം നിൽക്കും.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനവും സ്റ്റെപ്പ് ലിസ്റ്റിലെ അടുത്ത ടാപ്പ് ചെയ്ത് മുന്നോട്ട് പോകുന്നു. വ്രാപ്പ് പ്രവർത്തനക്ഷമമാണെങ്കിൽ അവസാന സ്റ്റെപ്പിന് ശേഷം ലിസ്റ്റ് വീണ്ടും തുടങ്ങും. അല്ലെങ്കിൽ അവസാനം പ്രവർത്തനം നിൽക്കും.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>മൗസ് ബട്ടൺ ടോഗിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനവും മൗസ് ബട്ടണിനെ ലാച്ച് ചെയ്യുകയോ അൺലാച്ച് ചെയ്യുകയോ ചെയ്യുന്നു. ലാച്ച് ചെയ്ത ബട്ടൺ അടുത്ത പ്രവർത്തനം വരെയോ മാക്രോ പ്രവർത്തനരഹിതമാക്കുന്നതുവരെയോ അമർത്തിയ നിലയിൽ തുടരും.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>മൗസ് {0} ടോഗിൾ ചെയ്യുക</value></data>
@@ -4091,6 +4105,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>വീൽ സ്ക്രോൾ ടോഗിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>ഓരോ പ്രവർത്തനവും തുടർച്ചയായ സ്ക്രോളിനെ ലാച്ച് ചെയ്യുകയോ അൺലാച്ച് ചെയ്യുകയോ ചെയ്യുന്നു. ലാച്ച് ചെയ്തിരിക്കുമ്പോൾ അടുത്ത പ്രവർത്തനം വരെയോ മാക്രോ പ്രവർത്തനരഹിതമാക്കുന്നതുവരെയോ ഓരോ ഇടവേളയിലും ടിക്ക് എണ്ണം അയയ്ക്കുന്നു.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>വീൽ സ്ക്രോൾ ടോഗിൾ ചെയ്യുക (ഓരോ {1} ms-ലും {0} ടിക്കുകൾ)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>വീൽ സ്ക്രോൾ ടോഗിൾ ചെയ്യുക (ഓരോ {1} ms-ലും {0} ടിക്ക്)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>ലാച്ച് ചെയ്തിരിക്കുമ്പോൾ സ്പന്ദിപ്പിക്കുക</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ലാച്ച് ചെയ്തിരിക്കുമ്പോൾ ഔട്ട്പുട്ട് സ്ഥിരമായി പിടിക്കുന്നതിനു പകരം ആവർത്തന ഇടവേളയിൽ ഓണും ഓഫുമായി സ്പന്ദിപ്പിക്കുക.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>ആക്സിസ് കൂട്ടുക (ആപേക്ഷികം)</value></data>
@@ -4112,6 +4127,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>ഫിസിക്കൽ ചലനം ടാർഗെറ്റിനെ ത്രെഷോൾഡ് കടത്തുമ്പോൾ, സജീവമാക്കലിന്റെ ശേഷിക്കുന്ന സമയത്ത് മാക്രോ ആക്സിസ് എഴുതുന്നത് നിർത്തുന്നു.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ഫിസിക്കലിന് വഴങ്ങുന്നു)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>ടാപ്പ് ലിസ്റ്റ് സൈക്കിൾ ചെയ്യുക ({0} സ്റ്റെപ്പുകൾ)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>ടാപ്പ് ലിസ്റ്റ് സൈക്കിൾ ചെയ്യുക ({0} സ്റ്റെപ്പ്)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>സ്റ്റെപ്പുകൾ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>വ്രാപ്പ്</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>കീകൾ {0} ടോഗിൾ ചെയ്യുക</value></data>
@@ -4195,6 +4211,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>പ്രൊഫൈൽ സ്വിച്ച് ഓവർലേ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>റേഡിയൽ അല്ലെങ്കിൽ ടച്ച് മെനു ഇടപഴകിയിരിക്കുമ്പോൾ ഓൺ-സ്ക്രീൻ റിംഗോ ഗ്രിഡോ കാണിക്കുക. ഓവർലേ ഓഫാണെങ്കിലും മെനുകൾ പ്രവർത്തിക്കും.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ മെനു സൃഷ്ടിച്ചു ({0} ബൈൻഡ് ചെയ്ത സെല്ലുകൾ)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ഓൺ-സ്ക്രീൻ മെനു സൃഷ്ടിച്ചു ({0} ബൈൻഡ് ചെയ്ത സെൽ)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>മെനുവിൽ ബൈൻഡ് ചെയ്ത സെല്ലുകളില്ല</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>മെനു ഹോസ്റ്റ് പ്രതലം പിന്തുണയ്ക്കുന്നില്ല ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>മെനു സെൽ ഐക്കൺ തിരിച്ചറിഞ്ഞില്ല ({0}), അതിനാൽ സെൽ അതിന്റെ വാചക ലേബൽ നിലനിർത്തുന്നു</value></data>
@@ -4381,6 +4398,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq ഡൗൺലോഡ് ചെയ്ത .txt തിരഞ്ഞെടുക്കുക. ഉപയോഗിക്കേണ്ടത് ഇതാണ്: autoeq.app പകർത്താവുന്ന ടെക്സ്റ്റിന് പകരം ഒരു ഫയലാണ് നൽകുന്നത്.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>നിങ്ങളുടെ ഹെഡ്ഫോണിന് ചേർന്ന തിരുത്തലിനായി: autoeq.app തുറക്കുക, നിങ്ങളുടെ മോഡൽ തിരഞ്ഞെടുക്കുക, Custom Parametric Eq തിരഞ്ഞെടുത്ത് ഡൗൺലോഡ് ചെയ്യുക, തുടർന്ന് ഫയലിൽ നിന്ന് ഇറക്കുമതി ചെയ്യുക ഉപയോഗിക്കുക. Graphic Eq ഡൗൺലോഡിൽ ഫിൽട്ടർ വരികൾ ഇല്ലാത്തതിനാൽ അത് ഇറക്കുമതി ചെയ്യാൻ കഴിയില്ല.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2}-ൽ നിന്ന് {1:0.#} dB പ്രീആംപോടെ {0} ബാൻഡുകൾ ഇറക്കുമതി ചെയ്തു.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2}-ൽ നിന്ന് {1:0.#} dB പ്രീആംപോടെ {0} ബാൻഡ് ഇറക്കുമതി ചെയ്തു.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ആ പ്രൊഫൈലിൽ ഫിൽട്ടർ വരികളില്ല. AutoEq-ന്റെ Graphic Eq എക്സ്പോർട്ട് ഇവിടെ വായിക്കാൻ കഴിയില്ല. പകരം Custom Parametric Eq ഡൗൺലോഡ് ചെയ്യുക. നിലവിലെ EQ മാറ്റമില്ലാതെ തുടരുന്നു.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>ഇറക്കുമതി ചെയ്യാൻ ഒന്നുമില്ല. നിലവിലെ EQ മാറ്റമില്ലാതെ തുടരുന്നു.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ആ ഫയൽ വായിക്കാൻ കഴിഞ്ഞില്ല: {0}</value></data>

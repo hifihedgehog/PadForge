@@ -101,6 +101,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Linpa</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nenhun</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sigundus</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -869,11 +870,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Botãu ki ta faze akumulador dixi timenti el sta sigurado</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Baxu: botãu ki ta faze akumulador dixi timenti el sta sigurado.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Taxa</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velosidadi di varedura en unidadi pa sigundu. 0.5 = intervalu kompletu en 2 s; 2 = intervalu kompletu en 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velosidadi di varedura en unidadi pa sigundu. 0.5 = intervalu kompletu en 2 s. 2 = intervalu kompletu en 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Fixu</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Kantu markadu, akumulador ta manti se valor dipos di solta (cruise control). Kantu dizmarkadu, el ta volta pa Mín kantu bu solta.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Mín</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limiti inferior di akumulador. -1 = totalmenti negativu pa eixu bipolar; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Limiti inferior di akumulador. -1 = totalmenti negativu pa eixu bipolar. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limiti superior di akumulador. 1 = totalmenti pozitivu.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
@@ -1145,6 +1146,7 @@
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Difini modu di lightbar pa {0}</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Alterna modus di lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Alterna entri {0} modu di lightbar</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Alterna entri {0} modu di lightbar</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Manti</value></data>
   <data name="Macro_LightbarHold_Sticky" xml:space="preserve"><value>Fixu (Manti)</value></data>
@@ -1474,6 +1476,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Tudu amostra kapturadu. Da jestu un nomi i klika na Guarda.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Amostra {0} di {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} amostra</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} amostra</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Amostra pa kaptura</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Amostras pa grava</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nomi</value></data>
@@ -2374,7 +2377,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Solta botãu.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Pasu {0} di {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Ka odja nenhun mudansa. Skodji Kumesa di novu, dipos karga i sigura botãu ora ki pidi.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Vijia {0} relatóriu di fabrikanti i {1} klasi di eventu. Duranti karga: {2} relatóriu, {3} eventu.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Relatóriu di fabrikanti vijiadu: {0}. Klasi di eventu vijiadu: {1}. Relatóriu duranti karga: {2}. Eventu duranti karga: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Botãu kapturadu. Skrebe un nomi i klika Rejista.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Fonti</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nomi</value></data>
@@ -2447,9 +2450,11 @@
   <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Más votu</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ta mostra {0} di {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurason</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfigurason</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Buska jogu</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>oji</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votu</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} votu</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tudu</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Inda ka ten konfigurason pa es jogu</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Ka konsigi kontata Steam. Verifika bu konekson. Perfil ki bu dja inporta ta kontinua ta funsiona: es sta na es PC.</value></data>

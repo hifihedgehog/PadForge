@@ -96,6 +96,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Klinim</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nogat</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekon</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -1508,6 +1509,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mun bipo</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} yia bipo</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} vot</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} vot</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Olgeta</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>I no inap kisim Steam. Lukim konekson bilong yu. Ol profail yu kisim pinis i wok yet: ol i stap long dispela PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Traim gen</value></data>
@@ -2098,6 +2100,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Salim</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ol fraim: {0}. Long salim, em i kisim klostu {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrola i ken kisim {0} fraim tasol, olsem na laspela {1} i no i go.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Kontrola i ken kisim {0} fraim tasol, olsem na laspela wan i no i go.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektim kontrola long waia. Em i statim gen em yet klostu 15 sekon bihain long piksa i go insait.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektim kontrola long waia. Bilong salim, PadForge i senisim em i go long Xbox mod na muvim em long Xbox draiva bilong Windows i go long WinUSB, na bihain em i putim tupela i go bek.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge bai senisim kontrola i go long Xbox mod, muvim em i go long WinUSB bilong salim, na bihain givim em i go bek long Xbox draiva bilong Windows na senisim em i go bek long DInput mod. Pastaim, rausim plak bilong olgeta narapela Xbox 360 kontrola. Salim nau?</value></data>

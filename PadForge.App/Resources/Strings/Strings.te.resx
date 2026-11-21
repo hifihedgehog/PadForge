@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>పేజీ కుడికి</value></data>
   <data name="Common_None" xml:space="preserve"><value>ఏదీ లేదు</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>నిమి</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>సెకన్లు</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>నిమిషాలు (0 = ఎప్పుడూ కాదు)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge దాచిన పరికరం నుండి PadForgeను HidHide నిరోధించింది, కాబట్టి PadForge పరికరాలను దాచడం ఆపింది.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHideలో Inverse application cloak ఆన్ అయి ఉంది, కాబట్టి PadForge ఏ పరికరాన్నీ దాచదు.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services రన్టైమ్ అన్ఇన్స్టాల్ అవుతోంది…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI నడవడం లేదు కాబట్టి {0} ప్రారంభం కాలేదు. కారణాన్ని సెట్టింగులలోని Windows MIDI Services కార్డ్ చెబుతుంది.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI నడవడం లేదు కాబట్టి {0} ప్రారంభం కాలేదు. సెట్టింగులలో డ్రైవర్లు కింద Windows MIDI Services చూడండి.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services దాని పోర్ట్‌ను సృష్టించలేదు కాబట్టి {0} ప్రారంభం కాలేదు.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}కు అవుట్పుట్ పోర్ట్ లేదు. దాని పేజీలో ఒకటి ఎంచుకోండి.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} యొక్క అవుట్పుట్ పోర్ట్ “{1}” కనెక్ట్ కాలేదు. పోర్ట్ తిరిగి వచ్చిన వెంటనే స్లాట్ ప్రారంభమవుతుంది.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ప్రారంభించడానికి నిరాకరించింది. సాధారణంగా Logitech Gaming Software నడవడం లేదని అర్థం.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>కనెక్ట్ అయింది, ఇంకా ఏ కీ కనిపించలేదు. Logitech Gaming Softwareలో PadForge ప్రొఫైల్‌లోని ప్రతి కీపైకి G-key కమాండ్‌ను లాగండి, ఆ ప్రొఫైల్‌ను శాశ్వతంగా చేయండి. G600 లేదా G300 మౌస్ ఆన్-బోర్డ్ మెమరీ మోడ్ నుండి కూడా బయట ఉండాలి.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>నడుస్తోంది, {0} కీ ఈవెంట్లు</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>నడుస్తోంది, {0} కీ ఈవెంట్</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>అనలాగ్ కీబోర్డ్‌లను చదువు</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA మరియు ఇతర తయారీదారుల అనలాగ్ కీబోర్డ్‌లలో ప్రతి కీ ఎంత లోతుగా నొక్కబడిందో చదువుతుంది, ప్రతిదాన్ని ఒక్కో పరికరం వరుసగా చూపిస్తుంది. మద్దతు ఉన్న ప్రతి మోడల్‌ను డాక్యుమెంటేషన్ జాబితా చేస్తుంది. Razer కీబోర్డ్‌లకు Razer Synapse నడుస్తూ ఉండాలి. మిగిలిన వాటిలో చాలా వాటిని వాటి స్వంత కాన్ఫిగరేటర్ ఉపయోగించే ఛానెల్ ద్వారా చదువుతారు, కాబట్టి ఇది ఆన్‌లో ఉన్నప్పుడు కాన్ఫిగరేటర్‌ను మూసివేయండి.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>మద్దతు ఉన్న అనలాగ్ కీబోర్డ్ కనుగొనబడలేదు.</value></data>
@@ -814,7 +816,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>నవీకరణలను తనిఖీ చేయి</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce నుండి ఫోర్క్ చేసి SDL3, WPF, .NET 10తో పునర్నిర్మించబడింది</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ఏ ఇన్పుట్ పరికరాన్నైనా ఏ వర్చువల్ కంట్రోలర్‌గానైనా మారుస్తుంది. గేమ్‌ప్యాడ్‌లు, జాయ్‌స్టిక్‌లు, కీబోర్డ్‌లు, మౌస్‌లు, టచ్‌స్క్రీన్‌లను వర్చువల్ గేమ్ కంట్రోలర్‌లకు (Xbox, PlayStation, ఫ్లైట్ స్టిక్‌లు, స్టీరింగ్ వీల్స్, థర్డ్-పార్టీ గేమ్‌ప్యాడ్‌లు) లేదా గేమ్‌లు నిజమైన హార్డ్‌వేర్‌గా భావించే కీబోర్డ్+మౌస్ / MIDI అవుట్పుట్‌కు మ్యాప్ చేస్తారు. HIDMaestro, Windows MIDI Services ఆధారంగా పనిచేస్తుంది. కంట్రోలర్ ఇన్పుట్ కోసం SDL3ని, కీబోర్డ్, మౌస్ కోసం Windows Raw Inputను, ప్రతి గేమ్‌కు పరికరాలను మాస్క్ చేయడానికి HidHideను ఉపయోగిస్తుంది, మ్యాపింగ్, డెడ్ జోన్లు, సున్నితత్వ వక్రరేఖలు, ఫోర్స్ ఫీడ్బ్యాక్ కోసం Fluent Design ఇంటర్‌ఫేస్‌ను అందిస్తుంది.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ఏ ఇన్పుట్‌ను అయినా ఏ కంట్రోలర్‌లా అయినా కనిపించేలా చేస్తుంది. గేమ్‌ప్యాడ్‌లు, జాయ్‌స్టిక్‌లు, స్టీరింగ్ వీల్స్, కీబోర్డ్‌లు, మౌస్‌లు, టచ్ స్క్రీన్‌లు, MIDI పరికరాలు, ఫోన్లు వర్చువల్ కంట్రోలర్‌లను నడిపిస్తాయి, వాటిని గేమ్‌లు నిజమైన హార్డ్‌వేర్‌గా భావిస్తాయి: Xbox, PlayStation, Nintendo, Steam ప్యాడ్‌లు, SInput ప్యాడ్‌లు, VR హ్యాండ్ కంట్రోలర్‌లు, MIDI అవుట్పుట్, కీబోర్డ్ మరియు మౌస్, లేదా ఫ్లైట్ స్టిక్ లేదా స్టీరింగ్ వీల్ వంటి కస్టమ్ పరికరం. HIDMaestro వర్చువల్ గేమ్‌ప్యాడ్‌లను సృష్టిస్తుంది, SDL3 కంట్రోలర్‌లను చదువుతుంది, Windows Raw Input కీబోర్డ్‌లను, మౌస్‌లను చదువుతుంది, HidHide పరికరాన్ని గేమ్‌ల నుండి దాస్తుంది, Windows MIDI Services MIDI ఇన్, అవుట్ రెండింటినీ తీసుకెళ్తుంది.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>అవలోకనం</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>దీనితో నిర్మించబడింది</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>క్రెడిట్లను శోధించు</value></data>
@@ -942,6 +944,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>అక్షరాల మధ్య ఆలస్యం</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>టైప్ చేసే అక్షరాల మధ్య మిల్లీసెకన్లు, గరిష్ఠంగా 1000. 0 అయితే మొత్తం వచనం ఒకేసారి టైప్ అవుతుంది.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>నిష్క్రియ డిస్కనెక్ట్</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 అంటే ఎప్పుడూ కాదు</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>వివరాలు</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ద్వారా ప్లగ్ చేసినప్పుడు బ్లూటూత్ డిస్కనెక్ట్ చేయి</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>క్విక్ ఛార్జ్. ఈ కంట్రోలర్ బ్లూటూత్ ద్వారా కనెక్ట్ అయి ఉండి ఛార్జ్ అవుతున్నట్లు తెలిపినప్పుడు, రేడియోకు పవర్ ఇవ్వకుండా ఛార్జ్ అవ్వడానికి బ్లూటూత్ లింక్ తెంచబడుతుంది. గోడ ఛార్జర్లతో సహా ఏ USB పవర్ మూలమైనా లెక్కలోకి వస్తుంది. కేబుల్ ఉండగానే బ్లూటూత్ మళ్లీ ఆన్ చేస్తే, తదుపరి అన్ప్లగ్ వరకు దాన్ని తాకరు.</value></data>
@@ -1006,6 +1009,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>పంపు</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ఫ్రేమ్‌లు: {0}. పంపడానికి సుమారు {1} పడుతుంది.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>కంట్రోలర్ గరిష్ఠంగా {0} ఫ్రేమ్‌లు తీసుకుంటుంది, కాబట్టి చివరి {1} వదిలివేయబడ్డాయి.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>కంట్రోలర్ గరిష్ఠంగా {0} ఫ్రేమ్‌లు తీసుకుంటుంది, కాబట్టి చివరిది వదిలివేయబడింది.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>కంట్రోలర్‌ను కేబుల్‌తో కనెక్ట్ చేయండి. చిత్రం చేరిన సుమారు 15 సెకన్ల తర్వాత అది తనంతట తానే రీస్టార్ట్ అవుతుంది.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>కంట్రోలర్‌ను కేబుల్‌తో కనెక్ట్ చేయండి. పంపడం కోసం PadForge దాన్ని Xbox మోడ్‌కు మార్చి, Windows Xbox డ్రైవర్ నుండి WinUSBకి మారుస్తుంది, తర్వాత రెండింటినీ తిరిగి ఉంచుతుంది.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge కంట్రోలర్‌ను Xbox మోడ్‌కు మార్చి, పంపడం కోసం WinUSBకి మారుస్తుంది, తర్వాత దాన్ని Windows Xbox డ్రైవర్‌కు తిరిగి ఇచ్చి DInput మోడ్‌కు మారుస్తుంది. ముందుగా ఇతర ప్రతి Xbox 360 కంట్రోలర్‌ను తీసివేయండి. ఇప్పుడు పంపాలా?</value></data>
@@ -1198,6 +1202,7 @@
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో పాయింటర్‌ను కదిలించదు. మీరు దాన్ని ఉద్దేశించకపోతే, ఏమీ చేయకండి, అది తిరిగి వస్తుంది.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows ఇకపై {0} తో పాయింటర్‌ను కదిలించదు. మీరు దాన్ని ఉద్దేశించకపోతే, ఏమీ చేయకండి, అది తిరిగి వస్తుంది.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} సెకన్లలో తిరిగి ఇవ్వబడుతుంది</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>{0} సెకనులో తిరిగి ఇవ్వబడుతుంది</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>ఉంచు</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>తిరిగి ఇవ్వు</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>ముందుగా ఈ మోడల్‌కు చెందిన ఇతర కీబోర్డ్‌లను అన్‌ప్లగ్ చేయండి. Windows ప్లగ్ చేసిన ప్రతిదాన్ని ఒకేసారి PadForge డ్రైవర్‌కు మారుస్తుంది, ప్రతిదానితో టైప్ చేయడం ఆపుతుంది.</value></data>
@@ -1612,8 +1617,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>క్లోన్</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>క్లోన్ చేయడానికి ఈ స్లాట్లో ఒక పరికరాన్ని ఎంచుకోండి.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ఎంచుకున్న పరికరం క్లోన్ చేయడానికి అక్షాలు, బటన్లు లేదా హ్యాట్లను చూపడం లేదు.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ను ఈ స్లాట్పై 1:1 పాస్త్రూగా క్లోన్ చేయాలా? లేఅవుట్ {1} అక్షాలు, {2} బటన్లు మరియు {3} POVలు అవుతుంది, మరియు ఈ స్లాట్లో ఈ పరికర వరుసలు దాని స్వంత ఇన్పుట్లతో భర్తీ అవుతాయి.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ఈ పరికరానికి ఎక్స్టెండెడ్ కంట్రోలర్ మోయగలిగిన దానికంటే ఎక్కువ ఇన్పుట్లు ఉన్నాయి. {1} అక్షాలలో {0}, {3} బటన్లలో {2}, {5} POVలలో {4} మ్యాప్ చేయబడ్డాయి. మిగిలినవి మ్యాప్ చేయకుండా వదిలివేయబడ్డాయి.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ను ఈ స్లాట్పై 1:1 పాస్త్రూగా క్లోన్ చేయాలా? లేఅవుట్ {1}, {2} మరియు {3} అవుతుంది, మరియు ఈ స్లాట్లో ఈ పరికర వరుసలు దాని స్వంత ఇన్పుట్లతో భర్తీ అవుతాయి.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ఈ పరికరానికి ఎక్స్టెండెడ్ కంట్రోలర్ మోయగలిగిన దానికంటే ఎక్కువ ఇన్పుట్లు ఉన్నాయి. {1} లో {0}, {3} లో {2}, {5} లో {4} మ్యాప్ చేయబడ్డాయి. మిగిలినవి మ్యాప్ చేయకుండా వదిలివేయబడ్డాయి.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>కంట్రోలర్ ప్రీసెట్లు</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge అందించని కంట్రోలర్ కోసం ఫైల్ నుండి లేదా కంట్రోలర్ నుండే ప్రీసెట్ జోడించండి.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>దిగుమతి చేసినవి</value></data>
@@ -1785,11 +1790,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>నొక్కి ఉంచినప్పుడు అక్యుములేటర్‌ను కిందికి తగ్గించే బటన్</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>కిందికి: నొక్కి ఉంచినప్పుడు అక్యుములేటర్‌ను కిందికి తగ్గించే బటన్.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>రేటు</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>సెకనుకు యూనిట్లలో స్వీప్ వేగం. 0.5 = 2 సెకన్లలో పూర్తి పరిధి; 2 = 0.5 సెకన్లలో పూర్తి పరిధి.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>సెకనుకు యూనిట్లలో స్వీప్ వేగం. 0.5 = 2 సెకన్లలో పూర్తి పరిధి. 2 = 0.5 సెకన్లలో పూర్తి పరిధి.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>స్టిక్కీ</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>టిక్ చేసినప్పుడు, అక్యుములేటర్ విడుదల తర్వాత తన విలువను నిలుపుకుంటుంది (క్రూయిజ్ కంట్రోల్). టిక్ తీసివేస్తే, విడుదల చేయగానే కనిష్ఠ విలువకు తిరిగి వస్తుంది.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>కనిష్ఠం</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>అక్యుములేటర్ కనిష్ఠ పరిమితి. -1 = ద్విధ్రువ అక్ష లక్ష్యాలకు పూర్తి రుణాత్మకం; 0 = ఏకధ్రువం.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>అక్యుములేటర్ కనిష్ఠ పరిమితి. -1 = ద్విధ్రువ అక్ష లక్ష్యాలకు పూర్తి రుణాత్మకం. 0 = ఏకధ్రువం.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>గరిష్ఠం</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>అక్యుములేటర్ గరిష్ఠ పరిమితి. 1 = పూర్తి ధనాత్మకం.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ర్యాంప్</value></data>
@@ -2083,6 +2088,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్ లైట్ బార్ మోడ్‌ను ఒక నిర్దిష్ట విలువకు సెట్ చేస్తుంది. మరొక చర్య లేదా వినియోగదారు మార్చే వరకు, లైటింగ్ కార్డ్‌లో చేసిన మార్పు లాగా నిలిచి ఉంటుంది.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>లైట్ బార్ మోడ్‌లను మార్చుతూ తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} లైట్ బార్ మోడ్‌ల గుండా తిప్పు</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} లైట్ బార్ మోడ్ గుండా తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>కింద ఎంచుకున్న మోడ్‌ల గుండా స్లాట్ లైట్ బార్ మోడ్‌ను ముందుకు జరుపుతుంది. ప్రతి ఫైర్ తర్వాతి టిక్ చేసిన మోడ్‌కు వెళ్తుంది. తిప్పే స్థానం ప్రతి చర్యకు విడిగా ఉంటుంది మరియు యాప్ పునఃప్రారంభంలో రీసెట్ అవుతుంది.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>హోల్డ్</value></data>
@@ -2480,6 +2486,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>అన్ని నమూనాలు సేకరించబడ్డాయి. సంజ్ఞకు పేరు పెట్టి సేవ్ చేయి నొక్కండి.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>నమూనా {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} నమూనాలు</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} నమూనా</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>సేకరించాల్సిన నమూనాలు</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>క్యాప్చర్ చేయాల్సిన నమూనాలు</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ప్రామాణికం. ఎక్కువ నమూనాలు మరింత ఖచ్చితమైన సరిపోలికనిస్తాయి, తక్కువ నమూనాలు రికార్డింగ్‌ను వేగవంతం చేస్తాయి.</value></data>
@@ -3585,6 +3592,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>గన్ స్క్రీన్ బయట</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>పాయింటర్ మోడ్లను సైకిల్ చేయి</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} పాయింటర్ మోడ్ల ద్వారా సైకిల్ చేయి</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} పాయింటర్ మోడ్ ద్వారా సైకిల్ చేయి</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>స్లాట్లోని IR సామర్థ్యం ఉన్న ప్రతి రిమోట్ కోసం Wii పాయింటర్ మోడ్ను కింద ఎంచుకున్న మోడ్ల ద్వారా ముందుకు తీసుకెళ్తుంది. ప్రతి ఫైర్ తదుపరి ఎంచుకున్న మోడ్కు వెళ్తుంది. సైకిల్ స్థానం ప్రతి చర్యకు వేరుగా ఉంటుంది, యాప్ మళ్లీ ప్రారంభించినప్పుడు రీసెట్ అవుతుంది.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>మాక్రో ఏ పాయింటర్ మోడ్ల ద్వారా సైకిల్ కావాలో ఎంచుకోండి. ప్రతి ఫైర్ తదుపరి ఎంచుకున్న మోడ్కు వెళ్తుంది.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ఆడియో</value></data>
@@ -3916,7 +3924,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB లో DualShock 3 కనుగొనబడలేదు. USB కేబుల్తో కనెక్ట్ చేసి మళ్లీ ప్రయత్నించండి.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>DualShock 3 కోసం PadForge USB డ్రైవర్ను Windows ఇన్స్టాల్ చేయదు, ఎందుకంటే దాని సైనింగ్ సర్టిఫికెట్ ఈ PC లో విశ్వసనీయం కాదు.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation కంట్రోలర్ల బ్లూటూత్ డ్రైవర్ను ఇన్స్టాల్ చేయలేకపోయింది.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>బ్లూటూత్ రేడియో అందుబాటులో లేదు. బ్లూటూత్ ఆన్ చేసి మళ్లీ ప్రయత్నించండి. జత చేయడం వైర్లెస్ ప్లేకు మాత్రమే అవసరం, కేబుల్ కనెక్ట్ చేసిన కంట్రోలర్ అది లేకుండా పనిచేస్తుంది.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>బ్లూటూత్ రేడియో అందుబాటులో లేదు. బ్లూటూత్ ఆన్ చేసి మళ్లీ ప్రయత్నించండి. జత చేయడం వైర్లెస్ ప్లేకు మాత్రమే అవసరం. కేబుల్ కనెక్ట్ చేసిన కంట్రోలర్ అది లేకుండా పనిచేస్తుంది.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>జత చేయడం పూర్తి కాలేదు. విఫలమైన దశ పైన చూపబడింది.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>మూసివేయి</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ట్యాగ్లు</value></data>
@@ -4007,7 +4015,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>బటన్‌ను వదిలేయండి.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>{1} లో దశ {0}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ఏ మార్పూ కనిపించలేదు. మళ్లీ మొదలుపెట్టు ఎంచుకుని, అడిగినప్పుడు బటన్‌ను నొక్కి పట్టుకోండి.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} వెండర్ రిపోర్టులు, {1} ఈవెంట్ తరగతులు గమనించబడ్డాయి. నొక్కినప్పుడు: {2} రిపోర్టులు, {3} ఈవెంట్లు.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>గమనించిన వెండర్ రిపోర్టులు: {0}. గమనించిన ఈవెంట్ తరగతులు: {1}. నొక్కినప్పుడు రిపోర్టులు: {2}. నొక్కినప్పుడు ఈవెంట్లు: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>బటన్ రికార్డ్ అయింది. పేరు ఇచ్చి రిజిస్టర్ చేయి క్లిక్ చేయండి.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>మూలం</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>పేరు</value></data>
@@ -4043,12 +4051,17 @@
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>అన్నీ మరచిపో</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>ఈ మోడల్ కోసం నేర్చుకున్న ప్రతి పేరును తీసివేయి.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>{0} పేర్లు ఎగుమతి అయ్యాయి.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>{0} పేరు ఎగుమతి అయింది.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>{0} పేర్లు దిగుమతి అయ్యాయి.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>{0} పేరు దిగుమతి అయింది.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>మరొక మోడల్ {1} కోసం {0} పేర్లు దిగుమతి అయ్యాయి.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>మరొక మోడల్ {1} కోసం {0} పేరు దిగుమతి అయింది.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>ఆ ఫైల్‌లో కీ లైట్ పేర్లు లేవు.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>దిగుమతి…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} బటన్లు ఎగుమతి అయ్యాయి.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} బటన్ ఎగుమతి అయింది.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} బటన్లు దిగుమతి అయ్యాయి.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} బటన్ దిగుమతి అయింది.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>హ్యాండ్హెల్డ్ PC బటన్లు</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>హ్యాండ్హెల్డ్ గేమింగ్ PC లు, ల్యాప్టాప్లలో ఆపరేటింగ్ సిస్టమ్ ఎప్పుడూ కంట్రోలర్ లాగా చూపని బటన్లు ఉంటాయి: వెనుక ప్యాడిల్స్, మెను కీలు, వీల్స్, వెండర్ హాట్ కీలు. వాటిని ఒకసారి నొక్కి గుర్తించడానికి దీన్ని ఆన్ చేయండి, ఆ తర్వాత ఇతర బటన్ల లాగే మ్యాప్ చేయండి. మెషీన్ సొంత గైరోస్కోప్ను కూడా మోషన్ పరికరంగా జోడిస్తుంది.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>హ్యాండ్హెల్డ్ PC బటన్లను ఎనేబుల్ చేయి</value></data>
@@ -4212,9 +4225,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ఆరోహణ</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>అవరోహణ</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} బైండింగ్లు</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} బైండింగ్</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} దొరికాయి</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} లో {0} చూపిస్తోంది</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} కాన్ఫిగరేషన్లు</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} కాన్ఫిగరేషన్</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>పూర్తి కంట్రోలర్ మద్దతు</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>పాక్షిక కంట్రోలర్ మద్దతు</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>గేమ్లను శోధించు</value></data>
@@ -4224,7 +4239,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} నెలల క్రితం</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} సంవత్సరాల క్రితం</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} సబ్స్క్రైబర్లు</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} సబ్స్క్రైబర్</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ఓట్లు</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ఓటు</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>అన్నీ</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ఈ గేమ్కు ఇంకా కాన్ఫిగరేషన్లు లేవు</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>{0} కోసం Steam Workshop లో కమ్యూనిటీ కంట్రోలర్ కాన్ఫిగరేషన్లు లేవు. మీరే మొదటివారు కావచ్చు: Steam లో ఒకటి రూపొందించండి, అది ఇక్కడ కనిపిస్తుంది.</value></data>
@@ -4257,6 +4274,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>లేయర్: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ఈ ఇన్పుట్కు పరికరరహిత ట్రిగ్గర్ లేదు</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} గేమ్లోని చర్యలు, Steam మాత్రమే, గేమ్ వైపు హుక్ లేదు</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} గేమ్లోని చర్య, Steam మాత్రమే, గేమ్ వైపు హుక్ లేదు</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam క్లయింట్ చర్య {0}, సమానమైనది లేదు</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>కంట్రోలర్ చర్య {0} కు మద్దతు లేదు</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>తెలియని బైండింగ్ రకం {0}</value></data>
@@ -4331,10 +4349,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>మౌస్ వీల్ టిక్</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>ప్రతి అమలుకు ఒక మౌస్ వీల్ క్లిక్ను పంపుతుంది. విలువ చిహ్నంతో కూడిన టిక్ సంఖ్య (ధనాత్మకం పైకి లేదా కుడికి స్క్రోల్ చేస్తుంది).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>కర్సర్ను జరుపు</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>ప్రతి అమలుకు మౌస్ కర్సర్ను నిర్ణీత సంఖ్యలో పిక్సెళ్లు కదిలిస్తుంది. ధనాత్మక X కుడికి, ధనాత్మక Y కిందికి కదులుతుంది, రుణాత్మక విలువలు అనుమతించబడతాయి.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>ప్రతి అమలుకు మౌస్ కర్సర్ను నిర్ణీత సంఖ్యలో పిక్సెళ్లు కదిలిస్తుంది. ధనాత్మక X కుడికి, ధనాత్మక Y కిందికి కదులుతుంది. రుణాత్మక విలువలు అనుమతించబడతాయి.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>కర్సర్ను ({0}, {1}) px జరుపు</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>ట్యాప్ జాబితా సైకిల్</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>ప్రతి అమలు స్టెప్ జాబితాలో తదుపరి ట్యాప్ను చేసి ముందుకు సాగుతుంది. ర్యాప్ ఎనేబుల్ అయితే చివరి స్టెప్ తర్వాత జాబితా మళ్లీ మొదలవుతుంది, లేకపోతే చివరిలో అమలు ఆగుతుంది.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>ప్రతి అమలు స్టెప్ జాబితాలో తదుపరి ట్యాప్ను చేసి ముందుకు సాగుతుంది. ర్యాప్ ఎనేబుల్ అయితే చివరి స్టెప్ తర్వాత జాబితా మళ్లీ మొదలవుతుంది. లేకపోతే చివరిలో అమలు ఆగుతుంది.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>మౌస్ బటన్ టోగుల్</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>ప్రతి అమలు మౌస్ బటన్ను లాచ్ లేదా అన్లాచ్ చేస్తుంది. లాచ్ అయిన బటన్ తదుపరి అమలు వరకు లేదా మాక్రో డిసేబుల్ అయ్యే వరకు నొక్కి ఉంటుంది.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>మౌస్ {0} టోగుల్</value></data>
@@ -4347,6 +4365,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>వీల్ స్క్రోల్ టోగుల్</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>ప్రతి అమలు నిరంతర స్క్రోల్ను లాచ్ లేదా అన్లాచ్ చేస్తుంది. లాచ్ అయినప్పుడు, తదుపరి అమలు వరకు లేదా మాక్రో డిసేబుల్ అయ్యే వరకు ప్రతి వ్యవధికి టిక్ సంఖ్యను పంపుతుంది.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>వీల్ స్క్రోల్ టోగుల్ (ప్రతి {1} ms కు {0} టిక్లు)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>వీల్ స్క్రోల్ టోగుల్ (ప్రతి {1} ms కు {0} టిక్)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>లాచ్ అయినప్పుడు పల్స్</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>లాచ్ అయినప్పుడు, అవుట్పుట్ను స్థిరంగా పట్టుకోకుండా పునరావృత వ్యవధిలో ఆన్, ఆఫ్ పల్స్ చేస్తుంది.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>అక్షం కూడిక (సాపేక్షం)</value></data>
@@ -4368,6 +4387,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>భౌతిక కదలిక లక్ష్యాన్ని థ్రెషోల్డ్ దాటి నెట్టినప్పుడు, మిగిలిన యాక్టివేషన్ కోసం మాక్రో అక్షానికి రాయడం ఆపుతుంది.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(భౌతికానికి దారి ఇస్తుంది)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>ట్యాప్ జాబితా సైకిల్ ({0} స్టెప్లు)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>ట్యాప్ జాబితా సైకిల్ ({0} స్టెప్)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>స్టెప్లు</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>ర్యాప్</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>కీలు {0} టోగుల్</value></data>
@@ -4451,6 +4471,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ప్రొఫైల్ మార్పు ఓవర్లే</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>రేడియల్ లేదా టచ్ మెను ఎంగేజ్ అయినప్పుడు స్క్రీన్పై రింగ్ లేదా గ్రిడ్ను చూపుతుంది. ఓవర్లే ఆఫ్లో ఉన్నా మెనూలు అమలవుతాయి.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>స్క్రీన్పై మెను సృష్టించబడింది ({0} బైండ్ చేసిన సెల్లు)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>స్క్రీన్పై మెను సృష్టించబడింది ({0} బైండ్ చేసిన సెల్)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>మెనూకు బైండ్ చేసిన సెల్లు లేవు</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>మెను హోస్ట్ ఉపరితలానికి మద్దతు లేదు ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>మెను సెల్ ఐకాన్ గుర్తించబడలేదు ({0}), కాబట్టి సెల్ తన పాఠ్య లేబుల్ను ఉంచుతుంది</value></data>
@@ -4639,6 +4660,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq డౌన్లోడ్ చేసిన .txt ను ఎంచుకోండి. ఇదే వాడాలి: autoeq.app కాపీ చేయగల వచనం కాకుండా ఫైల్ ఇస్తుంది.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>మీ హెడ్ఫోన్లకు సరిపోయే సవరణ కోసం: autoeq.app తెరిచి, మీ మోడల్ ఎంచుకుని, Custom Parametric Eq ఎంచుకుని డౌన్లోడ్ చేసి, ఆపై ఫైల్ నుండి దిగుమతి చేయండి. Graphic Eq డౌన్లోడ్లో ఫిల్టర్ లైన్లు ఉండవు, అది దిగుమతి కాదు.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} నుండి {1:0.#} dB ప్రీయాంప్తో {0} బ్యాండ్లు దిగుమతి అయ్యాయి.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} నుండి {1:0.#} dB ప్రీయాంప్తో {0} బ్యాండ్ దిగుమతి అయింది.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ఆ ప్రొఫైల్లో ఫిల్టర్ లైన్లు లేవు. AutoEq యొక్క Graphic Eq ఎగుమతిని ఇక్కడ చదవలేరు. బదులుగా Custom Parametric Eq దానిని డౌన్లోడ్ చేయండి. ప్రస్తుత EQ మారలేదు.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>దిగుమతి చేయడానికి ఏమీ లేదు. ప్రస్తుత EQ మారలేదు.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ఆ ఫైల్ను చదవడం సాధ్యం కాలేదు: {0}</value></data>
@@ -5500,11 +5522,17 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>ఇక్కడ ఎంచుకున్న కీలలో ఒకదాన్ని వెలిగించే, ఈ వర్చువల్ కంట్రోలర్‌పై నడుస్తున్న కీ రంగులను సెట్ చేయి చర్యలను ముగిస్తుంది. ఏదీ ఎంచుకోకపోతే అన్నింటినీ ముగిస్తుంది.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>అన్ని కీ రంగులను తొలగించు</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>{0} లైట్లపై కీ రంగులను తొలగించు</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>{0} లైట్పై కీ రంగులను తొలగించు</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{1} లో {0} లైట్లు, {2} ms పాటు</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{1} లో {0} లైట్, {2} ms పాటు</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{1} లో {0} లైట్లు, నొక్కి ఉంచినంత సేపు</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{1} లో {0} లైట్, నొక్కి ఉంచినంత సేపు</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{1} లో {0} లైట్లు, తొలగించే వరకు</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{1} లో {0} లైట్, తొలగించే వరకు</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{1} లో {0} లైట్లు, {2} ms లో మసకబారుతూ</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{1} లో {0} లైట్, {2} ms లో మసకబారుతూ</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{1} లో {0} లైట్లు, {2} ms లో కౌంట్‌డౌన్ అవుతూ</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{1} లో {0} లైట్, {2} ms లో కౌంట్‌డౌన్ అవుతూ</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>కీలు</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>ప్రతి లైట్</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>కీలు ఏవీ ఎంచుకోలేదు, కాబట్టి చర్య ఏమీ వెలిగించదు.</value></data>

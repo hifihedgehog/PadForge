@@ -91,6 +91,7 @@
   <data name="Common_Recording" xml:space="preserve"><value>Nagre-record…</value></data>
   <data name="Common_None" xml:space="preserve"><value>Waray</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -615,6 +616,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ini nga touchpad</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} han {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} nga sample</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} nga sample</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ngaran</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Ngarani ini nga gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kinahanglan an ngaran</value></data>
@@ -1078,7 +1080,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Gin-export an {0} nga mga button.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Gin-export an {0} nga button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Gin-import an {0} nga mga button.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Gin-import an {0} nga button.</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mga gesture han mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Wala</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Tuo</value></data>

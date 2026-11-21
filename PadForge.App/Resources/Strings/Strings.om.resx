@@ -95,6 +95,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Qulqulleessi</value></data>
   <data name="Common_None" xml:space="preserve"><value>Homaa</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>daq</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekondii</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Hin ramadamne</value></data>
@@ -1498,7 +1499,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Al-ergi…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Galchi…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Qabduuwwan {0} al-ergamaniiru.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Qabduu {0} al-ergameera.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Qabduuwwan {0} galfamaniiru.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Qabduu {0} galfameera.</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mallattoowwan maawusii</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mallattoowwan maawusii dandeessisi</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Qabduuwwan mallattoo</value></data>

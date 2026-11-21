@@ -102,6 +102,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Sula</value></data>
   <data name="Common_None" xml:space="preserve"><value>Lutho</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>imiz</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>amasekhondi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Akwabiwe</value></data>
@@ -1094,7 +1095,7 @@
   <data name="Pad_Touchpad_RotateThreshold_Tooltip" xml:space="preserve"><value>Ibanga iminwe emibili okufanele ijike ngalo ngaphambi kokuthi ukuzungezisa kusebenze.</value></data>
   <data name="Pad_ResetTouchpadRotateThresholdDegrees" xml:space="preserve"><value>Setha kabusha umkhawulo wokuzungezisa</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Ububanzi besifunda</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ububanzi bendawo yesikrini le phedi emephela kuyo, njengengxenye yobubanzi besikrini. 1.00 kumboza ububanzi obugcwele; 0.50 kuvalela ikhesa kwisigamu sesikrini.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Ububanzi bendawo yesikrini le phedi emephela kuyo, njengengxenye yobubanzi besikrini. 1.00 kumboza ububanzi obugcwele. 0.50 kuvalela ikhesa kwisigamu sesikrini.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Ukuphakama kwesifunda</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Ukuphakama kwendawo yesikrini, njengengxenye yokuphakama kwesikrini.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Isikhungo sesifunda X</value></data>
@@ -1179,6 +1180,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Zonke izisampula zithwetshuliwe. Qamba ukunyakazisa bese uchofoza okuthi Londoloza.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Isampula {0} kwezingu-{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} izisampula</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} isisampula</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Izisampula ezizothwetshulwa</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Amasampula okuthwebula</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Igama</value></data>
@@ -1993,7 +1995,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Thekelisa…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Ngenisa…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Kuthekeliswe izinkinobho ezingu-{0}.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Kuthekeliswe inkinobho engu-{0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Kungeniswe izinkinobho ezingu-{0}.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Kungeniswe inkinobho engu-{0}.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Izinkinobho ze-PC ephathwa ngesandla</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Vula izinkinobho ze-PC ephathwa ngesandla</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ukunyakazisa kwegundane</value></data>
@@ -2056,7 +2060,9 @@
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Sesha imidlalo</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>namuhla</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>Ababhalisile abangu-{0}</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>Obhalisile ongu-{0}</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Amavoti angu-{0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Ivoti elingu-{0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Konke</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Zama futhi</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Vula ku-Steam Workshop</value></data>
@@ -2756,6 +2762,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Thumela</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Amafreyimu: {0}. Ukuthumela kuthatha cishe {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Isilawuli samukela amafreyimu angafika ku-{0} kuphela, ngakho okokugcina okungu-{1} kushiywe ngaphandle.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Isilawuli samukela amafreyimu angafika ku-{0} kuphela, ngakho ifreyimu yokugcina ishiywe ngaphandle.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Xhuma isilawuli ngekhebula. Siziqalela kabusha cishe imizuzwana engu-15 ngemuva kokuba isithombe singenile.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Xhuma isilawuli ngekhebula. Ukuze kuthunyelwe, i-PadForge isishintshela kumodi ye-Xbox futhi isisusa kudrayiva ye-Xbox ye-Windows isiyise ku-WinUSB, bese ibuyisela kokubili.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>I-PadForge izoshintshela isilawuli kumodi ye-Xbox, isiyise ku-WinUSB ukuze kuthunyelwe, bese isibuyisela kudrayiva ye-Xbox ye-Windows futhi isibuyisele kumodi ye-DInput. Qala ngokukhipha zonke ezinye izilawuli ze-Xbox 360. Thumela manje?</value></data>

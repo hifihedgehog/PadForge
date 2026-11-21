@@ -86,6 +86,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Fafao</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tsy misy</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segondra</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -584,7 +585,7 @@
   <data name="Pad_Mapping_RapidTrigger_Distance_Tooltip" xml:space="preserve"><value>Ny halavirana tokony hiakaran'ny fampidirana vao alefa, na hidinany indray vao tsindriana indray, amin'ny isan-jato amin'ny diany manontolo. Mihatra izany raha mbola mihoatra ny deadzone ny fampidirana.</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Avadika rehefa tazomina</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hafainganana</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Hafainganan'ny fandehanana amin'ny ventiny isaky ny segondra. 0.5 = elanelana manontolo ao anatin'ny 2 s; 2 = elanelana manontolo ao anatin'ny 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Hafainganan'ny fandehanana amin'ny ventiny isaky ny segondra. 0.5 = elanelana manontolo ao anatin'ny 2 s. 2 = elanelana manontolo ao anatin'ny 0.5 s.</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segondra ilaina hahatongavana amin'ny deflection feno raha mbola tazomina ilay bokotra fitendry mifanaraka. 0 = avy hatrany.</value></data>
   <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Segondra ilaina hiverenana any afovoany aorian'ny fandefasana. 0 = avy hatrany.</value></data>
   <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Hafainganan'ny fiverenan'ny axe any afovoany rehefa tsindrianao ny bokotra fitendry mifanohitra alohan'ny hilaminany. 1 = tsy misy fanafainganana.</value></data>
@@ -962,6 +963,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ity touchpad ity</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Santionany {0} amin'ny {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} santionany</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} santionany</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Anarana</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Omeo anarana ity fihetsika ity</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Ilaina ny anarana</value></data>
@@ -1614,6 +1616,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} volana lasa</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} taona lasa</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} vato</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} vato</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Rehetra</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Tsy tratra ny Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Tsy tratra ny Steam. Hamarino ny fifandraisanao. Mbola mandeha ny profil efa nampidirinao: eo amin'ity PC ity izy ireo.</value></data>
@@ -2232,6 +2235,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Alefaso</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Isan'ny sary: {0}. Mila {1} eo ho eo ny fandefasana.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Sary {0} farafahabetsany no raisin'ny contrôleur, koa navela ireo sary {1} farany.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Sary {0} farafahabetsany no raisin'ny contrôleur, koa navela ilay sary farany.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ampifandraiso amin'ny tariby ny contrôleur. Manomboka indray ho azy izy 15 segondra eo ho eo aorian'ny nahatongavan'ny sary.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ampifandraiso amin'ny tariby ny contrôleur. Mandritra ny fandefasana, avadik'i PadForge ho mode Xbox izy ary afindrany avy amin'ny pilote Xbox an'ny Windows ho any amin'ny WinUSB, avy eo averiny daholo izy roa.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Havadik'i PadForge ho mode Xbox ny contrôleur, hafindra any amin'ny WinUSB izy mandritra ny fandefasana, avy eo haverina amin'ny pilote Xbox an'ny Windows ary haverina ho mode DInput. Esory aloha ny contrôleur Xbox 360 hafa rehetra. Alefa izao ve?</value></data>

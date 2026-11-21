@@ -88,6 +88,7 @@
   <data name="Common_Recording" xml:space="preserve"><value>Gina-record…</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -633,6 +634,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ini nga touchpad</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} sang {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ka sample</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ka sample</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Hatagi sang ngalan ini nga gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kinahanglan ang ngalan</value></data>
@@ -1070,7 +1072,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Na-export ang {0} ka button.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Na-export ang {0} ka button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Na-import ang {0} ka button.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Na-import ang {0} ka button.</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mga gesture sang mouse</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Mga button sang gesture</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>I-reset ang mga gesture sang mouse</value></data>
@@ -1110,6 +1114,7 @@
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pangitaa ang mga game</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>subong nga adlaw</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ka boto</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ka boto</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Tanan</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Tilawi liwat</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buksi sa Steam Workshop</value></data>
@@ -1204,6 +1209,7 @@
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>I-import halin sa clipboard</value></data>
   <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>I-import halin sa file…</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Na-import ang {0} ka band nga may {1:0.#} dB nga preamp halin sa {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Na-import ang {0} ka band nga may {1:0.#} dB nga preamp halin sa {2}.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Wala sing ma-import. Wala nabag-o ang EQ subong.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Indi mabasa ang file: {0}</value></data>
   <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>ang clipboard</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>ရှင်းလင်း</value></data>
   <data name="Common_None" xml:space="preserve"><value>မရှိ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>မိနစ်</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>စက္ကန့်</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>မိနစ် (0 = မည်သည့်အခါမျှ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge ဝှက်ထားသော စက်ပစ္စည်းတစ်ခုမှ HidHide က PadForge ကို ပိတ်ဆို့သဖြင့် PadForge သည် စက်ပစ္စည်းများ ဝှက်ခြင်းကို ရပ်လိုက်သည်။</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide ၏ Inverse application cloak ဖွင့်ထားသဖြင့် PadForge သည် မည်သည့်စက်ပစ္စည်းကိုမျှ မဝှက်ပါ။</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services ရန်တိုင်းကို ဖြုတ်ချနေသည်…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI မလည်ပတ်သဖြင့် {0} ကို စတင်၍ မရပါ။ အကြောင်းရင်းကို ဆက်တင်များရှိ Windows MIDI Services ကတ်တွင် ဖော်ပြထားသည်။</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI မလည်ပတ်သဖြင့် {0} ကို စတင်၍ မရပါ။ ဆက်တင်များရှိ ဒရိုက်ဘာများ အောက်တွင် Windows MIDI Services ကို ကြည့်ပါ။</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services က ၎င်း၏ပေါ့တ်ကို မဖန်တီးသဖြင့် {0} ကို စတင်၍ မရပါ။</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} တွင် အထွက်ပေါ့တ် မရှိပါ။ ၎င်း၏စာမျက်နှာတွင် တစ်ခု ရွေးပါ။</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} ၏ အထွက်ပေါ့တ် “{1}” ချိတ်ဆက်မထားပါ။ ပေါ့တ် ပြန်ရောက်လာသည်နှင့် ဆလော့ စတင်မည်။</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK က စတင်ရန် ငြင်းဆိုသည်။ အများအားဖြင့် Logitech Gaming Software လည်ပတ်မနေခြင်းကြောင့် ဖြစ်သည်။</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ချိတ်ဆက်ပြီး၊ ကီးတစ်ခုမျှ မတွေ့ရသေးပါ။ Logitech Gaming Software တွင် G-key ကွန်မန်းကို PadForge ပရိုဖိုင်ရှိ ကီးတစ်ခုစီပေါ်သို့ ဆွဲထည့်ပြီး ထိုပရိုဖိုင်ကို အမြဲတမ်း (persistent) ဖြစ်အောင် သတ်မှတ်ပါ။ G600 သို့မဟုတ် G300 မောက်စ်ကိုလည်း on-board memory မုဒ်မှ ထွက်ထားရမည်။</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>လည်ပတ်နေသည်၊ ကီးဖြစ်ရပ် {0} ခု</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>လည်ပတ်နေသည်၊ ကီးဖြစ်ရပ် {0} ခု</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>အန်နာလော့ကီးဘုတ်များကို ဖတ်ရန်</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting၊ Razer၊ SteelSeries၊ Keychron၊ NuPhy၊ DrunkDeer၊ AULA နှင့် အခြားထုတ်လုပ်သူများ၏ အန်နာလော့ကီးဘုတ်များပေါ်ရှိ ကီးတိုင်းကို မည်မျှ နှိပ်ထားသည်ကို ဖတ်ပြီး တစ်ခုစီကို ၎င်း၏ကိုယ်ပိုင် စက်ပစ္စည်းအတန်းအဖြစ် ပြသည်။ ပံ့ပိုးထားသော မော်ဒယ်တိုင်းကို စာရွက်စာတမ်းတွင် ဖော်ပြထားသည်။ Razer ကီးဘုတ်များအတွက် Razer Synapse လည်ပတ်နေရန် လိုအပ်သည်။ အခြားအများစုကို ၎င်းတို့၏ ကိုယ်ပိုင် ပြင်ဆင်သတ်မှတ်ရေးဆော့ဖ်ဝဲ အသုံးပြုသော ချန်နယ်မှတစ်ဆင့် ဖတ်သဖြင့် ဤရွေးချယ်မှု ဖွင့်ထားစဉ် ထိုဆော့ဖ်ဝဲကို ပိတ်ထားပါ။</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>ပံ့ပိုးထားသော အန်နာလော့ကီးဘုတ် မတွေ့ပါ။</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>အပ်ဒိတ် စစ်ဆေးရန်</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce မှ ခွဲထွက်ထားသော ခေတ်မီဗားရှင်း၊ SDL3၊ WPF နှင့် .NET 10 ဖြင့် ပြန်လည်တည်ဆောက်ထားသည်</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge သည် မည်သည့်အဝင်စက်ပစ္စည်းကိုမဆို မည်သည့်ဗာချွယ်ကွန်ထရိုလာအဖြစ်မဆို ပြောင်းလဲပေးသည်။ ဂိမ်းပက်များ၊ ဂျွိုက်စတစ်များ၊ ကီးဘုတ်များ၊ မောက်စ်များနှင့် ထိတွေ့မျက်နှာပြင်များကို ဂိမ်းများက တကယ့်ဟာ့ဒ်ဝဲအဖြစ် သတ်မှတ်သော ဗာချွယ်ဂိမ်းကွန်ထရိုလာများ (Xbox၊ PlayStation၊ ဖလိုက်စတစ်များ၊ စတီယာရင်ဘီးများ၊ ပြင်ပထုတ်လုပ်သူ ဂိမ်းပက်များ) သို့မဟုတ် ကီးဘုတ်+မောက်စ် / MIDI အထွက်သို့ မက်ပ်လုပ်သည်။ HIDMaestro နှင့် Windows MIDI Services ဖြင့် လည်ပတ်သည်။ ကွန်ထရိုလာအဝင်အတွက် SDL3၊ ကီးဘုတ်နှင့် မောက်စ်အတွက် Windows Raw Input၊ ဂိမ်းတစ်ခုချင်းစီအလိုက် စက်ပစ္စည်းဝှက်ရန် HidHide ကို အသုံးပြုပြီး မက်ပင်း၊ ဒက်ဇုန်များ၊ အာရုံခံနိုင်စွမ်း မျဉ်းကွေးများနှင့် အားပြန်တုံ့ပြန်မှုအတွက် ခေတ်မီ Fluent Design အင်တာဖေ့စ်ကို ပေးသည်။</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge သည် မည်သည့်အဝင်ကိုမဆို မည်သည့်ကွန်ထရိုလာကဲ့သို့မဆို ဖြစ်စေသည်။ ဂိမ်းပက်များ၊ ဂျွိုက်စတစ်များ၊ စတီယာရင်ဘီးများ၊ ကီးဘုတ်များ၊ မောက်စ်များ၊ ထိတွေ့မျက်နှာပြင်များ၊ MIDI စက်ပစ္စည်းများနှင့် ဖုန်းများသည် ဂိမ်းများက တကယ့်ဟာ့ဒ်ဝဲအဖြစ် သတ်မှတ်သော ဗာချွယ်ကွန်ထရိုလာများကို မောင်းနှင်သည်: Xbox၊ PlayStation၊ Nintendo နှင့် Steam ပက်များ၊ SInput ပက်များ၊ VR လက်ကိုင်ကွန်ထရိုလာများ၊ MIDI အထွက်၊ ကီးဘုတ်နှင့် မောက်စ် သို့မဟုတ် ဖလိုက်စတစ် သို့မဟုတ် စတီယာရင်ဘီးကဲ့သို့ စိတ်ကြိုက်စက်ပစ္စည်း။ HIDMaestro သည် ဗာချွယ်ဂိမ်းပက်များကို ဖန်တီးသည်၊ SDL3 သည် ကွန်ထရိုလာများကို ဖတ်သည်၊ Windows Raw Input သည် ကီးဘုတ်နှင့် မောက်စ်များကို ဖတ်သည်၊ HidHide သည် စက်ပစ္စည်းကို ဂိမ်းများမှ ဝှက်ထားပြီး Windows MIDI Services သည် MIDI အဝင်အထွက်ကို သယ်ဆောင်သည်။</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ခြုံငုံသုံးသပ်ချက်</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>တည်ဆောက်ရာတွင် အသုံးပြုထားသည်</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ကျေးဇူးတင်လွှာ ရှာရန်</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>အက္ခရာကြား စောင့်ချိန်</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ရိုက်ထည့်သော အက္ခရာများကြား မီလီစက္ကန့်၊ 1000 အထိ။ 0 ဆိုလျှင် စာသားတစ်ခုလုံးကို တစ်ပြိုင်နက် ရိုက်ထည့်သည်။</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>အားနေချိန် ချိတ်ဆက်မှုဖြုတ်ရန်</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 ဆိုလျှင် မည်သည့်အခါမျှ မဖြုတ်ပါ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>အသေးစိတ်</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ကြိုးတပ်ထားချိန် Bluetooth ကို ဖြုတ်ရန်</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>အမြန်အားသွင်းခြင်း။ ဤကွန်ထရိုလာသည် Bluetooth ဖြင့် ချိတ်ဆက်ထားစဉ် အားသွင်းနေကြောင်း ပြလာသည့်အခါ ရေဒီယိုကို ပါဝါမပေးဘဲ အားသွင်းနိုင်ရန် Bluetooth ချိတ်ဆက်မှုကို ဖြုတ်ပေးသည်။ နံရံအားသွင်းကိရိယာများ အပါအဝင် မည်သည့် USB ပါဝါရင်းမြစ်မဆို ရေတွက်သည်။ ကြိုးတပ်ထားဆဲ Bluetooth ကို ပြန်ဖွင့်လျှင် နောက်တစ်ကြိမ် ကြိုးဖြုတ်သည်အထိ မထိတော့ပါ။</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>ပို့</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ဖရိမ်: {0}။ ပို့ရန် {1} ခန့် ကြာသည်။</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ကွန်ထရိုလာသည် အများဆုံး ဖရိမ် {0} ခုသာ လက်ခံသဖြင့် နောက်ဆုံး ဖရိမ် {1} ခုကို ချန်ထားခဲ့သည်။</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>ကွန်ထရိုလာသည် အများဆုံး ဖရိမ် {0} ခုသာ လက်ခံသဖြင့် နောက်ဆုံး ဖရိမ်ကို ချန်ထားခဲ့သည်။</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ကွန်ထရိုလာကို ကြိုးဖြင့် ချိတ်ပါ။ ပုံရောက်ပြီး 15 စက္ကန့်ခန့်အကြာတွင် ၎င်းသည် အလိုအလျောက် ပြန်စတင်သည်။</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ကွန်ထရိုလာကို ကြိုးဖြင့် ချိတ်ပါ။ ပို့ရန်အတွက် PadForge က ၎င်းကို Xbox မုဒ်သို့ ပြောင်းပြီး Windows ၏ Xbox ဒရိုက်ဘာမှ WinUSB သို့ ရွှေ့ကာ ပြီးနောက် နှစ်ခုစလုံးကို မူလအတိုင်း ပြန်ထားသည်။</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge သည် ကွန်ထရိုလာကို Xbox မုဒ်သို့ ပြောင်းပြီး ပို့ရန်အတွက် WinUSB သို့ ရွှေ့ကာ ထို့နောက် Windows ၏ Xbox ဒရိုက်ဘာသို့ ပြန်ပေးပြီး DInput မုဒ်သို့ ပြန်ပြောင်းပါမည်။ အခြား Xbox 360 ကွန်ထရိုလာအားလုံးကို ဦးစွာ ဖြုတ်ပါ။ ယခု ပို့မလား?</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ပုံတူကူးရန်</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ပုံတူကူးရန် ဤဆလော့ပေါ်ရှိ စက်ပစ္စည်းတစ်ခု ရွေးပါ။</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ရွေးထားသော စက်ပစ္စည်းတွင် ပုံတူကူးရန် ဝင်ရိုး၊ ခလုတ် သို့မဟုတ် hat မရှိပါ။</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ကို ဤဆလော့ပေါ်သို့ 1:1 တိုက်ရိုက်ဖြတ်သန်းခြင်းအဖြစ် ပုံတူကူးမလား။ အပြင်အဆင်သည် ဝင်ရိုး {1} ခု၊ ခလုတ် {2} ခုနှင့် POV {3} ခု ဖြစ်လာမည်ဖြစ်ပြီး ဆလော့ပေါ်ရှိ ဤစက်ပစ္စည်း၏ အတန်းများကို ၎င်း၏ ကိုယ်ပိုင် ထည့်သွင်းမှုများဖြင့် အစားထိုးမည်။</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ဤစက်ပစ္စည်းတွင် Extended ကွန်ထရိုလာ သယ်ဆောင်နိုင်သည်ထက် ထည့်သွင်းမှု ပိုများသည်။ ဝင်ရိုး {1} ခုအနက် {0} ခု၊ ခလုတ် {3} ခုအနက် {2} ခုနှင့် POV {5} ခုအနက် {4} ခုကို မက်ပင်းလုပ်ခဲ့သည်။ ကျန်သည်များကို မက်ပင်းမလုပ်ဘဲ ထားခဲ့သည်။</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ကို ဤဆလော့ပေါ်သို့ 1:1 တိုက်ရိုက်ဖြတ်သန်းခြင်းအဖြစ် ပုံတူကူးမလား။ အပြင်အဆင်သည် {1}၊ {2} နှင့် {3} ဖြစ်လာမည်ဖြစ်ပြီး ဆလော့ပေါ်ရှိ ဤစက်ပစ္စည်း၏ အတန်းများကို ၎င်း၏ ကိုယ်ပိုင် ထည့်သွင်းမှုများဖြင့် အစားထိုးမည်။</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ဤစက်ပစ္စည်းတွင် Extended ကွန်ထရိုလာ သယ်ဆောင်နိုင်သည်ထက် ထည့်သွင်းမှု ပိုများသည်။ {1} အနက် {0} ခု၊ {3} အနက် {2} ခုနှင့် {5} အနက် {4} ခုကို မက်ပင်းလုပ်ခဲ့သည်။ ကျန်သည်များကို မက်ပင်းမလုပ်ဘဲ ထားခဲ့သည်။</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>ကွန်ထရိုလာ ကြိုတင်သတ်မှတ်ချက်များ</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge တွင် မပါဝင်သော ကွန်ထရိုလာအတွက် ကြိုတင်သတ်မှတ်ချက်ကို ဖိုင်မှ သို့မဟုတ် ကွန်ထရိုလာကိုယ်တိုင်မှ ထည့်ပါ။</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>တင်သွင်းထားသည်</value></data>
@@ -1597,11 +1601,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>ဖိထားစဉ် စုဆောင်းတန်ဖိုးကို အောက်သို့ လျှော့ပေးသော ခလုတ်</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>အောက်: ဖိထားစဉ် စုဆောင်းတန်ဖိုးကို အောက်သို့ လျှော့ပေးသော ခလုတ်။</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>နှုန်း</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>တစ်စက္ကန့်လျှင် ယူနစ်ဖြင့် ပြောင်းလဲနှုန်း။ 0.5 = 2 s တွင် အပိုင်းအခြားအပြည့်၊ 2 = 0.5 s တွင် အပိုင်းအခြားအပြည့်။</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>တစ်စက္ကန့်လျှင် ယူနစ်ဖြင့် ပြောင်းလဲနှုန်း။ 0.5 = 2 s တွင် အပိုင်းအခြားအပြည့်။ 2 = 0.5 s တွင် အပိုင်းအခြားအပြည့်။</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ကပ်ထား</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>အမှန်ခြစ်ထားလျှင် လွှတ်ပြီးနောက် စုဆောင်းတန်ဖိုးကို ဆက်ထိန်းထားသည် (အရှိန်ထိန်းစနစ်ကဲ့သို့)။ မခြစ်ထားလျှင် လွှတ်သည့်အခါ အနိမ့်ဆုံးသို့ ပြန်သွားသည်။</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>အနိမ့်ဆုံး</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>စုဆောင်းတန်ဖိုး၏ အောက်ဆုံးကန့်သတ်ချက်။ -1 = နှစ်ဖက်သုံး ဝင်ရိုးများအတွက် အနုတ်ဘက် အပြည့်၊ 0 = တစ်ဖက်သုံး။</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>စုဆောင်းတန်ဖိုး၏ အောက်ဆုံးကန့်သတ်ချက်။ -1 = နှစ်ဖက်သုံး ဝင်ရိုးများအတွက် အနုတ်ဘက် အပြည့်။ 0 = တစ်ဖက်သုံး။</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>အမြင့်ဆုံး</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>စုဆောင်းတန်ဖိုး၏ အထက်ဆုံးကန့်သတ်ချက်။ 1 = အပေါင်းဘက် အပြည့်။</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>တဖြည်းဖြည်းပြောင်း</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့၏ အလင်းတန်း မုဒ်ကို တန်ဖိုးတစ်ခုသို့ သတ်မှတ်သည်။ အခြားလုပ်ဆောင်ချက် သို့မဟုတ် အသုံးပြုသူက ပြောင်းသည်အထိ မီးအလင်း ကတ်တွင် ပြင်ဆင်သကဲ့သို့ ဆက်တည်နေသည်။</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>အလင်းတန်း မုဒ်များ လှည့်ပြောင်း</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ် {0} ခုကို လှည့်ပြောင်းရန်</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ် {0} ခုကို လှည့်ပြောင်းရန်</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ဆလော့၏ အလင်းတန်း မုဒ်ကို အောက်တွင် ရွေးထားသော မုဒ်များအတိုင်း ရှေ့ဆက်ပြောင်းသည်။ အလုပ်လုပ်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရွှေ့သည်။ လှည့်ပတ်မှု တည်နေရာသည် လုပ်ဆောင်ချက်တစ်ခုစီအလိုက် ဖြစ်ပြီး အက်ပ် ပြန်စတင်သည့်အခါ အစမှ ပြန်စသည်။</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>ထိန်းထားပုံ</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>နမူနာအားလုံး ဖမ်းယူပြီးပါပြီ။ လက်ဟန်ကို အမည်ပေးပြီး သိမ်းဆည်း ကို နှိပ်ပါ။</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>နမူနာ {1} ခုအနက် {0}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>နမူနာ {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>နမူနာ {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ဖမ်းယူမည့် နမူနာ အရေအတွက်</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>ဖမ်းယူမည့် နမူနာများ</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 သည် စံ ဖြစ်သည်။ နမူနာ ပိုများလျှင် ကိုက်ညီမှု ပိုသေချာပြီး နည်းလျှင် မှတ်တမ်းတင်ရန် ပိုမြန်သည်။</value></data>
@@ -3388,6 +3394,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>သေနတ် မျက်နှာပြင် ပြင်ပ</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>ပွိုင်တာ မုဒ်များ လှည့်ပတ်</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>ပွိုင်တာ မုဒ် {0} ခုကို လှည့်ပတ်</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>ပွိုင်တာ မုဒ် {0} ခုကို လှည့်ပတ်</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ဆလော့ပေါ်ရှိ IR သုံးနိုင်သော ရီမုတ်တိုင်းအတွက် Wii ပွိုင်တာ မုဒ်ကို အောက်တွင် ရွေးထားသော မုဒ်များအတိုင်း ရှေ့ဆက်ပြောင်းသည်။ လုပ်ဆောင်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရွှေ့သည်။ လှည့်ပတ်နေရာသည် လုပ်ဆောင်ချက်တစ်ခုစီအလိုက် ဖြစ်ပြီး အက်ပ် ပြန်စတင်ချိန်တွင် ပြန်စသည်။</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>မက်ခရိုက လှည့်ပတ်ရမည့် ပွိုင်တာ မုဒ်များကို ရွေးပါ။ လုပ်ဆောင်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရှေ့ဆက်သည်။</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>အသံ</value></data>
@@ -3806,7 +3813,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ခလုတ်ကို လွှတ်ပါ။</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>အဆင့် {0}/{1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ပြောင်းလဲမှု မတွေ့ပါ။ “အစမှ ပြန်စရန်” ကို ရွေးပြီး တောင်းဆိုသည့်အခါ ခလုတ်ကို နှိပ်ပြီး ဖိထားပါ။</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>ထုတ်လုပ်သူ အစီရင်ခံစာ {0} ခုနှင့် ဖြစ်ရပ်အမျိုးအစား {1} ခုကို စောင့်ကြည့်ခဲ့သည်။ နှိပ်စဉ်အတွင်း- အစီရင်ခံစာ {2} ခု၊ ဖြစ်ရပ် {3} ခု။</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>စောင့်ကြည့်ခဲ့သော ထုတ်လုပ်သူ အစီရင်ခံစာ: {0}။ စောင့်ကြည့်ခဲ့သော ဖြစ်ရပ်အမျိုးအစား: {1}။ နှိပ်စဉ်အတွင်း အစီရင်ခံစာ: {2}။ နှိပ်စဉ်အတွင်း ဖြစ်ရပ်: {3}။</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ခလုတ်ကို ဖမ်းယူပြီးပါပြီ။ အမည်တစ်ခု ထည့်ပြီး “မှတ်ပုံတင်ရန်” ကို နှိပ်ပါ။</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ရင်းမြစ်</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>အမည်</value></data>
@@ -3822,7 +3829,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>ထုတ်ယူရန်…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>တင်သွင်းရန်…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>ခလုတ် {0} ခု ထုတ်ယူပြီးပါပြီ။</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>ခလုတ် {0} ခု ထုတ်ယူပြီးပါပြီ။</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>ခလုတ် {0} ခု တင်သွင်းပြီးပါပြီ။</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>ခလုတ် {0} ခု တင်သွင်းပြီးပါပြီ။</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>လက်ကိုင် PC ခလုတ်များ</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>လက်ကိုင်ဂိမ်း PC များနှင့် လက်ပ်တော့များတွင် လည်ပတ်မှုစနစ်က ကွန်ထရိုလာအဖြစ် ဘယ်တော့မှ မပြသော ခလုတ်များ ပါရှိသည်- နောက်ခလုတ်များ၊ မီနူးကီးများ၊ ဘီးများ၊ ထုတ်လုပ်သူ ဟော့ကီးများ။ ၎င်းတို့ကို တစ်ကြိမ် နှိပ်၍ လေ့လာရန် ဤအရာကို ဖွင့်ပြီး အခြားခလုတ်များကဲ့သို့ မက်ပင်းလုပ်ပါ။ စက်၏ ကိုယ်ပိုင် ဂိုင်ရိုစကုပ်ကိုလည်း လှုပ်ရှားမှု စက်ပစ္စည်းအဖြစ် ထည့်ပေးသည်။</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>လက်ကိုင် PC ခလုတ်များကို ဖွင့်ရန်</value></data>
@@ -3985,9 +3994,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ငယ်စဉ်ကြီးလိုက်</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>ကြီးစဉ်ငယ်လိုက်</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>ဘိုင်းဒင်း {0} ခု</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>ဘိုင်းဒင်း {0} ခု</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ခု တွေ့သည်</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} ခုအနက် {0} ခု ပြသနေသည်</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>ဖွဲ့စည်းပုံ {0} ခု</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>ဖွဲ့စည်းပုံ {0} ခု</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>ကွန်ထရိုလာ အပြည့်အဝ ပံ့ပိုးမှု</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>ကွန်ထရိုလာ တစ်စိတ်တစ်ပိုင်း ပံ့ပိုးမှု</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ဂိမ်းများ ရှာရန်</value></data>
@@ -3997,7 +4008,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} လက</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} နှစ်က</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>စာရင်းသွင်းသူ {0} ဦး</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>စာရင်းသွင်းသူ {0} ဦး</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>မဲ {0} မဲ</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>မဲ {0} မဲ</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>အားလုံး</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ဤဂိမ်းအတွက် ဖွဲ့စည်းပုံ မရှိသေးပါ</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop တွင် {0} အတွက် အသိုင်းအဝိုင်း ကွန်ထရိုလာ ဖွဲ့စည်းပုံ မရှိပါ။ သင် ပထမဆုံး ဖြစ်နိုင်သည်- Steam တွင် တစ်ခု ပြုလုပ်လိုက်ပါ၊ ၎င်းသည် ဤနေရာတွင် ပေါ်လာမည်။</value></data>
@@ -4030,6 +4043,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>အလွှာ- {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ဤအဝင်အတွက် စက်ပစ္စည်းမပါသော အစပျိုးခလုတ် မရှိပါ</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>ဂိမ်းအတွင်း လုပ်ဆောင်ချက် {0} ခု၊ Steam တွင်သာ ရှိပြီး ဂိမ်းဘက် ချိတ်ဆက်မှု မရှိ</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>ဂိမ်းအတွင်း လုပ်ဆောင်ချက် {0} ခု၊ Steam တွင်သာ ရှိပြီး ဂိမ်းဘက် ချိတ်ဆက်မှု မရှိ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam ကလိုင်းယင့် လုပ်ဆောင်ချက် {0}၊ တူညီသည့်အရာ မရှိ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ကွန်ထရိုလာ လုပ်ဆောင်ချက် {0} ကို မပံ့ပိုးပါ</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>မသိသော ဘိုင်းဒင်း အမျိုးအစား {0}</value></data>
@@ -4120,6 +4134,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ဘီးလှိမ့်ခြင်း အဖွင့်အပိတ်</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>အလုပ်လုပ်တိုင်း ဆက်တိုက်လှိမ့်ခြင်းကို ချိတ်ခြင်း သို့မဟုတ် ချိတ်ဖြုတ်ခြင်း ပြုသည်။ ချိတ်ထားစဉ် နောက်တစ်ကြိမ် အလုပ်လုပ်သည်အထိ သို့မဟုတ် မက်ခရို ပိတ်သည်အထိ ကြားကာလတိုင်း အဆင့်အရေအတွက်ကို ပို့သည်။</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ဘီးလှိမ့်ခြင်း အဖွင့်အပိတ် ({1} ms တိုင်း {0} ဆင့်)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>ဘီးလှိမ့်ခြင်း အဖွင့်အပိတ် ({1} ms တိုင်း {0} ဆင့်)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>ချိတ်ထားစဉ် ဖွင့်ပိတ်ပြုလုပ်ရန်</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ချိတ်ထားစဉ် အထွက်ကို ဆက်တိုက် ထိန်းမထားဘဲ ထပ်ခါကြားကာလဖြင့် ဖွင့်လိုက်ပိတ်လိုက် လုပ်သည်။</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>ဝင်ရိုး ပေါင်းရန် (နှိုင်းရ)</value></data>
@@ -4141,6 +4156,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>ရုပ်ပိုင်းဆိုင်ရာ ရွေ့လျားမှုက ပစ်မှတ်ကို စတင်တန်ဖိုး ကျော်အောင် တွန်းလျှင် မက်ခရိုသည် ကျန်ရှိသော အသက်ဝင်ကာလအတွင်း ဝင်ရိုးကို ရေးခြင်း ရပ်သည်။</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ရုပ်ပိုင်းဆိုင်ရာ အဝင်ကို လမ်းဖယ်ပေးသည်)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>တစ်ချက်နှိပ်စာရင်း လှည့်ပတ်ရန် (အဆင့် {0} ဆင့်)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>တစ်ချက်နှိပ်စာရင်း လှည့်ပတ်ရန် (အဆင့် {0} ဆင့်)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>အဆင့်များ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>ပတ်ချာလည်</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ကီးများ {0} အဖွင့်အပိတ်</value></data>
@@ -4224,6 +4240,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းခြင်း အုပ်ထပ်ပြကွက်</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>စက်ဝိုင်း သို့မဟုတ် ထိ မီနူး အသက်ဝင်နေစဉ် ဖန်သားပြင်ပေါ်ရှိ ကွင်း သို့မဟုတ် ဇယားကွက်ကို ပြပါ။ အုပ်ထပ်ပြကွက် ပိတ်ထားလည်း မီနူးများ အလုပ်လုပ်ဆဲ ဖြစ်သည်။</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ဖန်သားပြင်ပေါ် မီနူး ဖန်တီးပြီး (ဘိုင်းဒင်းပါ အကွက် {0} ခု)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ဖန်သားပြင်ပေါ် မီနူး ဖန်တီးပြီး (ဘိုင်းဒင်းပါ အကွက် {0} ခု)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>မီနူးတွင် ဘိုင်းဒင်းပါ အကွက် မရှိ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>မီနူးဖွင့်သည့် ထိန်းချုပ်မျက်နှာပြင်ကို မပံ့ပိုးပါ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>မီနူးအကွက် အိုင်ကွန်ကို မသိရှိပါ ({0})၊ ထို့ကြောင့် အကွက်သည် ၎င်း၏ စာသားတံဆိပ်ကို ဆက်ထားသည်</value></data>
@@ -4406,6 +4423,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq မှ ဒေါင်းလုဒ်လုပ်ထားသော .txt ဖိုင်ကို ရွေးပါ။ ဤနည်းကို အသုံးပြုပါ: autoeq.app သည် ကူးယူနိုင်သော စာသားမဟုတ်ဘဲ ဖိုင်တစ်ခုကို ပေးသည်။</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>သင့်နားကြပ်နှင့် ကိုက်ညီသော ပြင်ဆင်ချက်အတွက်: autoeq.app ကိုဖွင့်ပြီး သင့်မော်ဒယ်ကို ရွေးကာ Custom Parametric Eq ကို ရွေး၍ ဒေါင်းလုဒ်လုပ်ပါ၊ ထို့နောက် “ဖိုင်မှ တင်သွင်းရန်” ကို နှိပ်ပါ။ Graphic Eq ဒေါင်းလုဒ်တွင် စစ်ထုတ်ကိရိယာစာကြောင်းများ မပါသောကြောင့် တင်သွင်း၍ မရပါ။</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} မှ ဘန်း {0} ခုနှင့် {1:0.#} dB ကြိုတင်ချဲ့အားကို တင်သွင်းပြီးပါပြီ။</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} မှ ဘန်း {0} ခုနှင့် {1:0.#} dB ကြိုတင်ချဲ့အားကို တင်သွင်းပြီးပါပြီ။</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ထိုပရိုဖိုင်တွင် စစ်ထုတ်ကိရိယာစာကြောင်းများ မရှိပါ။ AutoEq ၏ Graphic Eq ထုတ်ယူချက်ကို ဤနေရာတွင် ဖတ်၍မရပါ။ Custom Parametric Eq ကို ဒေါင်းလုဒ်လုပ်ပါ။ လက်ရှိ EQ မပြောင်းလဲပါ။</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>တင်သွင်းစရာ မရှိပါ။ လက်ရှိ EQ မပြောင်းလဲပါ။</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ထိုဖိုင်ကို ဖတ်၍မရပါ: {0}</value></data>
@@ -4421,7 +4439,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>အမြင့်ဆုံးအဆင့် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>အမှတ်တစ်ခုကို ဆွဲ၍ ၎င်း၏ ကြိမ်နှုန်းနှင့် ချဲ့အားကို ရွှေ့ပါ။ အမှတ်ပေါ်တွင် လှိမ့်ဘီးကို လှိမ့်၍ ကျယ်စေ သို့မဟုတ် ကျဉ်းစေပါ။</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>အထွက်လမ်းကြောင်း</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>ကွန်ထရိုလာက ၎င်း၏အသံကို ဖွင့်မည့်နေရာ။ “မူလ” သည် ဖမ်းဝဲ၏ ကိုယ်ပိုင်လမ်းကြောင်းကို ထားရှိပြီး PadForge အသံများကို စပီကာတွင် ဖွင့်သည်။ “နားကြပ် + စပီကာ” သည် နားကြပ်ဘက်တွင် မိုနိုဖြင့် ဖွင့်သည်၊ ဖမ်းဝဲ ကန့်သတ်ချက်တစ်ခု ဖြစ်သည်။ Bluetooth ဖြင့်ဆိုလျှင် ဤမုဒ်သည် နားကြပ်မှသာ ဖွင့်သည်။ “နားကြပ်ပေါက်ကို လိုက်ရန်” သည် ကွန်ထရိုလာတွင် တစ်ခုခု ထိုးထားသည့်အခါ နားကြပ်သို့ ပြောင်းပြီး ဖြုတ်လိုက်သည့်အခါ စပီကာသို့ ပြန်ပြောင်းသည်၊ နားကြပ်ပေါက် အခြေအနေကို မဖတ်နိုင်ပါက “မူလ” ကဲ့သို့ လုပ်ဆောင်သည်။</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>ကွန်ထရိုလာက ၎င်း၏အသံကို ဖွင့်မည့်နေရာ။ “မူလ” သည် ဖမ်းဝဲ၏ ကိုယ်ပိုင်လမ်းကြောင်းကို ထားရှိပြီး PadForge အသံများကို စပီကာတွင် ဖွင့်သည်။ “နားကြပ် + စပီကာ” သည် နားကြပ်ဘက်တွင် မိုနိုဖြင့် ဖွင့်သည်၊ ဖမ်းဝဲ ကန့်သတ်ချက်တစ်ခု ဖြစ်သည်။ Bluetooth ဖြင့်ဆိုလျှင် ဤမုဒ်သည် နားကြပ်မှသာ ဖွင့်သည်။ “နားကြပ်ပေါက်ကို လိုက်ရန်” သည် ကွန်ထရိုလာတွင် တစ်ခုခု ထိုးထားသည့်အခါ နားကြပ်သို့ ပြောင်းပြီး ဖြုတ်လိုက်သည့်အခါ စပီကာသို့ ပြန်ပြောင်းသည်။ နားကြပ်ပေါက် အခြေအနေကို မဖတ်နိုင်ပါက “မူလ” ကဲ့သို့ လုပ်ဆောင်သည်။</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>မူလ</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>နားကြပ် (စတီရီယို)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>နားကြပ် (မိုနို)</value></data>

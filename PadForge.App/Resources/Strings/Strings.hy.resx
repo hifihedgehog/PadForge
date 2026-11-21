@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Մաքրել</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ոչ մեկը</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>մվ</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>ր</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>վայրկյան</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>րոպե (0 = երբեք)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Հց</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide-ը արգելափակեց PadForge-ի մուտքը սարք, որը PadForge-ը թաքցրել էր, ուստի PadForge-ը դադարեցրեց սարքերի թաքցումը։</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide-ի Inverse application cloak-ը միացված է, ուստի PadForge-ը սարքեր չի թաքցնում։</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services runtime-ի ապատեղադրում…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0}-ը չկարողացավ մեկնարկել, քանի որ MIDI-ը չի աշխատում։ Պատճառը նշված է Կարգավորումներում՝ Windows MIDI Services քարտում։</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0}-ը չկարողացավ մեկնարկել, քանի որ MIDI-ը չի աշխատում։ Տե՛ս Windows MIDI Services-ը Կարգավորումներում՝ Դրայվերներ բաժնում։</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0}-ը չկարողացավ մեկնարկել, քանի որ Windows MIDI Services-ը չստեղծեց դրա պորտը։</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0}-ի համար ելքային պորտ ընտրված չէ։ Ընտրեք այն դրա էջում։</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0}-ի «{1}» ելքային պորտը միացված չէ։ Սլոթը կմեկնարկի, երբ պորտը վերադառնա։</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK-ը հրաժարվեց մեկնարկել։ Սովորաբար Logitech Gaming Software-ը չի աշխատում։</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Կապակցված է, ստեղն դեռ չի երևացել։ Logitech Gaming Software-ում քաշեք G-key հրամանը PadForge պրոֆիլի յուրաքանչյուր ստեղնի վրա և այդ պրոֆիլը դարձրեք մշտական։ G600 կամ G300 մկնիկը նույնպես պետք է դուրս լինի ներկառուցված հիշողության ռեժիմից։</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Աշխատում է, ստեղնի {0} իրադարձություն</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Աշխատում է, ստեղնի {0} իրադարձություն</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Կարդալ անալոգային ստեղնաշարերը</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Կարդում է, թե որքան խորն է սեղմված յուրաքանչյուր ստեղն Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA և այլ արտադրողների անալոգային ստեղնաշարերում՝ յուրաքանչյուրը որպես առանձին սարքի տող։ Փաստաթղթերը թվարկում են բոլոր աջակցվող մոդելները։ Razer ստեղնաշարերին անհրաժեշտ է աշխատող Razer Synapse։ Մյուսների մեծ մասը կարդացվում է իրենց կարգավորիչի օգտագործած ալիքով, ուստի այս ընտրանքը միացրած ժամանակ փակեք կարգավորիչը։</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Աջակցվող անալոգային ստեղնաշար չի գտնվել։</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Ստուգել թարմացումները</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ի ֆորկ, վերակառուցված SDL3-ով, WPF-ով և .NET 10-ով</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge-ը ցանկացած մուտքի սարք վերածում է ցանկացած վիրտուալ կառավարիչի։ Խաղային վահանակները, ջոյստիկները, ստեղնաշարերը, մկնիկները և հպէկրանները կապակցվում են վիրտուալ խաղային կառավարիչներին (Xbox, PlayStation, թռիչքի ձողեր, ղեկեր, երրորդ կողմի խաղային վահանակներ) կամ ստեղնաշար+մկնիկ / MIDI ելքին, որը խաղերն ընդունում են որպես իրական սարքավորում։ Աշխատում է HIDMaestro-ով և Windows MIDI Services-ով։ Կառավարիչների մուտքի համար օգտագործում է SDL3, ստեղնաշարի և մկնիկի համար՝ Windows Raw Input, յուրաքանչյուր խաղի համար սարքերի քողարկման համար՝ HidHide, և տրամադրում է Fluent Design ինտերֆեյս կապակցումների, մեռյալ գոտիների, զգայունության կորերի և հետադարձ ուժի համար։</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge-ը ցանկացած մուտքը դարձնում է ցանկացած կառավարիչի նման։ Խաղային վահանակները, ջոյստիկները, ղեկերը, ստեղնաշարերը, մկնիկները, հպէկրանները, MIDI սարքերը և հեռախոսները կառավարում են վիրտուալ կառավարիչներ, որոնք խաղերն ընդունում են որպես իրական սարքավորում՝ Xbox, PlayStation, Nintendo և Steam վահանակներ, SInput վահանակներ, VR ձեռքի կառավարիչներ, MIDI ելք, ստեղնաշար և մկնիկ, կամ հատուկ սարք, օրինակ՝ թռիչքի ձող կամ ղեկ։ HIDMaestro-ն ստեղծում է վիրտուալ խաղային վահանակները, SDL3-ը կարդում է կառավարիչները, Windows Raw Input-ը կարդում է ստեղնաշարերն ու մկնիկները, HidHide-ը սարքը թաքցնում է խաղերից, իսկ Windows MIDI Services-ը փոխանցում է MIDI-ի մուտքն ու ելքը։</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Ակնարկ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Օգտագործված տեխնոլոգիաներ</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Որոնել հեղինակներին</value></data>
@@ -929,6 +931,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Ուշացում տառերի միջև</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Միլիվայրկյաններ մուտքագրված նիշերի միջև՝ մինչև 1000։ 0-ը մուտքագրում է ամբողջ տեքստը միանգամից։</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Անջատում անգործության դեպքում</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 նշանակում է երբեք</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Մանրամասներ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Անջատել Bluetooth-ը, երբ միացված է USB-ով</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Արագ լիցքավորում։ Երբ այս կառավարիչը հայտնում է, որ լիցքավորվում է Bluetooth-ով միացած վիճակում, Bluetooth կապն անջատվում է, որպեսզի այն լիցքավորվի առանց ռադիոն սնուցելու։ Ցանկացած USB սնման աղբյուր հաշվվում է, այդ թվում պատի լիցքավորիչները։ Եթե Bluetooth-ը նորից միացնեք, մինչ մալուխը մնում է միացված, այն չի շոշափվի մինչև հաջորդ անջատումը։</value></data>
@@ -993,6 +996,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ուղարկել</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Կադրեր՝ {0}։ Ուղարկումը տևում է մոտ {1}։</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Կառավարիչն ընդունում է առավելագույնը {0} կադր, ուստի վերջին կադրերը բաց թողնվեցին՝ {1}։</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Կառավարիչն ընդունում է առավելագույնը {0} կադր, ուստի վերջին կադրը բաց թողնվեց։</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Միացրեք կառավարիչը մալուխով։ Պատկերը ներբեռնվելուց մոտ 15 վայրկյան հետո այն ինքնուրույն վերագործարկվում է։</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Միացրեք կառավարիչը մալուխով։ Ուղարկման համար PadForge-ը այն անցկացնում է Xbox ռեժիմի և Windows-ի Xbox դրայվերից տեղափոխում WinUSB, ապա երկուսն էլ հետ է դնում։</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge-ը կառավարիչը կանցկացնի Xbox ռեժիմի, ուղարկման համար կտեղափոխի WinUSB, ապա կվերադարձնի Windows-ի Xbox դրայվերին և կանցկացնի DInput ռեժիմի։ Նախ անջատեք մյուս բոլոր Xbox 360 կառավարիչները։ Ուղարկե՞լ հիմա։</value></data>
@@ -1424,8 +1428,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Կլոնավորել</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Կլոնավորելու համար ընտրեք սարք այս սլոթում։</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Ընտրված սարքը չունի կլոնավորելու առանցքներ, կոճակներ կամ POV-ներ։</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Կլոնավորե՞լ {0}-ը այս սլոթի վրա որպես 1:1 փոխանցում։ Դասավորությունը դառնում է {1} առանցք, {2} կոճակ և {3} POV, և այս սարքի տողերը սլոթում փոխարինվում են նրա սեփական մուտքերով։</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Այս սարքն ունի ավելի շատ մուտք, քան Extended կառավարիչը կարող է տանել։ Կապակցվեց {1} առանցքից {0}-ը, {3} կոճակից {2}-ը և {5} POV-ից {4}-ը։ Մնացածը մնացին չկապակցված։</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Կլոնավորե՞լ {0}-ը այս սլոթի վրա որպես 1:1 փոխանցում։ Դասավորությունը դառնում է {1}, {2} և {3}, և այս սարքի տողերը սլոթում փոխարինվում են նրա սեփական մուտքերով։</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Այս սարքն ունի ավելի շատ մուտք, քան Extended կառավարիչը կարող է տանել։ Կապակցվեց՝ {0} / {1}, {2} / {3} և {4} / {5}։ Մնացածը մնացին չկապակցված։</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Կառավարչի նախադրվածքներ</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Ավելացրեք նախադրվածք կառավարչի համար, որը PadForge-ը չի տրամադրում, ֆայլից կամ հենց կառավարչից։</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Ներմուծված</value></data>
@@ -1597,11 +1601,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Կոճակ, որը պահելիս կուտակիչը իջեցնում է ներքև</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Ներքև՝ կոճակ, որը պահելիս կուտակիչը իջեցնում է ներքև։</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Արագություն</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Մաքրման արագությունը՝ միավորներ վայրկյանում։ 0.5 = ամբողջ միջակայքը 2 վրկ-ում, 2 = ամբողջ միջակայքը 0.5 վրկ-ում։</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Մաքրման արագությունը՝ միավորներ վայրկյանում։ 0.5 = ամբողջ միջակայքը 2 վրկ-ում։ 2 = ամբողջ միջակայքը 0.5 վրկ-ում։</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Կպչուն</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Նշված լինելու դեպքում կուտակիչը բաց թողնելուց հետո պահում է իր արժեքը (նավարկության կառավարում)։ Չնշվածի դեպքում բաց թողնելիս վերադառնում է նվազագույնին։</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Նվազ.</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Կուտակիչի ստորին սահմանը։ -1 = լրիվ բացասական երկբևեռ առանցքի թիրախների համար, 0 = միաբևեռ։</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Կուտակիչի ստորին սահմանը։ -1 = լրիվ բացասական երկբևեռ առանցքի թիրախների համար։ 0 = միաբևեռ։</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Առավ.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Կուտակիչի վերին սահմանը։ 1 = լրիվ դրական։</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Աճ</value></data>
@@ -1894,6 +1898,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Նշանակված սլոթի լուսաշերտի ռեժիմը սահմանում է կոնկրետ արժեքի։ Պահպանվում է ինչպես Լուսավորություն քարտում կատարված խմբագրումը, մինչև մեկ այլ գործողություն կամ օգտատերը փոխի այն։</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Շրջանցել լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Շրջանցել {0} լուսաշերտի ռեժիմները</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Շրջանցել {0} լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Սլոթի լուսաշերտի ռեժիմը անցկացնում է ներքևում ընտրված ռեժիմներով։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։ Շրջանի դիրքը յուրաքանչյուր գործողության համար առանձին է և վերականգնվում է հավելվածը վերագործարկելիս։</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Պահել</value></data>
@@ -2172,7 +2177,7 @@
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Էկրանի այն հատվածը, որին հասնում է հարթակը</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Կարգավորում է հպահարթակի ցուցիչ X/Y աղբյուրները, որոնք ցուցիչը տեղափոխում են ձեր մատի դիրքին՝ հարթակի վրա (կապակցեք դրանք մկնիկի X/Y-ին «Ստեղնաշար / մկնիկ» վիրտուալ կառավարիչի վրա)։ 1.00 չափսը և 0.50 կենտրոնը հարթակը համապատասխանեցնում են ամբողջ էկրանին։ Փոքրացրեք չափսը՝ ցուցիչը էկրանի մի մասով սահմանափակելու համար, իսկ կենտրոնը տեղափոխեք՝ այն տեղադրելու համար։</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Տարածքի լայնություն</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Էկրանի այն տարածքի լայնությունը, որին համապատասխանում է այս հարթակը՝ էկրանի լայնության մասով։ 1.00-ը ծածկում է ամբողջ լայնությունը. 0.50-ը ցուցիչը սահմանափակում է էկրանի կեսով։</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Էկրանի այն տարածքի լայնությունը, որին համապատասխանում է այս հարթակը՝ էկրանի լայնության մասով։ 1.00-ը ծածկում է ամբողջ լայնությունը։ 0.50-ը ցուցիչը սահմանափակում է էկրանի կեսով։</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Տարածքի բարձրություն</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Էկրանի տարածքի բարձրությունը՝ էկրանի բարձրության մասով։</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Տարածքի կենտրոն X</value></data>
@@ -2183,7 +2188,7 @@
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Սահեցման հապտիկա</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Թրթիռներ՝ մատի շարժմանը համընթաց</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Կառավարիչի հապտիկան իմպուլսներով է աշխատում, երբ մատը շարժվում է այս հպահարթակով, ինչպես Steam Input-ի թրեքփեդի տիկտակները։ Steam Controller-ները և Steam Deck-ը տիկտակում են հարթակի տակի շարժիչով, իսկ DualSense-ը և DualShock 4-ը իմպուլսներ են տալիս թրթռաշարժիչներով։</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Կառավարիչի հապտիկան իմպուլսներով է աշխատում, երբ մատը շարժվում է այս հպահարթակով, ինչպես Steam Input-ի թրեքփեդի տիկտակները։ Steam Controller-ները և Steam Deck-ը տիկտակում են հարթակի տակի շարժիչով։ DualSense-ը և DualShock 4-ը իմպուլսներ են տալիս թրթռաշարժիչներով։</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Միացնել սահեցման հապտիկան</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Կարճ հապտիկ տիկ է տալիս, երբ մատը այս հարթակի վրա անցնում է որոշակի հեռավորություն։ Մատի հպումը կամ հարթակի սեղմումը երբեք տիկ չի տալիս։ Լռելյայն անջատված է։</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Իմպուլսի ուժգնություն</value></data>
@@ -2291,6 +2296,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>Բոլոր նմուշները ֆիքսված են։ Անվանեք ժեստը և սեղմեք «Պահել»։</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Նմուշ {0}՝ {1}-ից</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} նմուշ</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} նմուշ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Ֆիքսվող նմուշներ</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Գրանցվող նմուշներ</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Ստանդարտը 3-ն է։ Ավելի շատ նմուշը ավելի հուսալի համընկնում է տալիս, իսկ ավելի քիչը՝ ավելի արագ գրանցվում է։</value></data>
@@ -3353,6 +3359,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Զենքը էկրանից դուրս</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Ցիկլ ցուցիչի ռեժիմներով</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Ցիկլ {0} ցուցիչի ռեժիմներով</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Ցիկլ {0} ցուցիչի ռեժիմներով</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Wii ցուցիչի ռեժիմը փոխում է ստորև նշված ռեժիմների միջով՝ սլոթի յուրաքանչյուր IR-ընդունակ հեռակառավարիչի համար։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։ Ցիկլի դիրքը յուրաքանչյուր գործողության համար առանձին է և վերականգնվում է ծրագրի վերագործարկման ժամանակ։</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Ընտրեք ցուցիչի այն ռեժիմները, որոնցով մակրոն պետք է անցնի։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Աուդիո</value></data>
@@ -3771,7 +3778,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Բաց թողեք կոճակը։</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Քայլ {0}՝ {1}-ից</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Փոփոխություն չի նկատվել։ Ընտրեք Սկսել նորից, ապա սեղմեք և պահեք կոճակը, երբ հարցվի։</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Դիտարկվել է արտադրողի {0} հաշվետվություն և իրադարձությունների {1} դաս։ Սեղմման ընթացքում՝ {2} հաշվետվություն, {3} իրադարձություն։</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Դիտարկված արտադրողի հաշվետվություններ՝ {0}։ Դիտարկված իրադարձությունների դասեր՝ {1}։ Հաշվետվություններ սեղմման ընթացքում՝ {2}։ Իրադարձություններ սեղմման ընթացքում՝ {3}։</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Կոճակը գրանցվեց։ Մուտքագրեք անուն և սեղմեք «Գրանցել»։</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Աղբյուր</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Անուն</value></data>
@@ -3787,7 +3794,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>Արտահանել…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Ներմուծել…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Արտահանվեց {0} կոճակ։</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Արտահանվեց {0} կոճակ։</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Ներմուծվեց {0} կոճակ։</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Ներմուծվեց {0} կոճակ։</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Դյուրակիր համակարգչի կոճակներ</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Դյուրակիր խաղային համակարգիչներն ու նոթբուքերն ունեն կոճակներ, որոնք օպերացիոն համակարգը երբեք չի ցուցադրում որպես կառավարիչ՝ հետևի պադլեր, ընտրացանկի ստեղներ, անիվներ, արտադրողի թեժ ստեղներ։ Միացրեք սա, որպեսզի դրանք սովորեցնեք մեկ անգամ սեղմելով, ապա կապակցեք ինչպես ցանկացած այլ կոճակ։ Ավելացնում է նաև սարքի սեփական գիրոն որպես շարժման սարք։</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Միացնել դյուրակիր համակարգչի կոճակները</value></data>
@@ -3951,9 +3960,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Աճման կարգով</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Նվազման կարգով</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} կապակցում</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} կապակցում</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Գտնվել է {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ցուցադրվում է {0}՝ {1}-ից</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} կոնֆիգուրացիա</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} կոնֆիգուրացիա</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>լրիվ կառավարիչի աջակցություն</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>մասնակի կառավարիչի աջակցություն</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Որոնել խաղեր</value></data>
@@ -3963,7 +3974,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ամիս առաջ</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} տարի առաջ</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} բաժանորդ</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} բաժանորդ</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ձայն</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ձայն</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Բոլորը</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Այս խաղի համար կոնֆիգուրացիաներ դեռ չկան</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop-ում {0}-ի համար համայնքային կառավարիչի կոնֆիգուրացիաներ չկան։ Դուք կարող եք առաջինը լինել՝ ստեղծեք մեկը Steam-ում, և այն կհայտնվի այստեղ։</value></data>
@@ -3996,6 +4009,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>շերտ՝ {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>այս մուտքի համար սարքից անկախ գործարկիչ չկա</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} խաղային գործողություն, միայն Steam-ի համար, խաղի կողմից կեռիկ չկա</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} խաղային գործողություն, միայն Steam-ի համար, խաղի կողմից կեռիկ չկա</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam հաճախորդի գործողություն {0}, համարժեք չկա</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>կառավարիչի գործողությունը {0} չի աջակցվում</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>անհայտ կապակցման տեսակ {0}</value></data>
@@ -4073,7 +4087,7 @@
   <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Մեկ գործարկման համար մկնիկի ցուցիչը տեղաշարժում է պիքսելների ֆիքսված քանակով։ Դրական X-ը շարժում է աջ, դրական Y-ը՝ ներքև։ Բացասական արժեքները թույլատրվում են։</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Տեղաշարժել ցուցիչը ({0}, {1}) պիքսելով</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Շրջանառել հպումների ցանկը</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր գործարկում կատարում է քայլերի ցանկի հաջորդ հպումը և առաջ է գնում։ «Շրջանաձև»-ը միացրած դեպքում ցանկը վերսկսվում է վերջին քայլից հետո, առանց դրա՝ գործարկումը ավարտվում է վերջում։</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր գործարկում կատարում է քայլերի ցանկի հաջորդ հպումը և առաջ է գնում։ «Շրջանաձև»-ը միացրած դեպքում ցանկը վերսկսվում է վերջին քայլից հետո։ Առանց դրա գործարկումը ավարտվում է վերջում։</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Փոխանջատել մկնիկի կոճակը</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր գործարկումը ամրակցում կամ ազատում է մկնիկի կոճակը։ Ամրակցված կոճակը մնում է սեղմված մինչև հաջորդ գործարկումը կամ մինչև մակրոն անջատվի։</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Փոխանջատել մկնիկի {0}-ը</value></data>
@@ -4086,6 +4100,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Փոխանջատել անիվի ոլորումը</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր գործարկումը ամրակցում կամ ազատում է անընդհատ ոլորումը։ Ամրակցված ժամանակ ամեն միջակայքում մեկ անգամ ուղարկում է կտկտոցների քանակը՝ մինչև հաջորդ գործարկումը կամ մինչև մակրոն անջատվի։</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Փոխանջատել անիվի ոլորումը ({0} կտկտոց ամեն {1} մվ)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Փոխանջատել անիվի ոլորումը ({0} կտկտոց ամեն {1} մվ)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Զարկեր ամրակցված ժամանակ</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Ամրակցված ժամանակ ելքը միացնում և անջատում է կրկնության միջակայքով՝ այն կայուն պահելու փոխարեն։</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Առանցքին ավելացնել (հարաբերական)</value></data>
@@ -4107,6 +4122,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Երբ ֆիզիկական շարժումը թիրախը տանում է շեմից այն կողմ, մակրոն դադարում է գրել առանցքը ակտիվացման մնացած մասի ընթացքում։</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(զիջում է ֆիզիկականին)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Շրջանառել հպումների ցանկը ({0} քայլ)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Շրջանառել հպումների ցանկը ({0} քայլ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Քայլեր</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Շրջանաձև</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Փոխանջատել ստեղները {0}</value></data>
@@ -4190,6 +4206,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Պրոֆիլի փոխարկման վերադիր</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ցուցադրել էկրանային օղակը կամ ցանցը, երբ շառավղային կամ հպման ընտրացանկը ներգրավված է։ Ընտրացանկերը դարձյալ գործարկվում են վերադիրն անջատված ժամանակ։</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>էկրանային ընտրացանկը ստեղծվեց ({0} կապակցված բջիջ)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>էկրանային ընտրացանկը ստեղծվեց ({0} կապակցված բջիջ)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ընտրացանկը կապակցված բջիջներ չունի</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ընտրացանկի հյուրընկալող մակերեսը չի աջակցվում ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ընտրացանկի բջջի պատկերակը չճանաչվեց ({0}), ուստի բջիջը պահպանում է տեքստային պիտակը</value></data>
@@ -4376,6 +4393,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Ընտրեք AutoEq-ի ներբեռնած .txt ֆայլը։ Օգտագործեք հենց սա՝ autoeq.app-ը տալիս է ֆայլ, ոչ թե պատճենվող տեքստ։</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Ձեր ականջակալներին համապատասխան ուղղման համար՝ բացեք autoeq.app, ընտրեք ձեր մոդելը, ընտրեք Custom Parametric Eq և ներբեռնեք այն, ապա՝ Ներմուծել ֆայլից։ Graphic Eq ներբեռնումը զտիչի տողեր չունի և չի ներմուծվի։</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Աղբյուր՝ {2}։ Ներմուծվեց {0} գոտի {1:0.#} dB նախաուժեղացմամբ։</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Աղբյուր՝ {2}։ Ներմուծվեց {0} գոտի {1:0.#} dB նախաուժեղացմամբ։</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Այդ պրոֆիլում զտիչի տողեր չկան։ AutoEq-ի Graphic Eq արտահանումը այստեղ չի կարող կարդացվել։ Փոխարենը ներբեռնեք Custom Parametric Eq-ը։ Ընթացիկ EQ-ն չի փոխվել։</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Ներմուծելու ոչինչ չկա։ Ընթացիկ EQ-ն չի փոխվել։</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Չհաջողվեց կարդալ այդ ֆայլը՝ {0}</value></data>

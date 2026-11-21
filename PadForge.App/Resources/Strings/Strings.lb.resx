@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Eidelmaachen</value></data>
   <data name="Common_None" xml:space="preserve"><value>Keng</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>Sekonnen</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>Minutten (0 = ni)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide huet PadForge den Zougrëff op en Apparat gespaart, deen PadForge verstoppt hat, dofir verstoppt PadForge keng Apparater méi.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>D'Optioun „Inverse application cloak“ vun HidHide ass un, dofir verstoppt PadForge keng Apparater.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>D'Runtime vu Windows MIDI Services gëtt desinstalléiert…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} konnt net starten, well MIDI net leeft. D'Kaart Windows MIDI Services an den Astellunge seet firwat.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} konnt net starten, well MIDI net leeft. Kuck Windows MIDI Services an den Astellungen, ënner Treiber.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} konnt net starten, well Windows MIDI Services säi Port net ugeluecht huet.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} huet keen Ausgangsport. Wielt een op senger Säit.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Den Ausgangsport „{1}“ vun {0} ass net verbonnen. De Slot start, soubal de Port erëm do ass.</value></data>
@@ -558,6 +559,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>D'G-key SDK huet refuséiert ze starten. Meeschtens leeft Logitech Gaming Software net.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonnen, nach keng Tast gesinn. Zitt an der Logitech Gaming Software de Befeel „G-key“ op all Tast am PadForge-Profil, a maacht dëse Profil persistent. Eng G600- oder G300-Maus däerf ausserdeem net am Onboard-Späichermodus sinn.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Leeft, {0} Tastenevenementer</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Leeft, {0} Tastenevenement</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analog Tastature liesen</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Liest, wéi déif all Tast gedréckt ass, op analoge Tastature vu Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA an anere Fabrikanten, all eenzel als eegen Zeil an der Apparatelëscht. D'Dokumentatioun lëscht all ënnerstëtzte Modell op. Razer-Tastature brauchen e lafent Razer Synapse. Déi meescht aner ginn iwwer de Kanal gelies, deen hir eege Konfiguratiounssoftware benotzt, also maacht déi Software zou, soulaang dës Optioun un ass.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Keng ënnerstëtzt analog Tastatur fonnt.</value></data>
@@ -795,7 +797,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Op Updates kucken</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>E moderne Fork vun x360ce, nei gebaut mat SDL3, WPF a .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge mécht aus all Agabapparat e beléiwege virtuelle Controller. Gamepads, Joysticks, Tastaturen, Mais an Touchscreens ginn op virtuell Spillcontroller (Xbox, PlayStation, Flight Sticks, Steierrieder, Gamepads vun Drëttfirmen) oder op eng Tastatur+Maus- oder MIDI-Ausgab zougeuerdnet, déi d'Spiller wéi richteg Hardware behandelen. Ënnerstëtzt vun HIDMaestro a Windows MIDI Services. Et benotzt SDL3 fir d'Controller-Agab, Windows Raw Input fir Tastatur a Maus, HidHide fir d'Verstoppe vun Apparater pro Spill, a bitt eng modern Fluent-Design-Uewerfläch fir Zouuerdnungen, Doudzonen, Empfindlechkeetskurven a Force Feedback.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge léisst all Agab wéi e beléiwege Controller ausgesinn. Gamepads, Joysticks, Steierrieder, Tastaturen, Mais, Touchscreens, MIDI-Apparater an Handyen steieren virtuell Controller, déi d'Spiller wéi richteg Hardware behandelen: Xbox-, PlayStation-, Nintendo- a Steam-Pads, SInput-Pads, VR-Handcontroller, MIDI-Ausgab, eng Tastatur a Maus oder en eegenen Apparat wéi e Flight Stick oder e Steierrad. HIDMaestro erstellt déi virtuell Gamepads, SDL3 liest Controller, Windows Raw Input liest Tastaturen a Mais, HidHide verstoppt en Apparat virun de Spiller, a Windows MIDI Services bréngt MIDI eran an eraus.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Iwwersiicht</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebaut mat</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Credits sichen</value></data>
@@ -917,6 +919,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Verspéidung tëscht de Buschtawen</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekonnen tëscht de getippten Zeechen, bis zu 1000. Bei 0 gëtt de ganzen Text op eemol getippt.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Bei Inaktivitéit trennen</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 heescht ni</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detailer</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth trennen, wann iwwer USB ugeschloss</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wann dëse Controller mellt, datt e lued, während en iwwer Bluetooth verbonnen ass, gëtt d'Bluetooth-Verbindung getrennt, sou datt e lued, ouni de Funkmodul mat Stroum ze versuergen. All USB-Stroumquell zielt, och Chargeuren fir d'Steckdous. Wann Dir Bluetooth erëm uschalt, während de Kabel dra bleift, gëtt et a Rou gelooss, bis de Kabel déi nächst Kéier erausgezu gëtt.</value></data>
@@ -981,6 +984,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Schécken</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Biller: {0}. D'Schécken dauert ongeféier {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>De Controller hëlt héchstens {0} Biller, dofir goufen déi lescht {1} ewechgelooss.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>De Controller hëlt héchstens {0} Biller, dofir gouf dat lescht ewechgelooss.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Verbannt de Controller mat engem Kabel. En start ongeféier 15 Sekonnen, nodeems d'Bild drop ass, vu selwer nei.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Verbannt de Controller mat engem Kabel. Fir d'Schécken setzt PadForge en an den Xbox-Modus a wiesselt en vum Xbox-Treiber vu Windows op WinUSB, duerno setzt et béides zréck.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge setzt de Controller an den Xbox-Modus, wiesselt en fir d'Schécken op WinUSB, gëtt en duerno dem Xbox-Treiber vu Windows zréck a setzt en erëm an den DInput-Modus. Maacht fir d'éischt all aner Xbox 360-Controller of. Elo schécken?</value></data>
@@ -1411,8 +1415,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonen</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Wielt en Apparat an dësem Slot, fir en ze klonen.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>De gewielten Apparat huet keng Achsen, Knäppercher oder POVs, déi ee klone kann.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} als 1:1-Passthrough op dëse Slot klonen? De Layout gëtt {1} Achsen, {2} Knäppercher an {3} POVs, an d'Zeile vun dësem Apparat am Slot ginn duerch seng eegen Agaben ersat.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dësen Apparat huet méi Agaben, wéi en Extended-Controller droe kann. {0} vu {1} Achsen, {2} vu {3} Knäppercher an {4} vu {5} POVs goufen zougeuerdnet. De Rescht ass ouni Zouuerdnung bliwwen.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} als 1:1-Passthrough op dëse Slot klonen? De Layout gëtt {1}, {2} an {3}, an d'Zeile vun dësem Apparat am Slot ginn duerch seng eegen Agaben ersat.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dësen Apparat huet méi Agaben, wéi en Extended-Controller droe kann. {0} vu {1}, {2} vu {3} an {4} vu {5} goufen zougeuerdnet. De Rescht ass ouni Zouuerdnung bliwwen.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Controller-Virastellungen</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Setzt eng Virastellung fir e Controller derbäi, deen PadForge net matbréngt, aus engem Fichier oder vum Controller selwer.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importéiert</value></data>
@@ -1584,11 +1588,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knäppchen, dat den Akkumulator beim Halen no an no reduzéiert</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Erof: Knäppchen, dat den Akkumulator beim Halen no an no reduzéiert.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Tempo</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Geschwindegkeet an Eenheeten pro Sekonn. 0.5 = ganze Beräich an 2 s; 2 = ganze Beräich an 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Geschwindegkeet an Eenheeten pro Sekonn. 0.5 = ganze Beräich an 2 s. 2 = ganze Beräich an 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Pecheg</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>Wann aktivéiert, hält den Akkumulator säi Wäert nom Lassloossen (Tempomat). Wann deaktivéiert, spréngt en beim Lassloossen op Min zréck.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ënnescht Grenz vum Akkumulator. -1 = voll negativ fir bipolar Achsen; 0 = unipolar.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ënnescht Grenz vum Akkumulator. -1 = voll negativ fir bipolar Achsen. 0 = unipolar.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Iewescht Grenz vum Akkumulator. 1 = voll positiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
@@ -1881,6 +1885,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt de Liichtbalken-Modus vum zougewisene Slot op e bestëmmte Wäert. Bleift wéi eng Ännerung op der Beliichtungs-Kaart, bis eng aner Aktioun oder de Benotzer en ännert.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Liichtbalken-Modi duerchlafen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} Liichtbalken-Modi duerchlafen</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} Liichtbalken-Modus duerchlafen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schalt de Liichtbalken-Modus vum Slot duerch déi hei ënne gewielte Modi weider. All Ausléisung spréngt op deen nächste markéierte Modus. D'Positioun am Zyklus gëllt pro Aktioun a gëtt beim Neistart vun der App zréckgesat.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Halen</value></data>
@@ -2159,7 +2164,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Den Deel vum Ecran, deen den Touchpad erreecht</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stellt d'Quellen Touchpad Zeiger X/Y an, déi de Mauszeiger op d'Positioun vum Fanger um Touchpad setzen (ordnet se Maus X/Y op engem virtuelle Controller Tastatur / Maus zou). Gréisst 1.00 mat Mëtt 0.50 bilt den Touchpad op de ganzen Ecran of. Mat enger méi klenger Gréisst bleift de Mauszeiger an engem Deel vum Ecran, an d'Mëtt leet fest, wou deen Deel läit.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Breet vum Beräich</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breet vum Ecranberäich, op deen dësen Touchpad ofgebilt gëtt, als Undeel vun der Ecranbreet. 1.00 deckt déi ganz Breet of, 0.50 hält de Mauszeiger op der hallwer Breet.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Breet vum Ecranberäich, op deen dësen Touchpad ofgebilt gëtt, als Undeel vun der Ecranbreet. 1.00 deckt déi ganz Breet of. 0.50 hält de Mauszeiger op der hallwer Breet.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Héicht vum Beräich</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Héicht vum Ecranberäich, als Undeel vun der Ecranhéicht.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Mëtt vum Beräich X</value></data>
@@ -2170,7 +2175,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe-Haptik</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Ticks, wärend de Fanger iwwer de Touchpad fiert</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Léist kuerz Haptik-Ticks um Controller aus, wärend de Fanger iwwer dësen Touchpad fiert, wéi d'Trackpad-Ticks vu Steam Input. Steam Controller an de Steam Deck ticken mam Aktuator ënner dem Touchpad, DualSense an DualShock 4 pulséieren d'Vibratiounsmotoren.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Léist kuerz Haptik-Ticks um Controller aus, wärend de Fanger iwwer dësen Touchpad fiert, wéi d'Trackpad-Ticks vu Steam Input. Steam Controller an de Steam Deck ticken mam Aktuator ënner dem Touchpad. DualSense an DualShock 4 pulséieren d'Vibratiounsmotoren.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Swipe-Haptik aktivéieren</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Léist e kuerzen Haptik-Tick aus, all Kéier wann de Fanger eng bestëmmt Distanz op dësem Touchpad zréckleet. Opsetzen oder Klicken um Touchpad tickt ni. Standardméisseg aus.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensitéit</value></data>
@@ -2278,6 +2283,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>All Samples erfaasst. Gitt der Geste en Numm a klickt op Späicheren.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} vun {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} Samples</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} Sample</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Unzuel Samples</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Unzuel Samples fir opzehuelen</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ass de Standard. Méi Samples ginn eng méi sécher Erkennung, a manner sinn der méi séier opgeholl.</value></data>
@@ -3366,6 +3372,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistoul ausserhalb</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Zeigermodi duerchschalten</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Duerch {0} Zeigermodi schalten</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Duerch {0} Zeigermodus schalten</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schalt de Wii-Zeigermodus fir all IR-fäeg Remote um Slot duerch déi Modi, déi hei ënnendrënner gewielt sinn. All Ausléisung geet op den nächsten ugekräizte Modus. D'Positioun gëllt pro Aktioun a gëtt beim Neistart vun der App zréckgesat.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Wielt, wéi eng Zeigermodi de Makro duerchschalte soll. All Ausléisung geet op den nächsten ugekräizte Modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
@@ -3784,7 +3791,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Loosst de Knäppchen lass.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Schrëtt {0} vun {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Keng Ännerung festgestallt. Wielt „Nei ufänken“ an dréckt dann de Knäppchen a haalt en, wann Dir dozou opgefuerdert gitt.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} Hiersteller-Reporten an {1} Evenementsklassen iwwerwaacht. Wärend dem Drécken: {2} Reporten, {3} Evenementer.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Iwwerwaacht Hiersteller-Reporten: {0}. Iwwerwaacht Evenementsklassen: {1}. Reporte wärend dem Drécken: {2}. Evenementer wärend dem Drécken: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Knäppchen erfaasst. Gitt en Numm an a klickt op Registréieren.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Quell</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Numm</value></data>
@@ -3800,7 +3807,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Exportéieren…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importéieren…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} Knäppercher exportéiert.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} Knäppchen exportéiert.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} Knäppercher importéiert.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} Knäppchen importéiert.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld-PC-Knäppercher</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld-Gaming-PCen a Laptoppen hu Knäppercher, déi de Betribssystem ni als Controller weist: Paddlen hannen, Menütasten, Rieder, Tastekombinatioune vum Hiersteller. Schalt dat hei un, fir se eemol duerch Drécken ze léieren, an ordnet se dann wéi all anere Knäppchen zou. Setzt och de Gyroskop vun der Maschinn als Beweegungsapparat derbäi.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Handheld-PC-Knäppercher aktivéieren</value></data>
@@ -3963,9 +3972,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Opsteigend</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Ofsteigend</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} Belegungen</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} Belegung</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} fonnt</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} vun {1} gewisen</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} Konfiguratiounen</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} Konfiguratioun</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>voll Controller-Ënnerstëtzung</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>deelweis Controller-Ënnerstëtzung</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Spiller sichen</value></data>
@@ -3975,7 +3986,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>virun {0} Mt.</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>virun {0} J.</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} Abonnenten</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} Abonnent</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} Stëmmen</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} Stëmm</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>All</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Nach keng Konfiguratioune fir dëst Spill</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>De Steam Workshop huet keng Community-Controllerkonfiguratioune fir {0}. Dir kënnt deen Éischte sinn: maacht eng a Steam, an da steet se hei.</value></data>
@@ -4008,6 +4021,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>Schicht: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>keen Ausléiser ouni Apparat fir dës Agab</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} Aktiounen am Spill, nëmme Steam, keen Hook um Spill</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} Aktioun am Spill, nëmme Steam, keen Hook um Spill</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-Client-Aktioun {0}, keng Entspriechung</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>Controller-Aktioun {0} net ënnerstëtzt</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekannte Belegungstyp {0}</value></data>
@@ -4085,7 +4099,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Verréckelt de Mauszeiger pro Ausléisung ëm eng fix Zuel vu Pixelen. Positiv X beweegt no riets, positiv Y no ënnen. Negativ Wäerter sinn erlaabt.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Mauszeiger ëm ({0}, {1}) px verréckelen</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Tipp-Lëscht duerchlafen</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>All Ausléisung mécht deen nächsten Tipp aus der Schrëttlëscht a geet weider. Mat Ëmlaf fänkt d'Lëscht nom leschte Schrëtt vu vir un, ouni Ëmlaf hält d'Ausléisen um Enn op.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>All Ausléisung mécht deen nächsten Tipp aus der Schrëttlëscht a geet weider. Mat Ëmlaf fänkt d'Lëscht nom leschte Schrëtt vu vir un. Ouni Ëmlaf hält d'Ausléisen um Enn op.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Mausknäppchen ëmschalten</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>All Ausléisung fixéiert de Mausknäppchen oder léisst e lass. E fixéierte Knäppchen bleift gedréckt bis zur nächster Ausléisung oder bis de Makro desaktivéiert gëtt.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Maus {0} ëmschalten</value></data>
@@ -4098,6 +4112,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Mausrad-Scrollen ëmschalten</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>All Ausléisung schalt e kontinuéierlecht Scrollen un oder aus. Soulaang et un ass, gëtt d'Unzuel vu Schrëtt eemol pro Intervall geschéckt, bis zur nächster Ausléisung oder bis de Makro desaktivéiert gëtt.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Mausrad-Scrollen ëmschalten ({0} Schrëtt all {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Mausrad-Scrollen ëmschalten ({0} Schrëtt all {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulséieren, soulaang fixéiert</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Soulaang fixéiert, gëtt d'Ausgab am Widderhuelungsintervall un- an ausgeschalt, amplaz se permanent ze halen.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Achs addéieren (relativ)</value></data>
@@ -4119,6 +4134,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Wann eng physesch Beweegung d'Zil iwwer d'Schwell dréckt, schreift de Makro d'Achs fir de Rescht vun der Aktivéierung net méi.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(gëtt der physescher Agab de Virrang)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Tipp-Lëscht duerchlafen ({0} Schrëtt)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Tipp-Lëscht duerchlafen ({0} Schrëtt)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Schrëtt</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ëmlaf</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tasten {0} ëmschalten</value></data>
@@ -4201,6 +4217,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilwiessel-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Weist de Rank oder de Raster um Bildschierm, soulaang e Radial- oder Touch-Menü aktiv ass. Menüe léisen och mat ausgeschaltem Overlay aus.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>Menü um Bildschierm erstallt ({0} belegt Zellen)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>Menü um Bildschierm erstallt ({0} belegt Zell)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü huet keng belegt Zellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Host-Fläch vum Menü net ënnerstëtzt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Symbol vun der Menü-Zell net erkannt ({0}), dofir behält d'Zell hir Textbeschrëftung</value></data>
@@ -4387,6 +4404,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Wielt de .txt-Fichier, deen Dir vun AutoEq erofgelueden hutt. Dat ass de richtege Wee: autoeq.app gëtt Iech e Fichier amplaz vun Text zum Kopéieren.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Fir eng Korrektur, déi op Äre Kopfhörer ofgestëmmt ass: maacht autoeq.app op, wielt Äre Modell, wielt Custom Parametric Eq a luet en erof, dann „Aus Fichier importéieren“. Den Download Graphic Eq huet keng Filterzeilen a léisst sech net importéieren.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} Bänner mat {1:0.#} dB Virverstäerkung aus {2} importéiert.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{0} Band mat {1:0.#} dB Virverstäerkung aus {2} importéiert.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Keng Filterzeilen an dësem Profil. De Graphic-Eq-Export vun AutoEq kann hei net gelies ginn. Luet amplaz dee vu Custom Parametric Eq erof. Den aktuellen EQ bleift onverännert.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Näischt z'importéieren. Den aktuellen EQ bleift onverännert.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>De Fichier konnt net gelies ginn: {0}</value></data>
@@ -4402,7 +4420,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Grenz zrécksetzen</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Zitt e Punkt, fir seng Frequenz a Verstäerkung ze änneren. Dréit d'Rad iwwer engem Punkt, fir en méi breet oder méi schmuel ze maachen.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ausgabwee</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wou de Controller säin Toun ofspillt. Standard behält de Routing vun der Firmware a spillt PadForge-Téin um Lautsprecher of. Kopfhörer + Lautsprecher spillt Mono op der Headset-Säit, eng Limitt vun der Firmware. Iwwer Bluetooth spillt dëse Modus nëmmen iwwer d'Kopfhörer. Kopfhöreruschloss verfollegen wiesselt op d'Kopfhörer, wann eppes un de Controller ugeschloss gëtt, an zréck op de Lautsprecher, wann et erausgezu gëtt; ouni Status vum Uschloss verhält et sech wéi Standard.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wou de Controller säin Toun ofspillt. Standard behält de Routing vun der Firmware a spillt PadForge-Téin um Lautsprecher of. Kopfhörer + Lautsprecher spillt Mono op der Headset-Säit, eng Limitt vun der Firmware. Iwwer Bluetooth spillt dëse Modus nëmmen iwwer d'Kopfhörer. Kopfhöreruschloss verfollegen wiesselt op d'Kopfhörer, wann eppes un de Controller ugeschloss gëtt, an zréck op de Lautsprecher, wann et erausgezu gëtt. Ouni Status vum Uschloss verhält et sech wéi Standard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Kopfhörer (Stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Kopfhörer (Mono)</value></data>

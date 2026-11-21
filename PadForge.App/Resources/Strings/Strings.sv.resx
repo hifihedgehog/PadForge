@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sida åt höger</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>sekunder</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>minuter (0 = aldrig)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -207,7 +208,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide blockerade PadForge från en enhet som PadForge hade dolt, så PadForge slutade dölja enheter.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>Alternativet ”Inverse application cloak” i HidHide är på, så PadForge döljer inga enheter.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Avinstallerar körmiljön för Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kunde inte starta eftersom MIDI inte körs. Kortet Windows MIDI Services i Inställningar förklarar varför.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} kunde inte starta eftersom MIDI inte körs. Se Windows MIDI Services under Inställningar, i gruppen Drivrutiner.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} kunde inte starta eftersom Windows MIDI Services inte skapade porten.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} har ingen utport. Välj en på dess sida.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>Utporten ”{1}” för {0} är inte ansluten. Platsen startar när porten är tillbaka.</value></data>
@@ -577,6 +578,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK vägrade starta. Oftast beror det på att Logitech Gaming Software inte körs.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Ansluten, ingen tangent har setts än. Dra i Logitech Gaming Software kommandot ”G-key” till varje tangent i PadForge-profilen och gör profilen beständig. En G600- eller G300-mus får dessutom inte vara i läget för inbyggt minne.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Körs, {0} tangenthändelser</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>Körs, {0} tangenthändelse</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Läs av analoga tangentbord</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Läser av hur långt varje tangent är nedtryckt på analoga tangentbord från Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA och andra tillverkare, vart och ett som en egen enhetsrad. Dokumentationen listar alla modeller som stöds. Razer-tangentbord kräver att Razer Synapse körs. De flesta andra läses av via den kanal som deras eget konfigurationsprogram använder, så stäng konfigurationsprogrammet medan det här är på.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Inget analogt tangentbord som stöds hittades.</value></data>
@@ -814,7 +816,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>Sök efter uppdateringar</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Modern förgrening av x360ce, ombyggd med SDL3, WPF och .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge gör vilken inmatningsenhet som helst till vilken virtuell handkontroll som helst. Handkontroller, joystickar, tangentbord, möss och pekskärmar mappas till virtuella spelkontroller (Xbox, PlayStation, flygspakar, rattar, handkontroller från tredje part) eller till utdata för tangentbord + mus / MIDI som spel behandlar som riktig hårdvara. Drivs av HIDMaestro och Windows MIDI Services. Programmet använder SDL3 för handkontrollsinmatning, Windows Raw Input för tangentbord och mus, HidHide för att dölja enheter per spel, och har ett modernt Fluent Design-gränssnitt för mappning, dödzoner, känslighetskurvor och kraftåterkoppling.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge får vilken inmatning som helst att se ut som vilken handkontroll som helst. Spelkontroller, joystickar, rattar, tangentbord, möss, pekskärmar, MIDI-enheter och telefoner styr virtuella handkontroller som spel behandlar som riktig hårdvara: handkontroller för Xbox, PlayStation, Nintendo och Steam, SInput-handkontroller, VR-handkontroller, MIDI-utdata, ett tangentbord och en mus eller en egen enhet som en flygspak eller ett ratt. HIDMaestro skapar de virtuella spelkontrollerna, SDL3 läser handkontroller, Windows Raw Input läser tangentbord och möss, HidHide döljer en enhet för spel och Windows MIDI Services för MIDI in och ut.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Översikt</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Byggt med</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>Sök bland tack</value></data>
@@ -942,6 +944,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Fördröjning mellan tecken</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunder mellan skrivna tecken, upp till 1000. 0 skriver hela texten på en gång.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Frånkoppling vid inaktivitet</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 betyder aldrig</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detaljer</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Koppla från Bluetooth vid anslutning via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Snabbladdning. När den här handkontrollen rapporterar att den laddas medan den är ansluten via Bluetooth bryts Bluetooth-länken, så att den laddas utan att driva radion. Alla USB-strömkällor räknas, även väggladdare. Om du slår på Bluetooth igen medan kabeln sitter i lämnas länken i fred tills kabeln dras ur nästa gång.</value></data>
@@ -1006,6 +1009,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>Skicka</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bildrutor: {0}. Att skicka tar ungefär {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Handkontrollen tar högst {0} bildrutor, så de sista {1} utelämnades.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>Handkontrollen tar högst {0} bildrutor, så den sista utelämnades.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Anslut handkontrollen med kabel. Den startar om av sig själv ungefär 15 sekunder efter att bilden har kommit in.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Anslut handkontrollen med kabel. För sändningen växlar PadForge den till Xbox-läge och flyttar den från Windows Xbox-drivrutin till WinUSB, och återställer sedan båda.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge växlar handkontrollen till Xbox-läge, flyttar den till WinUSB under sändningen, lämnar sedan tillbaka den till Windows Xbox-drivrutin och växlar tillbaka den till DInput-läge. Koppla först ur alla andra Xbox 360-handkontroller. Skicka nu?</value></data>
@@ -1198,6 +1202,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows flyttar inte längre pekaren med {0}. Om du inte menade det ska du inte göra något, så kommer den tillbaka.</value></data>
   <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows flyttar inte längre pekaren med {0}. Om du inte menade det ska du inte göra något, så kommer den tillbaka.</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>Lämnas tillbaka om {0} sekunder</value></data>
+  <data name="Devices_DriverKeepCountdown_One_Format" xml:space="preserve"><value>Lämnas tillbaka om {0} sekund</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>Behåll</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>Lämna tillbaka</value></data>
   <data name="Status_DriverBindOthersPluggedIn_Keyboard" xml:space="preserve"><value>Koppla först ur de andra tangentborden av den här modellen. Windows flyttar alla inkopplade till PadForge-drivrutinen på en gång och slutar skriva med vart och ett.</value></data>
@@ -1612,8 +1617,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klona</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Välj en enhet på den här platsen att klona.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Den valda enheten har inga axlar, knappar eller hattar att klona.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klona {0} till den här platsen som en genomkoppling 1:1? Layouten blir {1} axlar, {2} knappar och {3} POV-hattar, och den här enhetens rader på platsen ersätts med dess egna inmatningar.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Den här enheten har fler inmatningar än en Utökad handkontroll rymmer. Mappade {0} av {1} axlar, {2} av {3} knappar och {4} av {5} POV-hattar. Resten lämnades omappade.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klona {0} till den här platsen som en genomkoppling 1:1? Layouten blir {1}, {2} och {3}, och den här enhetens rader på platsen ersätts med dess egna inmatningar.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Den här enheten har fler inmatningar än en Utökad handkontroll rymmer. Mappade {0} av {1}, {2} av {3} och {4} av {5}. Resten lämnades omappade.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Handkontrollsförval</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Lägg till ett förval för en handkontroll som PadForge inte levererar, från en fil eller från handkontrollen själv.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importerade</value></data>
@@ -1785,11 +1790,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>Knapp som rampar ackumulatorn nedåt medan den hålls ned</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>Ned: knapp som rampar ackumulatorn nedåt medan den hålls ned.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hastighet</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Svephastighet i enheter per sekund. 0.5 = hela omfånget på 2 s; 2 = hela omfånget på 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Svephastighet i enheter per sekund. 0.5 = hela omfånget på 2 s. 2 = hela omfånget på 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>Kvarstående</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>När rutan är markerad behåller ackumulatorn sitt värde efter släpp (farthållare). När den är avmarkerad hoppar den tillbaka till Min vid släpp.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ackumulatorns nedre gräns. -1 = fullt negativt för bipolära axelmål; 0 = unipolärt.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>Ackumulatorns nedre gräns. -1 = fullt negativt för bipolära axelmål. 0 = unipolärt.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Ackumulatorns övre gräns. 1 = fullt positivt.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
@@ -2083,6 +2088,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ställer in den tilldelade platsens ljusfältsläge på ett visst värde. Består som en ändring på kortet Belysning tills en annan åtgärd eller användaren ändrar det.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Bläddra mellan ljusfältslägen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Bläddra mellan {0} ljusfältslägen</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>Bläddra mellan {0} ljusfältsläge</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Stegar platsens ljusfältsläge genom de lägen som är valda nedan. Varje utlösning går vidare till nästa markerade läge. Positionen i ordningen är per åtgärd och nollställs när appen startas om.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hållning</value></data>
@@ -2361,7 +2367,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_AbsolutePointer_FoldHint" xml:space="preserve"><value>Den del av skärmen som plattan når</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Justerar källorna Styrplatta pekare X/Y, som flyttar muspekaren direkt till fingrets position på plattan (mappa dem till mus X/Y på en virtuell handkontroll av typen Tangentbord / mus). Storlek 1.00 med mitt 0.50 mappar plattan till hela skärmen. Minska storleken för att begränsa muspekaren till en del av skärmen, och flytta mitten för att placera den.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeX" xml:space="preserve"><value>Områdets bredd</value></data>
-  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bredden på det skärmområde som plattan mappas till, som andel av skärmens bredd. 1.00 täcker hela bredden; 0.50 begränsar muspekaren till halva skärmen.</value></data>
+  <data name="Pad_Touchpad_PointerRegionSizeX_Tooltip" xml:space="preserve"><value>Bredden på det skärmområde som plattan mappas till, som andel av skärmens bredd. 1.00 täcker hela bredden. 0.50 begränsar muspekaren till halva skärmen.</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY" xml:space="preserve"><value>Områdets höjd</value></data>
   <data name="Pad_Touchpad_PointerRegionSizeY_Tooltip" xml:space="preserve"><value>Skärmområdets höjd, som andel av skärmens höjd.</value></data>
   <data name="Pad_Touchpad_PointerRegionCenterX" xml:space="preserve"><value>Områdets mitt X</value></data>
@@ -2372,7 +2378,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Svephaptik</value></data>
   <data name="Pad_SwipeHaptics_FoldHint" xml:space="preserve"><value>Tick medan fingret rör sig</value></data>
-  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulserar handkontrollens haptik när fingret rör sig över den här styrplattan, som styrplattetickandet i Steam Input. Steam Controller-handkontroller och Steam Deck tickar med aktuatorn under plattan; DualSense och DualShock 4 pulserar med vibrationsmotorerna.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulserar handkontrollens haptik när fingret rör sig över den här styrplattan, som styrplattetickandet i Steam Input. Steam Controller-handkontroller och Steam Deck tickar med aktuatorn under plattan. DualSense och DualShock 4 pulserar med vibrationsmotorerna.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Aktivera svephaptik</value></data>
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Avger ett kort haptiskt tick varje gång fingret rör sig en viss sträcka på den här plattan. Att sätta ned ett finger eller klicka på plattan ger aldrig något tick. Av som standard.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensitet</value></data>
@@ -2480,6 +2486,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Recorder_Complete" xml:space="preserve"><value>Alla prov är fångade. Ge gesten ett namn och klicka på Spara.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Prov {0} av {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} prov</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} prov</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Antal prov att fånga</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>Prov att fånga</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 är standard. Fler prov ger en säkrare matchning och färre går snabbare att spela in.</value></data>
@@ -3585,6 +3592,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistol utanför skärmen</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Bläddra mellan pekarlägen</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Bläddra mellan {0} pekarlägen</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>Bläddra mellan {0} pekarläge</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Stegar Wii-pekarläget genom de lägen som är valda nedan för varje IR-kapabel fjärrkontroll på platsen. Varje utlösning går vidare till nästa markerade läge. Positionen i ordningen är per åtgärd och nollställs när appen startas om.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Välj vilka pekarlägen makrot ska bläddra mellan. Varje utlösning går vidare till nästa markerade läge.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ljud</value></data>
@@ -3916,7 +3924,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Ingen DualShock 3 hittades på USB. Anslut den med en USB-kabel och försök igen.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows installerar inte USB-drivrutinen från PadForge för DualShock 3, eftersom dess signeringscertifikat inte är betrott på den här datorn.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Bluetooth-drivrutinen för PlayStation-handkontroller kunde inte installeras.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Ingen Bluetooth-radio är tillgänglig. Slå på Bluetooth och försök igen. Parkoppling behövs bara för trådlöst spelande; en kabelansluten handkontroll fungerar utan den.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Ingen Bluetooth-radio är tillgänglig. Slå på Bluetooth och försök igen. Parkoppling behövs bara för trådlöst spelande. En kabelansluten handkontroll fungerar utan den.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Parkopplingen slutfördes inte. Steget som misslyckades visas ovan.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Stäng</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-taggar</value></data>
@@ -4007,7 +4015,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Släpp knappen.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>Steg {0} av {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Ingen ändring sågs. Välj Börja om och håll sedan ned knappen när du blir ombedd.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Bevakade {0} tillverkarrapporter och {1} händelseklasser. Under tryckningen: {2} rapporter, {3} händelser.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Bevakade tillverkarrapporter: {0}. Bevakade händelseklasser: {1}. Rapporter under tryckningen: {2}. Händelser under tryckningen: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Knappen är fångad. Ange ett namn och klicka på Registrera.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Källa</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Namn</value></data>
@@ -4043,12 +4051,17 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>Glöm alla</value></data>
   <data name="MapKeyLights_ForgetAll_Tooltip" xml:space="preserve"><value>Ta bort alla namn som lärts in för den här modellen.</value></data>
   <data name="MapKeyLights_ExportedFormat" xml:space="preserve"><value>Exporterade {0} namn.</value></data>
+  <data name="MapKeyLights_ExportedOneFormat" xml:space="preserve"><value>Exporterade {0} namn.</value></data>
   <data name="MapKeyLights_ImportedFormat" xml:space="preserve"><value>Importerade {0} namn.</value></data>
+  <data name="MapKeyLights_ImportedOneFormat" xml:space="preserve"><value>Importerade {0} namn.</value></data>
   <data name="MapKeyLights_ImportedOtherFormat" xml:space="preserve"><value>Importerade {0} namn för en annan modell, {1}.</value></data>
+  <data name="MapKeyLights_ImportedOtherOneFormat" xml:space="preserve"><value>Importerade {0} namn för en annan modell, {1}.</value></data>
   <data name="MapKeyLights_ImportNotAFile" xml:space="preserve"><value>Filen innehåller inga namn på tangentlampor.</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Importera…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Exporterade {0} knappar.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>Exporterade {0} knapp.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Importerade {0} knappar.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>Importerade {0} knapp.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Knappar på handhållen dator</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handhållna speldatorer och bärbara datorer har knappar som operativsystemet aldrig visar som en handkontroll: bakre paddlar, menytangenter, hjul, tillverkarens snabbtangenter. Slå på detta för att lära in dem en gång genom att trycka på dem, och mappa dem sedan som vilken knapp som helst. Lägger också till datorns eget gyroskop som en rörelseenhet.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivera knappar på handhållen dator</value></data>
@@ -4212,9 +4225,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>Stigande</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>Fallande</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} bindningar</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} bindning</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} hittade</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Visar {0} av {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurationer</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} konfiguration</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>fullt stöd för handkontroll</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>delvis stöd för handkontroll</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Sök spel</value></data>
@@ -4224,7 +4239,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>för {0} mån sedan</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>för {0} år sedan</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} prenumeranter</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} prenumerant</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} röster</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} röst</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Alla</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Inga konfigurationer för det här spelet än</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop har inga gemenskapskonfigurationer för handkontroll till {0}. Du kan bli först: skapa en i Steam, så visas den här.</value></data>
@@ -4257,6 +4274,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>lager: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ingen enhetsoberoende utlösare för den här inmatningen</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} åtgärder i spelet, endast Steam, ingen koppling på spelsidan</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} åtgärd i spelet, endast Steam, ingen koppling på spelsidan</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-klientåtgärden {0}, ingen motsvarighet</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>handkontrollsåtgärden {0} stöds inte</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>okänd bindningstyp {0}</value></data>
@@ -4331,10 +4349,10 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mushjulssteg</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Skickar ett separat mushjulssteg per utlösning. Värdet är antalet steg med tecken (positivt rullar uppåt eller åt höger).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Knuffa muspekaren</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Flyttar muspekaren ett fast antal bildpunkter per utlösning. Positivt X flyttar åt höger, positivt Y flyttar nedåt; negativa värden är tillåtna.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Flyttar muspekaren ett fast antal bildpunkter per utlösning. Positivt X flyttar åt höger, positivt Y flyttar nedåt. Negativa värden är tillåtna.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Knuffa muspekaren ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Bläddra i trycklista</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Varje utlösning utför nästa tryck i steglistan och går vidare. Med Gå runt aktiverat börjar listan om efter det sista steget; utan det upphör utlösningen vid slutet.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Varje utlösning utför nästa tryck i steglistan och går vidare. Med Gå runt aktiverat börjar listan om efter det sista steget. Utan det upphör utlösningen vid slutet.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Växla musknapp</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Varje utlösning låser eller låser upp musknappen. En låst knapp förblir nedtryckt till nästa utlösning eller tills makrot inaktiveras.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Växla mus {0}</value></data>
@@ -4347,6 +4365,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Växla hjulrullning</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Varje utlösning låser eller låser upp en kontinuerlig rullning. Medan den är låst skickas antalet steg en gång per intervall till nästa utlösning eller tills makrot inaktiveras.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Växla hjulrullning ({0} steg med {1} ms intervall)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>Växla hjulrullning ({0} steg med {1} ms intervall)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsera medan låst</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Medan den är låst pulseras utdata av och på med upprepningsintervallet i stället för att hållas konstant.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axeladdition (relativ)</value></data>
@@ -4368,6 +4387,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>När en fysisk rörelse för målet förbi tröskelvärdet slutar makrot skriva till axeln under resten av aktiveringen.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ger vika för fysisk)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Bläddra i trycklista ({0} steg)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>Bläddra i trycklista ({0} steg)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Steg</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Gå runt</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Växla tangenter {0}</value></data>
@@ -4451,6 +4471,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Överlägg vid profilbyte</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Visa ringen eller rutnätet på skärmen medan en radiell meny eller pekmeny är aktiv. Menyer utlöses även när överlägget är av.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>skärmmeny skapad ({0} bundna celler)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>skärmmeny skapad ({0} bunden cell)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menyn har inga bundna celler</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menyns värdyta stöds inte ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menycellens ikon kändes inte igen ({0}), så cellen behåller sin textetikett</value></data>
@@ -4639,6 +4660,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Välj den .txt-fil som AutoEq laddade ned. Det är det här alternativet du ska använda: autoeq.app ger dig en fil i stället för text som du kan kopiera.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>För en korrigering som är anpassad efter dina hörlurar: öppna autoeq.app, välj din modell, välj Custom Parametric Eq och ladda ned den, och använd sedan Importera från fil. Nedladdningen Graphic Eq har inga filterrader och går inte att importera.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importerade {0} band med en förförstärkning på {1:0.#} dB från {2}.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>Importerade {0} band med en förförstärkning på {1:0.#} dB från {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Inga filterrader i den profilen. Exporten Graphic Eq från AutoEq kan inte läsas här. Ladda ned Custom Parametric Eq i stället. Den aktuella EQ:n är oförändrad.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Inget att importera. Den aktuella EQ:n är oförändrad.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Kunde inte läsa filen: {0}</value></data>
@@ -4654,7 +4676,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Återställ tak</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Dra en punkt för att flytta dess frekvens och förstärkning. Rulla med hjulet över en punkt för att göra den bredare eller smalare.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Utdataväg</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Var handkontrollen spelar upp sitt ljud. Standard behåller firmwarens egen dirigering och spelar upp PadForge-ljud i högtalaren. Hörlurar + högtalare spelar mono på headsetsidan, en begränsning i firmware. Via Bluetooth spelar det här läget bara upp i hörlurarna. Följ hörlursuttag byter till hörlurar när något ansluts till handkontrollen och tillbaka till högtalaren när det kopplas ur; när ingen avläsning av uttaget finns fungerar det som Standard.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Var handkontrollen spelar upp sitt ljud. Standard behåller firmwarens egen dirigering och spelar upp PadForge-ljud i högtalaren. Hörlurar + högtalare spelar mono på headsetsidan, en begränsning i firmware. Via Bluetooth spelar det här läget bara upp i hörlurarna. Följ hörlursuttag byter till hörlurar när något ansluts till handkontrollen och tillbaka till högtalaren när det kopplas ur. När ingen avläsning av uttaget finns fungerar det som Standard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standard</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>Hörlurar (stereo)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>Hörlurar (mono)</value></data>
@@ -5500,11 +5522,17 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="MacroAction_ClearKeyColors_Tooltip" xml:space="preserve"><value>Avslutar de pågående Ange tangentfärger-åtgärderna på den här virtuella handkontrollen som tänder någon av tangenterna som valts här, eller alla om ingen är vald.</value></data>
   <data name="MacroAction_ClearKeyColors_All" xml:space="preserve"><value>Rensa alla tangentfärger</value></data>
   <data name="MacroAction_ClearKeyColors_Format" xml:space="preserve"><value>Rensa tangentfärger på {0} lampor</value></data>
+  <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Rensa tangentfärger på {0} lampa</value></data>
   <data name="MacroAction_SetKeyColors_Timed_Format" xml:space="preserve"><value>{0} lampor i {1} i {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Timed_One_Format" xml:space="preserve"><value>{0} lampa i {1} i {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Held_Format" xml:space="preserve"><value>{0} lampor i {1} medan den hålls ned</value></data>
+  <data name="MacroAction_SetKeyColors_Held_One_Format" xml:space="preserve"><value>{0} lampa i {1} medan den hålls ned</value></data>
   <data name="MacroAction_SetKeyColors_Sticky_Format" xml:space="preserve"><value>{0} lampor i {1} tills de rensas</value></data>
+  <data name="MacroAction_SetKeyColors_Sticky_One_Format" xml:space="preserve"><value>{0} lampa i {1} tills den rensas</value></data>
   <data name="MacroAction_SetKeyColors_Fade_Format" xml:space="preserve"><value>{0} lampor i {1}, tonar ut under {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Fade_One_Format" xml:space="preserve"><value>{0} lampa i {1}, tonar ut under {2} ms</value></data>
   <data name="MacroAction_SetKeyColors_Countdown_Format" xml:space="preserve"><value>{0} lampor i {1}, nedräkning under {2} ms</value></data>
+  <data name="MacroAction_SetKeyColors_Countdown_One_Format" xml:space="preserve"><value>{0} lampa i {1}, nedräkning under {2} ms</value></data>
   <data name="MacroAction_KeyColors_Keys" xml:space="preserve"><value>Tangenter</value></data>
   <data name="MacroAction_KeyColors_AllLights" xml:space="preserve"><value>Alla lampor</value></data>
   <data name="MacroAction_KeyColors_NoKeys" xml:space="preserve"><value>Inga tangenter valda, så åtgärden tänder ingenting.</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>ລ້າງ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ບໍ່ມີ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>ນາທີ</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>ວິນາທີ</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>ນາທີ (0 = ບໍ່ເຄີຍ)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>HidHide ໄດ້ກັນ PadForge ອອກຈາກອຸປະກອນທີ່ PadForge ເຊື່ອງໄວ້, ສະນັ້ນ PadForge ຈຶ່ງຢຸດເຊື່ອງອຸປະກອນ.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>ຕົວເລືອກ Inverse application cloak ຂອງ HidHide ເປີດຢູ່, ສະນັ້ນ PadForge ຈຶ່ງບໍ່ເຊື່ອງອຸປະກອນໃດເລີຍ.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>ກຳລັງຖອນການຕິດຕັ້ງຣັນທາມ Windows MIDI Services…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ບໍ່ສາມາດເລີ່ມໄດ້ ເພາະ MIDI ບໍ່ໄດ້ເຮັດວຽກ. ບັດ Windows MIDI Services ໃນການຕັ້ງຄ່າບອກສາເຫດ.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>{0} ບໍ່ສາມາດເລີ່ມໄດ້ ເພາະ MIDI ບໍ່ໄດ້ເຮັດວຽກ. ເບິ່ງ Windows MIDI Services ໃນການຕັ້ງຄ່າ, ພາຍໃຕ້ໄດຣເວີ.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>{0} ບໍ່ສາມາດເລີ່ມໄດ້ ເພາະ Windows MIDI Services ບໍ່ໄດ້ສ້າງພອດຂອງມັນ.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} ບໍ່ມີພອດເອົາພຸດ. ເລືອກພອດໜຶ່ງໃນໜ້າຂອງມັນ.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>ພອດເອົາພຸດ “{1}” ຂອງ {0} ບໍ່ໄດ້ເຊື່ອມຕໍ່. ຊ່ອງຈະເລີ່ມເມື່ອພອດກັບມາ.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK ປະຕິເສດການເລີ່ມ. ສ່ວນຫຼາຍແມ່ນ Logitech Gaming Software ບໍ່ໄດ້ເຮັດວຽກຢູ່.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ, ຍັງບໍ່ເຫັນປຸ່ມໃດ. ໃນ Logitech Gaming Software, ລາກຄຳສັ່ງ G-key ໄປໃສ່ແຕ່ລະປຸ່ມໃນໂປຣໄຟລ໌ PadForge, ແລະ ຕັ້ງໂປຣໄຟລ໌ນັ້ນໃຫ້ຖາວອນ. ເມົ້າ G600 ຫຼື G300 ຍັງຕ້ອງອອກຈາກໂໝດໜ່ວຍຄວາມຈຳໃນຕົວນຳ.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, {0} ເຫດການປຸ່ມ</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, {0} ເຫດການປຸ່ມ</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>ອ່ານແປ້ນພິມອະນາລັອກ</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>ອ່ານວ່າແຕ່ລະປຸ່ມຖືກກົດລົງເລິກປານໃດ ໃນແປ້ນພິມອະນາລັອກຈາກ Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA ແລະ ຜູ້ຜະລິດອື່ນໆ, ແຕ່ລະອັນເປັນແຖວອຸປະກອນຂອງຕົນເອງ. ເອກະສານມີລາຍຊື່ທຸກລຸ້ນທີ່ຮອງຮັບ. ແປ້ນພິມ Razer ຕ້ອງມີ Razer Synapse ເຮັດວຽກຢູ່. ອັນອື່ນສ່ວນຫຼາຍຖືກອ່ານຜ່ານຊ່ອງທາງດຽວກັບທີ່ໂປຣແກຣມຕັ້ງຄ່າຂອງມັນເອງໃຊ້, ສະນັ້ນໃຫ້ປິດໂປຣແກຣມຕັ້ງຄ່ານັ້ນໃນຂະນະທີ່ເປີດອັນນີ້.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>ບໍ່ພົບແປ້ນພິມອະນາລັອກທີ່ຮອງຮັບ.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>ກວດຫາອັບເດດ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>ສາຂາແຍກສະໄໝໃໝ່ຂອງ x360ce, ສ້າງຄືນໃໝ່ດ້ວຍ SDL3, WPF ແລະ .NET 10</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge ປ່ຽນອຸປະກອນອິນພຸດໃດກໍໄດ້ເປັນຕົວຄວບຄຸມສະເໝືອນໃດກໍໄດ້. ເກມແພດ, ຈອຍສະຕິກ, ແປ້ນພິມ, ເມົ້າ ແລະ ໜ້າຈໍສຳຜັດ ຖືກແມັບໄປຫາຕົວຄວບຄຸມເກມສະເໝືອນ (Xbox, PlayStation, ຈອຍບິນ, ພວງມາໄລ, ເກມແພດຂອງບໍລິສັດອື່ນ) ຫຼື ເອົາພຸດແປ້ນພິມ+ເມົ້າ / MIDI ທີ່ເກມຖືວ່າເປັນຮາດແວຈິງ. ຂັບເຄື່ອນດ້ວຍ HIDMaestro ແລະ Windows MIDI Services. ມັນໃຊ້ SDL3 ສຳລັບອິນພຸດຕົວຄວບຄຸມ, Windows Raw Input ສຳລັບແປ້ນພິມ ແລະ ເມົ້າ, HidHide ສຳລັບການເຊື່ອງອຸປະກອນຕາມແຕ່ລະເກມ, ແລະ ມີໜ້າຕາແບບ Fluent Design ສະໄໝໃໝ່ສຳລັບການແມັບ, ເດດໂຊນ, ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແລະ ແຮງສະທ້ອນກັບ.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge ເຮັດໃຫ້ອິນພຸດໃດກໍໄດ້ເບິ່ງຄືກັບຕົວຄວບຄຸມໃດກໍໄດ້. ເກມແພດ, ຈອຍສະຕິກ, ພວງມາໄລ, ແປ້ນພິມ, ເມົ້າ, ໜ້າຈໍສຳຜັດ, ອຸປະກອນ MIDI ແລະ ໂທລະສັບ ຂັບເຄື່ອນຕົວຄວບຄຸມສະເໝືອນທີ່ເກມຖືວ່າເປັນຮາດແວຈິງ: ແພດ Xbox, PlayStation, Nintendo ແລະ Steam, ແພດ SInput, ຕົວຄວບຄຸມມືສຳລັບ VR, ເອົາພຸດ MIDI, ແປ້ນພິມ ແລະ ເມົ້າ, ຫຼື ອຸປະກອນແບບກຳນົດເອງ ເຊັ່ນ ຈອຍບິນ ຫຼື ພວງມາໄລ. HIDMaestro ສ້າງເກມແພດສະເໝືອນ, SDL3 ອ່ານຕົວຄວບຄຸມ, Windows Raw Input ອ່ານແປ້ນພິມ ແລະ ເມົ້າ, HidHide ເຊື່ອງອຸປະກອນຈາກເກມ, ແລະ Windows MIDI Services ຮັບສົ່ງ MIDI ເຂົ້າ ແລະ ອອກ.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ພາບລວມ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>ສ້າງດ້ວຍ</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>ຄົ້ນຫາເຄຣດິດ</value></data>
@@ -928,6 +930,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ໄລຍະຫ່າງລະຫວ່າງຕົວອັກສອນ</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ມິນລິວິນາທີລະຫວ່າງແຕ່ລະຕົວອັກສອນທີ່ພິມ, ສູງສຸດ 1000. 0 ຈະພິມຂໍ້ຄວາມທັງໝົດໃນເທື່ອດຽວ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ຕັດການເຊື່ອມຕໍ່ເມື່ອບໍ່ໃຊ້ງານ</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 ໝາຍເຖິງບໍ່ຕັດເລີຍ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ລາຍລະອຽດ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ຕັດ Bluetooth ເມື່ອສຽບສາຍ USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ສາກໄວ. ເມື່ອຕົວຄວບຄຸມນີ້ລາຍງານວ່າກຳລັງສາກໄຟ ຂະນະເຊື່ອມຕໍ່ຜ່ານ Bluetooth, ການເຊື່ອມຕໍ່ Bluetooth ຈະຖືກຕັດ ເພື່ອໃຫ້ມັນສາກໄຟໂດຍບໍ່ຕ້ອງໃຊ້ພະລັງງານກັບວິທະຍຸ. ແຫຼ່ງໄຟ USB ໃດກໍໄດ້ ລວມທັງສາກຕິດຝາ. ຖ້າທ່ານເປີດ Bluetooth ຄືນ ຂະນະທີ່ສາຍຍັງສຽບຢູ່, ມັນຈະຖືກປະໄວ້ຈົນກວ່າຈະຖອດສາຍຄັ້ງຕໍ່ໄປ.</value></data>
@@ -992,6 +995,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>ສົ່ງ</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ຈຳນວນເຟຣມ: {0}. ການສົ່ງໃຊ້ເວລາປະມານ {1}.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ຕົວຄວບຄຸມຮັບໄດ້ສູງສຸດ {0} ເຟຣມ ຈຶ່ງໄດ້ຕັດ {1} ເຟຣມສຸດທ້າຍອອກ.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>ຕົວຄວບຄຸມຮັບໄດ້ສູງສຸດ {0} ເຟຣມ ຈຶ່ງໄດ້ຕັດເຟຣມສຸດທ້າຍອອກ.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມດ້ວຍສາຍ. ມັນຈະເລີ່ມໃໝ່ເອງປະມານ 15 ວິນາທີຫຼັງຈາກຮູບເຂົ້າໄປແລ້ວ.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມດ້ວຍສາຍ. ສຳລັບການສົ່ງ PadForge ຈະສະຫຼັບມັນເປັນໂໝດ Xbox ແລະ ຍ້າຍມັນຈາກໄດຣເວີ Xbox ຂອງ Windows ໄປ WinUSB ແລ້ວຈຶ່ງກັບຄືນທັງສອງຢ່າງ.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ຈະສະຫຼັບຕົວຄວບຄຸມເປັນໂໝດ Xbox, ຍ້າຍມັນໄປ WinUSB ເພື່ອສົ່ງ, ແລ້ວຄືນມັນໃຫ້ໄດຣເວີ Xbox ຂອງ Windows ແລະ ສະຫຼັບມັນກັບເປັນໂໝດ DInput. ກະລຸນາຖອດຕົວຄວບຄຸມ Xbox 360 ອື່ນທັງໝົດອອກກ່ອນ. ສົ່ງດຽວນີ້ບໍ?</value></data>
@@ -1423,8 +1427,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ໂຄລນ</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ເລືອກອຸປະກອນໃນຊ່ອງນີ້ເພື່ອໂຄລນ.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ອຸປະກອນທີ່ເລືອກບໍ່ມີແກນ, ປຸ່ມ ຫຼື POV ໃຫ້ໂຄລນ.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ໂຄລນ {0} ໃສ່ຊ່ອງນີ້ເປັນການສົ່ງຜ່ານແບບ 1:1 ບໍ? ໂຄງຮ່າງຈະເປັນ {1} ແກນ, {2} ປຸ່ມ ແລະ {3} POV, ແລະ ແຖວຂອງອຸປະກອນນີ້ໃນຊ່ອງຈະຖືກແທນທີ່ດ້ວຍການປ້ອນຂໍ້ມູນຂອງມັນເອງ.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ອຸປະກອນນີ້ມີການປ້ອນຂໍ້ມູນຫຼາຍກວ່າທີ່ຕົວຄວບຄຸມ Extended ຮອງຮັບໄດ້. ແມັບແລ້ວ {0} ຈາກ {1} ແກນ, {2} ຈາກ {3} ປຸ່ມ ແລະ {4} ຈາກ {5} POV. ສ່ວນທີ່ເຫຼືອບໍ່ໄດ້ແມັບ.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ໂຄລນ {0} ໃສ່ຊ່ອງນີ້ເປັນການສົ່ງຜ່ານແບບ 1:1 ບໍ? ໂຄງຮ່າງຈະເປັນ {1}, {2} ແລະ {3}, ແລະ ແຖວຂອງອຸປະກອນນີ້ໃນຊ່ອງຈະຖືກແທນທີ່ດ້ວຍການປ້ອນຂໍ້ມູນຂອງມັນເອງ.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ອຸປະກອນນີ້ມີການປ້ອນຂໍ້ມູນຫຼາຍກວ່າທີ່ຕົວຄວບຄຸມ Extended ຮອງຮັບໄດ້. ແມັບແລ້ວ {0} ຈາກ {1}, {2} ຈາກ {3} ແລະ {4} ຈາກ {5}. ສ່ວນທີ່ເຫຼືອບໍ່ໄດ້ແມັບ.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>ພຣີເຊັດຕົວຄວບຄຸມ</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>ເພີ່ມພຣີເຊັດສຳລັບຕົວຄວບຄຸມທີ່ PadForge ບໍ່ມີມາໃຫ້, ຈາກໄຟລ໌ ຫຼື ຈາກຕົວຄວບຄຸມເອງ.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>ນຳເຂົ້າແລ້ວ</value></data>
@@ -1596,11 +1600,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>ປຸ່ມທີ່ຫຼຸດຕົວສະສົມລົງຂະນະກົດຄ້າງ</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>ລົງ: ປຸ່ມທີ່ຫຼຸດຕົວສະສົມລົງຂະນະກົດຄ້າງ.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>ອັດຕາ</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>ຄວາມໄວການປັບເປັນໜ່ວຍຕໍ່ວິນາທີ. 0.5 = ຂອບເຂດເຕັມໃນ 2 s, 2 = ຂອບເຂດເຕັມໃນ 0.5 s.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>ຄວາມໄວການປັບເປັນໜ່ວຍຕໍ່ວິນາທີ. 0.5 = ຂອບເຂດເຕັມໃນ 2 s. 2 = ຂອບເຂດເຕັມໃນ 0.5 s.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ຕິດຄ້າງ</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>ເມື່ອເລືອກ, ຕົວສະສົມຈະຄ້າງຄ່າໄວ້ຫຼັງຈາກປ່ອຍ (ຄວບຄຸມຄວາມໄວຄົງທີ່). ເມື່ອບໍ່ເລືອກ, ມັນຈະກັບໄປຫາຄ່າຕ່ຳສຸດເມື່ອປ່ອຍ.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>ຕ່ຳສຸດ</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>ຂີດຈຳກັດລຸ່ມຂອງຕົວສະສົມ. -1 = ລົບເຕັມສຳລັບແກນເປົ້າໝາຍສອງຂົ້ວ, 0 = ຂົ້ວດຽວ.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>ຂີດຈຳກັດລຸ່ມຂອງຕົວສະສົມ. -1 = ລົບເຕັມສຳລັບແກນເປົ້າໝາຍສອງຂົ້ວ. 0 = ຂົ້ວດຽວ.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>ສູງສຸດ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>ຂີດຈຳກັດເທິງຂອງຕົວສະສົມ. 1 = ບວກເຕັມ.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ໄລ່ລະດັບ</value></data>
@@ -1893,6 +1897,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ຕັ້ງໂໝດແຖບໄຟຂອງຊ່ອງທີ່ກຳນົດເປັນຄ່າສະເພາະ. ຄົງຢູ່ຄືກັບການແກ້ໄຂໃນບັດ “ແສງໄຟ” ຈົນກວ່າການກະທຳອື່ນ ຫຼື ຜູ້ໃຊ້ຈະປ່ຽນມັນ.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ໝູນວຽນໂໝດແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ໝູນວຽນຜ່ານ {0} ໂໝດແຖບໄຟ</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>ໝູນວຽນຜ່ານ {0} ໂໝດແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ເລື່ອນໂໝດແຖບໄຟຂອງຊ່ອງຜ່ານໂໝດທີ່ເລືອກຂ້າງລຸ່ມ. ແຕ່ລະຄັ້ງທີ່ເຮັດວຽກຈະໄປຫາໂໝດທີ່ເລືອກຖັດໄປ. ຕຳແໜ່ງຮອບວຽນແຍກຕາມແຕ່ລະການກະທຳ ແລະ ຈະຄືນຄ່າເມື່ອເປີດແອັບຄືນໃໝ່.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>ຄ້າງ</value></data>
@@ -2290,6 +2295,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>ບັນທຶກຕົວຢ່າງຄົບແລ້ວ. ຕັ້ງຊື່ທ່າທາງ ແລ້ວຄລິກ ບັນທຶກ.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ຕົວຢ່າງ {0} ຈາກ {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ຕົວຢ່າງ</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} ຕົວຢ່າງ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ຈຳນວນຕົວຢ່າງທີ່ຈະບັນທຶກ</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>ຈຳນວນຕົວຢ່າງທີ່ຈະບັນທຶກ</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ແມ່ນມາດຕະຖານ. ຕົວຢ່າງຫຼາຍຂຶ້ນໃຫ້ການທຽບທີ່ແນ່ນອນກວ່າ ແລະ ໜ້ອຍລົງຈະບັນທຶກໄດ້ໄວກວ່າ.</value></data>
@@ -3376,6 +3382,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ປືນອອກນອກຈໍ</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>ວົນໂໝດຕົວຊີ້</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>ວົນຜ່ານ {0} ໂໝດຕົວຊີ້</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>ວົນຜ່ານ {0} ໂໝດຕົວຊີ້</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ເລື່ອນໂໝດຕົວຊີ້ Wii ໄປຕາມໂໝດທີ່ເລືອກດ້ານລຸ່ມ ສຳລັບທຸກຣີໂມດທີ່ຮອງຮັບ IR ໃນຊ່ອງນີ້. ການເຮັດວຽກແຕ່ລະຄັ້ງຈະຍ້າຍໄປໂໝດທີ່ໝາຍເລືອກຖັດໄປ. ຕຳແໜ່ງການວົນແຍກຕາມແຕ່ລະການກະທຳ ແລະ ຄືນຄ່າເມື່ອເປີດແອັບໃໝ່.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ເລືອກໂໝດຕົວຊີ້ທີ່ມາໂຄຣຈະວົນຜ່ານ. ການເຮັດວຽກແຕ່ລະຄັ້ງຈະເລື່ອນໄປໂໝດທີ່ໝາຍເລືອກຖັດໄປ.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ສຽງ</value></data>
@@ -3702,7 +3709,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>ບໍ່ພົບ DualShock 3 ທາງ USB. ເຊື່ອມຕໍ່ມັນດ້ວຍສາຍ USB ແລ້ວລອງໃໝ່.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows ຈະບໍ່ຕິດຕັ້ງໄດຣເວີ USB ຂອງ PadForge ສຳລັບ DualShock 3, ເພາະໃບຢັ້ງຢືນການເຊັນຂອງມັນບໍ່ໄດ້ຮັບຄວາມເຊື່ອຖືໃນ PC ນີ້.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>ບໍ່ສາມາດຕິດຕັ້ງໄດຣເວີ Bluetooth ສຳລັບຕົວຄວບຄຸມ PlayStation ໄດ້.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>ບໍ່ມີວິທະຍຸ Bluetooth ທີ່ພ້ອມໃຊ້. ເປີດ Bluetooth ແລ້ວລອງໃໝ່. ການຈັບຄູ່ຈຳເປັນສະເພາະການຫຼິ້ນແບບໄຮ້ສາຍ, ຕົວຄວບຄຸມທີ່ເຊື່ອມຕໍ່ດ້ວຍສາຍໃຊ້ໄດ້ໂດຍບໍ່ຕ້ອງຈັບຄູ່.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>ບໍ່ມີວິທະຍຸ Bluetooth ທີ່ພ້ອມໃຊ້. ເປີດ Bluetooth ແລ້ວລອງໃໝ່. ການຈັບຄູ່ຈຳເປັນສະເພາະການຫຼິ້ນແບບໄຮ້ສາຍ. ຕົວຄວບຄຸມທີ່ເຊື່ອມຕໍ່ດ້ວຍສາຍໃຊ້ໄດ້ໂດຍບໍ່ຕ້ອງຈັບຄູ່.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ການຈັບຄູ່ບໍ່ສຳເລັດ. ຂັ້ນຕອນທີ່ລົ້ມເຫຼວສະແດງຢູ່ດ້ານເທິງ.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>ປິດ</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>ແທັກ NFC</value></data>
@@ -3793,7 +3800,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ປ່ອຍປຸ່ມ.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>ຂັ້ນຕອນ {0} ຈາກ {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>ບໍ່ພົບການປ່ຽນແປງ. ເລືອກ ເລີ່ມໃໝ່, ແລ້ວກົດປຸ່ມຄ້າງໄວ້ເມື່ອຖືກຂໍ.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>ໄດ້ເຝົ້າເບິ່ງ {0} ລາຍງານຂອງຜູ້ຜະລິດ ແລະ {1} ປະເພດເຫດການ. ໃນລະຫວ່າງການກົດ: {2} ລາຍງານ, {3} ເຫດການ.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>ລາຍງານຂອງຜູ້ຜະລິດທີ່ເຝົ້າເບິ່ງ: {0}. ປະເພດເຫດການທີ່ເຝົ້າເບິ່ງ: {1}. ລາຍງານໃນລະຫວ່າງການກົດ: {2}. ເຫດການໃນລະຫວ່າງການກົດ: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ຈັບປຸ່ມໄດ້ແລ້ວ. ໃສ່ຊື່ ແລ້ວຄລິກ ລົງທະບຽນ.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>ແຫຼ່ງ</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
@@ -3809,7 +3816,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>ສົ່ງອອກ…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>ນຳເຂົ້າ…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>ສົ່ງອອກ {0} ປຸ່ມແລ້ວ.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>ສົ່ງອອກ {0} ປຸ່ມແລ້ວ.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>ນຳເຂົ້າ {0} ປຸ່ມແລ້ວ.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>ນຳເຂົ້າ {0} ປຸ່ມແລ້ວ.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>ປຸ່ມ PC ແບບພົກພາ</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC ເກມແບບພົກພາ ແລະ ແລັບທັອບມີປຸ່ມທີ່ລະບົບປະຕິບັດການບໍ່ເຄີຍສະແດງເປັນຕົວຄວບຄຸມ: ແພດເດິລດ້ານຫຼັງ, ປຸ່ມເມນູ, ລໍ້, ປຸ່ມລັດຂອງຜູ້ຜະລິດ. ເປີດອັນນີ້ເພື່ອຮຽນຮູ້ພວກມັນເທື່ອດຽວໂດຍການກົດ, ແລ້ວແມັບພວກມັນຄືກັບປຸ່ມອື່ນ. ຍັງເພີ່ມໄຈໂຣຂອງເຄື່ອງເອງເປັນອຸປະກອນການເຄື່ອນໄຫວ.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>ເປີດໃຊ້ປຸ່ມ PC ແບບພົກພາ</value></data>
@@ -3972,9 +3981,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ຈາກນ້ອຍຫາໃຫຍ່</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>ຈາກໃຫຍ່ຫານ້ອຍ</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} ການຜູກ</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} ການຜູກ</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>ພົບ {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>ສະແດງ {0} ຈາກ {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} ຄອນຟິກ</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} ຄອນຟິກ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>ຮອງຮັບຕົວຄວບຄຸມເຕັມຮູບແບບ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>ຮອງຮັບຕົວຄວບຄຸມບາງສ່ວນ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ຄົ້ນຫາເກມ</value></data>
@@ -3984,7 +3995,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} ເດືອນກ່ອນ</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} ປີກ່ອນ</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} ຜູ້ສະໝັກຕິດຕາມ</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} ຜູ້ສະໝັກຕິດຕາມ</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} ໂຫວດ</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} ໂຫວດ</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>ທັງໝົດ</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>ຍັງບໍ່ມີຄອນຟິກສຳລັບເກມນີ້</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>ເວີກຊັອບ Steam ບໍ່ມີຄອນຟິກຕົວຄວບຄຸມຈາກຊຸມຊົນສຳລັບ {0}. ທ່ານສາມາດເປັນຄົນທຳອິດ: ສ້າງຄອນຟິກໃນ Steam, ແລ້ວມັນຈະປາກົດຢູ່ບ່ອນນີ້.</value></data>
@@ -4017,6 +4030,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>ຊັ້ນ: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>ບໍ່ມີຕົວກະຕຸ້ນທີ່ບໍ່ຂຶ້ນກັບອຸປະກອນສຳລັບອິນພຸດນີ້</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ການກະທຳໃນເກມ, ສະເພາະ Steam, ບໍ່ມີຈຸດເຊື່ອມຕໍ່ຝັ່ງເກມ</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ການກະທຳໃນເກມ, ສະເພາະ Steam, ບໍ່ມີຈຸດເຊື່ອມຕໍ່ຝັ່ງເກມ</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>ການກະທຳຂອງໂປຣແກຣມ Steam {0}, ບໍ່ມີສິ່ງທຽບເທົ່າ</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>ບໍ່ຮອງຮັບການກະທຳຕົວຄວບຄຸມ {0}</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>ປະເພດການຜູກທີ່ບໍ່ຮູ້ຈັກ {0}</value></data>
@@ -4107,6 +4121,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ສະຫຼັບການເລື່ອນລໍ້</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>ແຕ່ລະເທື່ອທີ່ທຳງານຈະລັອກ ຫຼື ປົດລັອກການເລື່ອນຕໍ່ເນື່ອງ. ໃນຂະນະທີ່ລັອກໄວ້, ຈະສົ່ງຈຳນວນຂັ້ນໜຶ່ງເທື່ອຕໍ່ຊ່ວງເວລາ ຈົນກວ່າຈະທຳງານຄັ້ງຕໍ່ໄປ ຫຼື ຈົນກວ່າມາໂຄຣຈະຖືກປິດ.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ສະຫຼັບການເລື່ອນລໍ້ ({0} ຂັ້ນທຸກ {1} ms)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>ສະຫຼັບການເລື່ອນລໍ້ ({0} ຂັ້ນທຸກ {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>ກະພິບຂະນະລັອກ</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>ໃນຂະນະທີ່ລັອກໄວ້, ໃຫ້ເປີດ ແລະ ປິດເອົາພຸດສະຫຼັບກັນຕາມຊ່ວງເວລາເຮັດຊ້ຳ ແທນທີ່ຈະຄ້າງໄວ້ຕະຫຼອດ.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>ບວກແກນ (ສຳພັດ)</value></data>
@@ -4128,6 +4143,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>ເມື່ອການເຄື່ອນທີ່ທາງກາຍະພາບດັນເປົ້າໝາຍເກີນຄ່າເກນ, ມາໂຄຣຈະຢຸດຂຽນແກນສຳລັບສ່ວນທີ່ເຫຼືອຂອງການເປີດໃຊ້ນັ້ນ.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ຍອມໃຫ້ອິນພຸດທາງກາຍະພາບ)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>ລາຍການແຕະແບບວົນ ({0} ຂັ້ນ)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>ລາຍການແຕະແບບວົນ ({0} ຂັ້ນ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ຂັ້ນ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>ວົນຄືນ</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>ສະຫຼັບປຸ່ມ {0}</value></data>
@@ -4211,6 +4227,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ໂອເວີເລການປ່ຽນໂປຣໄຟລ໌</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ສະແດງວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ ໃນຂະນະທີ່ເມນູວົງມົນ ຫຼື ເມນູສຳຜັດກຳລັງເຮັດວຽກ. ເມນູຍັງທຳງານເຖິງວ່າຈະປິດໂອເວີເລ.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ສ້າງເມນູເທິງໜ້າຈໍແລ້ວ ({0} ເຊວທີ່ຜູກໄວ້)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ສ້າງເມນູເທິງໜ້າຈໍແລ້ວ ({0} ເຊວທີ່ຜູກໄວ້)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ເມນູບໍ່ມີເຊວທີ່ຜູກໄວ້</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ບໍ່ຮອງຮັບພື້ນຜິວທີ່ເປີດເມນູ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ບໍ່ຮູ້ຈັກໄອຄອນເຊວເມນູ ({0}), ສະນັ້ນເຊວຈະໃຊ້ປ້າຍຂໍ້ຄວາມຂອງມັນ</value></data>
@@ -4397,6 +4414,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>ເລືອກໄຟລ໌ .txt ທີ່ດາວໂຫຼດຈາກ AutoEq ນີ້ແມ່ນວິທີທີ່ຄວນໃຊ້: autoeq.app ໃຫ້ໄຟລ໌ແກ່ທ່ານ ບໍ່ແມ່ນຂໍ້ຄວາມທີ່ສຳເນົາໄດ້</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>ສຳລັບການແກ້ໄຂທີ່ກົງກັບຫູຟັງຂອງທ່ານ: ເປີດ autoeq.app, ເລືອກລຸ້ນຂອງທ່ານ, ເລືອກ Custom Parametric Eq ແລ້ວດາວໂຫຼດ ຈາກນັ້ນໃຊ້ “ນຳເຂົ້າຈາກໄຟລ໌” ໄຟລ໌ Graphic Eq ບໍ່ມີແຖວຕົວກອງ ແລະ ຈະນຳເຂົ້າບໍ່ໄດ້</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>ນຳເຂົ້າ {0} ແບນ ພ້ອມພຣີແອມ {1:0.#} dB ຈາກ {2} ແລ້ວ</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>ນຳເຂົ້າ {0} ແບນ ພ້ອມພຣີແອມ {1:0.#} dB ຈາກ {2} ແລ້ວ.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>ບໍ່ມີແຖວຕົວກອງໃນໂປຣໄຟລ໌ນັ້ນ ບໍ່ສາມາດອ່ານໄຟລ໌ Graphic Eq ຂອງ AutoEq ໄດ້ທີ່ນີ້ ໃຫ້ດາວໂຫຼດແບບ Custom Parametric Eq ແທນ EQ ປັດຈຸບັນບໍ່ປ່ຽນແປງ</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃຫ້ນຳເຂົ້າ EQ ປັດຈຸບັນບໍ່ປ່ຽນແປງ</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>ອ່ານໄຟລ໌ນັ້ນບໍ່ໄດ້: {0}</value></data>

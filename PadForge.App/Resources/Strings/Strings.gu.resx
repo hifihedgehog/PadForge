@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>સાફ કરો</value></data>
   <data name="Common_None" xml:space="preserve"><value>કોઈ નહીં</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Min" xml:space="preserve"><value>min</value></data>
   <data name="Common_Seconds" xml:space="preserve"><value>સેકન્ડ</value></data>
   <data name="Common_MinutesZeroNever" xml:space="preserve"><value>મિનિટ (0 = ક્યારેય નહીં)</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
@@ -194,7 +195,7 @@
   <data name="Status_HidHideRefusedPadForge" xml:space="preserve"><value>PadForge એ છુપાવેલા ઉપકરણથી HidHide એ PadForge ને અટકાવ્યું, તેથી PadForge એ ઉપકરણો છુપાવવાનું બંધ કર્યું.</value></data>
   <data name="Status_HidHideInverse" xml:space="preserve"><value>HidHide નું Inverse application cloak ચાલુ છે, તેથી PadForge કોઈ ઉપકરણ છુપાવતું નથી.</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services રનટાઇમ અનઇન્સ્ટોલ થઈ રહ્યું છે…</value></data>
-  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ચાલુ ન હોવાથી {0} શરૂ થઈ શક્યું નહીં. કારણ સેટિંગ્સના Windows MIDI Services કાર્ડમાં છે.</value></data>
+  <data name="Status_MidiNotRunning_Format" xml:space="preserve"><value>MIDI ચાલુ ન હોવાથી {0} શરૂ થઈ શક્યું નહીં. સેટિંગ્સમાં ડ્રાઇવર હેઠળ Windows MIDI Services જુઓ.</value></data>
   <data name="Status_MidiCreateFailed_Format" xml:space="preserve"><value>Windows MIDI Services એ તેનો પોર્ટ બનાવ્યો નહીં, તેથી {0} શરૂ થઈ શક્યું નહીં.</value></data>
   <data name="Status_MidiPortNotPicked_Format" xml:space="preserve"><value>{0} પાસે આઉટપુટ પોર્ટ નથી. તેના પેજ પર એક પસંદ કરો.</value></data>
   <data name="Status_MidiPortNotConnected_Format" xml:space="preserve"><value>{0} નો આઉટપુટ પોર્ટ “{1}” જોડાયેલ નથી. પોર્ટ પાછો આવે કે તરત સ્લોટ શરૂ થશે.</value></data>
@@ -564,6 +565,7 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK એ શરૂ થવાનો ઇનકાર કર્યો. સામાન્ય રીતે Logitech Gaming Software ચાલુ નથી હોતું.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>જોડાયેલ, હજુ કોઈ કી દેખાઈ નથી. Logitech Gaming Software માં, PadForge પ્રોફાઇલમાં દરેક કી પર G-key કમાન્ડ ખેંચો, અને તે પ્રોફાઇલને સ્થાયી બનાવો. G600 કે G300 માઉસને ઓન-બોર્ડ મેમરી મોડમાંથી પણ બહાર રાખવો પડે છે.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>ચાલુ છે, {0} કી ઇવેન્ટ</value></data>
+  <data name="Settings_GKeysStatus_Running_One_Format" xml:space="preserve"><value>ચાલુ છે, {0} કી ઇવેન્ટ</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>એનાલોગ કીબોર્ડ વાંચો</value></data>
   <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA અને અન્ય નિર્માતાઓના એનાલોગ કીબોર્ડ પર દરેક કી કેટલી દબાઈ છે તે વાંચે છે, દરેક પોતાની ઉપકરણ પંક્તિ તરીકે. દસ્તાવેજીકરણમાં દરેક સમર્થિત મૉડલ છે. Razer કીબોર્ડ માટે Razer Synapse ચાલુ હોવું જરૂરી છે. બાકીના મોટા ભાગના તેમના પોતાના કૉન્ફિગ્યુરેટર જે ચેનલ વાપરે છે તેના પરથી વંચાય છે, તેથી આ ચાલુ હોય ત્યારે કૉન્ફિગ્યુરેટર બંધ રાખો.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>કોઈ સમર્થિત એનાલોગ કીબોર્ડ મળ્યું નથી.</value></data>
@@ -801,7 +803,7 @@
   <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
   <data name="About_CheckForUpdates" xml:space="preserve"><value>અપડેટ તપાસો</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce નો નવો ફોર્ક, SDL3, WPF અને .NET 10 સાથે ફરી બનાવેલો</value></data>
-  <data name="About_Description" xml:space="preserve"><value>PadForge કોઈપણ ઇનપુટ ઉપકરણને કોઈપણ વર્ચ્યુઅલ કંટ્રોલરમાં ફેરવે છે. ગેમપેડ, જોયસ્ટિક, કીબોર્ડ, માઉસ અને ટચસ્ક્રીનને વર્ચ્યુઅલ ગેમ કંટ્રોલર (Xbox, PlayStation, ફ્લાઇટ સ્ટિક, વ્હીલ, થર્ડ-પાર્ટી ગેમપેડ) અથવા કીબોર્ડ+માઉસ / MIDI આઉટપુટ પર મેપ કરવામાં આવે છે, જેને ગેમ્સ વાસ્તવિક હાર્ડવેર ગણે છે. HIDMaestro અને Windows MIDI Services દ્વારા સંચાલિત. કંટ્રોલર ઇનપુટ માટે SDL3, કીબોર્ડ અને માઉસ માટે Windows Raw Input, ગેમ-દીઠ ઉપકરણ માસ્કિંગ માટે HidHide વાપરે છે, અને મેપિંગ, ડેડઝોન, સંવેદનશીલતા વળાંકો અને ફોર્સ ફીડબેક માટે Fluent Design ઇન્ટરફેસ આપે છે.</value></data>
+  <data name="About_Description" xml:space="preserve"><value>PadForge કોઈપણ ઇનપુટને કોઈપણ કંટ્રોલર જેવું બનાવે છે. ગેમપેડ, જોયસ્ટિક, વ્હીલ, કીબોર્ડ, માઉસ, ટચ સ્ક્રીન, MIDI ઉપકરણ અને ફોન વર્ચ્યુઅલ કંટ્રોલર ચલાવે છે, જેને ગેમ્સ વાસ્તવિક હાર્ડવેર ગણે છે: Xbox, PlayStation, Nintendo અને Steam પેડ, SInput પેડ, VR હાથના કંટ્રોલર, MIDI આઉટપુટ, કીબોર્ડ અને માઉસ, અથવા ફ્લાઇટ સ્ટિક કે વ્હીલ જેવું કસ્ટમ ઉપકરણ. HIDMaestro વર્ચ્યુઅલ ગેમપેડ બનાવે છે, SDL3 કંટ્રોલર વાંચે છે, Windows Raw Input કીબોર્ડ અને માઉસ વાંચે છે, HidHide ઉપકરણને ગેમ્સથી છુપાવે છે, અને Windows MIDI Services MIDI અંદર અને બહાર લઈ જાય છે.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ઝાંખી</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>આનાથી બનેલું</value></data>
   <data name="About_SearchCredits" xml:space="preserve"><value>શ્રેય શોધો</value></data>
@@ -926,6 +928,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>અક્ષરો વચ્ચેનો વિલંબ</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ટાઇપ થતા અક્ષરો વચ્ચે મિલિસેકન્ડ, વધુમાં વધુ 1000. 0 આખો ટેક્સ્ટ એકસાથે ટાઇપ કરે છે.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>નિષ્ક્રિય હોય ત્યારે ડિસ્કનેક્ટ કરો</value></data>
+  <data name="Devices_IdleDisconnectNever" xml:space="preserve"><value>0 એટલે ક્યારેય નહીં</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>વિગતો</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB થી પ્લગ ઇન હોય ત્યારે બ્લૂટૂથ ડિસ્કનેક્ટ કરો</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ક્વિક ચાર્જ. બ્લૂટૂથથી જોડાયેલું આ કંટ્રોલર ચાર્જ થઈ રહ્યાનું જણાવે ત્યારે બ્લૂટૂથ લિંક તોડી દેવામાં આવે છે, જેથી રેડિયો ચલાવ્યા વિના તે ચાર્જ થાય. દીવાલના ચાર્જર સહિત કોઈ પણ USB પાવર સ્રોત ચાલે છે. કેબલ લગાવેલો હોય ત્યારે તમે બ્લૂટૂથ ફરી ચાલુ કરો, તો આગળની વખત અનપ્લગ થાય ત્યાં સુધી તેમાં ફેરફાર કરવામાં આવતો નથી.</value></data>
@@ -990,6 +993,7 @@
   <data name="FlydigiScreen_Send" xml:space="preserve"><value>મોકલો</value></data>
   <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ફ્રેમ: {0}. મોકલવામાં લગભગ {1} લાગે છે.</value></data>
   <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>કંટ્રોલર વધુમાં વધુ {0} ફ્રેમ લે છે, તેથી છેલ્લી {1} છોડી દેવામાં આવી.</value></data>
+  <data name="FlydigiScreen_Cut_One_Format" xml:space="preserve"><value>કંટ્રોલર વધુમાં વધુ {0} ફ્રેમ લે છે, તેથી છેલ્લી એક છોડી દેવામાં આવી.</value></data>
   <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>કંટ્રોલરને કેબલથી જોડો. ચિત્ર અંદર આવ્યાના લગભગ 15 સેકન્ડ પછી તે પોતાની રીતે ફરી શરૂ થાય છે.</value></data>
   <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>કંટ્રોલરને કેબલથી જોડો. મોકલવા માટે PadForge તેને Xbox મોડમાં બદલે છે અને Windows ના Xbox ડ્રાઇવરમાંથી WinUSB પર લઈ જાય છે, પછી બંને પાછા મૂકે છે.</value></data>
   <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge કંટ્રોલરને Xbox મોડમાં બદલશે, મોકલવા માટે તેને WinUSB પર લઈ જશે, પછી તેને Windows ના Xbox ડ્રાઇવરને પાછું આપશે અને DInput મોડમાં પાછું બદલશે. પહેલા બીજા દરેક Xbox 360 કંટ્રોલરને કાઢી નાખો. હમણાં મોકલવું?</value></data>
@@ -1421,8 +1425,8 @@
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>ક્લોન કરો</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>ક્લોન કરવા માટે આ સ્લોટ પર ઉપકરણ પસંદ કરો.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>પસંદ કરેલું ઉપકરણ ક્લોન કરવા માટે કોઈ અક્ષ, બટન કે હૅટ આપતું નથી.</value></data>
-  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ને આ સ્લોટ પર 1:1 પાસથ્રુ તરીકે ક્લોન કરવું? લેઆઉટ {1} અક્ષ, {2} બટન અને {3} POV નો બને છે, અને સ્લોટ પર આ ઉપકરણની પંક્તિઓ તેના પોતાના ઇનપુટથી બદલાય છે.</value></data>
-  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>આ ઉપકરણમાં Extended કંટ્રોલર વહન કરી શકે તેથી વધુ ઇનપુટ છે. {1} માંથી {0} અક્ષ, {3} માંથી {2} બટન અને {5} માંથી {4} POV મેપ થયા. બાકીના મેપ કર્યા વિના રહ્યા.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ને આ સ્લોટ પર 1:1 પાસથ્રુ તરીકે ક્લોન કરવું? લેઆઉટ {1}, {2} અને {3} નો બને છે, અને સ્લોટ પર આ ઉપકરણની પંક્તિઓ તેના પોતાના ઇનપુટથી બદલાય છે.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>આ ઉપકરણમાં Extended કંટ્રોલર વહન કરી શકે તેથી વધુ ઇનપુટ છે. {1} માંથી {0}, {3} માંથી {2} અને {5} માંથી {4} મેપ થયા. બાકીના મેપ કર્યા વિના રહ્યા.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>કંટ્રોલર પ્રીસેટ</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge જે મોકલતું નથી તેવા કંટ્રોલર માટે ફાઇલમાંથી અથવા કંટ્રોલરમાંથી જ પ્રીસેટ ઉમેરો.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>આયાત કરેલ</value></data>
@@ -1594,11 +1598,11 @@
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>પકડી રાખતાં સંચયકને નીચે તરફ રેમ્પ કરતું બટન</value></data>
   <data name="Pad_Mapping_Down_PickerTooltip" xml:space="preserve"><value>નીચે: પકડી રાખતાં સંચયકને નીચે તરફ રેમ્પ કરતું બટન.</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>દર</value></data>
-  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>પ્રતિ સેકન્ડ એકમોમાં સ્વીપ ઝડપ. 0.5 = 2 s માં પૂરી શ્રેણી; 2 = 0.5 s માં પૂરી શ્રેણી.</value></data>
+  <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>પ્રતિ સેકન્ડ એકમોમાં સ્વીપ ઝડપ. 0.5 = 2 s માં પૂરી શ્રેણી. 2 = 0.5 s માં પૂરી શ્રેણી.</value></data>
   <data name="Pad_Mapping_Sticky" xml:space="preserve"><value>ચોંટેલું</value></data>
   <data name="Pad_Mapping_Sticky_Tooltip" xml:space="preserve"><value>ચેક કરેલું હોય ત્યારે, છોડ્યા પછી સંચયક તેનું મૂલ્ય જાળવે છે (ક્રૂઝ કંટ્રોલ). ચેક ન કરેલું હોય ત્યારે, છોડતાં તે ન્યૂનતમ પર પાછું આવી જાય છે.</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>ન્યૂનતમ</value></data>
-  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>સંચયકની નીચલી મર્યાદા. -1 = દ્વિધ્રુવી અક્ષ લક્ષ્યો માટે પૂર્ણ ઋણ; 0 = એકધ્રુવી.</value></data>
+  <data name="Pad_Mapping_Min_Tooltip" xml:space="preserve"><value>સંચયકની નીચલી મર્યાદા. -1 = દ્વિધ્રુવી અક્ષ લક્ષ્યો માટે પૂર્ણ ઋણ. 0 = એકધ્રુવી.</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>મહત્તમ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>સંચયકની ઉપલી મર્યાદા. 1 = પૂર્ણ ધન.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>રેમ્પ</value></data>
@@ -1891,6 +1895,7 @@
   <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>સોંપેલા સ્લોટનો લાઇટબાર મોડ ચોક્કસ મૂલ્ય પર સેટ કરે છે. બીજી ક્રિયા કે વપરાશકર્તા તેને બદલે ત્યાં સુધી લાઇટિંગ કાર્ડ પરના ફેરફારની જેમ ટકી રહે છે.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>લાઇટબાર મોડ ફેરવો</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} લાઇટબાર મોડમાંથી ફેરવો</value></data>
+  <data name="MacroAction_LightbarModeCycle_One_Format" xml:space="preserve"><value>{0} લાઇટબાર મોડમાંથી ફેરવો</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>સ્લોટનો લાઇટબાર મોડ નીચે પસંદ કરેલા મોડમાંથી આગળ વધારે છે. દરેક વખતે ચલાવવાથી પછીના ચેક કરેલા મોડ પર જાય છે. ચક્રની સ્થિતિ દરેક ક્રિયા માટે અલગ છે અને એપ ફરી શરૂ થતાં રીસેટ થાય છે.</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>પકડ</value></data>
@@ -2288,6 +2293,7 @@
   <data name="Recorder_Complete" xml:space="preserve"><value>બધા નમૂના કૅપ્ચર થયા. હાવભાવનું નામ આપો અને સાચવો પર ક્લિક કરો.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>નમૂનો {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} નમૂના</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>{0} / {1} નમૂના</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>કૅપ્ચર કરવાના નમૂના</value></data>
   <data name="Recorder_MoreHint" xml:space="preserve"><value>કૅપ્ચર કરવાના નમૂના</value></data>
   <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 સામાન્ય છે. વધુ નમૂના વધુ ચોક્કસ મેળ આપે છે, અને ઓછા નમૂના રેકોર્ડ કરવામાં ઝડપી છે.</value></data>
@@ -3383,6 +3389,7 @@
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>ગન સ્ક્રીન બહાર</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>પૉઇન્ટર મોડ સાયકલ કરો</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} પૉઇન્ટર મોડમાંથી સાયકલ કરો</value></data>
+  <data name="MacroAction_PointerModeCycle_One_Format" xml:space="preserve"><value>{0} પૉઇન્ટર મોડમાંથી સાયકલ કરો</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>સ્લોટ પરના દરેક IR-સક્ષમ રિમોટ માટે Wii પૉઇન્ટર મોડને નીચે પસંદ કરેલા મોડમાં આગળ વધારે છે. દરેક વખતે ચલાવતાં પછીના ચેક કરેલા મોડ પર જાય છે. સાયકલનું સ્થાન દરેક ક્રિયાનું પોતાનું છે અને ઍપ ફરી શરૂ થતાં રીસેટ થાય છે.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>મેક્રો કયા પૉઇન્ટર મોડમાંથી સાયકલ કરે તે પસંદ કરો. દરેક વખતે ચલાવતાં પછીના ચેક કરેલા મોડ પર જાય છે.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ઑડિયો</value></data>
@@ -3710,7 +3717,7 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB પર કોઈ DualShock 3 મળ્યું નથી. તેને USB કેબલથી જોડો અને ફરી પ્રયાસ કરો.</value></data>
   <data name="Ds3Pair_DriverUntrusted" xml:space="preserve"><value>Windows DualShock 3 માટે PadForge નો USB ડ્રાઇવર ઇન્સ્ટૉલ કરશે નહીં, કારણ કે તેનું સાઇનિંગ પ્રમાણપત્ર આ PC પર વિશ્વસનીય નથી.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation કંટ્રોલર માટેનો Bluetooth ડ્રાઇવર ઇન્સ્ટૉલ થઈ શક્યો નહીં.</value></data>
-  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>કોઈ Bluetooth રેડિયો ઉપલબ્ધ નથી. Bluetooth ચાલુ કરો અને ફરી પ્રયાસ કરો. પેરિંગ ફક્ત વાયરલેસ રમત માટે જરૂરી છે: કેબલથી જોડાયેલું કંટ્રોલર તેના વગર કામ કરે છે.</value></data>
+  <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>કોઈ Bluetooth રેડિયો ઉપલબ્ધ નથી. Bluetooth ચાલુ કરો અને ફરી પ્રયાસ કરો. પેરિંગ ફક્ત વાયરલેસ રમત માટે જરૂરી છે. કેબલથી જોડાયેલું કંટ્રોલર તેના વગર કામ કરે છે.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>પેરિંગ પૂર્ણ થયું નહીં. જે પગલું નિષ્ફળ થયું તે ઉપર બતાવ્યું છે.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>બંધ કરો</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ટૅગ</value></data>
@@ -3801,7 +3808,7 @@
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>બટન છોડી દો.</value></data>
   <data name="Handheld_Step_Format" xml:space="preserve"><value>પગલું {0} / {1}</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>કોઈ ફેરફાર દેખાયો નહીં. ફરી શરૂ કરો પસંદ કરો, પછી પૂછવામાં આવે ત્યારે બટન દબાવી રાખો.</value></data>
-  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} વેન્ડર રિપોર્ટ અને {1} ઇવેન્ટ વર્ગો પર નજર રાખી. દબાવતી વખતે: {2} રિપોર્ટ, {3} ઇવેન્ટ.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>જોયેલા વેન્ડર રિપોર્ટ: {0}. જોયેલા ઇવેન્ટ વર્ગો: {1}. દબાવતી વખતે રિપોર્ટ: {2}. દબાવતી વખતે ઇવેન્ટ: {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>બટન મળી ગયું. નામ દાખલ કરો અને નોંધણી કરો પર ક્લિક કરો.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>સ્ત્રોત</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>નામ</value></data>
@@ -3817,7 +3824,9 @@
   <data name="Handheld_Export" xml:space="preserve"><value>નિકાસ કરો…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>આયાત કરો…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} બટનો નિકાસ કર્યા.</value></data>
+  <data name="Handheld_ExportedOneFormat" xml:space="preserve"><value>{0} બટન નિકાસ કર્યું.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} બટનો આયાત કર્યા.</value></data>
+  <data name="Handheld_ImportedOneFormat" xml:space="preserve"><value>{0} બટન આયાત કર્યું.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>હેન્ડહેલ્ડ PC બટનો</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>હેન્ડહેલ્ડ ગેમિંગ PC અને લેપટોપમાં એવા બટનો હોય છે જેને ઓપરેટિંગ સિસ્ટમ ક્યારેય કંટ્રોલર તરીકે બતાવતી નથી: પાછળના પેડલ, મેનૂ કી, વ્હીલ, વેન્ડર હોટકી. તેમને એકવાર દબાવીને શીખવા માટે આ ચાલુ કરો, પછી બીજા કોઈપણ બટનની જેમ તેમને મેપ કરો. મશીનના પોતાના જાયરોને પણ મોશન ઉપકરણ તરીકે ઉમેરે છે.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>હેન્ડહેલ્ડ PC બટનો સક્ષમ કરો</value></data>
@@ -3981,9 +3990,11 @@
   <data name="Workshop_Sort_Ascending" xml:space="preserve"><value>ચડતા ક્રમમાં</value></data>
   <data name="Workshop_Sort_Descending" xml:space="preserve"><value>ઉતરતા ક્રમમાં</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} બાઇન્ડિંગ</value></data>
+  <data name="Workshop_LayerBindings_One_Format" xml:space="preserve"><value>{0} બાઇન્ડિંગ</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} મળ્યા</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} માંથી {0} બતાવી રહ્યું છે</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} કોન્ફિગ</value></data>
+  <data name="Workshop_ConfigsCount_One_Format" xml:space="preserve"><value>{0} કોન્ફિગ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>સંપૂર્ણ કંટ્રોલર સપોર્ટ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>આંશિક કંટ્રોલર સપોર્ટ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>રમતો શોધો</value></data>
@@ -3993,7 +4004,9 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} મહિના પહેલાં</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} વર્ષ પહેલાં</value></data>
   <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} સબ્સ્ક્રાઇબર</value></data>
+  <data name="Workshop_Subs_One_Format" xml:space="preserve"><value>{0} સબ્સ્ક્રાઇબર</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} મત</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>{0} મત</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>બધા</value></data>
   <data name="Workshop_EmptyTitle" xml:space="preserve"><value>આ રમત માટે હજી કોઈ કોન્ફિગ નથી</value></data>
   <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop પાસે {0} માટે સમુદાયના કોઈ કંટ્રોલર કોન્ફિગ નથી. તમે પહેલા બની શકો છો: Steam માં એક બનાવો, અને તે અહીં દેખાશે.</value></data>
@@ -4026,6 +4039,7 @@
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>લેયર: {0}</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>આ ઇનપુટ માટે ઉપકરણ-મુક્ત કોઈ ટ્રિગર નથી</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ઇન-ગેમ ક્રિયાઓ, ફક્ત Steam માટે, રમત તરફનો કોઈ હૂક નથી</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported_One" xml:space="preserve"><value>{0} ઇન ગેમ ક્રિયા, ફક્ત Steam માટે, રમત તરફનો કોઈ હૂક નથી</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-ક્લાયન્ટ ક્રિયા {0}, કોઈ સમકક્ષ નથી</value></data>
   <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>કંટ્રોલર ક્રિયા {0} સપોર્ટેડ નથી</value></data>
   <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>અજ્ઞાત બાઇન્ડિંગ પ્રકાર {0}</value></data>
@@ -4100,10 +4114,10 @@
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>માઉસ વ્હીલ ટિક</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>દરેક ફાયરે માઉસ વ્હીલનો એક અલગ ક્લિક મોકલે છે. મૂલ્ય ચિહ્નવાળી ટિક સંખ્યા છે (ધન ઉપર અથવા જમણે સ્ક્રોલ કરે છે).</value></data>
   <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>કર્સર ધક્કો</value></data>
-  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>દરેક ફાયરે માઉસ કર્સરને નિશ્ચિત પિક્સેલ સંખ્યાથી ખસેડે છે. ધન X જમણે ખસે છે, ધન Y નીચે ખસે છે, ઋણ મૂલ્યો માન્ય છે.</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>દરેક ફાયરે માઉસ કર્સરને નિશ્ચિત પિક્સેલ સંખ્યાથી ખસેડે છે. ધન X જમણે ખસે છે, ધન Y નીચે ખસે છે. ઋણ મૂલ્યો માન્ય છે.</value></data>
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>કર્સરને ({0}, {1}) px ધક્કો આપો</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>ટૅપ યાદી ચક્રાવો</value></data>
-  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>દરેક ફાયર પગલાં યાદીમાંનું આગલું ટૅપ કરે છે અને આગળ વધે છે. વ્રૅપ સક્ષમ હોય તો છેલ્લા પગલા પછી યાદી ફરી શરૂ થાય છે, નહીં તો અંતે ફાયરિંગ અટકી જાય છે.</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>દરેક ફાયર પગલાં યાદીમાંનું આગલું ટૅપ કરે છે અને આગળ વધે છે. વ્રૅપ સક્ષમ હોય તો છેલ્લા પગલા પછી યાદી ફરી શરૂ થાય છે. તે વગર અંતે ફાયરિંગ અટકી જાય છે.</value></data>
   <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>માઉસ બટન ટૉગલ કરો</value></data>
   <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>દરેક ફાયર માઉસ બટનને લૅચ કે અનલૅચ કરે છે. લૅચ કરેલું બટન આગલા ફાયર સુધી અથવા મેક્રો અક્ષમ થાય ત્યાં સુધી દબાયેલું રહે છે.</value></data>
   <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>માઉસ {0} ટૉગલ કરો</value></data>
@@ -4116,6 +4130,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>વ્હીલ સ્ક્રોલ ટૉગલ કરો</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>દરેક ફાયર સતત સ્ક્રોલને લૅચ કે અનલૅચ કરે છે. લૅચ હોય ત્યારે આગલા ફાયર સુધી અથવા મેક્રો અક્ષમ થાય ત્યાં સુધી દર અંતરાલે ટિક સંખ્યા મોકલે છે.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>વ્હીલ સ્ક્રોલ ટૉગલ કરો (દર {1} ms એ {0} ટિક)</value></data>
+  <data name="MacroAction_ToggleWheel_One_Format" xml:space="preserve"><value>વ્હીલ સ્ક્રોલ ટૉગલ કરો (દર {1} ms એ {0} ટિક)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>લૅચ હોય ત્યારે પલ્સ કરો</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>લૅચ હોય ત્યારે, આઉટપુટને સતત પકડી રાખવાને બદલે પુનરાવર્તન અંતરાલે ચાલુ-બંધ પલ્સ કરો.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>અક્ષ ઉમેરો (સાપેક્ષ)</value></data>
@@ -4137,6 +4152,7 @@
   <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>ભૌતિક હિલચાલ લક્ષ્યને થ્રેશોલ્ડથી આગળ ધકેલે ત્યારે, બાકીના સક્રિયકરણ માટે મેક્રો અક્ષ લખવાનું બંધ કરે છે.</value></data>
   <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(ભૌતિકને પ્રાધાન્ય)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>ટૅપ યાદી ચક્રાવો ({0} પગલાં)</value></data>
+  <data name="MacroAction_CycleTapList_One_Format" xml:space="preserve"><value>ટૅપ યાદી ચક્રાવો ({0} પગલું)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>પગલાં</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>વ્રૅપ</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>કી {0} ટૉગલ કરો</value></data>
@@ -4220,6 +4236,7 @@
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>પ્રોફાઇલ સ્વિચ ઓવરલે</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>રેડિયલ કે ટચ મેનૂ સક્રિય હોય ત્યારે ઑન-સ્ક્રીન રિંગ કે ગ્રિડ બતાવો. ઓવરલે બંધ હોય ત્યારે પણ મેનૂ ચાલે છે.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>ઑન-સ્ક્રીન મેનૂ બન્યું ({0} બાઇન્ડ કરેલા સેલ)</value></data>
+  <data name="Workshop_Tr_MenuEmitted_One" xml:space="preserve"><value>ઑન સ્ક્રીન મેનૂ બન્યું ({0} બાઇન્ડ કરેલો સેલ)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>મેનૂમાં કોઈ બાઇન્ડ કરેલો સેલ નથી</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>મેનૂ હોસ્ટ સપાટી સપોર્ટેડ નથી ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>મેનૂ સેલ આઇકન ઓળખાયું નથી ({0}), તેથી સેલ પોતાનું લખાણ લેબલ રાખે છે</value></data>
@@ -4406,6 +4423,7 @@
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq એ ડાઉનલોડ કરેલી .txt પસંદ કરો. આ જ વાપરવી જોઈએ: autoeq.app કૉપિ કરી શકાય એવા ટેક્સ્ટને બદલે ફાઇલ આપે છે.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>તમારા હેડફોનને અનુરૂપ કરેક્શન માટે: autoeq.app ખોલો, તમારું મૉડલ પસંદ કરો, Custom Parametric Eq પસંદ કરી ડાઉનલોડ કરો, પછી ફાઇલમાંથી આયાત કરો. Graphic Eq ડાઉનલોડમાં ફિલ્ટર લાઇન નથી અને તે આયાત થશે નહીં.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} માંથી {1:0.#} dB પ્રીઍમ્પ સાથે {0} બેન્ડ આયાત થયા.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_One_Format" xml:space="preserve"><value>{2} માંથી {1:0.#} dB પ્રીઍમ્પ સાથે {0} બેન્ડ આયાત થયો.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>તે પ્રોફાઇલમાં ફિલ્ટર લાઇન નથી. AutoEq નું Graphic Eq એક્સપોર્ટ અહીં વાંચી શકાતું નથી. તેના બદલે Custom Parametric Eq ડાઉનલોડ કરો. વર્તમાન EQ બદલાયો નથી.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>આયાત કરવા માટે કંઈ નથી. વર્તમાન EQ બદલાયો નથી.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>તે ફાઇલ વાંચી શકાઈ નહીં: {0}</value></data>
@@ -4421,7 +4439,7 @@
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>સીલિંગ રીસેટ કરો</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>ફ્રિક્વન્સી અને ગેઇન બદલવા પોઇન્ટ ખેંચો. પહોળો કે સાંકડો કરવા પોઇન્ટ પર વ્હીલ ફેરવો.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>આઉટપુટ પાથ</value></data>
-  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>કંટ્રોલર તેનો ઑડિયો ક્યાં વગાડે છે તે. ડિફોલ્ટ ફર્મવેરનું પોતાનું રાઉટિંગ રાખે છે અને PadForge ના અવાજ સ્પીકર પર વગાડે છે. હેડફોન + સ્પીકર હેડસેટ બાજુ મોનો વગાડે છે, જે ફર્મવેરની મર્યાદા છે. Bluetooth પર આ મોડ માત્ર હેડફોન દ્વારા વગાડે છે. હેડફોન જૅકને અનુસરો કંટ્રોલરમાં કંઈક પ્લગ થાય ત્યારે હેડફોન પર અને અનપ્લગ થાય ત્યારે સ્પીકર પર ફેરવે છે; જૅક રીડિંગ ઉપલબ્ધ ન હોય તો તે ડિફોલ્ટની જેમ વર્તે છે.</value></data>
+  <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>કંટ્રોલર તેનો ઑડિયો ક્યાં વગાડે છે તે. ડિફોલ્ટ ફર્મવેરનું પોતાનું રાઉટિંગ રાખે છે અને PadForge ના અવાજ સ્પીકર પર વગાડે છે. હેડફોન + સ્પીકર હેડસેટ બાજુ મોનો વગાડે છે, જે ફર્મવેરની મર્યાદા છે. Bluetooth પર આ મોડ માત્ર હેડફોન દ્વારા વગાડે છે. હેડફોન જૅકને અનુસરો કંટ્રોલરમાં કંઈક પ્લગ થાય ત્યારે હેડફોન પર અને અનપ્લગ થાય ત્યારે સ્પીકર પર ફેરવે છે. જૅક રીડિંગ ઉપલબ્ધ ન હોય તો તે ડિફોલ્ટની જેમ વર્તે છે.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>ડિફોલ્ટ</value></data>
   <data name="Pad_Audio_OutputPath_Stereo" xml:space="preserve"><value>હેડફોન (સ્ટીરિયો)</value></data>
   <data name="Pad_Audio_OutputPath_Mono" xml:space="preserve"><value>હેડફોન (મોનો)</value></data>

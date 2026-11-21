@@ -540,6 +540,7 @@
   <data name="Recorder_Drawing" xml:space="preserve"><value>Kudhirowa…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Mienzaniso yose yatorwa. Ipa gesture zita, wodzvanya Chengetedza.</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Mienzaniso {0} / {1}</value></data>
+  <data name="Recorder_Samples_One_Format" xml:space="preserve"><value>Muenzaniso {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Zita</value></data>
   <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Tumidza gesture iyi</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Zita rinodiwa</value></data>
@@ -1007,6 +1008,7 @@
   <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>mwedzi {0} yapfuura</value></data>
   <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>makore {0} apfuura</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>Mavhoti {0}</value></data>
+  <data name="Workshop_Votes_One_Format" xml:space="preserve"><value>Vhoti {0}</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Zvese</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Edza zvakare</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Chengetedza purofaira</value></data>

@@ -714,7 +714,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
-                    OnPropertyChanged(nameof(IsGenericSensitivitySource));
                     OnPropertyChanged(nameof(IsRapidTriggerOffered));
                     OnPropertyChanged(nameof(KindChoices));
                     OnPropertyChanged(nameof(DescriptorDeviceGuid));
@@ -775,14 +774,6 @@ namespace PadForge.ViewModels
         /// family's read in SourceCoercion).</summary>
         public bool IsMouseMotionSource => _descriptor != null
             && _descriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
-
-        /// <summary>True when this source carries the generic per-source
-        /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read, or
-        /// an abstract Gamepad stick / trigger that canonicalizes to one.
-        /// Drives that slider's visibility, mutually exclusive with the gyro /
-        /// mouse / IR predicates above.</summary>
-        public bool IsGenericSensitivitySource =>
-            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(_descriptor);
 
         public bool Invert
         {
@@ -1153,16 +1144,16 @@ namespace PadForge.ViewModels
         }
 
         private double _sensitivity = 1.0;
-        /// <summary>Generic per-source sensitivity (issue #9). Only applied for
-        /// NO LONGER EXPOSED IN THE MAPPING GRID (2026-07-27): the knob moved
-        /// to the Sticks group as a per-stick multiplier, because per-row the
-        /// scale was folded in before the row's own readout (making its raw
-        /// and out columns agree) and its slider sat in a grid column too
-        /// narrow to show. The field stays for the mapping-set schema and
-        /// defaults to 1.0, i.e. inert. Do not re-add a grid slider for it.
-        /// plain analog sources (see <see cref="IsGenericSensitivitySource"/>):
-        /// "Axis N" / "Slider N" and the abstract Gamepad sticks / triggers that
-        /// canonicalize to them. Default 1.0 = unchanged.</summary>
+        /// <summary>Generic per-source sensitivity (issue #9), applied only for
+        /// plain analog sources: "Axis N" / "Slider N" and the abstract Gamepad
+        /// sticks / triggers that canonicalize to them
+        /// (SourceCoercion.IsGenericSensitivityDescriptor). Default 1.0 =
+        /// unchanged. The mapping grid has shown no knob for it since
+        /// 2026-07-27: the knob moved to the Sticks group as a per-stick
+        /// multiplier, because per-row the scale was folded in before the
+        /// row's own readout (making its raw and out columns agree) and its
+        /// slider sat in a grid column too narrow to show. Do not re-add a
+        /// grid slider for it. The importers still set it, as below.</summary>
         public double Sensitivity
         {
             get => _sensitivity;

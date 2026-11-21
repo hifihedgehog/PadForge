@@ -35,11 +35,10 @@ namespace PadForge.Tests
         [InlineData("IHAxis 2")]
         [InlineData("Gamepad LeftStickY")]
         [InlineData("IHGamepad LeftStickY")]
-        public void MappingItem_GenericSensitivityGate_SurvivesPrefixAndAlias(string encoded)
+        public void MappingItem_AnalogGates_SurvivePrefixAndAlias(string encoded)
         {
             var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             mi.LoadDescriptor(encoded);
-            Assert.True(mi.IsGenericSensitivitySource);
             Assert.True(mi.IsDeadZoneApplicable);
             Assert.True(mi.IsHalfAxisApplicable);
         }
@@ -52,7 +51,6 @@ namespace PadForge.Tests
             var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             mi.LoadDescriptor(encoded);
             Assert.True(mi.IsGyroSource);
-            Assert.False(mi.IsGenericSensitivitySource);
         }
 
         [Fact]
@@ -61,7 +59,6 @@ namespace PadForge.Tests
             var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             mi.LoadDescriptor("IR Pointer X");
             Assert.False(mi.IsInverted);
-            Assert.False(mi.IsGenericSensitivitySource);
             Assert.True(mi.IsDeadZoneApplicable); // engine family reads the per-source DeadZone
         }
 
@@ -73,7 +70,6 @@ namespace PadForge.Tests
             var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             mi.LoadDescriptor(encoded);
             Assert.True(mi.IsIrPointerSource);
-            Assert.False(mi.IsGenericSensitivitySource);
         }
 
         // ── MappingSourceItem (grid extras, clean descriptors) ──
@@ -86,7 +82,6 @@ namespace PadForge.Tests
                 Descriptor = "Gamepad LeftTrigger",
                 ParentTargetIsDiscrete = true,
             };
-            Assert.True(alias.IsGenericSensitivitySource);
             Assert.True(alias.IsHalfAxisApplicable);
             Assert.True(alias.IsDeadZoneApplicable);
             Assert.False(alias.IsButtonClassDescriptor);

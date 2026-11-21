@@ -203,7 +203,7 @@ namespace PadForge.Tests
             Assert.False(SourceCoercion.EvaluateForButtonTarget(TouchState(0.25f), src, 50));
         }
 
-        // ── Predicate widening (sensitivity slider + Half checkbox) ──
+        // ── Predicate widening (per-source sensitivity + Half checkbox) ──
 
         [Theory]
         [InlineData("Touchpad 0 Finger 0 X Left", true)]
@@ -224,7 +224,6 @@ namespace PadForge.Tests
         {
             var msi = new MappingSourceItem { Descriptor = "Touchpad 0 Finger 0 X Left" };
             Assert.True(msi.IsHalfAxisApplicable);
-            Assert.True(msi.IsGenericSensitivitySource);
             msi.ParentTargetIsDiscrete = true;
             Assert.False(msi.IsDeadZoneApplicable);
 

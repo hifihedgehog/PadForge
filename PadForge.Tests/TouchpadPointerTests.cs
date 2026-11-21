@@ -302,7 +302,6 @@ namespace PadForge.Tests
             { Descriptor = "Touchpad 0 Pointer X Right", ParentTargetIsDiscrete = true };
             Assert.True(msi.IsDeadZoneApplicable);
             Assert.False(msi.IsHalfAxisApplicable);
-            Assert.False(msi.IsGenericSensitivitySource);
 
             var mi = new PadForge.ViewModels.MappingItem("A", "ButtonA",
                 PadForge.ViewModels.MappingCategory.Buttons);

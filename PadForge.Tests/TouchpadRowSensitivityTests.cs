@@ -142,7 +142,7 @@ namespace PadForge.Tests
             Assert.Equal(0.6f, SourceCoercion.EvaluateForBipolarAxisTarget(s, src), 3);
         }
 
-        // ── Predicate widening (drives the slider on both VM twins) ──
+        // ── Predicate widening ──
 
         [Theory]
         [InlineData("Touchpad 0 Finger 0 X", true)]
@@ -156,23 +156,6 @@ namespace PadForge.Tests
         public void Predicate_IncludesFingerXYOnly(string descriptor, bool expected)
         {
             Assert.Equal(expected, SourceCoercion.IsGenericSensitivityDescriptor(descriptor));
-        }
-
-        [Fact]
-        public void VmGates_SliderVisible_OnBothTwins_WithPrefixInterplay()
-        {
-            // Grid extra source (clean descriptor).
-            var msi = new MappingSourceItem { Descriptor = "Touchpad 0 Finger 0 X" };
-            Assert.True(msi.IsGenericSensitivitySource);
-
-            // Primary row, bare and legacy-I-prefixed encodings (the
-            // 9fc26119 strip interplay: the VM strips I/H before the
-            // predicate, and 'T' is never stripped).
-            var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
-            mi.LoadDescriptor("Touchpad 0 Finger 0 X");
-            Assert.True(mi.IsGenericSensitivitySource);
-            mi.LoadDescriptor("ITouchpad 0 Finger 0 X");
-            Assert.True(mi.IsGenericSensitivitySource);
         }
 
         [Fact]

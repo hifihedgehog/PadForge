@@ -648,7 +648,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
-                    OnPropertyChanged(nameof(IsGenericSensitivitySource));
                     OnPropertyChanged(nameof(IsRapidTriggerOffered));
                     // A newly picked input with no press depth drops Rapid
                     // Trigger (#482). A load runs the gate once the whole row
@@ -1550,7 +1549,7 @@ namespace PadForge.ViewModels
         /// <summary>Generic per-source sensitivity for the primary source
         /// (issue #9). Mirrors <see cref="MappingSourceItem.Sensitivity"/>;
         /// applied only when the primary descriptor is a plain analog source
-        /// (see <see cref="IsGenericSensitivitySource"/>). 1.0 = unchanged.</summary>
+        /// (SourceCoercion.IsGenericSensitivityDescriptor). 1.0 = unchanged.</summary>
         public double Sensitivity
         {
             get => _sensitivity;
@@ -1614,16 +1613,6 @@ namespace PadForge.ViewModels
         /// the engine's lean/tilt path never applies ParamAccel (#292).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor ?? ""));
-
-        /// <summary>True when the primary source carries the generic per-source
-        /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an
-        /// abstract Gamepad stick / trigger that canonicalizes to one. Mirrors
-        /// <see cref="MappingSourceItem.IsGenericSensitivitySource"/> so the
-        /// primary's slider is gated identically, mutually exclusive with the
-        /// specialized-family predicates above.</summary>
-        public bool IsGenericSensitivitySource =>
-            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(
-                StripLegacyPrefix(_sourceDescriptor));
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:

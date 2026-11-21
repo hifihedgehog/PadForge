@@ -1257,9 +1257,38 @@ namespace PadForge.Common.Input.Peripherals
                     BuildLights = () => PluginKeyNames.Lights(board.Table()),
                     Slots = 256,
                     Picture = colors => AsusKeyboardPicture(board.Table().Indexes, colors),
-                    HandBack = new[] { PluginStep.Output(ClaymoreOwnEffect) },
+                    HandBack = TakesTheWaveInThreeReports(pid) ? AsusWaveInThreeReports() : new[] { PluginStep.Output(ClaymoreOwnEffect) },
                 };
             }
+        }
+
+        /// <summary>The Falchion RX and the Falchion Ace HFX. The plugin's Shutdown sends every ASUS
+        /// keyboard the Wave effect in one 51 2C report (ASUS_Keyboard.js, line 45), and G-Helper names
+        /// these two as keyboards that reject it that way: FalchionRX overrides UsesChunkedWaveEffects
+        /// and FalchionAceHFX derives from it (Falchion.cs:51-96 at aa0037c5, with the rule at
+        /// AsusKeyboard.cs:656-661). A hand-back in the plugin's one report would leave them on
+        /// PadForge's last picture.</summary>
+        internal static bool TakesTheWaveInThreeReports(ushort productId) => productId is 0x1B04 or 0x1B7E;
+
+        /// <summary>The Wave effect as G-Helper sets it on those keyboards: 51 2C 04 three times, byte 4
+        /// counting 02, 01, 00. The first report carries the speed (1E, G-Helper's Normal), the
+        /// brightness, 01 for its random colors and 02 in byte 9, and each report's answer is read
+        /// within G-Helper's 300 ms before the next goes out (ApplyLighting and ApplyChunked,
+        /// AsusKeyboard.cs:668-702, AuraSpeedByte, 663-666, USBTimeout, 302-305). Nothing saves the
+        /// effect, so the stored one comes back at the next power cycle, as with
+        /// <see cref="ClaymoreOwnEffect"/>. The crash path writes the three reports with no wait
+        /// between them.</summary>
+        internal static PluginStep[] AsusWaveInThreeReports()
+        {
+            var steps = new List<PluginStep>();
+            for (int count = 2; count >= 0; count--)
+            {
+                steps.Add(PluginStep.Output(count == 2
+                    ? Frame(65, 0x00, 0x51, 0x2C, 0x04, 0x02, 0x1E, 0x64, 0x01, 0x00, 0x02)
+                    : Frame(65, 0x00, 0x51, 0x2C, 0x04, (byte)count)));
+                steps.Add(PluginStep.ReadInput(AsusAuraUsbLighting.GHelperTimeoutMs));
+            }
+            return steps.ToArray();
         }
 
         /// <summary>Fifteen LEDs to a report, each its number and its color. The

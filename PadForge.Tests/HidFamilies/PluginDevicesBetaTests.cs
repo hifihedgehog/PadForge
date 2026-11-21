@@ -420,14 +420,34 @@ namespace PadForge.Tests
         [InlineData(0x18F6)]
         [InlineData(0x1A55)]
         [InlineData(0x1A64)]
-        [InlineData(0x1B04)]
-        [InlineData(0x1B7E)]
         public void AnAsusKeyboard_HandsBackItsOwnEffect(int pid)
         {
             var d = Device(0x0B05, (ushort)pid);
             Assert.NotEmpty(d.Lights);
             Assert.Equal("00 51 2C 04 00 48 64", Hex(d.HandBack[0].Bytes, 7));
             Assert.Contains(d.Lights, l => l.Usage == 0x29);
+        }
+
+        /// <summary>The Falchion RX and the Falchion Ace HFX take the Wave effect in three
+        /// reports, each answered, as G-Helper sends it to them and not as the plugin's one
+        /// report (FalchionRX.UsesChunkedWaveEffects, Falchion.cs:75-78, and ApplyChunked,
+        /// AsusKeyboard.cs:668-702, at aa0037c5). The count in byte 4 runs 02, 01, 00, and the
+        /// first report carries the speed, the brightness, the random colors and 02 in byte 9.</summary>
+        [Theory]
+        [InlineData(0x1B04)]
+        [InlineData(0x1B7E)]
+        public void TheFalchionRxKind_HandsBackTheWave_InThreeAnsweredReports(int pid)
+        {
+            var d = Device(0x0B05, (ushort)pid);
+            Assert.NotEmpty(d.Lights);
+            Assert.Equal(new[]
+            {
+                "out 00 51 2C 04 02 1E 64 01 00 02", "read",
+                "out 00 51 2C 04 01", "read",
+                "out 00 51 2C 04", "read",
+            }, Steps(d.HandBack));
+            Assert.All(d.HandBack.Where(s => s.Kind == PluginStepKind.Output), s => Assert.Equal(65, s.Bytes.Length));
+            Assert.All(d.HandBack.Where(s => s.Kind == PluginStepKind.ReadInput), s => Assert.Equal(300, s.Value));
         }
 
         [Fact]

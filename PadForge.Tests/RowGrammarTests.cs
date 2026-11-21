@@ -156,5 +156,31 @@ namespace PadForge.Tests
             Assert.Empty(first.Where(b => b.Margin == null || double.Parse(b.Margin.Split(',')[0], CultureInfo.InvariantCulture) != 0)
                 .Select(b => b.Label));
         }
+
+        /// <summary>Check boxes that are a row's control start their boxes
+        /// where the row's control does. The library's check box sets its box
+        /// 11 in from its edge, so the Gesture Buttons' first box stood 11
+        /// right of the Custom Activation Input picker under it (seen in the
+        /// 6.0.0 screenshots). A list's check boxes stand inside the list's
+        /// own frame and keep the inset.</summary>
+        [Fact]
+        public void CheckBoxesThatAreARowsControlStartAtItsColumn()
+        {
+            var page = Page();
+            var panels = page.Descendants().Where(e => e.Name.LocalName == "SettingRow" && !IsEndsRow(e))
+                .Select(r => r.Elements().Where(e => !e.Name.LocalName.Contains('.')).ToList())
+                .Where(parts => parts.Count > 1 && parts[0].Name.LocalName == "TextBlock"
+                    && parts[1].Name.LocalName is "WrapPanel" or "StackPanel"
+                    && parts[1].Elements().Any(c => c.Name.LocalName == "CheckBox" && c.Attribute("Style") == null))
+                .Select(parts => parts[1]).ToList();
+            var panel = Assert.Single(panels);
+            Assert.Contains("Pad_MouseGestures", (string)panel.Parent!.Elements().First().Attribute("Text"));
+            var style = Assert.Single(panel.Elements().Single(e => e.Name.LocalName == "WrapPanel.Resources").Elements());
+            Assert.Equal("CheckBox", (string)style.Attribute("TargetType"));
+            Assert.Equal("{StaticResource {x:Type CheckBox}}", (string)style.Attribute("BasedOn"));
+            string padding = (string)style.Elements().Single(s => (string)s.Attribute("Property") == "Padding").Attribute("Value");
+            Assert.Equal("0", padding.Split(',')[0]);
+            Assert.All(panel.Elements().Where(c => c.Name.LocalName == "CheckBox"), c => Assert.Null(c.Attribute("Padding")));
+        }
     }
 }

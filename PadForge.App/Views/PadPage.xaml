@@ -6217,6 +6217,14 @@
                                         <TextBlock Text="{Binding Pad_MouseGestures_Button, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                    ToolTip="{Binding Pad_MouseGestures_Button_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <WrapPanel controls:SettingRow.Fills="True" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <!-- The check boxes are the row's control, so each box
+                                                 starts at its check box's edge and the first at the
+                                                 row's control column. The library's sets it 11 in. -->
+                                            <WrapPanel.Resources>
+                                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                                    <Setter Property="Padding" Value="0,5,11,6"/>
+                                                </Style>
+                                            </WrapPanel.Resources>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_LeftClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_MiddleClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"

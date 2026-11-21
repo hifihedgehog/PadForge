@@ -33,6 +33,7 @@ namespace PadForge.Views
         // drawn at. They were drawn inside the scaled art at 30 of its
         // pixels, which the 200-tall frame brought to about 5.
         private const double CalloutFont = 12;
+        // The lines' pitch where the frame has room for it.
         private const double CalloutPitch = 16;
         // The level run of a leader, from beside its words to the pad.
         private const double LeaderRun = 14;
@@ -144,12 +145,16 @@ namespace PadForge.Views
                     .ToList();
                 if (side.Count == 0) continue;
 
-                double half = CalloutPitch / 2;
+                // A side with more callouts than the frame holds at the
+                // usual pitch sets its lines closer, down to the words' own
+                // size: a Valve pad can call out 15 controls on one side.
+                double pitch = Math.Max(CalloutFont, Math.Min(CalloutPitch, height / side.Count));
+                double half = pitch / 2;
                 var rows = new double[side.Count];
                 for (int i = 0; i < side.Count; i++)
-                    rows[i] = Math.Max(side[i].At.Top + side[i].At.Height / 2, i == 0 ? half : rows[i - 1] + CalloutPitch);
+                    rows[i] = Math.Max(side[i].At.Top + side[i].At.Height / 2, i == 0 ? half : rows[i - 1] + pitch);
                 for (int i = side.Count - 1; i >= 0; i--)
-                    rows[i] = Math.Max(half, Math.Min(rows[i], i == side.Count - 1 ? height - half : rows[i + 1] - CalloutPitch));
+                    rows[i] = Math.Max(half, Math.Min(rows[i], i == side.Count - 1 ? height - half : rows[i + 1] - pitch));
 
                 double edge = left ? pad.Left : pad.Right;
                 double room = (left ? edge : width - edge) - LeaderRun;

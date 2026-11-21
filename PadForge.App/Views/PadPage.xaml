@@ -4629,8 +4629,14 @@
                             <StackPanel>
 
 
+                                <!-- One on/off setting: its name in the card's
+                                     label column and a switch, as the card's
+                                     own switch is. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                    <TextBlock Text="{Binding Pad_KeepAwake_Motion, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center" TextWrapping="Wrap"
+                                               ToolTip="{Binding Pad_KeepAwake_Motion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                               IsChecked="{Binding KeepAwakeMotion, Mode=TwoWay}"
                                               VerticalAlignment="Center"
                                               Content="{Binding Pad_KeepAwake_Motion, Source={x:Static strings:Strings.Instance}}"
@@ -5899,10 +5905,14 @@
                                             <TextBox Text="{Binding FlickRotationOffset, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
                                             <ui:Button Command="{Binding ResetFlickRotationOffsetCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickRotationOffset, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>
-                                        <controls:SettingRow Grow="True" MinHeight="44">
-                                            <TextBlock Text="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                        <!-- One on/off setting: a switch row, as the
+                                             page's other switches are. -->
+                                        <controls:SettingRow controls:SettingRow.Ends="True" Grow="True" MinHeight="44">
+                                            <TextBlock Text="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"
                                                        ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <CheckBox IsChecked="{Binding FlickOnEngage, Mode=TwoWay}" VerticalAlignment="Center"
+                                            <CheckBox Style="{StaticResource SwitchCheckBox}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                      Content="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}"
+                                                      IsChecked="{Binding FlickOnEngage, Mode=TwoWay}" VerticalAlignment="Center"
                                                       ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ui:Button Command="{Binding ResetFlickOnEngageCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickOnEngage, Source={x:Static strings:Strings.Instance}}"/>
                                         </controls:SettingRow>

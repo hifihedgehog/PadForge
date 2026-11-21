@@ -1038,6 +1038,31 @@ namespace PadForge.Tests
             Shot("sticks-1440.png", 1176, 1900);
             Shot("sticks-1720.png", 1456, 1900);
             Shot("sticks-900.png", 636, 3000);
+
+            // The Flick Stick card a Keyboard + Mouse slot shows, open, and
+            // Keep Controller Awake open: each holds one on/off setting
+            // among sliders and pickers. Their open states are the app's
+            // and close again after.
+            var flick = (PadForge.Controls.FoldCard)page.FindName("FlickStickCard");
+            var flickShown = flick.Visibility;
+            Shot("sticks-flick-open.png", 1456, 2400, () =>
+            {
+                flick.Visibility = Visibility.Visible;
+                flick.IsExpanded = true;
+            });
+            flick.IsExpanded = false;
+            flick.Visibility = flickShown;
+            var awake = (PadForge.Controls.FoldCard)page.FindName("KeepAwakeFoldCard");
+            var awakeShown = awake.Visibility;
+            Shot("buttons-keepawake-open.png", 1456, 2400, () =>
+            {
+                vm.SelectedConfigTab = 0;
+                awake.Visibility = Visibility.Visible;
+                awake.IsExpanded = true;
+                awake.BringIntoView();
+            });
+            awake.IsExpanded = false;
+            awake.Visibility = awakeShown;
         }
 
         /// <summary>Draws the Devices board's pictures with its devices'

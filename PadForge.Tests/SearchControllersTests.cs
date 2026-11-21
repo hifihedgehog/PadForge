@@ -39,9 +39,11 @@ namespace PadForge.Tests
         /// <summary>Five controllers of five kinds, each made, the controller
         /// page bound to <paramref name="bound"/> (or to none), and Search
         /// over them, opened as the window opens it. <paramref name="bindPad"/>
-        /// makes Search's bind step, as the window passes BindPadPage.</summary>
+        /// makes Search's bind step, as the window passes BindPadPage.
+        /// <paramref name="inWindow"/> shows the page in a window off the
+        /// screen, so a landing's ring has a layer to draw on.</summary>
         private void WithControllers(int bound, Action<MainViewModel, PadPage, SearchService, List<string>> body,
-            Func<MainViewModel, PadPage, Action<PadViewModel>> bindPad = null)
+            Func<MainViewModel, PadPage, Action<PadViewModel>> bindPad = null, bool inWindow = false)
         {
             var lines = new List<string>();
             try
@@ -49,6 +51,7 @@ namespace PadForge.Tests
                 PageRenderDumpPages.WithApp((app, dispatcher) =>
                 {
                     bool[] made = (bool[])SettingsManager.SlotCreated.Clone();
+                    Window window = null;
                     try
                     {
                         var main = new MainViewModel();
@@ -56,8 +59,20 @@ namespace PadForge.Tests
                         for (int i = 0; i < Kinds.Length; i++) main.Pads[i].OutputType = Kinds[i];
                         var page = new PadPage { DataContext = bound >= 0 ? main.Pads[bound] : null };
                         page.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
-                        page.Measure(new Size(1456, 985));
-                        page.Arrange(new Rect(0, 0, 1456, 985));
+                        if (inWindow)
+                        {
+                            window = new Window
+                            {
+                                Content = page, Width = 1456, Height = 985, Left = -10000, Top = -10000,
+                                ShowActivated = false, ShowInTaskbar = false, WindowStyle = WindowStyle.None,
+                            };
+                            window.Show();
+                        }
+                        else
+                        {
+                            page.Measure(new Size(1456, 985));
+                            page.Arrange(new Rect(0, 0, 1456, 985));
+                        }
                         page.UpdateLayout();
                         PageRenderDump.Settle(dispatcher);
                         var service = new SearchService(main, p => p == SearchPage.Pad ? page : null, bindPad?.Invoke(main, page));
@@ -69,6 +84,7 @@ namespace PadForge.Tests
                     }
                     finally
                     {
+                        window?.Close();
                         Array.Copy(made, SettingsManager.SlotCreated, made.Length);
                     }
                 }, TimeSpan.FromMinutes(4), "the controllers' search run timed out");
@@ -209,6 +225,76 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>Gives a controller's right trigger row a second source,
+        /// which the Combine option of a row needs, and returns the row.</summary>
+        private static MappingItem AddSecondSource(PadViewModel pad)
+        {
+            var device = Guid.NewGuid();
+            string id = device.ToString("D");
+            pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = device, Name = "Pad", TypeKey = "Gamepad", IsOnline = true });
+            var row = pad.Mappings.First(m => m.TargetSettingName == "RightTrigger");
+            row.PrimarySourceDeviceGuid = id;
+            row.PrimarySourceDeviceLabel = "Pad";
+            row.LoadDescriptor("Axis 5");
+            row.ExtraSources.Add(new MappingSourceItem { Kind = "Direct", DeviceGuid = id, DeviceLabel = "Pad", Descriptor = "Axis 2" });
+            return row;
+        }
+
+        private static bool IsCombine(SearchResult r) => r.Entry is { RowOptions: true, Label.Key: "Pad_Combine_Label" };
+
+        /// <summary>Runs the dispatcher for a while, so posted work and
+        /// layout are done.</summary>
+        private static void Pump(System.Windows.Threading.Dispatcher dispatcher, int milliseconds)
+        {
+            var frame = new System.Windows.Threading.DispatcherFrame();
+            var timer = new System.Windows.Threading.DispatcherTimer(TimeSpan.FromMilliseconds(milliseconds),
+                System.Windows.Threading.DispatcherPriority.Background, (_, _) => frame.Continue = false, dispatcher);
+            timer.Start();
+            System.Windows.Threading.Dispatcher.PushFrame(frame);
+            timer.Stop();
+        }
+
+        /// <summary>The Buttons section opens on the picture with nothing
+        /// picked, and its table then holds no row. A row option of a row the
+        /// controller has is still found, and opening it opens the list on
+        /// that row, with the row's options open and its ring drawn. Words in
+        /// the list's own box that hide the row are emptied.</summary>
+        [Fact]
+        public void ARowOption_IsFoundUnderThePicture_AndItsLandingOpensTheListOnTheRow()
+        {
+            WithControllers(VrPad, (main, page, service, lines) =>
+            {
+                var xbox = main.Pads[XboxPad];
+                var row = AddSecondSource(xbox);
+                Assert.True(xbox.IsButtonsPictureView);
+                service.RefreshAvailability();
+                var result = Search(service, PadForge.Resources.Strings.Strings.Instance.Pad_Combine_Label, lines).Results
+                    .FirstOrDefault(r => IsCombine(r) && ReferenceEquals(r.Pad, xbox));
+                Assert.NotNull(result);
+
+                var navigator = new SearchNavigator(service, p => p == SearchPage.Pad ? page : null, main, tag =>
+                {
+                    if (tag.StartsWith("Pad", StringComparison.Ordinal)) page.DataContext = main.Pads[int.Parse(tag.Substring(3)) - 1];
+                }, _ => { }, () => { });
+                // The list's own box holds words that hide the row there.
+                xbox.MappingInputSearch = "zzqqxx";
+                navigator.Open(result);
+                Pump(page.Dispatcher, 500);
+
+                Assert.Same(xbox, page.DataContext);
+                Assert.True(xbox.IsButtonsListView);
+                Assert.Equal(string.Empty, xbox.MappingInputSearch);
+                var grid = (System.Windows.Controls.DataGrid)page.FindName("MappingDataGrid");
+                Assert.Same(row, grid.SelectedItem);
+                var container = grid.ItemContainerGenerator.ContainerFromItem(row) as System.Windows.Controls.DataGridRow;
+                Assert.NotNull(container);
+                Assert.Equal(Visibility.Visible, container.DetailsVisibility);
+                bool ringed = SearchLocator.VisualDescendants(container).OfType<UIElement>().Any(e =>
+                    System.Windows.Documents.AdornerLayer.GetAdornerLayer(e)?.GetAdorners(e)?.OfType<SearchLandingAdorner>().Any() == true);
+                Assert.True(ringed, "the row's option has no ring");
+            }, inWindow: true);
+        }
+
         /// <summary>Another controller's view model rows can be stale against
         /// its stored rows, which a visit to its page mirrors in. Search binds
         /// another controller the way a visit does, so a row option the stored
@@ -220,14 +306,8 @@ namespace PadForge.Tests
             var mirrored = new List<PadViewModel>();
             WithControllers(VrPad, (main, page, service, lines) =>
             {
-                // The Xbox controller's Buttons section shows the list, whose
-                // table holds every row (under the picture it holds only the
-                // picked control's).
-                main.Pads[XboxPad].SelectedConfigTab = PadViewModel.MappingsTabIndex;
-                service.RefreshAvailability();
                 var search = Search(service, PadForge.Resources.Strings.Strings.Instance.Pad_Combine_Label, lines);
-                Assert.Contains(search.Results, r => r.Entry is { RowOptions: true, Label.Key: "Pad_Combine_Label" }
-                                                     && ReferenceEquals(r.Pad, main.Pads[XboxPad]));
+                Assert.Contains(search.Results, r => IsCombine(r) && ReferenceEquals(r.Pad, main.Pads[XboxPad]));
                 // The bound controller was not mirrored: Search did not
                 // refresh it, and binds it back by its data alone.
                 Assert.DoesNotContain(main.Pads[VrPad], mirrored);
@@ -236,16 +316,7 @@ namespace PadForge.Tests
             {
                 mirrored.Add(pad);
                 if (ReferenceEquals(pad, main.Pads[XboxPad]) && !pad.Mappings.Any(m => m.ExtraSources.Count > 0))
-                {
-                    var device = Guid.NewGuid();
-                    string id = device.ToString("D");
-                    pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = device, Name = "Pad", TypeKey = "Gamepad", IsOnline = true });
-                    var row = pad.Mappings.First(m => m.TargetSettingName == "RightTrigger");
-                    row.PrimarySourceDeviceGuid = id;
-                    row.PrimarySourceDeviceLabel = "Pad";
-                    row.LoadDescriptor("Axis 5");
-                    row.ExtraSources.Add(new MappingSourceItem { Kind = "Direct", DeviceGuid = id, DeviceLabel = "Pad", Descriptor = "Axis 2" });
-                }
+                    AddSecondSource(pad);
                 page.DataContext = pad;
             });
         }

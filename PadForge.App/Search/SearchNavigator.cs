@@ -168,14 +168,23 @@ namespace PadForge.Search
             return opened;
         }
 
-        /// <summary>A row option's element: the first mapping row whose item
-        /// passes the option's gates is picked and shown, and its details
-        /// hold the option.</summary>
+        /// <summary>A row option's element: the first of the controller's
+        /// rows whose item passes the option's gates is picked and shown, and
+        /// its details hold the option. A row the table does not show opens
+        /// the list, which holds every row, and the list's own box and scope
+        /// empty, as the Settings page's box does for a landing there.</summary>
         private DependencyObject RowOption(SearchEntry entry, FrameworkElement page)
         {
-            if (page.FindName("MappingDataGrid") is not DataGrid grid) return null;
-            var item = grid.Items.Cast<object>().FirstOrDefault(i => entry.ItemGates.All(g => BindingProbe.Passes(i, g, k => page.TryFindResource(k))));
+            if (page.FindName("MappingDataGrid") is not DataGrid grid || page.DataContext is not PadViewModel vm) return null;
+            var item = vm.RowsOfSlot.FirstOrDefault(i => entry.ItemGates.All(g => BindingProbe.Passes(i, g, k => page.TryFindResource(k))));
             if (item == null) return null;
+            if (!grid.Items.Contains(item))
+            {
+                if (vm.IsButtonsPictureView && page is PadPage pad) pad.OpenTab(PadViewModel.MappingsTabIndex);
+                vm.MappingInputSearch = string.Empty;
+                vm.MappingSurfaceScope = "All";
+                if (!grid.Items.Contains(item)) return null;
+            }
             grid.SelectedItem = item;
             grid.ScrollIntoView(item);
             grid.UpdateLayout();

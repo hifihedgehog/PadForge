@@ -1575,6 +1575,20 @@ namespace PadForge.ViewModels
             return true;
         }
 
+        /// <summary>The rows the slot has, whatever its table shows now: each
+        /// row its Keyboard + Mouse surface mode keeps, under no pick, search
+        /// or scope of the table's. Search offers a row's options from these
+        /// (#574), since the table under the picture holds only the picked
+        /// control's rows and the list's box and scope are a view.</summary>
+        internal System.Collections.Generic.IEnumerable<MappingItem> RowsOfSlot
+        {
+            get
+            {
+                var kbmCfg = OutputType == VirtualControllerType.KeyboardMouse ? KbmConfig : null;
+                return Mappings.Where(m => RowMatchesSurface(m, "All", kbmCfg));
+            }
+        }
+
         /// <summary>A grid row matches the search when its target label
         /// or its selected source's display name carries the text. Rows
         /// are OUTPUTS, so the device-visibility set does not hide them;

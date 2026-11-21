@@ -250,8 +250,9 @@ namespace PadForge.Search
                     }
                     if (entry.RowOptions)
                     {
-                        if (padPage?.FindName("MappingDataGrid") is ItemsControl grid
-                            && grid.Items.Cast<object>().Any(item => entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => Resource(entry.Page, k)))))
+                        // The controller's rows, not the table's: the table
+                        // under the picture holds only the picked control's.
+                        if (pad.RowsOfSlot.Any(item => entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => Resource(entry.Page, k)))))
                             Add(entry, null, null);
                         continue;
                     }

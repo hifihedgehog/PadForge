@@ -25,7 +25,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", GaiZhongGaiLayouts.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", GaiZhongGaiLayouts.OpenRgbCommit);
             // RGBController_GaiZhongGai.cpp:21-70 with led_names_general and
             // led_names_42key (lines 85-233).
             Assert.Equal(68, GaiZhongGaiLayouts.Pro68.Length);

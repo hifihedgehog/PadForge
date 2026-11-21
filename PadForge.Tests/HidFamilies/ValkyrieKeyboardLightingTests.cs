@@ -23,7 +23,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", ValkyrieLayouts.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", ValkyrieLayouts.OpenRgbCommit);
             // ValkyrieKeyboardController.h:55-74 and
             // RGBController_ValkyrieKeyboard.cpp:19-33 and 55-261.
             Assert.Equal(98, ValkyrieLayouts.Pro.Length);

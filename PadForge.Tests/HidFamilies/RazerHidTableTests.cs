@@ -133,7 +133,7 @@ namespace PadForge.Tests
                 "RazerControllerDetect.cpp:444", "RazerControllerDetect.cpp:445", "RazerControllerDetect.cpp:465",
                 "RazerControllerDetect.cpp:466", "RazerControllerDetect.cpp:483",
             }, lines);
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", RazerHidTable.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", RazerHidTable.OpenRgbCommit);
             Assert.All(RazerHidTable.Registrations, r => Assert.Equal(0x1532, r.VendorId));
             // The registration generator leaves the folder out, so no other
             // family's table holds these.

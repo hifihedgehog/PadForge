@@ -522,9 +522,13 @@ namespace PadForge.Tests
         [Fact]
         public void TheK70ProMini_TakesTheFamilysNumbers()
         {
+            // OpenRGB lists the Mini since 3035206c, with its own layout over
+            // corsair_sixty_values (CorsairPeripheralV2Devices.cpp:48-60 and 189-207 at
+            // 6b681e3c): Esc at 41 and A at 4, as the plugin's ledMap has them
+            // (Corsair_Bragi_Device.js, "K70 Pro Mini").
             var device = CorsairPeripheralV2Lighting.DeviceOf(0x1BB6);
-            var lights = device.OwnLights;
-            // OpenRGB's K70 has Esc at 41 and A at 4, and so does the plugin's Mini.
+            Assert.Null(device.OwnLights);
+            var lights = CorsairPeripheralV2Lighting.MapOf(device, KeyboardLayout.AnsiQwerty, out _).Lights;
             Assert.Equal(41, lights.Single(l => l.Usage == 0x29).Address);
             Assert.Equal(4, lights.Single(l => l.Usage == 0x04).Address);
             Assert.All(lights, l => Assert.True(l.Address >= 0));

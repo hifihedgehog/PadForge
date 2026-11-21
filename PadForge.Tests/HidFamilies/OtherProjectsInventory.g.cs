@@ -134,6 +134,7 @@ namespace PadForge.Tests
             (0x0B05, 0x1943, "g-helper DeltaS"),
             (0x0B05, 0x193C, "g-helper Falchion"),
             (0x0B05, 0x1A64, "g-helper FalchionAce"),
+            (0x0B05, 0x1C7D, "g-helper FalchionAce75HE"),
             (0x0B05, 0x1B7E, "g-helper FalchionAceHFX"),
             (0x0B05, 0x1B04, "g-helper FalchionRX"),
             (0x0B05, 0x1ACE, "g-helper FalchionRXLowProfileOmni"),

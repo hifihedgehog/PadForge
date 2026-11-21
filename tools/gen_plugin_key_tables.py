@@ -1094,7 +1094,7 @@ def lists_of(board, text, suffix):
 KEYCHRON_FIRMWARE = ("57e682caa0a821e6de1b589e6f983f266151ab02", "666862cb8123b64a6b96718d739c6203ad99031f",
                      "4a8143cce9c2ab32a1384c352c3db324149abddd", "618127a725a1773e85f13455602cf6f72ab4de17")
 KEYCHRON_FOLDERS = ("keyboards/keychron", "keyboards/lemokey")
-QMK_FIRMWARE = "d194c077ed964195ec16d255c7a4b89a794cf03b"
+QMK_FIRMWARE = "80973aa0b5413e9a5bbbf9293507f39e870f9aa3"
 QMK_FOLDERS = ("keyboards",)
 
 KEYCODE_USAGES = {

@@ -73,23 +73,33 @@ namespace PadForge.Tests
         [Fact]
         public void TheDeviceList_IsOpenRgbs()
         {
-            // corsair_v2_device_list_data (CorsairPeripheralV2Devices.cpp at b9d903b5).
-            Assert.Equal(34, CorsairLights.V2Devices.Length);
+            // corsair_v2_device_list_data (CorsairPeripheralV2Devices.cpp at 6b681e3c).
+            Assert.Equal(36, CorsairLights.V2Devices.Length);
             Assert.Equal("k55_rgb_pro_device", CorsairLights.V2Devices[0].Name);
             Assert.Equal("mm700_3xl_device", CorsairLights.V2Devices[^1].Name);
             var k100 = CorsairPeripheralV2Lighting.DeviceOf(0x1B7C);
             Assert.Equal(("corsair_k100_layout", 12, 24), (k100.Layout, k100.Rows, k100.Cols));
             // Each device's lighting register and packet size (light_ctrl_reg and pkt_size,
-            // CorsairPeripheralV2Devices.h:66-67): the K65 Mini's own (lines 968-985) and
-            // the K70 RGB PRO V2's 1025-byte reports (OpenRGB dbb97ccb), 5F and 65 elsewhere.
-            // Every device of the list paints on handle 1 (SetLEDs, CorsairPeripheralV2Controller.cpp:390-398).
+            // CorsairPeripheralV2Devices.h:66-67): the K65 Mini's own (lines 988-1005), the
+            // 1025-byte reports of the K70 RGB PRO V2 (OpenRGB dbb97ccb), the K100 RGB Optical
+            // V1 (b5f3bd4f) and the K70 PRO MINI WIRELESS (3035206c), the K70 RGB PRO's 129
+            // (634b62fe), and 5F and 65 elsewhere. Every device of the list paints on handle 1
+            // (SetLEDs, CorsairPeripheralV2Controller.cpp:392-400).
             var k65 = CorsairPeripheralV2Lighting.DeviceOf(0x1BAF);
             Assert.Equal(("k65_mini_device", "corsair_K65_mini_layout", 6, 14), (k65.Name, k65.Layout, k65.Rows, k65.Cols));
             Assert.Equal((0x6E, 1025, 1), (k65.LightCtrlReg, k65.PacketSize, k65.PictureHandle));
             var proV2 = CorsairPeripheralV2Lighting.DeviceOf(0x1BB3);
             Assert.Equal((0x5F, 1025, 1), (proV2.LightCtrlReg, proV2.PacketSize, proV2.PictureHandle));
-            Assert.Equal((0x5F, 65, 1), (k100.LightCtrlReg, k100.PacketSize, k100.PictureHandle));
-            Assert.All(CorsairLights.V2Devices.Where(d => d.ProductId is not (0x1BAF or 0x1BB3)),
+            Assert.Equal((0x5F, 1025, 1), (k100.LightCtrlReg, k100.PacketSize, k100.PictureHandle));
+            var pro = CorsairPeripheralV2Lighting.DeviceOf(0x1BC4);
+            Assert.Equal((0x5F, 129, 1), (pro.LightCtrlReg, pro.PacketSize, pro.PictureHandle));
+            foreach (ushort mini in new ushort[] { 0x1BB6, 0x1BD3 })
+            {
+                var device = CorsairPeripheralV2Lighting.DeviceOf(mini);
+                Assert.Equal(("corsair_k70_pro_mini_wireless_layout", 5, 14), (device.Layout, device.Rows, device.Cols));
+                Assert.Equal((0x5F, 1025, 1), (device.LightCtrlReg, device.PacketSize, device.PictureHandle));
+            }
+            Assert.All(CorsairLights.V2Devices.Where(d => d.ProductId is not (0x1BAF or 0x1BB3 or 0x1B7C or 0x1BC4 or 0x1BB6 or 0x1BD3)),
                 d => Assert.Equal((0x5F, 65, 1), (d.LightCtrlReg, d.PacketSize, d.PictureHandle)));
             // The devices only SignalRGB's plugin lists paint on handle 0, as the plugin
             // opens it (Corsair_Bragi_Device.js:1705-1706 and 2458) and ckb-next does (bragi_proto.h:70).
@@ -113,7 +123,7 @@ namespace PadForge.Tests
         {
             var family = Family();
             var registrations = OpenRgbRegistrations.Of(CorsairPeripheralV2Lighting.OpenRgbFamily).ToList();
-            Assert.Equal(39, registrations.Count);
+            Assert.Equal(41, registrations.Count);
             foreach (var r in registrations)
             {
                 var model = family.Match(Collection((ushort)r.ProductId));
@@ -567,8 +577,8 @@ namespace PadForge.Tests
 
             // A device of OpenRGB's list on a collection that takes longer reports
             // still writes its table's 65, and the channel pads it.
-            var k100 = Family().Match(Collection(0x1B7C));
-            var wide = new FakeCorsairChannel { OutputReportLength = 1025, InputReportLength = 1025, Answer = Device(0x1B7C).Answer };
+            var k100 = Family().Match(Collection(0x1B7D));
+            var wide = new FakeCorsairChannel { OutputReportLength = 1025, InputReportLength = 1025, Answer = Device(0x1B7D).Answer };
             var listed = Assert.IsType<CorsairPeripheralV2Lighting.Session>(k100.Begin(wide, wide.Wait));
             Assert.Equal(1, listed.Device.PictureHandle);
             wide.Outputs.Clear();
@@ -594,8 +604,9 @@ namespace PadForge.Tests
         [Fact]
         public void ALongPicture_PacesEachContinuation()
         {
-            var model = Family().Match(Collection(0x1B7C));
-            var io = Device(0x1B7C);
+            // The K100 RGB MX Red keeps 65-byte reports (CorsairPeripheralV2Devices.cpp:1453-1470).
+            var model = Family().Match(Collection(0x1B7D));
+            var io = Device(0x1B7D);
             var session = model.Begin(io, io.Wait);
             io.Log.Clear();
             session.Paint(io, io.Wait, session.Map.Lights, new int[session.Map.Lights.Count]);

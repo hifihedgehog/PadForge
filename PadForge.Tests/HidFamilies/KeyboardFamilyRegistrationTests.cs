@@ -94,7 +94,7 @@ namespace PadForge.Tests
         public void TheGeneratedTables_AreReadAtThePinnedCommit()
         {
             Assert.Equal(KeyboardLayouts.OpenRgbCommit, KeyboardLedNames.OpenRgbCommit);
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", KeyboardLedNames.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", KeyboardLedNames.OpenRgbCommit);
         }
 
         [Fact]

@@ -39,7 +39,7 @@ import subprocess
 import sys
 
 ASUSCTL = "321b1114a0ac3782d67aa39201682effb749f4d9"
-GHELPER = "991145fc25c2bd0b3345f334f1fdeb8b4172322a"
+GHELPER = "aa0037c5326d002ecee316873dcf17de61fac228"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "PadForge.App", "Common", "Input", "Peripherals", "HidFamilies",
                    "AsusLaptopTables.g.cs")
 

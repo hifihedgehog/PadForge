@@ -117,7 +117,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", CorsairLights.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", CorsairLights.OpenRgbCommit);
             // CorsairPeripheralController.cpp:19-26: 113 numbers, Escape 0x00
             // first, then 0x10 and 114 for the two ISO keys.
             Assert.Equal(113, CorsairLights.Keys.Length);

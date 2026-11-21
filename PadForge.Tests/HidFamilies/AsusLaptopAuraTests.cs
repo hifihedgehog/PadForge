@@ -497,7 +497,7 @@ namespace PadForge.Tests
             Assert.Equal(125, AsusLaptopTables.Boards.Length);
             Assert.Equal(38, AsusLaptopTables.Boards.Count(b => b.PerKey));
             Assert.Equal("321b1114a0ac3782d67aa39201682effb749f4d9", AsusLaptopTables.AsusctlCommit);
-            Assert.Equal("991145fc25c2bd0b3345f334f1fdeb8b4172322a", AsusLaptopTables.GHelperCommit);
+            Assert.Equal("aa0037c5326d002ecee316873dcf17de61fac228", AsusLaptopTables.GHelperCommit);
             foreach (var board in AsusLaptopTables.Boards.Where(b => b.PerKey))
                 Assert.NotNull(AsusLaptopTables.Layout(board.Layout));
             Assert.Null(AsusLaptopTables.Layout("no such layout"));

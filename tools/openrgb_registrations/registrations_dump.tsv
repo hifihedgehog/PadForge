@@ -1,4 +1,4 @@
-openrgb	b9d903b544a40486709c4ca097d0b234b617db9c
+openrgb	6b681e3c3769755e20d0a89759abf38719d1d76f
 A4TechController	Hid	Bloody B820R	2522	64016	2	65362	528	-1	1
 A4TechController	Hid	Bloody W60 Pro	2522	14314	2	65331	1321	-1	1
 A4TechController	Hid	Bloody W70 Max	2522	31215	2	65331	1304	-1	1
@@ -166,12 +166,18 @@ CoolerMasterController	Hid	Cooler Master SK630	9494	137	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master SK650	9494	141	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master SK652	9494	349	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master SK653	9494	427	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master MK721	9494	367	3	65280	2	-1	1
+CoolerMasterController	Hid	Cooler Master MK721	9494	451	3	65290	1	-1	1
 CoolerMasterController	Hid	Cooler Master MK730	9494	143	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master MK750	9494	103	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master CK530	9494	159	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master CK530 V2	9494	327	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master CK550 V2	9494	325	1	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master CK550 V1 / CK552	9494	127	1	65280	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK721	9494	365	3	65280	2	-1	1
+CoolerMasterController	Hid	Cooler Master CK721	9494	387	3	65290	1	-1	1
+CoolerMasterController	Hid	Cooler Master CK721 LINE	9494	494	3	65280	2	-1	1
+CoolerMasterController	Hid	Cooler Master CK721 LINE	9494	498	3	65290	1	-1	1
 CoolerMasterController	Hid	Cooler Master ARGB	9494	4113	0	65280	1	-1	1
 CoolerMasterController	Hid	Cooler Master ARGB Gen 2 A1	9494	371	1	65281	1	-1	1
 CoolerMasterController	Hid	Cooler Master ARGB Gen 2 A1 V2	9494	457	1	65281	1	-1	1
@@ -239,6 +245,8 @@ CorsairPeripheralV2Controller	Hid	Corsair K60 RGB PRO TKL White	6940	7149	1	6534
 CorsairPeripheralV2Controller	Hid	Corsair K65 Mini	6940	7087	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB	6940	7165	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 Core RGB TKL	6940	11009	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 PRO MINI WIRELESS Black	6940	7094	1	65346	-1	-1	1
+CorsairPeripheralV2Controller	Hid	Corsair K70 PRO MINI WIRELESS White	6940	7123	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 RGB PRO	6940	7108	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 RGB PRO V2	6940	7091	1	65346	-1	-1	1
 CorsairPeripheralV2Controller	Hid	Corsair K70 RGB TKL	6940	7027	1	65346	-1	-1	1
@@ -406,11 +414,13 @@ RoccatController	Hid	Roccat Kone Pro	7805	11400	3	65281	1	-1	1
 RoccatController	Hid	Roccat Kone Pro Air	7805	11406	2	65280	1	-1	1
 RoccatController	Hid	Roccat Kone Pro Air (Wired)	7805	11410	1	65299	1	-1	1
 RoccatController	Hid	Roccat Kone XP	7805	11403	3	65281	1	-1	1
+RoccatController	Hid	Roccat Kone XTD	7805	11810	0	11	0	-1	1
 RoccatController	Hid	Roccat Kova	7805	11502	0	11	0	-1	1
 RoccatController	Hid	Roccat Sense Aimo Mid	7805	13370	0	65281	1	-1	1
 RoccatController	Hid	Roccat Sense Aimo XXL	7805	13371	0	65281	1	-1	1
 RoccatController	Hid	Roccat Elo 7.1	7805	14900	3	12	1	-1	1
 RoyuanKeyboardController	Hid	Akko 3068B Plus / PC75B Plus	12625	16387	0	-1	-1	-1	1
+RoyuanKeyboardController	Hid	Akko 3068B Plus / Dukharo VN66 (Vendor)	12625	16387	1	65535	-1	-1	1
 RoyuanKeyboardController	Hid	Skyloong GK68HE Pro	12625	20521	2	-1	-1	-1	1
 RoyuanKeyboardController	Hid	Epomaker TH80 Pro (USB Cable)	12625	16400	2	-1	-1	-1	1
 RoyuanKeyboardController	Hid	Epomaker TH80 Pro (USB Dongle)	12625	16401	2	-1	-1	-1	1

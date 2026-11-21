@@ -9,7 +9,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
     {
         internal const string QmkPluginsCommit = "d476c65e8acb0ed1034b5343ecca368c6724aa2c";
         internal const string KeychronFirmwareCommit = "57e682caa0a821e6de1b589e6f983f266151ab02";
-        internal const string QmkFirmwareCommit = "d194c077ed964195ec16d255c7a4b89a794cf03b";
+        internal const string QmkFirmwareCommit = "80973aa0b5413e9a5bbbf9293507f39e870f9aa3";
 
         internal static readonly PluginQmkBoard[] Boards =
         {

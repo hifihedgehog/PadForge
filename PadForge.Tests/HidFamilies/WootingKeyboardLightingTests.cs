@@ -31,7 +31,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheTables_AreOpenRgbsAtThePinnedCommit()
         {
-            Assert.Equal("b9d903b544a40486709c4ca097d0b234b617db9c", WootingLayouts.OpenRgbCommit);
+            Assert.Equal("6b681e3c3769755e20d0a89759abf38719d1d76f", WootingLayouts.OpenRgbCommit);
             // The cells of each matrix map that are not NA
             // (RGBController_WootingKeyboard.cpp:23-30, 179-186, 311-318,
             // 443-449 and 539-545).

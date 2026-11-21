@@ -92,7 +92,11 @@ namespace PadForge.Tests
         /// registrations inside functions name their device with a variable,
         /// which the inventory did not count (QMKOpenRGBControllerDetect.cpp:172,
         /// QMKVialRGBControllerDetect.cpp:85). The K65 Mini moved from the first Corsair
-        /// family to the V2 one in OpenRGB 4f2d8920, after the inventory. Wooting's 11
+        /// family to the V2 one in OpenRGB 4f2d8920, after the inventory. Later commits
+        /// added registrations the inventory did not count: the K70 PRO MINI WIRELESS's two
+        /// (3035206c), six Cooler Master MK721, CK721 and CK721 LINE lines (e4af57cd), the
+        /// Roccat Kone XTD (e2e64625) and the Akko and Dukharo VN66 vendor collection
+        /// (d91bff77). Wooting's 11
         /// REGISTER_WOOTING_DETECTOR lines make three detectors each
         /// (WootingKeyboardControllerDetect.cpp:182-185).
         /// </summary>
@@ -105,7 +109,7 @@ namespace PadForge.Tests
                 ["AlienwareController"] = 2, ["AlienwareKeyboardController"] = 2, ["AnnePro2Controller"] = 5,
                 ["AsusAuraCoreController"] = 5, ["AsusAuraUSBController"] = 101, ["AsusLegacyUSBController"] = 3,
                 ["AsusTUFLaptopController"] = 2, ["CherryKeyboardController"] = 25, ["ClevoKeyboardController"] = 2,
-                ["CoolerMasterController"] = 38, ["CorsairPeripheralController"] = 38, ["CorsairPeripheralV2Controller"] = 39,
+                ["CoolerMasterController"] = 38, ["CorsairPeripheralController"] = 38, ["CorsairPeripheralV2Controller"] = 41,
                 ["CougarController"] = 2, ["DarkProject"] = 1, ["DasKeyboardController"] = 3, ["DuckyKeyboardController"] = 2,
                 ["DygmaRaiseController"] = 1, ["EVGAUSBController"] = 7, ["EVisionKeyboardController"] = 15,
                 ["FnaticStreakController"] = 3, ["GaiZongGaiKeyboardController"] = 9, ["GigabyteAorusLaptopController"] = 4,
@@ -114,15 +118,15 @@ namespace PadForge.Tests
                 ["LightSaltController"] = 1, ["MNTKeyboardController"] = 2, ["MSI3ZoneController"] = 1,
                 ["MSIKeyboardController"] = 4, ["MSILaptopController"] = 4, ["MSIVigorController"] = 1,
                 ["MintakaKeyboardController"] = 1, ["MountainKeyboardController"] = 3, ["OKSController"] = 1,
-                ["QMKController"] = 5, ["RedSquareKeyroxController"] = 2, ["RoccatController"] = 28,
-                ["RoyuanKeyboardController"] = 5, ["SayoDeviceController"] = 1, ["SinowealthController"] = 13,
+                ["QMKController"] = 5, ["RedSquareKeyroxController"] = 2, ["RoccatController"] = 29,
+                ["RoyuanKeyboardController"] = 6, ["SayoDeviceController"] = 1, ["SinowealthController"] = 13,
                 ["SkyloongController"] = 1, ["ThermaltakePoseidonZRGBController"] = 1, ["ValkyrieKeyboardController"] = 2,
                 ["WinbondGamingKeyboardController"] = 1, ["WitmodKeyboardController"] = 1, ["WootingKeyboardController"] = 13,
                 ["XPGSummonerKeyboardController"] = 1, ["ZETKeyboardController"] = 1,
             };
             var windowsBuild = new Dictionary<string, int>
             {
-                ["AsusTUFLaptopController"] = 1, ["CoolerMasterController"] = 37, ["HyperXKeyboardController"] = 13,
+                ["AsusTUFLaptopController"] = 1, ["CoolerMasterController"] = 43, ["HyperXKeyboardController"] = 13,
                 ["SinowealthController"] = 11, ["QMKController"] = 7,
             };
             Assert.Equal(54, inventory.Count);
@@ -133,8 +137,8 @@ namespace PadForge.Tests
                 Assert.True(windowsBuild.GetValueOrDefault(family, count) == lines, $"{family}: {lines} lines");
                 Assert.Equal(family == "WootingKeyboardController" ? 2 + 3 * 11 : lines, rows.Count);
             }
-            Assert.Equal(473, OpenRgbRegistrations.All.Count(r => inventory.ContainsKey(r.Family)));
-            Assert.Equal(577, OpenRgbRegistrations.All.Length);
+            Assert.Equal(483, OpenRgbRegistrations.All.Count(r => inventory.ContainsKey(r.Family)));
+            Assert.Equal(587, OpenRgbRegistrations.All.Length);
             Assert.DoesNotContain(OpenRgbRegistrations.All, r => r.Family is "HIDLampArrayController" or "LogitechController"
                                                                or "RazerController" or "SteelSeriesController");
         }

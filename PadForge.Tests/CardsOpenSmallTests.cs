@@ -453,9 +453,15 @@ namespace PadForge.Tests
             XElement Line(string name) => list.Elements().Single(e => Name(e) == name);
             Assert.Contains("{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}", Line("CrossfeedFoldCard").ToString());
             Assert.Contains("EqCurveControl", Line("ParametricEqFoldCard").ToString());
-            // A row that belongs to a line's first row has its label set in.
-            foreach (string label in new[] { "Pad_Audio_CrossfeedCut", "Pad_Audio_CrossfeedFeed", "Pad_Audio_EqPreamp", "Pad_Audio_LimiterCeiling" })
-                Assert.Equal("{StaticResource DzSubLabel}", (string)list.Descendants().Single(e => e.Name.LocalName == "TextBlock" && Key(e, "Text") == label).Attribute("Style"));
+            // A row that belongs to the row above it has its label set in:
+            // Cut and Feed under the Crossfeed preset. The EQ's Preamp and
+            // the Limiter's Ceiling are the first rows of their lines, whose
+            // switch is on the line, and stand at the label column.
+            string StyleOf(string label) => (string)list.Descendants().Single(e => e.Name.LocalName == "TextBlock" && Key(e, "Text") == label).Attribute("Style");
+            foreach (string label in new[] { "Pad_Audio_CrossfeedCut", "Pad_Audio_CrossfeedFeed" })
+                Assert.Equal("{StaticResource DzSubLabel}", StyleOf(label));
+            foreach (string label in new[] { "Pad_Audio_EqPreamp", "Pad_Audio_LimiterCeiling" })
+                Assert.Equal("{StaticResource DzLabel}", StyleOf(label));
 
             // The EQ and the Limiter turn on and off on their line, and the
             // switch is the line's state: no On or Off is written beside it.

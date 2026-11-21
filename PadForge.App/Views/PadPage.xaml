@@ -9592,7 +9592,7 @@
                                              FractionToPercentConverter. -->
                                         <StackPanel IsEnabled="{Binding TouchpadEnableJoystickOutput}">
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
                                                         Style="{StaticResource DzSlider}" Minimum="5" Maximum="50"/>
                                                 <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
@@ -9602,7 +9602,7 @@
                                                         ToolTip="{Binding Pad_ResetTouchpadStickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
                                                         Style="{StaticResource DzSlider}" Maximum="10"/>
                                                 <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
@@ -9760,7 +9760,7 @@
                                              converter. -->
                                         <StackPanel IsEnabled="{Binding DeviceConfig.TouchpadSyntheticPressure}">
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Touchpad_SyntheticTouchLevel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Touchpad_SyntheticTouchLevel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding DeviceConfig.TouchpadSyntheticTouchPercent, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}" Maximum="100"
                                                         ToolTip="{Binding Pad_Touchpad_SyntheticTouchLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -9807,7 +9807,7 @@
 
                                         <StackPanel IsEnabled="{Binding TouchpadSwipeHapticsEnabled}">
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Touchpad_SwipeHapticsIntensity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Touchpad_SwipeHapticsIntensity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding TouchpadSwipeHapticsIntensity, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
                                                         Style="{StaticResource DzSlider}" Minimum="5" Maximum="100"
                                                         ToolTip="{Binding Pad_Touchpad_SwipeHapticsIntensity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -12809,7 +12809,7 @@
                                     <StackPanel>
                                         <StackPanel Visibility="{Binding DeviceConfig.AudioEqEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Audio_EqPreamp, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
+                                                <TextBlock Text="{Binding Pad_Audio_EqPreamp, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                            ToolTip="{Binding Pad_Audio_EqPreamp_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Slider Value="{Binding DeviceConfig.AudioEqPreampDb, Mode=TwoWay}" Minimum="-30" Maximum="12"
                                                         Style="{StaticResource DzSlider}"/>
@@ -12966,7 +12966,7 @@
                                     <StackPanel>
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44"
                                                     Visibility="{Binding DeviceConfig.AudioLimiterEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding Pad_Audio_LimiterCeiling, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSubLabel}"
+                                            <TextBlock Text="{Binding Pad_Audio_LimiterCeiling, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                        ToolTip="{Binding Pad_Audio_LimiterCeiling_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Slider Value="{Binding DeviceConfig.AudioLimiterCeiling, Mode=TwoWay}" Minimum="5" Maximum="100"
                                                     Style="{StaticResource DzSlider}"/>

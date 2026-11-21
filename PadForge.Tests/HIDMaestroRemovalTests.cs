@@ -196,10 +196,11 @@ namespace PadForge.Tests
             Assert.Contains("_engineStopTask = System.Threading.Tasks.Task.Run(() => _inputService.Stop());", main, StringComparison.Ordinal);
         }
 
-        /// <summary>The Settings card reads the driver store, never an
-        /// HIDMaestro context: a context's warm-up stages the driver files
-        /// again in an elevated process with no driver installed, which
-        /// would follow every removal.</summary>
+        /// <summary>The HIDMaestro row of the Drivers card reads the driver
+        /// store, or on the USB/IP backend the host controller, and never
+        /// constructs an HIDMaestro context: a context's warm-up stages the
+        /// driver files again in an elevated process with no driver
+        /// installed, which would follow every removal.</summary>
         [Fact]
         public void TheSettingsCardReadsTheDriverStoreAndNoContext()
         {
@@ -212,6 +213,42 @@ namespace PadForge.Tests
             // Whatever this PC holds, the read answers and never throws.
             bool installed = HIDMaestroRemoval.IsDriverInstalled();
             Assert.Equal(installed, HIDMaestroRemoval.IsDriverInstalled());
+        }
+
+        /// <summary>On a machine whose HIDMaestro backend is USB/IP, as on
+        /// Windows on ARM, HIDMaestro installs usbip-win2's host controller
+        /// in place of its own driver, so its driver package never reaches
+        /// the driver store, and HIDMaestro's own answer reads the host
+        /// controller (HMContext.IsDriverInstalled at eb2f2ce0). The row
+        /// gives the same answer. On the UMDF2 backend the driver store
+        /// answers, whatever the host controller says.</summary>
+        [Fact]
+        public void OnTheUsbipBackend_TheRowReadsTheHostController()
+        {
+            var backend = HIDMaestroRemoval.MachineBackendSeam;
+            var usbip = HIDMaestroRemoval.UsbipAvailableSeam;
+            try
+            {
+                HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Usbip;
+                HIDMaestroRemoval.UsbipAvailableSeam = () => true;
+                Assert.True(HIDMaestroRemoval.IsDriverInstalled());
+                HIDMaestroRemoval.UsbipAvailableSeam = () => false;
+                Assert.False(HIDMaestroRemoval.IsDriverInstalled());
+
+                string repository = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.System),
+                    "DriverStore", "FileRepository");
+                bool inStore = System.IO.Directory.Exists(repository)
+                    && System.IO.Directory.EnumerateDirectories(repository, "hidmaestro.inf_*").Any();
+                HIDMaestroRemoval.MachineBackendSeam = () => HMBackend.Umdf2;
+                HIDMaestroRemoval.UsbipAvailableSeam = () => !inStore;
+                Assert.Equal(inStore, HIDMaestroRemoval.IsDriverInstalled());
+            }
+            finally
+            {
+                HIDMaestroRemoval.MachineBackendSeam = backend;
+                HIDMaestroRemoval.UsbipAvailableSeam = usbip;
+            }
         }
 
         /// <summary>The card shows the installed state in the UI language

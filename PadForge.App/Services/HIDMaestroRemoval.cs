@@ -37,23 +37,41 @@ namespace PadForge.Services
         /// runs it.</summary>
         internal static Func<HMUninstallOptions, HMUninstallReport> RunSeam;
 
+        /// <summary>Test seam for HMContext.MachineBackend, null in
+        /// production.</summary>
+        internal static Func<HMBackend> MachineBackendSeam;
+
+        /// <summary>Test seam for HMContext.IsUsbipBackendAvailable, null in
+        /// production.</summary>
+        internal static Func<bool> UsbipAvailableSeam;
+
         /// <summary>
-        /// True while HIDMaestro's driver package is in the driver store: a
+        /// True while the driver of the machine's HIDMaestro backend is
+        /// installed, the answer HIDMaestro's own
+        /// HMContext.IsDriverInstalled gives for Auto. On the USB/IP backend
+        /// (HMContext.MachineBackend), as on Windows on ARM, HIDMaestro
+        /// installs usbip-win2's host controller in place of its own driver,
+        /// so the answer is the host controller's presence
+        /// (HMContext.IsUsbipBackendAvailable). On the UMDF2 backend it is
+        /// HIDMaestro's driver package in the driver store: a
         /// <c>hidmaestro.inf_*</c> folder under DriverStore\FileRepository,
         /// the first test HIDMaestro's own check makes
         /// (PnputilHelper.IsHidMaestroDriverInstalled).
         ///
-        /// <para>Read from the folder, never through HMContext.IsDriverInstalled.
-        /// Constructing a context starts HIDMaestro's warm-up, and in an
-        /// elevated process with no driver installed the warm-up takes
-        /// HIDMaestro's owner claim and stages the driver files under
-        /// %ProgramFiles%\HIDMaestro, which after a removal would put them
-        /// back (HMContext's constructor).</para>
+        /// <para>Never read through an HMContext. Constructing a context
+        /// starts HIDMaestro's warm-up, and in an elevated process with no
+        /// driver installed the warm-up takes HIDMaestro's owner claim and
+        /// stages the driver files under %ProgramFiles%\HIDMaestro, which
+        /// after a removal would put them back (HMContext's constructor).
+        /// The two probes above are static and construct none.</para>
         /// </summary>
         internal static bool IsDriverInstalled()
         {
             try
             {
+                HMBackend backend = MachineBackendSeam != null ? MachineBackendSeam() : HMContext.MachineBackend;
+                if (backend == HMBackend.Usbip)
+                    return UsbipAvailableSeam != null ? UsbipAvailableSeam() : HMContext.IsUsbipBackendAvailable;
                 string repository = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.System),
                     "DriverStore", "FileRepository");

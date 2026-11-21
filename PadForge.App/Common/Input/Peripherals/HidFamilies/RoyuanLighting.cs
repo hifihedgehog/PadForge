@@ -6,10 +6,18 @@ namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
     /// The Royuan keyboards OpenRGB's RoyuanKeyboardController lights (#557):
-    /// the Akko 3068B Plus and PC75B Plus on interface 0, the Skyloong
-    /// GK68HE Pro, the Epomaker TH80 Pro on cable and dongle and the Attack
-    /// Shark K86 on interface 2 (RoyuanKeyboardControllerDetect.cpp:92-96).
+    /// the Akko 3068B Plus and PC75B Plus on interface 0 and on the vendor
+    /// collection of interface 1, page FFFF, the Skyloong GK68HE Pro, the
+    /// Epomaker TH80 Pro on cable and dongle and the Attack Shark K86 on
+    /// interface 2 (RoyuanKeyboardControllerDetect.cpp:125-130 at 6b681e3c).
     /// Each takes one color for the whole board.
+    ///
+    /// <para>The Dukharo VN66 has the Akko's product ID and profile. OpenRGB
+    /// makes no controller of its interface 0, whose product string holds
+    /// "Dukharo" or "VN66", and lights it through the vendor collection
+    /// (lines 27-81, RoyuanKeyboardController.cpp:98-105, d91bff77). A session
+    /// on interface 0 reads the product string first and is not made for
+    /// it.</para>
     ///
     /// <para>The report. SET_LEDPARAM, a 65-byte feature report 0: 07, the
     /// mode, the speed, the brightness, the option, red, green and blue, and
@@ -19,7 +27,7 @@ namespace PadForge.Common.Input.Peripherals
     /// Shark (lines 26-96 and 249-271).</para>
     ///
     /// <para>The Akko lights its Static mode with a single color: mode 01,
-    /// option 0x08, its speed byte reversed, 4 for Static's speed 0
+    /// option 0x07, its speed byte reversed, 4 for Static's speed 0
     /// (RGBController_AkkoKeyboard.cpp, the Static mode and DeviceUpdateLEDs,
     /// RoyuanKeyboardController.cpp:319-337), and brightness 4, its most
     /// (RoyuanKeyboardController.h:99), since PadForge dims a color itself.
@@ -118,9 +126,10 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte SetDirectColor = 0x0E;
 
         /// <summary>The modes and options (RoyuanKeyboardController.h:20-60,
-        /// EpomakerController.h).</summary>
+        /// EpomakerController.h). ROYUAN_AKKO_COLOR_SINGLE is 07 and RANDOM 08
+        /// since d91bff77 (lines 54-55 at 6b681e3c).</summary>
         internal const byte AkkoStatic = 0x01;
-        internal const byte AkkoColorSingle = 0x08;
+        internal const byte AkkoColorSingle = 0x07;
         internal const byte SkyloongDirect = 0x15;
         internal const byte EpomakerAlwaysOn = 0x01;
         internal const byte EpomakerDazzleOff = 0x07;
@@ -146,7 +155,7 @@ namespace PadForge.Common.Input.Peripherals
 
         public string Name => "Royuan";
 
-        private readonly Dictionary<ushort, HidLightingModel> _models = new();
+        private readonly Dictionary<(ushort, string), HidLightingModel> _models = new();
 
         public HidLightingModel Match(HidCollectionInfo collection)
         {
@@ -160,9 +169,11 @@ namespace PadForge.Common.Input.Peripherals
                 SkyloongDetector => Board.Skyloong,
                 _ => Board.Legacy,
             };
+            bool akkoFirst = board == Board.Akko && registration.Interface == 0;
             lock (_models)
             {
-                if (_models.TryGetValue(collection.ProductId, out var model)) return model;
+                var key = (collection.ProductId, registration.Name);
+                if (_models.TryGetValue(key, out var model)) return model;
                 model = new HidLightingModel
                 {
                     Family = this,
@@ -173,12 +184,19 @@ namespace PadForge.Common.Input.Peripherals
                     },
                     HoldMs = board switch { Board.Akko => AkkoPreSetMs, Board.Legacy => SinowealthLighting.StoredHoldMs, _ => 0 },
                     RepaintMs = board switch { Board.Akko => AkkoPostSetMs, Board.Legacy => SinowealthLighting.StoredRepaintMs, _ => RepaintMs },
-                    Begin = (io, wait) => Session.Begin(io, wait, board, board == Board.Akko ? this : null),
+                    Begin = (io, wait) => akkoFirst && IsDukharoVn66(io?.ProductString)
+                        ? null
+                        : Session.Begin(io, wait, board, board == Board.Akko ? this : null),
                 };
-                _models[collection.ProductId] = model;
+                _models[key] = model;
                 return model;
             }
         }
+
+        /// <summary>The product string OpenRGB takes for a Dukharo VN66
+        /// (RoyuanKeyboardControllerDetect.cpp:33, 47 and 56).</summary>
+        internal static bool IsDukharoVn66(string product)
+            => product != null && (product.Contains("Dukharo", StringComparison.Ordinal) || product.Contains("VN66", StringComparison.Ordinal));
 
         /// <summary>CalculateChecksum (RoyuanKeyboardController.cpp:249-271).</summary>
         internal static byte Checksum(byte[] report, int from, int count, bool onesComplement)
@@ -267,13 +285,15 @@ namespace PadForge.Common.Input.Peripherals
         /// 316-341). Both boards reverse their speed against a maximum of 4,
         /// so a speed byte of 4 or less goes back as it came, and a larger one
         /// as the board's default reversed: 4 on the Akko, 2 on the Skyloong
-        /// (lines 50-96). The brightness is at most 4. The Skyloong sends
-        /// option 0x07 for its Static mode whatever was read.</summary>
+        /// (lines 50-96). The brightness is at most 4. Both send option 0x07
+        /// for their Static mode whatever was read, the solid option of their
+        /// profiles (solid_option_overrides_static, lines 67-68, 91-92 and
+        /// 346-353, the Akko's since d91bff77).</summary>
         internal static byte[] RestoreReport(Board board, byte[] state)
         {
             byte brightness = Math.Min(state[2], (byte)4);
             byte speed = state[1] <= 4 ? state[1] : (byte)(board == Board.Akko ? 4 : 2);
-            byte option = board == Board.Skyloong && state[0] == AkkoStatic ? (byte)0x07 : state[3];
+            byte option = board != Board.Legacy && state[0] == AkkoStatic ? AkkoColorSingle : state[3];
             int rgb = state[4] << 16 | state[5] << 8 | state[6];
             return LedParams(board, state[0], speed, brightness, option, rgb);
         }

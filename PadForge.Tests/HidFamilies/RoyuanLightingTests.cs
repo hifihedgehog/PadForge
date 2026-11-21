@@ -18,18 +18,21 @@ namespace PadForge.Tests
 
         private static readonly IReadOnlyList<IHidLightingFamily> Families = new IHidLightingFamily[] { R.Instance };
 
-        private static HidCollectionInfo Vendor(ushort pid, int iface)
-            => KeyboardFamilyRig.Collection(0x3151, pid, 0xFF00, 0x01, iface: iface, feature: 65);
+        private static HidCollectionInfo Vendor(ushort pid, int iface, ushort page = 0xFF00)
+            => KeyboardFamilyRig.Collection(0x3151, pid, page, 0x01, iface: iface, feature: 65);
 
         [Fact]
         public void EveryRegistration_IsMatchedOnItsFeatureCollection()
         {
+            // RoyuanKeyboardControllerDetect.cpp:125-130 at 6b681e3c: the Akko's vendor
+            // collection on interface 1, page FFFF, is a registration of its own (d91bff77).
             var registrations = OpenRgbRegistrations.Of(R.FamilyName).ToList();
-            Assert.Equal(5, registrations.Count);
+            Assert.Equal(6, registrations.Count);
             foreach (var r in registrations)
             {
-                Assert.Equal(r.Name, R.Instance.Match(Vendor((ushort)r.ProductId, r.Interface)).Name);
-                Assert.Null(R.Instance.Match(Vendor((ushort)r.ProductId, r.Interface) with { FeatureReportLength = 9 }));
+                var collection = Vendor((ushort)r.ProductId, r.Interface, r.UsagePage < 0 ? (ushort)0xFF00 : (ushort)r.UsagePage);
+                Assert.Equal(r.Name, R.Instance.Match(collection).Name);
+                Assert.Null(R.Instance.Match(collection with { FeatureReportLength = 9 }));
             }
         }
 
@@ -49,10 +52,12 @@ namespace PadForge.Tests
         public void TheReports_AreOpenRgbs()
         {
             // The Akko's Static: 07 01, speed 4, brightness 4 (its most, since
-            // PadForge dims the color itself), option 08. The sum drops by one.
+            // PadForge dims the color itself), and ROYUAN_AKKO_COLOR_SINGLE, 07 since
+            // d91bff77 swapped it with RANDOM (RoyuanKeyboardController.h:54-55 at
+            // 6b681e3c). Sum 0x07+1+4+4+7+0x60 = 0x77, ones' complement 0x88.
             var akko = R.Picture(R.Board.Akko, 0x102030);
             Assert.Equal(65, akko.Length);
-            Assert.Equal("00 07 01 04 04 08 10 20 30 87", Hex(akko, 10));
+            Assert.Equal("00 07 01 04 04 07 10 20 30 88", Hex(akko, 10));
             // The Epomaker's Always On: speed 0, brightness 4, option 07,
             // sum 0x07+1+0+4+7+0x60 = 0x73, 0x80 - 0x73 - 1 = 0x0C.
             Assert.Equal("00 07 01 00 04 07 10 20 30 0C", Hex(R.Picture(R.Board.Legacy, 0x102030), 10));
@@ -75,10 +80,13 @@ namespace PadForge.Tests
             state[1] = 9;
             Assert.Equal(4, R.RestoreReport(R.Board.Akko, state)[3]);
             Assert.Equal(2, R.RestoreReport(R.Board.Skyloong, state)[3]);
-            // The Skyloong's Static takes option 07.
+            // A Static state goes back with option 07 on both, whatever was read:
+            // solid_option_overrides_static (SendUpdate, RoyuanKeyboardController.cpp:346-353),
+            // which the Akko's profile sets since d91bff77 (lines 67-68).
             state[0] = 0x01;
             Assert.Equal(0x07, R.RestoreReport(R.Board.Skyloong, state)[5]);
-            Assert.Equal(0x13, R.RestoreReport(R.Board.Akko, state)[5]);
+            Assert.Equal(0x07, R.RestoreReport(R.Board.Akko, state)[5]);
+            Assert.Equal(0x13, R.RestoreReport(R.Board.Legacy, state)[5]);
         }
 
         private static byte[] Answer()
@@ -102,7 +110,7 @@ namespace PadForge.Tests
             // The first read missed, the second answered, 80 ms after each ask.
             Assert.Equal(2, sent.Count(s => s.Kind == 'G'));
             Assert.Equal(2, rig.Waits.Count(w => w == R.ReadWaitMs));
-            Assert.Equal("00 07 01 04 04 08 FF 00 00", Hex(rig.Log.Of('F')[1], 9));
+            Assert.Equal("00 07 01 04 04 07 FF 00 00", Hex(rig.Log.Of('F')[1], 9));
             var restore = "00 07 05 02 03 13 0A 0B 0C";
             Assert.Equal(restore, Hex(Assert.Single(Assert.Single(backend.Recorded).Frames), 9));
             // A new color waits 1.5 s after the last.
@@ -117,6 +125,36 @@ namespace PadForge.Tests
             rig.Log.Clear();
             rig.Release(backend);
             Assert.Equal(restore, Hex(Assert.Single(rig.Log.Of('F')), 9));
+        }
+
+        /// <summary>The Dukharo VN66 shares the Akko's product ID. OpenRGB makes no
+        /// controller of its interface 0, whose product string names it, and lights it
+        /// through the vendor collection on interface 1 with the Akko's profile
+        /// (DetectRoyuanAkkoKeyboardControllers, RoyuanKeyboardControllerDetect.cpp:27-81,
+        /// RoyuanKeyboardController.cpp:98-105, d91bff77).</summary>
+        [Theory]
+        [InlineData("ROYUAN Dukharo VN66 Wired")]
+        [InlineData("VN66")]
+        public void ADukharoVn66_IsLitOnItsVendorCollection_AndNotOnInterface0(string product)
+        {
+            byte[] answer = new byte[65];
+            answer[1] = 0x87;
+            answer[2] = 0x05; answer[3] = 0x02; answer[4] = 0x03; answer[5] = 0x13;
+            var first = R.Instance.Match(Vendor(0x4003, 0));
+            Assert.Equal("Akko 3068B Plus / PC75B Plus", first.Name);
+            var io = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = product, Feature = _ => answer };
+            Assert.Null(first.Begin(io, _ => { }));
+            Assert.Empty(io.Calls);
+            var vendor = R.Instance.Match(Vendor(0x4003, 1, 0xFFFF));
+            Assert.Equal("Akko 3068B Plus / Dukharo VN66 (Vendor)", vendor.Name);
+            var lit = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = product, Feature = _ => answer };
+            var session = vendor.Begin(lit, _ => { });
+            Assert.NotNull(session);
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(lit, _ => { }, vendor.Map.Lights, new[] { 0x102030 }));
+            Assert.Equal("00 07 01 04 04 07 10 20 30 88", Hex(lit.Calls.Last().Bytes, 10));
+            // An Akko on interface 0 opens as before.
+            var akko = new FakeReportChannel { Path = null, FeatureReportLength = 65, ProductString = "Akko 3068B Plus", Feature = _ => answer };
+            Assert.NotNull(first.Begin(akko, _ => { }));
         }
 
         [Fact]

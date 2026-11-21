@@ -8,7 +8,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
-    /// The line a peripheral row's tab shows (#494): where its output goes
+    /// The line a peripheral row's group shows (#494): where its output goes
     /// and whether that path answers, in place of the Dashboard status lines
     /// the global switches carried. Built on the UI thread from the link
     /// table, the backend states and the found HID++ and direct units. While
@@ -19,9 +19,9 @@ namespace PadForge.Common.Input.Peripherals
     /// </summary>
     internal static class PeripheralRouteText
     {
-        /// <summary>The Force Feedback tab's line for a haptic row, or null
+        /// <summary>The Force Feedback group's line for a haptic row, or null
         /// for any other row. <paramref name="slotLive"/> says whether the
-        /// tab's controller rumbles anything
+        /// controller rumbles anything
         /// (<see cref="PeripheralOutputs.SlotLive"/>): one whose controller is
         /// gone sends the row no rumble, so it names no route. A Razer Sensa
         /// row in a build that cannot load its engine reads that platform's
@@ -150,7 +150,7 @@ namespace PadForge.Common.Input.Peripherals
             };
         }
 
-        /// <summary>The Lighting tab's line for a lit row on the virtual
+        /// <summary>The Lighting group's line for a lit row on the virtual
         /// controller at <paramref name="slot"/>, or null for any other row:
         /// where its colors go, whether that path answers, and whose color
         /// shows when another claim rules the path.

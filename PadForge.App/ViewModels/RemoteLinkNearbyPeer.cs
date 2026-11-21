@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace PadForge.ViewModels
 {
     /// <summary>One PadForge PC discovered on the LAN (issue #138), shown in the
-    /// Dashboard "Nearby PCs" list. Clicking Pair initiates the pairing — no IP typing.</summary>
+    /// Remote Link page's list of nearby PCs. Clicking Pair starts the pairing, with no IP to type.</summary>
     public sealed class RemoteLinkNearbyPeer
     {
         public RemoteLinkNearbyPeer(string name, string hostPort, string fingerprintHex, bool isPaired, bool isConnected, Action<string> onPair)

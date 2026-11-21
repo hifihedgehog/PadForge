@@ -59,7 +59,7 @@ namespace PadForge.Common.Input.Telemetry
         public bool ReadsUdp => FormatReadsUdp(Format);
 
         /// <summary>The rule <see cref="ReadsUdp"/> follows, shared with the
-        /// Dashboard, which turns the port boxes off while it is false.</summary>
+        /// Game Telemetry page, which turns the port boxes off while it is false.</summary>
         internal static bool FormatReadsUdp(GameTelemetryFormat format) => format != GameTelemetryFormat.AssettoCorsa;
 
         /// <summary>True while the shared memory pages are polled.</summary>

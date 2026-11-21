@@ -146,7 +146,7 @@ namespace PadForge.Common.Input.Peripherals
     /// unopened until the claimed types change or the retry interval
     /// passes, when it is loaded again in case the software was updated or
     /// replaced, and the types it can paint are published for the Lighting
-    /// tab (<see cref="PeripheralOutputs.LedSdkPaintable"/>). An engine that
+    /// group (<see cref="PeripheralOutputs.LedSdkPaintable"/>). An engine that
     /// cannot be loaded or cannot paint is logged once, not on every
     /// retry.</para>
     /// </summary>

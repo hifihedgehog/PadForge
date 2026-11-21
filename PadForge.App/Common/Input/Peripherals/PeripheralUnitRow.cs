@@ -14,7 +14,7 @@ namespace PadForge.Common.Input.Peripherals
     /// worker or a Logitech HID++ device. Without a row it could not be
     /// assigned, so it gets this one. It has no inputs. Assigned to a
     /// virtual controller it takes that controller's lighting through its
-    /// Lighting tab like any other lit device, and its Key Colors card where
+    /// Lighting group like any other lit device, and its Key Colors card where
     /// its unit knows its lights one by one.
     ///
     /// <para><see cref="PeripheralOutputRow"/>'s shape: a synthetic

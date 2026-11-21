@@ -19,7 +19,7 @@ using Xunit;
 namespace PadForge.Tests;
 
 /// <summary>
-/// The Wheel tab's Rotation Range slider offers the range the wheel takes
+/// The Wheel group's Rotation Range slider offers the range the wheel takes
 /// (discussion #512). It offered 40° to 2,520° on every wheel while each
 /// writer clamped to its model in silence, so a TS-PC set to 40° was sent 140°.
 /// The bounds load with the device whose range loads, so switching between

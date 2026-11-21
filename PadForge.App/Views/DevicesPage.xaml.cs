@@ -308,7 +308,7 @@ namespace PadForge.Views
         private void OnListViewChanged(object sender, NotifyCollectionChangedEventArgs e)
             => Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(SyncListSelection));
 
-        /// <summary>Use It on a row: the type bar under the button, and the
+        /// <summary>Use It on a row: Add a Controller opens, and the
         /// controller made there takes the row's device.</summary>
         private void UseIt_Click(object sender, RoutedEventArgs e)
         {
@@ -335,7 +335,7 @@ namespace PadForge.Views
             host.Child = RawFullView;
         }
 
-        // v3.3 — gyro UI moved to the Pad page's Gyro tab. The Calibrate
+        // v3.3: gyro UI moved to the pad page's Gyro group. The Calibrate
         // / Reset buttons + tuning sliders + live rate readout live there
         // now, gated per-(device, slot) like FFB / Adaptive Triggers /
         // Lighting. The Devices page intentionally has no gyro UI: it's
@@ -530,7 +530,7 @@ namespace PadForge.Views
 
             // Destructive-verb guard (#175 phase 2 item 1b): one click
             // deleted the device record plus its settings. Same shared
-            // confirm as the Dashboard slot X. The body names the device
+            // confirm as a Home card's Delete. The body names the device
             // the row holds and states the settings are forgotten.
             bool confirmed = ConfirmDialog.Show(
                 Window.GetWindow(this),

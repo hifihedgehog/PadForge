@@ -21,9 +21,9 @@ namespace PadForge.Common.Input.Twitch
         string Notice);
 
     /// <summary>
-    /// The Dashboard mirror the engine reads for Twitch chat (issue #555),
+    /// The mirror of the Twitch Chat page's settings the engine reads (issue #555),
     /// the shape of <see cref="Telemetry.GameTelemetryRuntime"/>: static,
-    /// written by the Dashboard view model on the UI thread, read by the poll
+    /// written by DashboardViewModel on the UI thread, read by the poll
     /// thread's device sweep, by the row and by the controller picture page.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row

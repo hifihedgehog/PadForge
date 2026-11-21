@@ -147,7 +147,7 @@ namespace PadForge.Tests
         [Fact]
         public void ReshapeUnit_RimMapsToUnit_AndPreviewCoreIsFrameConsistent()
         {
-            // ReshapeUnit is the shared warp core the Sticks-tab preview calls
+            // ReshapeUnit is the shared warp core the Sticks group preview calls
             // (after flipping Y into the XInput frame). A rim point in unit space
             // must land on the unit circle at every angle; a half point at half.
             var data = StickBoundary.NewMap();

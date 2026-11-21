@@ -30,7 +30,7 @@ param(
     [string]$NvdaDir = (Join-Path $env:LOCALAPPDATA 'PadForgeStudio\tooling\nvda'),
     [string]$OutDir = (Join-Path $env:LOCALAPPDATA 'PadForgeA11y'),
     [string]$Label = 'pass',
-    # Sidebar page to select first (Dashboard, Profiles, Devices, Pad1,
+    # Sidebar page to select first (Dashboard for Home, Profiles, Devices, Pad1,
     # Settings, About). Empty: tab through whatever page is in front.
     [string]$Page,
     # AutomationIds to select after the page, in order: a controller's

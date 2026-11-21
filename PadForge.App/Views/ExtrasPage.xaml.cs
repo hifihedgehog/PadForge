@@ -173,7 +173,7 @@ namespace PadForge.Views
 
         /// <summary>The Display boxes take in a display plugged in or out, once
         /// a second while the Crosshair or the Magnifier page is on the
-        /// screen, as the Lighting tab's box does.</summary>
+        /// screen, as the Lighting group's box does.</summary>
         private void FollowDisplays()
         {
             if (!IsVisible || CurrentExtra is not ("Crosshair" or "Magnifier"))

@@ -181,7 +181,7 @@ namespace PadForge.Tests
         }
     }
 
-    /// <summary>The Lighting tab's lines for a refused session and a device
+    /// <summary>The Lighting group's lines for a refused session and a device
     /// that stores its pictures (#557).</summary>
     [Collection("PeripheralOutputStatics")]
     public class RefusedAndStoredRouteTests : IDisposable

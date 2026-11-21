@@ -8,7 +8,7 @@ namespace PadForge.Converters
     /// <summary>
     /// Multi-binding converter: takes (Red, Green, Blue) byte values
     /// and produces a <see cref="SolidColorBrush"/> for the lightbar
-    /// preview swatch on the Lighting tab. Falls back to black on
+    /// preview swatch in the Lighting group. Falls back to black on
     /// invalid input.
     /// </summary>
     public sealed class RgbToBrushConverter : IMultiValueConverter

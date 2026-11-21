@@ -2638,8 +2638,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>A slot whose controller comes or goes changes what the
-        /// tabs say even where no claim was pruned, so the pass refreshes them
-        /// when a slot's liveness flips, and the tabs read the same rule the
+        /// groups say even where no claim was pruned, so the pass refreshes them
+        /// when a slot's liveness flips, and the groups read the same rule the
         /// prune does.</summary>
         [Fact]
         public void ASlotThatComesOrGoes_RefreshesTheTabs()
@@ -3171,7 +3171,7 @@ namespace PadForge.Tests
 
         /// <summary>A haptic mouse, keyboard or the Razer Sensa row plays the
         /// stronger motor whichever side it is on, so swapping the two changes
-        /// nothing, and the Force Feedback tab leaves the swap row out for
+        /// nothing, and the Force Feedback group leaves the swap row out for
         /// those rows and keeps it for every other device.</summary>
         [Fact]
         public void TheSwapRowHidesForAHapticRow_WhosePlayIsTheStrongerMotor()

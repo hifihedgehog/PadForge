@@ -631,8 +631,8 @@ namespace PadForge.Common.Input.Peripherals
             }
 
             // A slot that starts or stops lighting anything changes what the
-            // tabs say even where no claim was pruned: a rumble row, or a
-            // device whose Lighting tab leaves it alone.
+            // groups say even where no claim was pruned: a rumble row, or a
+            // device whose Lighting group leaves it alone.
             long live = 0;
             for (int slot = 0; slot < InputManager.MaxPads && slot < 64; slot++)
                 if (PeripheralOutputs.SlotLive(slot)) live |= 1L << slot;

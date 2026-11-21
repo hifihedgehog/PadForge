@@ -451,7 +451,7 @@ namespace PadForge.Engine.Common.Mapping
         public static Func<string, int, SimulatedGyroSample?> SimulatedGyroProvider { get; set; }
 
         /// <summary>Puts the simulated rates (#472) on the axes they supply,
-        /// over a debiased body reading in the sensor's frame. The Gyro tab's
+        /// over a debiased body reading in the sensor's frame. The Gyro group's
         /// readout calls it before the grip so it shows what
         /// <c>ReadCalibratedGyroRate</c> gives the mappings and the virtual
         /// controller.</summary>
@@ -614,7 +614,7 @@ namespace PadForge.Engine.Common.Mapping
         public static Func<string, float> BalanceTareKgProvider { get; set; }
 
         /// <summary>Per-(device, slot) Wii IR pointer tuning (issue #146 Pointer
-        /// tab), keyed by device GUID + VC slot so two virtual controllers
+        /// group), keyed by device GUID + VC slot so two virtual controllers
         /// sharing one remote keep independent pointer feel (stored on
         /// PadSetting like every other pad-page tunable). Returns the normalized
         /// vertical offset that compensates for the sensor bar sitting above or
@@ -678,7 +678,7 @@ namespace PadForge.Engine.Common.Mapping
 
         // Per-(device, slot, axis) EMA state for the IR pointer smoothing. The
         // smoothing must live at the slot-scoped read (not the per-device
-        // wrapper) so each virtual controller's Pointer-tab setting applies
+        // wrapper) so each virtual controller's Pointer group setting applies
         // independently. Entries are removed on sight loss so a re-acquire
         // snaps instead of sliding in from stale, and the population is
         // bounded by (devices x slots x 2 axes). Seq gates the EMA to one
@@ -706,7 +706,7 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Set on a thread that reads sources for a display off the
         /// poll thread. The IR pointer read then writes neither its held aim
-        /// nor its smoothing, which the poll thread owns: the Triggers tab's
+        /// nor its smoothing, which the poll thread owns: the Triggers group's
         /// live preview reads its rows on the UI thread.</summary>
         [ThreadStatic] private static bool _irReadOnly;
 
@@ -747,7 +747,7 @@ namespace PadForge.Engine.Common.Mapping
         // tick; each cache compares its stored sequence and re-serves the
         // frame's value on repeat reads. Without this, every extra row
         // advanced the shared state again: two gyro rows halved the
-        // smoothing window the Gyro tab promised (the passthrough path's
+        // smoothing window the Gyro group promised (the passthrough path's
         // "pt" key suffix guarded exactly this collision against the
         // mapping path, but mapping rows collided with each other), and a
         // second relative-touchpad row consumed the first one's delta.
@@ -1266,7 +1266,7 @@ namespace PadForge.Engine.Common.Mapping
         /// profile carried feel the user could neither see nor change, and an
         /// identical hand-built profile behaved differently with nothing to
         /// explain the gap. Touchpad glide is still supported through the
-        /// Touchpad tab's Momentum card, which the mouse lane reads
+        /// Touchpad group's Momentum card, which the mouse lane reads
         /// (ReadTouchpadMouseCounts); the decay here was a second
         /// implementation of the same idea, on a different physical model,
         /// reachable only when a pad drove a non-mouse target.</para>
@@ -1746,7 +1746,7 @@ namespace PadForge.Engine.Common.Mapping
         /// abstract Gamepad sticks / triggers that canonicalize to one),
         /// or to a touchpad finger X/Y position read (#9 B-13, so a
         /// workshop config's per-group touch sensitivity can live on the
-        /// row instead of punting to the Touchpad tab). Drives the
+        /// row instead of punting to the Touchpad group). Drives the
         /// picker/VM slider visibility, mirroring
         /// <see cref="IsGyroDescriptor"/> and the other per-family
         /// sensitivity predicates. Gyro / mouse / IR carry their own
@@ -1789,7 +1789,7 @@ namespace PadForge.Engine.Common.Mapping
         ///
         /// <para>Do NOT neutralize this because the mapping GRID no longer
         /// shows a slider for plain analog sources (the knob moved to the
-        /// Sticks tab, 2026-07-27). This field is also written by the
+        /// Sticks group, 2026-07-27). This field is also written by the
         /// touchpad row surfaces and read by the half-axis / slider button
         /// thresholds, and GenericSensitivityTests plus
         /// TouchpadRowSensitivityTests cover exactly that. Stubbing it to
@@ -2070,7 +2070,7 @@ namespace PadForge.Engine.Common.Mapping
         /// polling tick. Slot-keyed because the gesture engine runs
         /// per-slot now: two slots sharing one physical touchpad each
         /// keep their own GestureContext / FiredGesturesThisFrame, so
-        /// the toggles on each slot's Touchpad tab apply only to that
+        /// the toggles on each slot's Touchpad group apply only to that
         /// slot's mapping rows. Returns false when unwired (engine not
         /// running, no touchpad device).</summary>
         public static Func<int, string, int, string, bool> TouchpadGestureFiredProvider { get; set; }
@@ -2079,7 +2079,7 @@ namespace PadForge.Engine.Common.Mapping
         /// "Right" / "Up" / "Down" / "Click") fired on the given
         /// <c>(slotIndex, deviceGuid)</c> within the current cooldown
         /// pulse (issue #200). Slot-keyed like the touchpad twin so each
-        /// slot's Mouse-tab settings govern only that slot's rows.
+        /// slot's Mouse group settings govern only that slot's rows.
         /// Returns false when unwired.</summary>
         public static Func<int, string, string, bool> MouseGestureFiredProvider { get; set; }
 
@@ -2308,7 +2308,7 @@ namespace PadForge.Engine.Common.Mapping
             float baseVal = (axis == 'X' ? state.Ir.X : state.Ir.Y)
                 * (axis == 'X' ? IrMarginStretchX : IrMarginStretchY);
 
-            // Per-(device, slot) Pointer-tab tuning: sensor-bar vertical offset
+            // Per-(device, slot) Pointer group tuning: sensor-bar vertical offset
             // (Y only, Touchmote offsetY) then EMA smoothing, applied HERE at
             // the slot-scoped read (not the per-device wrapper) so each virtual
             // controller keeps its own pointer feel. Same order the wrapper
@@ -3396,7 +3396,7 @@ namespace PadForge.Engine.Common.Mapping
         /// and every read compares it: a neutral captured under one hold is
         /// a vector in that hold's frame, so after the grip changes it must
         /// be dropped and re-latched from the next real sample. Doing it on
-        /// the read covers every way the grip can change (the Gyro tab, a
+        /// the read covers every way the grip can change (the Gyro group, a
         /// profile switch, external profile control) and closes the window
         /// where the UI-thread recenter ran before the polling thread saw
         /// the new grip and re-latched in the old frame.</summary>
@@ -4352,7 +4352,7 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Applies the per-(device, slot) gyro tuning chain to
         /// the raw motion-sensor reading so the virtual controller's
         /// motion passthrough (the Sony report packer and the DSU
-        /// broadcast) reflects the Gyro tab settings — calibration bias,
+        /// broadcast) reflects the Gyro group settings: calibration bias,
         /// deadzone, sensitivity, smoothing, space projection, real-world
         /// calibration, response curve, acceleration, invert, and the
         /// Easy Aim / Aim Engage gates.
@@ -4368,7 +4368,7 @@ namespace PadForge.Engine.Common.Mapping
         /// slot's <see cref="GyroTuning.ApplyToPassthrough"/> flag is
         /// off, only the calibrated reading is returned and the
         /// discretionary tuning is skipped. With the flag on and every
-        /// Gyro tab control at its default, the tuning chain is the
+        /// Gyro group control at its default, the tuning chain is the
         /// identity, so the on and off paths agree: both relay the
         /// calibrated reading.</para>
         ///
@@ -4393,7 +4393,7 @@ namespace PadForge.Engine.Common.Mapping
             // both toggle states. The at-rest bias the calibration
             // measured would otherwise relay straight into the motion
             // report and the consuming game / emulator would integrate it
-            // as continuous drift. The Gyro tab's Live rate readout
+            // as continuous drift. The Gyro group's Live rate readout
             // subtracts this same bias for display, so a drifting
             // passthrough still reads ~0 there — the readout was masking
             // the bug.
@@ -4621,7 +4621,7 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>Rotates a body-sensor triple in place by the (device,
-        /// slot) grip (#392). The App's snapshot builder and the Gyro tab's
+        /// slot) grip (#392). The App's snapshot builder and the Gyro group's
         /// live readout call this for the accelerometer copy; the gyro copy
         /// already flows through the calibrated read below.</summary>
         public static void ApplyMotionGrip(string deviceGuid, int slotIndex, ref float x, ref float y, ref float z)
@@ -5729,7 +5729,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 // The shaped counts pass through directly (#324). This lane
                 // used to add a hidden jitter curve plus a 0.2-count nudge
-                // per poll, invisible to every Gyro-tab setting. The nudge
+                // per poll, invisible to every Gyro group setting. The nudge
                 // existed to stop small rotations "dying in the sub-count
                 // remainder", which was actually the KBM accumulator's
                 // reversal-check sign bug, and its per-poll dose at 1000 Hz
@@ -7294,7 +7294,7 @@ namespace PadForge.Engine.Common.Mapping
         /// <c>scale = 1920 / 15 ≈ 128</c>. A full horizontal pad sweep
         /// at sensitivity 1.0 moves the cursor 1920 pixels, matching a
         /// typical laptop trackpad's non-accelerated feel. Users dial
-        /// further via the Touchpad tab's per-axis Mouse Sensitivity
+        /// further via the Touchpad group's per-axis Mouse Sensitivity
         /// multipliers and per-row sensitivity curves.
         /// <para>Steam Controller 2026 and other touchpads with
         /// different native resolutions still feel intuitive: SDL3
@@ -7456,7 +7456,7 @@ namespace PadForge.Engine.Common.Mapping
             // provider lookup: an empty source guid is the documented "the
             // device on this slot" form that the Workshop translator emits,
             // and the providers are keyed by a CONCRETE guid. Passing the bare
-            // value made Touchpad-tab Mouse Sensitivity X/Y and Invert X/Y
+            // value made Touchpad group Mouse Sensitivity X/Y and Invert X/Y
             // inert on every device-free row, which is all of them on an
             // imported profile. The sibling ApplySyntheticPressure call fifty
             // lines up already resolves it this way.
@@ -7478,7 +7478,7 @@ namespace PadForge.Engine.Common.Mapping
             if (_suppressTouchForMouseLane) { bipolar = 0f; return true; }
             bipolar = delta * TouchpadDeltaScale * sens;
             // Generic per-source Sensitivity (#9 B-13) multiplies the delta
-            // on top of the slot-level Touchpad-tab tuning, so per-row touch
+            // on top of the slot-level Touchpad group tuning, so per-row touch
             // sensitivity from a workshop config (or the row's slider) acts
             // exactly here, before the same clamp the base read had. A delta
             // under a positive multiplier is sign-neutral, and the != 1 guard

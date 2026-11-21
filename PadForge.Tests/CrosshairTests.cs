@@ -972,7 +972,7 @@ namespace PadForge.Tests
             Assert.Equal(1, CountOf(row, "Extras_Magnifier_Width"));
         }
 
-        /// <summary>The Display box lists the Lighting tab's displays. A new list
+        /// <summary>The Display box lists the Lighting group's displays. A new list
         /// clears the box's selection, which writes null: the display stays,
         /// and goes back to the box after the list. A display unplugged stays
         /// listed, as gone, and a list that says nothing new is not

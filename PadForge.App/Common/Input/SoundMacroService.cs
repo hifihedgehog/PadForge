@@ -27,7 +27,7 @@ namespace PadForge.Common.Input
     ///
     /// <para><b>Loop lifecycle.</b> A looping sound stops on (a) a SoundStop
     /// action, (b) the owning While-Held / Until-Release macro's trigger
-    /// release, (c) Stop All on the Audio tab, (d) engine stop. One-shots
+    /// release, (c) Stop All in the Audio group, (d) engine stop. One-shots
     /// play out and self-remove from their mixers.</para>
     /// </summary>
     public static class SoundMacroService
@@ -204,10 +204,10 @@ namespace PadForge.Common.Input
         // a forever-loop. Guarded by _lock.
         private static readonly List<(int slot, object macroKey, string filePath)> _pendingLoops = new();
 
-        /// <summary>Short generated beep (880 Hz, 200 ms) for the Audio tab's
+        /// <summary>Short generated beep (880 Hz, 200 ms) for the Audio group's
         /// Test button. Plays a short beep through ONLY the assigned device
-        /// selected in the Audio tab (every tab right of the assigned-devices
-        /// list is per-device), or nowhere when that device has no live speaker
+        /// picked among the header's device pills (the Audio group follows that
+        /// pick), or nowhere when that device has no live speaker
         /// sink. It never fans out to the slot's other pads.</summary>
         public static void PlayTestBeep(int slot, Guid deviceGuid)
         {
@@ -367,7 +367,7 @@ namespace PadForge.Common.Input
                     bool onController = targets.Count > 0;
                     if (!onController)
                     {
-                        // Device-scoped play (the Audio-tab test signal targets only the
+                        // Device-scoped play (the Audio group test signal targets only the
                         // selected device): play on that device or nowhere, never on the
                         // PC speakers.
                         if (deviceFilter != null) return;

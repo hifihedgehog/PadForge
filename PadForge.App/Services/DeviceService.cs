@@ -240,7 +240,7 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
             _mainVm.StatusText = Strings.Instance.Status_DeviceRemoved;
 
-            // Refresh sidebar/dashboard device info (slot persists, just empty now).
+            // Refresh sidebar/Home device info (slot persists, just empty now).
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -493,7 +493,7 @@ namespace PadForge.Services
 
         /// <summary>Maps a raw 0-based <paramref name="slotIndex"/> to the
         /// 1-based global slot number the user sees in the UI (badges,
-        /// dashboard, sidebar, Pad page header). That ordering walks the
+        /// Home, sidebar, Pad page header). That ordering walks the
         /// VC type groups (Xbox → PlayStation → Extended → KbM → MIDI),
         /// so a PlayStation slot at padIndex=2 might be VC #1 in the UI
         /// — the prior <c>slotIndex + 1</c> form silently disagreed with

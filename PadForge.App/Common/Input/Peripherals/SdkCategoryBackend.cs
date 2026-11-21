@@ -29,7 +29,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>While the program runs, an SDK that will not open, a paint it
     /// refuses and a path whose every light it refuses are its answer, so the
-    /// tab says it refused (<see cref="PeripheralOutputs.RefusalOn"/>) in
+    /// Lighting group says it refused (<see cref="PeripheralOutputs.RefusalOn"/>) in
     /// place of a wait for a program that runs already.</para>
     /// </summary>
     internal abstract class SdkCategoryBackend : IDirectUnitBackend

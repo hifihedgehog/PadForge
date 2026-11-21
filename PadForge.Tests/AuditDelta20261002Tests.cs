@@ -888,7 +888,7 @@ namespace PadForge.Tests
     /// number through a row, a settings object or a mapping source.</summary>
     public class AuditDelta20261002FiniteSettingTests
     {
-        /// <summary>The Audio tab's EQ Preamp and crossfeed Feed took a typed
+        /// <summary>The Audio group's EQ Preamp and crossfeed Feed took a typed
         /// "NaN" through Math.Clamp, and the DSP multiplied every sample by
         /// it. Their class now refuses NaN the way the view models do, and
         /// infinity still clamps.</summary>

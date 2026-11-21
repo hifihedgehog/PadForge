@@ -3346,7 +3346,7 @@ namespace PadForge.Tests
         // ─────────────────────────────────────────────
 
         /// <summary>Set Chroma Color paints a Razer device on its virtual
-        /// controller whether or not the device's Lighting tab takes
+        /// controller whether or not the device's Lighting group takes
         /// control. With no claim behind it the macro claims the unit for
         /// its window and hands it back after. Over a claim it shows for
         /// its window and the claim's color returns. Two controllers'

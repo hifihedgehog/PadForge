@@ -8,7 +8,7 @@ namespace PadForge.Common
     /// MDL2 Assets glyph for that device class, so roster surfaces draw the
     /// icon that matches the device instead of a blanket gamepad (#175).
     /// Reuses the characters the app already established elsewhere: E962
-    /// (Mouse Output card), EFA5 (touchpad tab and capability chips), E8D6
+    /// (Mouse Output card), EFA5 (Touchpad group and capability chips), E8D6
     /// (MIDI badges), E7FC (controller). A wheel and a joystick, which no
     /// icon font draws, take a line drawing instead (<see cref="ShapeFor"/>).
     /// </summary>
@@ -40,8 +40,8 @@ namespace PadForge.Common
             InputDeviceType.LogitechGKeys => "\uE765",   // KeyboardClassic: G-keys are keyboard keys (#454)
             InputDeviceType.AnalogKeyboard => "\uE765",  // KeyboardClassic: it is a keyboard (#468)
             InputDeviceType.WebMenus => "\uF0E2",        // GridView, a deck of tiles (#471)
-            InputDeviceType.PeripheralLighting => "\uE781", // the Lighting tab's glyph (#494)
-            InputDeviceType.PeripheralHaptics => "\uE877",  // the Force Feedback tab's glyph (#494)
+            InputDeviceType.PeripheralLighting => "\uE781", // the Lighting group's glyph (#494)
+            InputDeviceType.PeripheralHaptics => "\uE877",  // the Force Feedback group's glyph (#494)
             InputDeviceType.KeyboardScreenKeys => "\uE765", // KeyboardClassic: the keys sit on a keyboard (#519)
             InputDeviceType.NovintFalcon => "\uE7FC",       // Game: the Falcon is a game controller (#521)
             InputDeviceType.GameTelemetry => "\uEC4A",      // SpeedHigh, a speedometer (#531; verified in live segmdl2.ttf)

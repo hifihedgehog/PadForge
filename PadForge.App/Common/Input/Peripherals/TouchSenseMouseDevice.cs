@@ -23,7 +23,7 @@ namespace PadForge.Common.Input.Peripherals
     /// host matches it to the mouse's TouchSense unit by container. Rumble
     /// reaches the motor through that unit (<see cref="TouchSenseBackend"/>),
     /// never through this row's own rumble calls: a mouse row gets its
-    /// Force Feedback tab and its rumble chip only as a haptic peripheral.</para>
+    /// Force Feedback group and its rumble chip only as a haptic peripheral.</para>
     ///
     /// <para>The row is its channel's life. The reader closes the channel
     /// when it stops, whether the mouse left, the channel was closed after

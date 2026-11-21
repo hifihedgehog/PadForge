@@ -13,9 +13,9 @@ namespace PadForge.Tests
     /// descriptors, and the engine's gesture gate treats a referenced
     /// descriptor as enabled (gate = user toggle OR referenced-by-mapping,
     /// TouchpadGestureAutoArm). These tests pin the arming table, the
-    /// authoritative scoping that keeps manual Touchpad-tab toggles
+    /// authoritative scoping that keeps manual Touchpad group toggles
     /// meaningful, and the runtime proof that a gated gesture read fires
-    /// for an imported mapping with every Touchpad-tab toggle off.
+    /// for an imported mapping with every Touchpad group toggle off.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class WorkshopAutoArmTests
@@ -143,7 +143,7 @@ namespace PadForge.Tests
         [Fact]
         public void NonAuthoritativeSet_NeverArms()
         {
-            // Manual mappings keep the Touchpad tab as the single gate:
+            // Manual mappings keep the Touchpad group as the single gate:
             // the same descriptors on a non-authoritative set change
             // nothing (documented slot fan-out contract).
             var set = AuthoritativeSet("Touchpad 0 SwipeUp", "Touchpad 0 StickX");
@@ -196,7 +196,7 @@ namespace PadForge.Tests
 
         /// <summary>Drives the real recognizer with a synthetic up-swipe
         /// under the armed settings of a materialized import and asserts
-        /// the gated swipe fire lands, with NO Touchpad-tab toggle on. The
+        /// the gated swipe fire lands, with NO Touchpad group toggle on. The
         /// unarmed control proves the fire is the auto-arm's doing.</summary>
         [Fact]
         public void ImportedSwipeRow_FiresGesture_WithoutAnyToggle()
@@ -215,7 +215,7 @@ namespace PadForge.Tests
             Assert.True(set.Authoritative);
 
             var userSettings = TouchpadGestureSettings.Default();
-            Assert.False(userSettings.Enabled); // no Touchpad-tab toggle anywhere
+            Assert.False(userSettings.Enabled); // no Touchpad group toggle anywhere
             var armed = TouchpadGestureAutoArm.Apply(userSettings, set);
 
             Assert.Contains("Touchpad 0 SwipeUp", RunSwipeUp(armed));

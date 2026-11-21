@@ -10,7 +10,7 @@ using PadForge.ViewModels;
 namespace PadForge.Tests;
 
 /// <summary>
-/// The type bar that a sidebar or Dashboard card's type chip opens runs one
+/// The type bar that a sidebar or Home card's type chip opens runs one
 /// type-change path, MainWindow.ChangeSlotType (discussion #543). The two
 /// cards' seven tiles had their own copies, and the Dashboard's never passed
 /// the slot's Extended layout to the automap. A switch to an unlettered

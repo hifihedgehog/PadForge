@@ -203,7 +203,7 @@ namespace PadForge.Common.Input.OnScreenKeyboard
         /// after a second press moved on, so it is left alone too (two
         /// presses of the style key, Grid to Split to Wheel, with Split's save
         /// landing after the second). One that the keyboard now shows means
-        /// the saves caught up. Any other change is an edit on the Menus tab,
+        /// the saves caught up. Any other change is an edit in the menu editor,
         /// which applies. <paramref name="force"/> takes both as saved, for a
         /// keyboard that opens for a menu.</summary>
         public void ApplySettings(OskSettings s, bool force = false)

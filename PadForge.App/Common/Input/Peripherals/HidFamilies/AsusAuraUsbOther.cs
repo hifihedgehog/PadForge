@@ -43,7 +43,7 @@ namespace PadForge.Common.Input.Peripherals
     /// (AsusAuraAddressableController.cpp:60-96), and EC 35 then EC 36 with
     /// the header's bit in the mask on a mainboard
     /// (AsusAuraMainboardController.cpp:111-153 and 190-225). A header given a
-    /// count on the Lighting tab lights LED by LED as OpenRGB's sized zone
+    /// count in the Lighting group lights LED by LED as OpenRGB's sized zone
     /// does: its Direct effect once, and then EC 40 frames with that many
     /// colors (RGBController_AsusAuraUSB.cpp:311-366,
     /// AsusAuraUSBController.cpp:148-212). None of these frames is followed

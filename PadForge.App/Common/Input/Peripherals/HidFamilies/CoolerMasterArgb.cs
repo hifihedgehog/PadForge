@@ -24,7 +24,7 @@ namespace PadForge.Common.Input.Peripherals
     /// header, each lit as one zone. OpenRGB lights an addressable header
     /// light by light only once the user has told it how many LEDs the
     /// header drives (its zones start at 0 LEDs, RGBController_CMARGBController.cpp:416-422).
-    /// Until a count is set on the Lighting tab, each header takes its zone's
+    /// Until a count is set in the Lighting group, each header takes its zone's
     /// color through OpenRGB's Static mode,
     /// as a zone mode sends it (DeviceUpdateZoneMode, lines 522-619): 00 80
     /// 01 01, then 00 80 0B 02, the port, the mode 0A, 10 (no random
@@ -56,7 +56,7 @@ namespace PadForge.Common.Input.Peripherals
     /// SetLedsDirect does (lines 173-222), its one color for 48 LEDs, the
     /// most the header takes (CM_SMALL_ARGB_MAX_LEDS,
     /// RGBController_CMSmallARGBController.h:19), so a strip of any length
-    /// it drives shows it. With a count set on the Lighting tab it sends that
+    /// it drives shows it. With a count set in the Lighting group it sends that
     /// many colors, after SetLedCount (CMSmallARGBController.cpp:148-158,
     /// RGBController_CMSmallARGBController.cpp:292). SignalRGB's plugin
     /// streams these frames (Cooler_Master_A-RGB_LED_Small_Controller.js,

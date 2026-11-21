@@ -11,7 +11,7 @@ using PadForge.ViewModels;
 namespace PadForge.Tests;
 
 /// <summary>
-/// A slot's flame on its Dashboard card follows the slot's on/off switch
+/// A slot's flame on its Home card follows the slot's on/off switch
 /// while the input engine is stopped (discussion #543, point 1). The card
 /// reads its slot summary, which the engine's display timer refreshes, so a
 /// toggle made with the engine stopped changed the sidebar card and left the
@@ -71,7 +71,7 @@ public sealed class SlotPowerToggleTests
             var settings = new SettingsService(vm);
             input = new InputService(vm) { SettingsService = settings };
             vm.Pads[0].OutputType = VirtualControllerType.Xbox;
-            // The Dashboard card for slot 0, as UpdatePadDeviceInfo builds it.
+            // The Home card for slot 0, as UpdatePadDeviceInfo builds it.
             // No engine runs, so nothing else refreshes it.
             vm.Dashboard.RefreshActiveSlots(new List<int> { 0 }, true);
             input.RefreshSlotSummaryProperties();

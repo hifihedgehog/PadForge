@@ -66,7 +66,7 @@
 #>
 param(
     [string]$OutDir = (Join-Path $env:LOCALAPPDATA 'PadForgeA11y'),
-    # Page tags to audit (Dashboard, Devices, Profiles, Extras, Pad1, Settings,
+    # Page tags to audit (Dashboard for Home, Devices, Profiles, Extras, Pad1, Settings,
     # About). Default: every page in the sidebar.
     [string[]]$Pages,
     # Leave out each extra's page, the Settings groups and the controller

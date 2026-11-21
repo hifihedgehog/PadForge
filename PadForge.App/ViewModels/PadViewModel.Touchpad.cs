@@ -13,7 +13,7 @@ namespace PadForge.ViewModels
 {
     /// <summary>
     /// Touchpad-gestures partial: per-(active device, pad-index) settings
-    /// surfaced to the Touchpad tab. Mirrors the same load/sync rhythm as
+    /// surfaced to the Touchpad group. Mirrors the same load/sync rhythm as
     /// the gyro tuning partial — Load* reads PadSetting.TouchpadSettings[]
     /// into VM fields under <c>_loadingTouchpadGestures</c> guard, setters
     /// push back to the same entry. The push to the live gesture engine
@@ -1402,11 +1402,11 @@ namespace PadForge.ViewModels
         /// <para>No-op while LoadTouchpadGestureSettingsForActiveDevice
         /// is running. That loader sets each VM field in sequence; each
         /// fires PropertyChanged; any external caller (e.g.
-        /// MainWindow's pad.PropertyChanged hook for the Touchpad tab)
+        /// MainWindow's pad.PropertyChanged hook for the Touchpad group)
         /// that calls Sync from inside the PropertyChanged dispatch
         /// would otherwise write the VM's not-yet-loaded fields back
         /// to PadSetting and clobber the on-disk state. Symptom: every
-        /// touchpad-tab toggle except <c>TouchpadGesturesEnabled</c>
+        /// Touchpad group toggle except <c>TouchpadGesturesEnabled</c>
         /// (which gets set first in the load and so is the only field
         /// holding the right value when the stampede fires) reverts
         /// across relaunches. PushIfNotLoading does the same check for

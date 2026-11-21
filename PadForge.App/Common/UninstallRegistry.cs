@@ -12,7 +12,7 @@ namespace PadForge.Common
     /// and read again only after Windows says something under the keys
     /// changed: a program installed, removed or updated.
     ///
-    /// <para>The driver cards found HidHide, Windows MIDI Services, vJoy and
+    /// <para>The driver rows found HidHide, Windows MIDI Services, vJoy and
     /// ViGEmBus by walking every subkey of both Uninstall keys and opening
     /// each one, and the status timer ran two such walks every five seconds
     /// on the interface thread: thousands of registry handles a minute, the
@@ -25,7 +25,7 @@ namespace PadForge.Common
     internal sealed class UninstallRegistry
     {
         /// <summary>One registration: its subkey's name and the values the
-        /// driver cards read.</summary>
+        /// driver rows read.</summary>
         internal readonly record struct Entry(string SubKeyName, string DisplayName,
             string DisplayVersion, string UninstallString, object WindowsInstaller);
 

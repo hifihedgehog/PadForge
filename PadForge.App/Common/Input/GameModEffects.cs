@@ -14,7 +14,7 @@ namespace PadForge.Common.Input
     /// <para>Mods address controllers by index, and every mod reviewed sends
     /// 0. In DSX the index counts connected controllers. Here it counts
     /// virtual controllers that have an online DualSense, DualSense Edge or
-    /// DualShock 4 assigned, in the order the Dashboard numbers them
+    /// DualShock 4 assigned, in the order Home numbers them
     /// (<see cref="SettingsManager.SlotOrders.GetGlobalSlotNumber"/>), so a
     /// DualSense on virtual controller 2 behind a wheel on 1 is still the
     /// mod's controller 0. Holds are stored by index and resolved on every
@@ -405,7 +405,7 @@ namespace PadForge.Common.Input
         internal static Func<int[]> OrderedSlotsOverrideForTest;
 
         /// <summary>The virtual controllers mods can address, in the order
-        /// the Dashboard numbers them: created and enabled, with an online
+        /// Home numbers them: created and enabled, with an online
         /// Sony pad assigned. Index 0 is the first. Takes the devices lock,
         /// then the settings lock, never both at once, and then the leaf
         /// slot-order lock.</summary>
@@ -442,7 +442,7 @@ namespace PadForge.Common.Input
             return slots.ToArray();
         }
 
-        /// <summary>The Dashboard's number for a slot, or a number after
+        /// <summary>Home's number for a slot, or a number after
         /// every listed one for a slot in no group's order.</summary>
         private static int Number(int padIndex)
         {

@@ -994,7 +994,7 @@ namespace PadForge.Tests
         }
     }
 
-    /// <summary>The Lighting tab's line for a row lit through OpenRGB
+    /// <summary>The Lighting group's line for a row lit through OpenRGB
     /// (#557).</summary>
     [Collection("PeripheralOutputStatics")]
     public partial class OpenRgbRouteLineTests : IDisposable

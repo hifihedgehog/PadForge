@@ -704,7 +704,7 @@ public class UpdateControllerTests
     });
 
     /// <summary>A manual check that finds a newer build than the one the
-    /// status bar announced takes that announcement back.</summary>
+    /// message line announced takes that announcement back.</summary>
     [Fact]
     public void ANewerOfferTakesBackTheOldAnnouncement() => OnDispatcher(async () =>
     {

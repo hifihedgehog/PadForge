@@ -4,9 +4,9 @@ using PadForge.Engine.Common;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// The Dashboard mirror the engine reads for head tracking (issue #355),
+    /// The mirror of the Head Tracking page's settings the engine reads (issue #355),
     /// the shape of <see cref="HandheldButtonRegistry.FeatureEnabled"/>:
-    /// static, written by the Dashboard view model on the UI thread, read by
+    /// static, written by DashboardViewModel on the UI thread, read by
     /// the poll thread's device sweep and by the device on every read.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row

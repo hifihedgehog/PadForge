@@ -218,7 +218,7 @@ namespace PadForge.Tests
             Assert.True(m.Success, "the two clears are not both inside the null guard");
         }
 
-        // C235: the Triggers tab reads a count that can change on its own.
+        // C235: the Triggers group reads a count that can change on its own.
 
         // C237 and C238: the passthrough clone.
 
@@ -349,7 +349,7 @@ namespace PadForge.Tests
             Assert.DoesNotContain("MidiVelocityBox.Text = ", body);
         }
 
-        /// <summary>The Triggers tab gates on the layout's trigger count, and
+        /// <summary>The Triggers group gates on the layout's trigger count, and
         /// that count changes with no OutputType or DataContext change behind
         /// it, so the tab kept the outgoing layout's visibility.</summary>
         [Fact]

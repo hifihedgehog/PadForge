@@ -288,7 +288,7 @@
     <CsWinRTInputs Include="Resources\WinMD\Windows.Devices.Midi2.winmd" />
   </ItemGroup>
 
-  <!-- cswinrt.exe 2.2.0 is not long-path aware (its manifest declares only
+  <!-- cswinrt.exe 2.3.1 is not long-path aware (its manifest declares only
        its execution level), so a generated file whose full path passes
        Windows' 259-character limit is dropped without a word, and further
        out the tool dies with 0xC0000409 (MSB3073, exit code -1073740791)

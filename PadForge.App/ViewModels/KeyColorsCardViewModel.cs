@@ -11,7 +11,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>One shift layer chip on the Key Colors card (#557). The
-    /// card keeps its own pick, apart from the Mappings tab's, so choosing a
+    /// card keeps its own pick, apart from the mapping list's, so choosing a
     /// layer to color never changes the layer being mapped.</summary>
     public sealed class KeyColorLayerItem : ObservableObject
     {
@@ -41,7 +41,7 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>
-    /// The Lighting tab's Key Colors card, Zone Colors for a device whose
+    /// The Lighting group's Key Colors card, Zone Colors for a device whose
     /// lights are zones (#557): the lights of the selected device, the
     /// shift layer being colored, the selection, and the colors the
     /// selection takes. Every change is written straight into the device's
@@ -56,7 +56,7 @@ namespace PadForge.ViewModels
     ///
     /// <para>A shift layer shows its own colors over the Base layer's until
     /// its Other Lights rule says otherwise, the way a target a shift layer
-    /// leaves unmapped falls through to Base on the Mappings tab. The
+    /// leaves unmapped falls through to Base in the mapping list. The
     /// picture shows the Base layer's colors on such a layer faded.</para>
     /// </summary>
     public sealed class KeyColorsCardViewModel : ObservableObject, IKeyLightsSource
@@ -151,7 +151,7 @@ namespace PadForge.ViewModels
 
         public bool IsBaseLayer => _selectedLayerMask == KeyLightingSettings.BaseMask;
 
-        /// <summary>The Base layer's name as the Mappings tab shows it.</summary>
+        /// <summary>The Base layer's name as the mapping list shows it.</summary>
         internal string BaseLayerName => Layers.FirstOrDefault(l => l.IsBase)?.LayerName
             ?? Strings.Instance.Pad_Shift_BaseTabLabel;
 
@@ -304,8 +304,8 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>Points the card at a device's config on this controller,
-        /// its lights and the slot's shift layers (the Mappings tab's layer
-        /// tabs, Base first). A new device or a new map clears the
+        /// its lights and the slot's shift layers (the layer chips in
+        /// Buttons, Base first). A new device or a new map clears the
         /// selection, and Select by Pressing Keys goes off when the new map
         /// has no keys, since its switch is hidden there. The layer pick is
         /// kept while the layer still exists.</summary>
@@ -340,9 +340,9 @@ namespace PadForge.ViewModels
         /// changes, until the page attaches the card to the new one.</summary>
         internal void Detach() => Attach(null, null, null);
 
-        /// <summary>Takes the slot's shift layers again after the Mappings
-        /// tab added, renamed or removed one, or a language switch rebuilt
-        /// the tabs.</summary>
+        /// <summary>Takes the slot's shift layers again after Buttons
+        /// added, renamed or removed one, or a language switch rebuilt
+        /// the chips.</summary>
         internal void UpdateLayers(IEnumerable<ShiftLayerInfo> layers)
         {
             string was = _selectedLayerMask;
@@ -651,7 +651,7 @@ namespace PadForge.ViewModels
 
         private static string Hex(int rgb) => (rgb & 0xFFFFFF).ToString("X6", CultureInfo.InvariantCulture);
 
-        /// <summary>RRGGBB or #RRGGBB, the Lighting tab's hex boxes' rule.</summary>
+        /// <summary>RRGGBB or #RRGGBB, the Lighting group's hex boxes' rule.</summary>
         internal static bool TryHex(string text, out int rgb)
         {
             rgb = 0;

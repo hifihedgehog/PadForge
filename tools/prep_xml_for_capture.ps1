@@ -116,7 +116,7 @@ Set-IdNil  $profileChildren[4]
 # Duplicate the existing slot-0 PadSetting block 4 more times so slots
 # 1-4 each have a valid PadSetting at their index. The slot's TYPE
 # comes from SlotControllerTypes, not from any field inside PadSetting,
-# so cloning is safe. The dashboard renders PS / Extended / KBM / MIDI
+# so cloning is safe. Home renders PS / Extended / KBM / MIDI
 # cards with the right type's UI even though every slot uses the same
 # default Xbox mapping.
 $padSettingsNode = $ns.PadSettings

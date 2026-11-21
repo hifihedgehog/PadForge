@@ -146,7 +146,7 @@ namespace PadForge.Services
         private string _localIp;
         private bool _https;
         /// <summary>Why the main address serves HTTP. Kept as a kind, not
-        /// text, so the Dashboard line follows a language change.</summary>
+        /// text, so the status line follows a language change.</summary>
         private HttpsFallback _httpsFallback;
         /// <summary>The plain address being served, or null.</summary>
         private volatile PlainHttpOptions _plain;
@@ -1015,7 +1015,7 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Renders a URL to a QR image for the Dashboard card (#296),
+        /// <summary>Renders a URL to a QR image for the Web Controller page in Extras (#296),
         /// so the phone scans instead of typing. Returns a frozen ImageSource,
         /// or null if the URL will not encode.</summary>
         public static System.Windows.Media.ImageSource RenderQr(string url)
@@ -1926,14 +1926,14 @@ namespace PadForge.Services
         /// Where a layout's lightbar sits on its own art, and whether it
         /// carries player indicator LEDs.
         ///
-        /// <para>The rule is the Lighting tab's, not a new one: a lightbar
+        /// <para>The rule is the Lighting group's, not a new one: a lightbar
         /// belongs to the DualSense family and the DualShock 4, and the
         /// indicator LEDs to the DualSense family alone (PadPage's
         /// hasLightbar / hasIndicatorLeds, "DS4 has neither"). Everything
         /// else shows no lighting at all, which is why this table has no
         /// entry for the Xbox, Switch or Steam layouts.</para>
         ///
-        /// <para>Geometry is the same the Lighting tab's preview draws, in
+        /// <para>Geometry is the same the Lighting group's preview draws, in
         /// the same base-coordinate space the overlays use, with the same
         /// mask art. The Edge entry is the DualSense's shifted by 175,
         /// which is the exact offset all 24 of its shared overlays carry:

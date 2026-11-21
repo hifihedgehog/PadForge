@@ -673,7 +673,7 @@ namespace PadForge.Engine
                 // reports rumble for it when Buffalo's DirectInput effect plug-in
                 // is installed, and PadForge never drives that plug-in, so the
                 // flag must not depend on it. This allocates ForceFeedbackState
-                // and shows the Feedback tab with no vendor package (#440).
+                // and shows the Force Feedback group with no vendor package (#440).
                 || PadixConverterIdentity.IsPlayStationConverter(VendorId, ProductId);
             // HAPTICDIAG (2026-07-24 rumble regression): ForceFeedbackState
             // .SetDeviceForces drops every rumble when HasRumble and
@@ -687,8 +687,8 @@ namespace PadForge.Engine
             // motors regardless of what SDL's current backend reports.
             // PadForge writes those triggers via XboxImpulseHidWriter
             // (raw HID) so we don't depend on SDL to expose the
-            // capability. The UI tab is gated on HasRumbleTriggers,
-            // so this also unblocks the tab whenever the controller is
+            // capability. The Impulse Triggers group is gated on HasRumbleTriggers,
+            // so this also unblocks the group whenever the controller is
             // connected.
             HasRumbleTriggers =
                 (props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, false))
@@ -1520,8 +1520,8 @@ namespace PadForge.Engine
         /// gun's aim already spans the screen, so it is stored divided by the
         /// stretch and the read restores it. Its window already places it on
         /// the picture, so it is marked calibrated and the read adds no
-        /// Pointer-tab bar offset, which a Copy From of a Wii Remote's settings
-        /// would otherwise carry onto a gun that has no Pointer tab to clear
+        /// Pointer group bar offset, which a Copy From of a Wii Remote's settings
+        /// would otherwise carry onto a gun that has no Pointer group to clear
         /// it.</summary>
         internal static void ApplyGunCon2(CustomInputState state, short rawX, short rawY,
             GunCon2Calibration calibration = null)
@@ -1568,10 +1568,10 @@ namespace PadForge.Engine
             if (StepIrCameraCheck(d0x, d0y, d1x, d1y, _irAccelSeeded, now))
                 ScheduleIrCameraBounce();
 
-            // Pointer-tab tuning (sensor-bar offset, smoothing) is applied at
+            // Pointer group tuning (sensor-bar offset, smoothing) is applied at
             // the SLOT-scoped read (SourceCoercion.ReadTunedIrPointer), not
             // here: this wrapper is per-device and one remote can feed several
-            // virtual controllers, each with its own Pointer-tab settings
+            // virtual controllers, each with its own Pointer group settings
             // (issue #146 follow-up). state.Ir carries the screen-aligned aim.
             state.Ir.Detected = detected;
             if (detected)
@@ -2466,7 +2466,7 @@ namespace PadForge.Engine
 
             // --- Sensors ---
             // A device opened as a joystick only, and a gamepad read raw
-            // through ForceRaw, whose Gyro tab stays live. Joystick is the
+            // through ForceRaw, whose Gyro group stays live. Joystick is the
             // gamepad's own joystick for the latter, and the gamepad sensor
             // calls are these calls on it (SDL_gamepad.c).
             if (HasGyro)

@@ -70,7 +70,7 @@ namespace PadForge.Tests
             Assert.Equal(-1f, Eval(TouchState(1f), x));
         }
 
-        // ── Margin stretch (per-(slot, device, pad) Touchpad-tab tuning) ──
+        // ── Margin stretch (per-(slot, device, pad) Touchpad group tuning) ──
 
         [Fact]
         public void Stretch_ReachesScreenEdgeBeforePadEdge()

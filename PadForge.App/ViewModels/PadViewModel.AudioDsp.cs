@@ -8,7 +8,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
-    /// <summary>The Audio tab's DSP chain surface (#347): crossfeed, the
+    /// <summary>The Audio group's DSP chain surface (#347): crossfeed, the
     /// parametric EQ and the limiter.
     ///
     /// <para>The band list lives on <c>DeviceConfig</c> as one encoded

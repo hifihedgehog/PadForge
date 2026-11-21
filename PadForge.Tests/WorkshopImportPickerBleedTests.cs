@@ -578,7 +578,7 @@ namespace PadForge.Tests
         [Fact]
         public void SingleInputPickers_SelectTheDevicesOwnEntryForAPinnedAbstractName()
         {
-            // The Gyro tab's aim engage, the trigger-route activators and the
+            // The Gyro group's aim engage, the trigger-route activators and the
             // mouse-gesture engage match their stored input by descriptor and
             // device with no "(Any device)" fallback, which could unpin a
             // binding on write-back. A pinned abstract name selects the

@@ -56,7 +56,7 @@ namespace PadForge.Common.Input.Peripherals
     /// PadForge does not read: a Razer headset or mousepad, a Logitech
     /// speaker, a SteelSeries headset, a Sensa HD controller (#494). It has no inputs. Assigned to a
     /// virtual controller, it takes that controller's lighting through its
-    /// Lighting tab or its rumble through its Force Feedback tab, like any
+    /// Lighting group or its rumble through its Force Feedback group, like any
     /// other device.
     ///
     /// <para><see cref="LogitechGKeysDevice"/>'s shape: a synthetic

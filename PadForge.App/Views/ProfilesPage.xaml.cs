@@ -82,8 +82,8 @@ namespace PadForge.Views
         //  The cards (#574)
         // ─────────────────────────────────────────────
 
-        /// <summary>A double click on a card loads its profile, as a double click
-        /// on the list's row did. The card's Load button does it from the keyboard.</summary>
+        /// <summary>A double click on a card loads its profile. The card's Load
+        /// button does it from the keyboard.</summary>
         private void ProfileCard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount != 2 || DataContext is not SettingsViewModel vm) return;

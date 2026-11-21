@@ -543,7 +543,7 @@ namespace PadForge.Views
         /// or null for a light with none. A G-key reads as Logitech prints
         /// it, and the media keys and the lock lights take the names the
         /// macro editor gives those keys. The brightness key takes the
-        /// Lighting tab's word for brightness. A macro or profile key reads
+        /// Lighting group's word for brightness. A macro or profile key reads
         /// as its letter and number, a numbered key as its two digits, and
         /// the ROG and Aimpad keys by the names printed on them, which no
         /// locale translates.</summary>

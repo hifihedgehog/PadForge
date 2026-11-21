@@ -638,7 +638,7 @@ namespace PadForge
 
             // Persist DSU / head tracking / Remote Link / web controller /
             // overlay settings on change (Dashboard VM). This list must cover
-            // every Dashboard property LoadAppSettings restores and
+            // every DashboardViewModel property LoadAppSettings restores and
             // BuildAppSettings writes: a persisted property missing here
             // changes live state but never marks the file dirty, so a normal
             // close (which saves only when IsDirty) silently discards it. The
@@ -988,13 +988,13 @@ namespace PadForge
                 };
                 pad.TestLeftMotorRequested += (s, e) =>
                 {
-                    // Controller preview tab: rumble all devices in the slot (null = no filter).
+                    // Buttons' picture: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, true, false);
                 };
                 pad.TestRightMotorRequested += (s, e) =>
                 {
-                    // Controller preview tab: rumble all devices in the slot (null = no filter).
+                    // Buttons' picture: rumble all devices in the slot (null = no filter).
                     if (s is PadViewModel pvm)
                         _inputService.SendTestRumble(pvm.PadIndex, null, false, true);
                 };
@@ -1009,7 +1009,7 @@ namespace PadForge
                         _inputService.SendTestImpulseTrigger(pvm.PadIndex, pvm.SelectedMappedDevice?.InstanceGuid, false, true);
                 };
 
-                // v3.3 — Gyro tab calibrate / reset wired to the slot's
+                // v3.3: Gyro group calibrate / reset wired to the slot's
                 // currently-selected mapped device. Both bias AND tuning
                 // are per-(device, slot) on the PadSetting; the handlers
                 // look up the slot's PadSetting via the same key the
@@ -1181,7 +1181,7 @@ namespace PadForge
                     });
                 };
 
-                // Record button on the Menus tab's host picker (#9 B-17).
+                // Record button in the menu editor's host picker (#9 B-17).
                 // Same freeform-recorder toggle as the Aim Engage picker
                 // above; the recorded descriptor folds onto a host choice
                 // (stick axes / stick click pick the stick, any touchpad
@@ -1237,8 +1237,8 @@ namespace PadForge
                     RecordKeyboardRow(pvm, menu, row);
                 };
 
-                // Map All: each control of the layout in turn, the Mappings
-                // tab's Map All for the keyboard. A click while it runs stops it.
+                // Map All: each control of the layout in turn, Buttons'
+                // Map All for the keyboard. A click while it runs stops it.
                 pad.MenuKeyboardMapAllRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
@@ -1261,7 +1261,7 @@ namespace PadForge
                 // toggle as the Aim Engage picker above; the VM setters push
                 // the pair into the active mouse's MouseGestureSettings entry
                 // and the PropertyChanged hook marks dirty + refreshes the
-                // Mappings-tab picker.
+                // mapping list picker.
                 pad.MouseGestureCustomEngageRecordRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
@@ -1480,7 +1480,7 @@ namespace PadForge
                         {
                             // Sync first (PropertyChanged fires before the
                             // setter's tail-call Sync), then rebuild the
-                            // Mappings-tab picker so newly-checked gesture
+                            // mapping list picker so newly-checked gesture
                             // buttons' entries appear (and unchecked ones
                             // disappear) immediately.
                             pvmMouse.SyncMouseGestureSettingsToActiveDevice();
@@ -1552,7 +1552,7 @@ namespace PadForge
                         nameof(PadViewModel.LeftTriggerRouteActivatorDeviceGuid) or nameof(PadViewModel.RightTriggerRouteActivatorDeviceGuid) or
                         nameof(PadViewModel.LeftTriggerRouteActivatorMode) or nameof(PadViewModel.RightTriggerRouteActivatorMode) or
                         nameof(PadViewModel.OutputType) or
-                        // Gyro tab — v3.3 + JoyShockMapper-canon fields all per-(device, slot).
+                        // Gyro group: v3.3 + JoyShockMapper-canon fields all per-(device, slot).
                         nameof(PadViewModel.GyroSensitivityH) or nameof(PadViewModel.GyroSensitivityV) or
                         nameof(PadViewModel.GyroDeadZoneDegPerSec) or nameof(PadViewModel.GyroSmoothingAlpha) or
                         nameof(PadViewModel.GyroAcceleration) or nameof(PadViewModel.GyroOutputCurve) or
@@ -1653,7 +1653,7 @@ namespace PadForge
                 // edit never marked the file dirty and close discarded it.
                 pad.MidiConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 
-                // DeviceConfig changes (Lighting tab, Adaptive Triggers tab)
+                // DeviceConfig changes (Lighting group, Adaptive Triggers group)
                 // — autosave + sync audio capture when audio-to-lightbar
                 // toggles. Audio-to-lightbar reuses the same WASAPI capture
                 // as audio-rumble, so the capture lifecycle gates on either
@@ -1713,7 +1713,7 @@ namespace PadForge
                 //  REGRESSION GUARD — the Device dropdown must NOT influence
                 //  which physical device a recorded mapping is attached to.
                 //
-                //  The Mappings tab + the controller preview are PER-VC, not
+                //  The mapping list + the controller preview are PER-VC, not
                 //  per-device. When the user records (preview quadrant click,
                 //  per-row Record button, Map All), RecorderService listens to
                 //  EVERY device assigned to the slot and the first one to fire
@@ -1925,7 +1925,7 @@ namespace PadForge
                         string dirHint = isXAxis ? Strings.Instance.Status_DirectionRight : Strings.Instance.Status_DirectionDown;
                         _viewModel.SetStatus(string.Format(Strings.Instance.Status_NowMap_Format, negMapping.TargetLabel, dirHint), persist: true);
 
-                        // Switch to Controller tab so the 3D directional arrow is visible.
+                        // Switch to Buttons' picture so the 3D directional arrow is visible.
                         activePad.SelectedConfigTab = 0;
 
                         // Update recording target to pos for flash/arrow.
@@ -2005,7 +2005,7 @@ namespace PadForge
                         activePad.MapAllPromptText = string.Format(Strings.Instance.Status_MapPrompt_Format, result.Mapping.TargetLabel, dirHint, idx + 1, activePad.Mappings.Count);
                     }
 
-                    // Switch to Controller tab so the 3D directional arrow is visible.
+                    // Switch to Buttons' picture so the 3D directional arrow is visible.
                     activePad.SelectedConfigTab = 0;
 
                     // Update the recording target to the neg setting for flash/arrow.
@@ -2034,8 +2034,8 @@ namespace PadForge
             };
 
             // A recording dropped unanswered (#566): the user's stop, a
-            // timeout, or another record button starting one. The Menus
-            // tab's record buttons leave their Recording state on their
+            // timeout, or another record button starting one. The menu
+            // editor's record buttons leave their Recording state on their
             // callbacks, which never run now (MainViewModel.ClearMenuRecordings).
             _recorderService.RecordingCanceled += (s, e) => _viewModel.ClearMenuRecordings();
 
@@ -2097,7 +2097,7 @@ namespace PadForge
                     // Mouse-gesture custom activation record button (#216).
                     if (activePad.MouseGestureCustomEngageRecording)
                         activePad.MouseGestureCustomEngageRecording = false;
-                    // Menus tab host / steer / click recording (#9). Its
+                    // Menu editor host / steer / click recording (#9). Its
                     // freeform completion callback is what normally clears
                     // this, and CancelRecording drops that callback without
                     // invoking it, so a timeout left the button stuck at Stop
@@ -4721,7 +4721,7 @@ namespace PadForge
         /// and the copies drifted. The Dashboard's never passed the slot's
         /// Extended layout, so a switch to an unlettered Extended profile such
         /// as Custom came up with no automap at all (CreateDefaultPadSetting's
-        /// extended parameter). This path passes it, and keeps the Dashboard's
+        /// extended parameter). This path passes it, and keeps the Dashboard copy's
         /// explicit device-list and slot-badge refresh, which the sidebar's
         /// copy left to MoveSlotToGroupTail and the rail rebuild. Picking the
         /// type the slot already has changes nothing, where both copies re-ran
@@ -6748,7 +6748,7 @@ namespace PadForge
             bool isPad = tag.StartsWith("Pad") && tag.Length >= 4 && int.TryParse(tag.Substring(3), out _);
             PadPageView.Visibility = isPad ? Visibility.Visible : Visibility.Collapsed;
 
-            // Tell the dashboard which controller's page is open (-1 for
+            // Tell DashboardViewModel which controller's page is open (-1 for
             // none): the page's header reads that slot's summary.
             int selectedPadIndex = -1;
             if (isPad && int.TryParse(tag.Substring(3), out int selPad1Based))
@@ -7966,7 +7966,7 @@ namespace PadForge
 
                 // Carry the slot's menus (#9 B-17) the same way. Menus live on
                 // the MappingSet like shift authoring, so Copy must snapshot
-                // them or Paste loses the Menus tab.
+                // them or Paste loses the menu editor.
                 ps.SlotMenusJson = InputService.BuildMenusSnapshotJson(padVm.PadIndex);
 
                 // And the last of the MappingSet's not-Rows family: rumble
@@ -8099,7 +8099,7 @@ namespace PadForge
                 // touches (rows, shift, menus, the config bags, the three
                 // cards above) replaces, and a paste that replaced everything
                 // except macros would double the list on every re-paste. The
-                // Macros tab's own Copy From appends, but that is an explicit
+                // macro list's own Copy From appends, but that is an explicit
                 // "add these to mine"; slot Paste is "make this slot look like
                 // that one". A payload with no macros clears the destination's
                 // for the same reason an empty rows list does.
@@ -8188,10 +8188,10 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(pastedMs?.ShiftActivators);
-                // Refresh the Menus tab from the restored set so pasted menus
+                // Refresh the menu editor from the restored set so pasted menus
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
-                // Same for the Bass Shakers tab (#236). The data flow used to
+                // Same for the Bass Shakers group (#236). The data flow used to
                 // be that the paste preserved the DESTINATION's config, so
                 // this reload only re-anchored the card onto the fresh set.
                 // It now carries the SOURCE's (ApplySlotSetExtrasJson), so the
@@ -8375,7 +8375,7 @@ namespace PadForge
         }
 
         /// <summary>VC-level macro Copy From (#112): pick another virtual controller
-        /// and append its macros to this one. Mirrors the Mappings-tab Copy From, which
+        /// and append its macros to this one. Mirrors Buttons' Copy From, which
         /// is VC-to-VC. A copied macro whose trigger is bound to a device not present on
         /// this VC pastes with that trigger unresolved (re-record it), same as Paste.</summary>
         private void OnCopyMacroFrom(PadViewModel padVm)
@@ -8703,10 +8703,10 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(targetMs?.ShiftActivators);
-                // Refresh the Menus tab so menus carried by ReplaceSlotMappingSet
+                // Refresh the menu editor so menus carried by ReplaceSlotMappingSet
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
-                // Same for the Bass Shakers tab (#236): its config rides the
+                // Same for the Bass Shakers group (#236): its config rides the
                 // copied MappingSet.
                 padVm.ReloadRumbleAudio();
                 // And the SOCD card (#240), same lifetime.
@@ -8741,7 +8741,7 @@ namespace PadForge
             // first (perfect round-trip), ProductGuid fallback (same model,
             // different unit). The dialog's SelectedEntry only identifies
             // WHICH slot to copy from; the slot's per-device tuning for
-            // gyro, touchpad-tab settings, deadzones, etc. comes along
+            // gyro, Touchpad group settings, deadzones, etc. comes along
             // for every device.
             if (srcEntry.SourceSlot >= 0 && srcEntry.SourceSlot != padVm.PadIndex)
             {

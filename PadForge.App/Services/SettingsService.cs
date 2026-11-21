@@ -931,7 +931,7 @@ namespace PadForge.Services
         /// Runs in <see cref="SaveToFile"/> right after the UI → PadSetting
         /// push. Also exposed to the recording pipeline so a freshly-recorded
         /// mapping lands in the in-memory MappingSet immediately, keeping the
-        /// per-VC Mappings tab consistent without waiting for the next
+        /// per-VC mapping list consistent without waiting for the next
         /// debounced save / device-dropdown toggle.
         /// </summary>
         internal void PushUiExtraSourcesIntoSlotMappingSets()
@@ -998,7 +998,7 @@ namespace PadForge.Services
                 var ms = sets[slot] ?? (sets[slot] = new MappingSet());
 
                 // Save into whichever layer the user is currently authoring.
-                // Defaults to "Base"; switching the nested Mappings tab to a
+                // Defaults to "Base". Switching the mapping list to a
                 // shift layer routes edits into that layer's rows instead.
                 // Rows for OTHER layers stay untouched — this slot can
                 // accumulate multi-layer authoring without bleed.
@@ -1304,8 +1304,8 @@ namespace PadForge.Services
                 // Motion Lean is NOT stamped here. It's a first-class input descriptor
                 // ("Motion Lean" in the picker) the user maps to an axis like any gyro
                 // input; its sources keep Kind=Direct, so the revert guard below leaves
-                // them alone, and ApplyMotionLeanParamsToRow pushes the gyro-tab card's
-                // tuning onto them. The old design (gyro-tab Enable + target dropdown
+                // them alone, and ApplyMotionLeanParamsToRow pushes the Gyro group card's
+                // tuning onto them. The old design (Gyro group Enable + target dropdown
                 // overriding the chosen stick axis's source with MotionLeanX) replaced
                 // one input with another — removed.
                 // AngleToAxisY outputs to the Y channel; every other mode to X. Only stamp
@@ -1380,7 +1380,7 @@ namespace PadForge.Services
             if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward", 15);
             string kind = ps.GetRawMapping($"Stick{stickIdx}SteerKind");
             // MotionLeanX is no longer a per-stick mode — it's driven by Motion Steering
-            // (gyro tab) via its own override. Treat a stored per-stick MotionLeanX as
+            // (Gyro group) via its own override. Treat a stored per-stick MotionLeanX as
             // Direct so an old profile doesn't ghost-lean while the new card sits idle.
             if (string.IsNullOrEmpty(kind) || kind == "MotionLeanX") kind = "Direct";
             double D(string key, double dflt)
@@ -2298,7 +2298,7 @@ namespace PadForge.Services
             // wrote its colors over it (#557), for the hand-back a run owes.
             PadForge.Common.Input.Peripherals.KeyboardProfileBackups.LoadRegistry(
                 appSettings.KeyboardProfileBackups?.Select(b => (b.Product, b.Profile, b.Contents)));
-            // Head tracking (#355) loads with the Dashboard services below:
+            // Head tracking (#355) loads with the extras below:
             // its enable is a per-profile leg under the authoring guard.
             // PS Move calibration blobs (#277): captured at pair time over USB,
             // consumed by the Bluetooth lane for sensor scaling.
@@ -2543,7 +2543,7 @@ namespace PadForge.Services
             SlotAppearancePersistence.Apply(_mainVm.Pads,
                 SlotAppearancePersistence.ResolveApp(appSettings, _mainVm.Pads));
 
-            // Audio tab (issue #83): per-slot macro-sound master volume.
+            // Audio group (issue #83): per-slot macro-sound master volume.
             if (appSettings.SlotSoundVolumes != null)
             {
                 for (int i = 0; i < _mainVm.Pads.Count && i < appSettings.SlotSoundVolumes.Length; i++)
@@ -2730,7 +2730,7 @@ namespace PadForge.Services
 
             dst.Model3DAppearances = src.Model3DAppearances;
 
-            // The Lighting / Adaptive Triggers / Audio tabs are per-device. Match
+            // The Lighting / Adaptive Triggers / Audio groups are per-device. Match
             // each destination device to the SOURCE config for the same device GUID,
             // so a slot with two differently-configured controllers keeps both rather
             // than flattening to one. A destination device the source slot did not
@@ -2849,7 +2849,7 @@ namespace PadForge.Services
         //  Copy / Paste clipboard helpers (per-slot)
         //
         //  Clipboard Copy/Paste needs to round-trip the per-slot config
-        //  tabs (Lighting / Adaptive Triggers / Mic LED / Player LED /
+        //  settings (Lighting / Adaptive Triggers / Mic LED / Player LED /
         //  Extended custom layout / MIDI CC + note layout) across the
         //  serialization boundary. The existing Build* / Apply* methods
         //  above iterate every slot for profile storage; these per-slot
@@ -3329,7 +3329,7 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[idx];
 
                 // Per-device entry — apply to that device's per-device
-                // DeviceSlotConfig only. The Lighting tab is
+                // DeviceSlotConfig only. The Lighting group is
                 // per-device, so two pads on one slot legitimately
                 // carry different lightbar / overlay state.
                 if (cfgData.DeviceGuid != Guid.Empty)
@@ -3343,7 +3343,7 @@ namespace PadForge.Services
                 // Slot-level entry. It mirrors whichever device was
                 // selected when the set was saved, so it is no device's
                 // own entry. The config bound while no device is selected
-                // is nobody's and takes it whole, so the Lighting tab shows
+                // is nobody's and takes it whole, so the Lighting group shows
                 // something reasonable. A device's config takes it only
                 // as a stand-in, with its own lighting switch and hold
                 // kept (#494), and not at all when the set holds that
@@ -3998,7 +3998,7 @@ namespace PadForge.Services
                     trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
                 }
 
-                // Steering is per assigned device (#94): the Sticks-tab card loads the
+                // Steering is per assigned device (#94): the Sticks group card loads the
                 // SELECTED device's steering via InputService.LoadPadSettingToViewModel on
                 // device select, not the first device here. The engine reads each source's
                 // own device steering off the MappingSet (stamped per source in
@@ -4015,8 +4015,8 @@ namespace PadForge.Services
                 // checking PrimarySourceDeviceGuid, so legacy fields can hold
                 // descriptors that don't belong to the device they're stored on,
                 // or get blanked out across save / load cycles. Reading
-                // SlotMappingSets here is what every other "refresh the Mappings
-                // tab" path already does — slot init was the missing call site.
+                // SlotMappingSets here is what every other "refresh the mapping
+                // list" path already does. Slot init was the missing call site.
                 InputService.RefreshMappingsToViewModel(padVm);
             }
         }
@@ -4996,7 +4996,7 @@ namespace PadForge.Services
             }
 
             // Collect the per-(slot, device) configurations.
-            // Lighting tab is per-device — different physical devices
+            // The Lighting group is per-device: different physical devices
             // mapped to the same slot can have different mode / colors
             // / palette. We write:
             //   1. ONE slot-level entry (DeviceGuid = Empty) holding
@@ -5015,7 +5015,7 @@ namespace PadForge.Services
             // fan-out skip (which prevents the slot-level entry from
             // bleeding into other devices' dict entries) leaves the
             // active device's dict entry at defaults. Result: user's
-            // Lighting tab edits don't survive an app restart.
+            // Lighting group edits don't survive an app restart.
             var deviceSlotConfigs = new System.Collections.Generic.List<ViewModels.DeviceSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
@@ -5992,7 +5992,7 @@ namespace PadForge.Services
                     // Per-stick steering mode + tunables (#94), every stick index. The
                     // engine reads Kind off the MappingSet rows (stamped in
                     // SaveViewModelToMappingSet), but the settings persist here too so
-                    // the Sticks-tab card can reload them.
+                    // the Sticks group card can reload them.
                     foreach (var stick in padVm.StickConfigs)
                     {
                         int g = stick.Index;
@@ -6108,7 +6108,7 @@ namespace PadForge.Services
 
             // 3. App-level surface: Settings page (HidHide toggles +
             //    whitelist, language, theme, engine options, 2D view),
-            //    Dashboard page (DSU / web controller / Remote Link /
+            //    Extras page (DSU / web controller / Remote Link /
             //    touchpad overlay), Remote Link identity + trusted
             //    peers, sound-package and NFC registries, global macro
             //    shortcuts, window placement. A fresh AppSettingsData's

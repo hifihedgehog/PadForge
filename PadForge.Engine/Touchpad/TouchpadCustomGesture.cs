@@ -36,8 +36,8 @@ namespace PadForge.Engine.Touchpad
         /// from settings; otherwise this value supersedes it.</summary>
         [XmlAttribute] public float Threshold { get; set; }
 
-        /// <summary>Per-gesture enable toggle surfaced on the Touchpad
-        /// tab. Lets the user keep a gesture configured but temporarily
+        /// <summary>Per-gesture enable toggle surfaced in the Touchpad
+        /// group. Lets the user keep a gesture configured but temporarily
         /// stop it firing without deleting the recording.</summary>
         [XmlAttribute] public bool Enabled { get; set; } = true;
 

@@ -454,7 +454,7 @@ namespace PadForge.Tests
         /// the chosen one is refused before the confirm is shown, and once
         /// more after it against a fresh list of what is plugged in, since
         /// the confirm can stay open while a second mouse is plugged in.
-        /// The status bar then says what to do, and stays. Each way out of
+        /// The message line then says what to do, and stays. Each way out of
         /// the switch takes the busy mark off the page. A keyboard's Keep
         /// prompt and automatic undo (#549) run before the last of them,
         /// while the page is still busy.</summary>

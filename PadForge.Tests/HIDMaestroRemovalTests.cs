@@ -176,7 +176,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The Settings flow confirms first, shows the engine
-        /// stopping, waits out a stop the Dashboard toggle started, and only
+        /// stopping, waits out a stop Home's engine flame started, and only
         /// then runs the removal with the engine's stop. Nothing in it starts
         /// the engine again: starting it installs HIDMaestro again.</summary>
         [Fact]

@@ -186,7 +186,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The rotation range a model takes, in degrees, which both
-        /// <see cref="WriteRange"/> and the Wheel tab's slider follow
+        /// <see cref="WriteRange"/> and the Wheel group's slider follow
         /// (<see cref="WheelRangeLimits"/>). Every model takes the T300RS's
         /// range command (t300rs_set_range, which clamps 40-1080), and each
         /// keeps the range Thrustmaster documents for it: 40-1080 on the

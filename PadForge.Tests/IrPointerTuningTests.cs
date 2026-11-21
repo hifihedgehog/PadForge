@@ -8,7 +8,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Pointer-tab tunables are per (device, slot) on PadSetting, not per
+    /// Pointer group tunables are per (device, slot) on PadSetting, not per
     /// device (issue #146 follow-up: moving the smoothing slider on one
     /// virtual controller must not change another VC sharing the same
     /// remote). Pins the persistence surface and the slot-scoped tuning
@@ -62,7 +62,7 @@ namespace PadForge.Tests
         [Fact]
         public void Tuning_AppliesPerSlot_NotPerDevice()
         {
-            // Two slots read the SAME device state through different Pointer-tab
+            // Two slots read the SAME device state through different Pointer group
             // settings: slot 0 has a bar offset, slot 1 has none. The whole
             // point of the follow-up: the slots must see different values.
             var prev = SourceCoercion.IrTuningProvider;

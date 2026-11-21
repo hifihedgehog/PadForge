@@ -10,7 +10,7 @@ namespace PadForge.Tests
     /// #9 B-13: the generic per-source <see cref="MappingSource.Sensitivity"/>
     /// extends to touchpad finger X/Y reads, so a workshop config's per-group
     /// touch tuning (and the row's own slider) acts on the row instead of
-    /// punting to the Touchpad tab. Coverage: the relative finger-delta read
+    /// punting to the Touchpad group. Coverage: the relative finger-delta read
     /// scales in both directions and stays bit-identical at 1.0, the absolute
     /// and unipolar position reads scale with the same clamp discipline,
     /// Pressure never scales, the widened predicate gates the slider for

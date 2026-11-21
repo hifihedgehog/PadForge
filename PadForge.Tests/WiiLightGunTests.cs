@@ -482,7 +482,7 @@ namespace PadForge.Tests
             Assert.Equal((short)Math.Round(mx * SdlDeviceWrapper.WiiPointerCountsX), cx);
         }
 
-        // ── The Pointer tab's bar offset ──
+        // ── The Pointer group's bar offset ──
 
         [Fact]
         public void ACalibratedAim_SkipsTheBarOffset()

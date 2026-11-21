@@ -96,7 +96,7 @@ namespace PadForge.Common
 
         /// <summary>The Visual C++ Redistributable's run outlived its wait,
         /// or Windows started it without a process to follow, so the MIDI
-        /// runtime's own installer never ran and the Settings card has no
+        /// runtime's own installer never ran and its row in Settings has no
         /// result to show for it. The user installs again once the
         /// redistributable is done. The inner exception is the
         /// <see cref="InstallerFailedException"/> behind it.</summary>
@@ -709,8 +709,8 @@ namespace PadForge.Common
         /// <summary>Whether uninstalling takes more than a runtime with it.
         /// Microsoft's bundle also removes its MIDI Settings app, console
         /// and PowerShell module, none of which Microsoft offers any more,
-        /// so the card asks first. A runtime package holds the runtime
-        /// alone, and the card can install a runtime again.</summary>
+        /// so the row asks first. A runtime package holds the runtime
+        /// alone, and the row can install a runtime again.</summary>
         internal static bool MidiUninstallIsIrreversible(MidiRuntimeOwner owner)
             => owner == MidiRuntimeOwner.MicrosoftBundle;
 
@@ -851,7 +851,7 @@ namespace PadForge.Common
         }
 
         /// <summary>How long a runtime uninstaller is waited on before the
-        /// card lets go of it. Tests shorten it.</summary>
+        /// row lets go of it. Tests shorten it.</summary>
         internal static int MidiUninstallWaitMs = 300_000;
 
         /// <summary>Waits <see cref="MidiUninstallWaitMs"/> for an
@@ -981,7 +981,7 @@ namespace PadForge.Common
             => FindMidiBundle()?.UninstallString;
 
         /// <summary>The bundle's DisplayVersion, the way the HidHide and ViGEm
-        /// cards read theirs.</summary>
+        /// rows read theirs.</summary>
         private static string GetMidiBundleVersion()
             => FindMidiBundle()?.DisplayVersion;
 

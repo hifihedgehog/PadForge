@@ -19,7 +19,7 @@ namespace PadForge.Tests
     /// its tabs finds the TabItem through the logical parent. A template builds
     /// its rows while the tab shows, under the presenter, where no TabItem is
     /// an ancestor: each Keyboard Controls row's Record button had no command,
-    /// and opening the Menus tab on a Keyboard menu logged 29 binding errors,
+    /// and opening the menu editor on a Keyboard menu logged 29 binding errors,
     /// one per row.
     /// </summary>
     public class TemplateAncestorBindingTests

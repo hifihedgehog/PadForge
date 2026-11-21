@@ -15,11 +15,11 @@ namespace PadForge.Tests
     /// <para>They were left out on purpose when the Macros tab sat visibly
     /// apart and "Copy" on the Mappings tab read as "not macros" on its own.
     /// That stopped being self-explanatory once the tooltip said all settings
-    /// and every OTHER whole-slot transfer (profile apply, the Macros tab's
+    /// and every OTHER whole-slot transfer (profile apply, the macro list's
     /// Copy From) carried them: the one exception the interface did not name
     /// became the confusing part.</para>
     ///
-    /// <para>The wire shape is the Macros tab's own clipboard envelope
+    /// <para>The wire shape is the macro list's own clipboard envelope
     /// (#112) and the re-scoping is the single-macro paste's, so the two
     /// gestures cannot disagree on how a macro crosses a slot.</para></summary>
     [Collection("SettingsManagerStatics")]

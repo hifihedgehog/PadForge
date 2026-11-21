@@ -82,7 +82,7 @@ namespace PadForge.ViewModels
         /// <summary>Number of physical devices assigned to this slot in config
         /// (regardless of whether they are currently connected). Lets the mini card
         /// tell "assigned but awaiting" (idle) from "nothing assigned" (cold), the
-        /// same split the Dashboard card makes.</summary>
+        /// same split a Home card makes.</summary>
         public int MappedDeviceCount
         {
             get => _mappedDeviceCount;
@@ -143,7 +143,7 @@ namespace PadForge.ViewModels
             for (int i = 0; i < Common.Input.InputManager.MaxPads; i++)
             {
                 var pad = new PadViewModel(i);
-                // The sidebar and Dashboard cards print the slot's Preset,
+                // The sidebar and Home cards print the slot's Preset,
                 // which the Pad page changes without touching the slot set.
                 pad.PropertyChanged += OnPadPresetChanged;
                 // A keyboard menu on any slot can type through a Keyboard +
@@ -157,15 +157,15 @@ namespace PadForge.ViewModels
             Dashboard = new DashboardViewModel();
             Devices = new DevicesViewModel();
             Settings = new SettingsViewModel();
-            // Remote Link's peer/identity state lives on Settings but is shown in the
-            // Dashboard's Remote Link section (issue #138), so expose it there.
+            // Remote Link's peer/identity state lives on Settings but is shown on the
+            // Remote Link page in Extras (issue #138), so expose it to DashboardViewModel.
             Dashboard.RemoteLink = Settings;
 
-            // Default to Dashboard page.
+            // Default to Home.
             _selectedNavTag = "Home";
         }
 
-        /// <summary>Leaves every Menus tab record button's Recording state,
+        /// <summary>Leaves every menu editor record button's Recording state,
         /// on RecorderService.RecordingCanceled: a cancel drops the callback
         /// that would have left it: the opener's Record buttons, and a
         /// keyboard row and Map All (#566). Each sets its state after its own
@@ -216,7 +216,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Carries a pad's new Preset name to its sidebar entry and
-        /// its Dashboard card at once. The Dashboard's own refresh rides the
+        /// its Home card at once. Home's own refresh rides the
         /// engine's display timer, which a stopped engine does not run. The
         /// entry's PropertyChanged rebuilds WPF elements, so a change raised
         /// off the UI thread moves onto it first.</summary>
@@ -392,7 +392,7 @@ namespace PadForge.ViewModels
                 NavControllerItemsRefreshed?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>Dashboard overview ViewModel.</summary>
+        /// <summary>The view model of Home and the Extras page.</summary>
         public DashboardViewModel Dashboard { get; }
 
         /// <summary>Devices list ViewModel.</summary>
@@ -410,7 +410,7 @@ namespace PadForge.ViewModels
         /// <summary>
         /// The tag string of the currently selected navigation item.
         /// Used by MainWindow to determine which page to display.
-        /// Values: "Home", "Pad1"–"Pad16", "Devices", "Settings", "About"
+        /// Values: "Home", "Devices", "Profiles", "Extras", "Pad1"–"Pad16", "Settings", "About"
         /// </summary>
         public string SelectedNavTag
         {

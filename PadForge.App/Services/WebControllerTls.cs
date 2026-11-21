@@ -47,7 +47,7 @@ namespace PadForge.Services
 
         internal static IDisposable AcquireBinding(int port) => BindingPool.Acquire(port);
 
-        /// <summary>Why HTTPS could not be prepared on a port, so the Dashboard
+        /// <summary>Why HTTPS could not be prepared on a port, so the Web Controller page
         /// can say why phone motion is off instead of quietly serving HTTP.</summary>
         internal enum Failure
         {

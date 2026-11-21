@@ -82,7 +82,7 @@ namespace PadForge.ViewModels
         /// past 16 controllers in all or past the type's own cap, no MIDI
         /// without a MIDI API, no VR without SteamVR. The tooltip is the
         /// popup's. The line says in plain words why a type cannot be made,
-        /// and MIDI's is the reason the Settings card gives
+        /// and MIDI's is the reason the MIDI row in Settings gives
         /// (<paramref name="midiReason"/>) when it has one. Every type's cap
         /// but VR's is 16, the most in all, and with 16 the dialog's notice
         /// says why while each tile keeps what it is for.</summary>

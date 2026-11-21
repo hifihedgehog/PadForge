@@ -328,7 +328,7 @@ namespace PadForge.Common
             // "Menu {id} Item {k}" (#9 B-17): a radial / touch menu cell's
             // hover-commit fire. The label keeps the RAW cell index (the
             // serialized touch_menu_button_{k} identity, matching the
-            // Menus-tab editor). Renumbering for display would re-create
+            // menu editor). Renumbering for display would re-create
             // the #196 off-by-one trap.
             if (PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
                     s, out int chipMenuId, out int chipMenuItem))
@@ -724,7 +724,7 @@ namespace PadForge.Common
 
         /// <summary>Localized display phrase for a touchpad window token
         /// (v18 grammar: SourceCoercion.ParseTouchpadHalf). Left / Right
-        /// reuse the Menus tab's half atoms. The vertical halves and the
+        /// reuse the menu editor's half atoms. The vertical halves and the
         /// diamond quadrants carry their own Mapping_TouchpadWindow_*
         /// keys (added with #239, replacing the verbatim-token stopgap
         /// the v18 batch shipped). Returns null outside the grammar.</summary>
@@ -1967,8 +1967,8 @@ namespace PadForge.Common
                 // Flick stick (#225): whole-stick mouse-turn inputs. Map one
                 // to Mouse X on a keyboard/mouse slot. The engine resolves
                 // the stick axes per device through the Gamepad alias table
-                // and the tuning rides the Flick Stick card on the Sticks
-                // tab. Each compound source reads a PAIR of canonical axes.
+                // and the tuning rides the Flick Stick card in the Sticks
+                // group. Each compound source reads a PAIR of canonical axes.
                 bool leftStickOk = AxisSupported("Axis 0") && AxisSupported("Axis 1");
                 bool rightStickOk = AxisSupported("Axis 3") && AxisSupported("Axis 4");
                 if (rightStickOk)
@@ -2366,8 +2366,8 @@ namespace PadForge.Common
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input
             // descriptor. It does NOT override the target's other sources.
-            // Tuning (tilt deadzones / grip orientation) lives on the Gyro
-            // tab's Motion Steering card, per assigned device.
+            // Tuning (tilt deadzones / grip orientation) lives in the Gyro
+            // group's Motion Steering card, per assigned device.
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Lean", DisplayName = si.Mapping_MotionLean });
 
@@ -2403,7 +2403,7 @@ namespace PadForge.Common
             // Mouse gestures (issue #200): each SELECTED gesture button
             // carries its own five one-shot pulses, so different buttons can
             // drive different mapping combos. Buttons come from the slot's
-            // Mouse-tab selection (default X1 when the engine is stopped).
+            // Mouse group selection (default X1 when the engine is stopped).
             // The Enabled toggle governs firing, not visibility, so a
             // disabled setup stays discoverable.
             if (ud.IsMouse)
@@ -2440,7 +2440,7 @@ namespace PadForge.Common
 
         /// <summary>
         /// Returns true when the device should use raw numbered naming (Button 0, Axis 1, etc.)
-        /// on the Mappings tab.
+        /// in the mapping list.
         /// </summary>
         internal static bool UseRawNumberedNaming(UserDevice ud) =>
             // A Bliss-Box port names its objects for the controller plugged
@@ -2491,7 +2491,7 @@ namespace PadForge.Common
         /// (Circle / Square / ...) are always available since they're
         /// single-finger. Custom user-recorded gestures intentionally
         /// don't surface here. They appear in the picker only after
-        /// the user records them through the Touchpad tab, gated by
+        /// the user records them through the Touchpad group, gated by
         /// the per-gesture DeviceClass / TouchpadIndex filter.</summary>
         private static void AddTouchpadGestureChoices(
             System.Collections.Generic.List<InputChoice> list,

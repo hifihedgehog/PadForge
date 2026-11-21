@@ -30,7 +30,7 @@ namespace PadForge.Common.Input
         private float _alpha;
 
         // Parallel filter chain for the trigger-motor audio rumble path,
-        // with its own sensitivity + cutoff so the Impulse Triggers tab
+        // with its own sensitivity + cutoff so the Impulse Triggers group
         // is independent of Force Feedback's Audio Bass Rumble settings.
         private readonly float[] _triggerFilterStates = new float[FilterOrder];
         private float _triggerAlpha;

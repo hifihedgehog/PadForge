@@ -361,7 +361,7 @@ namespace PadForge.Services
         //  Status line
         // ─────────────────────────────────────────────
 
-        /// <summary>The Dashboard's line: why the server is not listening, or
+        /// <summary>The status line on Extras and Home: why the server is not listening, or
         /// that it listens, and who is sending to which virtual controller.</summary>
         public string FormatStatus()
         {
@@ -391,7 +391,7 @@ namespace PadForge.Services
         }
 
         /// <summary>The line for a state, a port, the sender's name (null when
-        /// none is sending), the Dashboard number of the virtual controller
+        /// none is sending), Home's number of the virtual controller
         /// its index names (0 when it names none), and the index it sent
         /// when that is past every virtual controller with a PlayStation
         /// controller while some have one (-1 otherwise). With no

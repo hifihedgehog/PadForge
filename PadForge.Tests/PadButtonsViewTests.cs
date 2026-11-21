@@ -699,7 +699,7 @@ namespace PadForge.Tests
 
         // ── the output cards ───────────────────────────────────────────
 
-        /// <summary>The Output tab's cards fold to one line each under the
+        /// <summary>The output cards, once the Output tab, fold to one line each under the
         /// picture, the lines of the Buttons card's tray at its foot (the
         /// sections pass): the part's icon and its own title, a hint, and
         /// the value it holds. Each keeps its gate, its Reset All and every

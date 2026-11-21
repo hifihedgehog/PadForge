@@ -9,7 +9,7 @@ using PadForge.Views;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// One Screen Overlay's group on the Dashboard card (#560): its switch,
+    /// One Screen Overlay's group on the Screen Overlay page in Extras (#560): its switch,
     /// opacity, place and size. What it shows lives with the keyboard screens'
     /// choices, by its number. The number is its identity, and it stays through
     /// removing another overlay, so a macro that names overlay 3 keeps meaning

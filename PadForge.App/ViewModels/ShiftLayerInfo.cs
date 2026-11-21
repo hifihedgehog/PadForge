@@ -5,7 +5,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// View-model wrapper around a single
     /// <see cref="PadForge.Engine.Data.ShiftActivator"/> from a slot's
-    /// MappingSet. Populates the nested tab strip on the Mappings tab and
+    /// MappingSet. Populates the layer chips in the head of Buttons and
     /// the right-click context menu's per-layer commands.
     ///
     /// <para>

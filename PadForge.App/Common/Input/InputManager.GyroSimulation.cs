@@ -53,7 +53,7 @@ namespace PadForge.Common.Input
 
         /// <summary>The funnel asks only when the (device, slot) tuning has
         /// the option on, so devices without it never reach the lookup. The
-        /// Gyro tab's readout reads from the UI thread, under the same
+        /// Gyro group's readout reads from the UI thread, under the same
         /// per-device lock the polling thread writes under.</summary>
         internal SimulatedGyroSample? ReadGyroSimulation(string deviceGuid, int slot)
         {

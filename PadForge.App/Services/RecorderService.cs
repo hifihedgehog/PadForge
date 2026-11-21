@@ -635,8 +635,8 @@ namespace PadForge.Services
             _negRecording = negRecording;
 
             // Collect every device assigned to the slot. The first one
-            // to fire wins; this is what makes the Mappings tab a
-            // genuinely per-VC view (the Device dropdown to the right
+            // to fire wins. This is what makes the mapping list a
+            // genuinely per-VC view (the device picked in the header
             // doesn't gate which device the user can record from).
             _activeDevices.Clear();
             _baselines.Clear();
@@ -1118,7 +1118,7 @@ namespace PadForge.Services
 
                 // ── Touchpad gestures: rising edge vs the recording
                 //     baseline. Only gestures the user has ENABLED on the
-                //     Touchpad tab ever land in the fired set, so this
+                //     Touchpad group ever land in the fired set, so this
                 //     detects exactly the descriptors the mapping picker
                 //     offers. Checked after buttons / POVs so a deliberate
                 //     press wins the tick over an incidental touch. ──
@@ -1408,8 +1408,8 @@ namespace PadForge.Services
             string finalDescriptor;
             // Device the input fired on. Empty only if no device was ever
             // collected (handled earlier — recording would have aborted), so
-            // in practice this is always a real GUID. THIS — not whatever the
-            // Mappings-tab device dropdown shows — is the device the mapping
+            // in practice this is always a real GUID. THIS, and not whatever device the
+            // header has picked, is the device the mapping
             // gets attached to. Do not let any caller override it with the
             // dropdown selection (that was a regression; see the comment in
             // MainWindow.RecordingCompleted).
@@ -1660,7 +1660,7 @@ namespace PadForge.Services
 
             string finalDescriptor;
             // Winning (firing) device — the authoritative device the mapping
-            // attaches to, regardless of the Mappings-tab dropdown selection.
+            // attaches to, regardless of the mapping list dropdown selection.
             string winningGuidStr = winningDevice == Guid.Empty
                 ? "" : winningDevice.ToString().ToLowerInvariant();
 

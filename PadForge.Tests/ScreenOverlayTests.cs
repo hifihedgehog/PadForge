@@ -1986,7 +1986,7 @@ namespace PadForge.Tests
                 Assert.Equal(OverlayPlacement.NoPlace, one.Left);
                 Assert.Equal(320, one.Width);
 
-                // The active profile keeps what the Dashboard holds.
+                // The active profile keeps what DashboardViewModel holds.
                 var active = new ProfileData { Id = "p1", Name = "Game" };
                 SettingsManager.Profiles.Add(active);
                 SettingsManager.ActiveProfileId = "p1";

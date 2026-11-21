@@ -2012,7 +2012,7 @@ namespace PadForge.Engine.RemoteLink
                 // ConfigureAwait(false), like every other await in this
                 // file and as its own banner at the top requires. Without it
                 // the loop captures whatever context started it (the UI
-                // thread, via the dashboard toggle), so RouteDatagram and
+                // thread, via the Remote Link switch), so RouteDatagram and
                 // the whole decode path below ran ON THE WPF DISPATCHER,
                 // one post per datagram (round 34).
                 try { r = await _udp.ReceiveFromAsync(buf, SocketFlags.None, any, ct).ConfigureAwait(false); }

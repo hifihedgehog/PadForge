@@ -1634,10 +1634,10 @@ namespace PadForge.ViewModels
 
     /// <summary>Branded VC-type icon lookup for the slot pills (#175 phase 2
     /// item 12). The three vector families reuse the exact geometries the
-    /// sidebar cards and Dashboard wear (Common.ControllerIcons); MIDI and
+    /// sidebar entries and Home cards wear (Common.ControllerIcons); MIDI and
     /// KbM have no vector logo anywhere in the app and keep their MDL2
     /// glyphs (E8D6 piano, E961 input), mirroring
-    /// MainWindow.UpdateControllerNavItemContent's type chip. The Dashboard
+    /// MainWindow.UpdateControllerNavItemContent's type chip. A Home
     /// card's type chip reads this map too.</summary>
     internal static class SlotTypeIconMap
     {

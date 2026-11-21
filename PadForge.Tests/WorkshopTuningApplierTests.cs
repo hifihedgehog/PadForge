@@ -120,7 +120,7 @@ namespace PadForge.Tests
             Assert.Equal("Player", ps.GyroSpace);
             Assert.Equal("", set.WorkshopGyroSpace);
 
-            // A space the user chose on the Gyro tab stays.
+            // A space the user chose in the Gyro group stays.
             set = ArrangeSlot(s => s.WorkshopGyroSpace = "Player");
             ps = new PadSetting { GyroSpace = "World" };
             WorkshopTuningApplier.ApplyToAssignedDevice(Slot, ps);
@@ -646,7 +646,7 @@ namespace PadForge.Tests
         {
             // The translator admits Steam acceleration up to clamp(0..10) x 0.5
             // = 5. The card's VM clamp was 2, so a folded value above it
-            // survived only until the Gyro tab first loaded it, then degraded
+            // survived only until the Gyro group first loaded it, then degraded
             // silently on the round-trip. The card is the contract, so its
             // range covers the import's maximum.
             var vm = new PadForge.ViewModels.PadViewModel(0);

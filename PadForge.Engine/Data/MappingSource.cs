@@ -232,7 +232,7 @@ namespace PadForge.Engine.Data
         /// <summary>v3.2 per-source gyro sensitivity multiplier. Applied
         /// to the calibrated gyro rate during bipolar / unipolar coercion
         /// so users tune sensitivity at the row they're authoring instead
-        /// of having to walk over to the Sticks tab's Left Thumb settings.
+        /// of having to walk over to the Sticks group's Left Thumb settings.
         /// Default 1.0 = the engine's GyroScale (500°/s → ±1 deflection).
         /// Values &gt; 1.0 are more sensitive (smaller rotations produce
         /// larger output); values &lt; 1.0 are less sensitive. Only
@@ -323,7 +323,7 @@ namespace PadForge.Engine.Data
         // Gravity-tilt envelope ("Gyro Tilt X/Y", #292): degrees of tilt
         // for full deflection (default via GyroTiltDefaultRangeDeg = 25,
         // the modal Steam-corpus deflection max) and a subtract-style
-        // inner deadzone. Stamped from the Gyro tab's Tilt card per
+        // inner deadzone. Stamped from the Gyro group's Tilt card per
         // (slot, device), the Motion Steering push pattern. 0 = unset.
         [XmlAttribute] public double ParamTiltRangeDeg   { get => _paramTiltRangeDeg; set => _paramTiltRangeDeg = Finite(value, _paramTiltRangeDeg); }
         private double _paramTiltRangeDeg = 0;

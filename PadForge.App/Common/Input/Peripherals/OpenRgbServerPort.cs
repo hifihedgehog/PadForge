@@ -34,7 +34,7 @@ namespace PadForge.Common.Input.Peripherals
     /// that process's memory, which PadForge does not read. Under
     /// --localconfig the program's own folder stands in for it, the folder
     /// Explorer and a shortcut start a portable OpenRGB in. A server started
-    /// from anywhere else is not found, and the Lighting tab says which port
+    /// from anywhere else is not found, and the Lighting group says which port
     /// was tried.</para>
     ///
     /// <para>Both are reads. The running process is opened with

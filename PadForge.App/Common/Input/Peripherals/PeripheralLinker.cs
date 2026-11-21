@@ -17,7 +17,7 @@ namespace PadForge.Common.Input.Peripherals
         public static readonly PeripheralPresence None = new(false, false, false, false, false);
 
         /// <summary>Logitech Gaming Software runs and G HUB does not, so the
-        /// Lighting tab names it as the program lighting Logitech
+        /// Lighting group names it as the program lighting Logitech
         /// devices.</summary>
         public bool LogitechGamingSoftware { get; init; }
 
@@ -380,7 +380,7 @@ namespace PadForge.Common.Input.Peripherals
         /// drives through PadForge's own session with the pad (#586,
         /// <see cref="FlydigiApexLighting"/>). Its row takes that unit as a
         /// mouse or keyboard row takes its own, so the pad's lights sit on
-        /// the pad's own Lighting tab and get no row of their own. No
+        /// the pad's own Lighting group and get no row of their own. No
         /// other gamepad row is read.</summary>
         public bool LitPad { get; init; }
 
@@ -459,7 +459,7 @@ namespace PadForge.Common.Input.Peripherals
         /// the list for a failed write. No path is linked to an asleep
         /// unit, and the rows that match it keep the outputs they had on
         /// record (<see cref="PeripheralLinker.StillLooking"/>), so their
-        /// tabs stay up until it answers again.</summary>
+        /// groups stay up until it answers again.</summary>
         public bool Asleep { get; init; }
 
         /// <summary>The unit's handle opens and its session was refused: the
@@ -603,7 +603,7 @@ namespace PadForge.Common.Input.Peripherals
         /// the input manager's next device scan, and either can come
         /// first. The link pass does not read an offline row, so a row
         /// that goes offline inside this time keeps its record and its
-        /// tabs, as an unplugged gamepad's row does, whichever came first.
+        /// groups, as an unplugged gamepad's row does, whichever came first.
         /// The scan runs every 2000 ms (InputManager.EnumerationIntervalMs),
         /// and the last pass that saw the unit can be one pass,
         /// <see cref="PeripheralOutputHost.LinkMs"/>, older than the
@@ -892,7 +892,7 @@ namespace PadForge.Common.Input.Peripherals
                     }
                     // A program of the device's model runs and PadForge
                     // has no path through it: the row holds no path, keeps
-                    // its Lighting tab, and the tab names the program.
+                    // its Lighting group, and the group names the program.
                     if (chosen == LightingChoice.None && holder != null) leftToProgram = holder.Name;
                     if (chosen == LightingChoice.Shared) lighting.AddRange(shared);
                     else if (chosen is not (LightingChoice.None or LightingChoice.OpenRgb))
@@ -2000,7 +2000,7 @@ namespace PadForge.Common.Input.Peripherals
         /// plus what it had while its device may still be found
         /// (<see cref="StillLooking"/>) or its last unit left a moment ago
         /// (<see cref="HeldRows"/>), so a device asleep at launch keeps its
-        /// tabs, and so does one that was just unplugged.</summary>
+        /// groups, and so does one that was just unplugged.</summary>
         internal static int Capabilities(int previous, DeviceLinks links, bool stillLooking)
         {
             int found = links == null ? 0 : (int)links.Kinds;

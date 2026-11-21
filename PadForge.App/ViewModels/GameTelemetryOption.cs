@@ -5,7 +5,7 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
-    /// <summary>One entry in the Dashboard's game picker for telemetry (issue
+    /// <summary>One entry in the Game Telemetry page's game picker (issue
     /// #531): a game family, Auto-Detect, or a custom format by name.</summary>
     public sealed class GameTelemetryOption : INotifyPropertyChanged
     {

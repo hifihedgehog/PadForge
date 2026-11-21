@@ -111,7 +111,7 @@ namespace PadForge.Common
                     name(fe);
             };
 
-        /// <summary>"Slot 3": the label and number the Dashboard card shows
+        /// <summary>"Slot 3": the label and number a Home card shows
         /// for a slot, which name the slot wherever it appears.</summary>
         internal static string SlotTitle(int slotNumber)
             => Strings.Instance.Dashboard_Slot + " " + slotNumber.ToString(CultureInfo.InvariantCulture);
@@ -611,7 +611,7 @@ namespace PadForge.Common
         /// <summary>The label beside an element in its parent and Grid row.
         /// The row's reset button comes first: its SettingLabel names the
         /// setting itself, where the text beside a field can be as short as the
-        /// "Port" four Dashboard rows show. That is a reset button later in the
+        /// "Port" rows on the Extras pages show. That is a reset button later in the
         /// row, past the element's value box and any value it shows but not
         /// past another label, or one docked ahead of it (a DockPanel lists the
         /// right-docked button first). Next comes the nearest earlier sibling

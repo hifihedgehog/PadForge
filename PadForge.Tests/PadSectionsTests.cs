@@ -261,7 +261,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A jump to the Audio group by its number still refreshes
-        /// it, as selecting the Audio tab did. A jump to Lighting, in the
+        /// it, as selecting the Audio group did. A jump to Lighting, in the
         /// same section, does not: the page asks for the refresh there, and
         /// only when the selected device has the group.</summary>
         [Fact]
@@ -757,7 +757,7 @@ namespace PadForge.Tests
             // The host the window binds starts with no data. Left to
             // inherit, it would take the page's view model, which has no
             // SelectedSlotSummary, and fail every binding until the window
-            // hands over the dashboard.
+            // hands over DashboardViewModel.
             Assert.Equal("{x:Null}", (string)Named(page, "SlotPowerHost").Attribute("DataContext"));
             Assert.DoesNotContain("SelectedSlotSummary", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.cs"));
             var word = Named(page, "SlotStateWord");

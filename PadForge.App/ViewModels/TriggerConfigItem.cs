@@ -8,7 +8,7 @@ using PadForge.Common;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// Represents one trigger section in the dynamic Triggers tab.
+    /// Represents one trigger section in the dynamic Triggers group.
     /// For gamepad presets (Xbox / PlayStation): index 0 = Left, index 1 = Right.
     /// For custom Extended: index 0..N based on TriggerCount.
     /// </summary>

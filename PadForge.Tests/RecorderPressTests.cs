@@ -145,7 +145,7 @@ namespace PadForge.Tests
             Assert.Equal(2, canceled);
         }
 
-        /// <summary>The Menus tab's opener Record button, wired as MainWindow
+        /// <summary>The menu editor's opener Record button, wired as MainWindow
         /// wires it: another recording that starts leaves its Recording state,
         /// and starting it while another button records leaves it armed.</summary>
         [Fact]

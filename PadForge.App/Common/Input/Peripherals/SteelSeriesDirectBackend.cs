@@ -671,7 +671,7 @@ namespace PadForge.Common.Input.Peripherals
                     Name = SteelSeriesDirectProtocol.NameOf(unit.ProductId),
                     Asleep = unit.Asleep,
                     // A family with a hold is sent no color that keeps changing
-                    // (StartAt), and its Lighting tab says so.
+                    // (StartAt), and its Lighting group says so.
                     SteadyColorsOnly = unit.Plan.Info.HoldMs > 0,
                 };
             }
@@ -1220,7 +1220,7 @@ namespace PadForge.Common.Input.Peripherals
         /// Publishes the light map of every unit with more than one light,
         /// and takes down the maps of units that left (HidppBackend.SyncMaps).
         /// A unit found again with the same lights keeps its map, so the
-        /// Lighting tab does not redraw on every scan. The names Map Key
+        /// Lighting group does not redraw on every scan. The names Map Key
         /// Lights learned go over each map, again whenever they change.
         /// </summary>
         private void SyncMaps(List<Unit> units)

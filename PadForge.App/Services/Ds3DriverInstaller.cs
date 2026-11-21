@@ -2383,7 +2383,7 @@ namespace PadForge.Services
 
         /// <summary>True while either BthPS3 driver is installed as a service,
         /// where <see cref="IsBthPs3Installed"/> asks about the profile
-        /// driver alone. Two registry reads, so the Settings card follows it
+        /// driver alone. Two registry reads, so its row in Settings follows it
         /// on its five-second timer.</summary>
         internal static bool IsAnyBthPs3DriverInstalled()
         {

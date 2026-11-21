@@ -9,7 +9,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The Menus tab's editor for a keyboard menu (#566): the Keyboard style,
+    /// The menu editor for a keyboard menu (#566): the Keyboard style,
     /// the rows each layout lists, steering and pointers among them, a
     /// recorded press or axis on a row, each row's list, the press point, the
     /// resets, Types Through's list, Opens On's press modes and time, and the

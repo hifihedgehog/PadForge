@@ -1778,7 +1778,7 @@ namespace PadForge.Common.Input
         private long _logitechGKeysRetryTicks;
 
         /// <summary>The live G-Keys row, null while the feature is off. Read
-        /// by the Dashboard status lane.</summary>
+        /// by the status lane that writes the extras' lines on Extras and Home.</summary>
         internal LogitechGKeysDevice LogitechGKeys => _logitechGKeysDevice;
 
         // Analog keyboards (Phase 1k, issue #468). Discovery and the open are
@@ -1859,7 +1859,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The live Head Tracker row, null while the feature is off
-        /// or the row is retired. Read by the Dashboard status lane
+        /// or the row is retired. Read by the status lane that writes its line on Extras and Home
         /// (InputService.UpdateHeadTrackingStatus), which keys its cache on
         /// the instance plus <see cref="HeadTrackerDevice.StatusVersion"/>,
         /// so a reopen (new instance, version back at 0) still rebuilds.</summary>

@@ -64,7 +64,7 @@ namespace PadForge.Services
             => Run(Switches(null), new[] { profile }, null, null, _ => -1, null);
 
         /// <summary>The slot that shows the smallest player number: the
-        /// first created slot in the group order the Dashboard, the sidebar
+        /// first created slot in the group order Home, the sidebar
         /// and <see cref="SettingsManager.SlotOrders.GetGlobalSlotNumber"/>
         /// walk. -1 when no slot is created.</summary>
         internal static int FirstDisplayedSlot(IReadOnlyList<bool> created,

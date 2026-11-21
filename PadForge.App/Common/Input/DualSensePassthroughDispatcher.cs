@@ -129,7 +129,7 @@ namespace PadForge.Common.Input
         /// A host that drives triggers and never touches the bar therefore
         /// held it for the whole 15 s idle window, the identity writer
         /// suppressed its own lightbar enable for exactly as long, and the
-        /// pad sat on its firmware default blue while the Lighting tab did
+        /// pad sat on its firmware default blue while the Lighting group did
         /// nothing. The pips and the mic LED kept working the whole time
         /// because they gate through GateMirroredSubsystem instead, which
         /// is what made it read as "only the lightbar is broken".</para>
@@ -728,7 +728,7 @@ namespace PadForge.Common.Input
             // pass-through. payload[1] is validFlag1, the same decode
             // UserEffectsDispatcher.NotifyExternalSubsystems uses to mirror
             // the RGB at payload[44..46]. Without this distinction any effect
-            // traffic at all took the bar away from the Lighting tab (#334).
+            // traffic at all took the bar away from the Lighting group (#334).
             if (payload.Length > 1 && (payload[1] & 0x04) != 0)
                 Volatile.Write(ref _lightbarDrivenTicks, Environment.TickCount64);
 

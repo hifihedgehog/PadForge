@@ -10,7 +10,7 @@ namespace PadForge.Common.Input.Peripherals
     /// color of their own (#557). Append-only, saved by name.</summary>
     public enum KeyBackgroundRule
     {
-        /// <summary>The Lighting tab's mode, the Base layer's rule until it
+        /// <summary>The Lighting group's mode, the Base layer's rule until it
         /// is given another.</summary>
         Same = 0,
         /// <summary>Those lights off.</summary>
@@ -18,7 +18,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>Those lights in <see cref="KeyLightingLayer.BackgroundRgb"/>.</summary>
         Color = 2,
         /// <summary>Those lights as the Base layer shows them, a shift
-        /// layer's rule until it is given another: the Mappings tab's
+        /// layer's rule until it is given another: the mapping list's
         /// inherit rule, light by light. The Base layer never has it.</summary>
         BaseLayer = 3,
     }
@@ -37,7 +37,7 @@ namespace PadForge.Common.Input.Peripherals
         /// set, the rule the layer starts with
         /// (<see cref="DefaultRule"/>). The Base layer has no Base layer
         /// to show, so it reads <see cref="KeyBackgroundRule.BaseLayer"/>
-        /// as the Lighting tab's mode.</summary>
+        /// as the Lighting group's mode.</summary>
         public KeyBackgroundRule Background
         {
             get
@@ -53,7 +53,7 @@ namespace PadForge.Common.Input.Peripherals
         public IReadOnlyDictionary<string, int> Groups { get; init; } = new Dictionary<string, int>(StringComparer.Ordinal);
         public IReadOnlyDictionary<int, int> Lights { get; init; } = new Dictionary<int, int>();
 
-        /// <summary>The rule a layer starts with: the Lighting tab's mode on
+        /// <summary>The rule a layer starts with: the Lighting group's mode on
         /// the Base layer, the Base layer's colors on a shift layer, the
         /// way a key a shift layer leaves alone keeps doing what it does on
         /// Base.</summary>
@@ -66,7 +66,7 @@ namespace PadForge.Common.Input.Peripherals
             && Keys.Count == 0 && Groups.Count == 0 && Lights.Count == 0;
 
         /// <summary>The frame this layer asks for: its colors, its
-        /// background unless it keeps the Lighting tab's mode, and, for a
+        /// background unless it keeps the Lighting group's mode, and, for a
         /// layer that shows the Base layer under its own colors,
         /// <paramref name="baseFrame"/> beneath them.</summary>
         public KeyFrame ToFrame(KeyFrame baseFrame = null) => new(Keys, Groups, Lights,
@@ -150,7 +150,7 @@ namespace PadForge.Common.Input.Peripherals
         /// colors, and its other lights show what its rule says: the Base
         /// layer's colors and background until it is given another rule,
         /// the way an unmapped row on a shift layer falls through to Base
-        /// on the Mappings tab. A shift layer with nothing saved shows the
+        /// in the mapping list. A shift layer with nothing saved shows the
         /// Base layer. Empty when the device has no colors at all.
         /// </summary>
         public KeyFrame FrameFor(string engagedMask)

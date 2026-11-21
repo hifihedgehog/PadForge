@@ -49,7 +49,7 @@ namespace PadForge.Common.Input.Peripherals
     /// strips start with no LEDs until its user sizes them
     /// (RGBController_RazerAddressable.cpp:189-192), and its packets carry
     /// 80 colors for every channel all the same. Until a count is set on the
-    /// Lighting tab, PadForge's map is the 80 lights of each channel, a
+    /// Lighting group, PadForge's map is the 80 lights of each channel, a
     /// channel's lights past the end of its strip lighting nothing. A count
     /// narrows the channel's lights to that many, the rest of its packet
     /// black, and goes out as the size report OpenRGB sends when its user

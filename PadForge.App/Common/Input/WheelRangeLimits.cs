@@ -2,7 +2,7 @@ namespace PadForge.Common.Input
 {
     /// <summary>
     /// The rotation range a native-FFB wheel takes, from the writer that sends
-    /// it (Logitech, Fanatec, Thrustmaster). The Wheel tab's slider follows it,
+    /// it (Logitech, Fanatec, Thrustmaster). The Wheel group's slider follows it,
     /// so the range it shows is the range the wheel gets: it offered 40° to
     /// 2,520° on every wheel while each writer clamped to its model in silence,
     /// and a TS-PC set to 40° was sent 140° (discussion #512).

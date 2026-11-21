@@ -163,7 +163,7 @@ namespace PadForge.Engine.Touchpad
         // delta drives stick X/Y or wedge-thresholded D-pad output. Lives
         // in the same per-(device, pad) settings shape because the data
         // model already supports it and the user picks both gesture
-        // toggles and joystick toggles from the same Touchpad tab.
+        // toggles and joystick toggles from the same Touchpad group.
 
         /// <summary>Master enable for the touchpad's joystick / D-pad
         /// output channel. Off by default so existing users keep their
@@ -200,7 +200,7 @@ namespace PadForge.Engine.Touchpad
         // target. The base delta scale (TouchpadDeltaScale = 128) gives
         // a 1:1 sweep across a 1920-wide screen at sensitivity 1.0; the
         // multipliers below let the user dial in slower/faster cursor
-        // feel and flip either axis without leaving the touchpad tab.
+        // feel and flip either axis without leaving the Touchpad group.
 
         /// <summary>Multiplier on horizontal touchpad-to-mouse delta. 1.0
         /// is the calibrated baseline (a full horizontal pad sweep
@@ -640,7 +640,7 @@ namespace PadForge.Engine.Touchpad
                 {
                     // Repair HERE, at the shared resolve seam, not in the VM
                     // loader. The engine reads PointerRegionAuthored through
-                    // its own provider and never opens the Touchpad tab, so a
+                    // its own provider and never opens the Touchpad group, so a
                     // repair living on the UI path left a poisoned entry
                     // suppressing the imported region until the user happened
                     // to select that exact pad. Idempotent and gated on

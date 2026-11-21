@@ -29,7 +29,7 @@
 
     <!-- Stick outer-ring geometry — verbatim from Zacksly Left/Right
          Stick (path 2 in both files, identical). Reused below as the
-         shared shape for the Sticks tab header. -->
+         shared shape for the Sticks group header. -->
     <StreamGeometry x:Key="ZackslyStickOuterRingGeometry">M256,83A173,173,0,1,0,429,256,173,173,0,0,0,256,83Zm0,294.29A121.25,121.25,0,1,1,377.25,256,121.38,121.38,0,0,1,256,377.25Z</StreamGeometry>
 
     <!-- Stick inner disc — plain circle of radius 103.07 centered at
@@ -245,7 +245,7 @@
     <!-- SUBSECTION title inside a card: one visual rank below the CardTitle
          section header (e.g. "Left Thumbstick" is CardTitle; "Center Point",
          "Deadzone", "Sensitivity Curves", "Range", "Steering" inside its card
-         wear this). The reference look is the Force Feedback tab's Trigger
+         wear this). The reference look is the Force Feedback group's Trigger
          Routing "Left Trigger" / "Right Trigger" labels: SemiBold at the
          inherited body size, 6px gap below. -->
     <Style x:Key="CardSubsectionTitle" TargetType="TextBlock">

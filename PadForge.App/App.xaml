@@ -245,7 +245,7 @@
             <!--
                 Plain ItemsControls stay out of the Tab order. Every Control
                 is focusable by default, so Tab stopped on each list container
-                (the Dashboard's slot list, an empty slot-badge row on the
+                (Home's slot list, an empty slot-badge row on the
                 Devices page) and drew the focus ring around a list that does
                 nothing with focus. The controls inside keep their own Tab
                 stops. A style keyed by the type reaches only plain

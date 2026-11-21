@@ -115,7 +115,7 @@ namespace PadForge.Common.Input.Peripherals
         public byte ModeIndex { get; init; }
 
         /// <summary>How firmly this unit can be held, the top of what its
-        /// rows' Lighting tabs offer: 0 colors alone, 1 its lighting power
+        /// rows' Lighting groups offer: 0 colors alone, 1 its lighting power
         /// too, 2 its on-board memory mode off as well.</summary>
         public int MaxClaimLevel { get; init; }
 

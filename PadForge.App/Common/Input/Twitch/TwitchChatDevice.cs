@@ -168,7 +168,7 @@ namespace PadForge.Common.Input.Twitch
             return items;
         }
 
-        // ─── Status, for the Dashboard, the Devices page and the picture page ───
+        // ─── Status, for Extras, Home, the Devices page and the picture page ───
 
         /// <summary>Where the connection stands, null without a channel.</summary>
         internal TwitchChatState? State => _client?.State;

@@ -57,7 +57,7 @@ namespace PadForge.Common.Input
         /// <summary>True when the device both has a touchpad and has a
         /// haptic lane PadForge drives for swipe ticks (Steam Controller
         /// family via HapticToneService, or a dispatcher-driven Sony
-        /// pad). Gates the Swipe Haptics card on the Touchpad tab.</summary>
+        /// pad). Gates the Swipe Haptics card in the Touchpad group.</summary>
         public static bool DeviceHasSwipePulse(Engine.Data.UserDevice ud)
         {
             if (ud == null || !ud.HasTouchpad) return false;

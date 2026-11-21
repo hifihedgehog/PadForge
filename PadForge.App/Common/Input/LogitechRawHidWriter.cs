@@ -219,7 +219,7 @@ namespace PadForge.Common.Input
         private static bool FixedRange(ushort pid) => pid is 0xC293 or 0xC294 or 0xC295 or 0xCA03;
 
         /// <summary>The rotation range a model takes, in degrees, which both
-        /// <see cref="WriteRange"/> and the Wheel tab's slider follow
+        /// <see cref="WriteRange"/> and the Wheel group's slider follow
         /// (<see cref="WheelRangeLimits"/>): 40 up to the lg4ff device table's
         /// maximum, or that one angle for a wheel with a fixed range.</summary>
         internal static (int Min, int Max) RangeLimits(ushort pid)

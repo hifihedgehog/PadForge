@@ -30,7 +30,7 @@ namespace PadForge.Tests
             var settings = KeyLightingSettings.Parse(
                 "Base>k1A=FF0000,k00=FFFFFF,kZZ=FFFFFF,k1B=FFF,gbogus=FFFFFF,gzone0=FFFFFF,gzone2=00FF00,l-1=FFFFFF,x=1,bg=nonsense|>k04=FFFFFF|Bad|Mask>k04=FFFFFF");
             // "Mask" is a mask the text can hold, so it is kept: which
-            // layers a slot has is the Mappings tab's to say, not the text's.
+            // layers a slot has is the mapping list's to say, not the text's.
             Assert.Equal("Base>k1A=FF0000,gzone2=00FF00|Mask>k04=FFFFFF", settings.Format());
         }
 

@@ -10,7 +10,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// The Lighting tab's LED Strips card (#557): how many LEDs each strip of
+    /// The Lighting group's LED Strips card (#557): how many LEDs each strip of
     /// the selected device has, for a device that drives strips of a length
     /// only its user knows (<see cref="LightMap.Strips"/>). The counts live in
     /// the device's config for this controller

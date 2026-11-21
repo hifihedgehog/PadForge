@@ -454,7 +454,7 @@ namespace PadForge.Engine
 
         /// <summary>The aim went through a light-gun window that already
         /// places it on the screen: a Wii Remote's calibration (#485) or a
-        /// GunCon 2's beam window. The IR Pointer read adds no Pointer-tab
+        /// GunCon 2's beam window. The IR Pointer read adds no Pointer group
         /// bar offset to it.</summary>
         public bool Calibrated;
     }

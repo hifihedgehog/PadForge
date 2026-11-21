@@ -9,7 +9,7 @@ using Xunit;
 
 namespace PadForge.Tests
 {
-    /// <summary>The Gyro On rows and the Re-Center switch of the Gyro tab's
+    /// <summary>The Gyro On rows and the Re-Center switch of the Gyro group's
     /// Engage card, and the import stamps they replace: Steam's ratchet, its
     /// gyro activation by layer and its re-center each land on the assigned
     /// device's card and leave the slot.</summary>

@@ -347,7 +347,7 @@ namespace PadForge.Engine
         /// a picture of a DualShock 4 and it is honest about that: a proxy
         /// that reports somebody else's hardware id gets treated as that
         /// hardware by every writer that keys on the id, which for a browser
-        /// on the far end of a socket is not survivable. The Lighting tab asks
+        /// on the far end of a socket is not survivable. The Lighting group asks
         /// these two questions directly instead.</para>
         ///
         /// <para>Same rule the tab applies to physical pads: a bar for the
@@ -360,7 +360,7 @@ namespace PadForge.Engine
             || LayoutKey.Equals("dualsenseedge", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>True when the drawn pad is a DualShock 4, whose bar the
-        /// Lighting tab previews with different art.</summary>
+        /// Lighting group previews with different art.</summary>
         public bool LightbarIsDs4 =>
             LayoutKey.Equals("ds4", StringComparison.OrdinalIgnoreCase);
 

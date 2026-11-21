@@ -153,7 +153,7 @@ public partial class ProfileServiceToggleTests
             .Invoke(settings, new object[] { data });
 
     /// <summary>
-    /// The Dashboard has its data before the startup load runs, so the
+    /// DashboardViewModel has its data before the startup load runs, so the
     /// OpenXR runtime picker can be built before the saved runtime is known.
     /// A saved runtime the registry no longer names must be listed and
     /// selected once the load sets it, under its manifest's file name.

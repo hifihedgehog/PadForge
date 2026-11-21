@@ -106,7 +106,7 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(SyncScreenOverlays);
         }
 
-        /// <summary>Brings the windows into line with the Dashboard's list, whatever
+        /// <summary>Brings the windows into line with the Screen Overlay page's list, whatever
         /// changed: a switch, an opacity, a place, a profile switch, an overlay added
         /// or removed. It changes only what differs, so running it again does
         /// nothing, and an overlay in the middle of a drag keeps its place until the

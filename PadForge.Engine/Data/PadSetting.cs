@@ -207,7 +207,7 @@ namespace PadForge.Engine.Data
         [XmlElement] public string LeftThumbLinear { get; set; } = "0";
         /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
         /// Applied AFTER the deadzone / range / curve stage, so the Sticks
-        /// tab scales what the mapping table already produced. This is the
+        /// group scales what the mapping table already produced. This is the
         /// home of the sensitivity knob; the mapping grid does not carry
         /// one for plain analog sources.</summary>
         [XmlElement] public string LeftThumbSensitivity { get; set; } = "1";
@@ -216,7 +216,7 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
         /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
         /// Applied AFTER the deadzone / range / curve stage, so the Sticks
-        /// tab scales what the mapping table already produced. This is the
+        /// group scales what the mapping table already produced. This is the
         /// home of the sensitivity knob; the mapping grid does not carry
         /// one for plain analog sources.</summary>
         [XmlElement] public string RightThumbSensitivity { get; set; } = "1";
@@ -326,7 +326,7 @@ namespace PadForge.Engine.Data
         [XmlElement] public string WheelRpmLeds { get; set; } = "0";
 
         // ─── Novint Falcon (#521) ───
-        // The Falcon section of the Force Feedback tab, per (slot, device) so
+        // The Falcon section of the Force Feedback group, per (slot, device) so
         // a profile carries it per game, the job FalconJoyForce's per-title
         // config files do.
 
@@ -537,7 +537,7 @@ namespace PadForge.Engine.Data
         /// (Xbox One+). "0" = off (default), "1" = on. Runs a parallel
         /// filter chain inside <see cref="Common.Input.AudioBassDetector"/>
         /// with its own sensitivity / cutoff so it stays independent of
-        /// the Force Feedback tab's Audio Bass Rumble.</summary>
+        /// the Force Feedback group's Audio Bass Rumble.</summary>
         [XmlElement] public string AudioRumbleTriggersEnabled { get; set; } = "0";
 
         /// <summary>Audio-trigger rumble sensitivity (1–20, default 4).</summary>
@@ -946,11 +946,11 @@ namespace PadForge.Engine.Data
         [XmlIgnore] public string GyroInvertRollEffective
             => string.IsNullOrEmpty(GyroInvertRoll) ? GyroInvertYaw : GyroInvertRoll;
 
-        /// <summary>When "1" (default), the Gyro tab tuning chain is
+        /// <summary>When "1" (default), the Gyro group tuning chain is
         /// applied to this device's motion passthrough on this slot —
         /// the virtual controller's gyro report and the DSU broadcast.
         /// When "0", the passthrough relays the raw sensor reading and
-        /// the Gyro tab affects only gyro-as-mapping-source reads.
+        /// the Gyro group affects only gyro-as-mapping-source reads.
         /// Stored per-(device, slot) like the rest of the gyro tuning.
         /// Defaults to "0" so a fresh profile (or an absent element on
         /// an upgraded one) hands the game a clean passthrough; the
@@ -1942,7 +1942,7 @@ namespace PadForge.Engine.Data
             // collide on SaveToFile's dedup-by-checksum and the second
             // device's per-pad toggles (EnableRadialZones, EnableTaps,
             // GestureMatchThreshold, the lot) get dropped silently.
-            // Symptom: user toggles a touchpad-tab checkbox, autosave
+            // Symptom: user toggles a Touchpad group checkbox, autosave
             // fires, on next launch the checkbox is back to its prior
             // value because the PadSetting that actually carried the
             // mutation lost the dedup race.
@@ -2014,7 +2014,7 @@ namespace PadForge.Engine.Data
             // Per-device mouse-gesture settings (issue #200). Same dedup-by-
             // checksum trap as the touchpad block above: without these fields
             // in the checksum, two devices with otherwise-identical mappings
-            // collide on SaveToFile's dedup and the second device's Mouse-tab
+            // collide on SaveToFile's dedup and the second device's Mouse group
             // toggles get dropped silently on relaunch. Sorted by DeviceGuid
             // so the hash is content-defined, not order-defined.
             if (MouseGestureSettings != null && MouseGestureSettings.Length > 0)
@@ -2250,7 +2250,7 @@ namespace PadForge.Engine.Data
             if (string.IsNullOrEmpty(k)) return false;
             if (k.StartsWith("Stick", StringComparison.Ordinal) && k.Contains("Steer", StringComparison.Ordinal))
                 return true;
-            // Motion Lean input tuning (gyro tab's Motion Steering card):
+            // Motion Lean input tuning (Gyro group's Motion Steering card):
             // MotionSteerInner / MotionSteerOuter / MotionSteerOrient. Per-device
             // tuning, not an input-routing descriptor — without this, the
             // descriptor-bleed cleanup reset a non-selected device's tilt setup
@@ -2264,7 +2264,7 @@ namespace PadForge.Engine.Data
             if (k.StartsWith("FlickStick", StringComparison.Ordinal))
                 return true;
             // Stick trackball tuning (#291): KbmMouseMomentum /
-            // KbmMouseMomentumGlide, the Sticks tab's Momentum rows on a
+            // KbmMouseMomentumGlide, the Sticks group's Momentum rows on a
             // KBM slot's mouse stick. Same class as the steering keys:
             // without this, the descriptor rewrite wiped the toggle within
             // seconds of enabling it (owner-reported: momentum died after
@@ -2272,7 +2272,7 @@ namespace PadForge.Engine.Data
             if (k.StartsWith("KbmMouseMomentum", StringComparison.Ordinal))
                 return true;
             // Gyro Tilt envelope tuning (#292): GyroTiltRange /
-            // GyroTiltInner, the Gyro tab's tilt card. Found as the
+            // GyroTiltInner, the Gyro group's tilt card. Found as the
             // unlisted sibling while fixing the momentum keys above.
             if (k.StartsWith("GyroTilt", StringComparison.Ordinal))
                 return true;
@@ -2479,7 +2479,7 @@ namespace PadForge.Engine.Data
             // Constant force
             nameof(ConstantForceEnabled), nameof(ConstantForceX), nameof(ConstantForceY),
             // Gyro tuning — per-(device, slot). Omitting these from the
-            // clone list is the bug that makes Gyro tab sliders revert on
+            // clone list is the bug that makes Gyro group sliders revert on
             // restart: LoadFromFile's CloneDeep would drop them, leaving
             // every in-memory PadSetting at constructor defaults regardless
             // of what the XML round-tripped through the XmlSerializer.
@@ -2587,7 +2587,7 @@ namespace PadForge.Engine.Data
 
         /// <summary>Opaque JSON payload for the slot's radial / touch menu
         /// definitions (#9 B-17, MappingSet.Menus), so Copy / Paste carries
-        /// the Menus-tab state like the shift authoring above.</summary>
+        /// the menu editor state like the shift authoring above.</summary>
         [System.Xml.Serialization.XmlIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotMenusJson { get; set; }
@@ -2613,7 +2613,7 @@ namespace PadForge.Engine.Data
         public string SlotSetExtrasJson { get; set; }
 
         /// <summary>Opaque JSON payload carrying the slot's macros, as the
-        /// same envelope the Macros tab's own clipboard already uses
+        /// same envelope the macro list's own clipboard already uses
         /// (#112), so a slot Copy / Paste and a macro Copy / Paste agree on
         /// the wire shape and the re-scoping rules.
         ///
@@ -2621,7 +2621,7 @@ namespace PadForge.Engine.Data
         /// tab sat visibly apart and "Copy" on the Mappings tab read as
         /// "not macros" on its own. That stopped being self-explanatory: the
         /// tooltip says all settings, every OTHER whole-slot transfer (profile
-        /// apply, the Macros tab's Copy From) already carries them, and the
+        /// apply, the macro list's Copy From) already carries them, and the
         /// one exception the interface did not name became the confusing
         /// part.</para></summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -2726,10 +2726,10 @@ namespace PadForge.Engine.Data
                 dict["__MappingBidirectional"] = JsonSerializer.Serialize(bidirList);
             }
 
-            // v3.3 — per-(device, pad) Touchpad-tab settings (gesture
+            // v3.3: per-(device, pad) Touchpad group settings (gesture
             // toggles + thresholds + Stick/D-Pad output + Mouse output).
             // Without this, Copy / Paste of a slot's settings silently
-            // wipes the target's Touchpad-tab state because CopyFrom calls
+            // wipes the target's Touchpad group state because CopyFrom calls
             // DeepCopyTouchpadSettings with a null source, which returns
             // null and overwrites the target's existing array.
             if (TouchpadSettings != null && TouchpadSettings.Length > 0)
@@ -2739,7 +2739,7 @@ namespace PadForge.Engine.Data
 
             // Per-device mouse-gesture settings (issue #200): same sentinel-
             // key round-trip as the touchpad twin, so Copy / Paste of a
-            // slot's settings carries the Mouse-tab state.
+            // slot's settings carries the Mouse group state.
             if (MouseGestureSettings != null && MouseGestureSettings.Length > 0)
             {
                 dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);

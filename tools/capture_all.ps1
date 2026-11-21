@@ -709,7 +709,7 @@ function Find-UIA {
     # tells a hung UI thread from a slow tree walk.
     $what = "Name='$Name' Aid='$Aid'"
     $wholeWindow = -not $PSBoundParameters.ContainsKey('Parent')
-    # A page view found once is kept while it is shown: on the Preview tab
+    # A page view found once is kept while it is shown: in Buttons' picture
     # one read of the window's children costs 1.5 s, and the recipes ask for
     # PadPageView again and again. A kept view that no longer answers, or
     # that a navigation has hidden, is looked up afresh.
@@ -973,17 +973,17 @@ function Ensure-DeviceAssigned {
     # Runs with PadForge closed and restarts it, which is the state proven to
     # load settings cleanly.
     # SlotType resolves the pad index by VirtualControllerType instead of
-    # trusting a hardcoded number. Dashboard CARD order is type-group order
+    # trusting a hardcoded number. Home CARD order is type-group order
     # (Xbox, PlayStation, Nintendo, Extended, KBM, MIDI, VR) while PAD INDEX is
     # creation order, and they are not the same: on 2026-08-10 the slots came
     # out 0,1,5,4,2,2, so the KBM slot was pad 3 while its card sat fifth. A
-    # mouse mapped to "pad 4" landed on an Extended slot and the Mouse tab
+    # mouse mapped to "pad 4" landed on an Extended slot and the Mouse group
     # never appeared. Pass the type and let the file say where it is.
     #
     # PeripheralOutputs, when given, is written into the device's own row in
     # the same save: the record of the lighting and rumble PadForge found on
     # a mouse or keyboard (UserDevice.PeripheralOutputs, #494), which keeps
-    # its Lighting and Force Feedback tabs up while it is offline.
+    # its Lighting and Force Feedback groups up while it is offline.
     param([string]$DeviceNamePart, [int]$PadIndex, [int]$SlotType = -1,
           [string]$XmlPath, [string]$ExePath, [int]$PeripheralOutputs = -1)
 
@@ -1139,7 +1139,7 @@ function Ensure-DeviceAssigned {
     return $true
 }
 
-# The 4.3.2 audio DSP chain (#347) renders on the DualSense's Audio tab below
+# The 4.3.2 audio DSP chain (#347) renders on the DualSense's Audio group below
 # Output Path, and the EQ rows and curve render only while the EQ is ON with
 # bands authored. A scroll-down shot of the stock tab would show an empty
 # curve and no rows, which is the "captured whatever was on screen" failure
@@ -1303,7 +1303,7 @@ function Write-SlotStructures {
         Write-Host "  wrote the Combat Wheel menu (cell 2 bound to the Quick Combo macro) onto slot 0" -ForegroundColor Green
     }
 
-    # The two 5.3.0 menu styles, after the Combat Wheel, so the Menus tab
+    # The two 5.3.0 menu styles, after the Combat Wheel, so the menu editor
     # lists three menus and pad-menus-keyboard and pad-menus-hotbar each open
     # their own (Capture-MenuShots). Neither can open during the run:
     # the keyboard (#566) has no Opens With input, and the hotbar's controls
@@ -1413,7 +1413,7 @@ function Dismiss-AssignBanner {
     # Now button is one of the page's own children in the UI Automation
     # tree. A search of every element of the page for a button the run
     # seldom shows read the whole page twice, about a second each on the
-    # Mappings tab, ten times a run.
+    # mapping list, ten times a run.
     $notNow = New-Object System.Windows.Automation.AndCondition(@(
         (New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::NameProperty, "Not Now")),
@@ -1630,7 +1630,7 @@ function Ensure-MacrosLoaded {
     # The macros survive a load when they are written while PadForge is CLOSED
     # (proven: inject, launch, exit, and the file comes back re-serialized with
     # all five and their actions). During a capture run something between
-    # startup and the Macros tab empties them. Rather than keep guessing at
+    # startup and the macro editor empties them. Rather than keep guessing at
     # which step, write them again with the app closed and restart, which is
     # the state that is known to work. Returns $true when macros are present.
     param([string]$XmlPath, [string]$ExePath)
@@ -3822,9 +3822,9 @@ try {
 }
 
 # --- Inject synthetic dummy devices for the Wheel + MIDI-input captures ---
-# The Wheel tab needs a force-feedback wheel and the MIDI-input Devices-page
+# The Wheel group needs a force-feedback wheel and the MIDI-input Devices-page
 # preview needs a MIDI controller; neither is among the cached placeholders.
-# Gating is offline-safe: the Wheel tab is IsLogitechWheel(VendorId, ProdId)
+# Gating is offline-safe: the Wheel group is IsLogitechWheel(VendorId, ProdId)
 # (G29 = 0x046D / 0xC24F, CapType Driving=22 also lights Force Feedback), and
 # the MIDI note/CC preview is CapType == Midi(27). Clone an existing <Device>
 # so the XmlSerializer field order matches exactly, then override the identity
@@ -4021,7 +4021,7 @@ try {
 
         # v4 additions. DualShock 3 (#194/#195 motion + the BT/USB support):
         # a Bluetooth-looking path so the Devices page's Details card shows
-        # its Link row, gyro+accel true so the Gyro tab gates on (SDL sixaxis
+        # its Link row, gyro+accel true so the Gyro group gates on (SDL sixaxis
         # motion) along with the Pitch and Roll Simulation card (#474,
         # SimulatedGyro.MissingAxes). Keeps gamepad DeviceObjects so the
         # mapping grid has rows. Named "DualShock 3", the name PadForge
@@ -4046,7 +4046,7 @@ try {
         # Xbox Series X: deterministic stand-in (the cached list may only
         # carry an Xbox One pad). The XInput# path gates the Guide LED
         # card, the Series PID (0x0B12) passes the impulse-trigger set,
-        # and HasRumbleTriggers surfaces the Impulse Triggers tab.
+        # and HasRumbleTriggers surfaces the Impulse Triggers group.
         # UNIQUE ProductName ("...GIP...") on purpose: the user's REAL cached
         # Xbox Series X is also named "Xbox Series X Controller", and worse, the
         # Xbox slot's PRESET is "Xbox Series X|S Controller (Bluetooth)". A bare
@@ -4060,10 +4060,10 @@ try {
         $xsx = New-WiiDevice "acac1111-2222-3333-4444-555566667777" "Xbox Series X GIP Controller" 1118 2834 "XInput#0\dummy"
         $n = $xsx.SelectSingleNode("HasRumbleTriggers"); if ($n) { $n.InnerText = "true" }
         Add-DeviceOnce $xsx
-        # Wii Remote (#146 Pointer tab + #196 Clone Device on the Extended slot).
+        # Wii Remote (#146 Pointer group + #196 Clone Device on the Extended slot).
         # HasIrCamera is identity-derived: VendorId 0x057E (1406) AND ProductName
         # starting "Nintendo Wii Remote" (UserDevice.cs:142). The user's cache no
-        # longer carries a paired Wii Remote, so the Pointer tab + Extended-slot
+        # longer carries a paired Wii Remote, so the Pointer group + Extended-slot
         # clone had no device to gate on. New-WiiDevice keeps gamepad DeviceObjects
         # so auto-map builds a grid and the Clone-Device button has rows to clone.
         Add-DeviceOnce (New-WiiDevice "11110000-2222-3333-4444-555566667777" "Nintendo Wii Remote" 1406 774 "HID\VID_057E&PID_0306\wiimotedummy")
@@ -4120,7 +4120,7 @@ try {
         # .ModelName gives that ID, and the path takes the reader's
         # analogkb:// form (AnalogKeyboardDevice).
         Add-DeviceOnce (New-SyntheticDevice "cdcd1111-2222-3333-4444-555566667777" "Razer Huntsman V3 Pro" 5426 678 "analogkb://1532:02a6:dummy" 38 0 0 0)
-        # Two mice for a mouse's own Lighting and Force Feedback tabs (#494).
+        # Two mice for a mouse's own Lighting and Force Feedback groups (#494).
         # CapType 18 is Mouse (InputTypes.cs). 046D:C08B is the G502 HERO
         # (Solaar descriptors.py), lit over HID++, and 1038:1730 the Rival
         # 710 (SteelSeriesDirectProtocol.cs), whose rumble GG plays. Each
@@ -4129,7 +4129,7 @@ try {
         # (Ensure-DeviceAssigned -PeripheralOutputs).
         Add-DeviceOnce (New-SyntheticDevice "efef1111-2222-3333-4444-555566667777" "Logitech G502 HERO Gaming Mouse" 1133 49291 "HID\VID_046D&PID_C08B&MI_00\dummy" 18 3 5 0)
         Add-DeviceOnce (New-SyntheticDevice "efef2222-2222-3333-4444-555566667777" "SteelSeries Rival 710 Gaming Mouse" 4152 5936 "HID\VID_1038&PID_1730&MI_00\dummy" 18 3 5 0)
-        # A Novint Falcon (#521) for its card on the Force Feedback tab. The
+        # A Novint Falcon (#521) for its card in the Force Feedback group. The
         # pad page shows the card for a selected row whose CapType is
         # NovintFalcon, 43 (PadPage SyncFalconCard), so an offline row shows
         # it. 0403:CB48 and the falcon:// path are what an open Falcon gets:
@@ -4177,7 +4177,7 @@ if ($profilesNode.ChildNodes.Count -eq 0) {
     Write-Host "  Injected test profile"
 }
 
-# --- Inject test macros (so Macros tab screenshot shows content) ---
+# --- Inject test macros (so the Macros & Menus screenshot shows content) ---
 # These are written in MacroData's declared element order. That is worth keeping
 # because XmlSerializer reads elements in declared order, but be clear about
 # what it does NOT explain: on 2026-08-09 all five macros were discarded at load
@@ -4423,7 +4423,7 @@ if ($appSettings) {
     # only while the master switch is on: with it off there is no row, no
     # socket and no thread, so devices-head-tracking would photograph a
     # Devices page that cannot contain what the shot is named after. The
-    # Dashboard section renders either way, but its status line reads
+    # Head Tracking page renders either way, but its status line reads
     # "Stopped" while the feature is off, and the docs page shows it live.
     # This is the harness's own rule at work: the state is one bool in the
     # settings file, so write it rather than clicking for it. The owner's
@@ -4455,8 +4455,8 @@ if ($appSettings) {
         Write-Host "  Set $sw=true"
     }
 
-    # Four 5.2.0 switches, written the same way. The Dashboard's Game Mods
-    # (#529) and Game Telemetry (#531) cards report their listeners only
+    # Four 5.2.0 switches, written the same way. The Game Mods
+    # (#529) and Game Telemetry (#531) pages report their listeners only
     # while they listen, and the Settings cards for the Novint Falcon (#521)
     # and keyboard screens (#519) show their library lines only while on.
     # The DSX stand-in stays as the file has it, off. The owner's values
@@ -4473,7 +4473,7 @@ if ($appSettings) {
 
     # 5.3.0: the Twitch Chat row (#555) exists only while EnableTwitchChat is
     # on. No channel is written, so nothing connects to Twitch, and the row
-    # and the Dashboard card show what a first setup shows. The owner's value
+    # and its Extras page show what a first setup shows. The owner's value
     # rides the backup and is restored in STEP 4.
     $twNode = $appSettings.SelectSingleNode("EnableTwitchChat")
     if (-not $twNode) {
@@ -4814,7 +4814,7 @@ function Add-SlotViaDialogOnce {
 }
 
 # STAGING, not capture: tail mode needs the slots created and the
-# devices assigned, or it lands on an empty Dashboard. Gating this on
+# devices assigned, or it lands on an empty Home. Gating this on
 # -not $SkipToTail meant a tail run injected the synthetic devices and
 # then created NO virtual controllers, so every card index was out of
 # range and nothing could be photographed.
@@ -4928,8 +4928,8 @@ $script:ExpectedSlots = $slotTypes.Count
 # ----------------------------------------------------------------------
 # Assign a DualSense to the Xbox + PlayStation slots so their PadPages
 # expose the conditional tabs:
-#   - Force Feedback tab is gated on a gamepad-class device being assigned
-#   - Adaptive Triggers + Lighting tabs are gated on a DualSense (or
+#   - Force Feedback group is gated on a gamepad-class device being assigned
+#   - Adaptive Triggers + Lighting groups are gated on a DualSense (or
 #     DualSense Edge) device being assigned, per PadPage.xaml.cs:255-283
 # Without this step those tabs stay Visibility=Collapsed and capture
 # can't reach them.
@@ -5255,7 +5255,7 @@ function Assign-DeviceToSlot {
 }
 
 # STAGING, not capture: tail mode needs the slots created and the
-# devices assigned, or it lands on an empty Dashboard. Gating this on
+# devices assigned, or it lands on an empty Home. Gating this on
 # -not $SkipToTail meant a tail run injected the synthetic devices and
 # then created NO virtual controllers, so every card index was out of
 # range and nothing could be photographed.
@@ -5281,9 +5281,9 @@ Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualSense Wireless Controlle
 # Best effort: Ensure-DeviceAssigned below writes this one, and that is checked.
 Assign-DeviceToSlot -DeviceNamePart "Xbox Series X GIP" -SlotNumberLabel "1" -Reassert | Out-Null
 Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1") "assigning Logitech G29 to slot 1" | Out-Null
-# Mouse on the KBM slot (SlotNumber 4) for the #200 Mouse-gestures tab. The Mouse
-# tab gates on the SELECTED device being IsMouse (CapType == Mouse == 18); a KBM
-# slot with no device assigned surfaces no Mouse tab. "All Mice (Merged)" is a
+# Mouse on the KBM slot (SlotNumber 4) for the #200 Mouse gestures. The Mouse
+# group gates on the SELECTED device being IsMouse (CapType == Mouse == 18); a KBM
+# slot with no device assigned surfaces no Mouse group. "All Mice (Merged)" is a
 # first-class UserDevice (CapType 18) in the cache, so assigning + selecting it
 # shows the Mouse group, the same shape the Wheel group uses (assign G29, select it).
 # Best effort: Ensure-DeviceAssigned below writes this one, and that is checked.
@@ -5297,15 +5297,15 @@ Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "5" | O
 # cannot live in STEP 0 as written, because the slots are created through
 # the UI afterwards, so a targeted recapture script is the place for it.
 #
-# Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
-# reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
+# Assign the Wii Remote to the Extended slot so its Pointer / Gyro groups are
+# reachable for the 3.6.0 Pointer group capture (issue #146). SlotNumber follows
 # DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
-# (Xbox -> PlayStation -> Extended -> KBM -> MIDI) to match the dashboard cards,
+# (Xbox -> PlayStation -> Extended -> KBM -> MIDI) to match the Home cards,
 # NOT creation/PadIndex order. So SlotNumber 1=Xbox, 2=PlayStation, 3=Extended,
 # 4=KBM, 5=MIDI. The Extended slot is SlotNumber 3 (KBM at 4 hides the capability
-# tabs, which is why assigning the Wii to 4 left the Pointer tab unreachable).
+# groups, which is why assigning the Wii to 4 left the Pointer group unreachable).
 # The Wii Remote's IR-camera capability is identity-derived (VID 0x057E + name),
-# so the tab is offered whether the placeholder device is online or not.
+# so the group is offered whether the placeholder device is online or not.
 # Best effort: Ensure-DeviceAssigned below writes this one, and that is checked.
 Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "4" | Out-Null
 # The 3 Wii source-picker devices are NOT assigned here. They must NOT ride the
@@ -5328,7 +5328,7 @@ Assert-Staged (Wait-SavedAssignments -LastClick (Get-Date) -Pairs @(
     @("Logitech G29", 0))) "saving the staged assignments" | Out-Null
 
 # The Xbox GIP dummy is the one assignment the UI chain never lands, and two
-# shots depend on it: the Impulse Triggers tab gates on HasRumbleTriggers and
+# shots depend on it: the Impulse Triggers group gates on HasRumbleTriggers and
 # the Guide Button LED card wants an Xbox pad selected. Write the mapping
 # instead of clicking for it. This runs at a clean boundary, before any
 # capture, so the restart costs nothing and the full multi-slot topology the
@@ -5336,7 +5336,7 @@ Assert-Staged (Wait-SavedAssignments -LastClick (Get-Date) -Pairs @(
 Assert-Staged (Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 0 `
     -XmlPath $PadForgeXml -ExePath $PadForgeExe) "writing the Xbox Series X GIP assignment" | Out-Null
 
-# Same treatment for the mouse. The Mouse tab gates on the SELECTED device
+# Same treatment for the mouse. The Mouse group gates on the SELECTED device
 # being IsMouse, so pad-mouse-gestures needs "All Mice (Merged)" reachable in
 # the KBM slot's device dropdown. The UI toggle assigned it and the dropdown
 # still did not list it, exactly as with the Xbox GIP, and the shot has never
@@ -5344,9 +5344,9 @@ Assert-Staged (Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadInd
 #
 # PAD INDEX IS CREATION ORDER, AND $slotTypes ABOVE CREATES KBM BEFORE
 # EXTENDED: Xbox 0, PlayStation 1, Nintendo 2, KBM 3, Extended 4. The comment
-# here said Extended 3 / KBM 4, which is the dashboard CARD order, and the
+# here said Extended 3 / KBM 4, which is the Home CARD order, and the
 # number followed the comment: the 4.4.0 run wrote the mouse onto pad 4 and
-# the Extended slot grew a Mouse tab while the KBM slot had no mouse to
+# the Extended slot grew a Mouse group while the KBM slot had no mouse to
 # select. The SlotType argument is meant to catch exactly this, and it did
 # not fire, so do not lean on it. Read the creation list above.
 Assert-Staged (Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 3 -SlotType 4 `
@@ -5354,7 +5354,7 @@ Assert-Staged (Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadInd
 
 # The Wii Remote, by the same route and for the same reason. Its UI toggle
 # reported "Assigned Wii Remote to slot 4" in the 4.4.0 run and wrote NO
-# UserSetting row at all, so the Pointer tab was unreachable on every slot
+# UserSetting row at all, so the Pointer group was unreachable on every slot
 # and pad-pointer, wii-pointer-mode and pad-gyro-grip were all skipped. That
 # is the fourth device to lose the card-scroll / detail-realize / toggle
 # chain, and the answer has been the same every time: an assignment is one
@@ -5997,9 +5997,9 @@ function Capture-UninstallPreviews {
 }
 
 # A mouse takes its controller's lighting and rumble (#494): the G502
-# HERO's Lighting tab, with the Control This Device's Lighting box, the
+# HERO's Lighting group, with the Control This Device's Lighting box, the
 # Lighting Hold row and the lightbar's mode card, and the Rival 710's Force
-# Feedback tab. Both go on the Xbox slot with the record of what PadForge
+# Feedback group. Both go on the Xbox slot with the record of what PadForge
 # found on them: the G502 HERO lit over HID++ with its lighting power hold
 # (2 + 4, HidppUnits), the Rival 710 lit and rumbling (2 + 1). Two restarts,
 # so it runs after every other shot of that slot.
@@ -6120,7 +6120,7 @@ function Capture-KeyboardScreensCard {
     ScrollContent -Clicks 90
 }
 
-# The Xbox slot's Force Feedback tab twice: the Novint Falcon card (#521) on
+# The Xbox slot's Force Feedback group twice: the Novint Falcon card (#521) on
 # the stand-in Falcon STEP 0 injects, and the Steering Angle Rumble card
 # with its motor picker (#510) on the Xbox pad. The Falcon goes on the slot
 # by its settings record and a restart, so this runs after every other shot
@@ -7052,7 +7052,7 @@ function Capture-MotionRow {
     Drop-RowPick | Out-Null
 }
 
-# The DualShock 3's own 3D model (5.0.0) in the Preview tab of the
+# The DualShock 3's own 3D model (5.0.0) in Buttons' picture of the
 # PlayStation slot, with the DualShock 3 (SIXAXIS) preset written by pad
 # index (PlayStation is pad 1 in creation order and card 1 in type-group
 # order). Runs after every other PlayStation shot: the slot keeps the preset
@@ -7771,7 +7771,7 @@ if ($Only.Count -gt 0) {
     }
 
     # Pad-page tab shots on the PlayStation slot. These need an assignment
-    # (the Audio tab only appears when the slot's selected device has a
+    # (the Audio group only appears when the slot's selected device has a
     # speaker) and, for the DSP shot, the EQ seeded ON so the curve and rows
     # render. Both are data, so both are written by XML and the app restarted,
     # the same way Ensure-DeviceAssigned and Seed-AudioDsp do it for the full
@@ -8131,7 +8131,7 @@ if ($Only.Count -gt 0) {
             # composite has an entry in ValveReportPackers.ByProfileId, so
             # the plain id falls back to a generic gamepad frame and is the
             # least representative of the five. Both resolve to the same
-            # Deck body in the Preview tab.
+            # Deck body in the picture in Buttons.
             @{ Shot = "pad-extended-steam-deck";       Id = "steam-deck-composite" })) {
             if (-not (Want $vpF.Shot)) { continue }
             if (-not (Set-SlotPreset -PadIndex 4 -ProfileId $vpF.Id -XmlPath $PadForgeXml -ExePath $PadForgeExe -ClearCustomize)) {
@@ -8476,14 +8476,14 @@ if (Open-SlotPage -Type 0 -Label "Xbox slot") {
     else { Refuse-Shots @("pad-trigger-routing") "the Audio Rumble card did not come into view" }
 
     # 13b. Impulse Triggers: switch the mapped device to the Xbox Series X pad
-    # (HasRumbleTriggers) so its Impulse Triggers tab appears on this slot.
+    # (HasRumbleTriggers) so its Impulse Triggers group appears on this slot.
     Write-Host "[$(Next)/$total] Impulse Triggers"
     if (Select-MappedDevice "Xbox Series X GIP") {
         if (Tab "Impulse Triggers") { Start-Sleep -Milliseconds 700; Cap "pad-impulse-triggers" }
         else { Write-Host "  !! Impulse Triggers tab not found" -ForegroundColor Yellow }
     }
 
-    # 13c. Wheel: switch to the synthetic G29 so its Wheel tab (rotation range,
+    # 13c. Wheel: switch to the synthetic G29 so its Wheel group (rotation range,
     # auto-center, RPM LEDs) appears. Retry the device-combo walk: run 1 missed the
     # G29 in the dropdown on the first pass (flaky UIA combo enumeration right after
     # the Impulse-Triggers device switch).
@@ -8498,7 +8498,7 @@ if (Open-SlotPage -Type 0 -Label "Xbox slot") {
         else { Write-Host "  !! Wheel tab not found" -ForegroundColor Yellow }
     }
     # 13d. Guide Button LED (#209): the Xbox pad is XInput-pathed, so the
-    # Lighting tab surfaces the Guide LED brightness card (the lightbar
+    # Lighting group surfaces the Guide LED brightness card (the lightbar
     # card hides for a guide-LED-only device).
     Write-Host "[$(Next)/$total] Guide Button LED"
     if (Select-MappedDevice "Xbox Series X GIP") {
@@ -8848,7 +8848,7 @@ if ($kbmPage) {
     # Stick trackball momentum (#291, 4.3.0). The row is Visibility-bound to
     # IsMouseStick, so it exists ONLY on the KBM slot's mouse stick (stick 0)
     # and never on a gamepad slot. An earlier version scrolled a PlayStation
-    # slot's Sticks tab looking for it and framed the Range section instead.
+    # slot's Sticks group looking for it and framed the Range section instead.
     Write-Host "[$(Next)/$total] KBM stick momentum (trackball)"
     Select-MappedDevice "All Mice (Merged)" | Out-Null
     if ((Tab "Sticks") -and (Show-PadAnchor "pad-sticks-momentum")) {
@@ -8859,9 +8859,9 @@ if ($kbmPage) {
     }
 
     # Mouse gestures (#200): hold a mouse button, flick, an action fires. The
-    # gesture card lives on the Mouse tab, which gates on the SELECTED device being
+    # gesture card lives in the Mouse group, which gates on the SELECTED device being
     # a mouse (IsMouse). Select the mouse assigned to this KBM slot first, else the
-    # tab stays hidden (SelectedMappedDevice null -> hasMouse false).
+    # group stays hidden (SelectedMappedDevice null -> hasMouse false).
     Write-Host "[$(Next)/$total] Mouse gestures"
     Select-MappedDevice "All Mice (Merged)" | Out-Null
     Start-Sleep -Milliseconds 500
@@ -9016,7 +9016,7 @@ Write-Host "[$(Next)/$total] Add a Controller and the first page -- captured wit
 }
 
 # ==============================================================================
-# STEP 3b: New 3.6.0 sections (Pointer tab, NFC, Consumer Control, Power/battery)
+# STEP 3b: New 3.6.0 sections (Pointer group, NFC, Consumer Control, Power/battery)
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 3b: 3.6.0 new sections ===" -ForegroundColor Cyan
@@ -9086,8 +9086,8 @@ if (-not $ptrDone) {
 
 # ---- Valve personas on the Extended slot (#337 / #338) ----
 # Two Extended presets that carry a whole Valve pad: its USB identity, its
-# control names in the grid, and its own body in the Preview tab. Both shots
-# are the Preview tab with the persona picked, so the 3D model is the subject.
+# control names in the grid, and its own body in Buttons' picture. Both shots
+# are Buttons' picture with the persona picked, so the 3D model is the subject.
 #
 # Runs AFTER the Extended block's own captures (pad-extended-configbar,
 # pad-extended-schematic, pad-extended-clone-device) and after the Pointer
@@ -9146,7 +9146,7 @@ foreach ($vp in $valvePresets) {
 # ---- The DualShock 3's own model on the PlayStation slot (5.0.0) ----
 Capture-Ds3Preset
 
-# ---- Menus tab: the editor, a macro cell and icon packages (#390) ----
+# ---- The menu editor: a macro cell and icon packages (#390) ----
 # All three shots come off ONE menu selection on the Xbox slot, which is where
 # the injected macros live, so the macro cell can name a macro that exists.
 #
@@ -9191,7 +9191,7 @@ Capture-SourcePickerSet $script:SourcePickerTargets
 
 # --- DualShock 3 (v4): motion tab + the Devices page's Details card ---
 # The DS3 rides slot 1 ALONE for these shots, so unassign the anchoring
-# DualSense first (the Gyro tab and the Details card follow the selected
+# DualSense first (the Gyro group and the Details card follow the selected
 # device either way, but a solo slot makes the selection deterministic).
 Write-Host "[3c] DualShock 3"
 Nav "Devices"; Start-Sleep -Milliseconds 600
@@ -9226,11 +9226,11 @@ Close-DeviceFolds
 Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "DualShock 3" -SlotNumberLabel "1" -Unassign) "unassigning DualShock 3 from slot 1" | Out-Null
 
 # --- Haptic-tone audio controls (Controller-Audio.md) ---
-# The "Play mirrored audio" + "High tones" groups render on the Audio tab only
+# The "Play mirrored audio" + "High tones" groups render in the Audio group only
 # for haptic-actuator pads (DeviceHasHaptics: Joy-Con / Pro / Steam / Deck /
-# SC2026). The DualSense doesn't qualify, so its Audio tab (pad-audio) lacks
+# SC2026). The DualSense doesn't qualify, so its Audio group (pad-audio) lacks
 # them. Swap the synthetic Steam Controller (VID 28DE / PID 1102 -> Family.Steam)
-# onto slot 1 alone, open its Audio tab, capture, then unassign.
+# onto slot 1 alone, open its Audio group, capture, then unassign.
 Write-Host "[3c] Haptic-tone audio controls (Steam Controller)"
 Nav "Devices"; Start-Sleep -Milliseconds 600
 Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "Steam Controller" -SlotNumberLabel "1") "assigning Steam Controller to slot 1" | Out-Null
@@ -9389,8 +9389,8 @@ Close-DeviceFolds
 
 # The extras' pages (PadForge 6, #574). The Dashboard's services became the
 # Extras page: a catalog, and a page for each extra with its less-used rows
-# under a More row. The Dashboard keeps the Input Engine and the Virtual
-# Controllers (PageOrderContractTests holds both orders). A recipe reaches
+# under a More row. Home keeps the engine card and the virtual
+# controllers (PageOrderContractTests holds both orders). A recipe reaches
 # an extra by its key through Open-Extra, never by scrolling a long page,
 # so a card added or moved cannot land a frame a section early or late, as
 # the fixed scroll counts did while these were Dashboard sections.
@@ -9692,7 +9692,7 @@ try {
 }
 
 # The 5.1.0 recipes: the uninstall previews, a mouse's Lighting and Force
-# Feedback tabs (two restarts, after every other shot of the Xbox slot), and
+# Feedback groups (two restarts, after every other shot of the Xbox slot), and
 # the language shots, last of all since they take the interface out of
 # English.
 Write-Host ""

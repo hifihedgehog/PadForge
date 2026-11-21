@@ -7,7 +7,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The Menus tab's Hotbar style: the four controls and three switches show
+    /// The menu editor's Hotbar style: the four controls and three switches show
     /// for a hotbar only, Click Input and stay-open do not, the stick dead zone
     /// takes Steam's hotbar default, the fire modes read as a hotbar runs them,
     /// and a control records a button, refuses an axis and resets to the

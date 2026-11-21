@@ -9,9 +9,9 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The Lighting tab's lightbar picture showed the base art alone, which
-    /// leaves out the L2 and R2 triggers and the stick caps. The Preview tab's
-    /// 2D view draws those as their own layers at rest
+    /// The Lighting group's lightbar picture showed the base art alone, which
+    /// leaves out the L2 and R2 triggers and the stick caps. Buttons' picture, in its
+    /// 2D view, draws those as their own layers at rest
     /// (ControllerModel2DView.BuildModel), and the lightbar picture now adds
     /// the same layers from the same layout tables.
     /// </summary>

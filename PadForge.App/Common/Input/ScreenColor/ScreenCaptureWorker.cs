@@ -32,7 +32,7 @@ namespace PadForge.Common.Input.ScreenColor
         ScreenGrabResult Grab(int timeoutMs, out ScreenFrame frame);
     }
 
-    /// <summary>What a display's capture is doing, for the Lighting tab.</summary>
+    /// <summary>What a display's capture is doing, for the Lighting group.</summary>
     internal enum ScreenCaptureState
     {
         /// <summary>Nothing has read it lately.</summary>
@@ -47,7 +47,7 @@ namespace PadForge.Common.Input.ScreenColor
         Unavailable,
         /// <summary>The capture ended (a mode or resolution change, an HDR switch,
         /// a display that went away) and is being built again. The light keeps its
-        /// last color, and the Lighting tab says nothing until the build answers.</summary>
+        /// last color, and the Lighting group says nothing until the build answers.</summary>
         Restarting,
     }
 
@@ -89,7 +89,7 @@ namespace PadForge.Common.Input.ScreenColor
         internal const int ReturnCheckMs = 1000;
 
         /// <summary>How many times in a row a capture may end with no picture
-        /// between its builds before the Lighting tab says the screen cannot be
+        /// between its builds before the Lighting group says the screen cannot be
         /// read. One display change ends a capture once (ACCESS_LOST), and a
         /// rebuilt one can end once more while the switch settles (an HDR switch
         /// also moves the DXGI factory, ScreenModeWatch). A third end in a row is

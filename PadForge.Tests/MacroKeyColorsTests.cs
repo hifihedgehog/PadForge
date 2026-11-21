@@ -16,7 +16,7 @@ namespace PadForge.Tests
     /// <summary>
     /// Set Key Colors and Clear Key Colors (#557): the lights an action
     /// names, the per-slot store and the frame it paints over the Lighting
-    /// tab's colors, both slot evaluators with the release hook, the
+    /// group's colors, both slot evaluators with the release hook, the
     /// settings round trip, the action picker and the editor's key picker.
     /// The store's wake-up is a static the engine points at the dispatcher,
     /// so this class runs with the other macro classes.

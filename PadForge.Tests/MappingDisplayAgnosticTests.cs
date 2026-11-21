@@ -115,7 +115,7 @@ namespace PadForge.Tests
         // The Menu (#9 B-17) and Mouse Gesture (#216/#200) families are
         // device-free descriptors that Workshop import can write on an
         // empty-guid row, but they are not "(Any device)" PICKER entries
-        // (menus author on the Menus tab; the gesture picker carries a
+        // (menus author in the menu editor; the gesture picker carries a
         // concrete mouse guid). The mirror-closure test above cannot cover
         // them, so they get their own chip-resolution guards. Before the
         // 1k audit fix the row chip fell through to the raw 0-based

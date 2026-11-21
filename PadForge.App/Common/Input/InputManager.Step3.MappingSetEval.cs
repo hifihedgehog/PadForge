@@ -835,7 +835,7 @@ namespace PadForge.Common.Input
         /// "Postpone the mapping" option (here surfaced as
         /// "Also fire activator's own mapping").</summary>
         // Poll-thread scratch. The published sets above are treated as
-        // IMMUTABLE once assigned, because the Triggers-tab preview reads
+        // IMMUTABLE once assigned, because the Triggers group preview reads
         // them from the UI thread (EvaluatePerDeviceTriggerPreview). A
         // HashSet.Contains racing a Clear plus re-Add can return a wrong
         // answer, throw, or spin on a resize, and the preview's catch would
@@ -3230,7 +3230,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Per-device trigger value (0-65535) for the Triggers-tab live preview.
+        /// Per-device trigger value (0-65535) for the Triggers group live preview.
         /// Evaluates only <paramref name="deviceGuid"/>'s own sources on the
         /// target row, so the preview reflects the selected device's own
         /// contribution even when that source is the secondary entry on a
@@ -3240,7 +3240,7 @@ namespace PadForge.Common.Input
         /// row is evaluated once per slot in <see cref="ApplyMappingSetToGamepad"/>
         /// (the <c>_multiSourceEvaluatedTargetsBySlot</c> de-dup), so its combined
         /// value lands on only the first-evaluated device's <c>RawMappedState</c>.
-        /// Every other device's snapshot reads 0, which blanked the Triggers-tab
+        /// Every other device's snapshot reads 0, which blanked the Triggers group
         /// preview whenever the selected device was a secondary source on a
         /// LeftTrigger/RightTrigger row. This re-evaluates per device instead.</para>
         ///

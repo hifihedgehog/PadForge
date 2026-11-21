@@ -19,13 +19,13 @@ namespace PadForge.Tests
     /// backing list (or an x:Static ItemsSource) captures the labels once
     /// at class load, the language change updates every directly-bound
     /// string, and only the dropdowns keep the old language. That exact
-    /// bug shipped on the Menus tab and the mapping grid's Kind picker
+    /// bug shipped in the menu editor and the mapping grid's Kind picker
     /// (owner report 2026-07-16).
     /// </summary>
     [Collection("CultureSwitching")]
     public class CultureChangeOptionListTests
     {
-        /// <summary>Flips to German, asserts the Menus-tab option lists and
+        /// <summary>Flips to German, asserts the menu editor option lists and
         /// the fire-mode description re-resolve, then restores the culture
         /// in a finally so no other test observes the switch.</summary>
         [Fact]

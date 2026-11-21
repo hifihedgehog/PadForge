@@ -103,7 +103,7 @@ namespace PadForge.Engine.RemoteLink
             AnalogKeys = 1 << 2,
             /// <summary>The IR aim went through a light-gun window, a Wii
             /// Remote's calibration (#485) or a GunCon 2's beam window, so the
-            /// receiving read adds no Pointer-tab bar offset. The bit alone
+            /// receiving read adds no Pointer group bar offset. The bit alone
             /// carries it, with no payload, and it means nothing without the
             /// Ir block.</summary>
             IrCalibrated = 1 << 3,

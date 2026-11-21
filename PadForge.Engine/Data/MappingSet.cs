@@ -228,7 +228,7 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public string WorkshopBatteryColors { get; set; } = "";
 
         /// <summary>A gyro dead zone in degrees per second, as text (#561),
-        /// for the Gyro tab of whichever device lands on the slot. Empty
+        /// for the Gyro group of whichever device lands on the slot. Empty
         /// means none.</summary>
         [XmlAttribute] public string WorkshopGyroDeadZone { get; set; } = "";
 
@@ -238,7 +238,7 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public string WorkshopTouchpadGlide { get; set; } = "";
 
         /// <summary>A Steam import's gyro space, "Player" or "World"
-        /// (gyro_to_2d_conversion_style), for the Gyro tab of whichever
+        /// (gyro_to_2d_conversion_style), for the Gyro group of whichever
         /// device lands on the slot. Empty means none.</summary>
         [XmlAttribute] public string WorkshopGyroSpace { get; set; } = "";
 

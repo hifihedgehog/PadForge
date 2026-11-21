@@ -539,7 +539,7 @@ namespace PadForge.Tests
         /// anchor the check in every locale. The English text and the
         /// README name the mode as Logitech Gaming Software's own toggle
         /// does, On-Board Memory mode (Logitech support article
-        /// 360023411353), the name the Lighting tab uses for it too.</para>
+        /// 360023411353), the name the Lighting group uses for it too.</para>
         /// </summary>
         [Fact]
         public void TheSetupTextNamesTheOnBoardModeRuleInEveryLocale()

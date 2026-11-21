@@ -67,7 +67,7 @@ namespace PadForge
             if (screen != null) ConfigureScreen(service, screen);
         }
 
-        /// <summary>A Screen Overlay's dialog (#560), from its Dashboard card, whether
+        /// <summary>A Screen Overlay's dialog (#560), from its Extras page, whether
         /// or not its window is up.</summary>
         private void ConfigureScreenOverlay(ScreenOverlayItem item)
         {

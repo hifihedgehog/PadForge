@@ -292,7 +292,7 @@ namespace PadForge.Tests
                 + "                    ApplyIrForget(kind, dev, slot);", sc);
         }
 
-        /// <summary>The Triggers tab's live preview reads an IR source on the
+        /// <summary>The Triggers group's live preview reads an IR source on the
         /// UI thread. The read writes neither the held aim nor the smoothing,
         /// which the poll thread owns: a preview read between two poll reads
         /// stepped the smoothing in their place and left its own aim
@@ -1256,7 +1256,7 @@ namespace PadForge.Tests
     /// <summary>Delta-audit 2026-10-03: an Invert on Hold modifier keeps the
     /// descriptor and gates its source had, which are no input to it. The
     /// Combined D-Pad row, the consumed-key set, steering feedback, the
-    /// Sticks tab's mouse preview and the controller annotations took them
+    /// Sticks group's mouse preview and the controller annotations took them
     /// for one.</summary>
     [Collection("SettingsManagerStatics")]
     public class AuditDelta20261003ModifierTests : IDisposable
@@ -1370,7 +1370,7 @@ namespace PadForge.Tests
             Assert.True(row.HasAnySource);
         }
 
-        /// <summary>The Sticks tab's preview of a stick a mouse drives skips a
+        /// <summary>The Sticks group's preview of a stick a mouse drives skips a
         /// modifier. One that kept "Mouse Position X" showed the cursor's
         /// place on the stick while the engine read the row's other
         /// source.</summary>

@@ -205,7 +205,7 @@ namespace PadForge.Tests
         /// <summary>Without LogiLedSetTargetDevice a LogiLedSetLighting
         /// reaches every device, so an engine that lacks it sends neither the
         /// whole-device call nor the per-key one, the keyboard keeps its zone
-        /// calls, and the Lighting tab learns the paths it can paint.</summary>
+        /// calls, and the Lighting group learns the paths it can paint.</summary>
         [Fact]
         public void AnEngineWithoutTheTargetCall_SendsNoWholeDeviceOrPerKeyCall()
         {
@@ -421,7 +421,7 @@ namespace PadForge.Tests
 
         /// <summary>An engine that will not load while Logitech's software
         /// runs, an x64 engine in the ARM64 build among the causes, can paint
-        /// nothing, and the Lighting tab learns that instead of a wait for
+        /// nothing, and the Lighting group learns that instead of a wait for
         /// software already running. Once the software leaves, the tab waits
         /// for it again.</summary>
         [Fact]

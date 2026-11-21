@@ -98,7 +98,7 @@ namespace PadForge.Tests
         /// <summary>
         /// Every value row on the Extras page carries its own reset. The
         /// rows were the Dashboard's until its services got a page each
-        /// (#574), and the Dashboard holds no number box since.
+        /// (#574), and Home holds no number box.
         ///
         /// <para>The other tests here check what a reset SAYS. This one
         /// checks that the reset EXISTS, which is the half that shipped

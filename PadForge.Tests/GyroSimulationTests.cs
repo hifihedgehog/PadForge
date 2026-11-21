@@ -179,7 +179,7 @@ public class GyroSimulationTests
     }
 
     /// <summary>A DS3 lying still flickers one count. At the default 100 ms
-    /// that reads about 2.5 deg/s RMS, under the Gyro tab's 3 deg/s
+    /// that reads about 2.5 deg/s RMS, under the Gyro group's 3 deg/s
     /// deadzone, and at 20 ms it reads several times that.</summary>
     [Fact]
     public void AOneCountFlickerAtRestStaysSmall()
@@ -832,7 +832,7 @@ public class GyroSimulationTests
         Assert.Null(rig.Read(ds3, 0));
     }
 
-    /// <summary>The Gyro tab's readout reads from the UI thread while the
+    /// <summary>The Gyro group's readout reads from the UI thread while the
     /// polling thread writes and a profile switch resets.</summary>
     [Fact]
     public async Task ResetAndReadCanRunBesideThePollingWriter()

@@ -745,7 +745,7 @@ namespace PadForge.Tests
         [Fact]
         public void PadSettingClipboard_RoundTripsTheSlotMenusJson()
         {
-            // Copy / Paste of a slot's settings carries the Menus tab
+            // Copy / Paste of a slot's settings carries the menu editor
             // exactly like the shift authoring (__SlotShiftActivators).
             var ps = new PadSetting { SlotMenusJson = "[{\"MenuId\":4}]" };
             string json = ps.ToJson();

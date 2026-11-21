@@ -1776,7 +1776,7 @@ namespace PadForge.Tests
             throw new InvalidOperationException("PadForge.sln not found");
         }
 
-        // ── The Dashboard section ──
+        // ── The Game Telemetry page ──
 
         [Fact]
         public void PickingProjectCars2OrTheTrucks_MovesThePortToTheirs()

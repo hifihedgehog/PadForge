@@ -130,7 +130,7 @@ namespace PadForge.Tests
 
     /// <summary>The catalog captured its labels once as strings with no
     /// Strings.CultureChanged hook, so a live language change left the
-    /// macro type picker in the old language, the Menus-tab bug (owner
+    /// macro type picker in the old language, the Menus tab bug (owner
     /// report 2026-07-16) on one more list. In the serialized culture
     /// collection because CurrentUICulture is process-global.</summary>
     [Collection("CultureSwitching")]

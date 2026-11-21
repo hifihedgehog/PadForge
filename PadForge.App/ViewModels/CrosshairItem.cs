@@ -146,7 +146,7 @@ namespace PadForge.ViewModels
 
         /// <summary>The Display box's lines: the primary display, each display by
         /// its number, and the saved one while it is not connected, the Lighting
-        /// tab's list (ScreenDisplayChoice.ListFor).</summary>
+        /// group's list (ScreenDisplayChoice.ListFor).</summary>
         public IReadOnlyList<ScreenDisplayChoice> DisplayChoices => _displays ??= ScreenDisplayChoice.ListFor(_d.Display);
 
         private List<ScreenDisplayChoice> _displays;

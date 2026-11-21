@@ -19,7 +19,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Set Chroma Color (#468) paints the categories of the Razer
     /// devices assigned to the controller its macro runs on, whether or not
-    /// their Lighting tabs take control, and lets go within
+    /// their Lighting groups take control, and lets go within
     /// <see cref="PeripheralOutputs.MacroAssertWindowMs"/> of the action
     /// ending: while one is live the worker's wait ends at its lapse
     /// (<see cref="PeripheralOutputs.NextChromaMacroLapse"/>). Two

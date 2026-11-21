@@ -679,7 +679,7 @@ namespace PadForge.Tests
 
         /// <summary>The style key pressed twice, Grid to Split to Wheel, with
         /// the save of the first press arriving after the second: the
-        /// keyboard stays on Wheel. A style picked on the Menus tab still
+        /// keyboard stays on Wheel. A style picked in the menu editor still
         /// applies.</summary>
         [Fact]
         public void TwoStyleKeyPresses_AroundALaggingSave_EndOnTheSecond()

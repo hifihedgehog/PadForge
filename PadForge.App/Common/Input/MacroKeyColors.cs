@@ -74,7 +74,7 @@ namespace PadForge.Common.Input
     /// trigger effect store (<see cref="MacroTriggerEffectState"/>).
     ///
     /// <para>The running actions stack, the newest on top, over the
-    /// colors the Lighting tab gives the shift layer engaged: an action
+    /// colors the Lighting group gives the shift layer engaged: an action
     /// whose other lights keep their colors lets what is beneath show
     /// there, and one that turns them off or to a color hides it. An
     /// action ends at its time, when the macro that owns it lets its

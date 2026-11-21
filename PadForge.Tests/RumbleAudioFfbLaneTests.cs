@@ -11,7 +11,7 @@ namespace PadForge.Tests
     /// wheel slots means the game-authored pair HMaestroFfbDecoder.Apply
     /// computes from the uploaded PID effect set. Pins the decoder's
     /// LastComputedMotors tap and the descriptor probe the Bass Shakers
-    /// tab gate rides.
+    /// group gate rides.
     /// </summary>
     public class RumbleAudioFfbLaneTests
     {

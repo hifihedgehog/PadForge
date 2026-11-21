@@ -71,7 +71,7 @@ namespace PadForge.Views.Controls
 
         // Compact sparkline mode (#175 competitor item 5): tightened
         // chrome and no mode-label band, for the small per-mode-card
-        // instances on the Adaptive Triggers tab. The card already
+        // instances in the Adaptive Triggers group. The card already
         // names the mode, so the in-graph label is redundant there.
         public static readonly DependencyProperty IsCompactProperty =
             DependencyProperty.Register(nameof(IsCompact), typeof(bool), typeof(TriggerEffectGraph),

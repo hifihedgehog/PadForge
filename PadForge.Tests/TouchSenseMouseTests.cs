@@ -65,7 +65,7 @@ namespace PadForge.Tests
 
             // Rumble reaches the motor through the mouse's TouchSense unit
             // and the peripheral outputs, never through the row: a mouse
-            // row gets its Force Feedback tab only as a haptic peripheral.
+            // row gets its Force Feedback group only as a haptic peripheral.
             Assert.False(row.HasRumble || row.HasRumbleTriggers || row.HasHaptic);
             Assert.False(row.SetRumble(65535, 65535));
             Assert.False(row.StopRumble());
@@ -1038,7 +1038,7 @@ namespace PadForge.Tests
             host.Start();
             Until(() => PeripheralOutputs.Links.For(RowId)?.Haptics.Contains(path) == true, "the row is linked to its unit");
             Assert.Empty(PeripheralOutputs.Links.For(RowId).Lighting);
-            // On record, so the row has its Force Feedback tab and its rumble chip.
+            // On record, so the row has its Force Feedback group and its rumble chip.
             Until(() => record.HasPeripheralHaptics, "the row's haptic output is on record");
             Assert.True(PeripheralOutputs.IsHapticPeripheral(record));
 

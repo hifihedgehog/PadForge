@@ -197,7 +197,7 @@ namespace PadForge.Engine
         /// (caller should issue a fresh HID write), false when they match
         /// (skip the HID write entirely). The public motor-speed and
         /// <see cref="IsActive"/> fields are always updated so the UI
-        /// activity meter and FFB tab reflect what was dispatched.</summary>
+        /// activity meter and Force Feedback group reflect what was dispatched.</summary>
         public bool TryRecordXboxImpulseSnapshot(
             ushort leftMotor, ushort rightMotor,
             ushort leftTrigger, ushort rightTrigger)
@@ -540,7 +540,7 @@ namespace PadForge.Engine
             }
 
             // Scalar values are already audio-mixed and gain/swap-scaled by
-            // InputManager.ComputeFinalVibrationStates so the FFB-tab activity
+            // InputManager.ComputeFinalVibrationStates so the Force Feedback group activity
             // meter, the SDL physical-rumble path, and the DS5/DS4 effect
             // packet stay in sync. Reapplying leftGain/rightGain/overallGain/
             // swap here would double-attenuate. The directional/haptic
@@ -911,7 +911,7 @@ namespace PadForge.Engine
         }
 
         /// <summary>The one predicate for "this device may hold the software
-        /// auto-center spring", shared verbatim by the Wheel tab's
+        /// auto-center spring", shared verbatim by the Wheel group's
         /// hasGenericWheel gate (PadPage.SyncTabVisibility) so the tab and the
         /// spring can never disagree (#282: the tab appeared or the slider
         /// worked, never reliably both, when the two sites drifted).
@@ -921,7 +921,7 @@ namespace PadForge.Engine
         /// axes despite a perfectly good spring (#282, Moza). What actually
         /// keeps gamepads out is the DEVICE TYPE: SDL types wheels
         /// SDL_JOYSTICK_TYPE_WHEEL and SdlDeviceWrapper maps that to
-        /// InputDeviceType.Driving, the same source the Wheel tab's CapType
+        /// InputDeviceType.Driving, the same source the Wheel group's CapType
         /// check uses. Axis count is a shape detail, not an identity.</para></summary>
         public static bool IsGenericWheelSpringCapable(bool hasHaptic, uint hapticFeatures, int inputDeviceType)
         {
@@ -937,7 +937,7 @@ namespace PadForge.Engine
                 && IsGenericWheelSpringCapable(device.HasHaptic, device.HapticFeatures, device.GetInputDeviceType());
         }
 
-        /// <summary>The spring coefficient, 0 to 32767, that the Wheel tab's
+        /// <summary>The spring coefficient, 0 to 32767, that the Wheel group's
         /// Auto Centering Strength asks of a generic FFB wheel routed through
         /// SDL, or 0 for a device that takes no software spring. Logitech,
         /// Fanatec and Thrustmaster get theirs from their native writers.</summary>

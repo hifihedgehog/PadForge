@@ -16,7 +16,7 @@ namespace PadForge.Common.Input.Peripherals
         Lighting = 2,
         /// <summary>The device offers the first lighting hold above colors
         /// alone (<see cref="DeviceLinks.MaxClaimLevel"/> 1 or more), kept
-        /// on record so the Lighting tab keeps the choice while the device
+        /// on record so the Lighting group keeps the choice while the device
         /// sleeps.</summary>
         LightingLevel1 = 4,
         /// <summary>The device offers the second lighting hold too.</summary>
@@ -239,7 +239,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>A vendor row (Razer Chroma, Logitech LIGHTSYNC,
         /// SteelSeries GG, Razer Sensa): it takes the paths no assigned
-        /// device of its own claims, so a mouse set up on its own Lighting tab
+        /// device of its own claims, so a mouse set up on its own Lighting group
         /// keeps that color.</summary>
         public bool CatchAll { get; init; }
 
@@ -293,7 +293,7 @@ namespace PadForge.Common.Input.Peripherals
         /// null: a program its shared-worker model names runs, and
         /// PadForge has no path through it
         /// (<see cref="PeripheralLinker.ProgramHolding"/>). The row then
-        /// holds no lighting path and keeps its Lighting tab, whose line
+        /// holds no lighting path and keeps its Lighting group, whose line
         /// names the program.</summary>
         public string LeftToProgram { get; init; }
 
@@ -437,7 +437,7 @@ namespace PadForge.Common.Input.Peripherals
     /// The meeting point between the engine and the peripheral backends
     /// (#494). A mouse, keyboard or vendor row assigned to a virtual
     /// controller takes that controller's rumble and lighting through its own
-    /// tabs, the way a DualSense does: Step 2 hands each haptic row its
+    /// groups, the way a DualSense does: Step 2 hands each haptic row its
     /// combined level (<see cref="SetMotors"/>), the slot's effects
     /// dispatcher hands each lit row its color (<see cref="SetLighting"/>),
     /// and the backends read them per path.
@@ -485,7 +485,7 @@ namespace PadForge.Common.Input.Peripherals
             => ud != null && (ud.HasPeripheralHaptics || HasHaptics(ud.InstanceGuid));
 
         /// <summary>A mouse, keyboard or vendor row that rumbles, for the
-        /// Force Feedback tab and the Devices page's rumble chip: this PC's
+        /// Force Feedback group and the Devices page's rumble chip: this PC's
         /// (<see cref="TakesHaptics"/>), or a mouse or keyboard a linked PC
         /// forwards with rumble, whose level ships back to that PC.</summary>
         public static bool IsHapticPeripheral(PadForge.Engine.Data.UserDevice ud)
@@ -572,7 +572,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The LED SDK paths the engine the worker last loaded can
         /// paint, empty while the running software's engine cannot be loaded,
         /// and null while nothing is claimed or no Logitech software runs. The
-        /// Lighting tab names a device type that engine cannot paint instead
+        /// Lighting group names a device type that engine cannot paint instead
         /// of a route.</summary>
         public static string[] LedSdkPaintable
         {
@@ -591,7 +591,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Records that a vendor's program runs and answered no on
         /// some of a family's paths, in place of what was recorded, or that
-        /// it no longer does (null). The Lighting and Force Feedback tabs read
+        /// it no longer does (null). The Lighting and Force Feedback groups read
         /// it ahead of their waiting lines, whose remedy is to start a program
         /// that runs already.</summary>
         public static void SetProgramRefusal(OutputFamily family, ProgramRefusal refusal)
@@ -611,7 +611,7 @@ namespace PadForge.Common.Input.Peripherals
         private static int s_openRgbPort;
 
         /// <summary>The port the OpenRGB worker last looked for the SDK server
-        /// on, 0 before it looked. The Lighting tab names it while nothing
+        /// on, 0 before it looked. The Lighting group names it while nothing
         /// answers there.</summary>
         public static int OpenRgbPortTried
         {
@@ -934,7 +934,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>This slot no longer lights the row: the row left the
-        /// slot, or its Lighting tab gave the device back. Another slot's
+        /// slot, or its Lighting group gave the device back. Another slot's
         /// claim on the same row is left alone.</summary>
         public static void ReleaseLighting(Guid device, int slot)
         {
@@ -1191,7 +1191,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Whether a Set Chroma Color is live on a slot that holds
         /// a row lit through a Razer unit of its own. The macro paints the
-        /// Razer devices on its slot whether or not their Lighting tabs
+        /// Razer devices on its slot whether or not their Lighting groups
         /// take control (<see cref="AssertChromaMacro(int, byte, byte, byte)"/>),
         /// so the unit is written to for the macro's window with no claim
         /// behind it, and Synapse starting under it has to be seen as soon
@@ -1234,7 +1234,7 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>A Set Chroma Color action is current on this slot (#468).
         /// It paints the Razer devices assigned to the slot, whether or not
-        /// their Lighting tabs take control, and lets go within
+        /// their Lighting groups take control, and lets go within
         /// <see cref="MacroAssertWindowMs"/> of the action ending. Called
         /// from the poll thread on every frame the action is current.</summary>
         public static void AssertChromaMacro(int slot, byte r, byte g, byte b)

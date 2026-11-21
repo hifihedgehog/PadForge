@@ -514,7 +514,7 @@
                                Text="{Binding Home_FirstRun_Connected, Source={x:Static strings:Strings.Instance}}"
                                Foreground="{DynamicResource EmberHotBrush}"
                                Visibility="{Binding FirstRunShowsDevice, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    <!-- Start: quiet, as the engine card's worded button is.
+                    <!-- Start: a quiet button.
                          It only ever starts. -->
                     <ui:Button x:Name="FirstRunStart" Grid.Column="2" VerticalAlignment="Center" Padding="14,0"
                                Style="{StaticResource QuietButton}"
@@ -581,9 +581,8 @@
                  numbers set large with a label under each. While the engine
                  runs the card stands in ember light, with a warm wash from
                  the flame's side and a ring that breathes. The flame in its
-                 ring is the switch it always was, and the worded button at
-                 the card's end is the same switch for someone who has not
-                 learned the flame. The parts wrap when the page is narrow. -->
+                 ring is the switch it always was, and the card's only one.
+                 The parts wrap when the page is narrow. -->
             <Border x:Name="EngineCard" Margin="0,18,0,0" CornerRadius="12" BorderThickness="1"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
                 <Border.Style>
@@ -1435,7 +1434,7 @@
                  there are, and the word that names the Extras page in it
                  opens that page. With none on, the section introduces the
                  Extras page in the page's own words, with a button to it.
-                 ExtrasPageTests holds these tiles to the catalog's ten keys. -->
+                 ExtrasPageTests holds these tiles to the catalog's twelve keys. -->
             <TextBlock x:Name="ExtrasHeading" Margin="0,28,0,12">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource PageSectionTitle}">
@@ -1528,7 +1527,7 @@
                  to the Extras page (the three runs sit on one line of markup,
                  since a line break between runs would add a space). With
                  none on: the Extras page's own subtitle and a button to it.
-                 With all ten on: nothing. -->
+                 With all twelve on: nothing. -->
             <StackPanel x:Name="ExtrasFoot" Margin="0,14,0,0">
                 <TextBlock x:Name="ExtrasLine" FontSize="13" TextWrapping="Wrap"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"

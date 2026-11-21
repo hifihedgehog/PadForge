@@ -55,7 +55,7 @@ namespace PadForge.Engine.Flydigi
     /// <summary>
     /// A DualSense trigger effect block as the Apex 4 and Apex 5 can play
     /// it (#586): the 11 bytes a game, a game mod, a macro or the Adaptive
-    /// Triggers tab hands PadForge, turned into one of the pad's five
+    /// Triggers group hands PadForge, turned into one of the pad's five
     /// modes.
     ///
     /// <para>A port of ApexSenseBridge's AdaptiveTriggerTranslation.cpp,

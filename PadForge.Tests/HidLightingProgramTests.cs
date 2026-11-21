@@ -186,7 +186,7 @@ namespace PadForge.Tests
             Assert.Equal(PeripheralOutputKinds.Lighting, links.Kinds);
             Assert.True(links.HasVendorProgram);
             Assert.False(links.DirectWhenClosed);
-            // The row keeps its Lighting tab on its record.
+            // The row keeps its Lighting group on its record.
             Assert.Equal((int)PeripheralOutputKinds.Lighting, PeripheralLinker.Capabilities(0, links, stillLooking: false));
             // The LampArray interface is still reached by the keyboard row.
             Assert.Empty(PeripheralLinker.Orphans(new[] { row }, inputs));

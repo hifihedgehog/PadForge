@@ -13,14 +13,14 @@ namespace PadForge.Engine.Touchpad
     /// ("Touchpad 0 SwipeUp", "Touchpad 0 TouchLeft", "Touchpad 0 DPadUp",
     /// "Touchpad 0 StickX", "Touchpad 1 DoubleTap"). An imported profile
     /// carries no devices, so at import time there is no per-device
-    /// Touchpad tab where the user could turn those gesture families on.
+    /// Touchpad group where the user could turn those gesture families on.
     /// For authoritative sets the gate is therefore
     /// "user toggle OR referenced-by-mapping": any gated descriptor the
     /// slot's active set references arms its own feature family on the
     /// resolved per-(slot, device) settings.
     ///
     /// <para>Manual (non-authoritative) sets keep the plain toggle gate.
-    /// That preserves the Touchpad tab as the single switch for
+    /// That preserves the Touchpad group as the single switch for
     /// hand-authored rows and the documented slot fan-out contract, where
     /// one slot's toggle OFF stops that slot's rows even while another
     /// slot has the same physical pad's toggle ON.</para>

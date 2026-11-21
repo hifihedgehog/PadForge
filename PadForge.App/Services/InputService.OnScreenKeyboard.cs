@@ -181,7 +181,7 @@ namespace PadForge.Services
         }
 
         /// <summary>Saves a change the keyboard made to its menu through the
-        /// menu's editor, so the Menus tab shows it and the settings save. A
+        /// menu's editor, so the menu editor shows it and the settings save. A
         /// menu with no editor (none built yet) takes it directly.</summary>
         private void EditKeyboardMenu(int slot, MenuDefinitionEntry menu, Action<MenuEditorItem> viaEditor, Action<MenuDefinitionEntry> direct)
         {

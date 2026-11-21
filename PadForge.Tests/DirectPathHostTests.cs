@@ -296,7 +296,7 @@ namespace PadForge.Tests
             Assert.Same(DirectSnapshot.Empty, PeripheralOutputs.Direct);
         }
 
-        // ── The Lighting tab's line ──
+        // ── The Lighting group's line ──
 
         /// <summary>A device with lighting on record and no path now is one
         /// asleep, unplugged or not scanned for yet. Outside Logitech that

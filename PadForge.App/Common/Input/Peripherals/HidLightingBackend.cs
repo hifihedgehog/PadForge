@@ -21,7 +21,7 @@ namespace PadForge.Common.Input.Peripherals
     /// handle with no access right (<see cref="HidLightingModel.Identify"/>).
     /// A unit stays listed for as long as its collection is in the last
     /// list, and its model's light map is
-    /// published for the Lighting tab and Map Key Lights from the scan on,
+    /// published for the Lighting group and Map Key Lights from the scan on,
     /// with the names Map Key Lights learned for the model
     /// (<see cref="LearnedKeyMaps"/>). A family whose devices are no HID
     /// collections (<see cref="IOwnLookFamily"/>) looks for them on its own

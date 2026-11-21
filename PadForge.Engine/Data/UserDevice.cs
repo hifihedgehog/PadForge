@@ -460,7 +460,7 @@ namespace PadForge.Engine.Data
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)
         // pair gets its own pointer feel, the same move the gyro tuning made
         // in v3.3. Old per-device values in existing XML are ignored by the
-        // serializer and the user re-tunes once on the Pointer tab.
+        // serializer and the user re-tunes once in the Pointer group.
 
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         [XmlElement]
@@ -512,7 +512,7 @@ namespace PadForge.Engine.Data
         /// a mouse, keyboard, vendor row or unit row through its own channel
         /// (#494), and the lighting holds its device offers above colors
         /// alone (bits 2 and 3). Persisted so the row's Force Feedback and
-        /// Lighting tabs, and the choices on them, stay up while the device
+        /// Lighting groups, and the choices on them, stay up while the device
         /// sleeps or is unplugged, as a gamepad's tabs do. Zero on configs
         /// predating it and on every other row.</summary>
         [XmlElement]
@@ -523,7 +523,7 @@ namespace PadForge.Engine.Data
         /// values of <see cref="PadForge.Engine.Flydigi.FlydigiApexModel"/>,
         /// which only grows at its end. 0 for every other device and for a
         /// pad not asked yet. Persisted so the pad's Adaptive Triggers,
-        /// Impulse Triggers and Lighting tabs stay up while it sleeps, as
+        /// Impulse Triggers and Lighting groups stay up while it sleeps, as
         /// <see cref="HasRumbleTriggers"/> keeps an Xbox pad's.</summary>
         [XmlElement]
         public int FlydigiApexModel { get; set; }

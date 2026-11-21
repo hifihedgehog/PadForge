@@ -9,7 +9,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// Mouse tab state (issue #200): per-(slot, device) mouse-gesture
+    /// Mouse group state (issue #200): per-(slot, device) mouse-gesture
     /// settings, twin of the Touchpad partial's Load/Sync/guard pattern.
     /// Persistence rides setter-time direct writes into the live PadSetting
     /// (Sync) plus MainWindow's PropertyChanged hook for MarkDirty; the
@@ -94,7 +94,7 @@ namespace PadForge.ViewModels
         // ─── Custom activation input (discussion #216): the recorded
         //     cross-device descriptor + owning device GUID that arm the
         //     Custom gesture session while held. Same pair shape, picker
-        //     projection, and record flow as the Gyro tab's Aim Engage
+        //     projection, and record flow as the Gyro group's Aim Engage
         //     cluster (PadViewModel.GyroAimEngageButton et al.), scoped
         //     per (slot, mouse device) with the rest of this card. ───
 
@@ -304,7 +304,7 @@ namespace PadForge.ViewModels
             SyncMouseGestureSettingsToActiveDevice();
         }
 
-        /// <summary>Resolves the UserSetting whose device the Mouse tab
+        /// <summary>Resolves the UserSetting whose device the Mouse group
         /// edits: the selected mapped device when it is a mouse, else the
         /// first online mouse on the slot, else the first mouse. Same
         /// resolution shape as the touchpad twin, separate SyncRoots, never

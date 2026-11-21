@@ -211,7 +211,7 @@ namespace PadForge.Tests
             lock (SettingsManager.UserSettings.SyncRoot)
                 SettingsManager.UserSettings.Items.Add(us);
 
-            // Round eleven: the per-device Touchpad and Mouse tabs are
+            // Round eleven: the per-device Touchpad and Mouse groups are
             // guid-keyed too, and were missed by the round-ten walk.
             ps.TouchpadSettings = new[]
             {

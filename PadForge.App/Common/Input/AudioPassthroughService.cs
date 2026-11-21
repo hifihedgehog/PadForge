@@ -1366,7 +1366,7 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 EnsureThreads_NoLock();
-                // The Audio tab's test signal names its device and plays there
+                // The Audio group's test signal names its device and plays there
                 // whatever the jack says. Macro sounds skip a headset-only pad
                 // with nothing in its jack.
                 live = _sinks.Values

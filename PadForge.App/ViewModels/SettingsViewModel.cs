@@ -646,7 +646,7 @@ namespace PadForge.ViewModels
 
         /// <summary>The Install button's tooltip: what it installs, or while
         /// an uninstaller still runs, that Install waits for it. Under the
-        /// legacy API MIDI keeps running through the uninstall, so the card's
+        /// legacy API MIDI keeps running through the uninstall, so the row's
         /// own line for a running uninstaller, which says MIDI starts again,
         /// does not fit here.</summary>
         public string MidiInstallTooltip => _midiUninstallerRunning

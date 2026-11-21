@@ -71,7 +71,7 @@ namespace PadForge.Common.Input.Peripherals
     ///
     /// <para>Light by light (#557). A product with more than one light
     /// (<see cref="RazerLightTable"/>) has its map published for the
-    /// Lighting tab's Key Colors card, and a claim that carries key colors
+    /// Lighting group's Key Colors card, and a claim that carries key colors
     /// paints it a color per light: one report per LED with each LED's
     /// color, or a frame with each cell's color, the extended matrix frame
     /// for a product painted one color by effect
@@ -95,7 +95,7 @@ namespace PadForge.Common.Input.Peripherals
     /// every 2 ms until they are final (<see cref="Exchange"/>).</para>
     ///
     /// <para>Set Chroma Color (#468) paints the Razer devices on its
-    /// virtual controller whether or not their Lighting tabs take control.
+    /// virtual controller whether or not their Lighting groups take control.
     /// For a unit that is the live macro of the controller with the
     /// smallest displayed number among the ones that hold a row of it,
     /// ahead of the unit's ruling claim, the precedence the Chroma worker
@@ -918,7 +918,7 @@ namespace PadForge.Common.Input.Peripherals
         /// than one light, with the names Map Key Lights learned over it,
         /// and takes down the maps of units that left
         /// (SteelSeriesDirectBackend.SyncMaps). A map that did not change
-        /// is not published again, so the Lighting tab does not redraw on
+        /// is not published again, so the Lighting group does not redraw on
         /// every pass. A worker that outlived its run publishes nothing.
         /// </summary>
         private void SyncMaps(Work work)

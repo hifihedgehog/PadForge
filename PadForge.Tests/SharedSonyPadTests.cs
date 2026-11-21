@@ -1651,7 +1651,7 @@ public sealed class SharedSonyPadTests : IDisposable
         Assert.Equal(1, (int)resolved.Invoke(null, new object[] { 255, id })!);
     }
 
-    /// <summary>The Audio tab's Output Path shows for a DualShock 4 on this
+    /// <summary>The Audio group's Output Path shows for a DualShock 4 on this
     /// PC's cable, and not for a peer's copy of one, where choosing would reach
     /// nothing.</summary>
     [Theory]

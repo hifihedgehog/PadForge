@@ -99,7 +99,7 @@ namespace PadForge.Tests
 
         /// <summary>The reporter's steps 1 to 6: a blank new profile, switched
         /// to, a virtual controller with its default model, and a new macro on
-        /// the Macros tab.</summary>
+        /// the macro editor.</summary>
         private static (ProfileData Profile, int Slot) AuthorMacro(
             MainViewModel vm, InputService svc, DeviceService ds, VirtualControllerType type)
         {

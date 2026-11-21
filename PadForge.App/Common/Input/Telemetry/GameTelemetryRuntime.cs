@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace PadForge.Common.Input.Telemetry
 {
     /// <summary>
-    /// The Dashboard mirror the engine reads for game telemetry (issue #531),
+    /// The mirror of the Game Telemetry page's settings the engine reads (issue #531),
     /// the shape of <see cref="HeadTrackingRuntime"/>: static, written by the
-    /// Dashboard view model on the UI thread, read by the poll thread's
+    /// DashboardViewModel on the UI thread, read by the poll thread's
     /// device sweep and by the row.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row

@@ -4,7 +4,7 @@ namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
     /// The color one mouse, keyboard or lighting row shows for its slot
-    /// (#494): the Lighting tab's whole mode set through the color core every
+    /// (#494): the Lighting group's whole mode set through the color core every
     /// lit device shares (<see cref="Ds4EffectSynthesizer.ResolveLightbarRgb"/>),
     /// under the game's lightbar the way a DualSense takes it.
     ///

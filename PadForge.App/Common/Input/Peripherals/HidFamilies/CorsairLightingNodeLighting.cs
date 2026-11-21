@@ -27,7 +27,7 @@ namespace PadForge.Common.Input.Peripherals
     /// SignalRGB's 138 at most. OpenRGB's comments beside the registrations
     /// say the reverse ("1 channel" for the LS100, "2 channels" for the LT100),
     /// and nothing in its code acts on them. Each channel is a strip of the
-    /// map (<see cref="LightStrip"/>), sized on the Lighting tab. A strip with
+    /// map (<see cref="LightStrip"/>), sized in the Lighting group. A strip with
     /// no count is one zone whose color goes to every LED the channel takes,
     /// so the towers or strips light whatever their number. iCUE asks the
     /// device for its count (0x3C, then 0x3D, CorsairLightingProtocol

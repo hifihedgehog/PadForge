@@ -181,7 +181,7 @@ namespace PadForge.Tests
             padVm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
             SettingsManager.SlotMappingSets[0] = AuthoredSet();
 
-            // Hydrate the grid the way the open Mappings tab has it: rows
+            // Hydrate the grid the way the open mapping list has it: rows
             // built for the type, one carrying the Any-Device descriptor.
             padVm.RebuildMappings();
             padVm.MappingsViewLoaded = true;

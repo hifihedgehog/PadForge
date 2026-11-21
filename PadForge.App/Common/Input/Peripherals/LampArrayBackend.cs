@@ -1881,7 +1881,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The lamps could not be read. The unit is painted with
         /// the frame that needs no level count, and is not asked again
         /// while it stays awake. A map published before it fell asleep goes,
-        /// so the Lighting tab stops offering lights it paints one color.</summary>
+        /// so the Lighting group stops offering lights it paints one color.</summary>
         private static void Blind(Lamp lamp, string why)
         {
             PeripheralLightMaps.Remove(new OutputPath(OutputFamily.LampArrayUnit, lamp.Unit.Path));

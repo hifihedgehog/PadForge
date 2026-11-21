@@ -982,7 +982,7 @@ namespace PadForge.Common.Input.Peripherals
                         light.Plan = fallback;
                         Enqueue(light, fallback.Paint(light.QueuedRgb, full: true), light.QueuedRgb, null, null, now);
                         // Its keys can no longer be painted one by one, so
-                        // the Lighting tab stops offering them, and offers
+                        // the Lighting group stops offering them, and offers
                         // the zones of the plan it falls back to where that
                         // plan has them (#557).
                         if (_maps.Remove(unit.Key))
@@ -1685,7 +1685,7 @@ namespace PadForge.Common.Input.Peripherals
         /// (#557), the map its plan paints by (<see cref="HidppLightPlan.Lights"/>),
         /// and takes down the maps of units that left or fell back to one
         /// color. A unit found again with the same lights keeps its map, so
-        /// the Lighting tab does not redraw on every scan. The names Map Key
+        /// the Lighting group does not redraw on every scan. The names Map Key
         /// Lights learned go over each map, again whenever they change.
         /// </summary>
         private void SyncMaps(Dictionary<string, Channel> channels)

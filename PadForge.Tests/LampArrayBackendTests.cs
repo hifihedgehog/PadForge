@@ -3877,7 +3877,7 @@ namespace PadForge.Tests
         /// update for its four lamps: each key in its own color, a key no
         /// source named and every key the frame leaves out in the claim's
         /// color, the edge lamp in its group's. The board's map is
-        /// published for the Lighting tab.</summary>
+        /// published for the Lighting group.</summary>
         [Fact]
         public void AKeyFramePaintsLampByLamp_ByMultiUpdate_AndTheMapIsPublished()
         {

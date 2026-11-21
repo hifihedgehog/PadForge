@@ -462,7 +462,7 @@ namespace PadForge.Common.Input.Peripherals
 
             /// <summary>Publishes each type's map from its devices' LEDs, and
             /// takes away the map of a type with no device. A type whose LEDs
-            /// did not change keeps its map, so the Lighting tab does not
+            /// did not change keeps its map, so the Lighting group does not
             /// redraw on every read, until the names Map Key Lights learned
             /// change (HidppBackend.SyncMaps).</summary>
             private void Publish()

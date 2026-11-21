@@ -4741,7 +4741,7 @@
 
             <!-- The groups below were tabs of the page and keep that
                  indentation. -->
-            <!-- ─── TAB 3: Sticks (dynamic) ─── -->
+            <!-- ─── The Sticks group (tab 3, dynamic) ─── -->
                     <GroupBox x:Name="TabSticks" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.AutomationId="TabSticks"
                               AutomationProperties.Name="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}">
@@ -5915,7 +5915,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- ─── TAB 4: Triggers (dynamic) ─── -->
+            <!-- ─── The Triggers group (tab 4, dynamic) ─── -->
                     <GroupBox x:Name="TabTriggers" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.AutomationId="TabTriggers"
                               AutomationProperties.Name="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}">
@@ -6136,7 +6136,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- === TAB 14: Mouse (mouse gestures, issue #200) ===
+            <!-- === The Mouse group (tab 14, mouse gestures, issue #200) ===
                  A group of Sticks & Triggers, as the section's other groups
                  are (#574): the group carries the tab's id and name, and its
                  card's paragraph is its title's tooltip. -->
@@ -6299,7 +6299,7 @@
 
             <!-- The groups below were tabs of the page and keep that
                  indentation. -->
-            <!-- ─── TAB 5: Force Feedback ─── -->
+            <!-- ─── The Force Feedback group (tab 5) ─── -->
                     <GroupBox x:Name="TabForceFeedback" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.AutomationId="TabForceFeedback"
                               AutomationProperties.Name="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}">
@@ -7035,7 +7035,7 @@
                     </GroupBox>
 
             <!-- ══════════════════════════════════════
-                 TAB 9: IMPULSE TRIGGERS
+                 The Impulse Triggers group (tab 9)
                  (visible when the selected mapped device exposes
                  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN, as the
                  Xbox One / Elite / Series pads do).
@@ -7048,7 +7048,7 @@
                              Translate Adaptive Trigger Vibrations plays here.
                              A Flydigi Apex pad (#586) plays the effects
                              themselves and has no such switch, so it shows
-                             the Adaptive Triggers tab's line in its place. -->
+                             the Adaptive Triggers group's line in its place. -->
                         <Border x:Name="GameModImpulseLineHost">
                             <TextBlock Text="{Binding GameModImpulseLine}" Visibility="{Binding GameModImpulseLine, Converter={StaticResource StringToVisibility}}"
                                        Foreground="{DynamicResource EmberTextBrush}"
@@ -7334,7 +7334,7 @@
                     </GroupBox>
 
             <!-- ══════════════════════════════════════
-                 TAB 6: ADAPTIVE TRIGGERS
+                 The Adaptive Triggers group (tab 6)
                  (visible only for DualSense / DualSense Edge slots)
                  ══════════════════════════════════════ -->
                     <GroupBox x:Name="TabAdaptiveTriggers" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
@@ -7342,7 +7342,7 @@
                               AutomationProperties.Name="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
                         <!-- A DSX game mod setting these triggers (#529), in the
-                             ember of the Force Feedback tab's route line. -->
+                             ember of the Force Feedback group's route line. -->
                         <TextBlock Text="{Binding GameModTriggersLine}" Visibility="{Binding GameModTriggersLine, Converter={StaticResource StringToVisibility}}"
                                    Foreground="{DynamicResource EmberTextBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,12"/>
@@ -7514,10 +7514,10 @@
                                                                      LiveInput="{Binding DeviceLeftTrigger}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}"
                                                ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
-                                    <!-- The GameCube preset sets Weapon with a real
-                                         GameCube trigger's click. It shows whatever
-                                         the mode, so it is found before Weapon is
-                                         picked (#175 item 16). -->
+                                    <!-- The GameCube preset fills Range and Strength with
+                                         a real GameCube trigger's click, for Weapon, and leaves
+                                         the mode as it is. It shows whatever the mode, so it is
+                                         found before Weapon is picked (#175 item 16). -->
                                     <Button DockPanel.Dock="Right" Style="{StaticResource QuietPlainButton}"
                                             MinHeight="30" Padding="10,0" FontSize="13" VerticalAlignment="Center"
                                             Content="GameCube"
@@ -7706,10 +7706,10 @@
                                                                      LiveInput="{Binding DeviceRightTrigger}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}"
                                                ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
-                                    <!-- The GameCube preset sets Weapon with a real
-                                         GameCube trigger's click. It shows whatever
-                                         the mode, so it is found before Weapon is
-                                         picked (#175 item 16). -->
+                                    <!-- The GameCube preset fills Range and Strength with
+                                         a real GameCube trigger's click, for Weapon, and leaves
+                                         the mode as it is. It shows whatever the mode, so it is
+                                         found before Weapon is picked (#175 item 16). -->
                                     <Button DockPanel.Dock="Right" Style="{StaticResource QuietPlainButton}"
                                             MinHeight="30" Padding="10,0" FontSize="13" VerticalAlignment="Center"
                                             Content="GameCube"
@@ -7768,7 +7768,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- ═══ Wheel (Tag 11): a force feedback wheel's two cards ═══
+            <!-- ═══ The Wheel group (tab 11): a force feedback wheel's two cards ═══
                  Wheel is the range and the shift lights, which only a
                  Logitech, a Fanatec or a Thrustmaster wheel takes, so the
                  card shows for those. Centering shows for every wheel
@@ -8176,7 +8176,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- === TAB 16: Bass Shakers (slot-level, issue #236 rumble to audio) === -->
+            <!-- === The Bass Shakers group (tab 16, slot-level, issue #236 rumble to audio) === -->
                     <GroupBox x:Name="TabBassShakers" Visibility="{Binding RumbleAudioTabVisible, Converter={StaticResource BoolToVisibilityConverter}}" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.AutomationId="BassShakersTab"
                               AutomationProperties.Name="{Binding Pad_RumbleAudio_Header, Source={x:Static strings:Strings.Instance}}">
@@ -8413,7 +8413,7 @@
             <!-- The groups below were tabs of the page and keep that
                  indentation. -->
             <!-- ══════════════════════════════════════
-                 TAB 8: GYRO
+                 The Gyro group (tab 8)
                  (visible when the selected mapped device has a gyroscope or an accelerometer)
                  ══════════════════════════════════════ -->
                     <GroupBox AutomationProperties.AutomationId="TabGyro" x:Name="TabGyro" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
@@ -9669,7 +9669,7 @@
                                      mapping Pressure reads become no touch = 0,
                                      touch = the configured level, pad click = 100%.
                                      The two fields live on the per-device
-                                     DeviceSlotConfig (the Audio tab's mirror-row
+                                     DeviceSlotConfig (the Audio group's mirror-row
                                      pattern), so the bindings follow the selected
                                      device through the DeviceConfig anchor. Rows
                                      follow the Swipe Haptics card anatomy. -->
@@ -10090,7 +10090,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- === TAB 13: Pointer (Wii Remote IR camera tuning, issue #146) === -->
+            <!-- === The Pointer group (tab 13, Wii Remote IR camera tuning, issue #146) === -->
                     <GroupBox AutomationProperties.AutomationId="TabPointer" x:Name="TabPointer" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.Name="{Binding Pad_Pointer_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
@@ -11823,7 +11823,7 @@
                                      device is XInput-pathed, a 2015 Steam
                                      Controller, or a Switch home-LED device. The
                                      lightbar card and header hints hide when the
-                                     tab is up for a guide-LED-only device. -->
+                                     group is up for a guide-LED-only device. -->
                                 <controls:FoldCard x:Name="GuideLedCard" StateKey="Pad.Lights.Guide" Visibility="Collapsed" IconGlyph="&#xE706;"
                                                    Header="{Binding Pad_Lighting_GuideLed, Source={x:Static strings:Strings.Instance}}"
                                                    Hint="{Binding Pad_GuideLed_FoldHint, Source={x:Static strings:Strings.Instance}}"
@@ -11917,7 +11917,7 @@
                              writes its mode. Shown by SyncTabVisibility for a
                              lit mouse, keyboard or vendor row whose path
                              knows its lights one by one (PeripheralLightMaps).
-                             The layer chips are the Mappings tab's shift
+                             The layer chips are the Buttons card head's shift
                              layer chips with a pick of their own, so the
                              layer being colored never moves the layer being
                              mapped. The picture is built in code
@@ -12220,7 +12220,7 @@
                     </StackPanel>
                     </GroupBox>
 
-            <!-- === TAB 12: Audio (slot-level, issue #83) === -->
+            <!-- === The Audio group (tab 12, slot-level, issue #83) === -->
                     <GroupBox AutomationProperties.AutomationId="TabAudio" x:Name="TabAudio" Visibility="Collapsed" Style="{StaticResource BareGroupBox}"
                               AutomationProperties.Name="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
@@ -13262,7 +13262,7 @@
                                                         <!-- Add from List (#177): adds an input to the combination without
                                                              recording it. The list is the slot's choices across its devices
                                                              that can be a trigger's input, so a touchpad gesture enabled on the
-                                                             Touchpad tab can be picked here, which recording cannot capture.
+                                                             Touchpad group can be picked here, which recording cannot capture.
                                                              The picker is quiet and shows no pick: picking an input adds it and
                                                              clears the picker. Its closed face is drawn over it, the words and a
                                                              chevron in the text color, and it is as wide as that face. -->
@@ -14812,7 +14812,7 @@
                                                         </DataTemplate>
                                     <!-- Pointer Mode Set card (issue #203 follow-up): one fixed
                                          mode, the pointer sibling of the lightbar mode-set card.
-                                         Combo mirrors the Pointer tab's mode picker. -->
+                                         Combo mirrors the Pointer group's mode picker. -->
                                                         <DataTemplate x:Key="StepFieldsPointerModeSet">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Macro_PointerSetMode_Hint, Source={x:Static strings:Strings.Instance}}"

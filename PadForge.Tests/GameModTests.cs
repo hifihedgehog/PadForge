@@ -407,7 +407,7 @@ namespace PadForge.Tests
                     SettingsManager.SlotCreated[i] = true;
                     SettingsManager.SlotEnabled[i] = i != 3;
                 }
-                // The Dashboard numbers pads 0, 4 and 1 as 1, 2 and 3 in the
+                // Home numbers pads 0, 4 and 1 as 1, 2 and 3 in the
                 // Xbox group, then pads 2 and 3 in the PlayStation group.
                 SettingsManager.XboxSlotOrder = new List<int> { 0, 4, 1 };
                 SettingsManager.PlayStationSlotOrder = new List<int> { 2, 3 };

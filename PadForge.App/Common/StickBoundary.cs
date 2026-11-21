@@ -380,7 +380,7 @@ namespace PadForge.Common
         /// distance by the measured radius at the angle so the boundary maps to
         /// the unit circle; past the calibrated rim reads as full (1.0), never
         /// clipped inward. No-op when lut is null or at dead center. Shared by
-        /// the runtime short-axis <see cref="Reshape"/> and the Sticks-tab
+        /// the runtime short-axis <see cref="Reshape"/> and the Sticks group
         /// preview (which flips Y into this frame around the call).</summary>
         public static void ReshapeUnit(ref double x, ref double y, double[] lut)
         {

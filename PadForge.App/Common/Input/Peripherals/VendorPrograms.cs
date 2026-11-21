@@ -15,7 +15,7 @@ namespace PadForge.Common.Input.Peripherals
     /// </summary>
     internal sealed class VendorProgram
     {
-        /// <summary>The program's product name, which the Lighting tab's
+        /// <summary>The program's product name, which the Lighting group's
         /// route line names and no locale translates.</summary>
         public string Name { get; }
 

@@ -293,7 +293,7 @@ public static class W {
         catch { return $false }
     }
     # A page by its sidebar entry, Nav_ and the page's tag
-    # (MainWindow.SetNavAutomationId). Home's tag is Dashboard.
+    # (MainWindow.SetNavAutomationId). Home's id is Nav_Dashboard.
     function Go($tag, $label) {
         ForceFG $hwnd | Out-Null
         $el = Find-ByAid ('Nav_' + $tag)

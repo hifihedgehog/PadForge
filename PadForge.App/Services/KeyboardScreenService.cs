@@ -231,7 +231,7 @@ namespace PadForge.Services
         private readonly SortedDictionary<int, OverlayScreen> _overlays = new();
         private bool _overlaysRan;
 
-        /// <summary>The numbers on the Dashboard's card, for a macro that names every
+        /// <summary>The numbers on the Screen Overlay page, for a macro that names every
         /// overlay. With none set, every overlay is every window that is up.</summary>
         internal Func<IEnumerable<int>> OverlayNumbers { get; set; }
 
@@ -650,7 +650,7 @@ namespace PadForge.Services
         internal bool Active => _host != null || _overlaysRan;
 
         /// <summary>The overlays a macro reaches, from any slot, their windows up or
-        /// down: the one it names, or every one on the Dashboard's card at 0. A keyboard
+        /// down: the one it names, or every one on the Screen Overlay page at 0. A keyboard
         /// screen's row sets which slots reach it. An overlay is no device and feeds no
         /// slot.</summary>
         private List<OverlayScreen> OverlaysFor(int number)

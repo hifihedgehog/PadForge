@@ -54,7 +54,7 @@ namespace PadForge.Common.Input
 
             // Refresh per-slot post-mix-post-gain rumble before the per-device
             // FFB loop reads it. One pass per polling tick — every consumer
-            // (SDL physical rumble, DS5/DS4 effect packet, FFB-tab meter)
+            // (SDL physical rumble, DS5/DS4 effect packet, Force Feedback group meter)
             // reads the same FinalVibrationStates instance.
             ComputeFinalVibrationStates();
 
@@ -1076,7 +1076,7 @@ namespace PadForge.Common.Input
 
                 // Constant-trigger-force evaluator: trigger-motor analogue
                 // of ConstantForceEvaluator. When game/macro trigger
-                // rumble is silent AND the impulse-triggers tab has
+                // rumble is silent AND the Impulse Triggers group has
                 // ConstantTriggerForce enabled, fills the trigger fields
                 // with the user-set values. Same override-with-resume
                 // semantics. Composes onto the main-motor result.
@@ -1486,7 +1486,7 @@ namespace PadForge.Common.Input
                     // A setting of zero still silences, since the scale
                     // already zeroed the motors.
                     short wheelForce = level != 0 ? level : ForceFeedbackState.ComputeWheelRumbleLevel(cv, 100);
-                    // Auto-center strength (Wheel-tab slider). Fanatec has no firmware
+                    // Auto-center strength (Wheel group slider). Fanatec has no firmware
                     // autocenter and ftec_set_range's f5 disables its stock spring, so
                     // Fanatec centering is a per-frame software spring (slot 1); Logitech
                     // and Thrustmaster use their firmware spring in the one-shot below.
@@ -2004,7 +2004,7 @@ namespace PadForge.Common.Input
             // rumble enabled drives the detector's main filter chain;
             // first slot with audio-trigger rumble enabled drives the
             // detector's parallel trigger filter chain. The two paths
-            // are decoupled so the Impulse Triggers tab does not
+            // are decoupled so the Impulse Triggers group does not
             // inherit Force Feedback's bass cutoff / sensitivity.
             bool mainSet = false;
             bool triggerSet = false;
@@ -2079,14 +2079,14 @@ namespace PadForge.Common.Input
         /// <item><see cref="FinalVibrationStates"/> — strongest per-motor
         ///   output across every device mapped to the slot, each scaled
         ///   by its OWN PadSetting (gain, motor strengths, audio rumble,
-        ///   constant force). Drives the Controller-preview-tab motor
-        ///   meter. Device-filter-independent so a force coming through
+        ///   constant force). Drives the motor meter of Buttons'
+        ///   picture. Device-filter-independent so a force coming through
         ///   any device on the slot is visible regardless of which device
         ///   the user is editing.</item>
         /// <item><see cref="SelectedDeviceVibrationStates"/> — the
         ///   <see cref="SelectedDeviceGuids"/> device's own scaled output
         ///   (its own gain / audio rumble / constant force applied).
-        ///   Drives the FFB-tab motor meter. Device-specific so the
+        ///   Drives the Force Feedback group motor meter. Device-specific so the
         ///   user editing one device's FFB settings sees what's actually
         ///   reaching THAT device.</item>
         /// </list>
@@ -2143,7 +2143,7 @@ namespace PadForge.Common.Input
                 {
                     // No devices mapped → preview meter mirrors raw (no
                     // scaling to apply) so the user still sees a test
-                    // rumble in flight. FFB-tab meter shows zero (no
+                    // rumble in flight. Force Feedback group meter shows zero (no
                     // device == no per-device output to display).
                     final.LeftMotorSpeed = withMacro.LeftMotorSpeed;
                     final.RightMotorSpeed = withMacro.RightMotorSpeed;
@@ -2189,7 +2189,7 @@ namespace PadForge.Common.Input
                     // The hardware path runs this second evaluator right after
                     // the first, and the meter did not, so a slot using
                     // Constant Trigger Force drove real trigger actuators while
-                    // the FFB tab's trigger meters sat at whatever the raw
+                    // the Force Feedback group's trigger meters sat at whatever the raw
                     // frame carried. The meter is supposed to show what the
                     // device is being sent.
                     if (_constantTriggerForceScratch == null) _constantTriggerForceScratch = new Vibration();
@@ -2199,7 +2199,7 @@ namespace PadForge.Common.Input
                         devicePs, out ushort scaledL, out ushort scaledR);
 
                     // #102 trigger routing for the motor meters: mirror the
-                    // hardware path so the FFB-tab meter reflects what the user is
+                    // hardware path so the Force Feedback group meter reflects what the user is
                     // tuning the route Scale against.
                     ApplyTriggerRouting(padIndex, us.InstanceGuid, scaledL, scaledR,
                         out ushort routedLT, out ushort routedRT,
@@ -2233,7 +2233,7 @@ namespace PadForge.Common.Input
                         directionalSource = CaptureDirectional(effective, ref _meterDirectionalScratch);
 
                     // Capture the selected device's own scaled output for
-                    // the FFB-tab meter.
+                    // the Force Feedback group meter.
                     if (selectedGuid != Guid.Empty && us.InstanceGuid == selectedGuid)
                     {
                         selL = scaledL;
@@ -2298,7 +2298,7 @@ namespace PadForge.Common.Input
         /// Applies per-device impulse-trigger scaling: per-trigger
         /// strength (<c>ImpulseLeftStrength</c> / <c>ImpulseRightStrength</c>)
         /// × impulse-tab overall gain (<c>ImpulseOverallGain</c>) +
-        /// <c>ImpulseSwapTriggers</c>. The impulse-triggers tab now owns
+        /// <c>ImpulseSwapTriggers</c>. The Impulse Triggers group now owns
         /// its own overall-gain slider so it doesn't share the main-motor
         /// gain (<c>ForceOverall</c>). No audio-rumble mix on the trigger
         /// path — impulse triggers carry game-driven content only.

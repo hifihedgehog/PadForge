@@ -2,7 +2,7 @@ namespace PadForge.Common
 {
     /// <summary>
     /// SVG path geometry data for controller type icons (32x32 viewBox).
-    /// Shared across sidebar, dashboard, and any other UI that needs type icons.
+    /// Shared across the sidebar, Home, and any other UI that needs type icons.
     /// </summary>
     public static class ControllerIcons
     {

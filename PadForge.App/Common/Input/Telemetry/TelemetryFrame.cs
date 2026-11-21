@@ -2,7 +2,7 @@ using System;
 
 namespace PadForge.Common.Input.Telemetry
 {
-    /// <summary>The game a user picks on the Dashboard's Game Telemetry card
+    /// <summary>The game a user picks on the Game Telemetry page in Extras
     /// (issue #531). Saved by name. APPEND-ONLY: a profile written by a later
     /// build must still read on this one.</summary>
     public enum GameTelemetryFormat

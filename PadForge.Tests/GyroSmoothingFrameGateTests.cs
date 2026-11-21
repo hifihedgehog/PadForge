@@ -5,7 +5,7 @@ namespace PadForge.Tests
     /// <summary>
     /// Pins the poll-frame gate on SourceCoercion's smoothing caches: the
     /// filters advance once per poll no matter how many mapping rows read
-    /// the same source, so the Gyro tab's per-(device, slot) smoothing
+    /// the same source, so the Gyro group's per-(device, slot) smoothing
     /// settings deliver what they claim regardless of row count. Each test
     /// uses unique device keys because the caches are process-static.
     /// </summary>

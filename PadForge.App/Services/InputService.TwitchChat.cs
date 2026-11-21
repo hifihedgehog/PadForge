@@ -15,7 +15,7 @@ namespace PadForge.Services
         //  Twitch chat (#555)
         // ─────────────────────────────────────────────
 
-        // Cache key for the Dashboard line: the row INSTANCE plus its
+        // Cache key for the status line on Extras and Home: the row INSTANCE plus its
         // StatusVersion and the pause, the Game Telemetry card's key, since a
         // reopen restarts the version at 0.
         private object _twitchChatStatusDevice;
@@ -23,7 +23,7 @@ namespace PadForge.Services
         private bool _twitchChatStatusPaused;
         private const int TwitchChatStatusStopped = -1;
 
-        /// <summary>The Dashboard card's line and flame (issue #555): the same
+        /// <summary>The status line and flame on Extras and Home (issue #555): the same
         /// text as the Devices row, rebuilt on the dashboard tick only when
         /// the row's StatusVersion or the pause moves. "Stopped" while the
         /// switch is off, the engine is down, or the row has not opened
@@ -64,7 +64,7 @@ namespace PadForge.Services
             _twitchChatStatusVersion = int.MinValue;
         }
 
-        /// <summary>The line the Dashboard card and the Devices row share:
+        /// <summary>The line Extras, Home and the Devices row share:
         /// the channel the row reads, or why it reads nothing, and the
         /// pause.</summary>
         internal static string BuildTwitchChatStatus(string channel, TwitchChatState? state, bool paused)

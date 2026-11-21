@@ -69,7 +69,7 @@ namespace PadForge.Common.Input
         // bundled SDL's controller_list.h (the authoritative VID/PID -> controller-type
         // table). Mirror that table rather than hand-picking PIDs, so a new transport or
         // revision of the same controller is never silently dropped (which is exactly
-        // how a Triton-over-BLE Steam Controller 2026, 0x1303, got no Audio tab before).
+        // how a Triton-over-BLE Steam Controller 2026, 0x1303, got no Audio group before).
         // Protocol per family is verified against SteamHapticsSinger / SteamControllerSinger
         // / joycon-singer; same-family PIDs are the same controller over a different
         // transport (wired / BLE / dongle) and share the report format.
@@ -89,7 +89,7 @@ namespace PadForge.Common.Input
                     // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:599).
                     // SDL combines two Joy-Cons by default (HIDAPI_COMBINE_JOY_CONS = "1",
                     // SDL_hints.h:1695), so a paired set enumerates as 0x2008. Without
-                    // this it would get no Audio tab. The sink opens BOTH children and
+                    // this it would get no Audio group. The sink opens BOTH children and
                     // drives both coils, routing the tone by the slot's commanded motor
                     // sides (#223); with one child missing it degrades to that child's
                     // coil alone (#184) until Reconcile resolves the other.
@@ -141,7 +141,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>True when the device can play HD-haptic tones (gates the Audio
-        /// tab, mirrors the Sony/Wii speaker checks).</summary>
+        /// group, mirrors the Sony/Wii speaker checks).</summary>
         public static bool DeviceHasHaptics(Engine.Data.UserDevice ud) => FamilyOf(ud) != Family.None;
 
         // ── High-tone filter (#202) ─────────────────────
@@ -705,7 +705,7 @@ namespace PadForge.Common.Input
             // TRITON_RUMBLE_RESEND_INTERVAL_MS in SDL_hidapi_steam_triton.c).
             public long SteamLastBurstMs;
 
-            // Direct test-tone window (Audio-tab Test button). While TestUntilMs is in
+            // Direct test-tone window (Audio group Test button). While TestUntilMs is in
             // the future the stream loop drives TestHz at full amplitude straight to
             // the encoder, NEVER through the mixer / resampler / pitch reducer. So a
             // pure tone is never pitch-detected (no garble) and the reducer never sees
@@ -3034,7 +3034,7 @@ namespace PadForge.Common.Input
                     bool leftHot = true, rightHot = true;
                     if (!testActive)
                     {
-                        // The Audio-tab Test button is exempt: it diagnoses the
+                        // The Audio group Test button is exempt: it diagnoses the
                         // sink, so it must prove BOTH coils regardless of what a
                         // game happens to be rumbling. Everything else consults
                         // the slot's merged motor snapshot (RemoteDriven sinks

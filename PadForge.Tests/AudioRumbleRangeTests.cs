@@ -11,8 +11,8 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// #571: Audio Rumble's Sensitivity reaches 60 and its Bass Cutoff 2000 Hz,
-    /// on the Force Feedback tab and on the trigger chain of the Impulse
-    /// Triggers tab. The requester drives a direct-drive wheel's force
+    /// in the Force Feedback group and on the trigger chain of the Impulse
+    /// Triggers group. The requester drives a direct-drive wheel's force
     /// feedback from game audio, and some games' engine notes sit above the
     /// old 200 Hz top. The detector, the view model and the sliders read one
     /// set of ranges (AudioBassDetector's constants).

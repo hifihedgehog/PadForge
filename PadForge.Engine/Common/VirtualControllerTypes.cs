@@ -56,7 +56,7 @@ namespace PadForge.Engine
     /// <summary>
     /// The seven user-facing VC type groups in fixed visual order.
     /// Each group is independent: operations on one MUST NOT affect any
-    /// other. The group order matches the sidebar / dashboard rendering
+    /// other. The group order matches the sidebar / Home rendering
     /// order and is not user-reorderable.
     /// </summary>
     public static class VirtualControllerGroups
@@ -85,9 +85,9 @@ namespace PadForge.Engine
         bool IsConnected { get; }
 
         /// <summary>
-        /// The pad slot index this VC currently occupies. Updated by SwapSlotData
-        /// so feedback callbacks write to the correct VibrationStates element
-        /// after a slot reorder.
+        /// The pad slot index this VC currently occupies. Set by RegisterFeedbackCallback
+        /// and moved by RetargetToPad after a slot reorder, so feedback callbacks
+        /// write to the correct VibrationStates element. -1 after UnregisterFeedback.
         /// </summary>
         int FeedbackPadIndex { get; set; }
 

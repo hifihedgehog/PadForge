@@ -6,7 +6,7 @@ namespace PadForge.Common.Input.Peripherals
 {
     /// <summary>
     /// The light map of every unit whose backend knows one (#557), by the
-    /// output path that reaches it, for the Lighting tab's Key Colors and
+    /// output path that reaches it, for the Lighting group's Key Colors and
     /// Zone Colors card and for Map Key Lights. A backend publishes a map
     /// when it learns it, from the device or from a table, and takes it
     /// down when the unit leaves its list. Process-wide, like the claims

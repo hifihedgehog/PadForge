@@ -13,7 +13,7 @@ namespace PadForge.Services
         //  Game telemetry (#531)
         // ─────────────────────────────────────────────
 
-        // Cache key for the Dashboard line: the row INSTANCE plus its
+        // Cache key for the status line on Extras and Home: the row INSTANCE plus its
         // StatusVersion, the head tracking card's key, since a reopen
         // restarts the version at 0.
         private object _gameTelemetryStatusDevice;
@@ -21,7 +21,7 @@ namespace PadForge.Services
         private int _gameTelemetryStatusForward = -1;
         private const int GameTelemetryStatusStopped = -1;
 
-        /// <summary>The Dashboard card's line and flame (issue #531): the
+        /// <summary>The status line and flame on Extras and Home (issue #531): the
         /// same text as the Devices row, rebuilt on the dashboard tick only
         /// when the row's StatusVersion or the forward port moves. "Stopped"
         /// while the switch is off, the engine is down, or the row has not
@@ -65,7 +65,7 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// The line the Dashboard card and the Devices row share: why nothing
+        /// The line Extras, Home and the Devices row share: why nothing
         /// arrives, or which game sends and from where. The forward port is
         /// named whenever packets go on to one, so a user who set it can see
         /// it is in use.

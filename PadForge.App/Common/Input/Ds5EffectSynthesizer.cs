@@ -1165,7 +1165,7 @@ namespace PadForge.Common.Input
         /// bytes 4 / 5), the dispatcher synthesizes one of these blocks and
         /// stuffs it into <see cref="UserEffectsDispatcher.ExternalSubsystemOverrides.RightTriggerEffect"/>
         /// (or LeftTriggerEffect), which takes precedence over the user's
-        /// configured Adaptive Triggers tab cfg. The user's cfg resumes the
+        /// configured Adaptive Triggers group cfg. The user's cfg resumes the
         /// moment the game stops writing the motor — override-with-resume
         /// semantics, same shape as <c>ConstantTriggerForceEvaluator</c>.
         /// Reference: Special K's playstation.cpp:3004 / 4926.</summary>
@@ -1196,7 +1196,7 @@ namespace PadForge.Common.Input
             return block;
         }
 
-        /// <summary>The Adaptive Triggers tab's setting for one trigger as
+        /// <summary>The Adaptive Triggers group's setting for one trigger as
         /// its 11-byte block, for a pad that takes the block and no
         /// DualSense report (#586, the Flydigi lane).</summary>
         internal static void EncodeUserTrigger(DeviceSlotConfig cfg, bool right, Span<byte> block)

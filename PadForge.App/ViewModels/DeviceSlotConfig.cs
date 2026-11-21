@@ -622,7 +622,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Releases any active override (Sticky or Reactive) so
-        /// the synthesizer falls back to the configured Lighting tab
+        /// the synthesizer falls back to the configured Lighting group
         /// state on the next dispatch. Drives the
         /// <see cref="MacroActionType.LightbarColorClear"/> action.</summary>
         public void ClearMacroOverride()
@@ -641,7 +641,7 @@ namespace PadForge.ViewModels
         // output report's VolumeHeadphones byte using Sony's own scePad
         // window (duaLib maps headsetVolume + 64, so the PS5-used range
         // is 0x40..0x7F; the struct comment agrees: "max 0x7f").
-        // 0% writes 0x00. Owned by the Audio-tab card and the
+        // 0% writes 0x00. Owned by the Audio group card and the
         // HeadphoneVolumeUp/Down macro actions.
         private int _headphoneVolume = 100;
 
@@ -837,7 +837,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True when <see cref="GuideLedMode"/> is Fixed. Gates
-        /// the brightness slider row on the Lighting tab.</summary>
+        /// the brightness slider row in the Lighting group.</summary>
         [XmlIgnore]
         public bool IsGuideLedFixed => _guideLedMode == GuideLedMode.Fixed;
 
@@ -1015,7 +1015,7 @@ namespace PadForge.ViewModels
 
         private PeripheralClaimLevel _peripheralClaimLevel = PeripheralClaimLevel.Colors;
         /// <summary>How firmly this virtual controller may hold the device's
-        /// lighting while it lights it (#494), the Lighting tab's Lighting
+        /// lighting while it lights it (#494), the Lighting group's Lighting
         /// Hold. It qualifies <see cref="PeripheralLightingEnabled"/> for
         /// the same (slot, device) pair and starts at the lowest hold, so a
         /// device is asked for nothing but its colors until its own tab
@@ -1042,7 +1042,7 @@ namespace PadForge.ViewModels
             PadForge.Common.Input.Peripherals.KeyLightingSettings.Empty;
 
         /// <summary>This device's light colors on this virtual controller,
-        /// per shift layer (#557), the Lighting tab's Key Colors or Zone
+        /// per shift layer (#557), the Lighting group's Key Colors or Zone
         /// Colors card, in the text form
         /// <see cref="PadForge.Common.Input.Peripherals.KeyLightingSettings"/>
         /// reads and writes. A set value is read and written back, so equal
@@ -1072,7 +1072,7 @@ namespace PadForge.ViewModels
         private IReadOnlyList<int> _ledStripCountsParsed = PadForge.Common.Input.Peripherals.StripCounts.None;
 
         /// <summary>How many LEDs each strip of this device has (#557), the
-        /// Lighting tab's LED Strips card, in the text form
+        /// Lighting group's LED Strips card, in the text form
         /// <see cref="PadForge.Common.Input.Peripherals.StripCounts"/> reads and
         /// writes. Empty for a device whose strips no count was set for.</summary>
         public string LedStripCounts
@@ -1241,7 +1241,7 @@ namespace PadForge.ViewModels
 
         // Variable-length palette shared by ColorCycle and InputReactive
         // modes. Defaults to four primaries (red, green, blue, yellow);
-        // user can add or remove entries from the Lighting tab. Synth
+        // user can add or remove entries from the Lighting group. Synth
         // iterates with idx % Count so any size from 1..N works.
         //
         // Threading: the collection is mutated on the UI thread (palette
@@ -1627,7 +1627,7 @@ namespace PadForge.ViewModels
 
         // ────────────────────────────────────────────────
         //  Reset commands (per-control)
-        //  Mirror the per-row reset pattern on the Sticks / Triggers tabs.
+        //  Mirror the per-row reset pattern on the Sticks / Triggers groups.
         //  Each command resets one logical control to its safe default;
         //  every PropertyChanged that fires from a Reset feeds through
         //  UserEffectsDispatcher and immediately re-syncs the physical
@@ -1723,12 +1723,12 @@ namespace PadForge.ViewModels
         private RelayCommand _applyRightGameCubePreset;
 
         /// <summary>Section-level reset for the lightbar card on the
-        /// Lighting tab. Restores every lightbar field to its initial
+        /// Lighting group. Restores every lightbar field to its initial
         /// value: base mode + per-press overlay + palette + base color +
         /// input-reactive color + period + smooth toggle + hold/decay
         /// timing + audio threshold colors + audio mid/high split and
         /// crossfade. Mirrors the catch-all "Reset All" buttons on the
-        /// FFB / Sticks / Triggers tabs so users have one button to undo
+        /// FFB / Sticks / Triggers groups so users have one button to undo
         /// a slot's lighting tweaks without walking the per-row resets.</summary>
         public RelayCommand ResetLightbarAllCommand =>
             _resetLightbarAll ??= new RelayCommand(() =>
@@ -1772,7 +1772,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetLightbarAll;
 
         /// <summary>Section-level reset for the indicator-LEDs card on
-        /// the Lighting tab. Player number row brightness + mode + mic
+        /// the Lighting group. Player number row brightness + mode + mic
         /// mute LED mode and its follow-device pick. Mirrors the lightbar
         /// card's Reset All shape.</summary>
         public RelayCommand ResetIndicatorLedsAllCommand =>
@@ -1878,7 +1878,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetAudioOutputPath;
 
         /// <summary>Section-level reset for the Guide Button LED card on
-        /// the Lighting tab (#209). Mirrors the indicator-LEDs card's
+        /// the Lighting group (#209). Mirrors the indicator-LEDs card's
         /// Reset All shape.</summary>
         public RelayCommand ResetGuideLedAllCommand =>
             _resetGuideLedAll ??= new RelayCommand(() =>
@@ -2241,7 +2241,7 @@ namespace PadForge.ViewModels
         AudioCrossFade = 10,
         // ── Legacy (v3.1.x) ── these values stay in the enum for
         // XML round-trip + macro-action backward compat. They are NOT
-        // exposed in the Lighting tab dropdown anymore — the dispatcher
+        // exposed in the Lighting group dropdown anymore. The dispatcher
         // migrates them on load and on macro apply into
         // InputReactiveMode (overlay) + LightbarMode = Off (base).
         // See SettingsService.ApplyDeviceSlotConfigData and
@@ -2266,7 +2266,7 @@ namespace PadForge.ViewModels
         ScreenColor = 17,
     }
 
-    /// <summary>One line of the Lighting tab's Display box (#559). A record, so
+    /// <summary>One line of the Lighting group's Display box (#559). A record, so
     /// two lists compare by what they say.</summary>
     public sealed record ScreenDisplayChoice(string Id, string Label)
     {
@@ -2383,7 +2383,7 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>How firmly a virtual controller may hold a Logitech device's
-    /// lighting while it lights it (#494), the Lighting tab's Lighting
+    /// lighting while it lights it (#494), the Lighting group's Lighting
     /// Hold. Each step up takes one more thing from the device for as long
     /// as it is lit, for a device whose own behavior takes the color away
     /// at the step below. The number is the level a lighting claim carries
@@ -2413,7 +2413,7 @@ namespace PadForge.ViewModels
     {
         [XmlAttribute] public int SlotIndex { get; set; }
         /// <summary>Per-device entry: InstanceGuid of the physical
-        /// device this Lighting tab config applies to. Empty
+        /// device this Lighting group config applies to. Empty
         /// (Guid.Empty serialized as "00000000-0000-0000-0000-000000000000")
         /// means a legacy slot-level entry — loader fans out to every
         /// mapped device on the slot.</summary>

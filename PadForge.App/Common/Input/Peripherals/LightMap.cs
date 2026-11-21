@@ -268,7 +268,7 @@ namespace PadForge.Common.Input.Peripherals
         public string Product { get; init; }
 
         /// <summary>The strips of addressable LEDs the unit drives that its
-        /// user can size, the Lighting tab's LED Strips card, or none.</summary>
+        /// user can size, the Lighting group's LED Strips card, or none.</summary>
         public IReadOnlyList<LightStrip> Strips { get; init; } = Array.Empty<LightStrip>();
 
         /// <summary>True when every light has a position.</summary>

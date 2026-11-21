@@ -7,7 +7,7 @@ namespace PadForge.Tests
     /// <summary>
     /// #334, the second report: a DualSense powered on over Bluetooth sat on
     /// its firmware default blue and ignored every color PadForge wrote,
-    /// whatever the Lighting tab said, until an app restart happened to
+    /// whatever the Lighting group said, until an app restart happened to
     /// re-open the device.
     ///
     /// <para>Over BT the pad's wireless firmware owns the LEDs at connect

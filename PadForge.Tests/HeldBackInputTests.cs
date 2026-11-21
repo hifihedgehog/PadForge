@@ -287,7 +287,7 @@ namespace PadForge.Tests
         /// covers them (TheHoldBackWeighsTheDescriptorWhereTheKindReadsIt).
         /// The lanes are every site the rule reads: the gamepad loops, the
         /// builders and the pair's second leg, the per-target rows, the
-        /// touchpad row, the Triggers tab preview, and the stick trim's gate
+        /// touchpad row, the Triggers group preview, and the stick trim's gate
         /// and trim stick. The preview reads a Toggle source with no latch,
         /// at rest, so there the press shows nothing either way.</summary>
         [Theory]
@@ -490,7 +490,7 @@ namespace PadForge.Tests
             Assert.Equal(short.MaxValue, value);
         }
 
-        /// <summary>The Triggers tab's preview. It reads a key source as at
+        /// <summary>The Triggers group's preview. It reads a key source as at
         /// rest and holds a source back as the row does, so a row of a key
         /// source at rest and a pulled button averages to half, as the row
         /// itself does. The held-back kept Descriptor took the key source out
@@ -539,7 +539,7 @@ namespace PadForge.Tests
             Assert.NotEqual(0, Frame(Row("DPad", Direct("POV 0")), 1.0, a).Buttons & Gamepad.DPAD_UP);
         }
 
-        /// <summary>The Triggers tab preview counts a held-back source as
+        /// <summary>The Triggers group preview counts a held-back source as
         /// the live row counts it: at rest, in its place in the combine. It
         /// left the source out, so a row that averages a held-back input with
         /// a pressed one previewed a full pull where the trigger pulled half.
@@ -567,7 +567,7 @@ namespace PadForge.Tests
             Assert.Equal(live, preview);
         }
 
-        /// <summary>The Triggers tab preview turns the pull over while the
+        /// <summary>The Triggers group preview turns the pull over while the
         /// row's Invert on Hold modifier is held, as the trigger does. It
         /// showed the pull as it was, so a held modifier previewed a trigger
         /// at rest where the trigger was pulled, and the reverse.</summary>
@@ -979,7 +979,7 @@ namespace PadForge.Tests
                 a.InputState, Row("KbmMouseX", Direct("Touchpad 0 Pointer X")), "KbmMouseX", Slot, A));
         }
 
-        /// <summary>The Sticks tab's preview of a stick the mouse drives
+        /// <summary>The Sticks group's preview of a stick the mouse drives
         /// shows the row's first cursor source. A key source that kept
         /// "Mouse Position X" came first and showed the stick centered.</summary>
         [Fact]

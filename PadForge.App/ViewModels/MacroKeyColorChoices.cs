@@ -31,7 +31,7 @@ namespace PadForge.ViewModels
     /// while it runs (#557). Saved by name. APPEND-ONLY.</summary>
     public enum MacroKeyColorRest
     {
-        /// <summary>Their own colors, as the Lighting tab sets them.</summary>
+        /// <summary>Their own colors, as the Lighting group sets them.</summary>
         Keep = 0,
         /// <summary>Off.</summary>
         Off = 1,

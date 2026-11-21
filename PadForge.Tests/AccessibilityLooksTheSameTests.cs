@@ -243,7 +243,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheButtonSubclasses_KeepTheStyleTheirTemplateSets() => RunSta(() =>
         {
-            // A style the DataTemplate sets, as the Dashboard slot card sets
+            // A style the DataTemplate sets, as Home's slot card sets
             // its type tiles'. The first build of the change replaced it
             // with the Button style, and the tiles lost their look.
             var buttonStyle = TileStyle(Color.FromRgb(0x1B, 0x23, 0x33));

@@ -15,7 +15,7 @@ namespace PadForge.Common.Input
         private volatile bool _twitchChatInputsSuppressed;
 
         /// <summary>The live Twitch Chat row, null while the feature is off or
-        /// the row is retired. Read by the Dashboard status lane, which keys
+        /// the row is retired. Read by the status lane that writes its line on Extras and Home, which keys
         /// its cache on the instance plus
         /// <see cref="TwitchChatDevice.StatusVersion"/>.</summary>
         internal TwitchChatDevice TwitchChat => _twitchChatDevice;

@@ -1155,7 +1155,7 @@ namespace PadForge.ViewModels
         private double _sensitivity = 1.0;
         /// <summary>Generic per-source sensitivity (issue #9). Only applied for
         /// NO LONGER EXPOSED IN THE MAPPING GRID (2026-07-27): the knob moved
-        /// to the Sticks tab as a per-stick multiplier, because per-row the
+        /// to the Sticks group as a per-stick multiplier, because per-row the
         /// scale was folded in before the row's own readout (making its raw
         /// and out columns agree) and its slider sat in a grid column too
         /// narrow to show. The field stays for the mapping-set schema and

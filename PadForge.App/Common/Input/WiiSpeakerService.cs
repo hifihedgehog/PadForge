@@ -59,7 +59,7 @@ namespace PadForge.Common.Input
             => ud != null && ud.VendorId == NintendoVid && (ud.ProdId == 0x0306 || ud.ProdId == 0x0330);
 
         /// <summary>True when the device is a Wii Remote PadForge can drive a
-        /// speaker on (gates the Audio tab, mirrors the Sony check).</summary>
+        /// speaker on (gates the Audio group, mirrors the Sony check).</summary>
         public static bool DeviceHasSpeaker(Engine.Data.UserDevice ud) => IsWiiSpeakerDevice(ud);
 
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.

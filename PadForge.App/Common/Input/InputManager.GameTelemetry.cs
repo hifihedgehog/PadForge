@@ -15,7 +15,7 @@ namespace PadForge.Common.Input
         private volatile bool _gameTelemetryInputsSuppressed;
 
         /// <summary>The live Game Telemetry row, null while the feature is
-        /// off or the row is retired. Read by the Dashboard status lane, which
+        /// off or the row is retired. Read by the status lane that writes its line on Extras and Home, which
         /// keys its cache on the instance plus
         /// <see cref="GameTelemetryDevice.StatusVersion"/>.</summary>
         internal GameTelemetryDevice GameTelemetry => _gameTelemetryDevice;

@@ -137,7 +137,7 @@ namespace PadForge.Views
                 EngineToggleRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        // The flame and the worded button beside it are the one switch.
+        // The engine card's flame: the one switch that starts and stops the engine.
         private void EngineToggle_Click(object sender, RoutedEventArgs e)
         {
             EngineToggleRequested?.Invoke(this, EventArgs.Empty);

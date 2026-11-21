@@ -4694,7 +4694,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");
     public string Workshop_Tr_MenuIconUnresolved => Get("Workshop_Tr_MenuIconUnresolved");
 
-    // Bass Shakers tab (issue #236, rumble to audio)
+    // Bass Shakers group (issue #236, rumble to audio)
     public string Pad_Tab_Output => Get("Pad_Tab_Output");
     public string Pad_Section_KeysMouse => Get("Pad_Section_KeysMouse");
     public string Pad_Section_NotesControls => Get("Pad_Section_NotesControls");

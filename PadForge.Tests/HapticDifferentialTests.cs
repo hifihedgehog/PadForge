@@ -76,7 +76,7 @@ namespace PadForge.Tests
         [InlineData(40)]
         public void Reducer_AfterReset_BeepOnsetIsStable_NoGarble(int startOffset)
         {
-            // Simulate the Audio-tab test beep (880 Hz) starting from an idle reducer.
+            // Simulate the Audio group test beep (880 Hz) starting from an idle reducer.
             // Every voiced tick from the onset must report ~880 with NO octave error /
             // garble. "Hit or miss" garble = some onset tick lands on a wrong lag
             // because the autocorrelation window is too short.
@@ -104,7 +104,7 @@ namespace PadForge.Tests
         [Fact]
         public void Reducer_RealResampledTestBeep_PitchDoesNotJitter()
         {
-            // Reproduce the EXACT Audio-tab test-beep chain that garbles on hardware:
+            // Reproduce the EXACT Audio group test-beep chain that garbles on hardware:
             // 880 Hz full-scale sine @ 48 kHz -> mixer -> stereo->mono -> WDL resample
             // to 8 kHz -> reducer. The resampler's anti-aliasing ripple on a pure
             // full-scale tone is the layer the pure-8kHz onset test skipped. If the

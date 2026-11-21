@@ -135,7 +135,7 @@ namespace PadForge.Common.Input.Twitch
         public void Dispose() => _socket.Dispose();
     }
 
-    /// <summary>Where the client stands, for the Dashboard's status line.</summary>
+    /// <summary>Where the client stands, for the status line on Extras and Home.</summary>
     internal enum TwitchChatState { Connecting, Reading, Retrying, NoChat }
 
     /// <summary>

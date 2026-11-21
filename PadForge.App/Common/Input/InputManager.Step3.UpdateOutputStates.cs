@@ -782,7 +782,7 @@ namespace PadForge.Common.Input
             {
                 // FPS Mouse: aim offset from center becomes velocity on the
                 // relative lane. The evaluated aim already carries the
-                // Pointer-tab smoothing and per-source sensitivity (the
+                // Pointer group smoothing and per-source sensitivity (the
                 // slot-scoped tuned read), and the KBM VC's sub-pixel
                 // accumulator provides the lineage's remainder carry. The
                 // speed knob is the lineage's pixels per 10 ms report, 35 by
@@ -3132,7 +3132,7 @@ namespace PadForge.Common.Input
             // failure takes the machine away from them, so the mouse lane
             // gets a non-zero default that the gamepad lane does not.
             // LIMIT, stated because the original comment here promised the
-            // opposite and could not deliver it. An explicit Sticks-tab value
+            // opposite and could not deliver it. An explicit Sticks group value
             // wins only when it is ABOVE the floor. It cannot express a
             // deliberate zero: LeftThumbDeadZoneX/Y initialize to the string
             // "0" (PadSetting.cs) and XmlSerializer leaves an absent element
@@ -3167,7 +3167,7 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
-            // Mouse-movement speed (Sticks tab, stick 0 on a KBM slot).
+            // Mouse-movement speed (Sticks group, stick 0 on a KBM slot).
             // Applied after the deadzone / range / curve stage so the tab
             // scales what the mapping table produced.
             ApplyKbmStickSpeed(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
@@ -3245,7 +3245,7 @@ namespace PadForge.Common.Input
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                     Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
-                // Scroll speed (Sticks tab, stick 1 on a KBM slot). scrollX is
+                // Scroll speed (Sticks group, stick 1 on a KBM slot). scrollX is
                 // the dummy the deadzone call needs; only ScrollDelta ships.
                 ApplyKbmStickSpeed(ref scrollX, ref raw.ScrollDelta,
                     TryParseDoubleStatic(ps.RightThumbSensitivity, 1));
@@ -3291,7 +3291,7 @@ namespace PadForge.Common.Input
                     ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
                 // Scroll speed, exactly as the vertical block above applies it.
                 // This was the one rate lane that skipped the knob, so the
-                // Sticks-tab speed moved mouse and vertical scroll while the
+                // Sticks group speed moved mouse and vertical scroll while the
                 // tilt wheel kept running at 1x. scrollHy is the dummy the
                 // deadzone call needs; only ScrollDeltaH ships.
                 ApplyKbmStickSpeed(ref raw.ScrollDeltaH, ref scrollHy,

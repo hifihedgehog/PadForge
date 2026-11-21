@@ -17,7 +17,7 @@ namespace PadForge.Engine
     /// <see cref="ComputeMotors"/> at the same three injection points
     /// the constant-force evaluator uses (Step 2 ApplyForceFeedback,
     /// InputService's Sony dispatcher pump, and ComputeFinalVibrationStates
-    /// for the FFB-tab activity meter), and combines with the game's
+    /// for the Force Feedback group activity meter), and combines with the game's
     /// raw rumble via <c>max()</c> so user-driven feedback layers on
     /// top of game force instead of suppressing it.</para>
     /// </summary>

@@ -42,7 +42,7 @@ namespace PadForge.Common.Input.Peripherals
     /// light count, command 0x87, two bytes per channel high first
     /// (GaiZhongGaiController.cpp:70-98), four channels on the green hub and
     /// eight on the blue (RGBController_GaiZhongGai.cpp:477-490), and each
-    /// channel is a zone of its own lights. A count set on the Lighting tab
+    /// channel is a zone of its own lights. A count set in the Lighting group
     /// goes to the hub as OpenRGB writes one when its user resizes a zone
     /// (lines 676-692, SetChannelLen, GaiZhongGaiController.cpp:100-147), and
     /// the hub's answer gives the lights. A channel with no count keeps what

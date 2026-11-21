@@ -68,7 +68,7 @@ namespace PadForge.Engine.Touchpad
         /// can dial this independently of the global default.</summary>
         public float ThresholdOverride;
 
-        /// <summary>Per-template enable toggle. The Touchpad tab UI
+        /// <summary>Per-template enable toggle. The Touchpad group UI
         /// surfaces this so users can disable individual gestures
         /// without deleting them.</summary>
         public bool Enabled = true;

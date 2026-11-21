@@ -114,7 +114,7 @@ namespace PadForge.Services
             dash.IsGameModServerRunning = server.State == GameModServer.ServerState.Listening;
         }
 
-        /// <summary>The Dashboard line and the pad page lines, on the
+        /// <summary>The status line on Extras and Home and the pad page lines, on the
         /// dashboard cadence. Rebuilt when what the mods hold changed, and
         /// once a second while they hold anything, since the virtual
         /// controller a mod's index names moves with the pads. That
@@ -147,8 +147,8 @@ namespace PadForge.Services
         }
 
         /// <summary>A slot's three pad page lines from what a mod holds on
-        /// it: the Adaptive Triggers and Impulse Triggers tabs while it holds
-        /// a trigger program, the Lighting tab while it holds a light.</summary>
+        /// it: the Adaptive Triggers and Impulse Triggers groups while it holds
+        /// a trigger program, the Lighting group while it holds a light.</summary>
         internal static void SetGameModPadLines(PadViewModel pad, GameModEffects.Hold hold)
         {
             var s = Strings.Instance;

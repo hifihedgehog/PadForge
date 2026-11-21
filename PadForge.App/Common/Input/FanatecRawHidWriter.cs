@@ -193,7 +193,7 @@ namespace PadForge.Common.Input
         private static int ToHid(int dinput, int gainPct) =>
             (int)((long)dinput * gainPct / 100 * 0x7fff / 10000);
 
-        /// <summary>Software centering spring for the Wheel-tab auto-center slider.
+        /// <summary>Software centering spring for the Wheel group auto-center slider.
         /// Fanatec wheels expose no firmware autocenter command (hid-ftecff.c registers
         /// only upload/playback/destroy, and FF_AUTOCENTER is absent from the effects
         /// list), and calling ftec_set_range disables the stock centering spring
@@ -272,7 +272,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The rotation range a base takes, in degrees, which both
-        /// <see cref="WriteRange"/> and the Wheel tab's slider follow
+        /// <see cref="WriteRange"/> and the Wheel group's slider follow
         /// (<see cref="WheelRangeLimits"/>): min_range 90 (hid-ftec.c:862) up
         /// to the base's maximum.</summary>
         internal static (int Min, int Max) RangeLimits(ushort pid) => (90, MaxRange(pid));

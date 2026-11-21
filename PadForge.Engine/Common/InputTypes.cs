@@ -135,7 +135,7 @@ namespace PadForge.Engine
         // read (issue #494): the Razer Chroma and Logitech LIGHTSYNC rows
         // light whatever their software lights, and the Razer Sensa row
         // plays rumble on Sensa HD devices. No inputs: the row is assigned
-        // for its Lighting or Force Feedback tab. The row of one lit device
+        // for its Lighting or Force Feedback group. The row of one lit device
         // that no mouse or keyboard row reaches, a headset or a light strip
         // Windows lists as a HID LampArray, is a lighting row too.
         public const int PeripheralLighting = 40;
@@ -174,7 +174,7 @@ namespace PadForge.Engine
         /// tablet's pen state all start at index 0, so read through the
         /// wildcard they impersonate the gamepad layout (#431: a resting
         /// tracker held both triggers at half pull). These are the same
-        /// six rows the Mappings tab names instead of numbering. A named
+        /// six rows the mapping list names instead of numbering. A named
         /// source on any of them still reads. An analog keyboard leaves its
         /// numbered arrays at zero and publishes its keys on their own
         /// sub-state, and a zeroed trigger axis reads as half pull through

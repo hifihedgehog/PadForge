@@ -474,7 +474,7 @@ namespace PadForge.Engine.Common.Mapping
                     // level Toggle holds on a trigger row. The zone opens at the
                     // source's own deadzone, 50 percent unless the row sets
                     // another, the default Toggle's trigger lane uses. With no
-                    // runtime (the Triggers tab preview) it reads as its first
+                    // runtime (the Triggers group preview) it reads as its first
                     // press, and an input with no depth reads as Direct.
                     if (!SourceCoercion.IsRapidTriggerSource(src.Descriptor))
                         return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);

@@ -1592,7 +1592,7 @@ namespace PadForge.Tests
         }
     }
 
-    /// <summary>The Lighting tab's Display box. These tests set the process's
+    /// <summary>The Lighting group's Display box. These tests set the process's
     /// culture, so they run alone with the others that do.</summary>
     [Collection("CultureSwitching")]
     public sealed class ScreenDisplayListTests : IDisposable
@@ -1729,7 +1729,7 @@ namespace PadForge.Tests
 
         /// <summary>Picking another line while a gone display is saved drops the
         /// gone line, which swaps the list inside the box's own SelectionChanged,
-        /// as the Lighting tab does.</summary>
+        /// as the Lighting group does.</summary>
         [Fact]
         public void APickAwayFromAGoneDisplay_DropsItsLine_AndStaysOnThePick()
         {

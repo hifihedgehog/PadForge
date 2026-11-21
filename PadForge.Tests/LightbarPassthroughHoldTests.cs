@@ -7,7 +7,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// #334: the DualSense lightbar stopped following the Lighting tab and
+    /// #334: the DualSense lightbar stopped following the Lighting group and
     /// sat on its firmware default blue.
     ///
     /// <para>The identity writer yields the bar to the pass-through while
@@ -85,7 +85,7 @@ namespace PadForge.Tests
 
         /// <summary>THE REGRESSION. A host that drives the lane without ever
         /// asserting the lightbar must not take the bar. Before the fix this
-        /// returned true and the Lighting tab was inert for 15 s at a time,
+        /// returned true and the Lighting group was inert for 15 s at a time,
         /// renewed by every further packet.</summary>
         [Fact]
         public void EffectTrafficWithoutALightbarWrite_DoesNotHoldTheBar()

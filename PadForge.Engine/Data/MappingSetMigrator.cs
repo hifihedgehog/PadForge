@@ -278,7 +278,7 @@ namespace PadForge.Engine.Data
             // Touchpad targets — any device with a non-empty field
             // contributes (web touchpad, PTP, DS4, DualSense, …). Multiple
             // devices on the same slot land as multiple Sources on one row,
-            // which is what makes the user-visible Mappings tab show every
+            // which is what makes the user-visible mapping list show every
             // device's touchpad contribution side-by-side instead of only
             // the first-assigned device's.
             foreach (var target in TouchpadTargets)

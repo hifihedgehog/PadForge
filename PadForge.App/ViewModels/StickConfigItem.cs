@@ -12,7 +12,7 @@ using PadForge.Engine.Data;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// Represents one thumbstick section in the dynamic Sticks tab.
+    /// Represents one thumbstick section in the dynamic Sticks group.
     /// For gamepad presets (Xbox / PlayStation): index 0 = Left, index 1 = Right.
     /// For custom Extended: index 0..N based on ThumbstickCount.
     /// </summary>
@@ -54,7 +54,7 @@ namespace PadForge.ViewModels
         /// section reset format with the stick's own localized name so the
         /// tooltip reads "Reset Left Stick" / "Reset Right Stick" / etc.
         /// matching the Pad_ResetLeftTrigger / Pad_ResetRightTrigger style
-        /// used by the Adaptive Triggers tab. Recomputed on culture change
+        /// used by the Adaptive Triggers group. Recomputed on culture change
         /// would require notification, but Title is set at construction
         /// from the localized resource and stays valid for the lifetime
         /// of the slot's stick set.</summary>
@@ -585,7 +585,7 @@ namespace PadForge.ViewModels
         // Param* fields on the stick's MappingSet rows at build time.
         // Motion Lean is no longer a per-stick mode — it's the "Motion Lean" INPUT
         // descriptor (picked from the input dropdown like any gyro input; tuning
-        // lives on the gyro tab's Motion Steering card). The engine MotionLeanX
+        // lives on the Gyro group's Motion Steering card). The engine MotionLeanX
         // kind still backs that descriptor's evaluation. A stored "MotionLeanX"
         // here falls back to Linear via IndexOf.
         private static readonly string[] SteeringModeKinds =
@@ -643,7 +643,7 @@ namespace PadForge.ViewModels
         public double SteerStickDeadZone { get => _steerStickDeadZone; set => SetProperty(ref _steerStickDeadZone, Math.Clamp(value, 0, 90)); }
 
         // Motion-lean deadzones + controller orientation moved to PadViewModel's
-        // Motion Steering (gyro tab); the per-stick steering modes here are Winding
+        // Motion Steering (Gyro group); the per-stick steering modes here are Winding
         // and Angle only, which use the Wind*/Angle* params above.
 
         private ICommand _resetSteeringModeCommand;

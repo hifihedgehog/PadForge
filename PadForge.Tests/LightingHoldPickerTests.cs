@@ -27,7 +27,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The Lighting Hold row on the Pad page's Lighting tab (#494): which
+    /// The Lighting Hold row on the Pad page's Lighting group (#494): which
     /// devices show it, which of its options a device is offered, and the
     /// picker and its reset as the page declares them, loaded from the
     /// page's own markup and bound the way the page binds them.

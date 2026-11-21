@@ -170,7 +170,7 @@ namespace PadForge.Tests
                 MidiApiSelection.ProbeActivation("Windows.Devices.Midi2.PadForgeTestClassThatDoesNotExist"));
         }
 
-        // ── The Windows MIDI Services card ──
+        // ── The Windows MIDI Services row ──
 
         private static SettingsViewModel Card(MidiApiKind api, bool runtimeInstalled, string version = "",
             bool midiSlots = false)

@@ -67,7 +67,7 @@ namespace PadForge.Common.Input
         internal bool IsRunning => _running;
 
         /// <summary>True while the background client is connected to a
-        /// running SteamVR. Feeds the dashboard's SteamVR status tiering
+        /// running SteamVR. Feeds the status tiers of the SteamVR row in Settings' Drivers card
         /// (the issue's "the UI can only say installed" gap).</summary>
         public static bool ServerConnected => _serverConnected;
         private static volatile bool _serverConnected;

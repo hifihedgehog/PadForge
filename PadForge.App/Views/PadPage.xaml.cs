@@ -77,7 +77,7 @@ namespace PadForge.Views
         public static PadForge.Services.RecorderService Recorder { get; set; }
 
         /// <summary>Static InputService reference set by MainWindow, used
-        /// by the Touchpad tab's recorder dialog + delete-gesture handlers
+        /// by the Touchpad group's recorder dialog + delete-gesture handlers
         /// to add / remove custom gestures from the active profile.</summary>
         public static PadForge.Services.InputService InputService { get; set; }
 
@@ -499,7 +499,7 @@ namespace PadForge.Views
             SyncBassShakerMeterTimer();
             SyncCenteringLiveTimer();
             // Peripheral outputs (#494): a mouse found to have haptics gains
-            // its Force Feedback tab, and a path that starts answering
+            // its Force Feedback group, and a path that starts answering
             // changes the tab's line.
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged += OnPeripheralOutputsChanged;
@@ -508,7 +508,7 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged += OnPeripheralOutputsChanged;
             // A pad whose rumble SDL finds after the open gains its Force
-            // Feedback tab.
+            // Feedback group.
             PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen -= OnRumbleFoundAfterOpen;
             PadForge.Engine.SdlDeviceWrapper.RumbleFoundAfterOpen += OnRumbleFoundAfterOpen;
             // A Flydigi Apex pad's tabs follow the model it answers with (#586).
@@ -719,7 +719,7 @@ namespace PadForge.Views
             SyncScreenColorStatus();
             SyncAudioHexBoxes();
             // Slot switch: the meter timer follows the NEW slot's selected
-            // tab (a different slot may sit on a different tab).
+            // tab number (a different slot may sit on a different one).
             SyncBassShakerMeterTimer();
             SyncCenteringLiveTimer();
 
@@ -905,8 +905,8 @@ namespace PadForge.Views
             TabSticks.Visibility = (isMidi || isVrSlot) ? Visibility.Collapsed : Visibility.Visible;
             // Raw-surface slots whose profile declares no analog triggers
             // (the Switch Pro's ZL/ZR are digital buttons) have nothing
-            // for the Triggers tab to show; hide it like the other
-            // no-surface gates instead of presenting an empty tab.
+            // for the Triggers group to show. Hide it like the other
+            // no-surface gates instead of presenting an empty group.
             bool rawNoTriggers = DataContext is PadViewModel tvm
                 && tvm.OutputType is Engine.VirtualControllerType.Extended
                     or Engine.VirtualControllerType.Nintendo
@@ -921,7 +921,7 @@ namespace PadForge.Views
             if (FlickStickCard != null)
                 FlickStickCard.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
-            // Adaptive Triggers, Lighting, and Force Feedback tabs all
+            // Adaptive Triggers, Lighting, and Force Feedback groups all
             // reflect what the currently-SELECTED physical device on this
             // slot can do. Slots can have multiple devices assigned; the
             // user picks which one's mappings they're editing via the
@@ -951,14 +951,14 @@ namespace PadForge.Views
             // Controller (SDL home-LED hint), and the Switch home LED
             // population (#226: Pro Controller, right Joy-Con, the
             // combined pair, the charging grip; per-device
-            // SDL_SetJoystickLED). Puts the Lighting tab up for those
+            // SDL_SetJoystickLED). Puts the Lighting group up for those
             // devices with only the Guide LED card visible.
             bool hasGuideLed = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;      // any motion sensor: the tab (Grip, Tilt, Motion Steering read the accelerometer)
             bool hasGyroRate = false;  // a gyroscope: the rate cards (#392 widened the tab to accelerometer-only devices)
             bool hasMouse = false;
-            bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
+            bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer group
             bool hasImpulseTriggers = false;
             bool hasS2Mag = false;
             bool simulatesGyro = false; // #472: a gyro lacking axes the accelerometer can supply
@@ -985,7 +985,7 @@ namespace PadForge.Views
             // A row that only takes output (#494): a lit unit, a vendor's
             // lighting row, a rumble row.
             bool outputOnlyRow = false;
-            // A Novint Falcon row (#521): the Force Feedback tab with its
+            // A Novint Falcon row (#521): the Force Feedback group with its
             // Falcon card.
             PadForge.Engine.Data.UserDevice falconRow = null;
             int numTouchpads = 0;
@@ -1053,7 +1053,7 @@ namespace PadForge.Views
                         wheelFacts = PadForge.Common.Input.WheelCenteringFacts.Of(ud);
                         hasWheel = wheelFacts.NativeWheel;
                         hasGenericWheel = !hasWheel && wheelFacts.HasCard;
-                        // Pad count drives the Touchpad tab's per-pad
+                        // Pad count drives the Touchpad group's per-pad
                         // pivot. Most devices = 1; Steam Controller 2026
                         // = 2 (Triton); original Steam Controller = 3.
                         if (hasTouchpad)
@@ -1089,7 +1089,7 @@ namespace PadForge.Views
                         else if (ud.Device is PadForge.Engine.WebControllerDevice web)
                         {
                             // A phone drawing a DualShock 4 or a DualSense gets
-                            // the same Lighting tab the physical pad gets. The
+                            // the same Lighting group the physical pad gets. The
                             // color already reaches it (ResolveWebLightbar
                             // reads this very config), so without the tab the
                             // config existed and could not be edited.
@@ -1114,8 +1114,8 @@ namespace PadForge.Views
                             hasAudio = true;
                         }
                         // A Flydigi Apex pad (#586): its triggers play the
-                        // Adaptive Triggers tab's effects and the Impulse
-                        // Triggers tab's levels, an Apex 4 and 5 by force and
+                        // Adaptive Triggers group's effects and the Impulse
+                        // Triggers group's levels, an Apex 4 and 5 by force and
                         // an Apex 6 Pro by vibration. By the model the pad
                         // answered with, which its record keeps while it
                         // sleeps.
@@ -1146,7 +1146,7 @@ namespace PadForge.Views
                         // A lit mouse, keyboard or vendor row (#494) gets the
                         // lightbar's mode card, this slot's lighting reaching
                         // it through its own settings. The record keeps the
-                        // tab up while the device sleeps.
+                        // group up while the device sleeps.
                         hasPeripheralLighting = !hasLightbar
                             && (ud.HasPeripheralLighting
                                 || PadForge.Common.Input.Peripherals.PeripheralOutputs.HasLighting(ud.InstanceGuid));
@@ -1384,7 +1384,7 @@ namespace PadForge.Views
                 vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
             }
 
-            // Mouse tab (#200): reload the per-(slot, device) gesture
+            // Mouse group (#200): reload the per-(slot, device) gesture
             // settings whenever the active device changes.
             if (DataContext is PadViewModel vmMouse && hasMouse)
                 vmMouse.LoadMouseGestureSettingsForActiveDevice();
@@ -2497,7 +2497,7 @@ namespace PadForge.Views
         //  Sound macro action handlers (issue #83)
         // ─────────────────────────────────────────────
 
-        /// <summary>Audio tab hub row: jump to the Macros tab with the
+        /// <summary>Audio group hub row: jump to the macro editor with the
         /// clicked sound macro selected.</summary>
         private void SoundMacroRow_Click(object sender, RoutedEventArgs e)
         {
@@ -4306,8 +4306,8 @@ namespace PadForge.Views
             }
             else if (e.PropertyName == nameof(PadViewModel.SelectedMappedDevice))
             {
-                // Tabs reflect the selected physical device; refresh on
-                // dropdown change. SetProperty raises this BEFORE the setter
+                // Groups reflect the selected physical device. Refresh on
+                // a change of the picked device pill. SetProperty raises this BEFORE the setter
                 // swaps the DeviceConfig anchor, so the lighting
                 // re-syncs ride the DeviceConfig case below instead;
                 // only the device-info subscription is re-pointed here (the
@@ -4317,7 +4317,7 @@ namespace PadForge.Views
             }
             else if (e.PropertyName == nameof(PadViewModel.DeviceConfig))
             {
-                // The Lighting tab's config anchor swapped to another
+                // The Lighting group's config anchor swapped to another
                 // per-device entry (BindDeviceConfigForDevice on device
                 // change). Config events keep flowing through the
                 // ActiveDeviceConfigPropertyChanged forwarder; re-seed
@@ -4345,12 +4345,12 @@ namespace PadForge.Views
                     _syncingExtendedConfig = false;
                 }
 
-                // Adaptive Triggers and Lighting tab visibility depend on
+                // Adaptive Triggers and Lighting group visibility depend on
                 // the active profile's VID/PID (DualSense / DualSense Edge
                 // / DS4 capability). A profile switch within the same
                 // PlayStation slot type doesn't fire OutputType change, so
                 // SyncTabVisibility wouldn't run otherwise — leaving the
-                // tabs stale until app relaunch or slot switch. Re-sync
+                // groups stale until app relaunch or slot switch. Re-sync
                 // here so the groups and the header's sections follow
                 // profile changes too.
                 SyncTabVisibility();
@@ -4557,7 +4557,7 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Lighting tab — HEX color entry
+        //  Lighting group: HEX color entry
         // ─────────────────────────────────────────────
 
         /// <summary>Refreshes tab visibility when the slot's
@@ -4880,7 +4880,7 @@ namespace PadForge.Views
         }
 
         /// <summary>Adds the parts of the controller the base art leaves out,
-        /// as the Preview tab's 2D view draws them at rest
+        /// as Buttons' picture draws them in 2D at rest
         /// (ControllerModel2DView.BuildModel): the L2 and R2 trigger
         /// silhouettes behind the body (z 0, the body at z 1 covers their
         /// lower edge) and the stick caps in front of it (z 2). They stay
@@ -5259,7 +5259,7 @@ namespace PadForge.Views
         }
 
         /// <summary>A layer chip on the Key Colors card picks the layer
-        /// being colored, as a Mappings tab chip picks the layer being
+        /// being colored, as a layer chip in Buttons picks the layer being
         /// mapped (ShiftLayerTab_Click).</summary>
         private void KeyColorLayer_Click(object sender, RoutedEventArgs e)
         {
@@ -5329,7 +5329,7 @@ namespace PadForge.Views
             LightbarHexBox.Text = $"{vm.DeviceConfig.LightbarRed:X2}{vm.DeviceConfig.LightbarGreen:X2}{vm.DeviceConfig.LightbarBlue:X2}";
         }
 
-        /// <summary>Preset swatch row on the Lighting tab (#175
+        /// <summary>Preset swatch row in the Lighting group (#175
         /// competitor item 6). Tag carries RRGGBB. Write-through hits
         /// the same LightbarRed/Green/Blue trio the sliders and picker
         /// bind, so the lightbar preview, SV picker, and per-channel
@@ -5439,7 +5439,7 @@ namespace PadForge.Views
 
         /// <summary>
         /// Same defensive measure as <see cref="ProfileCombo_PreviewKeyDown"/>,
-        /// but for the Mappings-tab pickers (the Combine-mode dropdown and the
+        /// but for the mapping list pickers (the Combine-mode dropdown and the
         /// cross-device source dropdowns) — and it also swallows TYPE-AHEAD
         /// keys, not just arrow / page keys.
         ///
@@ -5475,8 +5475,8 @@ namespace PadForge.Views
                 e.Handled = true;
         }
 
-        /// <summary>The keys a keyboard-mapped slot uses that the Mappings
-        /// tab keeps from its closed pickers and its rows (#61): the arrows,
+        /// <summary>The keys a keyboard-mapped slot uses that the mapping
+        /// list keeps from its closed pickers and its rows (#61): the arrows,
         /// Page Up and Down, Home and End, which move a selection, and the
         /// letters and digits, which a closed ComboBox takes as type-ahead.
         /// Letters and digits cover every Combine-mode label ("Strongest",
@@ -5975,7 +5975,7 @@ namespace PadForge.Views
             => pageShown && section == PadViewModel.LightsSection && mode == ViewModels.LightbarMode.ScreenColor;
 
         /// <summary>Keeps the Screen Color status line and the Display box current
-        /// while the Lighting tab shows that mode (#559): what Windows is doing
+        /// while the Lighting group shows that mode (#559): what Windows is doing
         /// with the screen, a display plugged in or out, a change of language. A
         /// second is soon enough for all three. The timer stops when the page is
         /// hidden or another section is selected, and starts again when the
@@ -6761,7 +6761,7 @@ namespace PadForge.Views
     }
 
     /// <summary>Two-way 0..1 fraction (setting units) to 0..100 percent
-    /// (display) for the Touchpad tab's DZ-idiom rows (#175 item 15).
+    /// (display) for the Touchpad group's DZ-idiom rows (#175 item 15).
     /// ConvertBack takes a double from sliders and a string from the
     /// percent edit boxes. Unparseable text leaves the source untouched.</summary>
     public sealed class FractionToPercentConverter : IValueConverter

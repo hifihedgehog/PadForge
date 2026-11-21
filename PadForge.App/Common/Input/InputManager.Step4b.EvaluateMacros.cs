@@ -2593,7 +2593,7 @@ namespace PadForge.Common.Input
         /// grid's gesture descriptors read
         /// (SourceCoercion.TouchpadGestureFiredProvider, wired by
         /// InputService to this InputManager's per-(slot, device, pad)
-        /// GestureContexts), so the Touchpad tab's enable gates govern
+        /// GestureContexts), so the Touchpad group's enable gates govern
         /// macros and mappings identically and held spots / one-shot
         /// swipes behave exactly as they do on a mapping row.
         /// </summary>
@@ -4220,10 +4220,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Enumerates every per-device DeviceSlotConfig
-        /// on the slot. Macro lightbar actions are slot-level: macro is
-        /// to the left of the device dropdown, so a macro's color /
+        /// on the slot. Macro lightbar actions are slot-level: a macro
+        /// belongs to the slot, not to a device pill, so a macro's color /
         /// mode / clear push uniformly to every assigned device. The
-        /// Lighting tab (right of the dropdown) is per-device — a mode
+        /// Lighting group follows the picked device pill. A mode
         /// change pushed by a macro re-renders each device using its
         /// own LightbarMode / palette / colors. Falls back to the
         /// anchor slot config when the per-device dictionary hasn't
@@ -4316,7 +4316,7 @@ namespace PadForge.Common.Input
         /// the given RGB; RandomHue → a fresh random hue; PaletteStep → the next entry of
         /// <paramref name="paletteCsv"/>, advancing <paramref name="cycleIndex"/>. When the
         /// palette is empty: macros (<paramref name="slotPaletteFallback"/> = true) fall back
-        /// to the slot's Lighting-tab palette; a dedicated palette (steering) does not — it
+        /// to the slot's Lighting group palette. A dedicated palette (steering) does not. It
         /// resolves to off so the empty selection is visibly inert.</summary>
         private (byte r, byte g, byte b) ResolveOverrideLightbarColor(
             int slotIndex, MacroLightbarColorSource source,
@@ -4497,7 +4497,7 @@ namespace PadForge.Common.Input
 
         /// <summary>PointerModeCycle applier hook (issue #203). InputService
         /// points this at a dispatcher hop that writes the target mode into
-        /// every IR device's PadSetting on the slot, updates the Pointer-tab
+        /// every IR device's PadSetting on the slot, updates the Pointer group
         /// VM, and marks settings dirty. The write happens ON THE DISPATCHER
         /// deliberately: the 30 Hz UI tick copies the VM's PointerMode over
         /// PadSetting (SaveViewModelToPadSetting), so a poll-thread write

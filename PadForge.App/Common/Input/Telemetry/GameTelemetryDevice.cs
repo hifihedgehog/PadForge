@@ -258,7 +258,7 @@ namespace PadForge.Common.Input.Telemetry
             return items;
         }
 
-        // ─── Status, for the Dashboard and the Devices page ───
+        // ─── Status, for Extras, Home and the Devices page ───
 
         public int Port => _port;
         internal int BoundPort => (_socket?.LocalEndPoint as IPEndPoint)?.Port ?? 0;

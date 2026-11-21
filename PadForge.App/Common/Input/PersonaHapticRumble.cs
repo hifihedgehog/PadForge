@@ -21,7 +21,7 @@ namespace PadForge.Common.Input
     /// they play rumble on the actuators: SDL's rumble_left takes the
     /// low-frequency motor, hid-playstation's motor_left the strong
     /// magnitude. Every reader of the slot's rumble layers the level on under
-    /// max(), the way macro rumble joins, ahead of the Force Feedback tab's
+    /// max(), the way macro rumble joins, ahead of the Force Feedback group's
     /// gain, motor strengths and swap, and Bass Shakers plays it too.</para>
     ///
     /// <para>A device that plays the haptic track itself takes none of it: a

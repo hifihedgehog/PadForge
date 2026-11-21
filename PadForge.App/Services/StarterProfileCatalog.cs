@@ -259,8 +259,8 @@ namespace PadForge.Services
 
         /// <summary>Desktop's system key, unreachable as a row. The Windows
         /// key sits on Paddle 1, which is Valve's own Deck assignment. It
-        /// stays off Start deliberately: the quiet layer is a long press of
-        /// Start, and a macro there would open the Start menu every time the
+        /// stays off Start deliberately: the quiet layer is the Guide + Start
+        /// chord (AddQuietLayer), and a macro there would open the Start menu every time the
         /// user reached for silence.</summary>
         private static IEnumerable<MacroData> DesktopMacros() => new[]
         {

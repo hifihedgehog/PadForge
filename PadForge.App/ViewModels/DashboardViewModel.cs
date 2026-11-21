@@ -249,7 +249,7 @@ namespace PadForge.ViewModels
         private bool _isHidHideInstalled;
 
         /// <summary>Whether HidHide is installed. The Dashboard's driver
-        /// status strip is gone (Settings carries the full HidHide card), so
+        /// status strip is gone (the HidHide row of Settings' Drivers card carries it), so
         /// this flag has no display text of its own here.</summary>
         public bool IsHidHideInstalled
         {

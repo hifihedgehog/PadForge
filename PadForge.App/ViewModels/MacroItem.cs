@@ -687,7 +687,7 @@ namespace PadForge.ViewModels
             /// "Touchpad 0 SwipeUp", "Touchpad 0 Custom_MyShape"), or null
             /// if this entry isn't a gesture. Evaluated per frame through
             /// the same SourceCoercion.TouchpadGestureFiredProvider the
-            /// mapping grid uses, so the enable gates on the Touchpad tab
+            /// mapping grid uses, so the enable gates in the Touchpad group
             /// govern macros and mappings identically (#177). Picked from
             /// the trigger dropdown, never recorded. Recording a gesture
             /// by accident is the exact complaint the issue raises.</summary>
@@ -1254,7 +1254,7 @@ namespace PadForge.ViewModels
 
             // Bare gyro axes (#9 B-9): evaluated through SourceCoercion's
             // button read (rate past the engine's default threshold), with
-            // the same per-(device, slot) Gyro-tab tuning a mapping row
+            // the same per-(device, slot) Gyro group tuning a mapping row
             // gets. Covers workshop configs whose bindings live on a gyro
             // group.
             if (d.StartsWith("Gyro ", StringComparison.Ordinal))
@@ -1878,7 +1878,7 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         /// <summary>Compact "file1, file2" summary of this macro's Play
-        /// Sound actions, for the Audio tab's sound-macro hub list.</summary>
+        /// Sound actions, for the Audio group's sound-macro hub list.</summary>
         public string SoundFilesSummary
         {
             get
@@ -3694,7 +3694,7 @@ namespace PadForge.ViewModels
             {
                 if (_cycleModeOptions == null)
                 {
-                    // Mirrors the Lighting tab's dropdown order (simple
+                    // Mirrors the Lighting group's dropdown order (simple
                     // time-based, multi-color, battery, audio cluster),
                     // led by the PlayerNumber default and the deliberate
                     // Off, plus the legacy InputReactive* compat values.
@@ -4386,7 +4386,7 @@ namespace PadForge.ViewModels
         private int _rumbleStrengthLeft = 100;
         /// <summary>Left (heavy / low-frequency) motor strength as a
         /// percentage 0..100 of the device's full output. Combined with
-        /// the FFB-tab per-motor gain at injection time.</summary>
+        /// the Force Feedback group per-motor gain at injection time.</summary>
         public int RumbleStrengthLeft
         {
             get => _rumbleStrengthLeft;
@@ -4766,7 +4766,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>File name only, for compact display on the action row
-        /// and the Audio tab's sound-macro list. Package references render
+        /// and the Audio group's sound-macro list. Package references render
         /// as "entry — package".</summary>
         public string SoundFileName
         {
@@ -4781,7 +4781,7 @@ namespace PadForge.ViewModels
 
         private int _soundVolume = 100;
         /// <summary>Per-action volume percentage 0-100, multiplied with the
-        /// slot's master sound volume (Audio tab).</summary>
+        /// slot's master sound volume (Audio group).</summary>
         public int SoundVolume
         {
             get => _soundVolume;
@@ -6301,7 +6301,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Localized display name for a PointerMode value, shared
-        /// by the Pointer tab combo and the cycle checkboxes.</summary>
+        /// by the Pointer group combo and the cycle checkboxes.</summary>
         internal static string PointerModeDisplayName(string mode) => mode switch
         {
             "FpsMouse" => Strings.Instance.Pad_Pointer_Mode_FpsMouse,
@@ -7110,7 +7110,7 @@ namespace PadForge.ViewModels
         LightbarColorClear,
 
         /// <summary>Sets the slot's <c>LightbarMode</c> to a specific
-        /// value. Persists like any other Lighting-tab edit until
+        /// value. Persists like any other Lighting group edit until
         /// another action or the user changes it.</summary>
         LightbarModeSet,
 
@@ -7162,7 +7162,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Plays a sound file (issue #83). Routed through
         /// <c>SoundMacroService</c> to the slot's configured output device
-        /// (Audio tab) — the system default or a specific endpoint such as
+        /// (Audio group): the system default or a specific endpoint such as
         /// a USB DualSense's controller speaker. <c>SoundFilePath</c> picks
         /// the file (wav / mp3 / m4a / aac / wma / flac via Media
         /// Foundation), <c>SoundVolume</c> scales it (multiplied with the
@@ -7244,7 +7244,7 @@ namespace PadForge.ViewModels
         /// later pads over USB (the \\.\XboxGIP lane) and the 2015 Steam
         /// Controller (SDL home-LED hint). One transient write per fire,
         /// nothing persisted, so a pair of macros can flash the LED when a
-        /// mode engages and restore it after. The Lighting tab's Battery
+        /// mode engages and restore it after. The Lighting group's Battery
         /// mode reasserts on its next cadence. At the tail per the
         /// APPEND-ONLY rule above.</summary>
         GuideLedBrightness,
@@ -7450,7 +7450,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Raises the slot's headphone jack hardware volume
         /// (DeviceSlotConfig.HeadphoneVolume) by 10%, clamped at 100.
-        /// Persists like any other Audio-tab edit.</summary>
+        /// Persists like any other Audio group edit.</summary>
         HeadphoneVolumeUp = 52,
 
         /// <summary>Lowers the slot's headphone jack hardware volume
@@ -7483,7 +7483,7 @@ namespace PadForge.ViewModels
         /// color leaves within MacroAssertWindowMs of the action ending. The
         /// Chroma worker paints the categories of the Razer devices assigned
         /// to that slot (every category when the Razer Chroma row is), ahead
-        /// of every Lighting-tab claim, whether or not those tabs control the
+        /// of every Lighting group claim, whether or not those groups control the
         /// devices. Several macros asserting in one frame resolve to the last
         /// one evaluated, which is how a full-press macro listed below a
         /// soft-press one wins at the bottom of the press. At the tail;
@@ -7546,7 +7546,7 @@ namespace PadForge.ViewModels
         /// slot's lit keyboards, mice and lighting rows in a color (#557):
         /// steady, fading, or counting down one key at a time, for a time,
         /// until the macro's trigger releases, or until a
-        /// <see cref="ClearKeyColors"/>, over the Lighting tab's key colors,
+        /// <see cref="ClearKeyColors"/>, over the Lighting group's key colors,
         /// with the other lights kept, off or in a second color meanwhile.
         /// One-shot: the slot's store runs it. Ordinal pinned.</summary>
         SetKeyColors = 64,
@@ -7756,7 +7756,7 @@ namespace PadForge.ViewModels
     {
         /// <summary>Decay-fade flash. Intensity ramps from 1.0 to 0.0
         /// across the configured decay window, then expires and the
-        /// configured Lighting-tab mode takes back over. Mirrors the
+        /// configured Lighting group mode takes back over. Mirrors the
         /// existing InputReactive lightbar mode.</summary>
         Reactive = 0,
         /// <summary>Held at full intensity until a

@@ -27,7 +27,7 @@ namespace PadForge.Tests
     /// Undeclared text is en-US, so it took the last row.</para>
     ///
     /// <para>A window's language is also the culture its bindings format and
-    /// parse numbers in. The pad page reads and writes some 250 number boxes
+    /// parse numbers in. The pad page reads and writes its number boxes
     /// in the en-US notation, so a language is declared only where its
     /// numbers are written as en-US writes them. The second half of this
     /// file holds that against every number format in the markup.</para>

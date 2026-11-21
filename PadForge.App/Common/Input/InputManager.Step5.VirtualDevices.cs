@@ -779,7 +779,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Per-slot PlayStation configuration reference (Adaptive
         /// Triggers + Lighting). Mirrors the slot's currently-selected
-        /// device's per-device config — the Lighting tab is per-device,
+        /// device's per-device config. The Lighting group is per-device,
         /// so this entry shifts as the user switches SelectedMappedDevice.
         /// Used by HMaestroVirtualController.AttachDeviceConfig as
         /// the dispatcher's "anchor" for animation-timer state and event
@@ -1307,7 +1307,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Returns true if the specified pad slot has an active virtual controller.
-        /// Used by the UI to show connected status on dashboard cards.
+        /// Used by the UI to show connected status on Home's cards.
         /// </summary>
         public bool IsVirtualControllerConnected(int padIndex)
         {

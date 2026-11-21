@@ -10,8 +10,8 @@ namespace PadForge.Tests
     /// a device, so their names come from the string table and follow the UI
     /// language. Whatever name a row was created with, which for some of
     /// them is an English one from the engine,
-    /// <see cref="InputService.LocalizedDeviceName"/> is where the Mappings
-    /// tab and the recording status get the name for the language in use.
+    /// <see cref="InputService.LocalizedDeviceName"/> is where the mapping
+    /// list and the recording status get the name for the language in use.
     ///
     /// <para>"All Consumer Controls (Merged)" was added to the engine and
     /// never to that switch, so it stayed English in all ten languages beside

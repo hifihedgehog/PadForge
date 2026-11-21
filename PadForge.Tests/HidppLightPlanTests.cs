@@ -3633,7 +3633,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A G915 X with its layout code read: its light map is
-        /// published for the Lighting tab (#557), and a key frame paints it
+        /// published for the Lighting group (#557), and a key frame paints it
         /// zone by zone. The first paint is the one-color first paint in
         /// the color most zones take, then that color over every zone, A
         /// in its own color and the frame end, each frame awaited.</summary>
@@ -3697,7 +3697,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A keyboard that refuses a zone frame goes back to its
-        /// clusters, and its map becomes theirs, so the Lighting tab offers
+        /// clusters, and its map becomes theirs, so the Lighting group offers
         /// the colors it can show: the keys cluster and the logo.</summary>
         [Fact]
         public void ARefusedZoneFrame_SendsTheKeyboardToItsClusters_AndItsMapToTheirs()

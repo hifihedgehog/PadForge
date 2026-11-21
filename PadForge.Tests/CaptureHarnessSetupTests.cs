@@ -1432,7 +1432,7 @@ namespace PadForge.Tests
         /// one function that clicks the screen and then parks. The web pages'
         /// frames move the pointer onto Edge's title bar, off the page. No
         /// park in the window's bottom-right corner is left: that corner
-        /// holds the status bar's engine pill.
+        /// held the old status bar's engine pill.
         /// </summary>
         [Fact]
         public void ThePointerRestsOffEveryControlBeforeEachFrame()

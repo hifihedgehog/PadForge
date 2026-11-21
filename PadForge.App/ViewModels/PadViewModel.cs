@@ -282,7 +282,7 @@ namespace PadForge.ViewModels
                     // The header's type chip draws the type (#574).
                     OnPropertyChanged(nameof(TypeGeometry));
                     OnPropertyChanged(nameof(TypeGlyph));
-                    // Bass Shakers tab (#236): slot-type gate follows the
+                    // Bass Shakers group (#236): slot-type gate follows the
                     // output type, never a physical-device capability.
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
                     OnPropertyChanged(nameof(OutputTabVisible));
@@ -633,7 +633,7 @@ namespace PadForge.ViewModels
         /// HIDMaestro profile for an Xbox, PlayStation, Nintendo or Extended
         /// slot, the input halves for a Keyboard + Mouse slot, and the type
         /// name for MIDI and VR, which have no Preset. The sidebar and
-        /// Dashboard cards print it (discussion #543). Raised wherever one of
+        /// Home cards print it (discussion #543). Raised wherever one of
         /// those inputs changes: ProfileId, OutputType, the Keyboard + Mouse
         /// halves and the culture.</summary>
         /// <remarks>Read by RefreshSlotSummaryProperties on the 30 Hz
@@ -726,7 +726,7 @@ namespace PadForge.ViewModels
                     case nameof(ExtendedSlotConfig.ForceFeedbackEnabled):
                     case nameof(ExtendedSlotConfig.Customize):
                         // Bass Shakers rides the PID force feedback lane
-                        // (#236): the tab follows the effective FFB state.
+                        // (#236): the group follows the effective FFB state.
                         RefreshRumbleAudioTabGate();
                         break;
                 }
@@ -735,7 +735,7 @@ namespace PadForge.ViewModels
 
         // ═══════════════════════════════════════════════
         //  PlayStation per-slot configuration
-        //  Drives the Adaptive Triggers and Lighting tabs.
+        //  Drives the Adaptive Triggers and Lighting groups.
         //  Meaningful only when OutputType == PlayStation AND the
         //  active profile has the relevant capability (DualSense /
         //  DualSense Edge for adaptive triggers; DS4 / DualSense /
@@ -745,7 +745,7 @@ namespace PadForge.ViewModels
         //  ExtendedConfig.
         // ═══════════════════════════════════════════════
 
-        // Per-(slot, device) lighting tab configs. The Lighting tab is
+        // Per-(slot, device) Lighting group configs. The Lighting group is
         // per-device (parallel to PadSetting): different physical devices
         // mapped to the same slot can have different lightbar mode,
         // colors, palette, audio response, etc. Macro lightbar actions
@@ -755,7 +755,7 @@ namespace PadForge.ViewModels
         //
         // <c>_deviceConfig</c> below is a reference to the
         // SelectedMappedDevice's entry in this dictionary, swapped on
-        // device change so the Lighting tab's bindings re-resolve.
+        // device change so the Lighting group's bindings re-resolve.
         // ConcurrentDictionary so the polling thread (which iterates this
         // every dispatch tick + every macro lightbar action) doesn't race
         // with UI-thread mutations from device-map changes / settings
@@ -785,7 +785,7 @@ namespace PadForge.ViewModels
             // Destination wins, so cfg is dropped. When the tab was bound to
             // the instance being dropped it has to move to the winner, the
             // same rebind RemoveDeviceConfig performs: without it the
-            // Lighting and Audio tabs keep editing an object nothing reads.
+            // Lighting and Audio groups keep editing an object nothing reads.
             if (ReferenceEquals(_deviceConfig, cfg))
                 DeviceConfig = _perDeviceSlotConfigs.TryGetValue(newGuid, out var kept)
                     ? kept : _emptyDeviceConfigSentinel;
@@ -804,14 +804,14 @@ namespace PadForge.ViewModels
         /// (round 34).</para></summary>
         private readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
 
-        /// <summary>Per-(slot, device) lighting tab configs keyed by
+        /// <summary>Per-(slot, device) Lighting group configs keyed by
         /// physical device InstanceGuid. Always populated for every
         /// mapped device; the empty Guid key holds a fallback used
         /// before any device is mapped.</summary>
         public IReadOnlyDictionary<Guid, DeviceSlotConfig> PerDeviceSlotConfigs
             => _perDeviceSlotConfigs;
 
-        /// <summary>The lighting tab's currently-bound config —
+        /// <summary>The Lighting group's currently-bound config. It
         /// references the SelectedMappedDevice's entry in
         /// <see cref="PerDeviceSlotConfigs"/>. The setter accepts
         /// any config (used by load paths to seed the dictionary
@@ -903,7 +903,7 @@ namespace PadForge.ViewModels
         /// <summary>Ensures the per-device dictionary has an entry for
         /// every currently-mapped device. Newly-mapped devices get a
         /// fresh default config — the user customizes each device's
-        /// Lighting tab independently. Called by the input service
+        /// Lighting group independently. Called by the input service
         /// after MappedDevices changes.</summary>
         public void EnsureDeviceSlotConfigsForMappedDevices()
         {
@@ -938,7 +938,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Removes one device's per-device config, rebinding the
-        /// tab to the empty sentinel when that config was the bound one.
+        /// per-device groups to the empty sentinel when that config was the bound one.
         /// Returns false when there was nothing to remove.</summary>
         public bool RemoveDeviceConfig(Guid deviceGuid)
         {
@@ -949,7 +949,7 @@ namespace PadForge.ViewModels
             return true;
         }
 
-        /// <summary>Switches the Lighting tab's bound config to the
+        /// <summary>Switches the Lighting group's bound config to the
         /// device with the given InstanceGuid, creating an entry if
         /// missing. Called by SelectedMappedDevice change.</summary>
         private void BindDeviceConfigForDevice(Guid deviceGuid)
@@ -1413,7 +1413,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Slot-level cross-device InputChoice list. Mirrors the
         /// per-MappingItem AvailableInputs but exposed at the slot level
-        /// so the Gyro tab's Aim Engage picker (and any future slot-wide
+        /// so the Gyro group's Aim Engage picker (and any future slot-wide
         /// pickers) can bind without proxy-walking the Mappings list.
         /// Populated by <c>InputService.PopulateAvailableInputs</c>.</summary>
         public ObservableCollection<InputChoice> SlotAvailableInputs { get; } = new();
@@ -1762,7 +1762,7 @@ namespace PadForge.ViewModels
         /// buttons, POV directions, gamepad-layout axes, touchpad click,
         /// and touchpad gestures). Populated beside SlotAvailableInputs
         /// by <c>InputService.PopulateAvailableInputs</c>, so the same
-        /// Touchpad-tab enable gates that govern the mapping picker
+        /// Touchpad group enable gates that govern the mapping picker
         /// govern what macros can trigger on.</summary>
         public ObservableCollection<InputChoice> SlotMacroTriggerChoices { get; } = new();
 
@@ -1824,7 +1824,7 @@ namespace PadForge.ViewModels
                     // keep showing the previous pad's EQ and, worse, the next
                     // row edit would write it onto this one.
                     RefreshEqBands();
-                    // Pointer-tab tunables (IrSensorBarPos etc.) are per
+                    // Pointer group tunables (IrSensorBarPos etc.) are per
                     // (device, slot) on PadSetting; the device-switch reload
                     // repopulates them through the same PadSetting load path
                     // as the gyro tunables.
@@ -1836,7 +1836,7 @@ namespace PadForge.ViewModels
                     // again after the bind, so the combo kept the old value.
                     if (IsTabShown(AudioTabIndex)) RefreshMirrorSources();
                     else OnPropertyChanged(nameof(SelectedMirrorSourceId));
-                    // Swap the Lighting tab's bound config to the new
+                    // Swap the Lighting group's bound config to the new
                     // device's per-device entry. UI bindings that resolve
                     // DeviceConfig.* re-evaluate against the new
                     // reference.
@@ -1875,7 +1875,7 @@ namespace PadForge.ViewModels
         /// rewrites the selected entry's Name + InstanceGuid + IsOnline
         /// while keeping the same object — without this nudge, listeners
         /// that gate on PropertyChanged (PadPage.SyncTabVisibility, the
-        /// FFB / Lighting / Adaptive Triggers tabs, the HM dispatcher
+        /// FFB / Lighting / Adaptive Triggers groups, the HM dispatcher
         /// re-attachment) miss the device identity swap and stay pinned
         /// to the prior device's capabilities.
         /// </summary>
@@ -2647,7 +2647,7 @@ namespace PadForge.ViewModels
 
         // ── Shift mode (Issue #61 Phase 6) ──
 
-        /// <summary>Layer mask currently being authored on the Mappings tab.
+        /// <summary>Layer mask currently being authored in the mapping list.
         /// Defaults to <c>"Base"</c> (no shift layer selected). Setting this
         /// fires <see cref="LayerActivated"/> so InputService reloads each
         /// MappingItem from the matching layer's MappingRows.</summary>
@@ -2689,12 +2689,12 @@ namespace PadForge.ViewModels
         /// <summary>Raised before the active layer changes, while the grid still belongs to the old layer.</summary>
         public event EventHandler LayerChanging;
 
-        /// <summary>The Lighting tab's Key Colors or Zone Colors card for
+        /// <summary>The Lighting group's Key Colors or Zone Colors card for
         /// the selected device (#557). The page attaches it to
         /// <see cref="DeviceConfig"/> and the device's lights.</summary>
         public KeyColorsCardViewModel KeyColors { get; } = new();
 
-        /// <summary>The Lighting tab's LED Strips card for the selected device
+        /// <summary>The Lighting group's LED Strips card for the selected device
         /// (#557). The page attaches it as it does <see cref="KeyColors"/>.</summary>
         public LedStripsCardViewModel LedStrips { get; } = new();
 
@@ -2723,7 +2723,7 @@ namespace PadForge.ViewModels
         /// <summary>True when the slot has at least one shift activator
         /// authored, i.e. at least one tab beyond Base. Drives the nested
         /// tab strip's visibility (basic users without any shift layers see
-        /// the Mappings tab exactly as before).</summary>
+        /// the mapping list exactly as before).</summary>
         public bool HasShiftLayers => LayerTabs.Count > 1;
 
         /// <summary>True when the currently-active layer is a shift layer
@@ -3003,10 +3003,10 @@ namespace PadForge.ViewModels
             // Menus (#9 B-17) live on the same slot MappingSet the rows
             // do, so every path that rebuilds the mapping view (profile
             // apply, Workshop import, output-type change, Reset to
-            // Defaults) refreshes the Menus tab in the same breath.
+            // Defaults) refreshes the menu editor in the same breath.
             ReloadMenus();
             // The rumble-to-audio config (#236) shares that lifetime, so
-            // the Bass Shakers tab re-seeds from the set on the same paths.
+            // the Bass Shakers group re-seeds from the set on the same paths.
             ReloadRumbleAudio();
             // The SOCD card (#240) lives on the same slot MappingSet and
             // re-seeds on the same paths.
@@ -3657,7 +3657,7 @@ namespace PadForge.ViewModels
         private double _gyroAcceleration;
         // Clamp 5, not 2: a Steam import can carry acceleration up to
         // clamp(0..10) x 0.5 = 5, and the Workshop fold writes it onto this
-        // card. At the old 2 a folded value survived only until the Gyro tab
+        // card. At the old 2 a folded value survived only until the Gyro group
         // first loaded it, then this setter silently degraded it on the
         // round-trip. The card is the contract, so the range covers every
         // importable value.
@@ -4030,7 +4030,7 @@ namespace PadForge.ViewModels
         /// <see cref="SlotAvailableInputs"/>; setter writes both
         /// backing strings atomically. Returning null collapses the
         /// ComboBox to its placeholder. Wired by the Aim Engage
-        /// cross-device picker on the Gyro tab.</summary>
+        /// cross-device picker in the Gyro group.</summary>
         public InputChoice GyroAimEngageSelectedInput
         {
             get
@@ -4133,7 +4133,7 @@ namespace PadForge.ViewModels
 
         // Default false: a user expects a clean passthrough — the
         // virtual controller hands the game the raw sensor reading.
-        // Checking it routes the Gyro tab's tuning (deadzone, sens,
+        // Checking it routes the Gyro group's tuning (deadzone, sens,
         // smoothing, response curve, invert) through the passthrough
         // too, in addition to gyro-as-mapping-source reads.
         private bool _gyroApplyTuningToPassthrough = false;
@@ -4211,7 +4211,7 @@ namespace PadForge.ViewModels
         public int GyroCalibrationGeneration { get; set; }
 
         /// <summary>Raised when the user clicks Calibrate Gyro on the
-        /// Pad page's Gyro tab. MainWindow wires the handler to
+        /// Pad page's Gyro group. MainWindow wires the handler to
         /// InputService.GyroCalibrator.RecalibrateAsync against the
         /// slot's selected mapped device.</summary>
         public event EventHandler GyroCalibrateRequested;
@@ -4232,7 +4232,7 @@ namespace PadForge.ViewModels
         //     default so the user can revert a single tweak without
         //     clobbering the rest of the gyro tuning. Matches the
         //     per-control reset-button convention used across the
-        //     Triggers / AT / Lighting tabs. ───
+        //     Triggers / AT / Lighting groups. ───
         private RelayCommand _resetGyroSpaceCommand;
         public RelayCommand ResetGyroSpaceCommand =>
             _resetGyroSpaceCommand ??= new RelayCommand(() => GyroSpace = "Local");
@@ -4382,7 +4382,7 @@ namespace PadForge.ViewModels
         // ─── Per-card Reset All commands. Each clears every field
         //     inside its card to the canonical default — matches the
         //     "Reset All" button next to each card title used in the
-        //     Triggers, AT, Lighting, and Force Feedback tabs. ───
+        //     Triggers, AT, Lighting, and Force Feedback groups. ───
         /// <summary>The Gyro card's Reset All (the sections pass of #574):
         /// the card's own rows and its More, which are Motion Passthrough and
         /// the sensitivity with its units, inverts and Real-World
@@ -4910,20 +4910,20 @@ namespace PadForge.ViewModels
         public bool AtVibrationToImpulse { get => _atVibrationToImpulse; set => SetProperty(ref _atVibrationToImpulse, value); }
 
         // ── Game mods (#529): what a DSX game mod sets on this slot, on the
-        //    tab it sets it on. Never saved: InputService fills them from
+        //    group it sets it on. Never saved: InputService fills them from
         //    what the mods hold, and empty hides each.
         private string _gameModTriggersLine = string.Empty;
-        /// <summary>The Adaptive Triggers tab's line while a mod holds a
+        /// <summary>The Adaptive Triggers group's line while a mod holds a
         /// trigger program here.</summary>
         public string GameModTriggersLine { get => _gameModTriggersLine; set => SetProperty(ref _gameModTriggersLine, value ?? string.Empty); }
 
         private string _gameModImpulseLine = string.Empty;
-        /// <summary>The Impulse Triggers tab's line for the same programs,
+        /// <summary>The Impulse Triggers group's line for the same programs,
         /// which Translate Adaptive Trigger Vibrations plays there.</summary>
         public string GameModImpulseLine { get => _gameModImpulseLine; set => SetProperty(ref _gameModImpulseLine, value ?? string.Empty); }
 
         private string _gameModLightsLine = string.Empty;
-        /// <summary>The Lighting tab's line while a mod holds a light here.</summary>
+        /// <summary>The Lighting group's line while a mod holds a light here.</summary>
         public string GameModLightsLine { get => _gameModLightsLine; set => SetProperty(ref _gameModLightsLine, value ?? string.Empty); }
 
         // ── Constant Trigger Force (Xbox One+ trigger-motor analogue of
@@ -5066,7 +5066,7 @@ namespace PadForge.ViewModels
 
         private double _rawLeftMotorDisplay;
         /// <summary>The motor command the GAME put on the virtual pad, before
-        /// any device's settings. The feedback tab's raw bar reads this and its
+        /// any device's settings. The Force Feedback group's raw bar reads this and its
         /// output bar reads the selected device's scaled value, so the gap
         /// between them is the user's settings. It used to read the slot meter,
         /// which is already past every device's settings, so both bars showed
@@ -5079,8 +5079,8 @@ namespace PadForge.ViewModels
         private double _deviceLeftMotorDisplay;
         /// <summary>Selected device's own motor activity (its PadSetting's
         /// gain / motor strengths / audio rumble / constant force applied
-        /// to the slot's raw vibration). Drives the FFB-tab motor bar —
-        /// that meter MUST be device-specific so users editing one device's
+        /// to the slot's raw vibration). Drives the Force Feedback group motor bar.
+        /// That meter MUST be device-specific so users editing one device's
         /// FFB settings see what's effectively reaching THAT device, not
         /// the slot-wide max.</summary>
         public double DeviceLeftMotorDisplay { get => _deviceLeftMotorDisplay; set => SetProperty(ref _deviceLeftMotorDisplay, value); }
@@ -5243,7 +5243,7 @@ namespace PadForge.ViewModels
 
         // ── Steering-lock lightbar color source + dedicated palette (#94) ──
         // Mirrors the macro lightbar's three modes (Fixed base color / RandomHue / PaletteStep).
-        // The palette is dedicated to the steering lock — never shared with the Lighting tab or
+        // The palette is dedicated to the steering lock, never shared with the Lighting group or
         // a macro. Per device, so it swaps with SelectedMappedDevice: the CSV setter rebuilds the
         // bound collection on every swap.
         private MacroLightbarColorSource _steeringLockLightbarColorSource = MacroLightbarColorSource.Fixed;
@@ -5531,7 +5531,7 @@ namespace PadForge.ViewModels
             ActiveLayerMask = "Base";
             RebuildLayerTabs(null);
 
-            // Per-device Lighting tab configs live in this PadViewModel's
+            // Per-device Lighting group configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on
             // UserSetting, so DeleteSlot's UserSetting removal does not
             // reach them. Without this clear, deleting a slot and later
@@ -5752,7 +5752,7 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  Dynamic stick/trigger config items for the Sticks and Triggers tabs.
+        //  Dynamic stick/trigger config items for the Sticks and Triggers groups.
         //  These collections drive the ItemsControl-based dynamic UI.
         //  For gamepad presets: 2 sticks, 2 triggers.
         //  For custom Extended: N sticks, M triggers.
@@ -6274,7 +6274,7 @@ namespace PadForge.ViewModels
             });
 
         /// <summary>VC-level Copy From (#112): pull macros from another virtual
-        /// controller into this one, mirroring the Mappings-tab Copy From. MainWindow
+        /// controller into this one, mirroring Buttons' Copy From. MainWindow
         /// shows the VC picker and does the copy.</summary>
         public event EventHandler CopyMacroFromRequested;
         private RelayCommand _copyMacroFromCommand;
@@ -6449,7 +6449,7 @@ namespace PadForge.ViewModels
         private CommunityToolkit.Mvvm.Input.RelayCommand<string> _menuRecordTargetCommand;
 
         // ═══════════════════════════════════════════════
-        //  Audio tab (issue #83) — per-slot sound output for macro sounds
+        //  Audio group (issue #83): per-slot sound output for macro sounds
         // ═══════════════════════════════════════════════
 
         /// <summary>True when the SELECTED assigned device has a 3.5 mm
@@ -6520,7 +6520,7 @@ namespace PadForge.ViewModels
                && !PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath)
                && PadForge.Common.Input.AudioPassthroughService.Ds4HasAudio((ushort)ud.ProdId, false);
 
-        /// <summary>The selected device's sound can be routed, so the Audio tab
+        /// <summary>The selected device's sound can be routed, so the Audio group
         /// shows Output Path: every pad with a headphone jack row, and a
         /// DualShock 4 on USB, whose Headphone Volume Windows keeps (#546).</summary>
         public bool SelectedDeviceHasOutputPath
@@ -6559,7 +6559,7 @@ namespace PadForge.ViewModels
         /// assigned device over its link (DualSense / Edge, a DualShock 4 on a
         /// link that carries audio, and the Wii and haptic-tone devices). It
         /// does not say whether the device has a speaker: a first-model
-        /// DualShock 4 on USB has one and no path from PadForge. The Audio tab
+        /// DualShock 4 on USB has one and no path from PadForge. The Audio group
         /// is per assigned device by convention. This gates the mirror toggle
         /// and the routing notes, and the line that says there is no path
         /// (Pad_Audio_NoSpeakerRoute).</summary>
@@ -6669,7 +6669,7 @@ namespace PadForge.ViewModels
         /// <summary>True when the SELECTED assigned device has a touchpad
         /// AND a haptic lane the swipe-tick feature can drive (Steam
         /// Controller family actuators, or a dispatcher-driven Sony pad).
-        /// Gates the Touchpad tab's Swipe Haptics card (#219) so devices
+        /// Gates the Touchpad group's Swipe Haptics card (#219) so devices
         /// whose touchpads have no haptics (Precision Touchpads, the
         /// overlay, web controllers) don't show a dead toggle.</summary>
         public bool SelectedDeviceHasTouchpadPulse
@@ -7228,9 +7228,9 @@ namespace PadForge.ViewModels
 
         private RelayCommand _addSoundMacroCommand;
         /// <summary>Creates a macro pre-loaded with a Play Sound action and
-        /// jumps to the Macros tab to finish it (trigger + file) — the
-        /// "best of both worlds" flow: the Audio tab is the hub, the Macros
-        /// tab is the editor.</summary>
+        /// jumps to the macro editor to finish it (trigger + file), the
+        /// "best of both worlds" flow: the Audio group is the hub, and the
+        /// macro editor in Macros &amp; Menus does the rest.</summary>
         public RelayCommand AddSoundMacroCommand =>
             _addSoundMacroCommand ??= new RelayCommand(() =>
             {
@@ -7245,10 +7245,10 @@ namespace PadForge.ViewModels
                 macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound, CarriesPressure = macro.CarriesPressure });
                 Macros.Add(macro);
                 SelectedMacro = macro;
-                SelectedConfigTab = 1; // Macros tab
+                SelectedConfigTab = 1; // the macros in Macros & Menus
             });
 
-        /// <summary>Jump to the Macros tab with the clicked sound macro selected.</summary>
+        /// <summary>Jump to the macro editor with the clicked sound macro selected.</summary>
         public void OpenSoundMacro(MacroItem macro)
         {
             if (macro == null) return;
@@ -7435,29 +7435,29 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
-        //  Bass Shakers tab (issue #236, rumble to audio)
+        //  Bass Shakers group (issue #236, rumble to audio)
         // ═══════════════════════════════════════════════
 
         // The config lives on the slot's MappingSet (RumbleAudio), the
         // same lifetime as the mapping rows, macros, and menus. Every
         // setter writes the DTO in place, marks the settings dirty (the
-        // Menus tab's OnMenuEdited shape), and nudges the renderer off
+        // menu editor's OnMenuEdited shape), and nudges the renderer off
         // the UI thread so edits apply while the tone plays.
 
-        /// <summary>Tab-strip index of the Bass Shakers tab (#236).</summary>
+        /// <summary>Tab number of the Bass Shakers group (#236).</summary>
         public const int BassShakersTabIndex = 16;
 
-        /// <summary>Tab-strip index of the Output tab (#270 follow-up:
+        /// <summary>Tab number of the output cards under Buttons' picture (#270 follow-up:
         /// SOCD + Keep Controller Awake moved off the Mappings tab).</summary>
         public const int OutputTabIndex = 17;
 
-        /// <summary>Slot-type gate for the Output tab. SOCD covers the
+        /// <summary>Slot-type gate for the output cards. SOCD covers the
         /// gamepad and raw-surface types, its KBM twin covers
         /// KeyboardMouse, and Keep Awake covers the gamepad types, so
         /// only MIDI and VR have no output-behavior surface at all.</summary>
         public bool OutputTabVisible => _outputType is not (VirtualControllerType.Midi or VirtualControllerType.Vr);
 
-        /// <summary>Slot-type gate for the Bass Shakers tab. The feature
+        /// <summary>Slot-type gate for the Bass Shakers group. The feature
         /// decodes the game feedback the virtual controller RECEIVES,
         /// so every output path with a feedback surface shows it: Xbox
         /// and Sony motor lanes plus the PID force feedback lane on
@@ -7501,7 +7501,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Re-evaluates the Bass Shakers tab gate and evicts a
+        /// <summary>Re-evaluates the Bass Shakers group gate and evicts a
         /// now-hidden selection back to the first tab. Call from every
         /// seam that changes the gate's inputs: the force feedback
         /// checkbox, the Customize toggle, and an uncustomized profile
@@ -7668,7 +7668,7 @@ namespace PadForge.ViewModels
             finally { _refreshingRumbleAudioEndpoints = false; }
         }
 
-        /// <summary>Rebuilds the Bass Shakers tab state from the slot's
+        /// <summary>Rebuilds the Bass Shakers group state from the slot's
         /// live MappingSet. Called beside <see cref="ReloadMenus"/> from
         /// every path that swaps or rewrites the slot set (profile apply,
         /// Workshop import, output-type change, Reset to Defaults, paste,
@@ -8528,7 +8528,7 @@ namespace PadForge.ViewModels
             ReloadRumbleAudio();
         }
 
-        /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>
+        /// <summary>Tab number of the Audio group (issue #83).</summary>
         public const int AudioTabIndex = 12;
 
         private bool _annotationOverlayEnabled = true;
@@ -8853,9 +8853,9 @@ namespace PadForge.ViewModels
                 return;
             }
 
-            // Switch to Controller tab (index 0) for stick axes so the 3D arrow is visible.
-            // The 3D model is only on the Controller tab; if Map All was started from the
-            // Mappings tab, the user wouldn't see the directional arrows otherwise.
+            // Switch to Buttons' picture (tab 0) for stick axes so the 3D arrow is visible.
+            // The 3D model shows only in Buttons' picture. If Map All was started from the
+            // mapping list, the user wouldn't see the directional arrows otherwise.
             if (mapping.HasNegDirection)
                 SelectedConfigTab = 0;
 
@@ -9017,8 +9017,8 @@ namespace PadForge.ViewModels
 
             if (selectedDeviceVibration != null)
             {
-                // SelectedDeviceVibrationStates — the FFB-tab dropdown's
-                // selected device's own scaled output. Feeds the FFB-tab
+                // SelectedDeviceVibrationStates: the Force Feedback group dropdown's
+                // selected device's own scaled output. Feeds the Force Feedback group
                 // motor bar (device-specific by design).
                 DeviceLeftMotorDisplay = selectedDeviceVibration.LeftMotorSpeed / 65535.0;
                 DeviceRightMotorDisplay = selectedDeviceVibration.RightMotorSpeed / 65535.0;

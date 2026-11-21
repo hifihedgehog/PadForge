@@ -141,7 +141,7 @@ namespace PadForge.Tests
     }
 
     /// <summary>
-    /// Write-side canonicalization (CORRECTION 3 + prune): the Touchpad tab
+    /// Write-side canonicalization (CORRECTION 3 + prune): the Touchpad group
     /// pushes settings per DEVICE, so however many legacy per-pad entries a
     /// device carried, a save leaves exactly ONE entry for it stamped index
     /// 0. Runs serialized because it swaps SettingsManager statics.

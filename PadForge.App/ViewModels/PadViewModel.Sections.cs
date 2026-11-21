@@ -183,10 +183,10 @@ namespace PadForge.ViewModels
         public int MacrosPartIndex
             => Math.Max(0, Array.IndexOf(s_sectionTabs[MacrosSection], _lastTabOfSection[MacrosSection]));
 
-        /// <summary>The Macros tab's number.</summary>
+        /// <summary>The tab number of the macros in Macros &amp; Menus.</summary>
         public const int MacrosTabIndex = 1;
 
-        /// <summary>The Menus tab's number.</summary>
+        /// <summary>The tab number of the menus in Macros &amp; Menus.</summary>
         public const int MenusTabIndex = 15;
 
         /// <summary>The macro its list shows as picked: the selected macro

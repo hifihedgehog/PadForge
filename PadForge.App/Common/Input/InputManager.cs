@@ -518,7 +518,7 @@ namespace PadForge.Common.Input
         /// <c>MacroActionType.RumbleStop</c> (clear). Read at the
         /// three FFB injection points (Step 2 ApplyForceFeedback,
         /// InputService's Sony dispatcher rumble pump, and
-        /// ComputeFinalVibrationStates for the FFB-tab meter) and
+        /// ComputeFinalVibrationStates for the Force Feedback group meter) and
         /// combined with raw game-driven rumble via <c>max()</c>.
         /// </summary>
         public MacroRumbleOverride[] MacroRumbleOverrides { get; }
@@ -574,7 +574,7 @@ namespace PadForge.Common.Input
         /// Per-slot key colors played by <c>MacroActionType.SetKeyColors</c>
         /// and ended by <c>ClearKeyColors</c> (#557). Read by the effect
         /// dispatcher when it lights the slot's keyboards, mice and lighting
-        /// rows, over the Lighting tab's key colors. Lives with the engine,
+        /// rows, over the Lighting group's key colors. Lives with the engine,
         /// like <see cref="MacroTriggerEffects"/>.
         /// </summary>
         public MacroKeyColorState[] MacroKeyColors { get; } = InitMacroKeyColors();
@@ -590,8 +590,8 @@ namespace PadForge.Common.Input
         /// Per-slot post-processed vibration. Each motor is the max
         /// across every device mapped to the slot, with each device's
         /// own PadSetting applied (gain/balance/swap, audio rumble,
-        /// constant force). Drives the Controller-preview-tab motor
-        /// meter — that meter answers "is anything rumbling right now?"
+        /// constant force). Drives the motor meter of Buttons'
+        /// picture. That meter answers "is anything rumbling right now?"
         /// so it is intentionally device-filter-independent. The SDL
         /// physical-rumble path and the DS5/DS4 dispatcher each compute
         /// their own per-device scaled rumble from each device's own
@@ -600,10 +600,10 @@ namespace PadForge.Common.Input
         public Vibration[] FinalVibrationStates { get; } = new Vibration[MaxPads];
 
         /// <summary>
-        /// Per-slot vibration scaled by the FFB-tab dropdown's currently-
+        /// Per-slot vibration scaled by the Force Feedback group dropdown's currently-
         /// selected device's PadSetting (gain/balance/swap, audio rumble,
-        /// constant force). Drives the FFB tab's Motor Activity meter —
-        /// that meter MUST be device-specific so users editing one
+        /// constant force). Drives the Force Feedback group's Motor Activity meter.
+        /// That meter MUST be device-specific so users editing one
         /// device's settings see the effective output for THAT device,
         /// not the slot-wide max. Falls back to zero when no device is
         /// selected. Populated in the same loop as
@@ -614,11 +614,11 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Per-slot InstanceGuid of the device the user has selected on
-        /// the slot's FFB tab. Drives (a) the audio-bass detector's
+        /// the slot's Force Feedback group. Drives (a) the audio-bass detector's
         /// per-tick Sensitivity / CutoffHz settings via
         /// <c>ApplyDetectorSettingsForTick</c> and (b) which device's
         /// scaled vibration lands in
-        /// <see cref="SelectedDeviceVibrationStates"/> for the FFB-tab
+        /// <see cref="SelectedDeviceVibrationStates"/> for the Force Feedback group
         /// meter. Updated by <c>InputService.SyncViewModelToPadSettings</c>
         /// at 30 Hz. <see cref="Guid.Empty"/> when no device is selected.
         /// </summary>
@@ -1076,7 +1076,7 @@ namespace PadForge.Common.Input
                 // mouse counters; availability rides the raw axis count
                 // (9 = magnetometer, 11 = mouse + magnetometer), the mouse
                 // precedent. SdlDeviceWrapper.ReadSwitch2Magnetometer reads
-                // them, and the Gyro tab's Compass Yaw option uses them to
+                // them, and the Gyro group's Compass Yaw option uses them to
                 // correct gyro yaw (InputService's compass estimate feeds
                 // SourceCoercion.CompassYawCorrectionProvider).
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MAGNETOMETER, "1");
@@ -2375,7 +2375,7 @@ namespace PadForge.Common.Input
                         // Advance the evaluator's poll-frame gate exactly once
                         // per cycle: SourceCoercion's smoothing/delta caches
                         // step once per poll no matter how many mapping rows
-                        // read the same source (the Gyro tab's smoothing is
+                        // read the same source (the Gyro group's smoothing is
                         // per-device-per-slot, not per-row).
                         Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun, shortPassSeconds);
 
@@ -3486,7 +3486,7 @@ namespace PadForge.Common.Input
         /// time a mapping row resolves a touchpad-gesture source.
         ///
         /// <para>Slot fan-out: the same physical (device, pad) can be
-        /// assigned to multiple slots with different Touchpad-tab
+        /// assigned to multiple slots with different Touchpad group
         /// toggles. Each slot ticks the recognizer with its own
         /// settings, so slot 1's "4-way OFF" truly stops slot 1's
         /// mapping rows from firing even when slot 0 has it ON.

@@ -13,7 +13,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// What the key picture (<see cref="KeyLightsView"/>) draws and edits
     /// (#557): a device's lights, the selected ones, the color each shows,
-    /// and where a click, a drag or a key press goes. The Lighting tab's Key
+    /// and where a click, a drag or a key press goes. The Lighting group's Key
     /// Colors card and the key colors macro actions' picker each give it
     /// their own.
     /// </summary>

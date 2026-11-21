@@ -599,7 +599,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The same two headsets are published as taking steady colors
-        /// only, so their Lighting tab line says a changing color does not reach
+        /// only, so their Lighting group line says a changing color does not reach
         /// them. A family with no hold is not.</summary>
         [Theory]
         [InlineData(0x12EC, 4, true)]

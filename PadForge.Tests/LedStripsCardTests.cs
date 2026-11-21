@@ -7,7 +7,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>The LED counts a device's config holds for its strips (#557):
-    /// their text form, the setting, and the Lighting tab's LED Strips
+    /// their text form, the setting, and the Lighting group's LED Strips
     /// card.</summary>
     public class LedStripsCardTests
     {

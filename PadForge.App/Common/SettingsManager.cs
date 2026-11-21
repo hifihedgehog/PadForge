@@ -184,7 +184,7 @@ namespace PadForge.Common.Input
         /// Per-group ordered list of pad indices in user-facing visual order.
         /// Each pad index appears in exactly one list iff <see cref="SlotCreated"/>[i]
         /// is true; the group it appears in is determined by the slot's
-        /// <c>OutputType</c>. Ordering within a list drives sidebar / dashboard
+        /// <c>OutputType</c>. Ordering within a list drives sidebar / Home
         /// rendering. Cross-group operations are forbidden by design — mutate
         /// only via the helpers in <see cref="SlotOrders"/>. Persisted to
         /// settings.
@@ -221,7 +221,7 @@ namespace PadForge.Common.Input
             /// <summary>Returns the 1-based global slot number for
             /// <paramref name="padIndex"/>, walking type-group order
             /// (Xbox → PlayStation → Nintendo → Extended → KbM → MIDI) so it matches
-            /// the dashboard cards, sidebar, Pad page header, and the
+            /// the Home cards, sidebar, Pad page header, and the
             /// Devices-page assignment badges. Returns 0 when the slot
             /// isn't created or isn't in any group's order list (caller
             /// should treat 0 as "not assigned to a visible global

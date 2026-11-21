@@ -15,7 +15,7 @@ namespace PadForge.Common.Input
     /// slot's <see cref="DeviceSlotConfig"/> PropertyChanged and
     /// re-synthesizes + sends the DS5 effect message to every assigned
     /// physical DualSense whenever the user touches a setting on the
-    /// Adaptive Triggers or Lighting tab.
+    /// Adaptive Triggers or Lighting group.
     ///
     /// <para>Game-driven Feature A passthrough (handled by
     /// <see cref="DualSensePassthroughDispatcher"/>) runs independently
@@ -68,7 +68,7 @@ namespace PadForge.Common.Input
         // over its own radio link (linux hid-ids.h PS4_CONTROLLER,
         // PS4_CONTROLLER_2 and PS4_CONTROLLER_DONGLE). Same VID, different
         // output report shape (Report 0x05 USB / 0x11 BT, no AT / no player
-        // LEDs / no mic LED). Lighting tab base color + audio modes apply
+        // LEDs / no mic LED). Lighting group base color + audio modes apply
         // via the DS4 path. AT and Indicator LED settings are ignored.
         private const ushort Ds4Pid_V1      = 0x05C4;
         private const ushort Ds4Pid_V2      = 0x09CC;
@@ -172,7 +172,7 @@ namespace PadForge.Common.Input
         /// into <see cref="ExternalSubsystemOverrides.RightTriggerEffect"/>
         /// / LeftTriggerEffect for each trigger with a non-zero magnitude,
         /// taking precedence over the user's configured Adaptive Triggers
-        /// tab cfg. The user's cfg resumes the moment the motor returns to
+        /// group cfg. The user's cfg resumes the moment the motor returns to
         /// 0 — override-with-resume semantics, same as
         /// <c>ConstantTriggerForceEvaluator</c>. Matches Special K's pattern
         /// (SpecialK/src/input/hid_reports/playstation.cpp:2995-3030).
@@ -194,7 +194,7 @@ namespace PadForge.Common.Input
         public static Func<int, Common.Input.MacroTriggerEffectState> MacroTriggerEffectsProvider { get; set; }
 
         /// <summary>A slot's key colors played by macros (#557), or null.
-        /// Painted over the Lighting tab's key colors.</summary>
+        /// Painted over the Lighting group's key colors.</summary>
         public static Func<int, Common.Input.MacroKeyColorState> MacroKeyColorsProvider { get; set; }
 
         // Animated-lightbar polling cadence — 30Hz is enough to feel
@@ -1331,7 +1331,7 @@ namespace PadForge.Common.Input
         ///
         /// <para>Without this a DS5 powered on over BT sits on its firmware
         /// default blue and ignores every color PadForge writes, whatever
-        /// the Lighting tab says, until an app restart happens to re-open
+        /// the Lighting group says, until an app restart happens to re-open
         /// the device (#334, second report). The standing FadeOut that
         /// d4c011f5 removed had been delivering this release by accident on
         /// every tick since the Lighting tab shipped.</para></summary>
@@ -2243,7 +2243,7 @@ namespace PadForge.Common.Input
                 inst.QueueDispatch();
         }
 
-        /// <summary>Audio-tab routing or volume changed for the slot — push a
+        /// <summary>Audio group routing or volume changed for the slot: push a
         /// dispatch immediately so the speaker output path / volume bytes land
         /// now instead of riding the next lightbar/battery dispatch (which can
         /// be seconds away on an idle slot).</summary>
@@ -2267,7 +2267,7 @@ namespace PadForge.Common.Input
                 || cfg.InputReactiveMode != InputReactiveMode.Off);
 
         /// <summary>Whether a device's config drives what this slot shows. A
-        /// mouse or keyboard whose Lighting tab leaves its lighting to its own
+        /// mouse or keyboard whose Lighting group leaves its lighting to its own
         /// software shows nothing from here (#494), so its mode keeps no timer
         /// running. A vendor row or a unit row has no such switch and is
         /// driven whenever a path lights it
@@ -2840,7 +2840,7 @@ namespace PadForge.Common.Input
         /// (<see cref="Common.Input.Peripherals.IOutputOnlyRow"/>), and a
         /// mouse or keyboard waits for its own.</para>
         ///
-        /// <para>The color is the Lighting tab's mode through the core every
+        /// <para>The color is the Lighting group's mode through the core every
         /// lit device shares, under the game's lightbar the way a DualSense
         /// takes it (<see cref="Common.Input.Peripherals.PeripheralLightingColor"/>).
         /// Player Number shows this slot's own color, since each slot holds its
@@ -3545,7 +3545,7 @@ namespace PadForge.Common.Input
                     // forwarded ANY effect payload, and shipped as #334:
                     // a host driving adaptive triggers or rumble and never
                     // touching the lightbar still took it away from the
-                    // Lighting tab for the full 15 s idle window, so the
+                    // Lighting group for the full 15 s idle window, so the
                     // pad sat on its firmware default blue and no color
                     // setting did anything. IsPassthroughTarget only asks
                     // that an online DualSense be mapped to the slot, so
@@ -3906,7 +3906,7 @@ namespace PadForge.Common.Input
                         // Macro-sound speaker routing (issue #83). The DualSense
                         // firmware sends its USB program audio to the headphone
                         // path by default and keeps the internal speaker silent.
-                        // While this slot's Audio tab targets the controller's
+                        // While this slot's Audio group targets the controller's
                         // own endpoint, assert the speaker output path + volume
                         // in the same output report the lightbar rides
                         // (dualsensectl-verified: valid_flag0 0x20 speaker-volume

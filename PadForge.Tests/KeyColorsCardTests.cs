@@ -13,7 +13,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Issue #557: the Lighting tab's Key Colors card. Where a color goes
+    /// Issue #557: the Lighting group's Key Colors card. Where a color goes
     /// (a key by usage, a whole group by name, the rest by light), how a
     /// shift layer shows the Base layer under its own colors, the picker
     /// and the selection, and the picture's placement and key lookup.
@@ -139,7 +139,7 @@ namespace PadForge.Tests
             card.SelectedLayerMask = "Shift1";
             var choices = card.BackgroundChoices;
             Assert.Equal(KeyBackgroundRule.BaseLayer, choices[0].Rule);
-            // The choice names the Base layer the way the Mappings tab does.
+            // The choice names the Base layer the way the mapping list does.
             Assert.Contains("Normal", choices[0].Label);
             Assert.Equal(4, choices.Count);
         }

@@ -16,7 +16,7 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// Mice, keyboards and the vendor rows take a virtual controller's
-    /// lighting through their own Lighting tabs (#494): one claim per
+    /// lighting through their own Lighting groups (#494): one claim per
     /// (device, slot), the smallest displayed player number ruling a device
     /// on two controllers or a path several devices share, the game's
     /// lightbar captured per controller behind the trust gate, and the
@@ -708,7 +708,7 @@ namespace PadForge.Tests
             Assert.Equal(s.Pad_Lighting_RouteIcueSdkOff, PeripheralRouteText.Lighting(Device(vendor, 0x1B1C), 0));
         }
 
-        /// <summary>The Force Feedback tab reads a GG that runs and does not
+        /// <summary>The Force Feedback group reads a GG that runs and does not
         /// answer the same way.</summary>
         [Fact]
         public void TheRumbleLine_NamesAGgThatRunsAndDoesNotAnswer()
@@ -1014,7 +1014,7 @@ namespace PadForge.Tests
         // ─────────────────────────────────────────────
 
         /// <summary>A lit mouse on a virtual controller takes that slot's
-        /// color only while its Lighting tab controls it, ranked by the slot's
+        /// color only while its Lighting group controls it, ranked by the slot's
         /// displayed number, under the game's lightbar while the game writes
         /// one. It lets go when it leaves the slot, and the link pass drops the
         /// slot's claims once its dispatcher is gone. A vendor row needs no
@@ -2616,7 +2616,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The hold has a reset of its own beside its picker, which
-        /// touches nothing else, and Reset All on the Lighting tab leaves
+        /// touches nothing else, and Reset All in the Lighting group leaves
         /// it alone, as it leaves the switch.</summary>
         [Fact]
         public void TheLightingHoldHasAResetOfItsOwn_AndResetAllLeavesItAlone()

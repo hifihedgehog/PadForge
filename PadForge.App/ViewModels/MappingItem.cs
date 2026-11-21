@@ -817,7 +817,7 @@ namespace PadForge.ViewModels
             // The Kind pickers' option labels are localized. The list getter
             // is culture-aware (LCID-keyed cache), but nothing re-read it on
             // a live language switch, so the dropdowns kept the old language
-            // (owner report 2026-07-16, found alongside the Menus-tab twin).
+            // (owner report 2026-07-16, found alongside the Menus tab twin).
             OnPropertyChanged(nameof(PrimaryKindOptions));
             PrimaryKindSource?.RaiseModeChoices();
             foreach (var src in ExtraSources)
@@ -2221,7 +2221,7 @@ namespace PadForge.ViewModels
         // Cached once per culture so the WPF ComboBox binding doesn't
         // reallocate seven CombineModeOption objects + run fourteen
         // ResourceManager lookups every time it re-reads the property.
-        // Without the cache, hovering / clicking inside the Mappings tab
+        // Without the cache, hovering / clicking inside the mapping list
         // burned visible CPU because virtualization + per-row binding
         // re-evaluation kept refetching this list.
         // The stamp is the culture's name, not its LCID. Windows gives a

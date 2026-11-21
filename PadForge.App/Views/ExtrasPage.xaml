@@ -1938,7 +1938,7 @@
                  outline, rotation and edges. Each crosshair has its own
                  switch, so the page has none: Add Crosshair stands in its
                  place, as on the Screen Overlay page. The Display box lists
-                 the Lighting tab's displays (CrosshairItem.DisplayChoices),
+                 the Lighting group's displays (CrosshairItem.DisplayChoices),
                  and the page brings them up to date once a second. -->
             <StackPanel x:Name="CrosshairPage" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal">

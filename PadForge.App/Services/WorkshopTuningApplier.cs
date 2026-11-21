@@ -316,7 +316,7 @@ namespace PadForge.Services
             if (!string.IsNullOrEmpty(set.WorkshopGyroDeadZone))
             {
                 // Over the default only, as the rumble: a dead zone the user
-                // set on the Gyro tab stays.
+                // set in the Gyro group stays.
                 if (string.IsNullOrEmpty(ps.GyroDeadZoneDegPerSec) || ps.GyroDeadZoneDegPerSec == DefaultGyroDeadZone)
                 {
                     ps.GyroDeadZoneDegPerSec = set.WorkshopGyroDeadZone;
@@ -327,7 +327,7 @@ namespace PadForge.Services
             if (!string.IsNullOrEmpty(set.WorkshopGyroSpace))
             {
                 // A Steam import's Player or World Space, over the default
-                // Local only: a space the user chose on the Gyro tab stays.
+                // Local only: a space the user chose in the Gyro group stays.
                 if (string.IsNullOrEmpty(ps.GyroSpace) || ps.GyroSpace == "Local")
                 {
                     ps.GyroSpace = set.WorkshopGyroSpace;
@@ -505,8 +505,8 @@ namespace PadForge.Services
         }
 
         /// <summary>The (device, pad) entry, created at defaults if absent.
-        /// Same create-or-find shape the Touchpad tab's own push uses, so the
-        /// tab and this fold cannot disagree about which entry owns a pad.</summary>
+        /// Same create-or-find shape the Touchpad group's own push uses, so the
+        /// group and this fold cannot disagree about which entry owns a pad.</summary>
         private static PadForge.Engine.Touchpad.TouchpadSettingsEntry FindOrAddPadEntry(
             List<PadForge.Engine.Touchpad.TouchpadSettingsEntry> list,
             string deviceGuid, int pad, ref bool listGrew)

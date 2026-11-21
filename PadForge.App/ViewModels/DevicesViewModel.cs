@@ -695,7 +695,7 @@ namespace PadForge.ViewModels
 
         private string _gameTelemetryStatus = string.Empty;
         /// <summary>What the listener hears, for the details pane (issue
-        /// #531): the Dashboard card's line. Written by InputService's panel
+        /// #531): the line Extras and Home show. Written by InputService's panel
         /// lines, which clear it once a stopped engine retires the row.</summary>
         public string GameTelemetryStatus
         {
@@ -721,7 +721,7 @@ namespace PadForge.ViewModels
 
         private string _twitchChatStatus = string.Empty;
         /// <summary>The channel the row reads, or why it reads nothing, the
-        /// Dashboard card's line. Written by InputService's panel lines,
+        /// line Extras and Home show. Written by InputService's panel lines,
         /// which clear it once a stopped engine retires the row.</summary>
         public string TwitchChatStatus
         {
@@ -967,11 +967,11 @@ namespace PadForge.ViewModels
         public double GyroAuxY { get => _gyroAuxY; set => SetProperty(ref _gyroAuxY, value); }
         public double GyroAuxZ { get => _gyroAuxZ; set => SetProperty(ref _gyroAuxZ, value); }
 
-        // v3.3 — gyro UI moved to the Pad page Gyro tab. Calibration
+        // v3.3: gyro UI moved to the pad page's Gyro group. Calibration
         // label, live rate readouts, sensitivity / deadzone / smoothing
         // / acceleration / curve / units sliders all live on PadViewModel
         // now (per-(device, slot) tuning matches FFB / Adaptive Triggers
-        // / Lighting tab pattern). DevicesViewModel intentionally has
+        // / Lighting group pattern). DevicesViewModel intentionally has
         // no gyro UI state.
 
         /// <summary>Tracks which device's collections are currently populated.</summary>
@@ -1289,7 +1289,7 @@ namespace PadForge.ViewModels
         {
             // Walk SlotOrders in type-group order (Xbox → PlayStation →
             // Extended → KbM → MIDI) so the assignment buttons match the
-            // dashboard cards' visual order. Iterating raw padIndex here
+            // Home cards' visual order. Iterating raw padIndex here
             // would put a creation-order-first PlayStation before an
             // Xbox added later, even though the card layout shows Xbox
             // at #1. The walk's group type rides along so the pill can
@@ -1387,7 +1387,7 @@ namespace PadForge.ViewModels
         /// recompute their numbers within each type from the current SlotOrders. Call
         /// this any time the type-group order changes (slot create / delete /
         /// type change / swap / move). Without it, the badge numbers drift
-        /// out of sync with the dashboard cards' visual ordering even
+        /// out of sync with the Home cards' visual ordering even
         /// though the assignments themselves haven't changed.
         /// </summary>
         public void RefreshAllSlotBadges()

@@ -320,6 +320,39 @@ namespace PadForge.Tests
             Assert.Equal(new byte[] { 0x10, 0x11, 0x12 }, rear[14].Skip(9 + 6 * 3).Take(3).ToArray());
         }
 
+        /// <summary>G-Helper 9237aae, the Scar 18 2026's lightbar: on a model whose name holds
+        /// G835, a per-key picture sends BC 02 01 after its frames of keys, with the colors
+        /// of LEDs 176, 176, 174, 173, 173, 172, 171, 171, 170, 169, 169 and 177 from byte 9
+        /// (Aura.cs:737 at aa0037c5), and then the frame past the keys.</summary>
+        [Fact]
+        public void AScar18PerKeyPicture_SendsItsLightbarFrame()
+        {
+            var io = Answering(Answered(3));
+            var session = AsusLaptopAura.Begin(io, _ => { }, 0x19B6, new AsusLaptopMachine("ROG Strix SCAR 18 G835LX_G835LX", "G835LX"));
+            var lights = session.Map.Lights;
+            int before = Sets(io).Count;
+            var colors = lights.Select(l => l.Address is >= 169 and <= 177 ? 0x010000 * (l.Address - 160) : 0).ToList();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(io, _ => { }, lights, colors));
+            var sent = Sets(io).Skip(before).ToList();
+            Assert.Equal(13, sent.Count);
+            var expected = "5D BC 02 01 00 00 00 00 00 " + string.Join(" ",
+                new[] { 176, 176, 174, 173, 173, 172, 171, 171, 170, 169, 169, 177 }.Select(id =>
+                    lights.Any(l => l.Address == id) ? $"{id - 160:X2} 00 00" : "00 00 00"));
+            Starts(expected, sent[11], 64);
+            Assert.Equal("5D BC 00 01 04", Hex(sent[12].Take(5).ToArray()));
+            // Each LED of the list by its own color, whatever the board's layout holds.
+            var every = Enumerable.Range(168, 10).Select(a => new LightInfo(a, LightKind.Edge, 0, LightKeySource.None)).ToArray();
+            var own = AsusLaptopAura.Scar18LightbarFrame(every, every.Select(l => 0x000100 * l.Address).ToList());
+            Starts("5D BC 02 01 00 00 00 00 00 00 B0 00 00 B0 00 00 AE 00 00 AD 00 00 AD 00 00 AC 00 00 AB 00 00 AB 00 00 AA 00 00 A9 00 00 A9 00 00 B1 00", own, 64);
+            // Any other model sends no such frame.
+            var other = Answering(Answered(3));
+            var plain = AsusLaptopAura.Begin(other, _ => { }, 0x19B6, new AsusLaptopMachine("ROG Strix SCAR 18 G834JY", "G834JY"));
+            before = Sets(other).Count;
+            plain.Paint(other, _ => { }, plain.Map.Lights, plain.Map.Lights.Select(_ => 0).ToList());
+            Assert.Equal(12, Sets(other).Count - before);
+            Assert.DoesNotContain(Sets(other), f => f[2] == 0x02);
+        }
+
         /// <summary>A keyboard that says per-key, ISO, with a rear strip.</summary>
         [Fact]
         public void APerKeyKeyboard_OpensWithBc00_AndTakesItsLayout()

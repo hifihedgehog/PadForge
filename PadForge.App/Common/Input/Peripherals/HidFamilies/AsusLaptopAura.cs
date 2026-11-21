@@ -34,6 +34,9 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
         /// <summary>IsZ13 (AppConfig.cs:590-593).</summary>
         public bool Z13 => Has("Z13");
 
+        /// <summary>The Scar 18 2026, ContainsModel("G835") (Aura.cs:737 at aa0037c5).</summary>
+        public bool Scar18Lightbar => Has("G835");
+
         /// <summary>IsNoDirectRGB, with IsSlash and IsSlashLong (AppConfig.cs:570-573 and 495-503).</summary>
         public bool NoDirectColor => Has("GA503", "G533Q", "GU502", "GA403", "GU605", "GA605", "GA405", "GU405", "GU606", "GX651");
 
@@ -364,6 +367,27 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return frames;
         }
 
+        /// <summary>The LEDs whose colors the Scar 18 2026's lightbar frame carries, in its
+        /// order (Aura.cs:737 at aa0037c5, G-Helper 9237aae).</summary>
+        internal static readonly int[] Scar18LightbarLeds = { 176, 176, 174, 173, 173, 172, 171, 171, 170, 169, 169, 177 };
+
+        /// <summary>The Scar 18 2026's lightbar frame, which G-Helper sends after a per-key
+        /// picture's frames of keys: BC 02 01, five zeros, then the colors of
+        /// <see cref="Scar18LightbarLeds"/> (Aura.cs:737).</summary>
+        internal static byte[] Scar18LightbarFrame(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
+        {
+            var leds = new int[PerKeyLeds];
+            int n = Math.Min(lights?.Count ?? 0, colors?.Count ?? 0);
+            for (int i = 0; i < n; i++)
+            {
+                int at = lights[i].Address;
+                if (at >= 0 && at < PerKeyLeds) leds[at] = colors[i];
+            }
+            var frame = Frame(Report, AsusAuraCoreLighting.Direct, 0x02, 0x01);
+            for (int k = 0; k < Scar18LightbarLeds.Length; k++) AsusAuraUsbLighting.Put(frame, 9 + k * 3, leds[Scar18LightbarLeds[k]]);
+            return frame;
+        }
+
         /// <summary>The rear strip's frames (Aura.cs:757-782).</summary>
         internal static List<byte[]> RearStripFrames(IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
         {
@@ -385,9 +409,11 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             return frames;
         }
 
-        /// <summary>The frames of a picture.</summary>
+        /// <summary>The frames of a picture. On a Scar 18 2026 the lightbar's frame goes
+        /// between the frames of keys and the one past them, where G-Helper sends it
+        /// (Aura.cs:723-763 at aa0037c5).</summary>
         internal static List<byte[]> Frames(Kind kind, IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors,
-            bool white, bool stored, bool rearStrip)
+            bool white, bool stored, bool rearStrip, bool scar18Lightbar = false)
         {
             int first = colors != null && colors.Count > 0 ? colors[0] : 0;
             switch (kind)
@@ -400,6 +426,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
                     return StaticFrames(first, white, stored);
                 default:
                     var frames = AsusAuraCoreLighting.LaptopFrames(lights, colors, PerKeyLeds);
+                    if (scar18Lightbar) frames.Insert(frames.Count - 1, Scar18LightbarFrame(lights, colors));
                     if (rearStrip) frames.AddRange(RearStripFrames(lights, colors));
                     return frames;
             }
@@ -433,22 +460,23 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             for (int i = 0; i < opening.Count; i++)
                 if (!(machine.Z13 && i == 0 ? SendOutputFirst(io, opening[i]) : Send(io, opening[i]))) return null;
             if (kind != Kind.Static) wait?.Invoke(50);
-            return new Session(map, kind, WhiteOnly(answer, machine), false, rearStrip);
+            return new Session(map, kind, WhiteOnly(answer, machine), false, rearStrip, kind == Kind.PerKey && machine.Scar18Lightbar);
         }
 
         internal sealed class Session : HidLightingSession
         {
             private readonly LightMap _map;
             private readonly Kind _kind;
-            private readonly bool _white, _stored, _rearStrip;
+            private readonly bool _white, _stored, _rearStrip, _scar18Lightbar;
 
-            public Session(LightMap map, Kind kind, bool white, bool stored, bool rearStrip)
+            public Session(LightMap map, Kind kind, bool white, bool stored, bool rearStrip, bool scar18Lightbar = false)
             {
                 _map = map;
                 _kind = kind;
                 _white = white;
                 _stored = stored;
                 _rearStrip = rearStrip;
+                _scar18Lightbar = scar18Lightbar;
             }
 
             public override bool Feature => true;
@@ -465,7 +493,7 @@ namespace PadForge.Common.Input.Peripherals.HidFamilies
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)
             {
-                foreach (var frame in Frames(_kind, lights, colors, _white, _stored, _rearStrip))
+                foreach (var frame in Frames(_kind, lights, colors, _white, _stored, _rearStrip, _scar18Lightbar))
                     if (!(_stored ? SendOutputFirst(io, frame) : Send(io, frame))) return HidLightingPaint.Failed;
                 return HidLightingPaint.Sent;
             }

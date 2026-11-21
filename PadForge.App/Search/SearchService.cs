@@ -199,6 +199,15 @@ namespace PadForge.Search
             // same scope, counted over every entry, shown or not: the Nth
             // such entry is the Nth such element of the scope.
             var seen = new Dictionary<(SearchPage, string, SearchLabelSource, string), int>();
+            // A row's gates, each read once: the options of a row share them.
+            List<MappingItem> rows = null;
+            var passes = new Dictionary<(object, SearchGate), bool>();
+            bool RowPasses(object item, SearchGate gate)
+            {
+                if (!passes.TryGetValue((item, gate), out bool pass))
+                    passes[(item, gate)] = pass = BindingProbe.Passes(item, gate, k => Resource(SearchPage.Pad, k));
+                return pass;
+            }
 
             void Add(SearchEntry entry, object item, DependencyObject label)
             {
@@ -252,7 +261,8 @@ namespace PadForge.Search
                     {
                         // The controller's rows, not the table's: the table
                         // under the picture holds only the picked control's.
-                        if (pad.RowsOfSlot.Any(item => entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => Resource(entry.Page, k)))))
+                        rows ??= pad.RowsOfSlot.ToList();
+                        if (rows.Any(item => entry.ItemGates.All(g => RowPasses(item, g))))
                             Add(entry, null, null);
                         continue;
                     }

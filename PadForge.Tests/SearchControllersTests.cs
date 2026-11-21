@@ -80,6 +80,9 @@ namespace PadForge.Tests
                         var clock = Stopwatch.StartNew();
                         service.RefreshAvailability();
                         lines.Add("availability read in " + clock.ElapsedMilliseconds + " ms");
+                        clock.Restart();
+                        _ = new SearchViewModel(service.Query) { Query = "deadzone" };
+                        lines.Add("first query ran in " + clock.ElapsedMilliseconds + " ms");
                         body(main, page, service, lines);
                     }
                     finally
@@ -336,6 +339,7 @@ namespace PadForge.Tests
                 {
                     var clock = Stopwatch.StartNew();
                     service.RefreshAvailability();
+                    _ = new SearchViewModel(service.Query) { Query = "deadzone" };
                     lines.Add("warm read " + k + ": " + clock.ElapsedMilliseconds + " ms");
                 }
                 Assert.Contains(Search(service, "deadzone", lines).Results, r => ReferenceEquals(r.Pad, main.Pads[XboxPad]));

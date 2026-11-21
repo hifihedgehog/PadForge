@@ -63,7 +63,7 @@ PadForge.sln
 │   │       ├── InputManager.Step4.CombineOutputStates.cs  Multi-device merge per slot
 │   │       ├── InputManager.Step4b.EvaluateMacros.cs    Macro evaluation (gamepad + extended)
 │   │       ├── InputManager.Step5.VirtualDevices.cs     Virtual controller output (HIDMaestro / KBM / MIDI)
-│   │       ├── InputManager.Step6.RetrieveOutputStates.cs  Copy combined output for UI
+│   │       ├── InputManager.Step6.PublishSteeringAngles.cs  Steering angle frame per slot
 │   │       ├── HMaestroVirtualController.cs   HIDMaestro VC for Xbox / PlayStation / Nintendo / Extended types
 │   │       ├── KeyboardMouseVirtualController.cs  Virtual keyboard + mouse output
 │   │       ├── MidiVirtualController.cs       Virtual MIDI device output
@@ -306,7 +306,7 @@ None of the ARM64 path has run on ARM64 hardware. The bench is x64.
 4. **CombineOutputStates**: Merge multiple devices per slot (OR/MAX/largest-magnitude)
    - **4b. EvaluateMacros**: Process macro triggers and actions (gamepad + extended paths)
 5. **VirtualDevices**: Submit state to HIDMaestro via `HMController.SubmitState` / `SubmitRawReport`. KBM and MIDI VCs emit through their respective backends
-6. **RetrieveOutputStates**: Copy combined output for UI display
+6. **PublishSteeringAngles**: Publish each slot's steering angle frame for the steering rumble and its page
 
 ### Virtual Controller Types
 All gamepad-style virtuals run on HIDMaestro via `HMaestroVirtualController.cs`:

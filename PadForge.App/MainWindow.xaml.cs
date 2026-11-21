@@ -9070,13 +9070,11 @@ namespace PadForge
             {
                 bool installed = DriverInstaller.TryGetHidHideStatus(out string version);
                 _viewModel.Settings.IsHidHideInstalled = installed;
-                _viewModel.Dashboard.IsHidHideInstalled = installed;
                 _viewModel.Settings.HidHideVersion = version ?? string.Empty;
             }
             catch
             {
                 _viewModel.Settings.IsHidHideInstalled = false;
-                _viewModel.Dashboard.IsHidHideInstalled = false;
             }
         }
 
@@ -9095,7 +9093,6 @@ namespace PadForge
 
         private void RefreshMidiServicesStatus()
         {
-            bool midiAvailable = false;
             try
             {
                 // One uninstall-key walk per refresh. Whether the older
@@ -9135,24 +9132,19 @@ namespace PadForge
                     Common.Input.MidiApiSelection.CanOfferRuntimeInstall(runtimeInstalled);
                 _viewModel.Settings.MidiApiNotStarted = notStarted;
                 _viewModel.Settings.ActiveMidiApi = api;
-                midiAvailable = api != Common.Input.MidiApiKind.None;
-                _viewModel.Dashboard.IsMidiAvailable = midiAvailable;
                 SetPadsLegacyMidi(api == Common.Input.MidiApiKind.Legacy);
             }
             catch
             {
-                midiAvailable = false;
                 _viewModel.Settings.MidiApiNotStarted = false;
                 _viewModel.Settings.CanInstallMidiRuntime = false;
                 _viewModel.Settings.ActiveMidiApi = Common.Input.MidiApiKind.None;
-                _viewModel.Dashboard.IsMidiAvailable = false;
                 SetPadsLegacyMidi(false);
             }
 
             // SteamVR presence rides the same refresh cadence (VR slot
             // type gate, issue #49). The probe caches internally.
             bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
-            _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
             _viewModel.Settings.IsSteamVrInstalled = steamVr;
             // Repair an install made before PadForge started containing these
             // paths, so its config and log stop living beside the drive root.

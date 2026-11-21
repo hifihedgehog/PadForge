@@ -243,50 +243,6 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
-        //  HidHide status
-        // ─────────────────────────────────────────────
-
-        private bool _isHidHideInstalled;
-
-        /// <summary>Whether HidHide is installed. The Dashboard's driver
-        /// status strip is gone (the HidHide row of Settings' Drivers card carries it), so
-        /// this flag has no display text of its own here.</summary>
-        public bool IsHidHideInstalled
-        {
-            get => _isHidHideInstalled;
-            set => SetProperty(ref _isHidHideInstalled, value);
-        }
-
-        // ─────────────────────────────────────────────
-        //  Windows MIDI Services status
-        // ─────────────────────────────────────────────
-
-        private bool _isMidiAvailable;
-
-        /// <summary>Whether a MIDI API is available: the in-box API, the
-        /// App SDK runtime where that is installed, else the legacy API. Gates
-        /// the MIDI slot type button in the code-behind. The status text
-        /// lives on the Settings card.</summary>
-        public bool IsMidiAvailable
-        {
-            get => _isMidiAvailable;
-            set => SetProperty(ref _isMidiAvailable, value);
-        }
-
-        private bool _isSteamVrInstalled;
-
-        /// <summary>Whether SteamVR is installed (gates the VR slot type,
-        /// issue #49). Kept current by MainWindow's periodic status refresh
-        /// alongside the MIDI availability flag. The tiered SteamVR status row
-        /// (#287) lives on the Settings card, which reads the live statics
-        /// itself.</summary>
-        public bool IsSteamVrInstalled
-        {
-            get => _isSteamVrInstalled;
-            set => SetProperty(ref _isSteamVrInstalled, value);
-        }
-
-        // ─────────────────────────────────────────────
         //  DSU Motion Server
         // ─────────────────────────────────────────────
 

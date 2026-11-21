@@ -452,21 +452,6 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Retrieved output states copied from Step 4 for UI display in Step 6.
-        /// </summary>
-        public Gamepad[] RetrievedOutputStates { get; } = new Gamepad[MaxPads];
-
-        /// <summary>
-        /// Retrieved KBM raw states for UI display (keyboard key + mouse state preview).
-        /// </summary>
-        public KbmRawState[] RetrievedKbmRawStates { get; } = new KbmRawState[MaxPads];
-
-        /// <summary>
-        /// Retrieved touchpad states for UI display.
-        /// </summary>
-        public TouchpadState[] RetrievedTouchpadStates { get; } = new TouchpadState[MaxPads];
-
-        /// <summary>
         /// Pending profile switch ID queued by global macro evaluation.
         /// "\0" = no pending switch. null = switch to default profile.
         /// Consumed by InputService on the UI thread.
@@ -2435,7 +2420,7 @@ namespace PadForge.Common.Input
                             UpdateVirtualDevices();
                             _pollLoad.Mark(PollStep.Virtual);
                         }
-                        RetrieveOutputStates();
+                        PublishSteeringAngles();
                         UpdateDs3PlayerNumber();
                         UpdateMovePlayerNumber();
                         // #236: publish the per-slot inbound-feedback packs

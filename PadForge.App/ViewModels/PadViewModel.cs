@@ -8967,7 +8967,7 @@ namespace PadForge.ViewModels
             || (_outputType == VirtualControllerType.Extended
                 && MacroButtonNames.IsValveLetteredProfile(ProfileId));
 
-        public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration, Engine.Vibration selectedDeviceVibration = null)
+        public void UpdateFromEngineState(Gamepad gp, Engine.Vibration selectedDeviceVibration = null)
         {
             // A slot whose preview rides the raw surface has its
             // gamepad-shaped properties owned by UpdateNintendoPreviewFromRaw.

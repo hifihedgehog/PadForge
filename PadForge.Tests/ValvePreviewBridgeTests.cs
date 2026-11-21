@@ -42,7 +42,7 @@ namespace PadForge.Tests
         /// engine sends thirty times a second whether or not the player is
         /// touching anything.</summary>
         private static void IdleGamepadTick(PadViewModel vm)
-            => vm.UpdateFromEngineState(new Gamepad(), new Vibration());
+            => vm.UpdateFromEngineState(new Gamepad());
 
         /// <summary>The 2015's d-pad IS its left trackpad, reported as a hat.
         /// The wedge cut out of that pad lights off DPadUp, so a stomped
@@ -125,7 +125,7 @@ namespace PadForge.Tests
             var vm = Slot("xbox360");
             var gp = new Gamepad();
             gp.Buttons = Gamepad.A;
-            vm.UpdateFromEngineState(gp, new Vibration());
+            vm.UpdateFromEngineState(gp);
             Assert.True(vm.ButtonA);
         }
     }

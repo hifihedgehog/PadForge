@@ -3130,17 +3130,14 @@ namespace PadForge.Services
                 try
                 {
                 var gp = _inputManager.CombinedOutputStates[i];
-                // Two meter feeds:
-                //   FinalVibrationStates           → Buttons' picture bar (slot max)
-                //   SelectedDeviceVibrationStates  → Force Feedback group bar (selected dev)
-                var vibration = _inputManager.FinalVibrationStates[i];
+                // The Rumble section's Motor Activity bars: the selected
+                // device's vibration, after its settings.
                 var selectedDeviceVibration = _inputManager.SelectedDeviceVibrationStates[i];
 
-                padVm.UpdateFromEngineState(gp, vibration, selectedDeviceVibration);
-                // Third feed: the slot's vibration state is the command as it
-                // arrived from the game, before each device's settings are
-                // applied. The Force Feedback group's raw bar needs that one, not the
-                // slot maximum the picture in Buttons uses. Haptics the game plays
+                padVm.UpdateFromEngineState(gp, selectedDeviceVibration);
+                // And the raw bars: the slot's vibration state is the command
+                // as it arrived from the game, before each device's settings
+                // are applied. Haptics the game plays
                 // as audio on a DualSense persona count as its command too
                 // (discussion #522).
                 var rawVibration = _inputManager.VibrationStates[i];

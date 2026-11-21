@@ -332,7 +332,7 @@ public class SteeringAngleRumbleTests
             case "background": rig.Manager.SuspendWhenBackground = true; rig.Manager.HostIsForeground = false; break;
             case "raw": rig.Manager.SlotControllerTypes[0] = VirtualControllerType.Extended; break;
         }
-        Invoke(rig.Manager, "RetrieveOutputStates");
+        Invoke(rig.Manager, "PublishSteeringAngles");
         Assert.Equal(0, Field<long[]>(rig.Manager, "_steeringAngleFrames")[0]);
         Assert.Equal(0, rig.Manager.ReadSteeringAngleFrame(0));
     }
@@ -376,7 +376,7 @@ public class SteeringAngleRumbleTests
         rig.Assignment.OutputState = new Gamepad { ThumbLX = -8000 };
         SettingsManager.UserSettings.Items[1].OutputState = new Gamepad { ThumbLX = 24000 };
         Invoke(rig.Manager, "CombineOutputStates");
-        Invoke(rig.Manager, "RetrieveOutputStates");
+        Invoke(rig.Manager, "PublishSteeringAngles");
         rig.Feedback();
         Assert.Equal(0, rig.Output.Sent.Last().Item1);
         Assert.InRange(rig.Output.Sent.Last().Item2, (ushort)47999, (ushort)48002);
@@ -639,7 +639,7 @@ public class SteeringAngleRumbleTests
         public void Publish(short axis)
         {
             Manager.CombinedOutputStates[0] = new Gamepad { ThumbLX = axis };
-            Invoke(Manager, "RetrieveOutputStates");
+            Invoke(Manager, "PublishSteeringAngles");
         }
         public void Feedback() => Invoke(Manager, "ApplyForceFeedback", Device);
         public void Dispose()

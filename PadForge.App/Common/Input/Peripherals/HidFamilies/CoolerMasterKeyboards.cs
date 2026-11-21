@@ -79,6 +79,7 @@ namespace PadForge.Common.Input.Peripherals
         internal const ushort Sk622W = 0x014B;
         internal const ushort Sk630 = 0x0089;
         internal const ushort Sk650 = 0x008D;
+        internal const ushort Ck721 = 0x016D;
 
         /// <summary>The SK650's other product ID, which SignalRGB's plugin lists
         /// with the first (CoolerMaster_SK650_Keyboard.js:3). OpenRGB has it

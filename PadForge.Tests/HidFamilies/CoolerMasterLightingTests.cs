@@ -103,12 +103,23 @@ namespace PadForge.Tests
         public void EveryRegistration_IsMatchedByOpenRgbsRules()
         {
             var registrations = OpenRgbRegistrations.Of(CoolerMasterLighting.OpenRgbFamily).ToList();
-            // CoolerMasterControllerDetect.cpp:389-451, MM531 commented out
-            // at line 422.
-            Assert.Equal(37, registrations.Count);
+            // CoolerMasterControllerDetect.cpp:423-491 at 6b681e3c, MM531 commented out
+            // at line 462.
+            Assert.Equal(43, registrations.Count);
             Assert.DoesNotContain(registrations, r => r.Name == "Cooler Master MM531");
             foreach (var r in registrations)
             {
+                // The wired CK721 keeps SignalRGB's live mode, which OpenRGB's V3
+                // controller lacks (RGBController_CMKeyboardController.cpp:26).
+                if (r.ProductId == CoolerMasterLighting.Ck721)
+                {
+                    Assert.Null(CoolerMasterLighting.Instance.Match(Collection(r)));
+                    var plugin = HidLightingFamilies.Match(Collection(r));
+                    Assert.NotNull(plugin);
+                    Assert.Equal("Cooler Master CK721", plugin.Name);
+                    Assert.NotSame(CoolerMasterLighting.Instance, plugin.Family);
+                    continue;
+                }
                 var model = CoolerMasterLighting.Instance.Match(Collection(r));
                 Assert.True(model != null, r.Name);
                 Assert.Equal(r.Name, model.Name);
@@ -121,6 +132,130 @@ namespace PadForge.Tests
                 // Through the family list too.
                 Assert.Same(model, HidLightingFamilies.Match(Collection(r)));
             }
+        }
+
+        // ── The V3 keyboards (OpenRGB e4af57cd) ──
+
+        /// <summary>A V3 frame: report ID 0, the command, 80 and the count on the first
+        /// frame or the frame's number after, then the payload, at the write size
+        /// (_SendCommand, CMKeyboardV3Controller.cpp:166-201).</summary>
+        private static byte[] V3(int size, params byte[] payload)
+        {
+            var frame = new byte[size];
+            payload.CopyTo(frame, 1);
+            return frame;
+        }
+
+        /// <summary>The MK721, the CK721 LINE and the three dongles take OpenRGB's V3
+        /// keyboard with the CK721's values (CMKeyboardDevices.cpp:271-283 and 724-749).
+        /// OpenRGB's layout manager builds that layout with Escape twice, at its place and
+        /// Tab's, and no arrows or Page Down, since each of those edits is a swap where no
+        /// key stands (klm_dump.tsv, ck721_layout). The plugin's lists give every key at
+        /// the same values (CoolerMaster_CK721_Keyboard.js, vLeds), and OpenRGB adds the
+        /// wheel light at 14. Pictures are held and spaced as the keyboard's stored writes,
+        /// since OpenRGB's page says the family saves on every update
+        /// (RGBController_CMKeyboardController.cpp:18) and no reference streams this write.</summary>
+        [Fact]
+        public void TheV3Keyboards_TakeTheCk721Layout()
+        {
+            var built = CoolerMasterLighting.KeyboardLights(0x016F, KeyboardLayout.AnsiQwerty);
+            Assert.Equal(2, built.Count(l => l.Usage == 0x29));
+            Assert.DoesNotContain(built, l => l.Usage is 0x2B or 0x50 or 0x51 or 0x52 or 0x4F or 0x4E);
+            foreach (ushort pid in new ushort[] { 0x016F, 0x01C3, 0x0183, 0x01EE, 0x01F2 })
+            {
+                var model = ModelOf(pid);
+                Assert.NotNull(model);
+                var lights = model.Map.Lights;
+                Assert.Equal(0, lights.Single(l => l.Usage == 0x29).Address);
+                Assert.Equal(15, lights.Single(l => l.Usage == 0x2B).Address);
+                Assert.Equal(29, lights.Single(l => l.Usage == 0x4C).Address);
+                Assert.Equal(new[] { 56, 64, 67, 70 }, new ushort[] { 0x52, 0x51, 0x4F, 0x50 }.Select(u => lights.Single(l => l.Usage == u).Address));
+                Assert.Equal(58, lights.Single(l => l.Usage == 0x4E).Address);
+                Assert.Contains(lights, l => l.Address == 14);
+                Assert.Equal(lights.Count, lights.Select(l => l.Address).Distinct().Count());
+                Assert.All(lights, l => Assert.InRange(l.Address, 0, 70));
+                Assert.Equal(LenovoLegionLighting.HoldMs, model.HoldMs);
+                Assert.Equal(LenovoLegionLighting.RepaintMs, model.RepaintMs);
+            }
+        }
+
+        /// <summary>A wired V3 keyboard. The session reads the active profile, register
+        /// 0324, after reading away what waits (_ReadActiveProfile, lines 118-139), and
+        /// takes the Custom mode as OpenRGB's SetMode writes it: the profile's effect
+        /// register, 0xC8 past the profile's 0xC9 bytes, to 04, then Custom's ten bytes,
+        /// brightness FF twice, speed 2 with direction 1 above it, no colors, index 06
+        /// (lines 105-108 and 208-327, Custom's row at 335-336, MODE_DIRECTION_LEFT 0 in
+        /// RGBControllerInterface.h:84). A picture is WRITE_CUSTOM_RGB, 0A, at register 0:
+        /// 284 bytes of R, G, B and FF for 71 LEDs, 62 to a 65-byte frame, 3 ms after each
+        /// (lines 66-99 and 199). OpenRGB's Shutdown writes nothing (lines 57-60), so nor
+        /// does the hand-back.</summary>
+        [Fact]
+        public void AWiredV3Session_ReadsTheProfile_SetsCustom_AndPaintsInFiveFrames()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report[1] == 0x02
+                ? new byte[] { 0x02, 0x81, 0x24, 0x03, 0x01, 0x00, 0x02 }
+                : null;
+            var model = ModelOf(0x016F);
+            var waits = new List<int>();
+            var session = model.Begin(device.Channel, waits.Add);
+            Assert.NotNull(session);
+            // Profile 2: its block starts at 2 * 0xC9 = 0x192.
+            Same(new[]
+            {
+                V3(65, 0x02, 0x81, 0x24, 0x03, 0x01, 0x00),
+                V3(65, 0x01, 0x81, 0x5A, 0x02, 0x01, 0x00, 0x04),
+                V3(65, 0x01, 0x81, 0xBA, 0x01, 0x0A, 0x00, 0xFF, 0xFF, 0x12, 0, 0, 0, 0, 0, 0, 0x06),
+            }, device.Outs);
+            Assert.Equal(new[] { 3, 3, 3 }, waits);
+            device.Clear();
+            waits.Clear();
+            var lights = model.Map.Lights;
+            var colors = lights.Select(l => l.Address == 0 ? 0x112233 : l.Address == 70 ? 0x445566 : 0).ToList();
+            Assert.Equal(HidLightingPaint.Sent, session.Paint(device.Channel, waits.Add, lights, colors));
+            var frames = device.Outs;
+            Assert.Equal(5, frames.Count);
+            Assert.Equal("00 0A 85 00 00 1C 01 11 22 33 FF 00 00 00 FF", Hex(frames[0].Take(15).ToArray()));
+            Assert.Equal("00 0A 01", Hex(frames[1].Take(3).ToArray()));
+            Assert.Equal("00 0A 04", Hex(frames[4].Take(3).ToArray()));
+            // LED 70 is bytes 284 to 287 of the data: 284 - 4 * 62 = 36 into the last frame.
+            Assert.Equal("44 55 66 FF", Hex(frames[4].Skip(3 + 284 - 4 * 62).Take(4).ToArray()));
+            Assert.All(frames, f => Assert.Equal(65, f.Length));
+            Assert.Equal(new[] { 3, 3, 3, 3, 3 }, waits);
+            device.Clear();
+            Assert.Empty(session.CrashFrames);
+            Assert.True(session.HandBack(device.Channel, NoWait));
+            Assert.Empty(device.Outs);
+        }
+
+        /// <summary>A dongle writes 33 bytes with 20 of payload and waits 20 ms after each
+        /// (CM_KEYBOARD_V3_DONGLE_WRITE_SIZE and _PAYLOAD_SIZE, CMKeyboardV3Controller.h:20-22,
+        /// and lines 22-35 and 199 of the controller). A profile that does not answer, or
+        /// answers past the four profiles, is profile 0 (lines 128-138).</summary>
+        [Fact]
+        public void AV3DongleSession_Writes33ByteFrames_AndTakesProfile0WithoutAnAnswer()
+        {
+            var device = new CoolerMasterDevice();
+            device.Answer = report => report[1] == 0x02 ? new byte[] { 0x02, 0x81, 0x24, 0x03, 0x01, 0x00, 0x07 } : null;
+            var model = ModelOf(0x0183);
+            var waits = new List<int>();
+            var session = model.Begin(device.Channel, waits.Add);
+            Same(new[]
+            {
+                V3(33, 0x02, 0x81, 0x24, 0x03, 0x01, 0x00),
+                V3(33, 0x01, 0x81, 0xC8, 0x00, 0x01, 0x00, 0x04),
+                V3(33, 0x01, 0x81, 0x28, 0x00, 0x0A, 0x00, 0xFF, 0xFF, 0x12, 0, 0, 0, 0, 0, 0, 0x06),
+            }, device.Outs);
+            Assert.Equal(new[] { 20, 20, 20 }, waits);
+            device.Clear();
+            session.Paint(device.Channel, NoWait, model.Map.Lights, model.Map.Lights.Select(_ => 0x010203).ToList());
+            // 288 bytes, 20 to a frame: 15 frames, the first 8F.
+            var frames = device.Outs;
+            Assert.Equal(15, frames.Count);
+            Assert.All(frames, f => Assert.Equal(33, f.Length));
+            Assert.Equal("00 0A 8F 00 00 1C 01 01 02 03 FF", Hex(frames[0].Take(11).ToArray()));
+            Assert.Equal("00 0A 0E", Hex(frames[14].Take(3).ToArray()));
+            Assert.All(frames, f => Assert.All(f.Skip(23), b => Assert.Equal(0, b)));
         }
 
         // ── The keyboards OpenRGB's V2 detector leaves out ──

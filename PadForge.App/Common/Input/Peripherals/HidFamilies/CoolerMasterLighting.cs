@@ -9,7 +9,7 @@ namespace PadForge.Common.Input.Peripherals
     /// Cooler Master's keyboards, mice, mousepads, monitors, gaming desk,
     /// graphics cards and RGB controller, lit as OpenRGB's
     /// CoolerMasterController family lights them (#557). The collections
-    /// are OpenRGB's registrations (CoolerMasterControllerDetect.cpp:389-451),
+    /// are OpenRGB's registrations (CoolerMasterControllerDetect.cpp:423-491 at 6b681e3c),
     /// matched by OpenRGB's rules, and the detector a collection answers to
     /// picks the protocol.
     ///
@@ -99,6 +99,8 @@ namespace PadForge.Common.Input.Peripherals
                 case "DetectCoolerMasterV1Keyboards":
                 case "DetectCoolerMasterV2Keyboards":
                     return KeyboardModel(registration.Name, productId);
+                case "DetectCoolerMasterV3Keyboards":
+                    return V3KeyboardModel(registration.Name, productId);
                 case "DetectCoolerMasterMouse":
                     return MouseModel(registration.Name, productId);
                 case "DetectCoolerMasterMouse711":

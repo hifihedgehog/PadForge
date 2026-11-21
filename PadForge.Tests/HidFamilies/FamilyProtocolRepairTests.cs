@@ -244,8 +244,9 @@ namespace PadForge.Tests
         public void TheAkko_RunsAtItsMostBrightness()
         {
             // ROYUAN_AKKO_BRIGHTNESS_MAX 4 (RoyuanKeyboardController.h:99), and
-            // the color carries the dimming. 07 + 01 + 04 + 04 + 08 + 60 = 0x78.
-            Assert.Equal("00 07 01 04 04 08 10 20 30 87", ReportLog.Hex(R.Picture(R.Board.Akko, 0x102030), 10));
+            // the color carries the dimming. The single-color option is 07 since
+            // d91bff77 (lines 54-55 at 6b681e3c). 07 + 01 + 04 + 04 + 07 + 60 = 0x77.
+            Assert.Equal("00 07 01 04 04 07 10 20 30 88", ReportLog.Hex(R.Picture(R.Board.Akko, 0x102030), 10));
         }
 
         [Fact]

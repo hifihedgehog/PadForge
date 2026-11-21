@@ -2180,7 +2180,7 @@
                         <ComboBox x:Name="HMaestroProfileCombo" Grid.Column="1" VerticalAlignment="Center"
                                   MaxWidth="380"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
-                                  ItemsSource="{Binding AvailableProfiles}"
+                                  ItemsSource="{Binding PresetChoices}"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
                                   SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

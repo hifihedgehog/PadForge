@@ -2089,6 +2089,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_InputHold => Get("Pad_Lighting_InputHold");
     public string Pad_Lighting_InputDecay => Get("Pad_Lighting_InputDecay");
     public string Pad_Preset => Get("Pad_Preset");
+    public string Pad_Preset_Custom => Get("Pad_Preset_Custom");
     public string Pad_ExtendedSticks => Get("Pad_ExtendedSticks");
     public string Pad_ExtendedTriggers => Get("Pad_ExtendedTriggers");
     public string Pad_ExtendedPOVs => Get("Pad_ExtendedPOVs");

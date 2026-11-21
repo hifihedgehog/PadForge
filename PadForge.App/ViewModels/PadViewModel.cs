@@ -123,6 +123,7 @@ namespace PadForge.ViewModels
         private void OnCatalogReloaded(object sender, EventArgs e)
         {
             OnPropertyChanged(nameof(AvailableProfiles));
+            OnPropertyChanged(nameof(PresetChoices));
         }
 
         protected override void OnCultureChanged()
@@ -175,6 +176,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SocdSummary));
             _kbmConfig?.RaiseLocalizedChanged();
             OnPropertyChanged(nameof(OutputTypeDisplayName));
+            OnPropertyChanged(nameof(PresetChoices));
             OnPropertyChanged(nameof(PresetDisplayName));
             // Words read from the string table that nothing else raises:
             // the roster's spoken battery and the Bass Shakers tones. An
@@ -282,6 +284,7 @@ namespace PadForge.ViewModels
                     // left the dropdown visually blank even though the
                     // backend was running with the correct default profile.
                     OnPropertyChanged(nameof(AvailableProfiles));
+                    OnPropertyChanged(nameof(PresetChoices));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     OnPropertyChanged(nameof(OutputTypeDisplayName));
                     // The header's type chip draws the type (#574).
@@ -597,6 +600,47 @@ namespace PadForge.ViewModels
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
             };
 
+        /// <summary>One entry of the Preset picker: a profile's id and the
+        /// name PadForge shows for it (<see cref="HMaestroProfileCatalog.DisplayName"/>),
+        /// which is also its spoken name. Equal by id, so a list made again
+        /// for a new language keeps the pick.</summary>
+        public sealed class PresetChoice
+        {
+            public string Id { get; init; }
+            public string Name { get; init; }
+            public override string ToString() => Name;
+            public override bool Equals(object obj) => obj is PresetChoice o
+                && string.Equals(o.Id, Id, System.StringComparison.OrdinalIgnoreCase);
+            public override int GetHashCode() => System.StringComparer.OrdinalIgnoreCase.GetHashCode(Id ?? string.Empty);
+        }
+
+        private System.Collections.Generic.IReadOnlyList<HIDMaestro.HMProfile> _presetChoicesFrom;
+        private string _presetChoicesCulture;
+        private PresetChoice[] _presetChoices;
+
+        /// <summary><see cref="AvailableProfiles"/> as the Preset picker lists
+        /// them, made again when the list or the language changes and raised
+        /// with them.</summary>
+        public System.Collections.Generic.IReadOnlyList<PresetChoice> PresetChoices
+        {
+            get
+            {
+                var profiles = AvailableProfiles;
+                string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                if (_presetChoices == null || !ReferenceEquals(_presetChoicesFrom, profiles)
+                    || !string.Equals(_presetChoicesCulture, culture, System.StringComparison.Ordinal))
+                {
+                    var choices = new PresetChoice[profiles.Count];
+                    for (int i = 0; i < choices.Length; i++)
+                        choices[i] = new PresetChoice { Id = profiles[i].Id, Name = HMaestroProfileCatalog.DisplayName(profiles[i]) };
+                    _presetChoices = choices;
+                    _presetChoicesFrom = profiles;
+                    _presetChoicesCulture = culture;
+                }
+                return _presetChoices;
+            }
+        }
+
         /// <summary>
         /// True when the slot's category uses an HIDMaestro profile (Xbox /
         /// PlayStation / Nintendo / Extended). The header's Preset shows for
@@ -671,7 +715,10 @@ namespace PadForge.ViewModels
                     {
                         var profile = profiles[i];
                         if (string.Equals(profile.Id, id, System.StringComparison.OrdinalIgnoreCase))
-                            return string.IsNullOrEmpty(profile.Name) ? OutputTypeDisplayName : profile.Name;
+                        {
+                            string name = HMaestroProfileCatalog.DisplayName(profile);
+                            return string.IsNullOrEmpty(name) ? OutputTypeDisplayName : name;
+                        }
                     }
                 }
                 return OutputTypeDisplayName;

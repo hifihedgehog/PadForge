@@ -30,6 +30,20 @@ namespace PadForge.Common.Input
         /// </summary>
         public const string CustomProfileId = "padforge-custom";
 
+        /// <summary>The name PadForge shows for a profile: the catalog's own,
+        /// a product name read the same in every language, except the
+        /// synthetic Custom entry, whose name is a word of PadForge's and is
+        /// shown in the interface's language. The profile keeps "Custom" as
+        /// its Name, which HIDMaestro reads for a device name and mapping
+        /// string, so the virtual device stays the same in every language.</summary>
+        public static string DisplayName(HIDMaestro.HMProfile profile)
+        {
+            if (profile == null) return string.Empty;
+            return string.Equals(profile.Id, CustomProfileId, StringComparison.OrdinalIgnoreCase)
+                ? PadForge.Resources.Strings.Strings.Instance.Pad_Preset_Custom
+                : profile.Name ?? string.Empty;
+        }
+
         private static readonly object _initLock = new object();
 
         /// <summary>One load of the catalog: every list and map the accessors

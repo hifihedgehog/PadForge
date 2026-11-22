@@ -154,6 +154,7 @@ namespace PadForge.Services
         // Macro shows by port instance, as play time is kept.
         private readonly Dictionary<BlissBoxPort, DreamcastShow> _shows = new();
         private readonly Dictionary<string, byte[]> _textCache = new(StringComparer.Ordinal);
+        private FontFamily _textFace;
         private long _nextTick;
 
         /// <param name="saveNow">Saves the settings file at once, for the
@@ -454,6 +455,13 @@ namespace PadForge.Services
         private byte[] Text(string text)
         {
             text ??= string.Empty;
+            // Text drawn in another face, before the interface language
+            // changed, is drawn again.
+            if (!ReferenceEquals(_textFace, TextFaces.Screen))
+            {
+                _textCache.Clear();
+                _textFace = TextFaces.Screen;
+            }
             if (_textCache.TryGetValue(text, out var image)) return image;
             if (_textCache.Count >= TextCacheLimit) _textCache.Clear();
             image = RenderText(text);
@@ -599,7 +607,7 @@ namespace PadForge.Services
         public static byte[] RenderText(string text)
         {
             text = (text ?? string.Empty).Trim();
-            var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             FormattedText fitted = null;
             for (double size = BlissBoxScreen.Height; size >= 6; size -= 1)
             {

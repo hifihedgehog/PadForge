@@ -288,6 +288,112 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The device screens and the Screen Overlay draw their text
+        /// in Segoe UI, and under Galactic Basic in Aurebesh. Each renderer
+        /// draws other pixels in Galactic Basic and the same pixels again once
+        /// the language goes back. They read the language of the thread they
+        /// draw on, the UI thread's in PadForge.</summary>
+        [Fact]
+        public void TheScreensDrawTheirTextInAurebeshUnderGalacticBasic()
+        {
+            DialogTestHost.Run(() =>
+            {
+                CultureInfo was = CultureInfo.CurrentUICulture;
+                try
+                {
+                    foreach (LanguageInfo language in LanguageCatalog.All)
+                        Assert.Same(language.IsAurebesh ? TextFaces.AurebeshScreen : TextFaces.StandardScreen,
+                            TextFaces.ScreenFace(language.Culture));
+                    Assert.Equal("Segoe UI", TextFaces.StandardScreen.Source);
+
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = AmericanEnglish;
+                    Assert.Same(TextFaces.StandardScreen, TextFaces.Screen);
+                    List<byte[]> standard = ScreenText("Racing 7");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = GalacticBasic;
+                    Assert.Same(TextFaces.AurebeshScreen, TextFaces.Screen);
+                    List<byte[]> aurebesh = ScreenText("Racing 7");
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = AmericanEnglish;
+                    List<byte[]> back = ScreenText("Racing 7");
+
+                    Assert.Equal(standard.Count, aurebesh.Count);
+                    for (int i = 0; i < standard.Count; i++)
+                    {
+                        Assert.False(standard[i].SequenceEqual(aurebesh[i]), "screen " + i + " drew Galactic Basic in Segoe UI");
+                        Assert.True(standard[i].SequenceEqual(back[i]), "screen " + i + " drew other pixels after the change back");
+                    }
+                }
+                finally { System.Threading.Thread.CurrentThread.CurrentUICulture = was; }
+            });
+        }
+
+        /// <summary>A screen drawn before the language changed is drawn again
+        /// in the new face: the keyboard screens' last picture, the VMU's
+        /// store of drawn text and the Screen Overlay's last picture each
+        /// keep the face they were drawn in.</summary>
+        [Fact]
+        public void AScreenDrawnBeforeAChangeOfLanguageIsDrawnAgain()
+        {
+            DialogTestHost.Run(() =>
+            {
+                CultureInfo was = CultureInfo.CurrentUICulture;
+                try
+                {
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = AmericanEnglish;
+                    var keyboard = new PadForge.Services.KeyboardScreenService(new PadForge.ViewModels.SettingsViewModel(), null);
+                    var screen = new PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo("test-galactic-basic",
+                        PadForge.Common.Input.KeyboardScreens.KeyboardScreenKind.Color, "Test Screen", "Test");
+                    var data = new PadForge.Services.KeyboardScreenData
+                        { Device = screen.RowGuid.ToString("D"), Mode = PadForge.Services.KeyboardScreenMode.PlayTime };
+                    byte[] keyboardBefore = keyboard.Compose(screen, data, 1000, out _);
+                    Assert.Same(keyboardBefore, keyboard.Compose(screen, data, 1000, out _));
+
+                    var vmu = new PadForge.Services.DreamcastScreenService(new PadForge.ViewModels.SettingsViewModel(), null);
+                    var vmuText = typeof(PadForge.Services.DreamcastScreenService)
+                        .GetMethod("Text", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+                    var vmuBefore = (byte[])vmuText.Invoke(vmu, new object[] { "0:00" });
+                    Assert.Same(vmuBefore, vmuText.Invoke(vmu, new object[] { "0:00" }));
+
+                    var overlay = new PadForge.Views.ScreenOverlayContentView();
+                    overlay.Show(new PadForge.Services.ScreenOverlayContent("0:00"));
+                    byte[] overlayBefore = OverlayPixels(overlay);
+
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = GalacticBasic;
+                    Assert.False(keyboardBefore.SequenceEqual(keyboard.Compose(screen, data, 1000, out _)), "the keyboard screen kept its Segoe UI picture");
+                    Assert.False(vmuBefore.SequenceEqual((byte[])vmuText.Invoke(vmu, new object[] { "0:00" })), "the VMU kept its Segoe UI text");
+                    overlay.Show(new PadForge.Services.ScreenOverlayContent("0:00"));
+                    Assert.False(overlayBefore.SequenceEqual(OverlayPixels(overlay)), "the Screen Overlay kept its Segoe UI picture");
+                }
+                finally { System.Threading.Thread.CurrentThread.CurrentUICulture = was; }
+            });
+        }
+
+        /// <summary>The text as each device screen and the Screen Overlay draw
+        /// it, in the thread's interface language.</summary>
+        private static List<byte[]> ScreenText(string text)
+        {
+            var drawn = PadForge.Common.Input.KeyboardScreens.KeyboardScreenFormats.Kinds
+                .Select(kind => PadForge.Common.Input.KeyboardScreens.KeyboardScreenRenderer.RenderText(text, kind)).ToList();
+            drawn.Add(PadForge.Services.DreamcastScreenService.RenderText(text));
+            drawn.Add(PadForge.Common.Input.Flydigi.FlydigiScreenPictures.FromText(text).Frames[0]);
+            var overlay = new PadForge.Views.ScreenOverlayContentView();
+            overlay.Show(new PadForge.Services.ScreenOverlayContent(text));
+            drawn.Add(OverlayPixels(overlay));
+            return drawn;
+        }
+
+        private static byte[] OverlayPixels(PadForge.Views.ScreenOverlayContentView overlay)
+        {
+            const int width = 300, height = 150;
+            overlay.Measure(new Size(width, height));
+            overlay.Arrange(new Rect(0, 0, width, height));
+            overlay.UpdateLayout();
+            var target = new System.Windows.Media.Imaging.RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            target.Render(overlay);
+            var pixels = new byte[width * height * 4];
+            target.CopyPixels(pixels, width * 4, 0);
+            return pixels;
+        }
+
         /// <summary>The font ships as SilvinoR published it. The Open Font
         /// License lets a font keep its Reserved Font Name only unmodified,
         /// and the license and the attribution sit beside it.</summary>

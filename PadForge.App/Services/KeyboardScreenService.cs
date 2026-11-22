@@ -939,7 +939,7 @@ namespace PadForge.Services
                 : string.Format(CultureInfo.InvariantCulture, "{0}:{1:D2}", time.Minutes, time.Seconds);
 
         private byte[] Text(KeyboardScreenInfo screen, string text)
-            => Memo(screen.Id, "text|" + text, () => KeyboardScreenRenderer.RenderText(text, screen.Kind));
+            => Memo(screen.Id, "text|" + TextFaces.Screen.Source + "|" + text, () => KeyboardScreenRenderer.RenderText(text, screen.Kind));
 
         /// <summary>A screen's picture of <paramref name="what"/>, drawn only
         /// when the screen last showed something else.</summary>

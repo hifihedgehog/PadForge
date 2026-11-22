@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO.Packaging;
 using System.Windows;
 using System.Windows.Documents;
@@ -55,6 +56,27 @@ namespace PadForge.Common
         /// <summary>Galactic Basic's display face: the Aurebesh font, then
         /// Segoe UI Variable Display.</summary>
         public static FontFamily AurebeshDisplay => _aurebeshDisplay.Value;
+
+        /// <summary>The face the device screens and the Screen Overlay draw
+        /// text in under every language but Galactic Basic.</summary>
+        public static readonly FontFamily StandardScreen = new("Segoe UI");
+
+        private static readonly Lazy<FontFamily> _aurebeshScreen =
+            new(() => new FontFamily(FontsFolder(), "./#Aurebesh, Segoe UI"));
+
+        /// <summary>Galactic Basic's face on the device screens and the Screen
+        /// Overlay: the Aurebesh font, then Segoe UI.</summary>
+        public static FontFamily AurebeshScreen => _aurebeshScreen.Value;
+
+        /// <summary>The face the device screens and the Screen Overlay draw
+        /// text in under the interface language <paramref name="ui"/>.</summary>
+        internal static FontFamily ScreenFace(CultureInfo ui)
+            => LanguageCatalog.Resolve(ui)?.IsAurebesh == true ? AurebeshScreen : StandardScreen;
+
+        /// <summary>The screens' face now. They draw on the UI thread, whose
+        /// culture is the interface language (Strings.ChangeCulture), and read
+        /// it each time they draw.</summary>
+        internal static FontFamily Screen => ScreenFace(CultureInfo.CurrentUICulture);
 
         /// <summary>The face a language's own name is drawn in, in the
         /// language picker: the Aurebesh font for Galactic Basic, the standard

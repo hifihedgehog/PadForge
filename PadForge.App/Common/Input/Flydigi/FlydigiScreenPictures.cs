@@ -127,7 +127,7 @@ namespace PadForge.Common.Input.Flydigi
             text = (text ?? string.Empty).Trim();
             int margin = Math.Max(4, Format.Width / 20);
             double maxWidth = Format.Width - 2 * margin, maxHeight = Format.Height - 2 * margin;
-            var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             FormattedText fitted = null;
             for (double size = maxHeight; size >= 6; size -= 1)
             {

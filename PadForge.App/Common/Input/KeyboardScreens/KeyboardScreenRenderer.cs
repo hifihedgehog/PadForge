@@ -30,7 +30,7 @@ namespace PadForge.Common.Input.KeyboardScreens
             bool mono = KeyboardScreenFormats.IsMonochrome(kind);
             text = (text ?? string.Empty).Trim();
             var foreground = mono ? Brushes.Black : Brushes.White;
-            var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+            var typeface = new Typeface(TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             // A margin of a twentieth keeps text off the color screens'
             // bezels. The monochrome screen has no pixel to spare.
             int margin = mono ? 0 : Math.Max(4, width / 20);

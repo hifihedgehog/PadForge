@@ -18,10 +18,8 @@ namespace PadForge.Views
     /// </summary>
     public sealed class ScreenOverlayContentView : FrameworkElement
     {
-        private static readonly Typeface TextFace = new(new FontFamily("Segoe UI"), FontStyles.Normal,
-            FontWeights.Bold, FontStretches.Normal);
-
         private ScreenOverlayContent _content = ScreenOverlayContent.Nothing;
+        private FontFamily _face = PadForge.Common.TextFaces.Screen;
 
         public ScreenOverlayContentView()
         {
@@ -32,13 +30,16 @@ namespace PadForge.Views
 
         internal ScreenOverlayContent Shown => _content;
 
-        /// <summary>Draws again only when what it shows changed: the service
-        /// hands the same content over four times a second.</summary>
+        /// <summary>Draws again only when what it shows changed, or the face
+        /// its text is drawn in: the service hands the same content over four
+        /// times a second.</summary>
         internal void Show(ScreenOverlayContent content)
         {
             content ??= ScreenOverlayContent.Nothing;
-            if (content == _content) return;
+            var face = PadForge.Common.TextFaces.Screen;
+            if (content == _content && ReferenceEquals(face, _face)) return;
             _content = content;
+            _face = face;
             InvalidateVisual();
         }
 
@@ -81,8 +82,9 @@ namespace PadForge.Views
         {
             double margin = Math.Max(4, bounds.Width / 20);
             double maxWidth = Math.Max(1, bounds.Width - 2 * margin), maxHeight = Math.Max(1, bounds.Height - 2 * margin);
+            var face = new Typeface(PadForge.Common.TextFaces.Screen, FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
             FormattedText Sized(double size) => new(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                TextFace, size, Brushes.White, pixelsPerDip)
+                face, size, Brushes.White, pixelsPerDip)
             {
                 MaxTextWidth = maxWidth,
                 TextAlignment = TextAlignment.Center,

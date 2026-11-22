@@ -367,7 +367,7 @@ namespace PadForge.Tests
             Assert.Contains("name.IndexOf(\"Flydigi\", StringComparison.OrdinalIgnoreCase) < 0", flydigi);
             Assert.DoesNotContain("OptIn", flydigi);
             string screenDialog = AuditDelta20261002Tests.RepoText("PadForge.App", "Views", "FlydigiScreenDialog.xaml.cs");
-            int ask = screenDialog.IndexOf("MessageBox.Show(this, s.FlydigiScreen_Apex4Confirm,", StringComparison.Ordinal);
+            int ask = screenDialog.IndexOf("ConfirmDialog.Show(this, s.FlydigiScreen_Title, s.FlydigiScreen_Apex4Confirm,", StringComparison.Ordinal);
             int send = screenDialog.IndexOf("await FlydigiScreenSender.SendAsync(", StringComparison.Ordinal);
             Assert.True(ask >= 0 && send > ask, "the Apex 4's confirm comes before the send");
 

@@ -136,8 +136,7 @@ namespace PadForge.Views
             try { image = DreamcastScreenService.ImportPicture(dialog.FileName); }
             catch { image = null; }
             if (image == null)
-                MessageBox.Show(this, Strings.Instance.DreamcastScreen_ImportFailed, Strings.Instance.DreamcastScreen_Title,
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                ConfirmDialog.Notice(this, Strings.Instance.DreamcastScreen_Title, Strings.Instance.DreamcastScreen_ImportFailed);
             return image;
         }
 

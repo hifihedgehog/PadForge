@@ -215,6 +215,79 @@ namespace PadForge.Tests
             Assert.True(dynamic >= 55, dynamic + " DynamicResource references to the faces");
         }
 
+        /// <summary>Windows draws its message box in its own font, never the
+        /// interface's, so every question and notice a page or dialog shows is
+        /// PadForge's own ConfirmDialog. Four message boxes stay in App.xaml.cs:
+        /// the update helper's report and the already-running notice open
+        /// before PadForge reads its saved language, and the two crash dialogs
+        /// must open from any thread while PadForge fails.</summary>
+        [Fact]
+        public void OnlyTheStartupAndCrashDialogsAreWindowsMessageBoxes()
+        {
+            string app = Repo("PadForge.App");
+            var calls = new List<string>();
+            foreach (string path in Directory.EnumerateFiles(app, "*.cs", SearchOption.AllDirectories))
+            {
+                string rel = Path.GetRelativePath(app, path).Replace('\\', '/');
+                if (rel.StartsWith("obj/", StringComparison.Ordinal) || rel.StartsWith("bin/", StringComparison.Ordinal))
+                    continue;
+                foreach (string line in File.ReadLines(path))
+                    if (line.Contains("MessageBox.Show(", StringComparison.Ordinal) && !line.TrimStart().StartsWith("//", StringComparison.Ordinal))
+                        calls.Add(rel);
+            }
+            Assert.Equal(new[] { "App.xaml.cs", "App.xaml.cs", "App.xaml.cs", "App.xaml.cs" }, calls);
+
+            string text = File.ReadAllText(Repo("PadForge.App", "App.xaml.cs"));
+            int alreadyRunning = text.IndexOf("MessageBox.Show(Strings.Instance.App_AlreadyRunning,", StringComparison.Ordinal);
+            int savedLanguage = text.IndexOf("PadForge.Common.UiLanguage.Apply();", StringComparison.Ordinal);
+            Assert.True(alreadyRunning > 0 && savedLanguage > alreadyRunning, "the already-running notice opens before the saved language is read");
+
+            foreach (string dialog in new[] { "DreamcastScreenDialog.xaml.cs", "FlydigiScreenDialog.xaml.cs", "KeyboardScreenDialog.xaml.cs" })
+                Assert.Contains("ConfirmDialog.", File.ReadAllText(Repo("PadForge.App", "Views", dialog)));
+        }
+
+        /// <summary>The shared confirm, which the device screens' notices and
+        /// questions are, draws its title and its line in the interface's face:
+        /// Aurebesh under Galactic Basic, and App.xaml's face again after. The
+        /// host keeps its stand-in faces in a merged dictionary, where App.xaml
+        /// keeps the real ones.</summary>
+        [Fact]
+        public void TheSharedConfirmDrawsInTheInterfacesFace()
+        {
+            DialogTestHost.Run(() =>
+            {
+                ResourceDictionary resources = Application.Current.Resources;
+                var faces = new ResourceDictionary();
+                foreach (string key in new[] { TextFaces.BodyKey, TextFaces.DisplayKey })
+                {
+                    faces[key] = resources[key];
+                    resources.Remove(key);
+                }
+                resources.MergedDictionaries.Add(faces);
+                var dialog = (PadForge.Views.ConfirmDialog)typeof(PadForge.Views.ConfirmDialog)
+                    .GetConstructor(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null,
+                        new[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(PadForge.Views.ConfirmKind), typeof(string) }, null)!
+                    .Invoke(new object[] { Strings.Instance.FlydigiScreen_Title, Strings.Instance.DreamcastScreen_ImportFailed, null, null,
+                        PadForge.Views.ConfirmKind.Destructive, null });
+                try
+                {
+                    dialog.ApplyTemplate();
+                    var title = (TextBlock)dialog.Template.FindName("PART_Title", dialog);
+                    var line = (ContentPresenter)dialog.Template.FindName("PART_Subtitle", dialog);
+                    Assert.Same(faces[TextFaces.BodyKey], title.FontFamily);
+                    Assert.Same(faces[TextFaces.BodyKey], TextElement.GetFontFamily(line));
+                    UiLanguage.ApplyFaces(resources, GalacticBasic);
+                    Assert.Same(TextFaces.AurebeshBody, dialog.FontFamily);
+                    Assert.Same(TextFaces.AurebeshBody, title.FontFamily);
+                    Assert.Same(TextFaces.AurebeshBody, TextElement.GetFontFamily(line));
+                    UiLanguage.ApplyFaces(resources, AmericanEnglish);
+                    Assert.Same(faces[TextFaces.BodyKey], title.FontFamily);
+                    Assert.Same(faces[TextFaces.BodyKey], TextElement.GetFontFamily(line));
+                }
+                finally { dialog.Close(); }
+            });
+        }
+
         /// <summary>The font ships as SilvinoR published it. The Open Font
         /// License lets a font keep its Reserved Font Name only unmodified,
         /// and the license and the attribution sit beside it.</summary>

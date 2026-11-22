@@ -228,8 +228,7 @@ namespace PadForge.Views
             if (dialog.ShowDialog(this) != true) return null;
             string stored = IconPackageManager.MakeStoredPath(dialog.FileName);
             if (KeyboardScreenRenderer.LoadPicture(stored) != null) return stored;
-            MessageBox.Show(this, Strings.Instance.DreamcastScreen_ImportFailed, Title,
-                MessageBoxButton.OK, MessageBoxImage.Warning);
+            ConfirmDialog.Notice(this, Title, Strings.Instance.DreamcastScreen_ImportFailed);
             return null;
         }
 

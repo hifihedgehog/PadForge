@@ -254,8 +254,7 @@ namespace PadForge.Views
             if (dialog.ShowDialog(this) != true) return null;
             if (FlydigiScreenPictures.FromFile(dialog.FileName, _fit, 1, out _) == null)
             {
-                MessageBox.Show(this, Strings.Instance.DreamcastScreen_ImportFailed, Strings.Instance.FlydigiScreen_Title,
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                ConfirmDialog.Notice(this, Strings.Instance.FlydigiScreen_Title, Strings.Instance.DreamcastScreen_ImportFailed);
                 return null;
             }
             return IconPackageManager.MakeStoredPath(dialog.FileName);
@@ -295,8 +294,8 @@ namespace PadForge.Views
             }
             var s = Strings.Instance;
             if (Model == FlydigiApexModel.Apex4
-                && MessageBox.Show(this, s.FlydigiScreen_Apex4Confirm, s.FlydigiScreen_Title,
-                    MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK)
+                && !ConfirmDialog.Show(this, s.FlydigiScreen_Title, s.FlydigiScreen_Apex4Confirm, s.FlydigiScreen_Send,
+                    kind: ConfirmKind.Primary))
                 return;
 
             _sending = new CancellationTokenSource();
@@ -391,8 +390,8 @@ namespace PadForge.Views
             // send cut off partway leaves the screen waiting, so the dialog
             // asks first and then stops it. The send hands the pad back on
             // its own thread.
-            if (MessageBox.Show(this, Strings.Instance.FlydigiScreen_LeaveWhileSending, Strings.Instance.FlydigiScreen_Title,
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            if (!ConfirmDialog.Show(this, Strings.Instance.FlydigiScreen_Title, Strings.Instance.FlydigiScreen_LeaveWhileSending,
+                    Strings.Instance.Common_Stop))
             {
                 e.Cancel = true;
                 return;

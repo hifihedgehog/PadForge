@@ -391,6 +391,11 @@ namespace PadForge.Tests
                 Assert.Equal(ThemeFault.Unreadable, broken.Fault);
                 Assert.Equal("gone", broken.Name);
 
+                // A path from a settings file edited by hand that is no path, such as one holding a null character.
+                var noPath = ThemeFile.Read(System.IO.Path.Combine(folder, "a" + (char)0 + "b.pftheme"), "Hand Edited");
+                Assert.Equal(ThemeFault.Missing, noPath.Fault);
+                Assert.Equal("Hand Edited", noPath.Name);
+
                 var good = Custom(true, "#101010", "#FF00FF", null, null);
                 good.Name = "Good";
                 ThemeFile.Write(path, good);

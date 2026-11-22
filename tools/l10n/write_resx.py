@@ -37,8 +37,12 @@ if problems:
 raw = io.open(os.path.join(rules.STRINGS, "Strings.resx"), "rb").read()
 bom = raw.startswith(b"\xef\xbb\xbf")
 base = raw.decode("utf-8-sig")
-# An entry sits on one line or spreads over three, so entries are matched in the whole text.
-ENTRY = re.compile(r'(  <data name="([^"]+)" xml:space="preserve">\s*<value>)(.*?)(</value>\s*</data>\r?\n?)', re.S)
+# An entry sits on one line or spreads over three, so entries are matched in the whole text. A value
+# never runs past its own </value>, and an English entry may carry a translator's <comment> after it,
+# which a translation leaves out, as every translation in the tree does. A value that could run on
+# let a commented entry reach the next entry's </value> and swallow that entry (#590).
+ENTRY = re.compile(r'(  <data name="([^"]+)" xml:space="preserve">\s*<value>)((?:(?!</value>).)*)(</value>)'
+                   r'(\s*<comment>(?:(?!</comment>).)*</comment>)?(\s*</data>\r?\n?)', re.S)
 kept = [0]
 
 
@@ -47,10 +51,14 @@ def replace(m):
     if key not in translation:
         return ""
     kept[0] += 1
-    return m.group(1) + escape(translation[key]) + m.group(4)
+    return m.group(1) + escape(translation[key]) + m.group(4) + m.group(6)
 
 
 out = ENTRY.sub(replace, base)
 target = os.path.join(rules.STRINGS, "Strings.%s.resx" % tag)
 io.open(target, "wb").write((b"\xef\xbb\xbf" if bom else b"") + out.encode("utf-8"))
+back = rules.read_resx(target)
+if back != translation:
+    lost = sorted(set(translation) - set(back))
+    sys.exit("written %s, but it reads back %d of %d strings: %s" % (target, len(back), len(translation), lost[:8]))
 print("written %s: %d of %d strings" % (os.path.relpath(target, rules.REPO), kept[0], len(english)))

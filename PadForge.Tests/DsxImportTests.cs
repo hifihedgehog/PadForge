@@ -295,6 +295,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Strobe_ColorCycleAndOff_AreTheirLightPatterns()
+        {
+            var strobe = Assert.Single(Profile(Dsx(sections: "\"controller_led\":{\"colormode\":\"STROBE\",\"strobe_color\":\"#FF0000\",\"strobe_brightness\":100,\"brightness\":100}"))
+                .Macros, m => m.Name == "Lightbar");
+            // On, then off, the reWASD import's stroboscope.
+            Assert.Equal(4, strobe.Actions.Length);
+            Assert.Equal(((byte)255, (byte)0, (byte)0), (strobe.Actions[0].LightbarR, strobe.Actions[0].LightbarG, strobe.Actions[0].LightbarB));
+            Assert.Equal(((byte)0, (byte)0, (byte)0), (strobe.Actions[2].LightbarR, strobe.Actions[2].LightbarG, strobe.Actions[2].LightbarB));
+
+            var hues = Assert.Single(Profile(Dsx(sections: "\"controller_led\":{\"colormode\":\"MULTICOLOR\",\"multicolor_mode\":\"HSL\",\"brightness\":100}"))
+                .Macros, m => m.Name == "Lightbar");
+            Assert.Equal(ImportBuilder.RainbowPattern(6000).Count, hues.Actions.Length);
+
+            var list = Assert.Single(Profile(Dsx(sections: "\"controller_led\":{\"colormode\":\"MULTICOLOR\",\"multicolor_mode\":\"CUSTOM_COLORS\","
+                + "\"multicolor_customcolor_color_list\":[\"#FF0000\",\"#00FF00\",\"#FF0000FF\"],\"brightness\":100}")).Macros, m => m.Name == "Lightbar");
+            Assert.Equal(6, list.Actions.Length);
+            Assert.Equal(((byte)0, (byte)0, (byte)255), (list.Actions[4].LightbarR, list.Actions[4].LightbarG, list.Actions[4].LightbarB));
+
+            var off = Assert.Single(Assert.Single(Profile(Dsx(sections: "\"controller_led\":{\"colormode\":\"OFF\"}")).Macros, m => m.Name == "Lightbar").Actions);
+            Assert.Equal(((byte)0, (byte)0, (byte)0), (off.LightbarR, off.LightbarG, off.LightbarB));
+        }
+
+        [Fact]
         public void LedPassthrough_LeavesTheLightsToTheGame()
         {
             var r = Import(Dsx("DUALSENSE", "\"UseDualSenseLEDs\":true",
@@ -550,6 +573,25 @@ namespace PadForge.Tests
             Assert.All(release.Actions, a => Assert.Equal(MacroLatchDirection.Off, a.LatchDirection));
             // D, a row key, rides a row beside it.
             Assert.NotNull(Row(r.Profile, SteamInputVkTable.KbmKeyTarget(0x44)));
+        }
+
+        [Fact]
+        public void Combo_IsARowGatedByItsSecondInput()
+        {
+            var r = Import(Dsx(sections: Lab(Binding(new[] { 41, 42 }, "Single", "{\"mode\":\"single\",\"kind\":\"mapping\",\"mappingHash\":16393}", mute: false))));
+            var src = Assert.Single(Row(r.Profile, SteamInputVkTable.KbmKeyTarget(0x09)).Sources);
+            Assert.Equal("Gamepad DPadUp", src.Descriptor);
+            Assert.Equal("Gamepad DPadDown", src.GateDescriptor);
+        }
+
+        [Fact]
+        public void StartActivator_FiresOnThePress()
+        {
+            var r = Import(Dsx(sections: Lab(Binding(new[] { 43 }, "Start",
+                "{\"mode\":\"single\",\"kind\":\"mapping\",\"mappingHash\":32773,\"details\":{\"profileSystemTarget\":\"profile:Gyro Aim\"}}", mute: false))));
+            var macro = Assert.Single(r.Profile.Macros, m => m.Actions.Any(a => a.Type == MacroActionType.ProfileShortcut));
+            Assert.Equal(MacroTriggerMode.OnPress, macro.TriggerMode);
+            Assert.Equal("Gyro Aim", macro.Actions[0].ProfileShortcutName);
         }
 
         [Fact]

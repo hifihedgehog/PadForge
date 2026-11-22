@@ -30,7 +30,7 @@ namespace PadForge.Tests
         /// Hard-coded on purpose: a language dropped from the table and from
         /// the tree together would shrink every other test's coverage in
         /// silence, and this number would not move with it.</summary>
-        internal const int LanguageCount = 109;
+        internal const int LanguageCount = 112;
 
         private static string StringsDirectory()
         {
@@ -119,16 +119,25 @@ namespace PadForge.Tests
         /// Another variety of English holds only the strings it writes
         /// differently and is whole through Strings.resx, so each of its
         /// strings differs from the American one: a copy would keep the
-        /// American text after the American text changed.</summary>
+        /// American text after the American text changed. Galactic Basic
+        /// (#590) is American English drawn in the Aurebesh alphabet, so its
+        /// file holds no string at all.</summary>
         [Theory]
         [MemberData(nameof(Translations))]
         public void TheCoverageColumnIsWhatTheFileHolds(string tag)
         {
             SortedSet<string> baseKeys = KeysOf("Strings.resx"), keys = KeysOf("Strings." + tag + ".resx");
             Assert.True(baseKeys.Count > 1000);
+            LanguageInfo language = LanguageCatalog.Find(tag);
+            if (language.IsAurebesh)
+            {
+                Assert.True(language.IsComplete, tag);
+                Assert.True(LocaleFiles.IsOtherEnglish(language), tag);
+                Assert.Empty(keys);
+                return;
+            }
             Assert.NotEmpty(keys);
             Assert.Empty(keys.Except(baseKeys));
-            LanguageInfo language = LanguageCatalog.Find(tag);
             if (LocaleFiles.IsOtherEnglish(language))
             {
                 Assert.True(language.IsComplete, tag);

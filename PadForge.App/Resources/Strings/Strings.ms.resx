@@ -857,6 +857,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Terma lesen Visual Studio</value></data>
@@ -4764,6 +4765,8 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Susun atur profil permulaan Strategi dan Desktop, dan kelakuan turbo yang dielakkan oleh turbo berskala tekanan. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rujukan oleh Antoine Aflalo untuk susun atur antara muka IPolicyConfig tidak berdokumen Windows, yang digunakan PadForge untuk mendayakan semula titik hujung audio pengawal. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Fon Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Fon oleh SilvinoR, disertakan dalam PadForge tanpa diubah suai dan digunakan untuk memaparkan antara muka apabila bahasanya Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimport EQ Parametrik pengawal, oleh Jaakko Pasanen. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5231,4 +5234,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Kata Laluan</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Pembesar (Semasa Ditahan)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Menunjukkan pembesar semasa makro ini ditahan, untuk membidik melalui alat bidik. Sediakannya pada halaman Pembesar.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Rujukan bahasa Klingon dan Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Perkataan dalam terjemahan Klingon dan Sindarin disemak berdasarkan klingon-assistant-data (Apache-2.0), kamus di sebalik boQwI', dan Eldamo (CC BY 4.0), leksikon Elvish oleh Paul Strack. Data kamus sahaja, tiada yang disertakan.</value></data>
 </root>

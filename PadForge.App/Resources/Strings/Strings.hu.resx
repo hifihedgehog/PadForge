@@ -870,6 +870,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio licencfeltételek</value></data>
@@ -5002,6 +5003,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>A stratégiai és az asztali kezdőprofilok kiosztásai, valamint az a turbóviselkedés, amelyet a nyomással skálázott turbó elkerül. Kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo referenciája a Windows nem dokumentált IPolicyConfig interfészének felépítéséhez, amellyel a PadForge újra engedélyezi a kontroller hangvégpontját. Csak dokumentációként, a program nem tartalmaz belőle kódot.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh betűtípus</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR betűtípusa, amely módosítatlanul a PadForge része, és akkor rajzolja ki a felületet, ha a nyelve Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>A kontrollerek Parametrikus EQ beállítása által importált parametrikus EQ-profilformátum, készítette: Jaakko Pasanen. Csak dokumentációként, a program nem tartalmaz belőle kódot.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>A csevegés bejelentkezés nélküli olvasása és a ! parancsszabály a tmi.js és a ComfyJS alapján, a legújabb 20 parancs megtartása pedig a DougDoug TwitchPlays sablonjából kiolvasva. Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Billentyűzetképernyő-referenciák</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>A billentyűzetképernyők mögötti könyvtárak, képkockák és billentyűk, a Logitech LCD és Arx Control SDK-iból, valamint a Mad Catz S.T.R.I.K.E. 7 SDK-jából olvasva, és a logitech-lcd (MIT vagy Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff és ArxWidgetManager (nincs közzétett licenc), a Linux hid-lg-g15 illesztőprogramja (GPL-2.0-or-later), a libg15, G15Interface és lcdproc (GPL-2.0), gnome15 (GPL-3.0) és G19USB (Apache-2.0) alapján ellenőrizve. A PadForge betölti a Logitech Gaming Software könyvtárait és a letöltött vagy kiválasztott Strike7API.dll fájlt, és egyikükből sem tartalmaz kódot.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingon és szindarin referenciák</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>A klingon és szindarin fordítások szavait a klingon-assistant-data (Apache-2.0) projekttel, a boQwI' szótár adatbázisával, valamint az Eldamo (CC BY 4.0) projekttel, Paul Strack elf lexikonával vetettük össze. Csak szótári adatok, a program nem tartalmaz belőlük semmit.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon-referenciák</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>A Novint Falcon támogatás mögötti könyvtárhívások, érzetek és játékerők, a Force Dimension SDK fejlécfájljaiból, dokumentációjából és példáiból olvasva. A Joystick-érzet a FalconJoystick, a Célzás-érzet és a rezgés a FalconJoyForce (mindkettő Cyclops-11B műve, nincs közzétett licenc) alapján készült, ellenőrzésük a CHAI3D (BSD 3-Clause) és a libnifalcon (BSD) alapján történt. A PadForge az Ön által telepített Force Dimension könyvtárat tölti be, mert licence nem biztosít jogot a terjesztésére, és egyikükből sem tartalmaz kódot.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

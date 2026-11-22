@@ -631,6 +631,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio 사용 조건</value></data>
@@ -4957,6 +4958,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>전략 및 데스크톱 시작 프로필 배치와 압력 비례 터보가 피하는 터보 동작. 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows의 문서화되지 않은 IPolicyConfig 인터페이스 레이아웃에 대한 Antoine Aflalo의 참조 자료. PadForge는 이를 이용해 컨트롤러의 오디오 엔드포인트를 다시 활성화합니다. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh 글꼴</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>PadForge에 수정 없이 포함된 SilvinoR의 글꼴로, 인터페이스 언어가 Galactic Basic일 때 인터페이스를 그립니다.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>컨트롤러의 파라메트릭 EQ가 가져오는 EQ 프로필 형식. Jaakko Pasanen 제작. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5093,6 +5096,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>로그인하지 않고 채팅을 읽는 방식과 ! 명령 규칙은 tmi.js와 ComfyJS에서 읽었고, 최신 명령 20개만 유지하는 방식은 DougDoug의 TwitchPlays 템플릿에서 읽었습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>키보드 화면 참조</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>키보드 화면을 뒷받침하는 라이브러리, 프레임, 키는 Logitech의 LCD 및 Arx Control SDK와 Mad Catz의 S.T.R.I.K.E. 7 SDK에서 읽었으며, logitech-lcd(MIT 또는 Apache-2.0), dcspy(MIT), foo_logitech_lcd(LGPL-2.1), LogitechStuff와 ArxWidgetManager(라이선스 미공개), Linux의 hid-lg-g15 드라이버(GPL-2.0-or-later), libg15, G15Interface, lcdproc(GPL-2.0), gnome15(GPL-3.0), G19USB(Apache-2.0)와 대조했습니다. PadForge는 Logitech Gaming Software의 라이브러리와 사용자가 내려받거나 선택한 Strike7API.dll을 로드하며, 그 어느 것의 코드도 포함하지 않습니다.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>클링온어 및 신다린어 참조</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>클링온어와 신다린어 번역의 단어는 boQwI'의 바탕이 된 사전 klingon-assistant-data(Apache-2.0)와 Paul Strack의 엘프어 어휘집 Eldamo(CC BY 4.0)로 확인했습니다. 사전 데이터만 참고했으며 포함된 것은 없습니다.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 참조</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 지원을 뒷받침하는 라이브러리 호출, 느낌, 게임 힘은 Force Dimension의 SDK 헤더, 문서, 예제에서 읽었으며, 조이스틱 느낌은 FalconJoystick에서, 조준 느낌과 진동은 FalconJoyForce(둘 다 Cyclops-11B 제작, 라이선스 미공개)에서 가져왔고, CHAI3D(BSD 3-Clause) 및 libnifalcon(BSD)과 대조했습니다. PadForge는 사용자가 설치한 Force Dimension 라이브러리를 로드하며, 해당 라이선스가 재배포 권리를 부여하지 않으므로 그 어느 것의 코드도 포함하지 않습니다.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -870,6 +870,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Termenii de licență Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Aranjamentele profilurilor de început Strategie și Desktop, precum și comportamentul turbo pe care turbo-ul scalat după presiune îl evită. Citit doar ca documentație, nu este inclus niciun cod GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referință de Antoine Aflalo pentru structura interfeței nedocumentate IPolicyConfig din Windows, pe care PadForge o folosește pentru a reactiva punctul final audio al unui controler. Doar documentație, nu este inclus niciun cod.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Fontul Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Fontul lui SilvinoR, inclus nemodificat în PadForge, care desenează interfața când limba ei este Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Formatul de profil de egalizator parametric pe care îl importă Egalizator parametric din pagina unui controler, de Jaakko Pasanen. Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Citirea chatului fără autentificare și regula comenzilor cu !, citite din tmi.js și ComfyJS, iar păstrarea doar a celor mai noi 20 de comenzi, din șablonul TwitchPlays al lui DougDoug. Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referințe pentru ecranele tastaturilor</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Bibliotecile, cadrele și tastele din spatele ecranelor tastaturilor, citite din SDK-urile Logitech LCD și Arx Control și din SDK-ul S.T.R.I.K.E. 7 de la Mad Catz, verificate încrucișat cu logitech-lcd (MIT sau Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff și ArxWidgetManager (fără licență publicată), driverul hid-lg-g15 din Linux (GPL-2.0-or-later), libg15, G15Interface și lcdproc (GPL-2.0), gnome15 (GPL-3.0) și G19USB (Apache-2.0). PadForge încarcă bibliotecile Logitech Gaming Software și Strike7API.dll descărcat sau ales de utilizator și nu include cod din niciuna dintre ele.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referințe pentru klingoniană și sindarină</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Cuvintele traducerilor în klingoniană și sindarină, verificate în klingon-assistant-data (Apache-2.0), dicționarul din spatele aplicației boQwI', și în Eldamo (CC BY 4.0), lexiconul elfic al lui Paul Strack. Doar date de dicționar, niciuna nu este inclusă.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referințe Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Apelurile de bibliotecă, senzațiile și forțele din joc din spatele suportului pentru Novint Falcon, citite din anteturile SDK, documentația și exemplele Force Dimension, cu senzația Joystick din FalconJoystick și senzația Țintire și vibrația din FalconJoyForce (ambele de Cyclops-11B, fără licență publicată), verificate cu CHAI3D (BSD 3-Clause) și libnifalcon (BSD). PadForge încarcă biblioteca Force Dimension instalată de utilizator, deoarece licența ei nu acordă dreptul de redistribuire, și nu include cod din niciuna dintre ele.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

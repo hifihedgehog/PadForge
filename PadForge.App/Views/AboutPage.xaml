@@ -63,7 +63,7 @@
         <StackPanel x:Name="PageColumn" Margin="36,26,36,36" MaxWidth="1040" HorizontalAlignment="Left">
 
             <TextBlock x:Name="AboutTitle" AutomationProperties.HeadingLevel="Level1"
-                       FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                       FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                        LineHeight="40.6" LineStackingStrategy="BlockLineHeight"
                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                        common:BidiText.Text="{Binding About_Title, Source={x:Static strings:Strings.Instance}}"/>
@@ -216,6 +216,15 @@
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_AudioEndPointLibrary, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_AudioEndPointLibraryDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Ofl, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_AurebeshFont, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_AurebeshFontDesc, Source={x:Static strings:Strings.Instance}}"/>
                             </DockPanel>
                         </Border>
                         <Border Style="{StaticResource CreditRow}">
@@ -810,6 +819,15 @@
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_KeyboardScreenRefs, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_KeyboardScreenRefsDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Several, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_LanguageRefs, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_LanguageRefsDesc, Source={x:Static strings:Strings.Instance}}"/>
                             </DockPanel>
                         </Border>
                         <Border Style="{StaticResource CreditRow}">

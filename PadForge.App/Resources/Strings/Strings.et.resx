@@ -857,6 +857,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio litsentsitingimused</value></data>
@@ -4766,6 +4767,8 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strateegia ja töölaua algprofiilide paigutused ning turbo käitumine, mida survega skaleeritud turbo väldib. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo viide Windowsi dokumenteerimata liidese IPolicyConfig paigutusele, mida PadForge kasutab kontrolleri heli lõpp-punkti uuesti lubamiseks. Ainult dokumentatsioon, koodi ei levitata.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh kirjatüüp</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Kirjatüübi autor on SilvinoR. PadForge sisaldab seda muutmata kujul ja joonistab sellega liidese, kui liidese keel on Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Parameetrilise ekvalaiseri profiilivorming, mida kontrolleri Parameetriline ekvalaiser impordib, autor Jaakko Pasanen. Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5233,4 +5236,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Parool</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Suurendi (hoidmise ajal)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Näitab suurendit, kuni seda makrot hoitakse all, sihtimiseks sihikust läbi. Seadistage see suurendi lehel.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingoni ja sindarini viited</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingoni ja sindarini tõlgete sõnu on kontrollitud allikatega klingon-assistant-data (Apache-2.0), boQwI' sõnastiku andmed, ja Eldamo (CC BY 4.0), elfi keelte leksikon, autor Paul Strack. Ainult sõnastikuandmed, midagi ei levitata.</value></data>
 </root>

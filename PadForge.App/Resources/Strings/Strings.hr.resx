@@ -857,6 +857,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licencni uvjeti za Visual Studio</value></data>
@@ -4767,6 +4768,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Rasporedi početnih profila za strategije i radnu površinu te ponašanje turba koje turbo prema pritisku izbjegava. Korišteno samo kao dokumentacija, ne isporučuje se nikakav GPL kôd.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referenca za raspored nedokumentiranog sučelja IPolicyConfig sustava Windows, autor Antoine Aflalo, koje PadForge koristi za ponovno omogućivanje audiokrajnje točke kontrolera. Samo kao dokumentacija, ne isporučuje se nikakav kôd.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Pismo Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Pismo autora SilvinoR, koje se isporučuje unutar programa PadForge bez izmjena i iscrtava sučelje kada je jezik Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profila parametarskog ekvilizatora koji se uvozi u Parametarski ekvilizator kontrolera, autor Jaakko Pasanen. Samo kao dokumentacija, ne isporučuje se nikakav kôd.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5234,4 +5237,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Lozinka</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Povećalo (dok se drži)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Prikazuje povećalo dok se ovaj makro drži, za ciljanje preko nišana. Postavite ga na stranici Povećalo.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Reference za klingonski i sindarinski</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Riječi klingonskog i sindarinskog prijevoda provjerene su prema projektu klingon-assistant-data (Apache-2.0), rječniku iza aplikacije boQwI', te projektu Eldamo (CC BY 4.0), elfskom leksikonu autora Paul Strack. Samo rječnički podaci, ništa se od njih ne isporučuje.</value></data>
 </root>

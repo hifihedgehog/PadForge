@@ -1209,4 +1209,5 @@
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E phahamisa palo ya kenyo ena ho matla ana pele e kganna sephetho. 0 le 1 di e tlohela e otlolohile. Ka hodimo ho 1 e lieha haufi le bohareng.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad e iketselitsweng e boloka sehlopha ka seng bohole ba sona ho tswa moeling o haufi wa skrine se sephara, jwalo ka ha di-overlay tsa RetroArch di arohanya dihalofo tsa tsona tse pedi. E badilwe e le ditokomane feela, ha ho khoutu ya GPL e romelwang.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Fonte ya Aurebesh</value></data>
 </root>

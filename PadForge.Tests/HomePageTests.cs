@@ -154,7 +154,7 @@ namespace PadForge.Tests
             At(engine, "Width=\"76\" Height=\"76\"");
             At(engine, "BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"3\" CornerRadius=\"38\">");
             At(engine, "Width=\"29\" Height=\"29\" Stretch=\"Uniform\">");
-            At(engine, "FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"32\" FontWeight=\"SemiBold\"");
+            At(engine, "FontFamily=\"{DynamicResource DisplayFontFamily}\" FontSize=\"32\" FontWeight=\"SemiBold\"");
             At(engine, "<controls:FlexLinePanel Margin=\"26,22,26,22\" Gap=\"28\" LineGap=\"18\">");
             At(engine, "<StackPanel controls:FlexLinePanel.Basis=\"250\" controls:FlexLinePanel.Grow=\"1\" VerticalAlignment=\"Center\">");
 
@@ -191,13 +191,13 @@ namespace PadForge.Tests
             // order, and a screen reader hears it whole. It is cold blue
             // while there is a rate, in every state but stopped.
             At(numbers, "AutomationProperties.Name=\"{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontFamily=\"{DynamicResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", numbers);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 At(numbers, "<DataTrigger Binding=\"{Binding EngineStateKey}\" Value=\"" + state + "\"><Setter Property=\"Foreground\" Value=\"{DynamicResource ColdBrush}\"/></DataTrigger>");
             // How many of the controllers are live, said whole to a screen reader.
             At(numbers, "AutomationProperties.Name=\"{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontFamily=\"{DynamicResource DisplayFontFamily}\" FontSize=\"28\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
 
             // The numbers close the card: nothing stands after them.
             Assert.Matches(new Regex("</controls:FlexLinePanel>\\s*</controls:FlexLinePanel>\\s*</Grid>\\s*</Border>\\s*$"), engine.TrimEnd().Substring(0, engine.TrimEnd().LastIndexOf("<!--", StringComparison.Ordinal)).TrimEnd());
@@ -318,7 +318,7 @@ namespace PadForge.Tests
             // The name is the type's, one of seven, and a cold
             // controller's is quiet: the style both sizes of a card take.
             string typeName = Block(page, "<Style x:Key=\"SlotTypeName\" TargetType=\"TextBlock\">", "</Style>");
-            At(typeName, "<Setter Property=\"FontFamily\" Value=\"{StaticResource DisplayFontFamily}\"/>");
+            At(typeName, "<Setter Property=\"FontFamily\" Value=\"{DynamicResource DisplayFontFamily}\"/>");
             At(typeName, "<Setter Property=\"FontWeight\" Value=\"SemiBold\"/>");
             At(typeName, "<Setter Property=\"Text\" Value=\"{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}\"/>");
             foreach (var (type, key) in new[]
@@ -1642,7 +1642,7 @@ namespace PadForge.Tests
             // language's own format puts them. A screen reader hears it whole.
             At(engine, "<TextBlock x:Name=\"EngineFootRate\" Grid.Column=\"2\" VerticalAlignment=\"Center\"");
             At(engine, "AutomationProperties.Name=\"{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(engine, "<Run Text=\"{Binding Dashboard.PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding Dashboard.PollingRateNumber, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"18\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding Dashboard.PollingRateTail, Mode=OneWay}\"/>");
+            At(engine, "<Run Text=\"{Binding Dashboard.PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding Dashboard.PollingRateNumber, Mode=OneWay}\" FontFamily=\"{DynamicResource DisplayFontFamily}\" FontSize=\"18\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding Dashboard.PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", engine);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 Assert.Contains("<DataTrigger Binding=\"{Binding Dashboard.EngineStateKey}\" Value=\"" + state + "\">", engine);

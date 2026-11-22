@@ -5757,18 +5757,18 @@ namespace PadForge
                     flame.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorTertiaryBrush");
                 }
 
-                var name = new System.Windows.Controls.TextBlock
+                // Body face set on the text itself (#175 font sweep): a
+                // code-built Popup sits outside the window's tree, so the
+                // window-level BodyFontFamily never inherits into it. By
+                // resource reference, so it follows a change of face (#590).
+                var name = PadForge.Common.TextFaces.Body(new System.Windows.Controls.TextBlock
                 {
                     Text = item.Name,
-                    // Body face set explicitly (#175 font sweep): a code-built
-                    // Popup sits outside the window's tree, so the window-level
-                    // BodyFontFamily never inherits into it.
-                    FontFamily = (System.Windows.Media.FontFamily)FindResource("BodyFontFamily"),
                     MaxWidth = 240,
                     TextTrimming = TextTrimming.CharacterEllipsis,
                     ToolTip = item.Name,
                     VerticalAlignment = VerticalAlignment.Center
-                };
+                });
                 name.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
                     item.IsActive ? "EmberHotBrush" : "TextFillColorPrimaryBrush");
 

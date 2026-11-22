@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>លក្ខខណ្ឌអាជ្ញាប័ណ្ណ Visual Studio</value></data>
@@ -4763,6 +4764,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ប្លង់ប្រូហ្វាល់ចាប់ផ្ដើម «យុទ្ធសាស្ត្រ» និង «ផ្ទៃតុ» និងឥរិយាបថតួបូដែលតួបូតាមសម្ពាធជៀសវាង។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ឯកសារយោងដោយ Antoine Aflalo សម្រាប់ប្លង់នៃចំណុចប្រទាក់ IPolicyConfig ដែលគ្មានឯកសាររបស់ Windows ដែល PadForge ប្រើដើម្បីបើកចំណុចបញ្ចប់សំឡេងរបស់ឧបករណ៍បញ្ជាឡើងវិញ។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>ពុម្ពអក្សរ Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>ពុម្ពអក្សររបស់ SilvinoR ដែលត្រូវបានដាក់បញ្ចូលក្នុង PadForge ដោយមិនកែប្រែ ហើយគូរចំណុចប្រទាក់ នៅពេលភាសារបស់វាជា Galactic Basic។</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ទម្រង់ប្រូហ្វាល់ EQ ប៉ារ៉ាម៉ែត្រដែល «EQ ប៉ារ៉ាម៉ែត្រ» របស់ឧបករណ៍បញ្ជានាំចូល ដោយ Jaakko Pasanen។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5229,4 +5232,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ពាក្យសម្ងាត់</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>កែវពង្រីក (ពេលសង្កត់ជាប់)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>បង្ហាញកែវពង្រីកខណៈម៉ាក្រូនេះត្រូវបានសង្កត់ជាប់ សម្រាប់ការតម្រង់មើលតាមកែវយឹត។ កំណត់វានៅលើទំព័រ «កែវពង្រីក»។</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ឯកសារយោងភាសាក្លីងហ្គុន និងស៊ីនដារីន</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ពាក្យនៃការបកប្រែជាភាសាក្លីងហ្គុន និងស៊ីនដារីន ត្រូវបានពិនិត្យធៀបនឹង klingon-assistant-data (Apache-2.0) ដែលជាវចនានុក្រមនៅពីក្រោយ boQwI' និង Eldamo (CC BY 4.0) ដែលជាសទ្ទានុក្រមភាសាអែលហ្វរបស់ Paul Strack។ ប្រើជាទិន្នន័យវចនានុក្រមតែប៉ុណ្ណោះ មិនមានទិន្នន័យណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
 </root>

@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio-ի լիցենզիայի պայմաններ</value></data>
@@ -4728,6 +4729,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>«Ռազմավարություն» և «Աշխատասեղան» մեկնարկային պրոֆիլների դասավորությունները, և տուրբո վարքը, որից խուսափում է ճնշումով կարգավորվող տուրբոն։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ի հղումը Windows-ի չփաստաթղթավորված IPolicyConfig ինտերֆեյսի դասավորության վերաբերյալ, որը PadForge-ը օգտագործում է կառավարչի աուդիո վերջնակետը վերամիացնելու համար։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh տառատեսակ</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR-ի տառատեսակը, որը տեղակայվում է PadForge-ի մեջ անփոփոխ և նկարում է ինտերֆեյսը, երբ լեզուն Galactic Basic է։</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Պարամետրիկ EQ պրոֆիլի ձևաչափը, որը ներմուծում է կառավարչի Պարամետրիկ EQ-ն՝ Jaakko Pasanen։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5195,4 +5198,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Գաղտնաբառ</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Խոշորացույց (պահելիս)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ցուցադրում է խոշորացույցը, քանի դեռ այս մակրոն պահվում է, նշան բռնելու համար։ Կարգավորեք այն Խոշորացույցի էջում։</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Կլինգոնական և սինդարին լեզուների հղումներ</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Կլինգոնական և սինդարին թարգմանությունների բառերը ստուգվել են klingon-assistant-data (Apache-2.0) նախագծի հետ, որը boQwI'-ի բառարանն է, և Eldamo (CC BY 4.0) նախագծի հետ, որը Paul Strack-ի էլֆական բառապաշարն է։ Միայն բառարանային տվյալներ, դրանցից ոչինչ չի տեղակայվում։</value></data>
 </root>

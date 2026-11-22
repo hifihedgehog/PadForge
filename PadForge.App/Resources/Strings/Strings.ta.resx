@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio உரிம விதிமுறைகள்</value></data>
@@ -5002,6 +5003,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>உத்தி மற்றும் டெஸ்க்டாப் தொடக்கச் சுயவிவரத் தளவமைப்புகள், அழுத்தத்துக்கேற்ற டர்போ தவிர்க்கும் டர்போ நடத்தை. ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-இன் ஆவணப்படுத்தப்படாத IPolicyConfig இடைமுகத்தின் அமைப்புக்கான மேற்கோள், Antoine Aflalo உருவாக்கியது, கட்டுப்படுத்தியின் ஆடியோ எண்ட்பாயிண்ட்டை மீண்டும் இயக்க PadForge இதைப் பயன்படுத்துகிறது. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh எழுத்துரு</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR உருவாக்கிய எழுத்துரு, PadForge உடன் மாற்றமின்றி வருகிறது, இடைமுக மொழி Galactic Basic ஆக இருக்கும்போது இடைமுகத்தை வரைகிறது.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் பாராமெட்ரிக் EQ இறக்குமதி செய்யும் பாராமெட்ரிக் EQ ப்ரொஃபைல் வடிவம், Jaakko Pasanen உருவாக்கியது. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>உள்நுழையாமல் அரட்டையைப் படிப்பதும் ! கட்டளை விதியும் tmi.js மற்றும் ComfyJS ஆகியவற்றிலிருந்தும், சமீபத்திய 20 கட்டளைகளை மட்டும் வைத்திருப்பது DougDoug-இன் TwitchPlays டெம்ப்ளேட்டிலிருந்தும் படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>விசைப்பலகைத் திரை மேற்கோள்கள்</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>விசைப்பலகைத் திரைகளுக்குப் பின்னால் உள்ள நூலகங்கள், ஃபிரேம்கள் மற்றும் விசைகள், Logitech-இன் LCD மற்றும் Arx Control SDK-கள், Mad Catz-இன் S.T.R.I.K.E. 7 SDK ஆகியவற்றிலிருந்து படிக்கப்பட்டு, logitech-lcd (MIT அல்லது Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff மற்றும் ArxWidgetManager (உரிமம் வெளியிடப்படவில்லை), Linux-இன் hid-lg-g15 இயக்கி (GPL-2.0-or-later), libg15, G15Interface மற்றும் lcdproc (GPL-2.0), gnome15 (GPL-3.0), G19USB (Apache-2.0) ஆகியவற்றுடன் சரிபார்க்கப்பட்டவை. PadForge Logitech Gaming Software-இன் நூலகங்களையும் நீங்கள் பதிவிறக்கும் அல்லது தேர்ந்தெடுக்கும் Strike7API.dll-ஐயும் ஏற்றும், அவற்றில் எதிலிருந்தும் குறியீடு சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>கிளிங்கன் மற்றும் சிந்தாரின் மேற்கோள்கள்</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>கிளிங்கன் மற்றும் சிந்தாரின் மொழிபெயர்ப்புகளின் சொற்கள், boQwI' பின்னுள்ள அகராதியான klingon-assistant-data (Apache-2.0) மற்றும் Paul Strack உருவாக்கிய எல்வியத் சொற்களஞ்சியமான Eldamo (CC BY 4.0) ஆகியவற்றுடன் சரிபார்க்கப்பட்டன. அகராதித் தரவு மட்டும், அதில் எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon மேற்கோள்கள்</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon ஆதரவுக்குப் பின்னால் உள்ள நூலக அழைப்புகள், உணர்வுகள் மற்றும் கேம் ஃபோர்ஸ்கள், Force Dimension-இன் SDK ஹெடர்கள், ஆவணங்கள் மற்றும் எடுத்துக்காட்டுகளிலிருந்து படிக்கப்பட்டவை. ஜாய்ஸ்டிக் உணர்வு FalconJoystick-இலிருந்தும், குறிபார்த்தல் உணர்வும் அதிர்வும் FalconJoyForce-இலிருந்தும் (இரண்டும் Cyclops-11B உருவாக்கியவை, உரிமம் வெளியிடப்படவில்லை) எடுக்கப்பட்டு, CHAI3D (BSD 3-Clause) மற்றும் libnifalcon (BSD) உடன் சரிபார்க்கப்பட்டவை. Force Dimension நூலகத்தை நீங்கள் நிறுவுவதை PadForge ஏற்றும், ஏனெனில் அதன் உரிமம் மறுவிநியோக உரிமையை வழங்கவில்லை, அவற்றில் எதிலிருந்தும் குறியீடு சேர்க்கப்படவில்லை.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Услови на лиценцата на Visual Studio</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Распореди на почетните профили за стратегии и работна површина, како и однесувањето на турбото што турбото според притисокот го избегнува. Прочитано само како документација, не се испорачува GPL-код.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Референца од Antoine Aflalo за распоредот на недокументираниот интерфејс IPolicyConfig на Windows, кој PadForge го користи за повторно овозможување на аудиокрајната точка на контролерот. Само документација, не се испорачува код.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Фонт Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Фонтот на SilvinoR, вклучен во PadForge без измени, што го исцртува интерфејсот кога јазикот е Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Форматот на профилите на параметарскиот EQ што го увезува „Параметарски EQ“ на контролерот, од Jaakko Pasanen. Само документација, не се испорачува код.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Читањето на четот без најавување и правилото за командите со !, прочитани од tmi.js и ComfyJS, и задржувањето само на најновите 20 команди, од шаблонот TwitchPlays на DougDoug. Само документација, не се испорачува код.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Референци за екрани на тастатури</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Библиотеките, рамките и тастерите зад екраните на тастатурите, прочитани од SDK-ата на Logitech за LCD и Arx Control и SDK-то на Mad Catz за S.T.R.I.K.E. 7, вкрстено проверени со logitech-lcd (MIT или Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff и ArxWidgetManager (не е објавена лиценца), двигателот hid-lg-g15 на Linux (GPL-2.0-or-later), libg15, G15Interface и lcdproc (GPL-2.0), gnome15 (GPL-3.0) и G19USB (Apache-2.0). PadForge ги вчитува библиотеките на Logitech Gaming Software и Strike7API.dll што го преземате или го избирате и не испорачува код од ниту една од нив.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Референци за клингонски и синдарински</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Зборовите на клингонскиот и синдаринскиот превод, проверени според klingon-assistant-data (Apache-2.0), речникот зад boQwI', и Eldamo (CC BY 4.0), елфскиот лексикон на Paul Strack. Само речнички податоци, ништо од нив не се испорачува.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Референци за Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Повиците на библиотеката, чувствата и игрините сили зад поддршката за Novint Falcon, прочитани од заглавијата, документацијата и примерите на SDK на Force Dimension, со чувството „Џојстик“ од FalconJoystick и чувството „Нишан“ и вибрациите од FalconJoyForce (двете од Cyclops-11B, не е објавена лиценца), проверени со CHAI3D (BSD 3-Clause) и libnifalcon (BSD). PadForge ја вчитува библиотеката на Force Dimension што ја инсталирате, бидејќи нејзината лиценца не дава право на редистрибуција, и не испорачува код од ниту една од нив.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

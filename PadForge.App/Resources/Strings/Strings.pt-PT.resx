@@ -857,6 +857,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Termos de licença do Visual Studio</value></data>
@@ -4768,6 +4769,8 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Disposições dos perfis iniciais Estratégia e Ambiente de trabalho, e o comportamento de turbo que o turbo proporcional à pressão evita. Lido apenas como documentação, nenhum código GPL é distribuído.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referência de Antoine Aflalo para a estrutura da interface IPolicyConfig, não documentada, do Windows, que o PadForge usa para reativar o ponto final de áudio de um comando. Apenas documentação, nenhum código é distribuído.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Tipo de letra Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>O tipo de letra de SilvinoR, distribuído dentro do PadForge sem alterações, que desenha a interface quando o idioma é Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>O formato de perfil de equalizador paramétrico que o Equalizador paramétrico de um comando importa, de Jaakko Pasanen. Apenas documentação, nenhum código é distribuído.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5235,4 +5238,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Palavra-passe</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (enquanto premida)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Mostra a lupa enquanto esta macro estiver premida, para mirar com a mira apontada. Configure-a na página Lupa.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referências de klingon e sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>As palavras das traduções em klingon e sindarin, confirmadas com o klingon-assistant-data (Apache-2.0), o dicionário por trás do boQwI', e com o Eldamo (CC BY 4.0), o léxico élfico de Paul Strack. Apenas dados de dicionário, nenhum é distribuído.</value></data>
 </root>

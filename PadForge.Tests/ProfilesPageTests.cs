@@ -55,7 +55,7 @@ namespace PadForge.Tests
             var title = Named(parts[0], "ProfilesTitle");
             Assert.Equal("{Binding Profiles_Title" + S, (string)title.Attribute("Text"));
             Assert.Equal("28", (string)title.Attribute("FontSize"));
-            Assert.Equal("{StaticResource DisplayFontFamily}", (string)title.Attribute("FontFamily"));
+            Assert.Equal("{DynamicResource DisplayFontFamily}", (string)title.Attribute("FontFamily"));
             Assert.Equal("SemiBold", (string)title.Attribute("FontWeight"));
             Assert.Equal("Level1", (string)title.Attribute("AutomationProperties.HeadingLevel"));
             Assert.Contains(parts[0].Elements(), e => (string)e.Attribute("Text") == "{Binding Profiles_Subtitle" + S);

@@ -449,12 +449,7 @@ namespace PadForge.Views
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 IsHitTestVisible = false,
-                Child = new TextBlock
-                {
-                    Text = legend ?? string.Empty, FontSize = 8,
-                    FontFamily = font ?? (FontFamily)FindResource("BodyFontFamily"),
-                    Opacity = 0.8, IsHitTestVisible = false
-                },
+                Child = Legend(legend, font),
             };
             Canvas.SetLeft(border, x);
             Canvas.SetTop(border, y);
@@ -471,6 +466,17 @@ namespace PadForge.Views
             };
             border.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, targetName); e.Handled = true; };
             _keyWidgets.Add(new KbmKeyWidget { VKeyIndex = vk, Border = border, TargetName = targetName });
+        }
+
+        /// <summary>A key's legend: in the layout's own face where it has one
+        /// (a Japanese legend), else in the body face by resource reference,
+        /// which follows a change of face (#590).</summary>
+        private static TextBlock Legend(string legend, FontFamily font)
+        {
+            var text = new TextBlock { Text = legend ?? string.Empty, FontSize = 8, Opacity = 0.8, IsHitTestVisible = false };
+            if (font != null) text.FontFamily = font;
+            else PadForge.Common.TextFaces.Body(text);
+            return text;
         }
 
         /// <summary>The lock lights in the board's top right corner, lit from
@@ -493,11 +499,10 @@ namespace PadForge.Views
                 Canvas.SetLeft(dot, x);
                 Canvas.SetTop(dot, 4);
                 KeyboardCanvas.Children.Add(dot);
-                var mark = new TextBlock
+                var mark = PadForge.Common.TextFaces.Body(new TextBlock
                 {
                     Text = marks[i], FontSize = 7, Opacity = 0.7, IsHitTestVisible = false,
-                    FontFamily = (FontFamily)FindResource("BodyFontFamily"),
-                };
+                });
                 Canvas.SetLeft(mark, x + 8);
                 Canvas.SetTop(mark, 2);
                 KeyboardCanvas.Children.Add(mark);

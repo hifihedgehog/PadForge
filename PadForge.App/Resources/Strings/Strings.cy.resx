@@ -857,6 +857,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Telerau trwydded Visual Studio</value></data>
@@ -4751,6 +4752,8 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Cynlluniau proffiliau cychwynnol Strategaeth a Phenbwrdd, a'r ymddygiad tyrbo y mae'r tyrbo wedi'i raddio gan bwysau yn ei osgoi. Wedi'i ddarllen fel dogfennaeth yn unig, ni ddosberthir cod GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Cyfeirnod gan Antoine Aflalo ar gyfer cynllun rhyngwyneb IPolicyConfig heb ei ddogfennu Windows, y mae PadForge yn ei ddefnyddio i ailalluogi pwynt terfyn sain rheolydd. Dogfennaeth yn unig, ni ddosberthir cod.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Ffont Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Ffont gan SilvinoR, a ddosberthir y tu mewn i PadForge heb ei addasu ac sy'n lluniadu'r rhyngwyneb pan fo'i iaith yn Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Fformat proffil EQ paramedrig y mae EQ Paramedrig rheolydd yn ei fewnforio, gan Jaakko Pasanen. Dogfennaeth yn unig, ni ddosberthir cod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>

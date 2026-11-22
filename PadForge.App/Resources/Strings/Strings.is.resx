@@ -870,6 +870,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Leyfisskilmálar Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Uppsetningar upphafssniða fyrir herkænsku og skjáborð, og túrbóhegðunin sem þrýstingskvarðaða túrbóið forðast. Lesið eingöngu sem skjölun, enginn GPL-kóði fylgir.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Viðmiðun eftir Antoine Aflalo um uppsetningu óskjalfests IPolicyConfig-viðmóts Windows, sem PadForge notar til að virkja aftur hljóðendapunkt leikjastýringar. Aðeins skjölun, enginn kóði fylgir.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh-letur</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Letur frá SilvinoR, sem fylgir PadForge óbreytt og teiknar viðmótið þegar tungumálið er Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Skráarform fyrir stikaðan tónjafnara sem „Stikaður tónjafnari“ á síðu stýringar flytur inn, eftir Jaakko Pasanen. Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Lestur spjalls án innskráningar og reglan um skipanir með !, lesin úr tmi.js og ComfyJS, og að geyma aðeins 20 nýjustu skipanirnar, úr sniðmátinu TwitchPlays frá DougDoug. Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Viðmiðanir fyrir lyklaborðsskjái</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Söfnin, rammarnir og lyklarnir á bak við lyklaborðsskjái, lesin úr SDK frá Logitech fyrir LCD og Arx Control og SDK frá Mad Catz fyrir S.T.R.I.K.E. 7, borin saman við logitech-lcd (MIT eða Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff og ArxWidgetManager (ekkert leyfi birt), hid-lg-g15-rekil Linux (GPL-2.0-or-later), libg15, G15Interface og lcdproc (GPL-2.0), gnome15 (GPL-3.0) og G19USB (Apache-2.0). PadForge hleður söfnum Logitech Gaming Software og Strike7API.dll sem þú sækir eða velur, og enginn kóði frá neinu þeirra fylgir með.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Heimildir um klingonsku og sindarín</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Orðin í klingonskri og sindarínskri þýðingu, athuguð gegn klingon-assistant-data (Apache-2.0), orðabókinni á bak við boQwI', og Eldamo (CC BY 4.0), álfaorðasafni Paul Strack. Aðeins orðabókargögn, ekkert af þeim fylgir.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Viðmiðanir fyrir Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Föll safnsins, tilfinningarnar og leikjakraftarnir á bak við stuðning við Novint Falcon, lesin úr hausskrám SDK frá Force Dimension, skjölun og dæmum, með tilfinningu stýripinna úr FalconJoystick og tilfinningu miðunar og titringi úr FalconJoyForce (bæði frá Cyclops-11B, ekkert leyfi birt), borin saman við CHAI3D (BSD 3-Clause) og libnifalcon (BSD). PadForge hleður safni Force Dimension sem þú setur upp, þar sem leyfi þess veitir engan rétt til dreifingar, og enginn kóði frá neinu þeirra fylgir með.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

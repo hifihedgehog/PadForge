@@ -857,6 +857,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio lizentzia-baldintzak</value></data>
@@ -4760,6 +4761,8 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Estrategia- eta mahaigaineko hasierako profilen antolaketak, eta presioarekin eskalatutako turboak saihesten duen turbo-portaera. Dokumentazio gisa soilik irakurria, ez da GPL koderik banatzen.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ren erreferentzia, Windows-en IPolicyConfig interfaze dokumentatu gabearen antolaketarako, zeina PadForge-k kontrolagailu baten audio-amaiera-puntua berriro gaitzeko erabiltzen baitu. Dokumentazioa soilik, ez da koderik banatzen.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh letra-tipoa</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR-en letra-tipoa, PadForge-ren barruan aldatu gabe banatzen dena eta interfazea marrazten duena hizkuntza Galactic Basic denean.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Kontrolagailu baten Ekualizadore parametrikoak inportatzen dituen ekualizazio-profilen formatua, egilea: Jaakko Pasanen. Dokumentazioa soilik, ez da koderik banatzen.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5227,4 +5230,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Pasahitza</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (eutsita)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Lupa erakusten du makro honi eutsita dagoen bitartean, ikuskailuarekin apuntatzeko. Ezarri Lupa orrian.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingon eta Sindarin erreferentziak</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingon eta Sindarin itzulpenen hitzak hauen aurka egiaztatu dira: klingon-assistant-data (Apache-2.0), boQwI'-ren atzean dagoen hiztegia, eta Eldamo (CC BY 4.0), Paul Strack-en lexiko elfikoa. Hiztegiko datuak soilik, ez da bat ere banatzen.</value></data>
 </root>

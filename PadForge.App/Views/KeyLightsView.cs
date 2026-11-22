@@ -287,8 +287,9 @@ namespace PadForge.Views
             }
             var onPicture = new HashSet<int>(placed.Select(p => p.Index));
             double x = 0, y = placed.Count > 0 ? height + ChipGap * 2 : 0;
-            var typeface = new Typeface((FontFamily)FindResource("BodyFontFamily"), FontStyles.Normal,
-                FontWeights.Normal, FontStretches.Normal);
+            // The chips are measured in the face the canvas draws them in,
+            // the body face it takes by resource reference.
+            var typeface = PadForge.Common.TextFaces.TypefaceOf(_canvas, FontWeights.Normal);
             double dip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
             for (int i = 0; i < map.Lights.Count; i++)
             {

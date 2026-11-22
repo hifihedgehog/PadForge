@@ -870,6 +870,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Điều khoản cấp phép Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Bố cục của các hồ sơ khởi đầu Chiến thuật và Màn hình nền, cùng hành vi turbo mà turbo theo lực nhấn tránh. Chỉ được đọc làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Tài liệu tham chiếu của Antoine Aflalo về bố cục của giao diện IPolicyConfig không được ghi tài liệu của Windows, mà PadForge dùng để bật lại điểm cuối âm thanh của tay cầm. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Phông chữ Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Phông chữ của SilvinoR, đi kèm trong PadForge nguyên bản và dùng để vẽ giao diện khi ngôn ngữ của nó là Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Định dạng hồ sơ EQ tham số mà mục EQ tham số của tay cầm nhập, của Jaakko Pasanen. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Cách đọc chat mà không cần đăng nhập và quy tắc lệnh ! được đọc từ tmi.js và ComfyJS, còn việc chỉ giữ 20 lệnh mới nhất lấy từ mẫu TwitchPlays của DougDoug. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Tài liệu tham chiếu màn hình bàn phím</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Các thư viện, khung hình và phím đứng sau màn hình bàn phím, được đọc từ LCD và Arx Control SDK của Logitech cùng S.T.R.I.K.E. 7 SDK của Mad Catz, đối chiếu với logitech-lcd (MIT hoặc Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff và ArxWidgetManager (không công bố giấy phép), trình điều khiển hid-lg-g15 của Linux (GPL-2.0-or-later), libg15, G15Interface và lcdproc (GPL-2.0), gnome15 (GPL-3.0) và G19USB (Apache-2.0). PadForge tải các thư viện của Logitech Gaming Software và Strike7API.dll mà bạn tải về hoặc chọn, và không phát hành kèm mã nào của chúng.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Tài liệu tham chiếu tiếng Klingon và tiếng Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Các từ trong bản dịch tiếng Klingon và tiếng Sindarin, được đối chiếu với klingon-assistant-data (Apache-2.0), từ điển đứng sau boQwI', và Eldamo (CC BY 4.0), bộ từ vựng tiếng Elf của Paul Strack. Chỉ là dữ liệu từ điển, không có phần nào được phát hành kèm.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Tài liệu tham chiếu Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Các lệnh gọi thư viện, kiểu cảm nhận và lực trong trò chơi đứng sau hỗ trợ Novint Falcon, được đọc từ tệp header, tài liệu và ví dụ của SDK Force Dimension, với kiểu Joystick từ FalconJoystick và kiểu Ngắm cùng rung từ FalconJoyForce (cả hai của Cyclops-11B, không công bố giấy phép), đối chiếu với CHAI3D (BSD 3-Clause) và libnifalcon (BSD). PadForge tải thư viện Force Dimension mà bạn cài đặt, vì giấy phép của nó không cấp quyền phân phối lại, và không phát hành kèm mã nào của chúng.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

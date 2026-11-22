@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio परवाना अटी</value></data>
@@ -4755,6 +4756,8 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>स्ट्रॅटेजी आणि डेस्कटॉप सुरुवातीच्या प्रोफाइलची मांडणी, आणि दाबानुसार टर्बो जे टाळते ते टर्बो वर्तन. फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows च्या अदस्तऐवजीकृत IPolicyConfig इंटरफेसच्या मांडणीचा Antoine Aflalo यांचा संदर्भ, जो PadForge कंट्रोलरचा ऑडिओ एंडपॉइंट पुन्हा सक्षम करण्यासाठी वापरते. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh फॉन्ट</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR यांचा फॉन्ट, जो PadForge मध्ये कोणताही बदल न करता समाविष्ट आहे आणि इंटरफेसची भाषा Galactic Basic असताना इंटरफेस रेखाटतो.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>कंट्रोलरचा “पॅरामेट्रिक EQ” इम्पोर्ट करतो ते पॅरामेट्रिक EQ प्रोफाइल स्वरूप, Jaakko Pasanen यांचे. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5215,4 +5218,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>हा मॅक्रो दाबून ठेवला असताना मॅग्निफायर दाखवतो, दृश्यावर नेम धरण्यासाठी. तो मॅग्निफायर पानावर सेट करा.</value></data>
   <data name="About_SInputRefs" xml:space="preserve"><value>SInput संदर्भ</value></data>
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>SInput पॅड सपोर्ट आणि SInput पर्सोनामागील रिपोर्ट, Hand Held Legend च्या SINPUT-LIB-HID (MIT-0) आणि HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) आणि OpenPuck च्या SInput मोडमधून (AGPL-3.0) वाचले. फक्त दस्तऐवजीकरण, कोणताही AGPL कोड समाविष्ट नाही.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>क्लिंगन आणि सिंडारिन संदर्भ</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>क्लिंगन आणि सिंडारिन भाषांतरांतील शब्द klingon-assistant-data (Apache-2.0) शी, म्हणजे boQwI' मागील शब्दकोशाशी, आणि Eldamo (CC BY 4.0) शी, म्हणजे Paul Strack यांच्या एल्विश शब्दकोशाशी पडताळले. फक्त शब्दकोश डेटा, त्यातील काहीही समाविष्ट नाही.</value></data>
 </root>

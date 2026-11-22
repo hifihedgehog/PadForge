@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>شرایط مجوز Visual Studio</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>چیدمان‌های پروفایل‌های آغازین «استراتژی» و «دسکتاپ»، و رفتار توربویی که توربوی وابسته به فشار از آن پرهیز می‌کند. فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجعی اثر Antoine Aflalo برای چیدمان رابط مستندنشده IPolicyConfig در Windows که PadForge برای فعال کردن دوباره نقطه پایانی صوتی کنترلر از آن استفاده می‌کند. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>فونت Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>فونت SilvinoR که بدون تغییر درون PadForge قرار دارد و وقتی زبان رابط Galactic Basic باشد، رابط را با آن می‌کشد.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>قالب پروفایل اکولایزر پارامتریک که «اکولایزر پارامتریک» یک کنترلر وارد می‌کند، اثر Jaakko Pasanen. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>خواندن چت بدون ورود به حساب و قاعده فرمان ! ، خوانده‌شده از tmi.js و ComfyJS، و نگه داشتن فقط 20 فرمان تازه‌تر، از قالب TwitchPlays اثر DougDoug. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>مراجع صفحه‌نمایش صفحه‌کلید</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>کتابخانه‌ها، فریم‌ها و کلیدهای مبنای صفحه‌نمایش‌های صفحه‌کلید، خوانده‌شده از SDKهای LCD و Arx Control شرکت Logitech و SDK S.T.R.I.K.E. 7 شرکت Mad Catz، تطبیق‌داده‌شده با logitech-lcd (MIT یا Apache-2.0)، dcspy (MIT)، foo_logitech_lcd (LGPL-2.1)، LogitechStuff و ArxWidgetManager (بدون مجوز منتشرشده)، درایور hid-lg-g15 در Linux (GPL-2.0-or-later)، libg15، G15Interface و lcdproc (GPL-2.0)، gnome15 (GPL-3.0) و G19USB (Apache-2.0). PadForge کتابخانه‌های Logitech Gaming Software و Strike7API.dll را که دانلود یا انتخاب می‌کنید بارگذاری می‌کند و هیچ کدی از هیچ‌یک از آن‌ها عرضه نمی‌کند.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>مراجع کلینگون و سیندارین</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>واژه‌های ترجمه‌های کلینگون و سیندارین، با klingon-assistant-data (Apache-2.0) که فرهنگ‌لغت پشت boQwI' است، و Eldamo (CC BY 4.0) که واژگان الفی اثر Paul Strack است بررسی شده‌اند. فقط داده‌های فرهنگ‌لغت، هیچ بخشی از آن عرضه نمی‌شود.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>مراجع Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>فراخوانی‌های کتابخانه، حالت‌های حسی و نیروهای بازی که مبنای پشتیبانی از Novint Falcon هستند، خوانده‌شده از سرآیندها، مستندات و نمونه‌های SDK شرکت Force Dimension، با حالت جوی‌استیک از FalconJoystick و حالت هدف‌گیری و لرزش از FalconJoyForce (هر دو اثر Cyclops-11B، بدون مجوز منتشرشده)، تطبیق‌داده‌شده با CHAI3D (BSD 3-Clause) و libnifalcon (BSD). PadForge کتابخانه Force Dimension را که نصب می‌کنید بارگذاری می‌کند، چون مجوز آن حق بازتوزیع نمی‌دهد، و هیچ کدی از هیچ‌یک از آن‌ها عرضه نمی‌کند.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

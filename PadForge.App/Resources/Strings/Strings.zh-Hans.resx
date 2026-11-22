@@ -631,6 +631,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio 许可条款</value></data>
@@ -4957,6 +4958,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>策略和桌面入门配置的布局，以及压感连发所避免的连发行为。仅作文档参考，不随附任何 GPL 代码。</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo 关于 Windows 未公开的 IPolicyConfig 接口布局的参考资料，PadForge 用它重新启用手柄的音频端点。仅作文档参考，不随附任何代码。</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh 字体</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR 的字体，原样随 PadForge 提供，在界面语言为 Galactic Basic 时用于绘制界面。</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>控制器的“参数均衡器”所导入的参数均衡器配置格式，由 Jaakko Pasanen 提供。仅作文档参考，不随附任何代码。</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5093,6 +5096,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>无需登录即可读取聊天以及 ! 命令规则，读自 tmi.js 和 ComfyJS，只保留最新 20 条命令的做法则读自 DougDoug 的 TwitchPlays 模板。仅为文档参考，不含任何代码。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>键盘屏幕参考来源</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>键盘屏幕背后的库、帧和按键，读自 Logitech 的 LCD 和 Arx Control SDK 以及 Mad Catz 的 S.T.R.I.K.E. 7 SDK，并与 logitech-lcd (MIT 或 Apache-2.0)、dcspy (MIT)、foo_logitech_lcd (LGPL-2.1)、LogitechStuff 和 ArxWidgetManager (未公布许可)、Linux 的 hid-lg-g15 驱动 (GPL-2.0-or-later)、libg15、G15Interface 和 lcdproc (GPL-2.0)、gnome15 (GPL-3.0) 以及 G19USB (Apache-2.0) 比对。PadForge 加载 Logitech Gaming Software 的库以及你下载或选择的 Strike7API.dll，不随附其中任何一个的代码。</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>克林贡语和辛达林语参考来源</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>克林贡语和辛达林语译文的用词，对照 klingon-assistant-data (Apache-2.0)（boQwI' 背后的词典）和 Eldamo (CC BY 4.0)（Paul Strack 编纂的精灵语词汇表）核对。仅为词典数据，不随附任何内容。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 参考来源</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 支持背后的库调用、手感和游戏力反馈，读自 Force Dimension 的 SDK 头文件、文档和示例，其中操纵杆手感取自 FalconJoystick，瞄准手感和震动取自 FalconJoyForce (均为 Cyclops-11B 所作，未公布许可)，并与 CHAI3D (BSD 3-Clause) 和 libnifalcon (BSD) 比对。PadForge 加载你安装的 Force Dimension 库，因为其许可不授予再分发的权利，不随附其中任何一个的代码。</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

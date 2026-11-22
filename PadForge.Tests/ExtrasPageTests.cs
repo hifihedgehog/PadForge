@@ -389,7 +389,7 @@ namespace PadForge.Tests
             var titleStyle = Assert.Single(doc.Descendants(), e => (string)e.Attribute(XamlNs + "Key") == "ExtraTitle");
             string Set(string property) => (string)titleStyle.Elements().Single(s => (string)s.Attribute("Property") == property).Attribute("Value");
             Assert.Equal("28", Set("FontSize"));
-            Assert.Equal("{StaticResource DisplayFontFamily}", Set("FontFamily"));
+            Assert.Equal("{DynamicResource DisplayFontFamily}", Set("FontFamily"));
             Assert.Equal("40.6", Set("LineHeight"));
 
             // 2 of 12 on: the number large, in the code face and ember, and
@@ -405,7 +405,7 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding ExtrasOnLead, Mode=OneWay}", "{Binding ExtrasOnNumber, Mode=OneWay}", "{Binding ExtrasOnTail, Mode=OneWay}" },
                 runs.Select(r => (string)r.Attribute("Text")));
             Assert.Equal("20", (string)runs[1].Attribute("FontSize"));
-            Assert.Equal("{StaticResource DisplayFontFamily}", (string)runs[1].Attribute("FontFamily"));
+            Assert.Equal("{DynamicResource DisplayFontFamily}", (string)runs[1].Attribute("FontFamily"));
             Assert.Equal("Tabular", (string)runs[1].Attribute("Typography.NumeralAlignment"));
             Assert.Equal("{DynamicResource EmberHotBrush}", (string)runs[1].Attribute("Foreground"));
             Assert.Contains("\"><Run Text=\"{Binding ExtrasOnLead, Mode=OneWay}\"/><Run Text=\"{Binding ExtrasOnNumber, Mode=OneWay}\"", text);

@@ -1,5 +1,5 @@
 <ui:FluentWindow x:Class="PadForge.MainWindow"
-    FontFamily="{StaticResource BodyFontFamily}"
+    FontFamily="{DynamicResource BodyFontFamily}"
     FontSize="13"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -360,7 +360,7 @@
                                      between runs would add a space. -->
                                 <TextBlock x:Name="EngineFootRate" Grid.Column="2" VerticalAlignment="Center"
                                            Typography.NumeralAlignment="Tabular" FontSize="12"
-                                           AutomationProperties.Name="{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding Dashboard.PollingRateLead, Mode=OneWay}"/><Run Text="{Binding Dashboard.PollingRateNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="18" FontWeight="SemiBold"/><Run Text="{Binding Dashboard.PollingRateTail, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding Dashboard.PollingRateLead, Mode=OneWay}"/><Run Text="{Binding Dashboard.PollingRateNumber, Mode=OneWay}" FontFamily="{DynamicResource DisplayFontFamily}" FontSize="18" FontWeight="SemiBold"/><Run Text="{Binding Dashboard.PollingRateTail, Mode=OneWay}"/></TextBlock>
                             </Grid>
                         </Grid>
                     </Border>

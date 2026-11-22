@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio लाइसेन्स सर्तहरू</value></data>
@@ -5002,6 +5003,8 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>रणनीति र डेस्कटप सुरुआती प्रोफाइलका लेआउटहरू, र दबाबअनुसारको टर्बोले बेवास्ता गर्ने टर्बो व्यवहार। कागजातका रूपमा मात्र पढिएको, कुनै GPL कोड समावेश छैन।</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows को कागजात नभएको IPolicyConfig इन्टरफेसको लेआउटका लागि Antoine Aflalo को सन्दर्भ, जुन इन्टरफेस PadForge ले कन्ट्रोलरको अडियो एन्डपोइन्ट पुनः सक्षम गर्न प्रयोग गर्छ। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh फन्ट</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR को फन्ट, जुन कुनै परिवर्तन बिना PadForge भित्रै आउँछ र भाषा Galactic Basic हुँदा पूरा इन्टरफेस यसैमा कोर्छ।</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>कन्ट्रोलरको “प्यारामेट्रिक EQ” ले आयात गर्ने प्यारामेट्रिक EQ प्रोफाइल ढाँचा, Jaakko Pasanen द्वारा। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>साइन इन नगरी च्याट पढ्ने तरिका र ! कमान्ड नियम, tmi.js र ComfyJS बाट पढिएका, र सबैभन्दा नयाँ 20 कमान्डहरू मात्र राख्ने तरिका, DougDoug को TwitchPlays टेम्प्लेटबाट। कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>किबोर्ड स्क्रिन सन्दर्भहरू</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>किबोर्ड स्क्रिनहरू पछाडिका लाइब्रेरीहरू, फ्रेमहरू र कुञ्जीहरू, Logitech को LCD र Arx Control SDKs तथा Mad Catz को S.T.R.I.K.E. 7 SDK बाट पढिएका, र logitech-lcd (MIT वा Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff र ArxWidgetManager (कुनै इजाजतपत्र प्रकाशित छैन), Linux को hid-lg-g15 ड्राइभर (GPL-2.0-or-later), libg15, G15Interface र lcdproc (GPL-2.0), gnome15 (GPL-3.0) र G19USB (Apache-2.0) सँग जाँचिएका। PadForge ले Logitech Gaming Software का लाइब्रेरीहरू र तपाईंले डाउनलोड गर्ने वा रोज्ने Strike7API.dll लोड गर्छ, र तीमध्ये कुनैको पनि कोड समावेश गर्दैन।</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>क्लिङ्गन र सिन्डारिन सन्दर्भहरू</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>क्लिङ्गन र सिन्डारिन अनुवादका शब्दहरू boQwI' पछाडिको शब्दकोश klingon-assistant-data (Apache-2.0) र Paul Strack को एल्भिस शब्दकोश Eldamo (CC BY 4.0) सँग जाँचिएका छन्। शब्दकोश डेटा मात्र, यसको कुनै अंश समावेश छैन।</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon सन्दर्भहरू</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon समर्थनपछाडिका लाइब्रेरी कलहरू, अनुभूतिहरू र गेम बलहरू, Force Dimension को SDK हेडरहरू, कागजात र उदाहरणहरूबाट पढिएका, जोयस्टिक अनुभूति FalconJoystick बाट र निशाना अनुभूति तथा कम्पन FalconJoyForce बाट (दुवै Cyclops-11B द्वारा, कुनै इजाजतपत्र प्रकाशित छैन), CHAI3D (BSD 3-Clause) र libnifalcon (BSD) सँग जाँचिएका। PadForge ले तपाईंले स्थापना गर्ने Force Dimension लाइब्रेरी लोड गर्छ, किनभने यसको इजाजतपत्रले यसलाई पुनर्वितरण गर्ने अधिकार दिँदैन, र तीमध्ये कुनैको पनि कोड समावेश गर्दैन।</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

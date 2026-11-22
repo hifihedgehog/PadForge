@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio බලපත්‍ර නියම</value></data>
@@ -4724,6 +4725,8 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>උපාය මාර්ග සහ ඩෙස්ක්ටොප් ආරම්භක පැතිකඩ පිරිසැලසුම්, සහ පීඩනයට අනුව ටර්බෝ මඟ හරින ටර්බෝ හැසිරීම. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge පාලකයක ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය නැවත සක්‍රිය කිරීමට භාවිත කරන, Windows හි ලේඛනගත නොකළ IPolicyConfig අතුරුමුහුණතේ පිරිසැලසුම සඳහා Antoine Aflalo විසින් මූලාශ්‍රය. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh අක්ෂර මුහුණත</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR ගේ අක්ෂර මුහුණත, එය කිසිදු වෙනසකින් තොරව PadForge තුළ ඇතුළත් වන අතර අතුරු මුහුණතේ භාෂාව Galactic Basic වන විට අතුරු මුහුණත ඇඳීමට භාවිත වේ.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>පාලකයක පරාමිතික EQ ආයාත කරන පරාමිතික EQ පැතිකඩ ආකෘතිය, Jaakko Pasanen විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5191,4 +5194,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>මුරපදය</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>විශාලකය (ඔබාගෙන සිටින අතරතුර)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>දසුන් හරහා ඉලක්ක කිරීම සඳහා, මෙම මැක්‍රෝව ඔබාගෙන සිටින අතරතුර විශාලකය පෙන්වයි. එය විශාලකය පිටුවේ සකසන්න.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් මූලාශ්‍ර</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් පරිවර්තනවල වචන, boQwI' පිටුපස ඇති ශබ්දකෝෂය වන klingon-assistant-data (Apache-2.0) සහ Paul Strack ගේ එල්ෆ් ශබ්දකෝෂය වන Eldamo (CC BY 4.0) සමඟ සසඳා පරීක්ෂා කර ඇත. ශබ්දකෝෂ දත්ත පමණි, ඉන් කිසිවක් ඇතුළත් නොවේ.</value></data>
 </root>

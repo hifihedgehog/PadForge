@@ -63,6 +63,7 @@ assettocorsasharedmemory
 atan2
 AudioEndPointLibrary
 AULA
+Aurebesh
 AutoCalibrationRB
 AutoEq
 AutoHotkey
@@ -76,6 +77,7 @@ BlinkyTape_Arduino
 Bliss-Box
 Bluepad32
 BMP
+boQwI'
 bs2b
 BSD
 BSD-2-Clause
@@ -155,6 +157,7 @@ Dygmalab/Kaleidoscope
 EA SPORTS WRC
 Ed25519
 EDRefCard2
+Eldamo
 elgatosf/cli
 ergodex-dx1-linux
 ets2-telemetry-udp
@@ -190,6 +193,7 @@ g810-led
 g810-led-resources
 g915x-heatmap
 ga2mer
+Galactic Basic
 GameControllerDB
 GameInput
 Gamepad-Asset-Pack
@@ -277,6 +281,7 @@ kettlerUSB2BLE
 KeyAxis
 kHz
 KLAVIATURKIN
+klingon-assistant-data
 Kodi
 L1
 L2
@@ -385,6 +390,7 @@ PadForge.Control
 PadForge.exe
 PadForge.xml
 PashOK7
+Paul Strack
 PC/SC
 PCars2UdpNet
 PCM
@@ -465,6 +471,7 @@ SHA-256
 ShapeRecognizer
 shunt
 SideWinder
+SilvinoR
 simapi
 SimHub
 SIMULATOR

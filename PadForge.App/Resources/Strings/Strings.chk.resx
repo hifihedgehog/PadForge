@@ -755,4 +755,5 @@
   <data name="Common_Apply" xml:space="preserve"><value>Áeá</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Eú custom web pad a isoni ttamen iteiten mwichen button seni ewe kkan mi arap ngeni lón eú screen mi kon lapalap, usun ekkewe overlay an RetroArch ra mwékút ar ruu kinikin. Sia chok álleni usun documentation, esor GPL code a nóm lón.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Sókkun mak Aurebesh</value></data>
 </root>

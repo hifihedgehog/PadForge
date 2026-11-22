@@ -88,7 +88,7 @@
         <!-- A page's name, and the catalog's: the boards' page title, 28
              in the display face, as on every page. -->
         <Style x:Key="ExtraTitle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource DisplayFontFamily}"/>
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
@@ -107,7 +107,7 @@
             <Setter Property="Margin" Value="0,20,0,0"/>
         </Style>
         <Style x:Key="ExtraStatusText" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -189,7 +189,7 @@
         <!-- A paired PC's name, typed over in place: the look of a macro's
              name on the controller page (HeadNameEdit), at the line's size. -->
         <Style x:Key="PeerNameEdit" TargetType="TextBox" BasedOn="{StaticResource DzValueEdit}">
-            <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextAlignment" Value="Left"/>
@@ -320,7 +320,7 @@
                     <TextBlock x:Name="OnCountText" VerticalAlignment="Bottom" FontSize="14"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                AutomationProperties.AutomationId="Extras_OnCount"
-                               AutomationProperties.Name="{Binding ExtrasOnSpoken, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ExtrasOnLead, Mode=OneWay}"/><Run Text="{Binding ExtrasOnNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"/><Run Text="{Binding ExtrasOnTail, Mode=OneWay}"/></TextBlock>
+                               AutomationProperties.Name="{Binding ExtrasOnSpoken, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ExtrasOnLead, Mode=OneWay}"/><Run Text="{Binding ExtrasOnNumber, Mode=OneWay}" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"/><Run Text="{Binding ExtrasOnTail, Mode=OneWay}"/></TextBlock>
                 </controls:FlexLinePanel>
 
                 <TextBlock Text="{Binding Extras_Group_Play, Source={x:Static strings:Strings.Instance}}"

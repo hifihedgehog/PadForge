@@ -42,6 +42,9 @@ namespace PadForge.Controls
             // angle's sign and a time's order are not the reading order's.
             FlowDirection = FlowDirection.LeftToRight;
             SnapsToDevicePixels = true;
+            // The labels take the body face by resource reference, so a chart
+            // redraws in the face of the interface language (#590).
+            PadForge.Common.TextFaces.Follow(this, PadForge.Common.TextFaces.BodyKey);
         }
 
         // The plot's fill and its edge, the grid a step fainter than the
@@ -59,7 +62,7 @@ namespace PadForge.Controls
         protected FormattedText Text(string text, Brush brush)
         {
             return new FormattedText(text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                PadForge.Common.TextFaces.BodyTypeface(FontWeights.Normal), LabelSize, brush,
+                PadForge.Common.TextFaces.TypefaceOf(this, FontWeights.Normal), LabelSize, brush,
                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
         }
 

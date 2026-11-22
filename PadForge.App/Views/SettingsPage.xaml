@@ -229,7 +229,7 @@
                 <TextBlock x:Name="SettingsTitle" AutomationProperties.HeadingLevel="Level1"
                            controls:FlexLinePanel.Basis="200" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center"
                            Text="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}"
-                           FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                           FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                            LineHeight="40.6" LineStackingStrategy="BlockLineHeight"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                 <ui:TextBox x:Name="SettingsSearchBox" controls:FlexLinePanel.Basis="300" VerticalAlignment="Center"
@@ -325,11 +325,17 @@
                                                     <Setter Property="Language" Value="{Binding Culture, Converter={StaticResource CultureLanguageConverter}, ConverterCulture=en-US}"/>
                                                 </Style>
                                             </ComboBox.ItemContainerStyle>
+                                            <!-- Each name keeps its face under every interface language
+                                                 (#590): the own name in its language's face, Galactic Basic's
+                                                 in Aurebesh, and the English name in the standard body face,
+                                                 so a reader of any language can find their way back. -->
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding NativeName}"/>
+                                                        <TextBlock Text="{Binding NativeName}"
+                                                                   FontFamily="{Binding Converter={StaticResource LanguageFaceConverter}}"/>
                                                         <TextBlock Text="{Binding EnglishNameIfDifferent}" Margin="10,0,0,0"
+                                                                   FontFamily="{x:Static common:TextFaces.StandardBody}"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     </StackPanel>
                                                 </DataTemplate>

@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio لائسنس کی شرائط</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>اسٹریٹجی اور ڈیسک ٹاپ ابتدائی پروفائلز کے لے آؤٹس، اور ٹربو کا وہ طرز عمل جس سے دباؤ کے مطابق ٹربو بچتا ہے۔ صرف بطور دستاویز پڑھا گیا، کوئی GPL کوڈ شامل نہیں۔</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows کے غیر دستاویزی IPolicyConfig انٹرفیس کے لے آؤٹ کا حوالہ، از Antoine Aflalo، جسے PadForge کنٹرولر کے آڈیو اینڈ پوائنٹ کو دوبارہ فعال کرنے کے لیے استعمال کرتا ہے۔ صرف دستاویزات، کوئی کوڈ شامل نہیں۔</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh فونٹ</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR کا فونٹ، جو PadForge کے اندر بغیر کسی تبدیلی کے آتا ہے اور جب انٹرفیس کی زبان Galactic Basic ہو تو پورا انٹرفیس اسی میں بناتا ہے۔</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>پیرامیٹرک EQ پروفائل کا فارمیٹ جسے کنٹرولر کا "پیرامیٹرک EQ" درآمد کرتا ہے، از Jaakko Pasanen۔ صرف دستاویزات، کوئی کوڈ شامل نہیں۔</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>سائن اِن کیے بغیر چیٹ پڑھنا اور ! کمانڈ کا اصول، جو tmi.js اور ComfyJS سے پڑھے گئے، اور صرف تازہ ترین 20 کمانڈز رکھنا، جو DougDoug کے TwitchPlays ٹیمپلیٹ سے پڑھا گیا۔ صرف دستاویزات، کوئی کوڈ شامل نہیں۔</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>کی بورڈ اسکرین کے حوالے</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>کی بورڈ اسکرینز کے پیچھے لائبریریاں، فریمز اور کلیدیں، جو Logitech کے LCD اور Arx Control SDKs اور Mad Catz کے S.T.R.I.K.E. 7 SDK سے پڑھی گئیں اور logitech-lcd (MIT یا Apache-2.0)، dcspy (MIT)، foo_logitech_lcd (LGPL-2.1)، LogitechStuff اور ArxWidgetManager (کوئی لائسنس شائع نہیں)، Linux کے hid-lg-g15 ڈرائیور (GPL-2.0-or-later)، libg15، G15Interface اور lcdproc (GPL-2.0)، gnome15 (GPL-3.0) اور G19USB (Apache-2.0) سے ان کی جانچ کی گئی۔ PadForge Logitech Gaming Software کی لائبریریاں اور وہ Strike7API.dll لوڈ کرتا ہے جو آپ ڈاؤن لوڈ کرتے یا منتخب کرتے ہیں، اور ان میں سے کسی کا کوئی کوڈ شامل نہیں کرتا۔</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>کلنگن اور سنڈارن کے حوالے</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>کلنگن اور سنڈارن ترجموں کے الفاظ klingon-assistant-data (Apache-2.0)، جو boQwI' کے پیچھے کی لغت ہے، اور Eldamo (CC BY 4.0)، یعنی Paul Strack کی ایلفی لغت، سے جانچے گئے۔ صرف لغت کا ڈیٹا، کوئی ڈیٹا شامل نہیں۔</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon کے حوالے</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon سپورٹ کے پیچھے لائبریری کالز، فیلز اور گیم فورسز، جو Force Dimension کے SDK ہیڈرز، دستاویزات اور مثالوں سے پڑھی گئیں، جن میں جوائے اسٹک فیل FalconJoystick سے اور نشانہ فیل اور رمبل FalconJoyForce سے لیے گئے (دونوں Cyclops-11B کے، کوئی لائسنس شائع نہیں)، اور CHAI3D (BSD 3-Clause) اور libnifalcon (BSD) سے جانچے گئے۔ PadForge وہ Force Dimension لائبریری لوڈ کرتا ہے جو آپ انسٹال کرتے ہیں، کیونکہ اس کا لائسنس اسے دوبارہ تقسیم کرنے کا حق نہیں دیتا، اور ان میں سے کسی کا کوئی کوڈ شامل نہیں کرتا۔</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

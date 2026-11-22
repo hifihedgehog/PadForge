@@ -3,13 +3,15 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace PadForge.Common
 {
     /// <summary>
-    /// Gives every window the two things it takes from the interface
+    /// Gives every window the three things it takes from the interface
     /// language: the language its text is declared in, as xml:lang does in
-    /// markup, and the direction it is laid out in.
+    /// markup, the direction it is laid out in, and the faces its text is
+    /// drawn in.
     ///
     /// <para>The declared language is for Chinese, Japanese and Korean
     /// (#504). The three share their characters, and WPF picks the font for
@@ -31,6 +33,10 @@ namespace PadForge.Common
     /// (#505). A window laid out right to left mirrors its panels. Drawings
     /// pin themselves left to right, so a controller's left stick stays on
     /// the left.</para>
+    ///
+    /// <para>The faces are for Galactic Basic (#590), English written in the
+    /// Aurebesh alphabet: App.xaml's two faces become the Aurebesh font, and
+    /// every other language has App.xaml's own.</para>
     /// </summary>
     internal static class UiLanguage
     {
@@ -125,13 +131,40 @@ namespace PadForge.Common
             FlowDirection direction = Direction(ui);
             Application app = Application.Current;
             if (app == null) return;
-            if (app.Dispatcher.CheckAccess()) DeclareOnAll(app, language, direction);
-            else app.Dispatcher.BeginInvoke(new Action(() => DeclareOnAll(app, language, direction)));
+            if (app.Dispatcher.CheckAccess()) ApplyOnAll(app, ui, language, direction);
+            else app.Dispatcher.BeginInvoke(new Action(() => ApplyOnAll(app, ui, language, direction)));
         }
 
-        private static void DeclareOnAll(Application app, XmlLanguage language, FlowDirection direction)
+        private static void ApplyOnAll(Application app, CultureInfo ui, XmlLanguage language, FlowDirection direction)
         {
+            ApplyFaces(app.Resources, ui);
             foreach (Window window in app.Windows) Declare(window, language, direction);
+        }
+
+        /// <summary>The faces the interface's text is drawn in under
+        /// <paramref name="ui"/>. Galactic Basic sets BodyFontFamily and
+        /// DisplayFontFamily to the Aurebesh faces in the application's own
+        /// resources, over the merged dictionary in App.xaml that declares
+        /// them. Every other language takes them out again, and App.xaml's
+        /// own faces, the same objects, answer once more. ResourceDictionary's
+        /// indexer reads its own entries before its merged ones, and its
+        /// setter and Remove act on its own entries and tell every resource
+        /// reference (dotnet/wpf ResourceDictionary.cs). Markup and code take
+        /// both faces by resource reference, so a page already built redraws
+        /// in the new face.</summary>
+        internal static void ApplyFaces(ResourceDictionary resources, CultureInfo ui)
+        {
+            if (resources == null) return;
+            bool aurebesh = LanguageCatalog.Resolve(ui)?.IsAurebesh == true;
+            SetFace(resources, TextFaces.BodyKey, TextFaces.AurebeshBody, aurebesh);
+            SetFace(resources, TextFaces.DisplayKey, TextFaces.AurebeshDisplay, aurebesh);
+        }
+
+        private static void SetFace(ResourceDictionary resources, string key, FontFamily aurebesh, bool on)
+        {
+            bool set = ReferenceEquals(resources[key], aurebesh);
+            if (on && !set) resources[key] = aurebesh;
+            else if (!on && set) resources.Remove(key);
         }
 
         internal static void Declare(Window window, XmlLanguage language, FlowDirection direction)

@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio လိုင်စင် စည်းကမ်းများ</value></data>
@@ -4758,6 +4759,8 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ဗျူဟာနှင့် ဒက်စ်တော့ အစပြုပရိုဖိုင် အပြင်အဆင်များနှင့် ဖိအားအလိုက် တာဘိုက ရှောင်ရှားသော တာဘို အပြုအမူ။ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ၏ စာရွက်စာတမ်းမရှိသော IPolicyConfig interface ၏ အပြင်အဆင်အတွက် Antoine Aflalo ၏ ကိုးကားချက်၊ PadForge သည် ၎င်းကို ကွန်ထရိုလာ၏ အသံ endpoint ကို ပြန်ဖွင့်ရန် အသုံးပြုသည်။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh ဖောင့်</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR ၏ ဖောင့်၊ PadForge ထဲတွင် မပြင်ဆင်ဘဲ ပါဝင်ပြီး ဘာသာစကားသည် Galactic Basic ဖြစ်သောအခါ အင်တာဖေ့စ်ကို ရေးဆွဲပေးသည်။</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ကွန်ထရိုလာ၏ “ပါရာမက်ထရစ် EQ” က တင်သွင်းသော ပါရာမက်ထရစ် EQ ပရိုဖိုင်ပုံစံ၊ ရေးသားသူ Jaakko Pasanen။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5223,4 +5226,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>စကားဝှက်</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ချဲ့ကြည့်ကိရိယာ (ဖိထားစဉ်)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ပစ်မှတ်ချိန်ရန် ဤမက်ခရိုကို ဖိထားစဉ် ချဲ့ကြည့်ကိရိယာကို ပြသည်။ “ချဲ့ကြည့်ကိရိယာ” စာမျက်နှာတွင် သတ်မှတ်ပါ။</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ကိုးကားချက်များ</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ဘာသာပြန်ချက်များ၏ စကားလုံးများကို boQwI' ၏ နောက်ကွယ်ရှိ အဘိဓာန် klingon-assistant-data (Apache-2.0) နှင့် Paul Strack ၏ အဲလ်ဗ် ဝေါဟာရစာရင်း Eldamo (CC BY 4.0) တို့နှင့် တိုက်ဆိုင်စစ်ဆေးထားသည်။ အဘိဓာန်ဒေတာအဖြစ်သာ၊ မည်သည့်အပိုင်းမျှ မပါဝင်ပါ။</value></data>
 </root>

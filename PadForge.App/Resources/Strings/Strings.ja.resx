@@ -631,6 +631,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ライセンス条項</value></data>
@@ -4957,6 +4958,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ストラテジーとデスクトップのスタータープロファイルの配置、および感圧ターボが避けるターボの挙動。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows の文書化されていない IPolicyConfig インターフェイスのレイアウトに関する Antoine Aflalo のリファレンス。PadForge はこれを使ってコントローラーのオーディオエンドポイントを再度有効にします。ドキュメントのみ参照、コードは同梱しません。</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh フォント</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR 製のフォントで、PadForge に無改変で同梱され、言語が Galactic Basic のときにインターフェイスの描画に使われます。</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>コントローラーの「パラメトリック EQ」が読み込むパラメトリック EQ プロファイルの形式。Jaakko Pasanen 製。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5093,6 +5096,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>サインインせずにチャットを読み取る方法と ! コマンドの規則は tmi.js と ComfyJS から、最新の 20 件のコマンドだけを保持する方法は DougDoug の TwitchPlays テンプレートから読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>キーボード画面の参照元</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>キーボード画面を支えるライブラリ、フレーム、キーは、Logitech の LCD SDK と Arx Control SDK、Mad Catz の S.T.R.I.K.E. 7 SDK から読み取り、logitech-lcd (MIT または Apache-2.0)、dcspy (MIT)、foo_logitech_lcd (LGPL-2.1)、LogitechStuff と ArxWidgetManager (ライセンス未公開)、Linux の hid-lg-g15 ドライバー (GPL-2.0-or-later)、libg15、G15Interface、lcdproc (GPL-2.0)、gnome15 (GPL-3.0)、G19USB (Apache-2.0) と照合しました。PadForge は Logitech Gaming Software のライブラリと、ダウンロードまたは選択した Strike7API.dll を読み込み、これらのコードは一切同梱しません。</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>クリンゴン語とシンダール語の参照元</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>クリンゴン語とシンダール語の訳語は、boQwI' の元になった辞書の klingon-assistant-data (Apache-2.0) と、Paul Strack 氏によるエルフ語の語彙集 Eldamo (CC BY 4.0) で照合しました。辞書データのみで、同梱はしていません。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon の参照元</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 対応を支えるライブラリ呼び出し、操作感、ゲームフォースは、Force Dimension の SDK ヘッダー、ドキュメント、サンプルから読み取り、ジョイスティックの操作感は FalconJoystick、エイムの操作感とランブルは FalconJoyForce (どちらも Cyclops-11B 作、ライセンス未公開) から取り、CHAI3D (BSD 3-Clause) と libnifalcon (BSD) と照合しました。PadForge はお使いの環境にインストールされた Force Dimension のライブラリを読み込みます。そのライセンスには再配布の権利がないためで、これらのコードは一切同梱しません。</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -31,7 +31,8 @@ SCRIPT_WORDS = {
 SENTENCE_END = set(".!?。।॥۔։။።។؟")
 # The projects whose credits the app's tests read: the name, then the license in ASCII parentheses.
 CREDITED = {"Dolphin", "new-lg4ff", "OpenLogi", "t19xx_usb", "ttyT1941", "hmkconf", "android-bluez-ime", "Linux",
-            "zeemoted", "dji-firmware-tools", "NintendoExtensionCtrl", "spacenavd", "chmfp", "fortius_1942", "x360ce"}
+            "zeemoted", "dji-firmware-tools", "NintendoExtensionCtrl", "spacenavd", "chmfp", "fortius_1942", "x360ce",
+            "klingon-assistant-data", "Eldamo"}
 LICENSE_TAG = re.compile(r"(\S+) \(([^()]*)\)")
 # The About page's license chips that are a license's identifier or name, which AboutPageTests holds to the
 # English in every language.
@@ -39,8 +40,8 @@ LEGAL_CHIPS = ("About_License_Mit", "About_License_Apache2", "About_License_Bsd3
                "About_License_Bsl1", "About_License_Isc", "About_License_Mpl2", "About_License_Unlicense",
                "About_License_Zlib", "About_License_Gpl2", "About_License_Gpl2OrLater", "About_License_Gpl3",
                "About_License_Gpl3OrLater", "About_License_Agpl3", "About_License_Lgpl21OrLater", "About_License_Lgpl3",
-               "About_License_Lgpl3OrLater", "About_License_CcByNcSa4", "About_License_CcBy3", "About_License_CgTrader",
-               "About_License_WyvrnEula")
+               "About_License_Lgpl3OrLater", "About_License_CcByNcSa4", "About_License_CcBy3", "About_License_Ofl",
+               "About_License_CgTrader", "About_License_WyvrnEula")
 PURE_LICENSE = re.compile(r"^(?:[A-Z0-9][\w.+/-]*|and)(?: (?:[A-Z0-9][\w.+/-]*|and))*$")
 
 

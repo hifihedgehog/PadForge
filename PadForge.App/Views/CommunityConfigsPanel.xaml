@@ -5,7 +5,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:views="clr-namespace:PadForge.Views"
-             FontFamily="{StaticResource BodyFontFamily}">
+             FontFamily="{DynamicResource BodyFontFamily}">
 
     <UserControl.Resources>
         <!-- Forge bar (design doc: the one loading treatment, no skeletons,
@@ -84,7 +84,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="TextElement.FontSize" Value="12"/>
-            <Setter Property="TextElement.FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="TextElement.FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsActive}" Value="True">
                     <Setter Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
@@ -109,7 +109,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="TextElement.FontSize" Value="12"/>
-            <Setter Property="TextElement.FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="TextElement.FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsIncluded}" Value="True">
                     <Setter Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
@@ -622,7 +622,7 @@
                             <Border CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatCleanNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
+                                    <TextBlock x:Name="StatCleanNum" Text="0" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatClean, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -631,7 +631,7 @@
                             <Border Grid.Column="2" CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatPartialNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
+                                    <TextBlock x:Name="StatPartialNum" Text="0" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatPartial, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -640,7 +640,7 @@
                             <Border Grid.Column="4" CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatSkippedNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
+                                    <TextBlock x:Name="StatSkippedNum" Text="0" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatSkipped, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>

@@ -490,6 +490,10 @@ namespace PadForge
                 }
                 catch { /* ignore parse errors, use system default */ }
             }
+            // UiLanguage started under the Windows language, above. The saved
+            // one may draw in another face (Galactic Basic's Aurebesh, #590),
+            // and no window has loaded yet to read it.
+            PadForge.Common.UiLanguage.Apply();
 
             // Elevation is guaranteed by app.manifest (requireAdministrator).
             // Windows prompts on launch and shows the UAC shield on the icon.

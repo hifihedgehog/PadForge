@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>ข้อกำหนดสัญญาอนุญาตของ Visual Studio</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>เลย์เอาต์ของโปรไฟล์ตั้งต้นแบบวางแผนกลยุทธ์และแบบเดสก์ท็อป และพฤติกรรมเทอร์โบที่เทอร์โบแบบตามแรงกดหลีกเลี่ยง ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>แหล่งอ้างอิงโดย Antoine Aflalo สำหรับโครงสร้างของอินเทอร์เฟซ IPolicyConfig ของ Windows ซึ่งไม่มีเอกสารประกอบ PadForge ใช้อินเทอร์เฟซนี้เพื่อเปิดใช้ปลายทางเสียงของคอนโทรลเลอร์อีกครั้ง ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>ฟอนต์ Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>ฟอนต์ของ SilvinoR ที่มาพร้อมใน PadForge โดยไม่ดัดแปลง และใช้แสดงอินเทอร์เฟซเมื่อตั้งภาษาเป็น Galactic Basic</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>รูปแบบโปรไฟล์ EQ แบบพาราเมตริกที่ “EQ แบบพาราเมตริก” ของคอนโทรลเลอร์นำเข้า โดย Jaakko Pasanen ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>การอ่านแชตโดยไม่ต้องลงชื่อเข้าใช้และกฎคำสั่งที่ขึ้นต้นด้วย ! อ่านจาก tmi.js และ ComfyJS และการเก็บเฉพาะคำสั่งล่าสุด 20 รายการ จากเทมเพลต TwitchPlays ของ DougDoug ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>แหล่งอ้างอิงหน้าจอคีย์บอร์ด</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>ไลบรารี เฟรม และคีย์ที่อยู่เบื้องหลังหน้าจอคีย์บอร์ด อ่านจาก LCD และ Arx Control SDK ของ Logitech กับ S.T.R.I.K.E. 7 SDK ของ Mad Catz และตรวจสอบเทียบกับ logitech-lcd (MIT หรือ Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff และ ArxWidgetManager (ไม่มีการเผยแพร่ใบอนุญาต), ไดรเวอร์ hid-lg-g15 ของ Linux (GPL-2.0-or-later), libg15, G15Interface และ lcdproc (GPL-2.0), gnome15 (GPL-3.0) และ G19USB (Apache-2.0) PadForge โหลดไลบรารีของ Logitech Gaming Software และ Strike7API.dll ที่คุณดาวน์โหลดหรือเลือก และไม่มีโค้ดของสิ่งเหล่านี้รวมอยู่ในโปรแกรม</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>แหล่งอ้างอิงภาษาคลิงออนและซินดาริน</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>คำในคำแปลภาษาคลิงออนและซินดารินตรวจสอบเทียบกับ klingon-assistant-data (Apache-2.0) ข้อมูลพจนานุกรมเบื้องหลัง boQwI' และ Eldamo (CC BY 4.0) พจนานุกรมภาษาเอลฟ์ของ Paul Strack ใช้เป็นข้อมูลพจนานุกรมเท่านั้น ไม่มีข้อมูลใดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>แหล่งอ้างอิง Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>การเรียกไลบรารี ฟีล และแรงในเกมที่อยู่เบื้องหลังการรองรับ Novint Falcon อ่านจากไฟล์ส่วนหัว เอกสาร และตัวอย่างของ SDK จาก Force Dimension โดยฟีลจอยสติ๊กมาจาก FalconJoystick และฟีลเล็งกับการสั่นมาจาก FalconJoyForce (ทั้งสองโดย Cyclops-11B, ไม่มีการเผยแพร่ใบอนุญาต) และตรวจสอบเทียบกับ CHAI3D (BSD 3-Clause) และ libnifalcon (BSD) PadForge โหลดไลบรารีของ Force Dimension ที่คุณติดตั้ง เพราะใบอนุญาตไม่ให้สิทธิ์แจกจ่ายซ้ำ และไม่มีโค้ดของสิ่งเหล่านี้รวมอยู่ในโปรแกรม</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

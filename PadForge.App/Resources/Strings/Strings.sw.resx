@@ -851,6 +851,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Masharti ya leseni ya Visual Studio</value></data>
@@ -4702,6 +4703,8 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mpangilio wa wasifu wa kuanzia wa Mkakati na Eneo-kazi, na tabia ya turbo ambayo turbo inayopimwa kwa shinikizo huiepuka. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rejeo la Antoine Aflalo kwa mpangilio wa kiolesura kisichoandikwa cha IPolicyConfig cha Windows, ambacho PadForge hutumia kuwasha tena sehemu ya mwisho ya sauti ya kidhibiti. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Fonti ya Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Fonti ya SilvinoR, inayosafirishwa ndani ya PadForge bila mabadiliko na kuchora kiolesura lugha yake ikiwa Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Muundo wa wasifu wa parametric EQ ambao Parametric EQ ya kidhibiti huingiza, na Jaakko Pasanen. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5165,4 +5168,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Kilele</value></data>
   <data name="About_SInputRefs" xml:space="preserve"><value>Marejeo ya SInput</value></data>
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ripoti zilizo nyuma ya usaidizi wa pedi za SInput na persona ya SInput, zilizosomwa kutoka SINPUT-LIB-HID (MIT-0) na HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) za Hand Held Legend na hali ya SInput ya OpenPuck (AGPL-3.0). Nyaraka pekee, hakuna msimbo wa AGPL unaosafirishwa.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Marejeo ya Kiklingon na Kisindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Maneno ya tafsiri za Kiklingon na Kisindarin, yaliyokaguliwa dhidi ya klingon-assistant-data (Apache-2.0), kamusi iliyo nyuma ya boQwI', na Eldamo (CC BY 4.0), leksikoni ya Kielfu ya Paul Strack. Data ya kamusi pekee, hakuna inayosafirishwa.</value></data>
 </root>

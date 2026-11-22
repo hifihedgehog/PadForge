@@ -1,6 +1,7 @@
 # tag	English name	own name	direction	script	coverage
 # One row for American English, the text of Strings.resx, and one for each Strings.<tag>.resx beside it.
 # LanguageCatalog reads it.
+# Qaaa, a script code ISO 15924 leaves to private use, is the Aurebesh alphabet: Galactic Basic is English drawn in it.
 af	Afrikaans	Afrikaans	ltr	Latn	partial
 am	Amharic	አማርኛ	ltr	Ethi	partial
 ar	Arabic	العربية	rtl	Arab	partial
@@ -19,6 +20,7 @@ da	Danish	Dansk	ltr	Latn	full
 de	German	Deutsch	ltr	Latn	full
 el	Greek	Ελληνικά	ltr	Grek	full
 en-GB	English (United Kingdom)	English (United Kingdom)	ltr	Latn	full
+en-Qaaa	Galactic Basic (Aurebesh)	Galactic Basic	ltr	Qaaa	full
 en-US	English (United States)	English (United States)	ltr	Latn	full
 es	Spanish	Español	ltr	Latn	full
 et	Estonian	Eesti	ltr	Latn	partial
@@ -82,6 +84,7 @@ ro	Romanian	Română	ltr	Latn	full
 ru	Russian	Русский	ltr	Cyrl	full
 rw	Kinyarwanda	Ikinyarwanda	ltr	Latn	partial
 si	Sinhala	සිංහල	ltr	Sinh	partial
+sjn	Sindarin (Elvish)	Eglathrin	ltr	Latn	full
 sk	Slovak	Slovenčina	ltr	Latn	full
 sl	Slovenian	Slovenščina	ltr	Latn	full
 sm	Samoan	Gagana Sāmoa	ltr	Latn	partial
@@ -94,6 +97,7 @@ sw	Swahili	Kiswahili	ltr	Latn	partial
 ta	Tamil	தமிழ்	ltr	Taml	full
 te	Telugu	తెలుగు	ltr	Telu	full
 th	Thai	ไทย	ltr	Thai	full
+tlh	Klingon	tlhIngan Hol	ltr	Latn	full
 tn	Tswana	Setswana	ltr	Latn	partial
 to	Tongan	Lea faka-Tonga	ltr	Latn	partial
 tpi	Tok Pisin	Tok Pisin	ltr	Latn	partial

@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензийн нөхцөл</value></data>
@@ -4750,6 +4751,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратеги ба ширээний компьютерийн эхлэлийн профайлын бүтэц, мөн даралтаас хамаарах турбогийн зайлсхийдэг турбо үйлдэл. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-ийн баримтжуулаагүй IPolicyConfig интерфейсийн бүтцийн эх сурвалж, Antoine Aflalo-гийн бүтээл. PadForge үүнийг контроллерын аудио төгсгөлийн цэгийг дахин идэвхжүүлэхэд ашигладаг. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh үсгийн хэв</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR-ийн үсгийн хэв нь PadForge-д өөрчлөлтгүйгээр багтсан бөгөөд интерфейсийн хэл Galactic Basic байх үед интерфейсийг дүрсэлнэ.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллерын Параметрт эквалайзерт импортлогддог параметрт эквалайзерийн профайлын формат, Jaakko Pasanen-ийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5216,4 +5219,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Нууц үг</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Томруулагч (дарж байх үед)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Дурангаар онилоход зориулж энэ макро дарагдаж байх үед томруулагчийг харуулна. Үүнийг Томруулагч хуудсанд тохируулна уу.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон ба Синдарин хэлний эх сурвалжууд</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон ба Синдарин орчуулгын үгсийг boQwI'-ийн суурь толь болох klingon-assistant-data (Apache-2.0) болон Paul Strack-ийн элф хэлний толь Eldamo (CC BY 4.0)-оор шалгасан. Зөвхөн толийн өгөгдөл, аль нь ч багтаагүй.</value></data>
 </root>

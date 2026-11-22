@@ -1,0 +1,18 @@
+Aurebesh font
+=============
+
+Source:   SilvinoR, font-aurebesh
+URL:      https://github.com/vinorodrigues/font-aurebesh
+Commit:   1aeb227950f2555923485fb586534cbba8c4a979
+License:  SIL Open Font License, Version 1.1, with Reserved Font Name AUREBESH
+          (full text in LICENSE.md beside this file)
+Copyright (c) 2022, SilvinoR
+
+Aurebesh.ttf in this directory is the repository's dist/Aurebesh.ttf, unmodified
+(SHA-256 c20656ee89c413817a1fea1bb4b1025a043d571c1008afce671e88bcc60c370c). The
+license lets a font keep its reserved name only while it is unmodified, so
+PadForge ships the file as it is and never subsets or edits it.
+
+PadForge draws its interface in this font while the interface language is
+Galactic Basic (#590), with the Segoe UI Variable face after it for every
+character the font lacks.

@@ -857,6 +857,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Mga tuntunin ng lisensya ng Visual Studio</value></data>
@@ -4568,6 +4569,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mga layout ng starter profile ng Strategy at Desktop, at ang turbo behavior na iniiwasan ng pressure-scaled turbo. Binasa bilang dokumentasyon lamang, walang GPL code na kasama.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Sanggunian ni Antoine Aflalo para sa layout ng hindi dokumentadong IPolicyConfig interface ng Windows, na ginagamit ng PadForge para muling i-enable ang audio endpoint ng controller. Dokumentasyon lamang, walang code na kasama.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Font na Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Ang font ni SilvinoR, na kasama sa PadForge nang hindi binago at ginagamit sa pagguhit ng interface kapag ang wika nito ay Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Ang format ng parametric EQ profile na ini-import ng Parametric EQ ng isang controller, ni Jaakko Pasanen. Dokumentasyon lamang, walang code na kasama.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5045,4 +5048,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Mapping_SourceDeadZoneShape_Radial" xml:space="preserve"><value>Radial</value></data>
   <data name="Mapping_SourceInnerDeadzone" xml:space="preserve"><value>Inner Deadzone</value></data>
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Sa ibaba ng bahaging ito ng galaw, nababasa ang input na nasa gitna.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Mga sanggunian sa Klingon at Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Ang mga salita ng mga salin sa Klingon at Sindarin, na sinuri laban sa klingon-assistant-data (Apache-2.0), ang diksyunaryo sa likod ng boQwI', at Eldamo (CC BY 4.0), ang leksikon ng Elvish ni Paul Strack. Data ng diksyunaryo lamang, walang kasama sa PadForge.</value></data>
 </root>

@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio લાઇસન્સ શરતો</value></data>
@@ -4758,6 +4759,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>સ્ટ્રેટેજી અને ડેસ્કટૉપ પ્રારંભિક-પ્રોફાઇલ લેઆઉટ, અને દબાણ-આધારિત ટર્બો જે ટાળે છે તે ટર્બો વર્તન. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ના અનડૉક્યુમેન્ટેડ IPolicyConfig ઇન્ટરફેસના લેઆઉટ માટે Antoine Aflalo નો સંદર્ભ, જેનો PadForge કંટ્રોલરના ઑડિયો એન્ડપોઇન્ટને ફરી ચાલુ કરવા ઉપયોગ કરે છે. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh ટાઇપફેસ</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR નો ટાઇપફેસ, જે PadForge ની અંદર ફેરફાર વગર આવે છે અને ભાષા Galactic Basic હોય ત્યારે ઇન્ટરફેસ દોરે છે.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>કંટ્રોલરનો પેરામેટ્રિક EQ જે પેરામેટ્રિક EQ પ્રોફાઇલ ફોર્મેટ આયાત કરે છે, Jaakko Pasanen દ્વારા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5225,4 +5228,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>પાસવર્ડ</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>મેગ્નિફાયર (પકડી રાખતી વખતે)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>આ મેક્રો પકડી રાખો ત્યાં સુધી મેગ્નિફાયર બતાવે છે, સાઇટ્સ ઉપર લઈને નિશાન લેવા માટે. તેને મેગ્નિફાયર પેજ પર સેટ કરો.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ક્લિંગોન અને સિન્ડારિન સંદર્ભો</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ક્લિંગોન અને સિન્ડારિન અનુવાદોના શબ્દો klingon-assistant-data (Apache-2.0), boQwI' પાછળનો શબ્દકોશ, અને Eldamo (CC BY 4.0), Paul Strack નો એલ્વિશ શબ્દકોશ સાથે ચકાસેલા છે. માત્ર શબ્દકોશ ડેટા, તેમાંનું કંઈ આવતું નથી.</value></data>
 </root>

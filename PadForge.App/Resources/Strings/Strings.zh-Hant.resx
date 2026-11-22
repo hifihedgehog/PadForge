@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio 授權條款</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>策略和桌面入門設定檔的配置，以及隨壓力調整的連發所要避免的連發行為。僅作為文件閱讀，未隨附任何 GPL 程式碼。</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo 的參考資料，說明 Windows 未公開的 IPolicyConfig 介面配置，PadForge 用這個介面重新啟用控制器的音訊端點。僅作為文件參考，未隨附任何程式碼。</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh 字型</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR 製作的字型，原樣隨 PadForge 提供，在介面語言為 Galactic Basic 時用來繪製介面。</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>控制器的「參數等化器」所匯入的設定檔格式，作者：Jaakko Pasanen。僅作為文件參考，未隨附任何程式碼。</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>不需登入即可讀取聊天室以及 ! 指令規則，讀自 tmi.js和 ComfyJS，只保留最新 20 個指令的做法則來自 DougDoug 的 TwitchPlays 範本。僅作為文件參考，未隨附任何程式碼。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>鍵盤螢幕參考資料</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>鍵盤螢幕所用的程式庫、畫面和按鍵，讀自 Logitech 的 LCD 與 Arx Control SDK 以及 Mad Catz 的 S.T.R.I.K.E. 7 SDK，並與 logitech-lcd(MIT 或 Apache-2.0)、dcspy(MIT)、foo_logitech_lcd(LGPL-2.1)、LogitechStuff 和 ArxWidgetManager(未公開授權)、Linux 的 hid-lg-g15 驅動程式(GPL-2.0-or-later)、libg15、G15Interface 和 lcdproc(GPL-2.0)、gnome15(GPL-3.0)及 G19USB(Apache-2.0)交叉比對。PadForge 會載入 Logitech Gaming Software 的程式庫，以及您下載或選擇的 Strike7API.dll，未隨附其中任何程式碼。</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>克林貢語和辛達林語參考資料</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>克林貢語和辛達林語翻譯的用詞，已對照 klingon-assistant-data(Apache-2.0)和 Eldamo(CC BY 4.0)查證，前者是 boQwI' 背後的辭典資料，後者是 Paul Strack 的精靈語詞彙庫。僅為辭典資料，均未隨附。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 參考資料</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 支援所用的程式庫呼叫、手感和遊戲力道，讀自 Force Dimension 的 SDK 標頭檔、文件和範例，其中搖桿手感來自 FalconJoystick，瞄準手感和震動來自 FalconJoyForce(兩者皆為 Cyclops-11B 所作，未公開授權)，並與 CHAI3D(BSD 3-Clause)和 libnifalcon(BSD)比對。PadForge 會載入您安裝的 Force Dimension 程式庫，因為其授權不允許轉散發，未隨附其中任何程式碼。</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -857,6 +857,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Kushtet e licencës Visual Studio</value></data>
@@ -4714,6 +4715,8 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Skemat e profileve fillestare Strategji dhe Desktop, dhe sjellja turbo që shmang turbo-ja e shkallëzuar me presion. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referencë nga Antoine Aflalo për strukturën e ndërfaqes së padokumentuar IPolicyConfig të Windows, që PadForge e përdor për të riaktivizuar pikën fundore audio të një kontrolluesi. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Shkronjat Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Shkronjat e SilvinoR, që përfshihen brenda PadForge pa ndryshim dhe vizatojnë ndërfaqen kur gjuha e saj është Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Formati i profilit EQ parametrik që importon „EQ parametrik“ i një kontrolluesi, nga Jaakko Pasanen. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5178,4 +5181,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Fjalëkalimi</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Zmadhuesi (me mbajtje)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Shfaq zmadhuesin ndërsa mbahet kjo makro, për të shënjestruar nëpërmjet shënjestrës. Cilësoje te faqja Zmadhuesi.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referencat e klingonishtes dhe sindarinishtes</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Fjalët e përkthimeve në klingonisht dhe sindarinisht, të kontrolluara me klingon-assistant-data (Apache-2.0), fjalorin pas boQwI', dhe me Eldamo (CC BY 4.0), leksikun elfik të Paul Strack. Vetëm të dhëna fjalori, asnjë nuk përfshihet.</value></data>
 </root>

@@ -855,6 +855,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio-lisensievoorwaardes</value></data>
@@ -4596,6 +4597,8 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_KaldiDesc" xml:space="preserve"><value>Die spraakdekodeerder, transducer-biblioteek en lineêre algebra binne libvosk.dll. Kaldi en OpenFst: Apache-2.0. OpenBLAS en CLAPACK: BSD 3-Clause, met aparte kennisgewings vir GotoBLAS2 binne OpenBLAS en vir die f2c-looptyd.</value></data>
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strateegia ja töölaua algprofiilide paigutused ning turbo käitumine, mida survega skaleeritud turbo väldib. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo viide Windowsi dokumenteerimata liidese IPolicyConfig paigutusele, mida PadForge kasutab kontrolleri heli lõpp-punkti uuesti lubamiseks. Ainult dokumentatsioon, koodi ei levitata.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh-lettertipe</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR se lettertipe, wat ongewysig binne PadForge gelewer word en die koppelvlak teken wanneer die taal Galactic Basic is.</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Parameetrilise ekvalaiseri profiilivorming, mida kontrolleri Parameetriline ekvalaiser impordib, autor Jaakko Pasanen. Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-tehnikad, millele tuginevad tekstiploki makrod ja klaviatuuri akordikonks: Unicode'i trükkimine, partiipiirangud, Win-klahvi maskiklahv ja märgistatud süstitud sisend. Kasutatud ainult dokumentatsioonina, GPL-koodi ei levitata.</value></data>
   <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU protokolli viide, millele tugineb liikumisserver, autor v1993.</value></data>
@@ -4684,6 +4687,8 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4-headsetverwysings</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Sleutelbordskerm-verwysings</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Die biblioteke, rame en sleutels agter sleutelbordskerms, gelees uit Logitech se LCD- en Arx Control-SDKs en Mad Catz se S.T.R.I.K.E. 7 SDK, nagegaan teen logitech-lcd (MIT of Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff en ArxWidgetManager (geen lisensie gepubliseer nie), Linux se hid-lg-g15-drywer (GPL-2.0-or-later), libg15, G15Interface en lcdproc (GPL-2.0), gnome15 (GPL-3.0) en G19USB (Apache-2.0). PadForge laai Logitech Gaming Software se biblioteke en die Strike7API.dll wat jy aflaai of kies, en lewer geen kode van enige een daarvan nie.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Verwysings vir Klingon en Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Die woorde van die Klingon- en Sindarin-vertalings, nagegaan teen klingon-assistant-data (Apache-2.0), die woordeboek agter boQwI', en Eldamo (CC BY 4.0), Paul Strack se Elfse woordeskat. Slegs woordeboekdata, niks daarvan word gelewer nie.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon-verwysings</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Die biblioteekoproepe, gevoel en speletjiekragte agter Novint Falcon-ondersteuning, gelees uit Force Dimension se SDK-opskrifte, dokumentasie en voorbeelde, met die Joystick-gevoel uit FalconJoystick en die Rig-gevoel en vibrasie uit FalconJoyForce (albei deur Cyclops-11B, geen lisensie gepubliseer nie), nagegaan teen CHAI3D (BSD 3-Clause) en libnifalcon (BSD). PadForge laai die Force Dimension-biblioteek wat jy installeer, aangesien sy lisensie geen reg gee om dit te herversprei nie, en lewer geen kode van enige een daarvan nie.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Sleutelbordskerms</value></data>

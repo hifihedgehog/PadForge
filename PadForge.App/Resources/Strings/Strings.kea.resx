@@ -3213,4 +3213,6 @@
   <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Krus i si pontu di CSGOCrosshair di Skarbo (sen lisensa publikadu), Sírkulu, stilus di imajen i di kontornu di Crosshair-Overlay (MIT), i Lenti i zoom di ekran interu di lupa di Windows-classic-samples di Microsoft (MIT). Só dokumentason, nenhun kódigu ka ta bai djuntu.</value></data>
   <data name="About_SInputRefs" xml:space="preserve"><value>Referénsias di SInput</value></data>
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Relatórius pa suporti di komandus SInput i pa persona SInput, lidu di SINPUT-LIB-HID (MIT-0) i HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) di Hand Held Legend i di modu SInput di OpenPuck (AGPL-3.0). Só dokumentason, nenhun kódigu AGPL ka ta bai djuntu.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referénsias di Klingon i di Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Palavras di tradusons di Klingon i di Sindarin, konferidu ku klingon-assistant-data (Apache-2.0), disionáriu ki sta pa trás di boQwI', i ku Eldamo (CC BY 4.0), léxiku élfiku di Paul Strack. Só dadus di disionáriu, nenhun di es ka ta bai djuntu.</value></data>
 </root>

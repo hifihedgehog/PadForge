@@ -856,6 +856,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>የVisual Studio ፈቃድ ውሎች</value></data>
@@ -4731,6 +4732,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>የስትራቴጂ እና የዴስክቶፕ የመነሻ መገለጫ አቀማመጦች፣ እና በግፊት የሚለካው ቱርቦ የሚያስወግደው የቱርቦ ባህሪ። እንደ ሰነድ ብቻ ተነቧል፣ ምንም የGPL ኮድ አይካተትም።</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge የመቆጣጠሪያን የድምጽ መዳረሻ ነጥብ እንደገና ለማንቃት የሚጠቀምበት፣ ሰነድ ያልተዘጋጀለት የWindows IPolicyConfig በይነገጽ አቀማመጥ ማጣቀሻ፣ በAntoine Aflalo። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>የAurebesh ቅርጸ ቁምፊ</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>የSilvinoR ቅርጸ ቁምፊ፣ PadForge ሳይቀየር የሚያካትተው እና የበይነገጹ ቋንቋ Galactic Basic ሲሆን በይነገጹን የሚስልበት።</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>የአንድ መቆጣጠሪያ «ፓራሜትሪክ EQ» የሚያስገባው የፓራሜትሪክ EQ መገለጫ ቅርጸት፣ በJaakko Pasanen። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -4857,6 +4860,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>የDualShock 4 ሄድሴት ማጣቀሻዎች</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጽ ማጣቀሻዎች</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>ከቁልፍ ሰሌዳ ማያ ገጾች በስተጀርባ ያሉት ቤተ-መጻሕፍት፣ ፍሬሞች እና ቁልፎች፣ ከLogitech LCD እና Arx Control SDKs እና ከMad Catz S.T.R.I.K.E. 7 SDK የተነበቡ፣ እና ከlogitech-lcd (MIT ወይም Apache-2.0)፣ dcspy (MIT)፣ foo_logitech_lcd (LGPL-2.1)፣ LogitechStuff እና ArxWidgetManager (ምንም ፈቃድ አልታተመም)፣ የLinux hid-lg-g15 አሽከርካሪ (GPL-2.0-or-later)፣ libg15፣ G15Interface እና lcdproc (GPL-2.0)፣ gnome15 (GPL-3.0) እና G19USB (Apache-2.0) ጋር የተረጋገጡ። PadForge የLogitech Gaming Software ቤተ-መጻሕፍትን እና እርስዎ የሚያወርዱትን ወይም የሚመርጡትን Strike7API.dll ይጭናል፣ እና ከአንዳቸውም ምንም ኮድ አያካትትም።</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>የክሊንጎን እና የሲንዳሪን ማጣቀሻዎች</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>የክሊንጎን እና የሲንዳሪን ትርጉሞች ቃላት ከklingon-assistant-data (Apache-2.0)፣ boQwI' የሚጠቀመው መዝገበ ቃላት፣ እና ከEldamo (CC BY 4.0)፣ የPaul Strack የኤልፍኛ ቃላት ስብስብ ጋር ተረጋግጠዋል። የመዝገበ ቃላት መረጃ ብቻ፣ ከእሱ ምንም አይካተትም።</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>የNovint Falcon ማጣቀሻዎች</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>ከNovint Falcon ድጋፍ በስተጀርባ ያሉት የቤተ-መጽሐፍት ጥሪዎች፣ ስሜቶች እና የጨዋታ ኃይሎች፣ ከForce Dimension SDK ራስጌዎች፣ ሰነዶች እና ምሳሌዎች የተነበቡ ናቸው። የጆይስቲክ ስሜት ከFalconJoystick፣ የማነጣጠር ስሜት እና ንዝረት ደግሞ ከFalconJoyForce (ሁለቱም በCyclops-11B፣ ምንም ፈቃድ አልታተመም) የመጡ ሲሆን፣ ከCHAI3D (BSD 3-Clause) እና libnifalcon (BSD) ጋር ተረጋግጠዋል። የForce Dimension ፈቃድ እንደገና የማሰራጨት መብት ስለማይሰጥ PadForge እርስዎ የሚጭኑትን የForce Dimension ቤተ-መጽሐፍት ይጭናል፣ እና ከአንዳቸውም ምንም ኮድ አያካትትም።</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>የቁልፍ ሰሌዳ ማያ ገጾች</value></data>

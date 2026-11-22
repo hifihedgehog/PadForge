@@ -3968,6 +3968,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Dispozisyon pwofil pou kòmanse Estrateji ak Biwo, ak konpòtman turbo ke turbo selon presyon an evite. Li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referans pa Antoine Aflalo pou dispozisyon entèfas IPolicyConfig Windows ki pa dokimante a, ke PadForge sèvi ak li pou reaktive pwen odyo yon kontwolè. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Polis Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Polis SilvinoR, ki enkli nan PadForge san modifikasyon epi ki desine entèfas la lè lang li se Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Fòma pwofil egalizè paramètrik ke Egalizè paramètrik yon kontwolè enpòte, pa Jaakko Pasanen. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -4538,6 +4540,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Kondisyon lisans Visual Studio</value></data>
@@ -4575,4 +4578,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
   <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referans Klingon ak Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Mo tradiksyon Klingon ak Sindarin yo, verifye ak klingon-assistant-data (Apache-2.0), diksyonè ki dèyè boQwI', ak Eldamo (CC BY 4.0), leksik elfik Paul Strack. Done diksyonè sèlman, okenn ladan yo pa enkli.</value></data>
 </root>

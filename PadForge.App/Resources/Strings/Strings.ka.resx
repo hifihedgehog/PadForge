@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ლიცენზიის პირობები</value></data>
@@ -4762,6 +4763,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>სტრატეგიისა და სამუშაო მაგიდის საწყისი პროფილების განლაგებები და ტურბო ქცევა, რომელსაც დაჭერის ძალაზე დამოკიდებული ტურბო თავს არიდებს. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ს მიერ Windows-ის დაუდოკუმენტებელი IPolicyConfig ინტერფეისის განლაგების წყარო, რომელსაც PadForge კონტროლერის აუდიო ენდფოინთის თავიდან ჩასართავად იყენებს. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh შრიფტი</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR-ის შრიფტი, რომელიც PadForge-ში უცვლელად შედის და ინტერფეისს ხატავს, როცა ენად Galactic Basic აქვს არჩეული.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>პარამეტრული EQ პროფილის ფორმატი, რომელსაც კონტროლერის „პარამეტრული EQ“ აიმპორტებს, ავტორი Jaakko Pasanen. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5216,4 +5219,6 @@
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>აჩვენებს გამადიდებელს, სანამ ეს მაკრო დაჭერილია, სამიზნით დასამიზნებლად. დააყენეთ ის გამადიდებლის გვერდზე.</value></data>
   <data name="About_SInputRefs" xml:space="preserve"><value>SInput-ის წყაროები</value></data>
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>ანგარიშები SInput-ის პადების მხარდაჭერისა და SInput-ის პერსონისთვის, წაკითხულია Hand Held Legend-ის SINPUT-LIB-HID-იდან (MIT-0) და HOJA-LIB-RP2040-იდან (CC BY-NC-SA 3.0), ასევე OpenPuck-ის SInput რეჟიმიდან (AGPL-3.0). მხოლოდ დოკუმენტაცია, AGPL კოდი არ შედის.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>კლინგონურისა და სინდარინის წყაროები</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>კლინგონური და სინდარინული თარგმანების სიტყვები შემოწმებულია შემდეგ წყაროებთან: klingon-assistant-data (Apache-2.0), boQwI'-ის ლექსიკონის მონაცემები, და Eldamo (CC BY 4.0), Paul Strack-ის ელფური ლექსიკონი. მხოლოდ ლექსიკონის მონაცემები, არცერთი არ შედის პროგრამაში.</value></data>
 </root>

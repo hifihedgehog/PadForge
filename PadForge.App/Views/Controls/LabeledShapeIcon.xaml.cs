@@ -46,7 +46,17 @@ namespace PadForge.Views.Controls
         public LabeledShapeIcon()
         {
             InitializeComponent();
+            // The label is the display face's glyphs, by resource reference,
+            // so it is built again in the face of the interface language,
+            // Galactic Basic's Aurebesh included (#590).
+            PadForge.Common.TextFaces.Follow(this, PadForge.Common.TextFaces.DisplayKey);
             Loaded += (_, _) => { UpdateShape(); UpdateLabel(); };
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property == FontFamilyProperty && IsLoaded) UpdateLabel();
         }
 
         /// <summary>The icon repeats the title beside it: a stick or trigger
@@ -97,7 +107,7 @@ namespace PadForge.Views.Controls
             // face. Bounds give the exact visible-glyph rectangle, avoiding
             // all of the line-box / ascender / descender ambiguity that comes
             // with TextBlock VerticalAlignment="Center".
-            var typeface = PadForge.Common.TextFaces.DisplayTypeface(FontWeights.SemiBold);
+            var typeface = PadForge.Common.TextFaces.TypefaceOf(this, FontWeights.SemiBold);
             var ft = new FormattedText(
                 text,
                 CultureInfo.CurrentCulture,

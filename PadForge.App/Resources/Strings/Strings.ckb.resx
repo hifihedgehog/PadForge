@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>مەرجەکانی مۆڵەتی Visual Studio</value></data>
@@ -4754,6 +4755,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ڕیزبەندیی پرۆفایلە سەرەتاییەکانی ستراتیژی و ڕوومێز، و ئەو ڕەفتاری تووربۆیەی تووربۆی پێوانەکراو بە پەستان خۆی لێ دەپارێزێت. تەنها وەک بەڵگەنامە خوێندراوەتەوە، هیچ کۆدێکی GPL لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>سەرچاوە لەلایەن Antoine Aflalo بۆ ڕیزبەندیی ڕووکاری بەڵگەنەکراوی IPolicyConfig ی Windows، کە PadForge بۆ دووبارە چالاککردنەوەی خاڵی کۆتایی دەنگی کۆنترۆڵەرێک بەکاری دەهێنێت. تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>فۆنتی Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>فۆنتی SilvinoR، کە بەبێ گۆڕانکاری لەناو PadForge دایە و کاتێک زمانی ڕووکار Galactic Basic بێت، ڕووکارەکە بەو فۆنتە دەنووسێت.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>شێوازی پرۆفایلی EQ ی پارامیتری کە EQ ی پارامیتریی کۆنترۆڵەرێک هاوردەی دەکات، لەلایەن Jaakko Pasanen. تەنها بەڵگەنامە، هیچ کۆدێک لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -4880,6 +4883,8 @@
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>سەرچاوەکانی هێدسێتی DualShock 4</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>سەرچاوەکانی شاشەی تەختەکلیل</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>کتێبخانەکان، فرەیمەکان و کلیلەکان لە پشت شاشەکانی تەختەکلیل، خوێندراوە لە SDKەکانی LCD و Arx Control ی Logitech و SDK ی S.T.R.I.K.E. 7 ی Mad Catz، بەراورد کراوە لەگەڵ logitech-lcd (MIT یان Apache-2.0)، dcspy (MIT)، foo_logitech_lcd (LGPL-2.1)، LogitechStuff و ArxWidgetManager (هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، درایڤەری hid-lg-g15 ی Linux (GPL-2.0-or-later)، libg15، G15Interface و lcdproc (GPL-2.0)، gnome15 (GPL-3.0) و G19USB (Apache-2.0). PadForge کتێبخانەکانی Logitech Gaming Software و ئەو Strike7API.dll ەی کە دایدەگریت یان هەڵیدەبژێریت بار دەکات، و هیچ کۆدێک لە هیچ کامیان لەگەڵ خۆیدا نییە.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>سەرچاوەکانی کلینگۆنی و سیندارین</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>وشەکانی وەرگێڕانی کلینگۆنی و سیندارین، بەراورد کراون لەگەڵ klingon-assistant-data (Apache-2.0)، فەرهەنگەکەی پشت boQwI'، و Eldamo (CC BY 4.0)، فەرهەنگی زمانە ئێلفییەکانی Paul Strack. تەنها داتای فەرهەنگ، هیچ بەشێکی لەگەڵ بەرنامەکەدا نییە.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>سەرچاوەکانی Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>بانگکردنەکانی کتێبخانە، هەستەکان و هێزەکانی یاری لە پشت پشتگیریی Novint Falcon، خوێندراوە لە سەرپەڕەکانی SDK، بەڵگەنامەکان و نموونەکانی Force Dimension، لەگەڵ هەستی جۆیستیک لە FalconJoystick و هەستی نیشانەگرتن و لەرزین لە FalconJoyForce (هەردووکیان لەلایەن Cyclops-11B، هیچ مۆڵەتێک بڵاو نەکراوەتەوە)، کە لەگەڵ CHAI3D (BSD 3-Clause) و libnifalcon (BSD) بەراورد کراون. PadForge ئەو کتێبخانەی Force Dimension ە بار دەکات کە دایدەمەزرێنیت، چونکە مۆڵەتەکەی هیچ مافێک بۆ دابەشکردنەوەی نادات، و هیچ کۆدێک لە هیچ کامیان لەگەڵ خۆیدا نییە.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>شاشەکانی تەختەکلیل</value></data>

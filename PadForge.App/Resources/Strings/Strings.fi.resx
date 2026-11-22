@@ -870,6 +870,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studion lisenssiehdot</value></data>
@@ -5002,6 +5003,8 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strategia- ja työpöytäaloitusprofiilien asettelut sekä turbon toiminta, jota paineeseen skaalattu turbo välttää. Käytetty vain dokumentaationa, GPL-koodia ei toimiteta.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Viite Windowsin dokumentoimattoman IPolicyConfig-rajapinnan rakenteelle, tekijä Antoine Aflalo. PadForge käyttää rajapintaa ohjaimen äänipäätepisteen ottamiseen uudelleen käyttöön. Vain dokumentaatio, koodia ei toimiteta.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh-kirjasinlaji</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Kirjasinlaji, jonka on tehnyt SilvinoR, sisältyy muokkaamattomana PadForge-ohjelmaan ja piirtää käyttöliittymän, kun sen kieli on Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Parametrisen taajuuskorjaimen profiilimuoto, jonka ohjaimen Parametrinen taajuuskorjain tuo, tekijä Jaakko Pasanen. Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Chatin lukeminen kirjautumatta sisään ja !-komentosääntö, luettu projekteista tmi.js ja ComfyJS, sekä vain 20 uusimman komennon säilyttäminen, luettu tekijän DougDoug TwitchPlays -mallipohjasta. Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Näppäimistönäyttöjen viitteet</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Näppäimistönäyttöjen taustalla olevat kirjastot, kehykset ja näppäimet, luettu Logitechin LCD- ja Arx Control -SDK-paketeista sekä Mad Catzin S.T.R.I.K.E. 7 -SDK:sta ja tarkistettu seuraavia vasten: logitech-lcd (MIT tai Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff ja ArxWidgetManager (lisenssiä ei julkaistu), Linux-ytimen hid-lg-g15-ajuri (GPL-2.0-or-later), libg15, G15Interface ja lcdproc (GPL-2.0), gnome15 (GPL-3.0) ja G19USB (Apache-2.0). PadForge lataa Logitech Gaming Software -ohjelmiston kirjastot sekä lataamasi tai valitsemasi Strike7API.dll-tiedoston eikä toimita koodia mistään niistä.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonin ja sindarinin viitteet</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonin ja sindarinin käännösten sanat on tarkistettu lähteistä klingon-assistant-data (Apache-2.0), boQwI'-sanakirjan aineisto, ja Eldamo (CC BY 4.0), haltiakielten sanasto, tekijä Paul Strack. Vain sanakirjatietoja, mitään niistä ei toimiteta.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon -viitteet</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Kirjastokutsut, tuntumat ja pelivoimat Novint Falcon -tuen taustalla, luettu Force Dimensionin SDK:n otsakkeista, dokumentaatiosta ja esimerkeistä. Ohjaussauva-tuntuma on peräisin FalconJoystick-projektista ja Tähtäys-tuntuma sekä tärinä FalconJoyForce-projektista (molemmat tekijältä Cyclops-11B, lisenssiä ei julkaistu), ja ne on tarkistettu CHAI3D (BSD 3-Clause) ja libnifalcon (BSD) -projekteja vasten. PadForge lataa asentamasi Force Dimension -kirjaston, koska sen lisenssi ei anna oikeutta jakaa sitä edelleen, eikä toimita koodia mistään niistä.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

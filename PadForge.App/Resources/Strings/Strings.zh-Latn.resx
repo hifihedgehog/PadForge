@@ -855,6 +855,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio xǔkě tiáokuǎn</value></data>
@@ -4699,6 +4700,8 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll nèihán de yǔyīn jiěmǎqì, zhuǎnhuànqì kù hé xiànxìng dàishù kù. Kaldi hé OpenFst cǎiyòng Apache-2.0. OpenBLAS hé CLAPACK cǎiyòng BSD 3-Clause, OpenBLAS nèihán de GotoBLAS2 hé f2c yùnxíngshí gè fù yǒu zìjǐ de shēngmíng.</value></data>
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Cèlüè hé zhuōmiàn qǐshǐ pèizhì de bùjú, yǐjí yāgǎn liánfā suǒ bìmiǎn de liánfā xíngwéi. Jǐn zuòwéi wéndàng yuèdú, bù suí fù rènhé GPL dàimǎ.</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo guānyú Windows wèi gōngkāi de IPolicyConfig jiēkǒu bùjú de cānkǎo zīliào, PadForge yòng tā chóngxīn qǐyòng kòngzhìqì de yīnpín duāndiǎn. Jǐn wéndàng cānkǎo, bù suí fù dàimǎ.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh zìtǐ</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR de zìtǐ, wèi jīng xiūgǎi suí PadForge fùdài, dāng jièmiàn yǔyán wéi Galactic Basic shí yòng yú xiǎnshì jièmiàn.</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Kòngzhìqì de “Cānshù jūnhéngqì” suǒ dǎorù de cānshù jūnhéngqì pèizhì géshì, yóu Jaakko Pasanen tígōng. Jǐn wéndàng cānkǎo, bù suí fù dàimǎ.</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Wénběn kuài hóng hé jiànpán héxián gōuzi bèihòu de SendInput jìshù: Unicode shūrù, pīliàng shàngxiàn, Win jiàn zhēdǎng jiàn yǐjí dài biāojì de zhùrù shūrù. Jǐn zuòwéi wéndàng yuèdú, bù suí fù rènhé GPL dàimǎ.</value></data>
   <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Tǐgǎn fúwùqì bèihòu de DSU xiéyì cānkǎo, yóu v1993 tígōng.</value></data>
@@ -5130,4 +5133,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Mìmǎ</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Fàngdàjìng (àn zhù shí)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Àn zhù cǐ hóng shí xiǎnshì fàngdàjìng, yòngyú kāijìng miáozhǔn. Qǐng zài “Fàngdàjìng” yèmiàn shàng shèzhì.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Kèlíngòngyǔ hé Xīndálínyǔ cānkǎo láiyuán</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Kèlíngòngyǔ hé Xīndálínyǔ yìwén zhōng de cíyǔ yǐ duìzhào klingon-assistant-data (Apache-2.0), jí boQwI' suǒ yòng de cídiǎn, yǐjí Eldamo (CC BY 4.0), jí Paul Strack de Jīnglíngyǔ cíhuìkù, jìnxíng héduì. Jǐn cídiǎn shùjù, bù suí fù rènhé shùjù.</value></data>
 </root>

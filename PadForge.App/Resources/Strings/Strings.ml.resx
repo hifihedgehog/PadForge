@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ലൈസൻസ് നിബന്ധനകൾ</value></data>
@@ -4733,6 +4734,8 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>സ്ട്രാറ്റജി, ഡെസ്ക്ടോപ്പ് സ്റ്റാർട്ടർ-പ്രൊഫൈൽ ലേഔട്ടുകളും, മർദ്ദത്തിനനുസരിച്ചുള്ള ടർബോ ഒഴിവാക്കുന്ന ടർബോ സ്വഭാവവും. ഡോക്യുമെന്റേഷനായി മാത്രം വായിച്ചത്, GPL കോഡ് ഒന്നും ഉൾപ്പെടുത്തുന്നില്ല.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-ന്റെ രേഖപ്പെടുത്താത്ത IPolicyConfig ഇന്റർഫേസിന്റെ ലേഔട്ടിനുള്ള Antoine Aflalo-യുടെ റഫറൻസ്, ഒരു കൺട്രോളറിന്റെ ഓഡിയോ എൻഡ്പോയിന്റ് വീണ്ടും പ്രവർത്തനക്ഷമമാക്കാൻ PadForge ഇത് ഉപയോഗിക്കുന്നു. ഡോക്യുമെന്റേഷൻ മാത്രം, കോഡ് ഉൾപ്പെടുന്നില്ല.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh ടൈപ്ഫേസ്</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR-ന്റെ ടൈപ്ഫേസ്, മാറ്റമൊന്നും വരുത്താതെ PadForge-നുള്ളിൽ ഉൾപ്പെടുത്തിയിരിക്കുന്നു, ഭാഷ Galactic Basic ആയിരിക്കുമ്പോൾ ഇന്റർഫേസ് വരയ്ക്കുന്നത് ഇതാണ്.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ഒരു കൺട്രോളറിന്റെ പാരാമെട്രിക് EQ ഇറക്കുമതി ചെയ്യുന്ന പാരാമെട്രിക് EQ പ്രൊഫൈൽ ഫോർമാറ്റ്, Jaakko Pasanen-ന്റേത്. ഡോക്യുമെന്റേഷൻ മാത്രം, കോഡ് ഉൾപ്പെടുന്നില്ല.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5200,4 +5203,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>പാസ്വേഡ്</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>മാഗ്നിഫയർ (അമർത്തിപ്പിടിക്കുമ്പോൾ)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ഈ മാക്രോ അമർത്തിപ്പിടിച്ചിരിക്കുമ്പോൾ മാഗ്നിഫയർ കാണിക്കുന്നു, സൈറ്റ് ഉപയോഗിച്ച് ലക്ഷ്യമിടാൻ. മാഗ്നിഫയർ പേജിൽ ഇത് സജ്ജമാക്കുക.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ റഫറൻസുകൾ</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ വിവർത്തനങ്ങളിലെ വാക്കുകൾ boQwI'-യുടെ പിന്നിലെ നിഘണ്ടുവായ klingon-assistant-data (Apache-2.0), Paul Strack-ന്റെ എൽവിഷ് ലെക്സിക്കണായ Eldamo (CC BY 4.0) എന്നിവയുമായി ഒത്തുനോക്കി. നിഘണ്ടു ഡാറ്റ മാത്രം, അതിൽ ഒന്നും ഉൾപ്പെടുന്നില്ല.</value></data>
 </root>

@@ -108,7 +108,7 @@
              page's own face in sentence case, one step quieter than the
              text under it. -->
         <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -121,7 +121,7 @@
          page reads as a few parts at a glance. -->
     <Style x:Key="PageSectionTitle" TargetType="TextBlock">
         <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
@@ -131,7 +131,7 @@
     <!-- The small label of a number or of a list: Polling rate under the
          rate, Driven by over a controller's devices. -->
     <Style x:Key="StatLabel" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -172,7 +172,7 @@
         <Setter Property="Height" Value="32"/>
         <Setter Property="Padding" Value="9,0,13,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -225,7 +225,7 @@
     </Style>
 
     <Style x:Key="CardTitle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -235,7 +235,7 @@
          world-class pass): a stick, a trigger. The boards' 18 in the
          display face, one step over a card's plain title. -->
     <Style x:Key="HeroCardTitle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DisplayFontFamily}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -259,7 +259,7 @@
          Body face is explicit (#175 font sweep) so the style holds its
          role even where an ancestor overrides the inherited family. -->
     <Style x:Key="CardDescription" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -407,7 +407,7 @@
         <Setter Property="MinHeight" Value="28"/>
         <Setter Property="Padding" Value="12,0"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         <Setter Property="Template">
@@ -563,15 +563,15 @@
                                           VerticalAlignment="Center" Margin="{TemplateBinding ChevronMargin}"/>
                                     <ContentPresenter Grid.Column="1" ContentSource="Header"
                                                       VerticalAlignment="Center"
-                                                      TextElement.FontFamily="{StaticResource BodyFontFamily}"
+                                                      TextElement.FontFamily="{DynamicResource BodyFontFamily}"
                                                       TextElement.FontSize="14"/>
                                     <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                TextTrimming="CharacterEllipsis"
                                                VerticalAlignment="Center" Margin="10,0,12,0"/>
                                     <TextBlock x:Name="SummaryText" Grid.Column="3" Text="{TemplateBinding Summary}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                                Foreground="{TemplateBinding SummaryForeground}"
                                                VerticalAlignment="Center"/>
                                     <!-- Room for the action, which lies over
@@ -650,10 +650,10 @@
                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
                                 <ContentPresenter Grid.Column="1" ContentSource="Header"
                                                   VerticalAlignment="Center"
-                                                  TextElement.FontFamily="{StaticResource BodyFontFamily}"
+                                                  TextElement.FontFamily="{DynamicResource BodyFontFamily}"
                                                   TextElement.FontSize="14"/>
                                 <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
-                                           FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                           FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -712,10 +712,10 @@
                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
                                 <ContentPresenter Grid.Column="1" ContentSource="Header"
                                                   VerticalAlignment="Center"
-                                                  TextElement.FontFamily="{StaticResource BodyFontFamily}"
+                                                  TextElement.FontFamily="{DynamicResource BodyFontFamily}"
                                                   TextElement.FontSize="14"/>
                                 <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
-                                           FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                           FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            TextTrimming="CharacterEllipsis"
                                            VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -900,15 +900,15 @@
                                     </Grid>
                                     <ContentPresenter Grid.Column="1" ContentSource="Header"
                                                       VerticalAlignment="Center"
-                                                      TextElement.FontFamily="{StaticResource BodyFontFamily}"
+                                                      TextElement.FontFamily="{DynamicResource BodyFontFamily}"
                                                       TextElement.FontSize="14" TextElement.FontWeight="SemiBold"/>
                                     <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                TextTrimming="CharacterEllipsis"
                                                VerticalAlignment="Center" Margin="12,0,12,0"/>
                                     <TextBlock x:Name="SummaryText" Grid.Column="3" Text="{TemplateBinding Summary}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="13"
                                                Foreground="{TemplateBinding SummaryForeground}"
                                                VerticalAlignment="Center" Margin="0,0,4,0"/>
                                     <!-- Room for the action and the switch over the line's end. -->

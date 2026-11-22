@@ -560,16 +560,15 @@ namespace PadForge.Views
             if (!isBlack)
             {
                 string name = MidiSlotConfig.PitchName(midiNote);
-                label = new TextBlock
+                label = PadForge.Common.TextFaces.Body(new TextBlock
                 {
                     Text = name,
-                    FontFamily = (FontFamily)FindResource("BodyFontFamily"),
                     FontSize = 9,
                     Foreground = DimBrush,
                     IsHitTestVisible = false,
                     TextAlignment = TextAlignment.Center,
                     Width = width
-                };
+                });
                 Canvas.SetLeft(label, x);
                 Canvas.SetTop(label, y + height + 2);
                 MidiCanvas.Children.Add(label);

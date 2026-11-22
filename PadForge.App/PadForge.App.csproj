@@ -107,6 +107,10 @@
     <Resource Include="Resources\PadForge.ico" />
     <Resource Include="Resources\PadForge-logo.png" />
     <Resource Include="Resources\PadForge-icon.png" />
+    <!-- Galactic Basic draws the interface in SilvinoR's Aurebesh font (#590, OFL-1.1, Reserved
+         Font Name AUREBESH), byte for byte its dist/Aurebesh.ttf: the license lets it keep that
+         name only unmodified. Its license and attribution sit beside it. -->
+    <Resource Include="Resources\Fonts\Aurebesh.ttf" />
     <!--
       SDL3.dll: Link="SDL3.dll" ensures the file is copied to the OUTPUT ROOT
       (next to PadForge.exe) rather than preserving the Resources\SDL3\<arch>\ subdirectory.

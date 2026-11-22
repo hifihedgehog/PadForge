@@ -194,11 +194,11 @@
                                         <ColumnDefinition Width="34"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock x:Name="HintText" Text="{TemplateBinding Hint}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="14" TextWrapping="Wrap"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="14" TextWrapping="Wrap"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                VerticalAlignment="Center"/>
                                     <TextBlock x:Name="SummaryText" Grid.Column="1" Text="{TemplateBinding Summary}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="14" Margin="12,0,0,0"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="14" Margin="12,0,0,0"
                                                Foreground="{TemplateBinding SummaryForeground}"
                                                VerticalAlignment="Center"/>
                                     <Path x:Name="Chevron" Grid.Column="2" FlowDirection="LeftToRight" Data="M 3,1 L 7,5 L 3,9"
@@ -278,7 +278,7 @@
                 <StackPanel controls:FlexLinePanel.Basis="240" controls:FlexLinePanel.Grow="1">
                     <TextBlock x:Name="ProfilesTitle" AutomationProperties.HeadingLevel="Level1"
                                Text="{Binding Profiles_Title, Source={x:Static strings:Strings.Instance}}"
-                               FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                               FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                LineHeight="40.6" LineStackingStrategy="BlockLineHeight"/>
                     <TextBlock Text="{Binding Profiles_Subtitle, Source={x:Static strings:Strings.Instance}}"

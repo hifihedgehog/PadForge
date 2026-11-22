@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Умови ліцензії Visual Studio</value></data>
@@ -4764,6 +4765,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Розкладки стартових профілів для стратегій і робочого стола, а також поведінка турбо, якої уникає турбо зі швидкістю за тиском. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Довідкове джерело від Antoine Aflalo щодо структури недокументованого інтерфейсу Windows IPolicyConfig, який PadForge використовує, щоб знову ввімкнути аудіоточку контролера. Лише документація, код не постачається.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Шрифт Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Шрифт від SilvinoR, який постачається в складі PadForge без змін і малює інтерфейс, коли мова інтерфейсу Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Формат профілів параметричного еквалайзера, які імпортує «Параметричний еквалайзер» контролера, від Jaakko Pasanen. Лише документація, код не постачається.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5231,4 +5234,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Пароль</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (поки утримується)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Показує лупу, поки цей макрос утримується, щоб цілитися через приціл. Налаштуйте її на сторінці «Лупа».</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Джерела щодо клінгонської та синдарина</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Слова клінгонського та синдаринського перекладів звірено з klingon-assistant-data (Apache-2.0), словником, на якому працює boQwI', і з Eldamo (CC BY 4.0), ельфійським лексиконом Paul Strack. Лише дані словників, жодні з них не постачаються.</value></data>
 </root>

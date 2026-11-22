@@ -851,6 +851,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ಪರವಾನಗಿ ನಿಯಮಗಳು</value></data>
@@ -4743,6 +4744,8 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ಕಾರ್ಯತಂತ್ರ ಮತ್ತು ಡೆಸ್ಕ್‌ಟಾಪ್ ಆರಂಭಿಕ-ಪ್ರೊಫೈಲ್ ವಿನ್ಯಾಸಗಳು, ಮತ್ತು ಒತ್ತಡ-ಆಧಾರಿತ ಟರ್ಬೊ ತಪ್ಪಿಸುವ ಟರ್ಬೊ ವರ್ತನೆ. ದಾಖಲೆಯಾಗಿ ಮಾತ್ರ ಓದಲಾಗಿದೆ, ಯಾವುದೇ GPL ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ನ ದಾಖಲೆರಹಿತ IPolicyConfig ಇಂಟರ್ಫೇಸ್‌ನ ವಿನ್ಯಾಸಕ್ಕೆ Antoine Aflalo ಅವರ ಉಲ್ಲೇಖ, ಇದನ್ನು PadForge ಕಂಟ್ರೋಲರ್‌ನ ಆಡಿಯೊ ಎಂಡ್‌ಪಾಯಿಂಟ್ ಅನ್ನು ಮತ್ತೆ ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಳಸುತ್ತದೆ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh ಫಾಂಟ್</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR ಅವರ ಫಾಂಟ್. ಇದು PadForge ಒಳಗೆ ಬದಲಾವಣೆ ಇಲ್ಲದೆ ಸೇರಿದೆ ಮತ್ತು ಭಾಷೆ Galactic Basic ಆಗಿದ್ದಾಗ ಇಂಟರ್ಫೇಸ್ ಅನ್ನು ಇದರಲ್ಲಿ ಚಿತ್ರಿಸುತ್ತದೆ.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ನ ಪ್ಯಾರಾಮೆಟ್ರಿಕ್ EQ ಆಮದು ಮಾಡುವ ಪ್ಯಾರಾಮೆಟ್ರಿಕ್ EQ ಪ್ರೊಫೈಲ್ ಸ್ವರೂಪ, Jaakko Pasanen ಅವರಿಂದ. ದಾಖಲೆ ಮಾತ್ರ. ಯಾವುದೇ ಕೋಡ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>

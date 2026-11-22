@@ -121,7 +121,7 @@
              the pointer and with the caret in it, as a value box does. Its
              text stands at the card's inset. -->
         <Style x:Key="HeadNameEdit" TargetType="TextBox" BasedOn="{StaticResource DzValueEdit}">
-            <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextAlignment" Value="Left"/>
@@ -1903,7 +1903,7 @@
                         <TextBlock Text="{Binding Word}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Visibility="{Binding Word, Converter={StaticResource StringToVisibility}}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Text}" FontFamily="{StaticResource BodyFontFamily}" FontSize="14" MaxWidth="190"
+                        <TextBlock Grid.Column="1" Text="{Binding Text}" FontFamily="{DynamicResource BodyFontFamily}" FontSize="14" MaxWidth="190"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                         <TextBlock Grid.Column="2" Text="{Binding Direction}" FontSize="12" FontWeight="SemiBold" Margin="6,0,0,0" VerticalAlignment="Center"
@@ -2141,8 +2141,8 @@
                      leading space giving the gap. -->
                 <TextBlock x:Name="PadTitle" AutomationProperties.HeadingLevel="Level1" VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"
-                           FontFamily="{StaticResource DisplayFontFamily}" FontWeight="SemiBold" FontSize="28"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"><Run Text="{Binding OutputTypeDisplayName, Mode=OneWay}"/><Run Text="{Binding TypeInstanceLabel, Mode=OneWay, StringFormat=' #{0}'}" FontFamily="{StaticResource BodyFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="15" FontWeight="Normal" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
+                           FontFamily="{DynamicResource DisplayFontFamily}" FontWeight="SemiBold" FontSize="28"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"><Run Text="{Binding OutputTypeDisplayName, Mode=OneWay}"/><Run Text="{Binding TypeInstanceLabel, Mode=OneWay, StringFormat=' #{0}'}" FontFamily="{DynamicResource BodyFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="15" FontWeight="Normal" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
                 </DockPanel>
 
                 <!-- The Preset (#574): its label, its picker as a box 34
@@ -3502,7 +3502,7 @@
                                               StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                     </ui:Button>
                                     <TextBlock x:Name="PickedNameText" DockPanel.Dock="Left" Text="{Binding PickedName}"
-                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="15" FontWeight="SemiBold"
+                                               FontFamily="{DynamicResource BodyFontFamily}" FontSize="15" FontWeight="SemiBold"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                VerticalAlignment="Center"/>
                                     <TextBlock x:Name="PickedKindText" DockPanel.Dock="Left" Text="{Binding PickedKind}" FontSize="13"
@@ -3732,7 +3732,7 @@
                                                                 </Path>
                                                                 <!-- The category's name: its place in
                                                                      MappingCategory picks one of the names. -->
-                                                                <TextBlock x:Name="ListGroupTitle" FontFamily="{StaticResource BodyFontFamily}" FontSize="13" FontWeight="SemiBold"
+                                                                <TextBlock x:Name="ListGroupTitle" FontFamily="{DynamicResource BodyFontFamily}" FontSize="13" FontWeight="SemiBold"
                                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                                            VerticalAlignment="Center" Margin="10,0,0,0">
                                                                     <TextBlock.Text>
@@ -3751,7 +3751,7 @@
                                                                 <!-- How many outputs the band holds, as the List
                                                                      board says it: "11 outputs", and "1 output" for
                                                                      one. -->
-                                                                <TextBlock FontFamily="{StaticResource BodyFontFamily}" FontSize="13" Typography.NumeralAlignment="Tabular"
+                                                                <TextBlock FontFamily="{DynamicResource BodyFontFamily}" FontSize="13" Typography.NumeralAlignment="Tabular"
                                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                            VerticalAlignment="Center" Margin="10,0,0,0">
                                                                     <TextBlock.Text>
@@ -3834,7 +3834,7 @@
                                                              name of the table and never under 200 and the 12 after
                                                              it. -->
                                                         <TextBlock Text="{Binding TargetLabel}"
-                                                                   FontFamily="{StaticResource BodyFontFamily}" FontSize="14"
+                                                                   FontFamily="{DynamicResource BodyFontFamily}" FontSize="14"
                                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                                    VerticalAlignment="Center" Margin="0,0,12,0"/>
                                                         <!-- The cells, one under each column of the head. -->

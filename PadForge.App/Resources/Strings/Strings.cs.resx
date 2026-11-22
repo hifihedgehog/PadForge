@@ -870,6 +870,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licenční podmínky Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Rozložení startovních profilů Strategie a Plocha a chování turba, kterému se turbo podle tlaku vyhýbá. Čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Předloha, autor Antoine Aflalo, pro rozložení nedokumentovaného rozhraní IPolicyConfig systému Windows, které PadForge používá k opětovnému povolení zvukového koncového bodu ovladače. Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Písmo Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Písmo od SilvinoR, které je součástí PadForge beze změn a vykresluje rozhraní, když je jeho jazykem Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Formát profilu parametrického ekvalizéru, který importuje Parametrický ekvalizér ovladače, autor Jaakko Pasanen. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Čtení chatu bez přihlášení a pravidlo příkazů s !, čtené z tmi.js a ComfyJS, a ponechání jen 20 nejnovějších příkazů, ze šablony TwitchPlays od DougDoug. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Reference k displejům klávesnic</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Knihovny, snímky a klávesy, které stojí za displeji klávesnic, čtené z SDK Logitech LCD a Arx Control a z SDK S.T.R.I.K.E. 7 od Mad Catz, křížově ověřené podle logitech-lcd (MIT nebo Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff a ArxWidgetManager (licence nezveřejněna), systémového ovladače hid-lg-g15 pro Linux (GPL-2.0-or-later), libg15, G15Interface a lcdproc (GPL-2.0), gnome15 (GPL-3.0) a G19USB (Apache-2.0). PadForge načítá knihovny Logitech Gaming Software a soubor Strike7API.dll, který stáhnete nebo vyberete, a žádný kód z nich nedodává.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Reference ke klingonštině a sindarštině</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Slova klingonských a sindarských překladů, ověřená podle klingon-assistant-data (Apache-2.0), slovníku za boQwI', a Eldamo (CC BY 4.0), elfského lexikonu od Paul Strack. Jen slovníková data, nic z nich se nedodává.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Reference k Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Volání knihoven, pocity a herní síly, které stojí za podporou Novint Falcon, čtené z hlaviček SDK, dokumentace a příkladů Force Dimension, s pocitem Joystick z FalconJoystick a pocitem Míření a vibracemi z FalconJoyForce (oba od Cyclops-11B, licence nezveřejněna), ověřené podle CHAI3D (BSD 3-Clause) a libnifalcon (BSD). PadForge načítá knihovnu Force Dimension, kterou si nainstalujete, protože její licence nedává právo ji redistribuovat, a žádný kód z nich nedodává.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

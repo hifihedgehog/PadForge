@@ -1036,7 +1036,7 @@ namespace PadForge.Tests
 
             var heading = Named(page, "DeviceNameHeading");
             Assert.Equal("20", Attr(heading, "FontSize"));
-            Assert.Equal("{StaticResource DisplayFontFamily}", Attr(heading, "FontFamily"));
+            Assert.Equal("{DynamicResource DisplayFontFamily}", Attr(heading, "FontFamily"));
             Assert.Equal("Level2", Attr(heading, "AutomationProperties.HeadingLevel"));
             Assert.Equal("{Binding SelectedDevice.DeviceType}", Attr(Named(page, "DeviceTypeLine"), "Text"));
             Assert.Same(Named(page, "DeviceTypeLine").Parent, Named(page, "TestRumbleButton").Parent);

@@ -851,6 +851,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>„Visual Studio“ licencijos sąlygos</value></data>
@@ -4759,6 +4760,8 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strategijos ir darbalaukio pradinių profilių išdėstymai bei turbo elgesys, kurio išvengia nuo spaudimo priklausantis turbo. Skaityta tik kaip dokumentacija, joks GPL kodas neplatinamas.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo etalonas nedokumentuotos „Windows“ sąsajos IPolicyConfig struktūrai, kurią „PadForge“ naudoja valdiklio garso galiniam įrenginiui vėl įjungti. Tik dokumentacija, joks kodas neplatinamas.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh šriftas</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR šriftas, kuris įtrauktas į PadForge nepakeistas ir kuriuo piešiama sąsaja, kai pasirinkta kalba Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Parametrinio ekvalaizerio profilio formatas, kurį importuoja valdiklio parametrinis ekvalaizeris, autorius Jaakko Pasanen. Tik dokumentacija, joks kodas neplatinamas.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5230,4 +5233,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Perjungimo sluoksniai</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Apversta</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Viršūnė</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonų ir sindarinų kalbų nuorodos</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonų ir sindarinų kalbų vertimų žodžiai patikrinti pagal klingon-assistant-data (Apache-2.0), žodyną, kuriuo remiasi boQwI', ir Eldamo (CC BY 4.0), Paul Strack sudarytą elfų kalbų žodyną. Tik žodyno duomenys, nė vienas neįtraukiamas.</value></data>
 </root>

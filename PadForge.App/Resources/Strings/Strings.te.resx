@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio లైసెన్స్ నిబంధనలు</value></data>
@@ -5002,6 +5003,8 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strategy మరియు డెస్క్టాప్ ప్రారంభ ప్రొఫైల్ లేఅవుట్లు, మరియు ఒత్తిడి ఆధారిత టర్బో నివారించే టర్బో ప్రవర్తన. డాక్యుమెంటేషన్గా మాత్రమే చదవబడింది, GPL కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge కంట్రోలర్ ఆడియో ఎండ్పాయింట్ను మళ్లీ ప్రారంభించడానికి ఉపయోగించే Windows యొక్క డాక్యుమెంట్ చేయని IPolicyConfig ఇంటర్ఫేస్ లేఅవుట్ కోసం Antoine Aflalo రూపొందించిన సూచన. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh ఫాంట్</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR రూపొందించిన ఫాంట్, PadForge లోపల మార్పు లేకుండా వచ్చి, భాష Galactic Basic అయినప్పుడు ఇంటర్‌ఫేస్‌ను గీస్తుంది.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>కంట్రోలర్ పారామెట్రిక్ EQ దిగుమతి చేసే పారామెట్రిక్ EQ ప్రొఫైల్ ఫార్మాట్, Jaakko Pasanen ద్వారా. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>సైన్ ఇన్ చేయకుండా చాట్ చదవడం మరియు ! కమాండ్ నియమం, tmi.js మరియు ComfyJS నుండి చదవబడ్డాయి, మరియు కేవలం తాజా 20 కమాండ్లను మాత్రమే ఉంచడం, DougDoug యొక్క TwitchPlays టెంప్లేట్ నుండి చదవబడింది. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ సూచనలు</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్ల వెనుక ఉన్న లైబ్రరీలు, ఫ్రేమ్లు మరియు కీలు, Logitech యొక్క LCD మరియు Arx Control SDKలు మరియు Mad Catz యొక్క S.T.R.I.K.E. 7 SDK నుండి చదవబడ్డాయి, logitech-lcd (MIT లేదా Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff మరియు ArxWidgetManager (లైసెన్స్ ప్రచురించబడలేదు), Linux యొక్క hid-lg-g15 డ్రైవర్ (GPL-2.0-or-later), libg15, G15Interface మరియు lcdproc (GPL-2.0), gnome15 (GPL-3.0) మరియు G19USB (Apache-2.0) తో క్రాస్-చెక్ చేయబడ్డాయి. PadForge Logitech Gaming Software యొక్క లైబ్రరీలను మరియు మీరు డౌన్లోడ్ చేసే లేదా ఎంచుకునే Strike7API.dll ను లోడ్ చేస్తుంది మరియు వాటిలో దేని నుండీ కోడ్ పంపిణీ చేయదు.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>క్లింగాన్, సిండారిన్ సూచనలు</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>క్లింగాన్, సిండారిన్ అనువాదాల పదాలు klingon-assistant-data (Apache-2.0) నుండి, అంటే boQwI' వెనుక ఉన్న నిఘంటువు, మరియు Paul Strack రూపొందించిన ఎల్విష్ పదకోశం Eldamo (CC BY 4.0) నుండి సరిచూడబడ్డాయి. నిఘంటువు డేటా మాత్రమే, దానిలో ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon సూచనలు</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon మద్దతు వెనుక ఉన్న లైబ్రరీ కాల్స్, ఫీల్లు మరియు గేమ్ ఫోర్స్లు, Force Dimension యొక్క SDK హెడర్లు, డాక్యుమెంటేషన్ మరియు ఉదాహరణల నుండి చదవబడ్డాయి, జాయ్స్టిక్ ఫీల్ FalconJoystick నుండి, ఎయిమ్ ఫీల్ మరియు రంబుల్ FalconJoyForce (రెండూ Cyclops-11B ద్వారా, లైసెన్స్ ప్రచురించబడలేదు) నుండి, మరియు CHAI3D (BSD 3-Clause), libnifalcon (BSD) తో తనిఖీ చేయబడ్డాయి. PadForge మీరు ఇన్స్టాల్ చేసిన Force Dimension లైబ్రరీని లోడ్ చేస్తుంది, ఎందుకంటే దాని లైసెన్స్ పునఃపంపిణీ హక్కు ఇవ్వదు, మరియు వాటిలో దేని నుండీ కోడ్ పంపిణీ చేయదు.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

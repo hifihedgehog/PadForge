@@ -15,11 +15,13 @@
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
 
-                <!-- Font faces (#175 typography): merged BEFORE
-                     ControllerIcons.xaml so its StaticResource font
-                     references (SectionTitle, HeaderTitle) resolve to
-                     these faces instead of falling back to Segoe UI.
-                     StaticResource only sees earlier siblings. -->
+                <!-- Font faces (#175 typography). Every reference takes
+                     them as a DynamicResource, so Galactic Basic (#590)
+                     can set the Aurebesh faces over them in the
+                     application's own resources and every page already
+                     built redraws (UiLanguage.ApplyFaces). They stay merged
+                     ahead of ControllerIcons.xaml, whose styles read
+                     them. -->
                 <ResourceDictionary>
                     <!-- One family for every word and number: Segoe UI
                          Variable, Text for body sizes and Display from 18
@@ -279,7 +281,7 @@
                 every dialog and lets all dialog text inherit it.
             -->
             <Style TargetType="uictrl:FluentWindow" BasedOn="{StaticResource DefaultFluentWindowStyle}">
-                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             </Style>
 
             <!--
@@ -1476,7 +1478,7 @@
                  so menus drew in classic Segoe UI. The face set here reaches
                  every item, the tray menu's too. -->
             <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
-                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             </Style>
 
             <!-- A popup the app builds itself: the ground, edge and corner of
@@ -1511,7 +1513,7 @@
                     </DataTemplate>
                 </Style.Resources>
                 <Setter Property="MaxWidth" Value="420"/>
-                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
                 <Setter Property="TextBlock.TextAlignment" Value="Left"/>
             </Style>
 
@@ -1607,6 +1609,7 @@
             <conv:BytePercentConverter x:Key="BytePercentConverter" />
             <conv:LogScaleConverter x:Key="LogScaleConverter" />
             <conv:CultureLanguageConverter x:Key="CultureLanguageConverter" />
+            <conv:LanguageFaceConverter x:Key="LanguageFaceConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

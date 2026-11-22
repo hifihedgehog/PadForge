@@ -11,7 +11,7 @@
              xmlns:reset="clr-namespace:PadForge.Controls"
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:vm="clr-namespace:PadForge.ViewModels"
-             FontFamily="{StaticResource BodyFontFamily}">
+             FontFamily="{DynamicResource BodyFontFamily}">
 
     <UserControl.Resources>
         <!-- A raw cell (#175): a field's fill inside the control line, its
@@ -615,7 +615,7 @@
             <StackPanel controls:FlexLinePanel.Basis="200" controls:FlexLinePanel.Grow="1" VerticalAlignment="Bottom">
                 <TextBlock x:Name="DevicesTitle" AutomationProperties.HeadingLevel="Level1"
                            Text="{Binding Devices_Title, Source={x:Static strings:Strings.Instance}}"
-                           FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                           FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                            LineHeight="40.6" LineStackingStrategy="BlockLineHeight"/>
                 <TextBlock x:Name="DevicesSubtitle" Margin="0,2,0,0" Style="{StaticResource DeviceSmall}"
@@ -1002,7 +1002,7 @@
                                          it. -->
                                     <StackPanel Margin="20,16,20,18">
                                         <TextBlock x:Name="DeviceNameHeading" TextWrapping="Wrap"
-                                                   FontFamily="{StaticResource DisplayFontFamily}" FontSize="20" FontWeight="SemiBold"
+                                                   FontFamily="{DynamicResource DisplayFontFamily}" FontSize="20" FontWeight="SemiBold"
                                                    LineHeight="29" LineStackingStrategy="BlockLineHeight"
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                    AutomationProperties.HeadingLevel="Level2"

@@ -870,6 +870,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licenčni pogoji Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Razporeditve začetnih profilov za strategije in namizje ter delovanje turba, ki se mu turbo glede na pritisk izogne. Prebrano le kot dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referenca avtorja Antoine Aflalo za razporeditev nedokumentiranega vmesnika IPolicyConfig sistema Windows, s katerim PadForge znova omogoči zvočno končno točko krmilnika. Samo dokumentacija, nobena koda ni vključena.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Pisava Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Pisava avtorja SilvinoR, ki je nespremenjena del PadForge in riše vmesnik, kadar je njegov jezik Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Oblika profilov parametričnega izenačevalnika, ki jih uvaža Parametrični izenačevalnik na strani krmilnika. Avtor: Jaakko Pasanen. Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Branje klepeta brez prijave in pravilo ukaza z ! sta prebrana iz tmi.js in ComfyJS, ohranjanje samo najnovejših 20 ukazov pa iz predloge TwitchPlays avtorja DougDoug. Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Reference za zaslone tipkovnic</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Knjižnice, okvirji in tipke za zaslone tipkovnic, prebrani iz SDK-jev Logitech LCD in Arx Control ter SDK-ja S.T.R.I.K.E. 7 podjetja Mad Catz, preverjeni z logitech-lcd (MIT ali Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff in ArxWidgetManager (brez objavljene licence), gonilnikom hid-lg-g15 za Linux (GPL-2.0-or-later), libg15, G15Interface in lcdproc (GPL-2.0), gnome15 (GPL-3.0) in G19USB (Apache-2.0). PadForge naloži knjižnice programa Logitech Gaming Software in datoteko Strike7API.dll, ki jo prenesete ali izberete, in ne vključuje kode nobene od njih.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Reference za klingonščino in sindarščino</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Besede klingonskega in sindarskega prevoda, preverjene po klingon-assistant-data (Apache-2.0), slovarju za boQwI', in po Eldamo (CC BY 4.0), elfovskem leksikonu avtorja Paul Strack. Samo podatki slovarjev, nobeni niso vključeni.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Reference za Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Klici knjižnice, občutki in sile iger za podporo Novint Falcon, prebrani iz glav SDK, dokumentacije in primerov podjetja Force Dimension, z občutkom „Igralna palica“ iz FalconJoystick in občutkom „Ciljanje“ ter vibriranjem iz FalconJoyForce (oba avtorja Cyclops-11B, brez objavljene licence), preverjeni s CHAI3D (BSD 3-Clause) in libnifalcon (BSD). PadForge naloži knjižnico Force Dimension, ki jo namestite, ker njena licenca ne daje pravice do redistribucije, in ne vključuje kode nobene od njih.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

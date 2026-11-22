@@ -65,7 +65,6 @@ namespace PadForge.Controls
         private static readonly Brush HandleFill = Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)));
         private static readonly Brush HandleHot = Frozen(new SolidColorBrush(Color.FromRgb(0xFF, 0x9D, 0x5D)));
         private static readonly Pen HandleRing = Frozen(new Pen(Frozen(new SolidColorBrush(Colors.White)), 1.5));
-        private static readonly Typeface Face = PadForge.Common.TextFaces.BodyTypeface(FontWeights.Normal);
         // The labels at the 12 of a label, the frequency's above the floor.
         private const double LabelSize = 12;
         private static readonly double[] GridHz = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000 };
@@ -88,6 +87,10 @@ namespace PadForge.Controls
             // to left (#505). Without the pin WPF would mirror the whole
             // drawing, and the axis labels with it, into backward text.
             FlowDirection = FlowDirection.LeftToRight;
+            // The labels take the body face by resource reference, so they
+            // redraw in the face of the interface language, Galactic Basic's
+            // Aurebesh included (#590).
+            PadForge.Common.TextFaces.Follow(this, PadForge.Common.TextFaces.BodyKey);
             SetResourceReference(LabelBrushProperty, "TextFillColorTertiaryBrush");
         }
 
@@ -228,7 +231,7 @@ namespace PadForge.Controls
         /// control is on.</summary>
         private FormattedText Text(string s, Brush b, double size) =>
             new(s, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                Face, size, b, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                PadForge.Common.TextFaces.TypefaceOf(this, FontWeights.Normal), size, b, VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
         // ── interaction ─────────────────────────────────────────────────────
 

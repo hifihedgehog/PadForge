@@ -845,6 +845,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Lizenzbedingunge vu Visual Studio</value></data>
@@ -5207,4 +5208,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift-Schichten</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertéiert</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Spëtzt</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>D'Schrëft vum SilvinoR, déi onverännert a PadForge matgeliwwert gëtt an d'Interface zeechent, wann hir Sprooch Galactic Basic ass.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referenze fir Klingonesch a Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>D'Wierder vun der klingonescher an der Sindarin-Iwwersetzung, iwwerpréift mat klingon-assistant-data (Apache-2.0), dem Wierderbuch hannert boQwI', an Eldamo (CC BY 4.0), dem elbesche Lexikon vum Paul Strack. Nëmmen Wierderbuchdaten, näischt dovun gëtt matgeliwwert.</value></data>
 </root>

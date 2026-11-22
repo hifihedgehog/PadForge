@@ -631,6 +631,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Lizenzbedingungen von Visual Studio</value></data>
@@ -4957,6 +4958,8 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Layouts der Startprofile für Strategie und Desktop sowie das Turbo-Verhalten, das der druckabhängige Turbo vermeidet. Nur als Dokumentation gelesen, kein GPL-Code wird ausgeliefert.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referenz von Antoine Aflalo für das Layout der undokumentierten IPolicyConfig-Schnittstelle von Windows, mit der PadForge den Audio-Endpunkt eines Controllers wieder aktiviert. Nur Dokumentation, kein Code wird ausgeliefert.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh-Schrift</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Die Schrift von SilvinoR, die unverändert in PadForge enthalten ist und die Oberfläche zeichnet, wenn ihre Sprache Galactic Basic ist.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Das Format der parametrischen EQ-Profile, die ein Controller unter „Parametrischer EQ“ importiert, von Jaakko Pasanen. Nur Dokumentation, kein Code wird ausgeliefert.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5093,6 +5096,8 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Das Lesen des Chats ohne Anmeldung und die !-Befehlsregel, gelesen aus tmi.js und ComfyJS, sowie die Beschränkung auf die neuesten 20 Befehle, gelesen aus der Vorlage TwitchPlays von DougDoug. Nur Dokumentation, es wird kein Code ausgeliefert.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referenzen zu Tastatur-Displays</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Die Bibliotheken, Frames und Tasten hinter Tastatur-Displays, gelesen aus den Logitech-SDKs für LCD und Arx Control sowie dem S.T.R.I.K.E. 7 SDK von Mad Catz, abgeglichen mit logitech-lcd (MIT oder Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff und ArxWidgetManager (keine Lizenz veröffentlicht), dem Linux-Treiber hid-lg-g15 (GPL-2.0-or-later), libg15, G15Interface und lcdproc (GPL-2.0), gnome15 (GPL-3.0) und G19USB (Apache-2.0). PadForge lädt die Bibliotheken der Logitech Gaming Software und die Strike7API.dll, die Sie herunterladen oder auswählen, und liefert keinen Code davon aus.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referenzen zu Klingonisch und Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Die Wörter der klingonischen und der Sindarin-Übersetzung, geprüft anhand von klingon-assistant-data (Apache-2.0), dem Wörterbuch hinter boQwI', und Eldamo (CC BY 4.0), dem elbischen Lexikon von Paul Strack. Nur Wörterbuchdaten, nichts davon wird ausgeliefert.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referenzen zum Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Die Bibliotheksaufrufe, Feels und Spielkräfte hinter der Unterstützung des Novint Falcon, gelesen aus den SDK-Headern, der Dokumentation und den Beispielen von Force Dimension, mit dem Feel „Joystick“ aus FalconJoystick und dem Feel „Zielen“ sowie der Vibration aus FalconJoyForce (beide von Cyclops-11B, keine Lizenz veröffentlicht), abgeglichen mit CHAI3D (BSD 3-Clause) und libnifalcon (BSD). PadForge lädt die Bibliothek von Force Dimension, die Sie installieren, da deren Lizenz kein Recht zur Weitergabe einräumt, und liefert keinen Code davon aus.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -1301,6 +1301,7 @@ public class Strings : INotifyPropertyChanged
     public string About_License_Lgpl3OrLater => Get("About_License_Lgpl3OrLater");
     public string About_License_CcByNcSa4 => Get("About_License_CcByNcSa4");
     public string About_License_CcBy3 => Get("About_License_CcBy3");
+    public string About_License_Ofl => Get("About_License_Ofl");
     public string About_License_CgTrader => Get("About_License_CgTrader");
     public string About_License_WyvrnEula => Get("About_License_WyvrnEula");
     public string About_License_VisualStudio => Get("About_License_VisualStudio");
@@ -4902,6 +4903,8 @@ public class Strings : INotifyPropertyChanged
     public string About_AntiMicroXDesc => Get("About_AntiMicroXDesc");
     public string About_AudioEndPointLibrary => Get("About_AudioEndPointLibrary");
     public string About_AudioEndPointLibraryDesc => Get("About_AudioEndPointLibraryDesc");
+    public string About_AurebeshFont => Get("About_AurebeshFont");
+    public string About_AurebeshFontDesc => Get("About_AurebeshFontDesc");
     public string About_AutoEq => Get("About_AutoEq");
     public string About_AutoEqDesc => Get("About_AutoEqDesc");
     public string About_AutoHotkey => Get("About_AutoHotkey");
@@ -5038,6 +5041,8 @@ public class Strings : INotifyPropertyChanged
     public string About_TwitchChatRefsDesc => Get("About_TwitchChatRefsDesc");
     public string About_KeyboardScreenRefs => Get("About_KeyboardScreenRefs");
     public string About_KeyboardScreenRefsDesc => Get("About_KeyboardScreenRefsDesc");
+    public string About_LanguageRefs => Get("About_LanguageRefs");
+    public string About_LanguageRefsDesc => Get("About_LanguageRefsDesc");
     public string About_FalconRefs => Get("About_FalconRefs");
     public string About_FalconRefsDesc => Get("About_FalconRefsDesc");
     public string About_DualSenseWindows => Get("About_DualSenseWindows");

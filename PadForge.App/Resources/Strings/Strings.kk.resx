@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензия шарттары</value></data>
@@ -4763,6 +4764,8 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратегия мен жұмыс үстеліне арналған бастапқы профиль орналасулары және қысымға бейімделген турбо болдырмайтын турбо әрекеті. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-тың құжатталмаған IPolicyConfig интерфейсінің орналасуы бойынша Antoine Aflalo сілтемесі, оны PadForge контроллердің дыбыс соңғы нүктесін қайта қосу үшін қолданады. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh қарпі</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR жасаған қаріп PadForge ішінде өзгертілмей жеткізіледі және интерфейс тілі Galactic Basic болғанда интерфейсті сол қарыппен салады.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллердегі «Параметрлік эквалайзер» импорттайтын параметрлік EQ профилінің пішімі, автор Jaakko Pasanen. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5230,4 +5233,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Құпия сөз</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (ұстап тұрғанда)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Осы макрос ұсталып тұрғанда лупаны көрсетеді, көздеп атуға арналған. Оны Лупа бетінде баптаңыз.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон және синдарин тілдерінің сілтемелері</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон және синдарин аудармаларындағы сөздер klingon-assistant-data (Apache-2.0) жобасымен, яғни boQwI' сөздігінің деректерімен, және Paul Strack құрастырған эльф тілдерінің лексиконы Eldamo (CC BY 4.0) жобасымен салыстырылып тексерілді. Тек сөздік деректері, ешқайсысы жеткізілмейді.</value></data>
 </root>

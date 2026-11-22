@@ -10,13 +10,15 @@ namespace PadForge.Common
     /// <summary>One language the interface is translated into.</summary>
     public sealed class LanguageInfo
     {
-        internal LanguageInfo(string tag, string englishName, string nativeName, bool rightToLeft, bool complete)
+        internal LanguageInfo(string tag, string englishName, string nativeName, bool rightToLeft, bool complete,
+            string script)
         {
             Tag = tag;
             EnglishName = englishName;
             NativeName = nativeName;
             IsRightToLeft = rightToLeft;
             IsComplete = complete;
+            Script = script;
             Culture = CultureInfo.GetCultureInfo(tag);
         }
 
@@ -31,6 +33,16 @@ namespace PadForge.Common
         public string NativeName { get; }
 
         public bool IsRightToLeft { get; }
+
+        /// <summary>The script the table names for the language: an ISO 15924
+        /// code, such as Latn or Deva, or Qaaa, the first code ISO 15924 leaves
+        /// to private use, for the Aurebesh alphabet.</summary>
+        public string Script { get; }
+
+        /// <summary>True for Galactic Basic (#590): English written in the
+        /// Aurebesh alphabet, which the interface draws in the Aurebesh
+        /// font.</summary>
+        public bool IsAurebesh => Script == LanguageCatalog.AurebeshScript;
 
         /// <summary>True when every string is translated. A language that
         /// is not complete shows English wherever its translation has no
@@ -71,6 +83,11 @@ namespace PadForge.Common
         /// <summary>The tag of the interface's own language: American
         /// English, the text of Strings.resx.</summary>
         internal const string EnglishTag = "en-US";
+
+        /// <summary>The script code of the Aurebesh alphabet in the table, Qaaa:
+        /// ISO 15924 has no code for Aurebesh and leaves Qaaa to Qabx to private
+        /// use.</summary>
+        internal const string AurebeshScript = "Qaaa";
 
         internal static LanguageInfo English => Find(EnglishTag);
 
@@ -197,7 +214,7 @@ namespace PadForge.Common
                 {
                     if (line.Length == 0 || line[0] == '#') continue;
                     string[] cells = line.Split('\t');
-                    rows.Add(new LanguageInfo(cells[0], cells[1], cells[2], cells[3] == "rtl", cells[5] == "full"));
+                    rows.Add(new LanguageInfo(cells[0], cells[1], cells[2], cells[3] == "rtl", cells[5] == "full", cells[4]));
                 }
             }
             CompareInfo invariant = CultureInfo.InvariantCulture.CompareInfo;

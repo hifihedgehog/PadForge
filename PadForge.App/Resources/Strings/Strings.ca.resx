@@ -851,6 +851,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Condicions de llicència de Visual Studio</value></data>
@@ -4764,6 +4765,8 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Disposicions dels perfils inicials d'estratègia i d'escriptori, i el comportament del turbo que evita el turbo segons la pressió. Llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referència d'Antoine Aflalo per a la disposició de la interfície no documentada IPolicyConfig de Windows, que PadForge fa servir per tornar a activar el punt final d'àudio d'un comandament. Només documentació, no s'hi inclou cap codi.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Tipografia Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>La tipografia de SilvinoR, que s'inclou a PadForge sense modificar i dibuixa la interfície quan l'idioma és Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>El format de perfils d'equalitzador paramètric que importa l'apartat Equalitzador paramètric d'un comandament, de Jaakko Pasanen. Només documentació, no s'hi inclou cap codi.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -4890,6 +4893,8 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Referències dels auriculars del DualShock 4</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referències de pantalles de teclat</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Les biblioteques, els fotogrames i les tecles darrere de les pantalles de teclat, extrets dels SDK d'LCD i Arx Control de Logitech i de l'SDK de S.T.R.I.K.E. 7 de Mad Catz, contrastats amb logitech-lcd (MIT o Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff i ArxWidgetManager (sense llicència publicada), el controlador de Linux hid-lg-g15 (GPL-2.0-or-later), libg15, G15Interface i lcdproc (GPL-2.0), gnome15 (GPL-3.0) i G19USB (Apache-2.0). PadForge carrega les biblioteques de Logitech Gaming Software i el Strike7API.dll que baixes o tries, i no inclou cap codi de cap d'ells.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referències del klingonià i del sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Les paraules de les traduccions al klingonià i al sindarin, contrastades amb klingon-assistant-data (Apache-2.0), el diccionari que hi ha darrere de boQwI', i amb Eldamo (CC BY 4.0), el lèxic èlfic de Paul Strack. Només dades de diccionari, no s'hi inclou cap.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referències de Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Les crides de biblioteca, les sensacions i les forces de joc darrere del suport per al Novint Falcon, extretes de les capçaleres, la documentació i els exemples de l'SDK de Force Dimension, amb la sensació Joystick de FalconJoystick i la sensació Apuntar i la vibració de FalconJoyForce (tots dos de Cyclops-11B, sense llicència publicada), contrastades amb CHAI3D (BSD 3-Clause) i libnifalcon (BSD). PadForge carrega la biblioteca de Force Dimension que instal·les, ja que la seva llicència no concedeix cap dret de redistribuir-la, i no inclou cap codi de cap d'ells.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Pantalles del teclat</value></data>

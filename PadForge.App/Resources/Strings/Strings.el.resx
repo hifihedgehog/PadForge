@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Όροι άδειας του Visual Studio</value></data>
@@ -5002,6 +5003,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Διατάξεις των έτοιμων προφίλ στρατηγικής και επιφάνειας εργασίας, καθώς και η συμπεριφορά turbo την οποία αποφεύγει το turbo με ρυθμό ανάλογο της πίεσης. Μελετήθηκε μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Αναφορά του Antoine Aflalo για τη διάταξη της μη τεκμηριωμένης διεπαφής IPolicyConfig των Windows, την οποία χρησιμοποιεί το PadForge για να ενεργοποιεί ξανά το τελικό σημείο ήχου ενός χειριστηρίου. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Γραμματοσειρά Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Η γραμματοσειρά του SilvinoR, που περιλαμβάνεται στο PadForge χωρίς τροποποίηση και σχεδιάζει τη διεπαφή όταν η γλώσσα της είναι Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Η μορφή προφίλ παραμετρικού ισοσταθμιστή που εισάγει ο «Παραμετρικός ισοσταθμιστής» ενός χειριστηρίου, του Jaakko Pasanen. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Η ανάγνωση της συνομιλίας χωρίς σύνδεση και ο κανόνας εντολών με !, όπως διαβάστηκαν από τα tmi.js και ComfyJS, και η διατήρηση μόνο των 20 νεότερων εντολών, από το πρότυπο TwitchPlays του DougDoug. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Αναφορές για τις οθόνες πληκτρολογίων</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Οι βιβλιοθήκες, τα καρέ και τα πλήκτρα πίσω από τις οθόνες πληκτρολογίων, όπως διαβάστηκαν από τα LCD και Arx Control SDK της Logitech και το S.T.R.I.K.E. 7 SDK της Mad Catz, και διασταυρώθηκαν με τα logitech-lcd (MIT ή Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff και ArxWidgetManager (χωρίς δημοσιευμένη άδεια), το πρόγραμμα οδήγησης hid-lg-g15 του Linux (GPL-2.0-or-later), τα libg15, G15Interface και lcdproc (GPL-2.0), το gnome15 (GPL-3.0) και το G19USB (Apache-2.0). Το PadForge φορτώνει τις βιβλιοθήκες του Logitech Gaming Software και το Strike7API.dll που κατεβάζετε ή επιλέγετε, και δεν διανέμει κώδικα από κανένα από αυτά.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Αναφορές για τα Κλίνγκον και τα Σίνταριν</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Οι λέξεις των μεταφράσεων στα Κλίνγκον και στα Σίνταριν ελέγχθηκαν με το klingon-assistant-data (Apache-2.0), το λεξικό πίσω από το boQwI', και με το Eldamo (CC BY 4.0), το λεξικό των γλωσσών των Ξωτικών του Paul Strack. Μόνο δεδομένα λεξικού, δεν διανέμεται κανένα από αυτά.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Αναφορές για το Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Οι κλήσεις βιβλιοθήκης, οι αισθήσεις και οι δυνάμεις παιχνιδιών πίσω από την υποστήριξη του Novint Falcon, όπως διαβάστηκαν από τις κεφαλίδες του SDK, την τεκμηρίωση και τα παραδείγματα της Force Dimension, με την αίσθηση Joystick από το FalconJoystick και την αίσθηση Σκόπευση και τη δόνηση από το FalconJoyForce (και τα δύο του Cyclops-11B, χωρίς δημοσιευμένη άδεια), και ελεγμένα έναντι των CHAI3D (BSD 3-Clause) και libnifalcon (BSD). Το PadForge φορτώνει τη βιβλιοθήκη της Force Dimension που εγκαθιστάτε, επειδή η άδειά της δεν παρέχει δικαίωμα αναδιανομής, και δεν διανέμει κώδικα από κανένα από αυτά.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

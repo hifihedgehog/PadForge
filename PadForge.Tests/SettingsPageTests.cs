@@ -391,7 +391,7 @@ namespace PadForge.Tests
 
             var title = Named("SettingsTitle");
             Assert.Equal("28", (string)title.Attribute("FontSize"));
-            Assert.Equal("{StaticResource DisplayFontFamily}", (string)title.Attribute("FontFamily"));
+            Assert.Equal("{DynamicResource DisplayFontFamily}", (string)title.Attribute("FontFamily"));
             Assert.Equal("300", Attached(Named("SettingsSearchBox"), "FlexLinePanel.Basis"));
 
             var list = Named("GroupList").Parent;

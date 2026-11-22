@@ -870,6 +870,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Ketentuan lisensi Visual Studio</value></data>
@@ -5002,6 +5003,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Tata letak profil awal strategi dan desktop, serta perilaku turbo yang dihindari turbo berskala tekanan. Dibaca hanya sebagai dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referensi karya Antoine Aflalo untuk tata letak antarmuka IPolicyConfig Windows yang tidak terdokumentasi, yang dipakai PadForge untuk mengaktifkan kembali endpoint audio kontroler. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Font Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>Font karya SilvinoR, yang disertakan di dalam PadForge tanpa perubahan dan menggambar antarmuka saat bahasanya Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimpor oleh EQ parametrik kontroler, karya Jaakko Pasanen. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Membaca chat tanpa masuk akun dan aturan perintah !, dibaca dari tmi.js dan ComfyJS, serta hanya menyimpan 20 perintah terbaru, dari templat TwitchPlays milik DougDoug. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Referensi layar keyboard</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Pustaka, frame, dan tombol di balik layar keyboard, dibaca dari SDK LCD dan Arx Control milik Logitech serta SDK S.T.R.I.K.E. 7 milik Mad Catz, diperiksa silang dengan logitech-lcd (MIT atau Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff dan ArxWidgetManager (tanpa lisensi yang dipublikasikan), driver hid-lg-g15 dari Linux (GPL-2.0-or-later), libg15, G15Interface, dan lcdproc (GPL-2.0), gnome15 (GPL-3.0), serta G19USB (Apache-2.0). PadForge memuat pustaka Logitech Gaming Software dan Strike7API.dll yang Anda unduh atau pilih, dan tidak menyertakan kode dari semuanya.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referensi bahasa Klingon dan Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Kata-kata dalam terjemahan Klingon dan Sindarin, diperiksa terhadap klingon-assistant-data (Apache-2.0), kamus di balik boQwI', dan Eldamo (CC BY 4.0), leksikon bahasa Elf karya Paul Strack. Hanya data kamus, tidak ada yang disertakan.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Referensi Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Panggilan pustaka, feel, dan gaya game di balik dukungan Novint Falcon, dibaca dari header SDK, dokumentasi, dan contoh milik Force Dimension, dengan feel Joystick dari FalconJoystick dan feel Aim serta getaran dari FalconJoyForce (keduanya oleh Cyclops-11B, tanpa lisensi yang dipublikasikan), diperiksa terhadap CHAI3D (BSD 3-Clause) dan libnifalcon (BSD). PadForge memuat pustaka Force Dimension yang Anda instal, karena lisensinya tidak memberi hak untuk mendistribusikannya ulang, dan tidak menyertakan kode dari semuanya.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

@@ -123,7 +123,7 @@
 
         <!-- The type's name. A cold controller's is quiet. -->
         <Style x:Key="SlotTypeName" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource DisplayFontFamily}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
@@ -572,7 +572,7 @@
 
             <TextBlock x:Name="HomeTitle" AutomationProperties.HeadingLevel="Level1"
                        Text="{Binding Home_Title, Source={x:Static strings:Strings.Instance}}"
-                       FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                       FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
 
             <!-- ═══ The engine ═══
@@ -742,7 +742,7 @@
                              the state means. -->
                         <StackPanel controls:FlexLinePanel.Basis="250" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center">
                             <TextBlock x:Name="EngineStatusLine" common:LiveText.Polite="True" Text="{Binding EngineStatus}"
-                                       FontFamily="{StaticResource DisplayFontFamily}" FontSize="32" FontWeight="SemiBold"
+                                       FontFamily="{DynamicResource DisplayFontFamily}" FontSize="32" FontWeight="SemiBold"
                                        LineHeight="36.8" LineStackingStrategy="BlockLineHeight" TextTrimming="CharacterEllipsis"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <TextBlock x:Name="EngineDevicesLine" Text="{Binding HeroLine}"
@@ -761,7 +761,7 @@
                             <StackPanel x:Name="EngineStatRate">
                                 <TextBlock x:Name="EngineRate" FontSize="14" Typography.NumeralAlignment="Tabular"
                                            LineHeight="31" LineStackingStrategy="BlockLineHeight"
-                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_PollingRate, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
@@ -769,13 +769,13 @@
                                 <TextBlock x:Name="EngineLive" FontSize="14" Typography.NumeralAlignment="Tabular"
                                            LineHeight="31" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_ControllersLive, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="EngineStatDevices">
                                 <TextBlock x:Name="EngineDevices" Text="{Binding OnlineDevices, Mode=OneWay}" Typography.NumeralAlignment="Tabular"
-                                           FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                                           FontFamily="{DynamicResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
                                            LineHeight="31" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <TextBlock Style="{StaticResource StatLabel}"

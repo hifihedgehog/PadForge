@@ -870,6 +870,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio lisans koşulları</value></data>
@@ -5002,6 +5003,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Strateji ve masaüstü başlangıç profili düzenleri ve basınca göre ölçeklenen turbonun kaçındığı turbo davranışı. Yalnızca belge olarak okundu, hiçbir GPL kodu dağıtılmıyor.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows'un belgelenmemiş IPolicyConfig arayüzünün düzeni için Antoine Aflalo'nun referansı. PadForge bu arayüzü bir kontrolcünün ses uç noktasını yeniden etkinleştirmek için kullanır. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh yazı tipi</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR'un yazı tipi, PadForge'un içinde değiştirilmeden gelir ve arayüz dili Galactic Basic olduğunda arayüzü çizer.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Bir kontrolcünün Parametrik EQ ayarının içe aktardığı parametrik EQ profil biçimi. Geliştiren: Jaakko Pasanen. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Sohbeti oturum açmadan okuma ve ! komut kuralı tmi.js ve ComfyJS kaynaklarından, yalnızca en yeni 20 komutu tutma ise DougDoug'un TwitchPlays şablonundan okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Klavye ekranı referansları</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Klavye ekranlarının arkasındaki kitaplıklar, kareler ve tuşlar. Logitech'in LCD ve Arx Control SDK'larından ve Mad Catz'in S.T.R.I.K.E. 7 SDK'sından okundu, logitech-lcd (MIT veya Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff ve ArxWidgetManager (lisans yayımlanmamış), Linux'un hid-lg-g15 sürücüsü (GPL-2.0-or-later), libg15, G15Interface ve lcdproc (GPL-2.0), gnome15 (GPL-3.0) ve G19USB (Apache-2.0) ile çapraz denetlendi. PadForge, Logitech Gaming Software'in kitaplıklarını ve indirdiğiniz ya da seçtiğiniz Strike7API.dll dosyasını yükler, bunların hiçbirinden kod dağıtmaz.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonca ve Sindarin referansları</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonca ve Sindarin çevirilerinin sözcükleri, boQwI' uygulamasının arkasındaki sözlük klingon-assistant-data (Apache-2.0) ve Paul Strack'in Elf dili sözlüğü Eldamo (CC BY 4.0) ile karşılaştırılarak denetlendi. Yalnızca sözlük verisi, hiçbiri dağıtılmıyor.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon referansları</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon desteğinin arkasındaki kitaplık çağrıları, hisler ve oyun kuvvetleri. Force Dimension'ın SDK üstbilgilerinden, belgelerinden ve örneklerinden okundu. Joystick hissi FalconJoystick'ten, Nişan hissi ve titreşim FalconJoyForce'tan (ikisi de Cyclops-11B'ye ait, lisans yayımlanmamış) alındı, ardından CHAI3D (BSD 3-Clause) ve libnifalcon (BSD) ile denetlendi. PadForge, lisansı yeniden dağıtım hakkı tanımadığı için kurduğunuz Force Dimension kitaplığını yükler ve bunların hiçbirinden kod dağıtmaz.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

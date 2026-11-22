@@ -870,6 +870,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio licences noteikumi</value></data>
@@ -5002,6 +5003,8 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Stratēģijas un darbvirsmas sākuma profilu izkārtojumi un turbo darbība, no kuras izvairās no spiediena atkarīgais turbo. Izmantots tikai kā dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo atsauce par Windows nedokumentētās saskarnes IPolicyConfig izkārtojumu, ko PadForge izmanto, lai atkārtoti iespējotu kontrollera audio galapunktu. Tikai dokumentācija, kods netiek izplatīts.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Aurebesh burtveids</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>SilvinoR burtveids, kas iekļauts PadForge nemainītā veidā un attēlo saskarni, kad tās valoda ir Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Parametriskā ekvalaizera profila formāts, ko importē kontrollera „Parametriskais ekvalaizers”, autors Jaakko Pasanen. Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5138,6 +5141,8 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>Tērzēšanas lasīšana, nepierakstoties, un ! komandu noteikums, iegūti no tmi.js un ComfyJS, bet tikai jaunāko 20 komandu paturēšana no DougDoug izstrādātās TwitchPlays veidnes. Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>Tastatūras ekrānu atsauces</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>Bibliotēkas, kadri un taustiņi, uz kuriem balstās tastatūras ekrāni, iegūti no Logitech LCD un Arx Control SDK un Mad Catz S.T.R.I.K.E. 7 SDK, pārbaudīti ar logitech-lcd (MIT vai Apache-2.0), dcspy (MIT), foo_logitech_lcd (LGPL-2.1), LogitechStuff un ArxWidgetManager (licence nav publicēta), Linux draiveri hid-lg-g15 (GPL-2.0-or-later), libg15, G15Interface un lcdproc (GPL-2.0), gnome15 (GPL-3.0) un G19USB (Apache-2.0). PadForge ielādē Logitech Gaming Software bibliotēkas un Strike7API.dll, ko lejupielādējat vai izvēlaties, un neizplata kodu no neviena no tiem.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonu un sindarīnu valodas atsauces</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonu un sindarīnu tulkojumu vārdi pārbaudīti pēc klingon-assistant-data (Apache-2.0), vārdnīcas, kas ir boQwI' pamatā, un Eldamo (CC BY 4.0), Paul Strack elfu valodu leksikona. Tikai vārdnīcu dati, nekas no tā netiek izplatīts.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon atsauces</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Bibliotēkas izsaukumi, sajūtas un spēļu spēki, uz kuriem balstās Novint Falcon atbalsts, iegūti no Force Dimension SDK galvenēm, dokumentācijas un piemēriem, bet Kursorsvira sajūta no FalconJoystick un Tēmēšana sajūta un vibrācija no FalconJoyForce (abus veidojis Cyclops-11B, licence nav publicēta), pārbaudīti ar CHAI3D (BSD 3-Clause) un libnifalcon (BSD). PadForge ielādē Force Dimension bibliotēku, ko instalējat, jo tās licence nedod tiesības to izplatīt, un neizplata kodu no neviena no tiem.</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>

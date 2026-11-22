@@ -87,6 +87,7 @@ namespace PadForge.Tests
             ("About_License_Lgpl3OrLater", new[] { "Libwdi" }),
             ("About_License_CcByNcSa4", new[] { "HandheldCompanion", "ValveCad" }),
             ("About_License_CcBy3", new[] { "ZackslyIcons" }),
+            ("About_License_Ofl", new[] { "AurebeshFont" }),
             ("About_License_CgTrader", new[] { "3doverstock", "Hado" }),
             ("About_License_WyvrnEula", new[] { "Interhaptics" }),
             ("About_License_VisualStudio", new[] { "VcRuntime" }),
@@ -101,7 +102,7 @@ namespace PadForge.Tests
             {
                 "ArcadeIoRefs", "BlissBoxRefs", "BleControllerRefs", "RfcommIcadeRefs", "CrosshairRefs", "DjiRemoteRefs", "GameModRefs",
                 "Ds4HeadsetRefs", "GunConRefs", "OpenFlydigi", "AnalogKeyboardRefs", "HidDeviceRefs", "IForceRefs", "IconSources",
-                "InstrumentRefs", "IrohFlexInput", "Kaldi", "KeyboardScreenRefs", "LightingRefs", "Linuxmotehook",
+                "InstrumentRefs", "IrohFlexInput", "Kaldi", "KeyboardScreenRefs", "LanguageRefs", "LightingRefs", "Linuxmotehook",
                 "LogitechLedRefs", "MenuRefs", "MingwRuntime", "Nefcon", "FalconRefs", "OpenXrRefs",
                 "PeripheralOutputRefs", "PortMidiRtMidi", "ProfileImportRefs", "Psmoveapi", "TelemetryRefs",
                 "RingConRefs", "Ds3Research", "ScreenColorRefs", "SerialControllerRefs", "SInputRefs", "SpaceMouseRefs",

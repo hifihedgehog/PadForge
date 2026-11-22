@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>ເງື່ອນໄຂໃບອະນຸຍາດ Visual Studio</value></data>
@@ -4748,6 +4749,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ໂຄງຮ່າງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ກົນລະຍຸດ” ແລະ “ເດັສທັອບ” ແລະ ພຶດຕິກຳເທີໂບທີ່ເທີໂບຕາມແຮງກົດຫຼີກລ່ຽງ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂດຍ Antoine Aflalo ສຳລັບໂຄງສ້າງຂອງອິນເຕີເຟດ IPolicyConfig ທີ່ບໍ່ມີເອກະສານຂອງ Windows ເຊິ່ງ PadForge ໃຊ້ເພື່ອເປີດໃຊ້ endpoint ສຽງຂອງຕົວຄວບຄຸມຄືນ ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>ຟອນ Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>ຟອນຂອງ SilvinoR, ເຊິ່ງຖືກລວມມາໃນ PadForge ໂດຍບໍ່ມີການດັດແປງ ແລະ ໃຊ້ສະແດງສ່ວນຕິດຕໍ່ເມື່ອພາສາຂອງມັນແມ່ນ Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>ຮູບແບບໂປຣໄຟລ໌ EQ ແບບພາຣາເມຕຣິກທີ່ “EQ ແບບພາຣາເມຕຣິກ” ຂອງຕົວຄວບຄຸມນຳເຂົ້າ, ໂດຍ Jaakko Pasanen. ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5215,4 +5218,6 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ລະຫັດຜ່ານ</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ແວ່ນຂະຫຍາຍ (ຂະນະກົດຄ້າງ)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ສະແດງແວ່ນຂະຫຍາຍຂະນະກົດຄ້າງມາໂຄຣນີ້, ສຳລັບການເລັງຜ່ານສູນເລັງຂອງປືນ. ຕັ້ງຄ່າມັນໃນໜ້າແວ່ນຂະຫຍາຍ.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ຄຳສັບຂອງການແປພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ, ກວດສອບກັບ klingon-assistant-data (Apache-2.0), ວັດຈະນານຸກົມເບື້ອງຫຼັງ boQwI', ແລະ Eldamo (CC BY 4.0), ພົດຈະນານຸກົມພາສາເອວຟ໌ຂອງ Paul Strack. ເປັນຂໍ້ມູນວັດຈະນານຸກົມເທົ່ານັ້ນ, ບໍ່ມີສ່ວນໃດຖືກລວມມາ.</value></data>
 </root>

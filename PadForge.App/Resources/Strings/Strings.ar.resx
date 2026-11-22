@@ -857,6 +857,7 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>شروط ترخيص Visual Studio</value></data>
@@ -4769,6 +4770,8 @@
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>تخطيطات ملفي التعريف المبدئيين «الاستراتيجية» و«سطح المكتب»، وسلوك التوربو الذي يتجنبه التوربو المعتمد على الضغط. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجع من إعداد Antoine Aflalo لتخطيط واجهة IPolicyConfig غير الموثقة في Windows، التي يستخدمها PadForge لإعادة تفعيل نقطة نهاية الصوت لوحدة تحكم. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>خط Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>خط من إعداد SilvinoR، يأتي ضمن PadForge دون تعديل ويُستخدم لرسم الواجهة عندما تكون لغتها Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>تنسيق ملف تعريف المعادل البارامتري الذي يستورده «المعادل البارامتري» في وحدة التحكم، من إعداد Jaakko Pasanen. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -4895,6 +4898,8 @@
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>مراجع الصوت والميكروفون في DualShock 4</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>مراجع شاشات لوحات المفاتيح</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>المكتبات والإطارات والمفاتيح التي تقف وراء شاشات لوحات المفاتيح، تمت قراءتها من LCD SDK وArx Control SDK من Logitech وS.T.R.I.K.E. 7 SDK من Mad Catz، ومطابقتها مع logitech-lcd (MIT أو Apache-2.0) وdcspy (MIT) وfoo_logitech_lcd (LGPL-2.1) وLogitechStuff وArxWidgetManager (بلا ترخيص منشور) وبرنامج تشغيل hid-lg-g15 في Linux (GPL-2.0-or-later) وlibg15 وG15Interface وlcdproc (GPL-2.0) وgnome15 (GPL-3.0) وG19USB (Apache-2.0). يحمّل PadForge مكتبات Logitech Gaming Software وملف Strike7API.dll الذي تنزّله أو تختاره، ولا يتضمن أي شيفرة من أي منها.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>مراجع الكلينغونية والسندارين</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>كلمات ترجمتَي الكلينغونية والسندارين جرى التحقق منها مقابل klingon-assistant-data (Apache-2.0)، وهو القاموس الذي يقوم عليه boQwI'، ومقابل Eldamo (CC BY 4.0)، المعجم الإلفي من إعداد Paul Strack. لبيانات القواميس فقط، ولا يتضمن البرنامج أيًا منها.</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>مراجع Novint Falcon</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>استدعاءات المكتبة وأنماط الإحساس وقوى اللعبة التي تقف وراء دعم Novint Falcon، تمت قراءتها من ترويسات SDK ووثائقه وأمثلته من Force Dimension، مع إحساس «عصا تحكم» من FalconJoystick وإحساس «تصويب» والاهتزاز من FalconJoyForce (كلاهما من Cyclops-11B، بلا ترخيص منشور)، ومطابقتها مع CHAI3D (BSD 3-Clause) وlibnifalcon (BSD). يحمّل PadForge مكتبة Force Dimension التي تثبّتها، لأن ترخيصها لا يمنح حق إعادة توزيعها، ولا يتضمن أي شيفرة من أي منها.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>شاشات لوحة المفاتيح</value></data>

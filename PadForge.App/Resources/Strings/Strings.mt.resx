@@ -857,6 +857,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Termini tal-liċenzja ta' Visual Studio</value></data>
@@ -4699,6 +4700,8 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>It-tqassim tal-profili tal-bidu għall-istrateġija u għad-desktop, u l-imġiba tat-turbo li t-turbo skalat skont il-pressjoni jevita. Moqri biss bħala dokumentazzjoni, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referenza minn Antoine Aflalo għat-tqassim tal-interface IPolicyConfig mhux dokumentata ta' Windows, li PadForge juża biex jerġa' jattiva l-endpoint tal-awdjo ta' kontrollur. Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
+  <data name="About_AurebeshFont" xml:space="preserve"><value>Tipa tal-ittri Aurebesh</value></data>
+  <data name="About_AurebeshFontDesc" xml:space="preserve"><value>It-tipa tal-ittri ta' SilvinoR, li tiġi inkluża f'PadForge mingħajr modifiki u tpinġi l-interfaċċja meta l-lingwa tagħha tkun Galactic Basic.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
   <data name="About_AutoEqDesc" xml:space="preserve"><value>Il-format tal-profili EQ parametriċi li l-EQ parametriku ta' kontrollur jimporta, minn Jaakko Pasanen. Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
@@ -5164,4 +5167,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Password</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Tkabbir (waqt li jinżamm)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Juri t-tkabbir waqt li dan il-makro jinżamm, biex timmira mill-vista tal-arma. Issettjah fil-paġna Tkabbir.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Referenzi tal-Klingon u tas-Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Il-kliem tat-traduzzjonijiet bil-Klingon u bis-Sindarin, ivverifikat ma' klingon-assistant-data (Apache-2.0), id-dizzjunarju wara boQwI', u Eldamo (CC BY 4.0), il-lessiku Elfiku ta' Paul Strack. Dejta tad-dizzjunarju biss, l-ebda waħda minnha ma tiġi inkluża.</value></data>
 </root>

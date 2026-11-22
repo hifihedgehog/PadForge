@@ -1847,4 +1847,6 @@
   <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Kros mo dot blong hem i kam long CSGOCrosshair blong Skarbo (i no gat laesens we oli soemaot), ol stael Sakel, pikja mo aotlaen i kam long Crosshair-Overlay (MIT), mo Lens mo zum blong fulskrin blong magnifaea i kam long Windows-classic-samples blong Microsoft (MIT). Dokumentesen nomo, i no gat kod i stap insaed.</value></data>
   <data name="About_SInputRefs" xml:space="preserve"><value>Ol referens blong SInput</value></data>
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ol ripot biaen long sapot blong SInput ped mo SInput persona, we PadForge i ridim long SINPUT-LIB-HID (MIT-0) mo HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) blong Hand Held Legend mo SInput mod blong OpenPuck (AGPL-3.0). Dokumentesen nomo, i no gat kod blong AGPL i stap insaed.</value></data>
+  <data name="About_LanguageRefs" xml:space="preserve"><value>Ol referens blong lanwis Klingon mo Sindarin</value></data>
+  <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Ol wod blong tranlesen long lanwis Klingon mo Sindarin oli sekem long klingon-assistant-data (Apache-2.0), diksonari we i stap biaen long boQwI', mo long Eldamo (CC BY 4.0), diksonari blong ol lanwis blong Elf we Paul Strack i mekem. Data blong diksonari nomo, i no gat wan samting blong hem i stap insaed.</value></data>
 </root>

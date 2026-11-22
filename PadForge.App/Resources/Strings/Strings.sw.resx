@@ -625,6 +625,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Chaguomsingi la mfumo</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Mwanga</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Giza</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Mandhari Mpya…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Tengeneza mandhari kutoka rangi zako mwenyewe na picha, kutoka mchezo wa Steam au faili.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Ongeza Mandhari…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Orodhesha faili ya mandhari. PadForge huisoma ilipo na haikopi chochote.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Hifadhi Nakala…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Andika mandhari iliyochaguliwa kwenye faili unayoweza kubadilisha au kushiriki.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hariri Mandhari</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Ondoa kwenye orodha. Faili inabaki ilipo.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Faili haipatikani</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Haiwezi kusomwa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faili ya “{0}” haipo au haiwezi kusomwa. PadForge huonyesha Giza hadi itakaporudi.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Wasifu “{0}” umevaa mwonekano wa mchezo wake. Mandhari yako itarudi wasifu mwingine ukiwa amilifu.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Sanidi tabia ya ukaguzi na uchakataji wa chinichini.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Usaidizi wa Maunzi</value></data>
@@ -851,6 +863,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -859,6 +873,9 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Kanusho la alama ya biashara pekee</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Hakuna masharti yaliyotajwa</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Hakuna zilizochapishwa</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Kikoa cha umma</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Ina hakimiliki</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Masharti ya matumizi ya Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Leseni kadhaa</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Injini ya kidhibiti pepe cha HID ya hali ya mtumiaji (hubadilisha ViGEmBus na vJoy).</value></data>
@@ -2687,6 +2704,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Hakuna dirisha lingine lililofunguliwa lililopatikana.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ondoa {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Kasi ya kusoma wasifu huu unapopakiwa</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Vaa Mwonekano wa Mchezo</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Wasifu huu ukiwa amilifu, PadForge huonyesha picha na rangi za mchezo. Mandhari yako itarudi wasifu mwingine ukiwa amilifu.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Picha ya mchezo haipo kwenye PC hii.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Pata Picha</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Washa Usanidi wa Jumuiya kwenye Mipangilio ili kupata picha ya mchezo kutoka Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Nakili Kutoka</value></data>
@@ -3905,7 +3927,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Usanidi wa Jumuiya</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Vinjari usanidi wa vidhibiti vya Steam Input uliotengenezwa na jumuiya na uutafsiri kuwa wasifu wa PadForge. PadForge hutuma maandishi yako ya utafutaji, vitambulisho vya michezo, usanidi na waundaji wanaohusika, na toleo lake. Uingiaji wa Steam bila jina pia hutuma toleo lako la Windows na kitambulisho cha mashine kilichotengenezwa kutoka kwa hashi za kitambulisho cha usakinishaji wa Windows, anwani za adapta za mtandao na namba ya serial ya diski ya kuwasha. Hakuna huduma ya mtu wa tatu inayohusika.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge huunganisha kwenye seva za Steam tu unapotafuta, kufungua usanidi, au kukagua usanidi uliouleta kwa masasisho. Hakuna telemetry, hakuna akaunti ya Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge huunganisha kwenye seva za Steam tu unapotafuta, kufungua usanidi, kukagua usanidi uliouleta kwa masasisho au kupata picha ya mchezo. Hakuna telemetry, hakuna akaunti ya Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Kinachotumwa</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Washa Usanidi wa Jumuiya</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Onyesha Usanidi wa Zamani wa Workshop</value></data>
@@ -5170,4 +5192,59 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ripoti zilizo nyuma ya usaidizi wa pedi za SInput na persona ya SInput, zilizosomwa kutoka SINPUT-LIB-HID (MIT-0) na HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) za Hand Held Legend na hali ya SInput ya OpenPuck (AGPL-3.0). Nyaraka pekee, hakuna msimbo wa AGPL unaosafirishwa.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Marejeo ya Kiklingon na Kisindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Maneno ya tafsiri za Kiklingon na Kisindarin, yaliyokaguliwa dhidi ya klingon-assistant-data (Apache-2.0), kamusi iliyo nyuma ya boQwI', na Eldamo (CC BY 4.0), leksikoni ya Kielfu ya Paul Strack. Data ya kamusi pekee, hakuna inayosafirishwa.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Faili hiyo si mandhari ya PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Mandhari haikuweza kuhifadhiwa. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Mandhari Mpya</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge huvaa mandhari wakati unaitengeneza.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Jina</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mandhari Yangu</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Msingi</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Msingi ambao mandhari inasimama juu yake. Mandhari ya giza ina maandishi meupe, na mandhari ya mwanga ina maandishi meusi.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Picha</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Kutoka Mchezo wa Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Kutoka kwa Faili…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Bila Picha</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Inapata picha kutoka Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam haina picha pana ya mchezo huu.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Haikuweza kufikia Steam. Angalia muunganisho wako.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Nafasi</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Husogeza picha juu au chini ndani ya dirisha lake.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Onyesha Nembo ya Mchezo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Rangi</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Linganisha na Picha</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Huchukua rangi nne kutoka kwenye picha.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Mandharinyuma</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Ukurasa. Dirisha, utepe wa pembeni, kadi na mistari ni hatua kutoka kwake.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Msisitizo</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Kila kitu kilicho hai: injini, kitufe kikuu, kipengee kilichochaguliwa.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Pili</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Thamani zilizopimwa na alama za kifaa: kasi, viwango vya betri, ingizo ghafi.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Tahadhari</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Hali za kusubiri: vifaa vinavyosubiriwa, betri ya chini, mabadiliko yasiyohifadhiwa.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Chagua Rangi</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Picha (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faili Zote (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge haiwezi kusoma faili hiyo kama picha.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Picha: sanaa ya maktaba ya Steam kwa {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Picha ya Mandhari: Kofia ya Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Picha ya matangazo ya Lucasfilm kwa Revenge of the Sith: picha ya mandhari ya Star Wars Dark Side. Ilipatikana kwenye Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Picha ya Mandhari: Nembo za Kampuni za Filamu</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Nembo za Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series na Star Trek: The Next Generation kwenye picha za mandhari za kuanzia. Zilipatikana kwenye Wikimedia Commons, inayoweka kila moja kama nembo ya maandishi matupu iliyo kwenye kikoa cha umma. Kila moja ni alama ya biashara ya mmiliki wake.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Picha ya Mandhari: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Seti ya filamu ya Hobbiton huko New Zealand, picha ya Jackie.lck: picha ya mandhari ya The Lord of the Rings The One Ring. Ilipatikana kwenye Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Picha ya Mandhari: Kasri la Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Fremu ya trela ya Hogwarts Legacy kutoka kwenye kituo cha YouTube cha mchezo wenyewe: picha ya mandhari ya Harry Potter Gryffindor. Ilipatikana kwenye Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Picha ya Mandhari: Ramani ya Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Ramani ya Middle-earth: picha ya mandhari ya The Lord of the Rings Map of Middle-earth. Ilipatikana kwenye The One Wiki to Rule Them All, isiyotaja msanii yeyote.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Picha ya Mandhari: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon ya ukubwa kamili huko Galaxy’s Edge, picha ya Tomás Del Coro: picha ya mandhari ya Star Wars Opening Crawl. Ilipatikana kwenye Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Picha ya Mandhari: Sonic kwenye Kisiwa cha Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Fremu ya trela ya Sonic Frontiers kutoka kwenye kituo cha YouTube cha SEGA yenyewe: picha ya mandhari ya Sonic the Hedgehog Blue Blur. Ilipatikana kwenye Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Picha ya Mandhari: Sonic Akikimbia</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sanaa ya SEGA iliyotengenezwa kwa Sonic Lost World: picha ya mandhari ya Sonic the Hedgehog Night Run. Ilipatikana kwenye Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Picha ya Mandhari: Nembo Nne za Nyumba</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Nembo nne za nyumba za Hogwarts, zilizochorwa na Atomhawk Design kwa Pottermore: picha ya mandhari ya Harry Potter Four Houses. Ilipatikana kwenye Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Picha ya Mandhari: Kielelezo cha Studio cha USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Kielelezo kilichorekodiwa kwa mfululizo wa awali wa Star Trek, kilichopigwa picha na Smithsonian National Air and Space Museum, inayokihifadhi: picha ya mandhari ya Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Picha ya Mandhari: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Fremu ya Star Trek: The Next Generation: picha ya mandhari ya Star Trek Starfleet. Ilipatikana kwenye Memory Alpha.</value></data>
 </root>

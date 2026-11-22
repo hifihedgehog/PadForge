@@ -833,4 +833,20 @@
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>ʻOku tauhi ʻe ha pad uepi kuo ke fakafōtunga ʻa e mamaʻo ʻo e kulupu taki taha mei he kauʻā ʻoku ofi taha ki ai ʻi ha sikilini ʻoku fālahi ange, ʻo hangē ko e founga ʻoku hiki ai ʻe he ngaahi overlay ʻa e RetroArch honau konga ʻe ua. Naʻe lau pē ko ha fakamatala, ʻoku ʻikai ha kouti GPL ʻe kau mai.</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Toʻo mei he lisí. ʻOku nofo pē ʻa e faile ʻi hono feituʻu.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Kuo mole pe ʻikai lava ʻo lau ʻa e faile ʻo e “{0}”. ʻE fakaʻaliʻali ʻe PadForge ʻa e Fakapoʻuli kae ʻoua kuo toe foki mai.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Hingoa</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Hoku tēma</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Makatuʻunga</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ko e makatuʻunga ʻoku tuʻu ai ʻa e tēmá. ʻOku maama ʻa e tohi ʻi ha tēma fakapoʻuli, pea fakapoʻuli ʻa e tohi ʻi ha tēma maama.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Fakatātā</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mei ha vaʻinga Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ʻIkai ha fakatātā</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>ʻOku toʻo ʻa e fakatātā mei he Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ʻOku ʻikai ha fakatātā fālahi ʻa Steam ki he vaʻinga ko ʻení.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Tuʻunga</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Hiki ʻa e fakatātā ki ʻolunga pe ki lalo ʻi hono fakaʻata.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Fakaʻaliʻali ʻa e logo ʻo e vaʻinga</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fakatatau ki he fakatātā</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Toʻo ʻa e lanu ʻe fā mei he fakatātā.</value></data>
 </root>

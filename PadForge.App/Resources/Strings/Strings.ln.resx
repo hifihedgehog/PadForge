@@ -2044,4 +2044,19 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ba rapport oyo ezali na nse ya lisungi ya ba manette SInput mpe ya persona SInput, etangami na SINPUT-LIB-HID (MIT-0) mpe HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) ya Hand Held Legend mpe na mode SInput ya OpenPuck (AGPL-3.0). Documentation kaka, code ya AGPL moko te ezali na kati.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Ba référence ya Klingon mpe ya Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Maloba ya mabongoli ya Klingon mpe ya Sindarin etalelami na klingon-assistant-data (Apache-2.0), dictionnaire oyo boQwI' esalelaka, mpe na Eldamo (CC BY 4.0), lexique ya minoko ya Elfe ya Paul Strack. Ba données ya dictionnaire kaka, moko te ezali na kati.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kobomba kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Kobongisa thème</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kolongola na liste. Fichier ekotikala esika ezali.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Thème na ngai</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Elili</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Uta na lisano ya Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Elili te</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ezali kozwa elili uta na Steam…</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Esika</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ekotombola to ekokitisa elili na lininisa na yango.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Kolakisa logo ya lisano</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kokokanisa na elili</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ekozwa langi minei uta na elili.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ba fichier nyonso (*.*)|*.*</value></data>
 </root>

@@ -1307,4 +1307,21 @@
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>Siʻitia le faitauga a lenei faʻaoga i lenei malosi aʻo leʻi faʻagaioia le taunuʻuga. O le 0 ma le 1 e tuʻu saʻo ai. I luga aʻe o le 1 e telegese latalata i le ogatotonu.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>E taofi e se web pad e te faʻatulagaina le mamao o vaega taʻitasi mai le pito e latalata i ai i se lau e sili atu ona lautele, e pei ona tuʻueseʻese e overlay a RetroArch o latou afa e lua. Na faitau na o se tusi faʻamatalaga, e leai se code GPL e aofia ai.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Faʻasao se kopi…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Aveʻese mai le lisi. E tumau pea le faila i lona nofoaga.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>O le faila o “{0}” ua leiloa pe le mafai ona faitau. E faʻaali e PadForge le Pogisa seʻia toe maua.</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Loʻu autu</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Faʻavae</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>O le eleele e tū ai le autu. O se autu pogisa e malamalama ona tusitusiga, ae o se autu malamalama e pogisa ona tusitusiga.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Ata</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mai se taʻaloga Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Leai se ata</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>O loʻo aumai le ata mai Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>E leai se ata lautele a Steam mo lenei taʻaloga.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Tulaga</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E siʻi i luga pe i lalo le ata i totonu o lona faʻamalama.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Faʻaali le logo o le taʻaloga</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fetaui ma le ata</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E aumai lanu e fā mai le ata.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ata (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faila uma (*.*)|*.*</value></data>
 </root>

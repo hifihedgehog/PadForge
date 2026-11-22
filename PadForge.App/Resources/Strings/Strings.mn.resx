@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Системийн үндсэн</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Цайвар</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Бараан</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Шинэ загвар…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Өөрийн өнгө болон Steam тоглоом эсвэл файлаас авсан зургаар загвар бүтээнэ.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Загвар нэмэх…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Загварын файлыг жагсаалтад нэмнэ. PadForge түүнийг байгаа газраас нь уншиж, юу ч хуулахгүй.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Хуулбар хадгалах…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Сонгосон загварыг өөрчлөх эсвэл хуваалцах боломжтой файл болгон бичнэ.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Загвар засах</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Жагсаалтаас хасна. Файл байрандаа үлдэнэ.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл олдсонгүй</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Унших боломжгүй</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” загварын файл алга эсвэл уншигдахгүй байна. Файл буцаж ирэх хүртэл PadForge Бараан загварыг харуулна.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” профайл өөрийн тоглоомын төрхийг харуулж байна. Өөр профайл идэвхтэй болоход таны загвар буцаж ирнэ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Уншилтын үйлдэл болон арын боловсруулалтыг тохируулах.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Техник хангамжийн дэмжлэг</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Зөвхөн барааны тэмдгийн мэдэгдэл</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Нөхцөл заагаагүй</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Нийтлээгүй</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Нийтийн өмч</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Зохиогчийн эрхтэй</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian ашиглалтын нөхцөл</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Хэд хэдэн лиценз</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Хэрэглэгчийн горимын виртуал HID контроллерийн хөдөлгүүр (ViGEmBus болон vJoy-г орлоно).</value></data>
@@ -2710,6 +2727,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Өөр нээлттэй цонх олдсонгүй.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} хасах</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Энэ профайл ачаалагдсан үеийн уншилтын давтамж</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Тоглоомын төрхийг харуулах</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Энэ профайл идэвхтэй байх үед PadForge тоглоомын зураг ба өнгийг харуулна. Өөр профайл идэвхтэй болоход таны загвар буцаж ирнэ.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Тоглоомын зураг энэ компьютер дээр байхгүй.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Зургийг татах</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Тоглоомын зургийг Steam-ээс авахын тулд Тохиргоо хэсэгт Олон нийтийн тохиргоог асаана уу.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Хуулж авах</value></data>
@@ -3970,7 +3992,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Олон нийтийн тохиргоо</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Олон нийтийн хийсэн Steam Input контроллерын тохиргоог үзэж, PadForge-ийн профайл болгон хөрвүүлнэ. PadForge таны хайлтын текст, холбогдох тоглоом, тохиргоо, бүтээгчдийн ID болон өөрийн хувилбарыг илгээнэ. Steam-д нэргүй нэвтрэх үед мөн таны Windows-ийн хувилбар болон Windows суулгацын ID, сүлжээний адаптерийн хаяг, ачаалах дискний серийн дугаарын хэшээс үүсгэсэн машины ID илгээгдэнэ. Гуравдагч талын үйлчилгээ оролцохгүй.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge зөвхөн таныг хайх, тохиргоо нээх эсвэл импортолсон тохиргооны шинэчлэлийг шалгах үед Steam серверүүдэд холбогдоно. Телеметр байхгүй, Steam бүртгэл шаардлагагүй.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge зөвхөн таныг хайх, тохиргоо нээх, импортолсон тохиргооны шинэчлэлийг шалгах эсвэл тоглоомын зураг авах үед Steam серверүүдэд холбогдоно. Телеметр байхгүй, Steam бүртгэл шаардлагагүй.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Илгээгдэх зүйлс</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Олон нийтийн тохиргоог идэвхжүүлэх</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Хуучин Workshop тохиргоог харуулах</value></data>
@@ -5221,4 +5243,59 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Дурангаар онилоход зориулж энэ макро дарагдаж байх үед томруулагчийг харуулна. Үүнийг Томруулагч хуудсанд тохируулна уу.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон ба Синдарин хэлний эх сурвалжууд</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон ба Синдарин орчуулгын үгсийг boQwI'-ийн суурь толь болох klingon-assistant-data (Apache-2.0) болон Paul Strack-ийн элф хэлний толь Eldamo (CC BY 4.0)-оор шалгасан. Зөвхөн толийн өгөгдөл, аль нь ч багтаагүй.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Энэ файл PadForge загвар биш байна.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Загварыг хадгалж чадсангүй. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Шинэ загвар</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Таныг загвар бүтээх зуур PadForge түүнийг өөр дээрээ шууд харуулна.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Нэр</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Миний загвар</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Суурь</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Загварын суурь өнгө. Бараан загвар цайвар бичвэртэй, цайвар загвар бараан бичвэртэй.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Зураг</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam тоглоомоос…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Файлаас…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Зураггүй</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-ээс зургийг авч байна…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-д энэ тоглоомын өргөн зураг байхгүй.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-д холбогдож чадсангүй. Холболтоо шалгана уу.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Байрлал</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Зургийг цонхон дотор нь дээш эсвэл доош шилжүүлнэ.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Тоглоомын логог харуулах</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Өнгөнүүд</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Зурагт тааруулах</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Дөрвөн өнгийг зургаас авна.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Дэвсгэр</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Хуудасны өнгө. Цонх, хажуугийн самбар, карт, зураасны өнгө үүнээс шат шатаар гарна.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Тодруулга</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Идэвхтэй бүх зүйл: хөдөлгүүр, үндсэн товч, сонгосон зүйл.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Хоёрдогч</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Хэмжсэн утга ба төхөөрөмжийн тэмдэг: давтамж, батерейн түвшин, түүхий оролт.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Анхааруулга</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Хүлээлтийн төлөв: төхөөрөмж хүлээж буй, батерей бага, хадгалаагүй өөрчлөлт.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Өнгө сонгох</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Зургууд (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Бүх файл (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge энэ файлыг зураг болгон уншиж чадахгүй байна.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Зураг: {0} тоглоомын Steam номын сангийн зураг.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Загварын зураг: Дарт Вейдерийн дуулга</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm-ийн “Ситийн өшөө авалт” киноны сурталчилгааны зураг: Оддын дайн загварын Dark Side хувилбарын зураг. Wookieepedia-аас олсон.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Загварын зураг: Франчайзын логонууд</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Эхлэлийн загваруудын зураг дээрх Sonic the Hedgehog, Бөгжний эзэн, Харри Поттер, Оддын дайн, Star Trek: The Original Series ба Star Trek: The Next Generation логонууд. Wikimedia Commons-оос олсон бөгөөд тэнд тус бүрийг нийтийн өмч дэх энгийн бичвэр лого гэж тэмдэглэсэн. Тус бүр нь эзэмшигчийнхээ барааны тэмдэг юм.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Загварын зураг: Хоббитон</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Шинэ Зеланд дахь Хоббитон киноны зураг авалтын талбай, Jackie.lck-ийн гэрэл зураг: Бөгжний эзэн загварын The One Ring хувилбарын зураг. Wikimedia Commons-оос олсон.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Загварын зураг: Хогвартс шилтгээн</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Тоглоомын өөрийн YouTube сувгаас авсан Hogwarts Legacy трейлерийн кадр: Харри Поттер загварын Gryffindor хувилбарын зураг. Wikimedia Commons-оос олсон.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Загварын зураг: Дундад ертөнцийн газрын зураг</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Дундад ертөнцийн газрын зураг: Бөгжний эзэн загварын Map of Middle-earth хувилбарын зураг. Зураачийн нэрийг заагаагүй The One Wiki to Rule Them All сайтаас олсон.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Загварын зураг: Мянганы шонхор</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge дахь бодит хэмжээний Мянганы шонхор, Tomás Del Coro-ийн гэрэл зураг: Оддын дайн загварын Opening Crawl хувилбарын зураг. Wikimedia Commons-оос олсон.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Загварын зураг: Кронос арал дээрх Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA-ийн өөрийн YouTube сувгаас авсан Sonic Frontiers трейлерийн кадр: Sonic the Hedgehog загварын Blue Blur хувилбарын зураг. Wikimedia Commons-оос олсон.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Загварын зураг: Гүйж буй Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World тоглоомд зориулан SEGA-ийн бүтээсэн зураг: Sonic the Hedgehog загварын Night Run хувилбарын зураг. Sonic Wiki Zone-оос олсон.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Загварын зураг: Дөрвөн өргөөний сүлд</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore сайтад зориулан Atomhawk Design-ийн зурсан Хогвартсын дөрвөн өргөөний сүлд: Харри Поттер загварын Four Houses хувилбарын зураг. Harry Potter Wiki-ээс олсон.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Загварын зураг: USS Enterprise-ийн студийн макет</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Анхны Star Trek цувралын зураг авалтад ашигласан макет, түүнийг хадгалдаг Smithsonian National Air and Space Museum-ийн гэрэл зураг: Star Trek загварын LCARS хувилбарын зураг.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Загварын зураг: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation цувралын кадр: Star Trek загварын Starfleet хувилбарын зураг. Memory Alpha-аас олсон.</value></data>
 </root>

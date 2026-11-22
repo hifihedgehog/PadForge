@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Համակարգի լռելեայն</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Լուսաւոր</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Մութ</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Նոր ոճ…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Ստեղծեցէք ոճ մը ձեր գոյներէն եւ պատկերէ մը՝ Steam-ի խաղէ մը կամ նիշքէ մը։</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Աւելցնել ոճ…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Ցանկին աւելցուցէք ոճի նիշք մը։ PadForge-ը զայն կը կարդայ իր տեղէն եւ ոչինչ կը պատճէնէ։</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Պահել պատճէն մը…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Ընտրուած ոճը գրեցէք նիշքի մը մէջ, որ կրնաք փոխել կամ բաժնել։</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Խմբագրել ոճը</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Հեռացնել ցանկէն։ Նիշքը կը մնայ իր տեղը։</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Նիշքը չգտնուեցաւ</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Կարելի չէ կարդալ</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}»-ի նիշքը կը պակսի կամ կարելի չէ կարդալ։ PadForge-ը Մութ ոճը կը ցուցադրէ, մինչեւ որ նիշքը վերադառնայ։</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» փրոֆիլը իր խաղին տեսքը կը կրէ։ Ձեր ոճը կը վերադառնայ, երբ ուրիշ փրոֆիլ մը գործօն ըլլայ։</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Մուտքի շարժիչ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Կարգաւորեցէք հարցման վարքագիծը եւ խորքի մշակումը։</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Սարքաւորումներու աջակցութիւն</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Միայն ապրանքանիշի ծանուցում</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Պայմաններ նշուած չեն</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Հրատարակուած չէ</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Հանրային սեփականութիւն</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Հեղինակային իրաւունքով պաշտպանուած</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian-ի օգտագործման պայմաններ</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Քանի մը արտօնագիր</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Օգտատիրոջ ռեժիմի վիրթուալ HID կառավարիչի շարժիչ (կը փոխարինէ ViGEmBus-ը եւ vJoy-ը)։</value></data>
@@ -2701,6 +2718,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ուրիշ ոչ մէկ բաց պատուհան գտնուեցաւ։</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Հեռացնել {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Հարցման յաճախականութիւն, մինչ այս փրոֆիլը բեռնուած է</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Կրել խաղին տեսքը</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Երբ այս փրոֆիլը գործօն է, PadForge-ը խաղին պատկերն ու գոյները կը ցուցադրէ։ Ձեր ոճը կը վերադառնայ, երբ ուրիշ փրոֆիլ մը գործօն ըլլայ։</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Խաղին պատկերը այս համակարգիչին վրայ չէ։</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Բերել պատկերը</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Կարգաւորումներուն մէջ միացուցէք Համայնքի կազմաձեւերը, որպէսզի խաղին պատկերը բերուի Steam-էն։</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Պատճէնել</value></data>
@@ -3932,7 +3954,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Համայնքի կազմաձեւեր</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Թերթատեցէք համայնքի ստեղծած Steam Input կառավարիչի կազմաձեւերը եւ զանոնք թարգմանեցէք PadForge փրոֆիլներու։ PadForge կը ղրկէ ձեր որոնման գրութիւնը, առնչուող խաղերու, կազմաձեւերու եւ ստեղծողներու նոյնացուցիչները, եւ իր տարբերակը։ Steam-ի անանուն մուտքը նաեւ կը ղրկէ ձեր Windows-ի տարբերակը եւ մեքենայի նոյնացուցիչ մը, որ կազմուած է ձեր Windows-ի տեղադրման նոյնացուցիչի, ցանցային յարմարիչներու հասցէներու եւ բեռնման սկաւառակի սերիական համարի հեշերէն։ Երրորդ կողմի ոչ մէկ ծառայութիւն կը մասնակցի։</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ի սպասարկիչներուն կը միանայ միայն երբ կը փնտռէք, կազմաձեւ մը կը բանաք կամ ներմուծուած կազմաձեւերուն թարմացումները կը ստուգէք։ Ոչ հեռաչափութիւն, ոչ Steam հաշիւ։</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ի սպասարկիչներուն կը միանայ միայն երբ կը փնտռէք, կազմաձեւ մը կը բանաք, ներմուծուած կազմաձեւերուն թարմացումները կը ստուգէք կամ խաղի մը պատկերը կը բերէք։ Ոչ հեռաչափութիւն, ոչ Steam հաշիւ։</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ինչ կը ղրկուի</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Միացնել համայնքի կազմաձեւերը</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Ցուցադրել Արհեստանոցի հին կազմաձեւերը</value></data>
@@ -5192,4 +5214,59 @@
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Կը ցուցադրէ խոշորացոյցը, մինչ այս մաքրօն սեղմած կը պահուի, տեսանոցով նշան առնելու համար։ Զայն կարգաւորեցէք «Խոշորացոյց» էջին մէջ։</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Քլինկոներէնի եւ Սինտարիներէնի աղբիւրներ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Քլինկոներէն եւ Սինտարիներէն թարգմանութիւններուն բառերը ստուգուած են klingon-assistant-data (Apache-2.0) բառարանով, որ boQwI'-ի հիմքն է, եւ Eldamo (CC BY 4.0) բառագիրքով, որ Paul Strack-ի էլֆական լեզուներու բառագիրքն է։ Միայն բառարանային տուեալներ, անոնցմէ ոչինչ չի ներառուիր։</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Այդ նիշքը PadForge-ի ոճ չէ։</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ոճը կարելի չեղաւ պահել։ {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Նոր ոճ</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge-ը ոճը կը կրէ, մինչ զայն կը կառուցէք։</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Անուն</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Իմ ոճս</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Հիմք</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ոճին հիմնական գետինը։ Մութ ոճը լուսաւոր գրութիւն ունի, իսկ լուսաւոր ոճը՝ մութ գրութիւն։</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Պատկեր</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam-ի խաղէ մը…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Նիշքէ մը…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Առանց պատկերի</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Պատկերը կը բերուի Steam-էն…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ը այս խաղին համար լայն պատկեր չունի։</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-ին հասնիլ կարելի չեղաւ։ Ստուգեցէք ձեր կապը։</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Դիրք</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Պատկերը իր պատուհանին մէջ վեր կամ վար կը շարժէ։</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ցուցադրել խաղին լոկօն</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Գոյներ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Համապատասխանեցնել պատկերին</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Չորս գոյները կ՚առնէ պատկերէն։</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Ետնագոյն</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Էջը։ Պատուհանին, կողագոտիին, քարտերուն եւ գիծերուն գոյները անոր աստիճաններն են։</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Շեշտ</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ամէն գործօն բան՝ շարժիչը, գլխաւոր կոճակը, ընտրուած տարրը։</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Երկրորդական</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Չափուած արժէքներ եւ սարքի նշաններ՝ յաճախականութիւններ, մարտկոցի մակարդակներ, հում մուտքեր։</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Ուշադրութիւն</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Սպասման վիճակներ՝ սպասուող սարքեր, տկար մարտկոց, չպահուած փոփոխութիւններ։</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Ընտրել գոյն</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Պատկերներ (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Բոլոր նիշքերը (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge-ը չի կրնար այդ նիշքը իբրեւ պատկեր կարդալ։</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Պատկեր՝ Steam-ի գրադարանի պատկերը {0} խաղին համար։</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Ոճի պատկեր՝ Տարթ Վէյտըրի սաղաւարտը</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm-ի գովազդային լուսանկար մը «Սիթերու վրէժը» ֆիլմին համար՝ Աստղային պատերազմներու Dark Side ոճին պատկերը։ Գտնուած է Wookieepedia-ի մէջ։</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Ոճի պատկեր՝ շարքերու լոկօներ</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Sonic the Hedgehog-ի, Մատանիներու տիրակալին, Հարրի Փոթըրի, Աստղային պատերազմներու, Star Trek: The Original Series-ի եւ Star Trek: The Next Generation-ի լոկօները՝ սկզբնական ոճերուն պատկերներուն վրայ։ Գտնուած են Wikimedia Commons-ի մէջ, որ իւրաքանչիւրը կը նշէ իբրեւ հանրային սեփականութիւն եղող պարզ գրային լոկօ։ Իւրաքանչիւրը իր տիրոջ ապրանքանիշն է։</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Ոճի պատկեր՝ Հոպիթոն</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Հոպիթոնի նկարահանման վայրը Նոր Զելանտայի մէջ, Jackie.lck-ի լուսանկարը՝ Մատանիներու տիրակալին The One Ring ոճին պատկերը։ Գտնուած է Wikimedia Commons-ի մէջ։</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Ոճի պատկեր՝ Հոկուորթսի դղեակը</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy-ի ծանուցողական տեսահոլովակէն կադր մը՝ խաղին սեփական YouTube ալիքէն։ Հարրի Փոթըրի Gryffindor ոճին պատկերն է։ Գտնուած է Wikimedia Commons-ի մէջ։</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Ոճի պատկեր՝ Միջերկիրի քարտէսը</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Միջերկիրի քարտէս մը՝ Մատանիներու տիրակալին Map of Middle-earth ոճին պատկերը։ Գտնուած է The One Wiki to Rule Them All-ի մէջ, որ ոչ մէկ նկարիչ կը նշէ։</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Ոճի պատկեր՝ Հազարամեակի բազէն</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Հազարամեակի բազէին բնական չափի կառոյցը Galaxy’s Edge-ի մէջ, Tomás Del Coro-ի լուսանկարը՝ Աստղային պատերազմներու Opening Crawl ոճին պատկերը։ Գտնուած է Wikimedia Commons-ի մէջ։</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Ոճի պատկեր՝ Sonic-ը Քրոնոս կղզիին վրայ</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Sonic Frontiers-ի ծանուցողական տեսահոլովակէն կադր մը՝ SEGA-ի սեփական YouTube ալիքէն։ Sonic the Hedgehog-ի Blue Blur ոճին պատկերն է։ Գտնուած է Wikimedia Commons-ի մէջ։</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Ոճի պատկեր՝ վազող Sonic-ը</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA-ի կողմէ Sonic Lost World-ի համար ստեղծուած պատկերը՝ Sonic the Hedgehog-ի Night Run ոճին պատկերը։ Գտնուած է Sonic Wiki Zone-ի մէջ։</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Ոճի պատկեր՝ չորս տուներու զինանշանները</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Հոկուորթսի չորս տուներու զինանշանները, գծուած Atomhawk Design-ի կողմէ Pottermore-ի համար՝ Հարրի Փոթըրի Four Houses ոճին պատկերը։ Գտնուած է Harry Potter Wiki-ի մէջ։</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Ոճի պատկեր՝ USS Enterprise-ի նկարահանման մոտէլը</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek-ի առաջին շարքին համար նկարահանուած մոտէլը, լուսանկարուած զայն պահող Smithsonian National Air and Space Museum-ի կողմէ՝ Star Trek-ի LCARS ոճին պատկերը։</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Ոճի պատկեր՝ USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation-էն կադր մը՝ Star Trek-ի Starfleet ոճին պատկերը։ Գտնուած է Memory Alpha-ի մէջ։</value></data>
 </root>

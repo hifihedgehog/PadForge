@@ -181,6 +181,7 @@
   <data name="Settings_Appearance" xml:space="preserve"><value>Ojehechaháicha</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hesakã</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Iñypytũ</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema pyahu…</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Ovetã</value></data>
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Opyta: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ndojeipe'ái: {0}</value></data>
@@ -1321,4 +1322,22 @@
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (ñepyrũ)</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Peteĩ web pad ojejapo porãva omoĩ peteĩteĩ aty mombyrykue pe tembe'y hi'aguĩvévagui pantalla ipe'ãvévape, RetroArch overlay-kuéra omongu'e háicha ijykere mokõivéva. Oñemoñe'ẽ documentación ramónte, ndaipóri código GPL oñemondóva.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Embojoapy tema…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Eñongatu peteĩ kópia…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Nohẽ lístagui. Marandurenda opyta oĩhaguépe.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” marandurenda ndaipóri térã ndaikatúi ojelee. PadForge ohechauka Iñypytũ ojevy peve.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Téra</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Che tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pyenda</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Pyenda tema oñemopu'ãha. Tema iñypytũva oguereko moñe'ẽrã hesakãva, ha tema hesakãva oguereko moñe'ẽrã iñypytũva.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Ta'ãnga</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ñembosaráigui…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Marandurendágui…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ta'ãnga'ỹ</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Tenda</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Omongu'e ta'ãnga yvate térã yvy gotyo ijovetãme.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ehechauka ñembosarái logo</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Embojoja ta'ãngare</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ojagarra umi irundy sa'y ta'ãngagui.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ta'angakuéra (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Opaite marandurenda (*.*)|*.*</value></data>
 </root>

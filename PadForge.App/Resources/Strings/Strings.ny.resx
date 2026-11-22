@@ -1534,4 +1534,21 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Imasankha cholowetsa china choti idikire.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad yopangidwa nokha imasunga mtunda wa gulu lililonse la mabatani kuchokera ku m'mphepete mwa sikirini wapafupi pa sikirini yotambalala, monga momwe ma overlay a RetroArch amasunthira magawo awo awiri. Zawerengedwa ngati zolemba zokha, palibe khodi ya GPL yomwe imatumizidwa.</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Mutu watsopano…</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Onjezani mutu…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Sungani kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Sinthani mutu</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Chotsani pamndandanda. Fayilo imakhalabe pomwe ili.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Dzina</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mutu wanga</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Chithunzi</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Kuchokera pamasewera a Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Kuchokera pafayilo…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Popanda chithunzi</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Malo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Imasuntha chithunzi m’mwamba kapena pansi pawindo lake.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Onetsani chizindikiro cha masewera</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tengerani chithunzi</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Imatenga mitundu inayi kuchokera pachithunzi.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafayilo onse (*.*)|*.*</value></data>
 </root>

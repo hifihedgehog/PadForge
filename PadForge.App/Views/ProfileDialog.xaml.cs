@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Microsoft.Win32;
 using PadForge.Common.Input;
+using PadForge.Common.Themes;
 using PadForge.Resources.Strings;
+using PadForge.Services;
 
 namespace PadForge.Views
 {
@@ -223,6 +227,119 @@ namespace PadForge.Views
                 line.Children[1].Focus();
             else
                 AddRunningGameButton.Focus();
+        }
+
+        // ─────────────────────────────────────────────
+        //  The game's look (#591)
+        // ─────────────────────────────────────────────
+
+        private SteamGameArt _lookArt;
+        private int _lookAppId;
+        private string _lookGame;
+        private ProfileGameLook _look;
+        private GameLooks.Made _madeLook;
+        private bool _lookQuiet, _lookBusy;
+        private CancellationTokenSource _lookCancel;
+
+        /// <summary>Whether the dialog showed the game look's switch, so
+        /// <see cref="GameLook"/> is the user's answer.</summary>
+        internal bool GameLookOffered { get; private set; }
+
+        /// <summary>The look the profile wears after Save, or null for none.</summary>
+        internal ProfileGameLook GameLook => _look;
+
+        /// <summary>A look made in this dialog, whose picture is kept when
+        /// the profile takes it, or null when the dialog made none.</summary>
+        internal GameLooks.Made MadeGameLook => _madeLook;
+
+        /// <summary>Shows the game look's switch for a profile that knows
+        /// its Steam game, set to what the profile has now.</summary>
+        internal void OfferGameLook(int appId, string game, ProfileGameLook current, SteamGameArt art)
+        {
+            if (appId <= 0 || art == null) return;
+            GameLookOffered = true;
+            _lookAppId = appId;
+            _lookGame = game;
+            _lookArt = art;
+            _look = current;
+            GameLookPanel.Visibility = Visibility.Visible;
+            SetLookSwitch(current != null);
+            ShowLookState(null);
+            Closed += (_, _) => _lookCancel?.Cancel();
+        }
+
+        private void SetLookSwitch(bool on)
+        {
+            _lookQuiet = true;
+            try { GameLookSwitch.IsChecked = on; }
+            finally { _lookQuiet = false; }
+        }
+
+        /// <summary>The line under the switch: what is going on, or that
+        /// the look's picture is not on this PC, with the button that gets
+        /// it. Nothing while all is well.</summary>
+        private void ShowLookState(string status)
+        {
+            bool missing = _look != null && _madeLook == null && !GameLooks.HasPicture(_look);
+            string text = status ?? (missing ? Strings.Instance.Profile_GameLook_NoPicture : null);
+            GameLookStatus.Text = text ?? string.Empty;
+            GameLookGetButton.Visibility = missing && !_lookBusy ? Visibility.Visible : Visibility.Collapsed;
+            GameLookLine.Visibility = text != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void GameLookSwitch_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_lookQuiet) return;
+            if (GameLookSwitch.IsChecked == true)
+            {
+                await MakeLookAsync();
+                return;
+            }
+            _lookCancel?.Cancel();
+            _look = null;
+            _madeLook = null;
+            ShowLookState(null);
+        }
+
+        private async void GameLookGet_Click(object sender, RoutedEventArgs e) => await MakeLookAsync();
+
+        /// <summary>Makes the game's look. Save waits for it. With no
+        /// picture to be had, a look the profile already wears keeps its
+        /// colors and a new one is not made.</summary>
+        private async Task MakeLookAsync()
+        {
+            _lookCancel?.Cancel();
+            var cancel = _lookCancel = new CancellationTokenSource();
+            var s = Strings.Instance;
+            _lookBusy = true;
+            SaveButton.IsEnabled = false;
+            ShowLookState(s.ThemeBuilder_Fetching);
+            try
+            {
+                var made = await GameLooks.MakeAsync(_lookArt, _lookAppId, _lookGame, cancel.Token);
+                if (cancel.IsCancellationRequested) return;
+                _lookBusy = false;
+                if (made.Look != null)
+                {
+                    _look = made.Look;
+                    _madeLook = made;
+                    ShowLookState(null);
+                    return;
+                }
+                if (_look == null) SetLookSwitch(false);
+                ShowLookState(made.Fault == GameLookFault.LookupOff ? s.Profile_GameLook_LookupOff : s.ThemeBuilder_NoArt);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                if (ReferenceEquals(_lookCancel, cancel))
+                {
+                    _lookBusy = false;
+                    SaveButton.IsEnabled = true;
+                }
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

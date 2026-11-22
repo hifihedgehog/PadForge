@@ -1770,4 +1770,23 @@
   <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>Wala sang dalanon ang PadForge pakadto sa speaker sang napili nga device sa sini nga koneksyon. Ang mga macro sound sang sini nga pad magatunog sa default output sang sistema.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ang custom web pad nagatipig sang distansya sang tagsa ka cluster halin sa mas malapit nga kilid sang mas malapad nga screen, pareho sang paghulag sang mga overlay sang RetroArch sang ila duha ka bahin. Ginbasa bilang dokumentasyon lamang, wala sing GPL nga code nga ginaupod.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Magtipig sing kopya…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ang tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kuhaa sa listahan. Ang file magapabilin sa iya lugar.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ang file sang “{0}” nadula ukon indi mabasa. Ginapakita sang PadForge ang Madulom tubtob nga mabalik ini.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Akon nga tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basehan</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ang pundasyon sang tema. Ang madulom nga tema may masanag nga teksto, kag ang masanag nga tema may madulom nga teksto.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Litrato</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Halin sa isa ka Steam game…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Wala sing litrato</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ginakuha ang litrato halin sa Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Wala sing malapad nga litrato ang Steam para sa sini nga game.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ginapasaka ukon ginapanaog ang litrato sa iya bintana.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ang logo sang game</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ibagay sa litrato</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ginakuha ang apat ka kolor halin sa litrato.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tanan nga file (*.*)|*.*</value></data>
 </root>

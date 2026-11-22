@@ -890,6 +890,11 @@ namespace PadForge.Services
                 stream.CopyTo(ms);
                 var body = ms.ToArray();
 
+                // Under a theme (#591) the pages take its colors: the sheet
+                // is followed by the theme's values, and a page names the
+                // theme's ground as its theme-color.
+                body = PadForge.Common.Themes.WebThemeSheet.Dress(path, body);
+
                 ctx.Response.ContentType = GetContentType(path);
                 ctx.Response.StatusCode = 200;
                 ctx.Response.ContentLength64 = body.Length;

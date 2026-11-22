@@ -42,10 +42,12 @@ namespace PadForge.Views
             return brush;
         }
 
-        // Ember (#175), the color every lit preview control takes.
-        private static readonly Brush LitBrush = Frozen(0xFF, 0xFF, 0x6B, 0x2C);
-        private static readonly Brush HoverBrush = Frozen(0xFF, 0xFF, 0xA2, 0x4D);
-        private static readonly Brush FlashBrush = Frozen(0xFF, 0xFF, 0xA5, 0x00);
+        // Ember (#175), the color every lit preview control takes, with
+        // its light and its flash. A theme's accent takes their place
+        // (#591).
+        private static Brush LitBrush => PadForge.Common.Themes.ThemeLook.Solid("TouchStripLit", () => PadForge.Common.Themes.ThemeLook.Accent);
+        private static Brush HoverBrush => PadForge.Common.Themes.ThemeLook.Solid("TouchStripHover", () => PadForge.Common.Themes.ThemeLook.AccentLight);
+        private static Brush FlashBrush => PadForge.Common.Themes.ThemeLook.Solid("TouchStripFlash", () => PadForge.Common.Themes.ThemeLook.AccentFlash);
         private static readonly Brush RestBrush = Frozen(0x30, 0x88, 0x88, 0x88);
         private static readonly Brush EdgeBrush = Frozen(0x60, 0x88, 0x88, 0x88);
 

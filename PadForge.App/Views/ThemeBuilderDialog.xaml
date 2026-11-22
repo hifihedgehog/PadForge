@@ -1,0 +1,125 @@
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ThemeBuilderDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        Title="{Binding ThemeBuilder_NewTitle, Source={x:Static strings:Strings.Instance}}"
+        Subtitle="{Binding ThemeBuilder_Subtitle, Source={x:Static strings:Strings.Instance}}">
+
+    <!-- New Theme and Edit Theme (#591): a theme's name, its base, its
+         picture and its four colors. PadForge wears the theme while the
+         dialog is open, so every change shows on the real pages behind it,
+         and the picture also shows here, where the dialog covers them.
+         Save writes the theme to a file. Cancel puts the old look back. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="SaveButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    Click="SaveButton_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <StackPanel>
+        <controls:SettingRow MinHeight="44">
+            <TextBlock Style="{StaticResource DialogLabel}"
+                       Text="{Binding ThemeBuilder_Name, Source={x:Static strings:Strings.Instance}}"/>
+            <ui:TextBox x:Name="NameBox" Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True" MaxLength="80"
+                        TextChanged="NameBox_TextChanged"
+                        AutomationProperties.Name="{Binding ThemeBuilder_Name, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:SettingRow>
+        <controls:SettingRow MinHeight="44">
+            <TextBlock Style="{StaticResource DialogLabel}"
+                       Text="{Binding ThemeBuilder_Base, Source={x:Static strings:Strings.Instance}}"
+                       ToolTip="{Binding ThemeBuilder_BaseTip, Source={x:Static strings:Strings.Instance}}"/>
+            <ComboBox x:Name="BaseBox" Style="{StaticResource DialogSelect}" MinWidth="200" SelectionChanged="BaseBox_SelectionChanged"
+                      AutomationProperties.Name="{Binding ThemeBuilder_Base, Source={x:Static strings:Strings.Instance}}">
+                <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
+            </ComboBox>
+        </controls:SettingRow>
+
+        <!-- The picture: from a Steam game, from a file, or none. -->
+        <TextBlock Style="{StaticResource DialogHead3}"
+                   Text="{Binding ThemeBuilder_Picture, Source={x:Static strings:Strings.Instance}}"/>
+        <controls:FlexLinePanel Gap="8" LineGap="8" MinLineHeight="30">
+            <Button x:Name="FromGameButton" Style="{StaticResource DialogSmallQuietButton}"
+                    Content="{Binding ThemeBuilder_FromGame, Source={x:Static strings:Strings.Instance}}"
+                    Click="FromGame_Click"/>
+            <Button x:Name="FromFileButton" Style="{StaticResource DialogSmallQuietButton}"
+                    Content="{Binding ThemeBuilder_FromFile, Source={x:Static strings:Strings.Instance}}"
+                    Click="FromFile_Click"/>
+            <Button x:Name="NoPictureButton" Style="{StaticResource DialogSmallQuietButton}"
+                    Content="{Binding ThemeBuilder_NoPicture, Source={x:Static strings:Strings.Instance}}"
+                    Click="NoPicture_Click"/>
+        </controls:FlexLinePanel>
+
+        <!-- The Steam game search. With Community Configs off it says so
+             and offers the switch, as Get Profiles' Community tab does. -->
+        <StackPanel x:Name="GamePanel" Visibility="Collapsed" Margin="0,10,0,0">
+            <StackPanel x:Name="LookupOffPanel" Visibility="Collapsed">
+                <TextBlock Style="{StaticResource DialogNote}" TextWrapping="Wrap"
+                           Text="{Binding Settings_CommunityConfigs_Line, Source={x:Static strings:Strings.Instance}}"/>
+                <Button Style="{StaticResource DialogSmallQuietButton}" HorizontalAlignment="Left" Margin="0,8,0,0"
+                        Content="{Binding Workshop_EnableButton, Source={x:Static strings:Strings.Instance}}"
+                        Click="EnableLookup_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="SearchPanel">
+                <ui:TextBox x:Name="GameSearchBox" Style="{StaticResource DialogTextBox}" TextChanged="GameSearchBox_TextChanged"
+                            PlaceholderText="{Binding Workshop_SearchPlaceholder, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Workshop_SearchPlaceholder, Source={x:Static strings:Strings.Instance}}"/>
+                <ListBox x:Name="GameList" Style="{StaticResource DialogListBox}" MaxHeight="176" Margin="0,8,0,0" Visibility="Collapsed"
+                         ItemContainerStyle="{StaticResource DialogListItem}"
+                         SelectionChanged="GameList_SelectionChanged"
+                         AutomationProperties.Name="{Binding Workshop_Games, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock x:Name="GameStatus" Style="{StaticResource DialogNote}" Margin="0,8,0,0" Visibility="Collapsed"
+                           AutomationProperties.LiveSetting="Polite"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- The picture as the theme will draw it, on the theme's own
+             background: 1176 by 240 units, shown at the dialog's width. -->
+        <Border x:Name="PictureFrame" Margin="0,12,0,0" CornerRadius="6" BorderThickness="1" ClipToBounds="True"
+                BorderBrush="{DynamicResource SteelLineBrush}" Visibility="Collapsed" FlowDirection="LeftToRight">
+            <Viewbox Stretch="Uniform">
+                <Grid Width="1176" Height="240">
+                    <Rectangle x:Name="PictureGround"/>
+                    <Image x:Name="PictureView" Stretch="Fill" Width="1176" Height="240"
+                           AutomationProperties.Name="{Binding ThemeBuilder_Picture, Source={x:Static strings:Strings.Instance}}"/>
+                </Grid>
+            </Viewbox>
+        </Border>
+        <controls:SettingRow x:Name="PositionRow" MinHeight="44" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource DialogLabel}"
+                       Text="{Binding ThemeBuilder_Position, Source={x:Static strings:Strings.Instance}}"
+                       ToolTip="{Binding ThemeBuilder_PositionTip, Source={x:Static strings:Strings.Instance}}"/>
+            <Slider x:Name="PositionSlider" Minimum="0" Maximum="100" Value="50" SmallChange="1" LargeChange="10"
+                    controls:SettingRow.Fills="True" ValueChanged="PositionSlider_ValueChanged"
+                    AutomationProperties.Name="{Binding ThemeBuilder_Position, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:SettingRow>
+        <controls:SettingRow x:Name="LogoRow" MinHeight="44" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource DialogLabel}"
+                       Text="{Binding ThemeBuilder_ShowLogo, Source={x:Static strings:Strings.Instance}}"/>
+            <CheckBox x:Name="LogoSwitch" Style="{StaticResource SwitchCheckBox}" IsChecked="True"
+                      AutomationProperties.Name="{Binding ThemeBuilder_ShowLogo, Source={x:Static strings:Strings.Instance}}"
+                      Checked="LogoSwitch_Changed" Unchecked="LogoSwitch_Changed"/>
+        </controls:SettingRow>
+
+        <!-- The four colors. Each has a swatch that opens the picker and
+             a box that takes the color as #RRGGBB. -->
+        <controls:FlexLinePanel Gap="12" LineGap="6" Margin="0,4,0,0" EndsApart="True">
+            <TextBlock Style="{StaticResource DialogHead3}" VerticalAlignment="Center"
+                       Text="{Binding ThemeBuilder_Colors, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="MatchButton" Style="{StaticResource DialogSmallQuietButton}" controls:FlexLinePanel.AtEnd="True"
+                    VerticalAlignment="Center" IsEnabled="False"
+                    Content="{Binding ThemeBuilder_MatchPicture, Source={x:Static strings:Strings.Instance}}"
+                    ToolTip="{Binding ThemeBuilder_MatchPictureTip, Source={x:Static strings:Strings.Instance}}"
+                    Click="Match_Click"/>
+        </controls:FlexLinePanel>
+        <StackPanel x:Name="ColorRows"/>
+        <views:ColorPickerControl x:Name="Picker" Margin="0,6,0,4" HorizontalAlignment="Left" Visibility="Collapsed"/>
+    </StackPanel>
+</views:DialogWindow>

@@ -625,6 +625,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>ಸಿಸ್ಟಮ್ ಡೀಫಾಲ್ಟ್</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ಬೆಳಕು</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ಗಾಢ</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>ಹೊಸ ಥೀಮ್…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>ನಿಮ್ಮ ಸ್ವಂತ ಬಣ್ಣಗಳಿಂದ ಮತ್ತು Steam ಆಟದಿಂದ ಅಥವಾ ಫೈಲ್‌ನಿಂದ ಪಡೆದ ಚಿತ್ರದಿಂದ ಥೀಮ್ ರಚಿಸಿ.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>ಥೀಮ್ ಸೇರಿಸಿ…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>ಥೀಮ್ ಫೈಲ್ ಅನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ. PadForge ಅದನ್ನು ಇರುವ ಸ್ಥಳದಲ್ಲೇ ಓದುತ್ತದೆ ಮತ್ತು ಯಾವುದನ್ನೂ ನಕಲಿಸುವುದಿಲ್ಲ.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>ಪ್ರತಿ ಉಳಿಸಿ…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>ಆಯ್ದ ಥೀಮ್ ಅನ್ನು ನೀವು ಬದಲಾಯಿಸಬಹುದಾದ ಅಥವಾ ಹಂಚಿಕೊಳ್ಳಬಹುದಾದ ಫೈಲ್‌ಗೆ ಬರೆಯಿರಿ.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>ಥೀಮ್ ಸಂಪಾದಿಸಿ</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ. ಫೈಲ್ ಇದ್ದಲ್ಲೇ ಉಳಿಯುತ್ತದೆ.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ಓದಲಾಗುತ್ತಿಲ್ಲ</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ಥೀಮ್‌ನ ಫೈಲ್ ಕಾಣೆಯಾಗಿದೆ ಅಥವಾ ಓದಲಾಗುತ್ತಿಲ್ಲ. ಅದು ಮರಳಿ ಬರುವವರೆಗೆ PadForge ಗಾಢ ಥೀಮ್ ತೋರಿಸುತ್ತದೆ.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” ಪ್ರೊಫೈಲ್ ತನ್ನ ಆಟದ ನೋಟವನ್ನು ಧರಿಸಿದೆ. ಬೇರೆ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾದಾಗ ನಿಮ್ಮ ಥೀಮ್ ಮರಳುತ್ತದೆ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಎಂಜಿನ್</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ಪೋಲಿಂಗ್ ವರ್ತನೆ ಮತ್ತು ಹಿನ್ನೆಲೆ ಸಂಸ್ಕರಣೆಯನ್ನು ಸಂರಚಿಸಿ.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ಹಾರ್ಡ್‌ವೇರ್ ಬೆಂಬಲ</value></data>
@@ -851,6 +863,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -859,6 +873,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ಟ್ರೇಡ್‌ಮಾರ್ಕ್ ಹಕ್ಕುನಿರಾಕರಣೆ ಮಾತ್ರ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>ಯಾವುದೇ ನಿಯಮ ಹೆಸರಿಸಿಲ್ಲ</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ಯಾವುದೂ ಪ್ರಕಟಿಸಿಲ್ಲ</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>ಸಾರ್ವಜನಿಕ ಡೊಮೇನ್</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>ಹಕ್ಕುಸ್ವಾಮ್ಯ ಹೊಂದಿದೆ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian ಬಳಕೆಯ ನಿಯಮಗಳು</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>ಹಲವು ಪರವಾನಗಿಗಳು</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ಯೂಸರ್-ಮೋಡ್ ವರ್ಚುವಲ್ HID ಕಂಟ್ರೋಲರ್ ಎಂಜಿನ್ (ViGEmBus ಮತ್ತು vJoy ಅನ್ನು ಬದಲಿಸುತ್ತದೆ).</value></data>
@@ -2698,6 +2715,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ಬೇರೆ ಯಾವ ತೆರೆದ ವಿಂಡೋವೂ ಕಂಡುಬಂದಿಲ್ಲ.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ತೆಗೆದುಹಾಕಿ</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ಈ ಪ್ರೊಫೈಲ್ ಲೋಡ್ ಆಗಿರುವಾಗ ಪೋಲಿಂಗ್ ದರ</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ಆಟದ ನೋಟ ಧರಿಸಿ</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ಈ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿರುವಾಗ PadForge ಆಟದ ಚಿತ್ರ ಮತ್ತು ಬಣ್ಣಗಳನ್ನು ತೋರಿಸುತ್ತದೆ. ಬೇರೆ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾದಾಗ ನಿಮ್ಮ ಥೀಮ್ ಮರಳುತ್ತದೆ.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ಆಟದ ಚಿತ್ರ ಈ PC ಯಲ್ಲಿ ಇಲ್ಲ.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ಚಿತ್ರ ಪಡೆಯಿರಿ</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>ಆಟದ ಚಿತ್ರವನ್ನು Steam ನಿಂದ ಪಡೆಯಲು ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಸಮುದಾಯ ಕಾನ್ಫಿಗ್‌ಗಳನ್ನು ಆನ್ ಮಾಡಿ.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>ಇಲ್ಲಿಂದ ನಕಲಿಸಿ</value></data>
@@ -3945,7 +3967,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ಸಮುದಾಯ ಕಾನ್ಫಿಗ್‌ಗಳು</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ಸಮುದಾಯ ರಚಿಸಿದ Steam Input ಕಂಟ್ರೋಲರ್ ಕಾನ್ಫಿಗರೇಶನ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ ಮತ್ತು PadForge ಪ್ರೊಫೈಲ್‌ಗಳಾಗಿ ಅನುವಾದಿಸಿ. PadForge ನಿಮ್ಮ ಹುಡುಕಾಟ ಪಠ್ಯ, ಸಂಬಂಧಿತ ಆಟಗಳು, ಕಾನ್ಫಿಗ್‌ಗಳು ಮತ್ತು ರಚನಾಕಾರರ ID ಗಳು ಹಾಗೂ ತನ್ನ ಆವೃತ್ತಿಯನ್ನು ಕಳುಹಿಸುತ್ತದೆ. ಅನಾಮಧೇಯ Steam ಲಾಗಿನ್ ನಿಮ್ಮ Windows ಆವೃತ್ತಿಯನ್ನು ಮತ್ತು ನಿಮ್ಮ Windows ಇನ್‌ಸ್ಟಾಲೇಶನ್ ID, ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ವಿಳಾಸಗಳು ಮತ್ತು ಬೂಟ್ ಡಿಸ್ಕ್ ಸರಣಿ ಸಂಖ್ಯೆಯ ಹ್ಯಾಶ್‌ಗಳಿಂದ ಮಾಡಿದ ಯಂತ್ರ ID ಯನ್ನೂ ಕಳುಹಿಸುತ್ತದೆ. ಯಾವುದೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆ ಒಳಗೊಂಡಿಲ್ಲ.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ನೀವು ಹುಡುಕಿದಾಗ, ಕಾನ್ಫಿಗ್ ತೆರೆದಾಗ ಅಥವಾ ಆಮದು ಮಾಡಿದ ಕಾನ್ಫಿಗ್‌ಗಳ ನವೀಕರಣ ಪರಿಶೀಲಿಸಿದಾಗ ಮಾತ್ರ Steam ಸರ್ವರ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ. ಟೆಲಿಮೆಟ್ರಿ ಇಲ್ಲ, Steam ಖಾತೆ ಇಲ್ಲ.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ನೀವು ಹುಡುಕಿದಾಗ, ಕಾನ್ಫಿಗ್ ತೆರೆದಾಗ, ಆಮದು ಮಾಡಿದ ಕಾನ್ಫಿಗ್‌ಗಳ ನವೀಕರಣ ಪರಿಶೀಲಿಸಿದಾಗ ಅಥವಾ ಆಟದ ಚಿತ್ರ ಪಡೆದಾಗ ಮಾತ್ರ Steam ಸರ್ವರ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ. ಟೆಲಿಮೆಟ್ರಿ ಇಲ್ಲ, Steam ಖಾತೆ ಇಲ್ಲ.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ಏನು ಕಳುಹಿಸಲಾಗುತ್ತದೆ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ಸಮುದಾಯ ಕಾನ್ಫಿಗ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ಹಳೆಯ Workshop ಕಾನ್ಫಿಗ್‌ಗಳನ್ನು ತೋರಿಸಿ</value></data>
@@ -5203,4 +5225,59 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್‌ಗಳು</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>ವಿಲೋಮ</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>ಗರಿಷ್ಠ</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ಆ ಫೈಲ್ PadForge ಥೀಮ್ ಅಲ್ಲ.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ಥೀಮ್ ಉಳಿಸಲಾಗಲಿಲ್ಲ. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ಹೊಸ ಥೀಮ್</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>ನೀವು ಥೀಮ್ ರಚಿಸುವಾಗ PadForge ಅದನ್ನು ಧರಿಸಿರುತ್ತದೆ.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ಹೆಸರು</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ನನ್ನ ಥೀಮ್</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>ಆಧಾರ</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ಥೀಮ್ ನಿಂತಿರುವ ನೆಲೆ. ಗಾಢ ಥೀಮ್‌ನಲ್ಲಿ ಪಠ್ಯ ತಿಳಿಯಾಗಿರುತ್ತದೆ, ಬೆಳಕು ಥೀಮ್‌ನಲ್ಲಿ ಪಠ್ಯ ಗಾಢವಾಗಿರುತ್ತದೆ.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ಚಿತ್ರ</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ಆಟದಿಂದ…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ಫೈಲ್‌ನಿಂದ…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ಚಿತ್ರ ಬೇಡ</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam ನಿಂದ ಚಿತ್ರ ಪಡೆಯಲಾಗುತ್ತಿದೆ…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ಈ ಆಟಕ್ಕೆ Steam ನಲ್ಲಿ ಅಗಲವಾದ ಚಿತ್ರವಿಲ್ಲ.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam ಅನ್ನು ತಲುಪಲಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>ಸ್ಥಾನ</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ಚಿತ್ರವನ್ನು ಅದರ ಕಿಟಕಿಯಲ್ಲಿ ಮೇಲೆ ಅಥವಾ ಕೆಳಗೆ ಸರಿಸುತ್ತದೆ.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ಆಟದ ಲೋಗೋ ತೋರಿಸಿ</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ಬಣ್ಣಗಳು</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ಚಿತ್ರಕ್ಕೆ ಹೊಂದಿಸಿ</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ಚಿತ್ರದಿಂದ ನಾಲ್ಕು ಬಣ್ಣಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>ಹಿನ್ನೆಲೆ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>ಪುಟ. ಕಿಟಕಿ, ಸೈಡ್‌ಬಾರ್, ಕಾರ್ಡ್‌ಗಳು ಮತ್ತು ರೇಖೆಗಳು ಇದರ ಛಾಯೆಗಳು.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ಉಚ್ಚಾರಣೆ</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ಚಾಲನೆಯಲ್ಲಿರುವ ಎಲ್ಲವೂ: ಎಂಜಿನ್, ಮುಖ್ಯ ಬಟನ್, ಆಯ್ದ ಐಟಂ.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ದ್ವಿತೀಯ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>ಅಳತೆ ಮಾಡಿದ ಮೌಲ್ಯಗಳು ಮತ್ತು ಸಾಧನ ಗುರುತುಗಳು: ದರಗಳು, ಬ್ಯಾಟರಿ ಮಟ್ಟಗಳು, ಕಚ್ಚಾ ಇನ್‌ಪುಟ್‌ಗಳು.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ಗಮನ</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>ಕಾಯುತ್ತಿರುವ ಸ್ಥಿತಿಗಳು: ಸಾಧನಗಳಿಗಾಗಿ ಕಾಯುವಿಕೆ, ಕಡಿಮೆ ಬ್ಯಾಟರಿ, ಉಳಿಸದ ಬದಲಾವಣೆಗಳು.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>ಬಣ್ಣ ಆರಿಸಿ</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ಚಿತ್ರಗಳು (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ಎಲ್ಲಾ ಫೈಲ್‌ಗಳು (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ಆ ಫೈಲ್ ಅನ್ನು ಚಿತ್ರವಾಗಿ ಓದಲಾಗುತ್ತಿಲ್ಲ.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ಚಿತ್ರ: {0} ಗಾಗಿ Steam ನ ಲೈಬ್ರರಿ ಕಲೆ.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಡಾರ್ಥ್ ವೇಡರ್‌ನ ಹೆಲ್ಮೆಟ್</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>ರಿವೆಂಜ್ ಆಫ್ ದ ಸಿತ್ ಚಿತ್ರದ Lucasfilm ಪ್ರಚಾರ ಛಾಯಾಚಿತ್ರ: ಸ್ಟಾರ್ ವಾರ್ಸ್ ಥೀಮ್ Dark Side ನ ಚಿತ್ರ. Wookieepedia ದಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಫ್ರಾಂಚೈಸ್ ಲೋಗೋಗಳು</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>ಆರಂಭಿಕ ಥೀಮ್‌ಗಳ ಚಿತ್ರಗಳ ಮೇಲಿರುವ ಸೋನಿಕ್ ದ ಹೆಡ್ಜ್‌ಹಾಗ್, ದ ಲಾರ್ಡ್ ಆಫ್ ದ ರಿಂಗ್ಸ್, ಹ್ಯಾರಿ ಪಾಟರ್, ಸ್ಟಾರ್ ವಾರ್ಸ್, ಸ್ಟಾರ್ ಟ್ರೆಕ್: ದ ಒರಿಜಿನಲ್ ಸೀರೀಸ್ ಮತ್ತು ಸ್ಟಾರ್ ಟ್ರೆಕ್: ದ ನೆಕ್ಸ್ಟ್ ಜನರೇಶನ್ ಇವುಗಳ ಲೋಗೋಗಳು. Wikimedia Commons ನಲ್ಲಿ ಸಿಕ್ಕಿವೆ, ಅದು ಪ್ರತಿಯೊಂದನ್ನೂ ಸಾರ್ವಜನಿಕ ಡೊಮೇನ್‌ನಲ್ಲಿರುವ ಸರಳ ಪಠ್ಯ ಲೋಗೋ ಎಂದು ಗುರುತಿಸಿದೆ. ಪ್ರತಿಯೊಂದೂ ಅದರ ಮಾಲೀಕರ ಟ್ರೇಡ್‌ಮಾರ್ಕ್.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಹಾಬಿಟನ್</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ನ್ಯೂಜಿಲೆಂಡ್‌ನ ಹಾಬಿಟನ್ ಚಲನಚಿತ್ರ ಸೆಟ್, Jackie.lck ತೆಗೆದ ಛಾಯಾಚಿತ್ರ: ದ ಲಾರ್ಡ್ ಆಫ್ ದ ರಿಂಗ್ಸ್ ಥೀಮ್ The One Ring ನ ಚಿತ್ರ. Wikimedia Commons ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಹಾಗ್ವಾರ್ಟ್ಸ್ ಕೋಟೆ</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ಆಟದ ಸ್ವಂತ YouTube ಚಾನೆಲ್‌ನಲ್ಲಿರುವ Hogwarts Legacy ಟ್ರೇಲರ್‌ನ ಒಂದು ಫ್ರೇಮ್: ಹ್ಯಾರಿ ಪಾಟರ್ ಥೀಮ್ Gryffindor ನ ಚಿತ್ರ. Wikimedia Commons ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಮಧ್ಯ ಭೂಮಿಯ ನಕ್ಷೆ</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>ಮಧ್ಯ ಭೂಮಿಯ ನಕ್ಷೆ: ದ ಲಾರ್ಡ್ ಆಫ್ ದ ರಿಂಗ್ಸ್ ಥೀಮ್ Map of Middle-earth ನ ಚಿತ್ರ. The One Wiki to Rule Them All ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ, ಅದು ಯಾವ ಕಲಾವಿದನ ಹೆಸರನ್ನೂ ನೀಡಿಲ್ಲ.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಮಿಲೇನಿಯಂ ಫಾಲ್ಕನ್</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge ನಲ್ಲಿರುವ ಪೂರ್ಣ ಗಾತ್ರದ ಮಿಲೇನಿಯಂ ಫಾಲ್ಕನ್, Tomás Del Coro ತೆಗೆದ ಛಾಯಾಚಿತ್ರ: ಸ್ಟಾರ್ ವಾರ್ಸ್ ಥೀಮ್ Opening Crawl ನ ಚಿತ್ರ. Wikimedia Commons ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಕ್ರೋನೋಸ್ ದ್ವೀಪದಲ್ಲಿ Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA ದ ಸ್ವಂತ YouTube ಚಾನೆಲ್‌ನಲ್ಲಿರುವ Sonic Frontiers ಟ್ರೇಲರ್‌ನ ಒಂದು ಫ್ರೇಮ್: ಸೋನಿಕ್ ದ ಹೆಡ್ಜ್‌ಹಾಗ್ ಥೀಮ್ Blue Blur ನ ಚಿತ್ರ. Wikimedia Commons ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ಓಡುತ್ತಿರುವ Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World ಗಾಗಿ SEGA ರಚಿಸಿದ ಕಲೆ: ಸೋನಿಕ್ ದ ಹೆಡ್ಜ್‌ಹಾಗ್ ಥೀಮ್ Night Run ನ ಚಿತ್ರ. Sonic Wiki Zone ನಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: ನಾಲ್ಕು ಹೌಸ್ ಲಾಂಛನಗಳು</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>ಹಾಗ್ವಾರ್ಟ್ಸ್‌ನ ನಾಲ್ಕು ಹೌಸ್ ಲಾಂಛನಗಳು, Pottermore ಗಾಗಿ Atomhawk Design ರಚಿಸಿದ್ದು: ಹ್ಯಾರಿ ಪಾಟರ್ ಥೀಮ್ Four Houses ನ ಚಿತ್ರ. Harry Potter Wiki ಯಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: USS Enterprise ಸ್ಟುಡಿಯೋ ಮಾದರಿ</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ಮೂಲ ಸ್ಟಾರ್ ಟ್ರೆಕ್ ಸರಣಿಗಾಗಿ ಚಿತ್ರೀಕರಿಸಿದ ಮಾದರಿ, ಅದನ್ನು ಹೊಂದಿರುವ Smithsonian National Air and Space Museum ತೆಗೆದ ಛಾಯಾಚಿತ್ರ: ಸ್ಟಾರ್ ಟ್ರೆಕ್ ಥೀಮ್ LCARS ನ ಚಿತ್ರ.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>ಥೀಮ್ ಚಿತ್ರ: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ಸ್ಟಾರ್ ಟ್ರೆಕ್: ದ ನೆಕ್ಸ್ಟ್ ಜನರೇಶನ್‌ನ ಒಂದು ಫ್ರೇಮ್: ಸ್ಟಾರ್ ಟ್ರೆಕ್ ಥೀಮ್ Starfleet ನ ಚಿತ್ರ. Memory Alpha ದಲ್ಲಿ ಸಿಕ್ಕಿದೆ.</value></data>
 </root>

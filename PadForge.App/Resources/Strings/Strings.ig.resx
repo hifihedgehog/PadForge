@@ -1502,4 +1502,22 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Na-ahọrọ ntinye ọzọ a ga-echere.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad weebụ ahaziri ahazi na-edobe anya dị n'etiti ìgwè njikwa ọ bụla na nsọtụ ihuenyo sara mbara kacha nso ya, dịka ihe njikwa ihuenyo RetroArch si ewepụ ọkara ya abụọ. A gụrụ ya naanị dịka akwụkwọ nkọwa, ọ dịghị koodu GPL a na-ebunye.</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Ọdịdị ọhụrụ…</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tinye ọdịdị…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Chekwaa otu mbipụta…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Dezie ọdịdị</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Wepụ ya na ndepụta. Faịlụ ahụ ka nọ ebe ọ dị.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Aha</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ọdịdị m</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Foto</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Site na egwuregwu Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Site na faịlụ…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Enweghị foto</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Na-enweta foto ahụ site na Steam…</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ọnọdụ</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Na-ebugharị foto ahụ elu ma ọ bụ ala n'ime windo ya.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Gosi akara egwuregwu ahụ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Mee ka ọ dabara na foto</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Na-ewere agba anọ ahụ site na foto ahụ.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faịlụ niile (*.*)|*.*</value></data>
 </root>

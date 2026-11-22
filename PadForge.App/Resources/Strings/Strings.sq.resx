@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Parazgjedhja e sistemit</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>E çelët</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>E errët</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Temë e re…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Ndërto një temë nga ngjyrat e tua dhe një imazh, nga një lojë Steam ose nga një skedar.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Shto temë…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Listo një skedar teme. PadForge e lexon aty ku është dhe nuk kopjon asgjë.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Ruaj një kopje…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Shkruaj temën e zgjedhur në një skedar që mund ta ndryshosh ose ta ndash.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Ndrysho temën</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Hiqe nga lista. Skedari mbetet aty ku është.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Skedari nuk u gjet</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nuk lexohet</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Skedari i temës “{0}” mungon ose nuk lexohet. PadForge shfaq “E errët” derisa të kthehet.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profili “{0}” po mban pamjen e lojës së tij. Tema jote kthehet kur aktivizohet një profil tjetër.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motori i hyrjes</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguro sjelljen e sondazhit dhe përpunimin në sfond.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Mbështetja e harduerit</value></data>
@@ -857,6 +869,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Vetëm mohim i markës tregtare</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Pa kushte të emërtuara</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Asnjë e botuar</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domen publik</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Me të drejta autori</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Kushtet e përdorimit të Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Disa licenca</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor kontrolluesish virtualë HID në modalitetin e përdoruesit (zëvendëson ViGEmBus dhe vJoy).</value></data>
@@ -2698,6 +2715,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nuk u gjet asnjë dritare tjetër e hapur.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Hiq {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Frekuenca e leximit ndërsa ngarkohet ky profil</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Mbaj pamjen e lojës</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Sa kohë ky profil është aktiv, PadForge shfaq imazhin dhe ngjyrat e lojës. Tema jote kthehet kur aktivizohet një profil tjetër.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Imazhi i lojës nuk është në këtë PC.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Merr imazhin</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivizo konfigurimet e komunitetit te Cilësimet për të marrë imazhin e lojës nga Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopjo nga</value></data>
@@ -3914,7 +3936,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurimet e komunitetit</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Shfleto konfigurimet e kontrolluesve Steam Input të bëra nga komuniteti dhe përktheji në profile PadForge. PadForge dërgon tekstin e kërkimit, ID-të e lojërave, konfigurimeve dhe krijuesve të përfshirë, dhe versionin e vet. Hyrja anonime në Steam dërgon gjithashtu versionin e Windows dhe një ID makine të bërë nga hash-e të ID-së së instalimit të Windows, adresave të përshtatësve të rrjetit dhe serialit të diskut të nisjes. Nuk përfshihet asnjë shërbim i palës së tretë.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge lidhet me serverët e Steam vetëm kur kërkon, hap një konfigurim ose kontrollon konfigurimet e importuara për përditësime. Pa telemetri, pa llogari Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge lidhet me serverët e Steam vetëm kur kërkon, hap një konfigurim, kontrollon konfigurimet e importuara për përditësime ose merr imazhin e një loje. Pa telemetri, pa llogari Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Çfarë dërgohet</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktivizo konfigurimet e komunitetit</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Shfaq konfigurimet e vjetra të Workshop</value></data>
@@ -5183,4 +5205,59 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Shfaq zmadhuesin ndërsa mbahet kjo makro, për të shënjestruar nëpërmjet shënjestrës. Cilësoje te faqja Zmadhuesi.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referencat e klingonishtes dhe sindarinishtes</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Fjalët e përkthimeve në klingonisht dhe sindarinisht, të kontrolluara me klingon-assistant-data (Apache-2.0), fjalorin pas boQwI', dhe me Eldamo (CC BY 4.0), leksikun elfik të Paul Strack. Vetëm të dhëna fjalori, asnjë nuk përfshihet.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ai skedar nuk është temë e PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nuk u ruajt. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Temë e re</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge e vesh temën ndërkohë që e ndërton.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Emri</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Tema ime</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Baza</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Toka mbi të cilën qëndron tema. Një temë e errët ka tekst të çelët, dhe një temë e çelët ka tekst të errët.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imazhi</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Nga një lojë Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Nga një skedar…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Pa imazh</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Po merret imazhi nga Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nuk ka imazh të gjerë për këtë lojë.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nuk u arrit Steam. Kontrollo lidhjen.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pozicioni</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E lëviz imazhin lart ose poshtë në dritaren e tij.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Shfaq logon e lojës</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Ngjyrat</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Përshtat me imazhin</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>I merr katër ngjyrat nga imazhi.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Sfondi</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Faqja. Dritarja, shiriti anësor, kartat dhe vijat janë shkallë prej saj.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Theksi</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Gjithçka që është e gjallë: motori, butoni kryesor, elementi i zgjedhur.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Dytësore</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Vlerat e matura dhe shenjat e pajisjeve: frekuenca, nivelet e baterisë, hyrjet e papërpunuara.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Vëmendja</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Gjendjet në pritje: pajisje në pritje, bateri e ulët, ndryshime të paruajtura.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Zgjidh një ngjyrë</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imazhet (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Të gjithë skedarët (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge nuk e lexon atë skedar si imazh.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imazhi: arti i bibliotekës së Steam për {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Imazhi i temës: Helmeta e Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Një foto promovuese e Lucasfilm për Hakmarrjen e Sithëve: imazhi i temës Dark Side të Star Wars. Gjetur në Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Imazhi i temës: Logot e serive</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logot e Sonic the Hedgehog, Lordi i Unazave, Harry Potter, Star Wars, Star Trek: The Original Series dhe Star Trek: The Next Generation në imazhet e temave fillestare. Gjetur në Wikimedia Commons, që e shënon secilën si logo të thjeshtë teksti në domen publik. Secila është markë tregtare e pronarit të saj.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Imazhi i temës: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Skena filmike e Hobbiton në Zelandën e Re, foto nga Jackie.lck: imazhi i temës The One Ring të Lordit të Unazave. Gjetur në Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Imazhi i temës: Kështjella Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Një kuadër nga traileri i Hogwarts Legacy nga kanali YouTube i vetë lojës: imazhi i temës Gryffindor të Harry Potter. Gjetur në Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Imazhi i temës: Harta e Tokës së Mesme</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Një hartë e Tokës së Mesme: imazhi i temës Map of Middle-earth të Lordit të Unazave. Gjetur në The One Wiki to Rule Them All, që nuk emërton asnjë artist.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Imazhi i temës: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon në përmasa reale në Galaxy’s Edge, foto nga Tomás Del Coro: imazhi i temës Opening Crawl të Star Wars. Gjetur në Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Imazhi i temës: Sonic në ishullin Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Një kuadër nga traileri i Sonic Frontiers nga kanali YouTube i vetë SEGA: imazhi i temës Blue Blur të Sonic the Hedgehog. Gjetur në Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Imazhi i temës: Sonic duke vrapuar</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Arti i SEGA i bërë për Sonic Lost World: imazhi i temës Night Run të Sonic the Hedgehog. Gjetur në Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Imazhi i temës: Katër stemat e shtëpive</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Katër stemat e shtëpive të Hogwarts, vizatuar nga Atomhawk Design për Pottermore: imazhi i temës Four Houses të Harry Potter. Gjetur në Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Imazhi i temës: Modeli i studios USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Modeli i filmuar për serialin origjinal Star Trek, fotografuar nga Smithsonian National Air and Space Museum, që e ruan: imazhi i temës LCARS të Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imazhi i temës: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Një kuadër nga Star Trek: The Next Generation: imazhi i temës Starfleet të Star Trek. Gjetur në Memory Alpha.</value></data>
 </root>

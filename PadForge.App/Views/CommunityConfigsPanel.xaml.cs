@@ -464,7 +464,12 @@ namespace PadForge.Views
             // same game is how the sort and the search themselves refetch, so
             // those must not clear what they just set. The tag filter resets
             // either way: its chips are rebuilt from the new result set.
-            if (!ReferenceEquals(g, _selectedGame)) ResetConfigQuery();
+            if (!ReferenceEquals(g, _selectedGame))
+            {
+                ResetConfigQuery();
+                // A look is one game's: another game starts with the option off.
+                DropGameLook(null);
+            }
             _selectedGame = g;
             _activeTag = null;
             SetState(WsState.Browse);
@@ -1052,6 +1057,8 @@ namespace PadForge.Views
             ManifestErrorPanel.Visibility = active == ManifestErrorPanel ? Visibility.Visible : Visibility.Collapsed;
             ManifestResultPanel.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
             BecomesGroup.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
+            GameLookGroup.Visibility = active == ManifestResultPanel && (_selectedGame?.AppId ?? 0) > 0
+                ? Visibility.Visible : Visibility.Collapsed;
             CanSaveChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -1421,10 +1428,103 @@ namespace PadForge.Views
             // time spent reading the dossier doesn't age the record.
             if (_outcome.Profile.WorkshopSource != null)
                 _outcome.Profile.WorkshopSource.ImportedAt = DateTime.UtcNow;
+            // The game's look (#591), when its switch is on and the look made
+            // is this config's game's. Its picture is kept with the save.
+            var made = GameLookSwitch.IsChecked == true ? _madeLook : null;
+            if (made?.Look != null && made.Look.AppId == (_outcome.Profile.WorkshopSource?.AppId ?? 0))
+            {
+                Common.Themes.GameLooks.Keep(made);
+                _outcome.Profile.GameLook = made.Look.Clone();
+            }
+            else
+            {
+                _outcome.Profile.GameLook = null;
+            }
             string name = ImportSink(_outcome.Profile, applyAfter);
             statusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
                 name, _outcome.Clean, _outcome.Partial, _outcome.Skipped);
             return true;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The game's look (#591)
+        // ─────────────────────────────────────────────
+
+        private Common.Themes.SteamGameArt _gameArt;
+        private Common.Themes.GameLooks.Made _madeLook;
+        private Task _lookTask = Task.CompletedTask;
+        private CancellationTokenSource _lookCts;
+        private bool _syncingLook;
+
+        private async void GameLookSwitch_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_syncingLook) return;
+            if (GameLookSwitch.IsChecked != true)
+            {
+                DropGameLook(null);
+                return;
+            }
+            _lookTask = MakeGameLookAsync();
+            await _lookTask;
+        }
+
+        /// <summary>Takes the look off the import: its switch off, and the
+        /// line after it saying why when there is a reason.</summary>
+        private void DropGameLook(string reason)
+        {
+            _lookCts?.Cancel();
+            _madeLook = null;
+            _syncingLook = true;
+            try { GameLookSwitch.IsChecked = false; }
+            finally { _syncingLook = false; }
+            ShowGameLookStatus(reason);
+        }
+
+        private void ShowGameLookStatus(string text)
+        {
+            GameLookStatus.Text = text ?? string.Empty;
+            GameLookStatus.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        /// <summary>Makes the picked game's look when the switch goes on, so
+        /// a game with no picture says so here and not after the save.</summary>
+        private async Task MakeGameLookAsync()
+        {
+            _lookCts?.Cancel();
+            var cts = _lookCts = new CancellationTokenSource();
+            var game = _selectedGame;
+            _madeLook = null;
+            if (game == null || game.AppId <= 0)
+            {
+                DropGameLook(null);
+                return;
+            }
+            _gameArt ??= new Common.Themes.SteamGameArt(() => _settings.EnableCommunityConfigLookup, _cache);
+            ShowGameLookStatus(Strings.Instance.ThemeBuilder_Fetching);
+            try
+            {
+                var made = await Common.Themes.GameLooks.MakeAsync(_gameArt, game.AppId, game.Name, cts.Token);
+                if (cts.IsCancellationRequested) return;
+                if (made.Look == null)
+                {
+                    DropGameLook(made.Fault == Common.Themes.GameLookFault.LookupOff
+                        ? Strings.Instance.Profile_GameLook_LookupOff : Strings.Instance.ThemeBuilder_NoArt);
+                    return;
+                }
+                _madeLook = made;
+                ShowGameLookStatus(null);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        /// <summary>Waits for a look that is still being made, so a save
+        /// right after the switch takes it.</summary>
+        internal async Task PrepareSaveAsync()
+        {
+            try { await _lookTask; }
+            catch (OperationCanceledException) { }
         }
 
         // ─────────────────────────────────────────────

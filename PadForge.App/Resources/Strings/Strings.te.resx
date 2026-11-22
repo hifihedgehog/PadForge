@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>సిస్టమ్ డిఫాల్ట్</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>లైట్</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>డార్క్</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>కొత్త థీమ్…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>మీ స్వంత రంగులతో, Steam గేమ్ నుండి లేదా ఫైల్ నుండి తీసుకున్న చిత్రంతో థీమ్‌ను తయారు చేయండి.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>థీమ్ జోడించు…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>థీమ్ ఫైల్‌ను జాబితాలో చేర్చండి. PadForge దాన్ని ఉన్న చోటే చదువుతుంది, ఏదీ కాపీ చేయదు.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>కాపీని సేవ్ చేయి…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>ఎంచుకున్న థీమ్‌ను మీరు మార్చగల లేదా పంచుకోగల ఫైల్‌గా రాయండి.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>థీమ్ సవరించు</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>జాబితా నుండి తీసివేయి. ఫైల్ ఉన్న చోటే ఉంటుంది.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ఫైల్ కనబడలేదు</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>చదవలేకపోయింది</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ఫైల్ లేదు లేదా చదవలేకపోయింది. అది తిరిగి వచ్చే వరకు PadForge డార్క్‌ను చూపిస్తుంది.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” ప్రొఫైల్ తన గేమ్ రూపాన్ని ధరించింది. మరొక ప్రొఫైల్ యాక్టివ్ అయినప్పుడు మీ థీమ్ తిరిగి వస్తుంది.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge థీమ్‌లు (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ఆ ఫైల్ PadForge థీమ్ కాదు.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>థీమ్‌ను సేవ్ చేయలేకపోయింది. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>కొత్త థీమ్</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>మీరు థీమ్‌ను తయారు చేస్తుండగా PadForge దాన్ని ధరిస్తుంది.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>పేరు</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>నా థీమ్</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>ఆధారం</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>థీమ్ నిలిచే నేల. డార్క్ థీమ్‌కు లేత అక్షరాలు, లైట్ థీమ్‌కు ముదురు అక్షరాలు ఉంటాయి.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>చిత్రం</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam గేమ్ నుండి…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ఫైల్ నుండి…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>చిత్రం వద్దు</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam నుండి చిత్రాన్ని తెస్తోంది…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ఈ గేమ్‌కు Steam లో వెడల్పు చిత్రం లేదు.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam ను చేరుకోలేకపోయింది. మీ కనెక్షన్‌ను తనిఖీ చేయండి.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>స్థానం</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>చిత్రాన్ని దాని విండోలో పైకి లేదా కిందికి జరుపుతుంది.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>గేమ్ లోగోను చూపించు</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>రంగులు</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>చిత్రానికి సరిపోల్చు</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>చిత్రం నుండి నాలుగు రంగులను తీసుకుంటుంది.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>నేపథ్యం</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>పేజీ. విండో, సైడ్‌బార్, కార్డ్‌లు, గీతలు దీని నుండి వచ్చిన మెట్లు.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ప్రధాన రంగు</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ప్రత్యక్షంగా ఉన్నవన్నీ: ఇంజిన్, ప్రధాన బటన్, ఎంచుకున్న అంశం.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ద్వితీయ రంగు</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>కొలిచిన విలువలు, పరికర గుర్తులు: రేట్లు, బ్యాటరీ స్థాయిలు, రా ఇన్‌పుట్లు.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>హెచ్చరిక రంగు</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>వేచి ఉండే స్థితులు: పరికరాల కోసం వేచి ఉండటం, తక్కువ బ్యాటరీ, సేవ్ చేయని మార్పులు.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>రంగును ఎంచుకోండి</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>చిత్రాలు (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ఆ ఫైల్‌ను చిత్రంగా చదవలేకపోతోంది.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>చిత్రం: {0} కోసం Steam లైబ్రరీ ఆర్ట్.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ఇన్పుట్ ఇంజిన్</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>పోలింగ్ ప్రవర్తన, బ్యాక్‌గ్రౌండ్ ప్రాసెసింగ్‌ను కాన్ఫిగర్ చేయండి.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>హార్డ్‌వేర్ మద్దతు</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ట్రేడ్‌మార్క్ నిరాకరణ మాత్రమే</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>నిబంధనలు పేర్కొనలేదు</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ఏదీ ప్రచురించలేదు</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>పబ్లిక్ డొమైన్</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>కాపీరైట్ ఉంది</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian వినియోగ నిబంధనలు</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>అనేక లైసెన్స్‌లు</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>యూజర్-మోడ్ వర్చువల్ HID కంట్రోలర్ ఇంజిన్ (ViGEmBus, vJoyలను భర్తీ చేస్తుంది).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>తెరిచి ఉన్న ఇతర విండో ఏదీ కనుగొనబడలేదు.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} తొలగించు</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ఈ ప్రొఫైల్ లోడ్ అయినప్పుడు పోలింగ్ రేట్</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>గేమ్ రూపాన్ని ధరించు</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ఈ ప్రొఫైల్ యాక్టివ్‌గా ఉన్నప్పుడు PadForge గేమ్ చిత్రాన్ని, రంగులను చూపిస్తుంది. మరొక ప్రొఫైల్ యాక్టివ్ అయినప్పుడు మీ థీమ్ తిరిగి వస్తుంది.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>గేమ్ చిత్రం ఈ PC లో లేదు.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>చిత్రాన్ని తెచ్చుకో</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam నుండి గేమ్ చిత్రాన్ని పొందడానికి సెట్టింగ్‌లలో కమ్యూనిటీ కాన్ఫిగరేషన్లను ఆన్ చేయండి.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>నుండి కాపీ చేయి</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>కమ్యూనిటీ కాన్ఫిగరేషన్లు</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>సమాజం రూపొందించిన Steam Input కంట్రోలర్ కాన్ఫిగరేషన్లను బ్రౌజ్ చేసి వాటిని PadForge ప్రొఫైల్లుగా అనువదించండి. PadForge మీ శోధన పాఠ్యాన్ని, సంబంధిత గేమ్లు, కాన్ఫిగరేషన్లు, సృష్టికర్తల IDలను, తన వెర్షన్ను పంపుతుంది. అజ్ఞాత Steam లాగాన్ మీ Windows వెర్షన్ను, అలాగే మీ Windows ఇన్స్టాలేషన్ ID, నెట్వర్క్ అడాప్టర్ చిరునామాలు, బూట్ డిస్క్ సీరియల్ హాష్ల నుండి చేసిన మెషీన్ IDని కూడా పంపుతుంది. మూడవ పక్ష సేవ ఏదీ పాల్గొనదు.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>మీరు శోధించినప్పుడు, కాన్ఫిగరేషన్ తెరిచినప్పుడు, లేదా దిగుమతి చేసిన కాన్ఫిగరేషన్ల నవీకరణలను తనిఖీ చేసినప్పుడు మాత్రమే PadForge Steam సర్వర్లకు కనెక్ట్ అవుతుంది. టెలిమెట్రీ లేదు, Steam ఖాతా లేదు.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>మీరు శోధించినప్పుడు, కాన్ఫిగరేషన్ తెరిచినప్పుడు, దిగుమతి చేసిన కాన్ఫిగరేషన్ల నవీకరణలను తనిఖీ చేసినప్పుడు, లేదా గేమ్ చిత్రాన్ని పొందినప్పుడు మాత్రమే PadForge Steam సర్వర్లకు కనెక్ట్ అవుతుంది. టెలిమెట్రీ లేదు, Steam ఖాతా లేదు.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ఏమి పంపబడుతుంది</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>కమ్యూనిటీ కాన్ఫిగరేషన్లను ఎనేబుల్ చేయి</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>లెగసీ Workshop కాన్ఫిగరేషన్లను చూపు</value></data>
@@ -5157,6 +5213,28 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD ప్రొఫైల్ ఫార్మాట్, hcn1z1 యొక్క shunt స్కీమా డంప్ (MIT), DatMoshu యొక్క reWASD-Powertools పత్రాలు (MIT) మరియు reWASD యొక్క సహాయం నుండి చదవబడింది, DS4Windows ప్రొఫైల్ ఫార్మాట్, Schmaldeo యొక్క DS4Windows ఫోర్క్ (GPL-3.0-or-later) నుండి చదవబడింది, మరియు DSX ప్రొఫైల్ ఫార్మాట్, winkywong1998 యొక్క DSX-profile-share లోని ప్రొఫైల్‌లు, RAIZ-Zzz యొక్క DualSense ప్రాజెక్ట్ (MIT) మరియు Paliverse రూపొందించిన DSX యొక్క Mod System (Apache-2.0) నుండి చదవబడింది. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>స్క్రీన్ రంగు సూచనలు</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>స్క్రీన్ రంగు లైటింగ్ వెనుక ఉన్న క్యాప్చర్, Prismatik (GPL-2.0-or-later), Sunshine యొక్క AlkaidLab ఫోర్క్ foundation-sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) మరియు alienfx-tools (MIT) నుండి చదవబడింది. డాక్యుమెంటేషన్ మాత్రమే, GPL కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>థీమ్ చిత్రం: డార్త్ వేడర్ హెల్మెట్</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>స్టార్ వార్స్ థీమ్ Dark Side చిత్రం: రివెంజ్ ఆఫ్ ది సిత్ కోసం Lucasfilm విడుదల చేసిన ప్రచార ఫోటో. Wookieepedia లో దొరికింది.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>థీమ్ చిత్రం: ఫ్రాంచైజీ లోగోలు</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>స్టార్టర్ థీమ్‌ల చిత్రాలపై ఉన్న సోనిక్ ది హెడ్జ్హాగ్, ది లార్డ్ ఆఫ్ ది రింగ్స్, హ్యారీ పాటర్, స్టార్ వార్స్, స్టార్ ట్రెక్: ది ఒరిజినల్ సిరీస్, స్టార్ ట్రెక్: ది నెక్స్ట్ జనరేషన్ లోగోలు. Wikimedia Commons లో దొరికాయి, అది ఒక్కొక్కటీ సాధారణ అక్షరాల లోగోగా పబ్లిక్ డొమైన్‌లో ఉందని గుర్తించింది. ప్రతిదీ దాని యజమాని ట్రేడ్‌మార్క్.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>థీమ్ చిత్రం: హాబిటన్</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>న్యూజిలాండ్‌లోని హాబిటన్ సినిమా సెట్, Jackie.lck తీసిన ఫోటో: ది లార్డ్ ఆఫ్ ది రింగ్స్ థీమ్ The One Ring చిత్రం. Wikimedia Commons లో దొరికింది.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>థీమ్ చిత్రం: హాగ్వార్ట్స్ కోట</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>గేమ్ స్వంత YouTube ఛానెల్‌లోని Hogwarts Legacy ట్రైలర్ ఫ్రేమ్: హ్యారీ పాటర్ థీమ్ Gryffindor చిత్రం. Wikimedia Commons లో దొరికింది.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>థీమ్ చిత్రం: మిడిల్ ఎర్త్ పటం</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>మిడిల్ ఎర్త్ పటం: ది లార్డ్ ఆఫ్ ది రింగ్స్ థీమ్ Map of Middle-earth చిత్రం. The One Wiki to Rule Them All లో దొరికింది, అది ఏ కళాకారుడి పేరూ చెప్పలేదు.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>థీమ్ చిత్రం: మిలీనియం ఫాల్కన్</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge లోని పూర్తి పరిమాణ మిలీనియం ఫాల్కన్, Tomás Del Coro తీసిన ఫోటో: స్టార్ వార్స్ థీమ్ Opening Crawl చిత్రం. Wikimedia Commons లో దొరికింది.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>థీమ్ చిత్రం: Sonic క్రోనోస్ ఐలాండ్‌లో</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA స్వంత YouTube ఛానెల్‌లోని Sonic Frontiers ట్రైలర్ ఫ్రేమ్: Sonic the Hedgehog థీమ్ Blue Blur చిత్రం. Wikimedia Commons లో దొరికింది.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>థీమ్ చిత్రం: పరుగెత్తుతున్న Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World కోసం SEGA రూపొందించిన ఆర్ట్: Sonic the Hedgehog థీమ్ Night Run చిత్రం. Sonic Wiki Zone లో దొరికింది.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>థీమ్ చిత్రం: నాలుగు హౌస్ చిహ్నాలు</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore కోసం Atomhawk Design గీసిన హాగ్వార్ట్స్ నాలుగు హౌస్‌ల చిహ్నాలు: హ్యారీ పాటర్ థీమ్ Four Houses చిత్రం. హ్యారీ పాటర్ వికీలో దొరికింది.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>థీమ్ చిత్రం: USS Enterprise స్టూడియో మోడల్</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>అసలు స్టార్ ట్రెక్ సిరీస్ కోసం చిత్రీకరించిన మోడల్, దాన్ని భద్రపరచిన Smithsonian National Air and Space Museum తీసిన ఫోటో: స్టార్ ట్రెక్ థీమ్ LCARS చిత్రం.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>థీమ్ చిత్రం: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>స్టార్ ట్రెక్: ది నెక్స్ట్ జనరేషన్ ఫ్రేమ్: స్టార్ ట్రెక్ థీమ్ Starfleet చిత్రం. Memory Alpha లో దొరికింది.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్లు</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech GamePanel కీబోర్డులలోని స్క్రీన్లపై, Mad Catz S.T.R.I.K.E. 7 మీద, అలాగే Logitech Arx Control ద్వారా ఫోన్ మీద గీస్తుంది: ప్రొఫైల్, గడియారం, ఆట సమయం, స్టాప్వాచ్, చిత్రం, లేదా DualShock 4 లేదా DualSense లైట్ బార్ రంగు. ప్రతి స్క్రీన్కు పరికరాలు పేజీలో దాని స్వంత వరుస ఉంటుంది, అక్కడ అది ఏమి చూపాలో సెట్ చేస్తారు. స్క్రీన్ పక్కన ఉన్న కీలు దాని వరుసలోని బటన్లు.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>కీబోర్డ్ స్క్రీన్లను నడిపించు</value></data>

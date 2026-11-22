@@ -1434,6 +1434,79 @@ SteamKit2
   below). Its license.txt, which its source files name, grants version 2.1
   or any later version, and its package metadata says LGPL-2.1-only.
 
+Theme pictures
+  Each of the ten starter themes ships one picture inside the executable,
+  cropped, toned and faded to fit behind the page, with its franchise's
+  logo. The pictures keep their own terms and are not under PadForge's
+  license.
+
+  Sonic the Hedgehog, Blue Blur: a frame of the Sonic Frontiers trailer
+  from SEGA's YouTube channel.
+  https://commons.wikimedia.org/wiki/File:Sonic_Frontiers_-_Sonic_on_Kronos_Island.jpg
+  Licensed under CC BY 3.0
+
+  Sonic the Hedgehog, Night Run: SEGA's art of Sonic running, made for
+  Sonic Lost World.
+  https://sonic.fandom.com/wiki/File:Early_render_sonic_lost_world.png
+  Copyright SEGA. Sonic Wiki Zone states no license for the file.
+
+  The Lord of the Rings, The One Ring: the Hobbiton film set in New
+  Zealand, a photo by Jackie.lck.
+  https://commons.wikimedia.org/wiki/File:Hobbit_holes_reflected_in_water.jpg
+  Licensed under CC BY 2.0
+
+  The Lord of the Rings, Map of Middle-earth: a map of Middle-earth.
+  https://lotr.fandom.com/wiki/File:Middle_earth_map.jpg
+  Copyrighted. The One Wiki to Rule Them All names no artist.
+
+  Harry Potter, Gryffindor: a frame of the Hogwarts Legacy trailer from the
+  game's YouTube channel.
+  https://commons.wikimedia.org/wiki/File:Hogwarts_school_of_magic_in_late_1800s_according_to_Hogwarts_Legacy.jpg
+  Licensed under CC BY 3.0
+
+  Harry Potter, Four Houses: the four Hogwarts house crests, drawn by
+  Atomhawk Design for Pottermore.
+  https://harrypotter.fandom.com/wiki/File:Gryffindor_ClearBG.png
+  https://harrypotter.fandom.com/wiki/File:Ravenclaw_ClearBG.png
+  https://harrypotter.fandom.com/wiki/File:Hufflepuff_ClearBG.png
+  https://harrypotter.fandom.com/wiki/File:Slytherin_ClearBG.png
+  Copyrighted.
+
+  Star Wars, Opening Crawl: the full-size Millennium Falcon at Galaxy's
+  Edge, a photo by Tomás Del Coro.
+  https://commons.wikimedia.org/wiki/File:Millennium_Falcon_Star_Wars_Galaxy%27s_Edge_Disneyland_Resort_in_Anaheim,_California_(48512627247).jpg
+  Licensed under CC BY-SA 2.0. The picture made from it stays under that
+  license.
+
+  Star Wars, Dark Side: Darth Vader's helmet, a Lucasfilm promotional photo
+  for Revenge of the Sith.
+  https://starwars.fandom.com/wiki/File:Vader_Helmet.jpg
+  Copyright Lucasfilm.
+
+  Star Trek, LCARS: the studio model of the USS Enterprise filmed for the
+  original series, photographed by the Smithsonian National Air and Space
+  Museum, which holds it (inventory A19740668000).
+  https://airandspace.si.edu/collection-objects/model-star-trek-starship-enterprise-television-show/nasm_A19740668000
+  Used under the Smithsonian's terms of use, which allow non-commercial use
+  with the museum cited.
+
+  Star Trek, Starfleet: the Enterprise-D, a frame of Star Trek: The Next
+  Generation.
+  https://memory-alpha.fandom.com/wiki/File:USS_Enterprise-D,_2364.jpg
+  Copyrighted.
+
+  The logos of Sonic the Hedgehog, The Lord of the Rings, Harry Potter,
+  Star Wars, Star Trek: The Original Series and Star Trek: The Next
+  Generation.
+  https://commons.wikimedia.org/wiki/File:Sonic_the_Hedgehog_logo.png
+  https://commons.wikimedia.org/wiki/File:The_Lord_of_the_Rings_logo.svg
+  https://commons.wikimedia.org/wiki/File:Harry_Potter_wordmark.svg
+  https://commons.wikimedia.org/wiki/File:Star_Wars_Logo.svg
+  https://commons.wikimedia.org/wiki/File:Star_Trek_-_The_Original_Series_-_official_logo.svg
+  https://commons.wikimedia.org/wiki/File:Star_Trek_The_Next_Generation_official_logo.svg
+  Wikimedia Commons marks each as a text logo in the public domain. Each is
+  its owner's trademark.
+
 TriggerEffectGenerator
   https://gist.github.com/Nielk1/6d54cc2c00d2201ccb8c2720ad7538db
   Copyright (c) 2021-2022 John "Nielk1" Klein

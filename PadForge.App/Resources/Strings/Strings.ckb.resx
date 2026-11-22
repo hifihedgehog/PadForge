@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>بنەڕەتی سیستەم</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ڕووناک</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>تاریک</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>ڕووکاری نوێ…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>ڕووکارێک لە ڕەنگەکانی خۆت و وێنەیەک دروست بکە، لە یارییەکی Steam یان لە پەڕگەیەک.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>زیادکردنی ڕووکار…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>پەڕگەیەکی ڕووکار بخەرە لیستەکەوە. PadForge لە شوێنی خۆیدا دەیخوێنێتەوە و هیچ کۆپی ناکات.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>پاشەکەوتکردنی کۆپییەک…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>ڕووکاری هەڵبژێردراو بنووسە بۆ پەڕگەیەک کە دەتوانیت دەستکاری بکەیت یان هاوبەشی پێ بکەیت.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>دەستکاریکردنی ڕووکار</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>لابردن لە لیستەکە. پەڕگەکە لە شوێنی خۆیدا دەمێنێتەوە.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>پەڕگە نەدۆزرایەوە</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ناخوێندرێتەوە</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>پەڕگەی «{0}» نییە یان ناخوێندرێتەوە. PadForge تاریک پیشان دەدات تا پەڕگەکە دەگەڕێتەوە.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>پرۆفایلی «{0}» ڕووخساری یارییەکەی لەبەر کردووە. ڕووکارەکەت دەگەڕێتەوە کاتێک پرۆفایلێکی تر چالاک دەبێت.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>بزوێنەری تێخستن</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ڕەفتاری پشکنین و کارپێکردنی پاشبنەما ڕێک بخە.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>پشتگیریی ڕەقەکاڵا</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>تەنها ئاگاداریی نیشانەی بازرگانی</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>هیچ مەرجێک دیاری نەکراوە</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>هیچ بڵاونەکراوەتەوە</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>مڵکی گشتی</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>مافی لەبەرگرتنەوە پارێزراوە</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>مەرجەکانی بەکارهێنانی Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>چەند مۆڵەتێک</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>بزوێنەری کۆنترۆڵەری HID ی مەجازی لە دۆخی بەکارهێنەردا (جێگەی ViGEmBus و vJoy دەگرێتەوە).</value></data>
@@ -2703,6 +2720,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>هیچ پەنجەرەیەکی کراوەی تر نەدۆزرایەوە.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>لابردنی {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ڕێژەی پشکنین کاتێک ئەم پرۆفایلە بارکراوە</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>لەبەرکردنی ڕووخساری یارییەکە</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>لە کاتێکدا ئەم پرۆفایلە چالاکە، PadForge وێنە و ڕەنگەکانی یارییەکە پیشان دەدات. ڕووکارەکەت دەگەڕێتەوە کاتێک پرۆفایلێکی تر چالاک دەبێت.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>وێنەی یارییەکە لەسەر ئەم کۆمپیوتەرە نییە.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>وەرگرتنی وێنەکە</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>کۆنفیگەکانی کۆمەڵگە لە ڕێکخستنەکاندا چالاک بکە بۆ وەرگرتنی وێنەی یارییەکە لە Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>لەبەرگرتنەوە لە</value></data>
@@ -3954,7 +3976,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>کۆنفیگەکانی کۆمەڵگە</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>لە ناو ڕێکخستنەکانی کۆنترۆڵەری Steam Input کە کۆمەڵگە دروستی کردوون بگەڕێ و بیانگۆڕە بۆ پرۆفایلەکانی PadForge. PadForge دەقی گەڕانەکەت، ناسنامەی ئەو یاری، کۆنفیگ و دروستکەرانەی پەیوەندیدارن، و وەشانی خۆی دەنێرێت. چوونەژوورەوەی بێناوی Steam هەروەها وەشانی Windowsەکەت و ناسنامەیەکی کۆمپیوتەر دەنێرێت کە لە هاشی ناسنامەی دامەزراندنی Windows، ناونیشانی ئەداپتەرەکانی تۆڕ و ژمارەی زنجیرەیی دیسکی بووت دروست کراوە. هیچ خزمەتگوزارییەکی لایەنی سێیەم بەشدار نییە.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge تەنها کاتێک پەیوەندی بە ڕاژەکارەکانی Steam دەکات کە دەگەڕێیت، کۆنفیگێک دەکەیتەوە یان کۆنفیگە هاوردەکراوەکان بۆ نوێکاری دەپشکنیت. بێ تێلێمەتری، بێ هەژماری Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge تەنها کاتێک پەیوەندی بە ڕاژەکارەکانی Steam دەکات کە دەگەڕێیت، کۆنفیگێک دەکەیتەوە، کۆنفیگە هاوردەکراوەکان بۆ نوێکاری دەپشکنیت یان وێنەی یارییەک وەردەگریت. بێ تێلێمەتری، بێ هەژماری Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>چی دەنێردرێت</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>چالاککردنی کۆنفیگەکانی کۆمەڵگە</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>نیشاندانی کۆنفیگە کۆنەکانی وۆرکشۆپ</value></data>
@@ -5232,4 +5254,59 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>وشەی نهێنی</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>گەورەکەر (لەکاتی ڕاگرتندا)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>لەکاتێکدا ئەم ماکرۆیە ڕاگیراوە گەورەکەرەکە پیشان دەدات، بۆ نیشانەگرتن بە دووربین. لە پەڕەی گەورەکەر ڕێکی بخە.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ئەو پەڕگەیە ڕووکاری PadForge نییە.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ڕووکارەکە پاشەکەوت نەکرا. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ڕووکاری نوێ</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ڕووکارەکە لەبەر دەکات لە کاتێکدا دروستی دەکەیت.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ناو</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ڕووکارەکەم</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>بنچینە</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ئەو زەمینەیەی ڕووکارەکە لەسەری وەستاوە. ڕووکاری تاریک دەقی ڕووناکی هەیە، و ڕووکاری ڕووناک دەقی تاریکی هەیە.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>وێنە</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>لە یارییەکی Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>لە پەڕگەیەک…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>بێ وێنە</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>وەرگرتنی وێنەکە لە Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam هیچ وێنەیەکی پانی بۆ ئەم یارییە نییە.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>نەتوانرا پەیوەندی بە Steam بکرێت. پەیوەندییەکەت بپشکنە.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>شوێن</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>وێنەکە لە پەنجەرەکەیدا بەرەو سەرەوە یان خوارەوە دەجووڵێنێت.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>پیشاندانی لۆگۆی یارییەکە</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ڕەنگەکان</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>گونجاندن لەگەڵ وێنەکە</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>چوار ڕەنگەکە لە وێنەکەوە وەردەگرێت.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>پاشبنەما</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>پەڕەکە. پەنجەرەکە، شریتی لاتەنیشت، کارتەکان و هێڵەکان پلەی کاڵتر یان تۆختری ئەم ڕەنگەن.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ڕەنگی جەخت</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>هەموو شتێکی زیندوو: بزوێنەر، دوگمەی سەرەکی، بڕگەی هەڵبژێردراو.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>لاوەکی</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>بەها پێوراوەکان و نیشانەکانی ئامێر: ڕێژەکان، ئاستی پاتری، تێخراوە خاوەکان.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ئاگاداری</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>دۆخەکانی چاوەڕوانی: چاوەڕوانی ئامێرەکان، پاتری کەم، گۆڕانکاری پاشەکەوتنەکراو.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>هەڵبژاردنی ڕەنگ</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>وێنەکان (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|هەموو پەڕگەکان (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ناتوانێت ئەو پەڕگەیە وەک وێنە بخوێنێتەوە.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>وێنە: وێنەی کتێبخانەی Steam بۆ {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>وێنەی ڕووکار: کڵاوی دارس ڤەیدەر</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>وێنەیەکی بانگەشەیی Lucasfilm بۆ تۆڵەسەندنەوەی سیس: وێنەی ڕووکاری جەنگی ئەستێرەکان Dark Side. لە Wookieepedia دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>وێنەی ڕووکار: لۆگۆی زنجیرەکان</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>لۆگۆکانی Sonic the Hedgehog، سەروەری ئەڵقەکان، هاری پۆتەر، جەنگی ئەستێرەکان، ستار ترێک: زنجیرەی ڕەسەن و ستار ترێک: نەوەی داهاتوو لەسەر وێنەکانی ڕووکارە سەرەتاییەکان. لە Wikimedia Commons دۆزرانەوە، کە هەر یەکێکیان وەک لۆگۆیەکی دەقی سادە لە مڵکی گشتیدا نیشان دەکات. هەر یەکێکیان نیشانەی بازرگانی خاوەنەکەیەتی.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>وێنەی ڕووکار: هۆبیتۆن</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>شوێنی وێنەگرتنی فیلمی هۆبیتۆن لە نیوزیلەندا، وێنەیەک لەلایەن Jackie.lck: وێنەی ڕووکاری سەروەری ئەڵقەکان The One Ring. لە Wikimedia Commons دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>وێنەی ڕووکار: قەڵای هۆگوارتس</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>چوارچێوەیەک لە ترەیلەری Hogwarts Legacy لە کەناڵی فەرمی یارییەکە لە YouTube: وێنەی ڕووکاری هاری پۆتەر Gryffindor. لە Wikimedia Commons دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>وێنەی ڕووکار: نەخشەی زەوینی ناوەڕاست</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>نەخشەیەکی زەوینی ناوەڕاست: وێنەی ڕووکاری سەروەری ئەڵقەکان Map of Middle-earth. لە The One Wiki to Rule Them All دۆزرایەوە، کە ناوی هیچ هونەرمەندێک نابات.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>وێنەی ڕووکار: میلێنیەم فالکۆن</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>میلێنیەم فالکۆنی بە قەبارەی ڕاستەقینە لە Galaxy’s Edge، وێنەیەک لەلایەن Tomás Del Coro: وێنەی ڕووکاری جەنگی ئەستێرەکان Opening Crawl. لە Wikimedia Commons دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>وێنەی ڕووکار: Sonic لە دوورگەی کرۆنۆس</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>چوارچێوەیەک لە ترەیلەری Sonic Frontiers لە کەناڵی فەرمی SEGA لە YouTube: وێنەی ڕووکاری Sonic the Hedgehog Blue Blur. لە Wikimedia Commons دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>وێنەی ڕووکار: Sonic لە کاتی ڕاکردندا</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>هونەری SEGA کە بۆ Sonic Lost World دروستکراوە: وێنەی ڕووکاری Sonic the Hedgehog Night Run. لە Sonic Wiki Zone دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>وێنەی ڕووکار: چوار نیشانەی ماڵەکان</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>چوار نیشانەی ماڵەکانی هۆگوارتس، کە Atomhawk Design بۆ Pottermore کێشاونی: وێنەی ڕووکاری هاری پۆتەر Four Houses. لە ویکیی هاری پۆتەر دۆزرایەوە.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>وێنەی ڕووکار: مۆدێلی ستۆدیۆی USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ئەو مۆدێلەی بۆ زنجیرەی ڕەسەنی ستار ترێک فیلمی لێ گیرا، وێنەگیراو لەلایەن Smithsonian National Air and Space Museum کە هەڵیگرتووە: وێنەی ڕووکاری ستار ترێک LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>وێنەی ڕووکار: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>چوارچێوەیەک لە ستار ترێک: نەوەی داهاتوو: وێنەی ڕووکاری ستار ترێک Starfleet. لە Memory Alpha دۆزرایەوە.</value></data>
 </root>

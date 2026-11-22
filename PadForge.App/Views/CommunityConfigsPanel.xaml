@@ -32,9 +32,9 @@
                     <Rectangle Canvas.Left="0" Width="68" Height="5" RadiusX="3" RadiusY="3">
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#00FF6B2C" Offset="0"/>
-                                <GradientStop Color="#FF6B2C" Offset="0.5"/>
-                                <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="0"/>
+                                <GradientStop Color="{DynamicResource EmberColor}" Offset="0.5"/>
+                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="1"/>
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                         <Rectangle.Style>
@@ -572,6 +572,23 @@
                             </StackPanel>
                         </Border>
                     </StackPanel>
+                    <!-- The game's look (#591): the saved profile wears its
+                         game's picture and colors while it is the active
+                         one. Off until the user turns it on, and only with
+                         a translation. The line after it speaks while the
+                         picture is fetched and when it cannot be had. -->
+                    <StackPanel x:Name="GameLookGroup" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
+                        <TextBlock Text="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <CheckBox x:Name="GameLookSwitch" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                  ToolTip="{Binding Profile_GameLook_Tip, Source={x:Static strings:Strings.Instance}}"
+                                  AutomationProperties.Name="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}"
+                                  AutomationProperties.AutomationId="Workshop_GameLook"
+                                  Checked="GameLookSwitch_Changed" Unchecked="GameLookSwitch_Changed"/>
+                    </StackPanel>
+                    <TextBlock x:Name="GameLookStatus" FontSize="13" VerticalAlignment="Center" Visibility="Collapsed"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextWrapping="Wrap"
+                               AutomationProperties.LiveSetting="Polite"/>
                 </controls:FlexLinePanel>
 
                 <!-- Layers: a chip for each of the config's layers, which

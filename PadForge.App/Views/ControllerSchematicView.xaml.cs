@@ -36,31 +36,21 @@ namespace PadForge.Views
         private const string LabelKey = "TextFillColorSecondaryBrush";
         private const string AccentKey = "AccentFillColorDefaultBrush";
 
-        // Semantic colors, intentionally fixed (recording flash + hover
-        // affordance), not driven by theme. Hover warmed to the ember
-        // family (#175): the rig is an output surface.
-        private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
-        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA2, 0x4D));
+        // The recording flash and the hover affordance, the same on both
+        // grounds. Both are tones of the look's accent (#591): the rig is
+        // an output surface, and its hover was warmed to the ember family
+        // (#175).
+        private static Brush FlashBrush => PadForge.Common.Themes.ThemeLook.AccentFlashBrush;
+        private static Brush HoverBrush => PadForge.Common.Themes.ThemeLook.AccentLightBrush;
 
         // Ember bloom (#175 glow sweep): lit rig elements carry a static
         // DropShadowEffect. Frozen and shared, attached/detached where the
         // lit state is applied, never animated. Small variant for glyphs
         // 14px and under (the stick position dot).
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
-
-        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
-                BlurRadius = blur,
-                ShadowDepth = 0,
-                Opacity = 0.5
-            };
-            fx.Freeze();
-            return fx;
-        }
+        // Both are in the look's accent (#591): the same glow comes back
+        // until the look changes, so SetGlow still tells by reference.
+        private static System.Windows.Media.Effects.DropShadowEffect EmberGlow => PadForge.Common.Themes.ThemeLook.Glow(12, 0.5);
+        private static System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall => PadForge.Common.Themes.ThemeLook.Glow(8, 0.5);
 
         private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
         {

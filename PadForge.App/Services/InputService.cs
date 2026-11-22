@@ -22038,6 +22038,7 @@ namespace PadForge.Services
             snapshot.PollingRateOverrideHz = stored.PollingRateOverrideHz;
             snapshot.DreamcastPicture = stored.DreamcastPicture;
             snapshot.KeyboardScreenPicture = stored.KeyboardScreenPicture;
+            snapshot.GameLook = stored.GameLook;
             snapshot.WorkshopSource = null;
             SettingsManager.Profiles[at] = snapshot;
             return snapshot;

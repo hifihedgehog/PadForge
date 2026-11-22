@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>सिस्टम डिफ़ॉल्ट</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>लाइट</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>डार्क</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>नई थीम…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>अपने रंगों और किसी Steam गेम या फ़ाइल के चित्र से थीम बनाएँ।</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>थीम जोड़ें…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>थीम फ़ाइल को सूची में जोड़ें। PadForge उसे वहीं से पढ़ता है जहाँ वह है और कुछ कॉपी नहीं करता।</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>प्रतिलिपि सहेजें…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>चुनी हुई थीम को ऐसी फ़ाइल में लिखें जिसे आप बदल या साझा कर सकें।</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>थीम संपादित करें</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>सूची से निकालें। फ़ाइल जहाँ है वहीं रहती है।</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>फ़ाइल नहीं मिली</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>पढ़ी नहीं जा सकती</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” की फ़ाइल गायब है या पढ़ी नहीं जा सकती। जब तक वह वापस नहीं आती, PadForge डार्क दिखाता है।</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>प्रोफ़ाइल “{0}” अपने गेम का रूप पहने हुए है। किसी दूसरी प्रोफ़ाइल के सक्रिय होने पर आपकी थीम लौट आती है।</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge थीम (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>वह फ़ाइल PadForge थीम नहीं है।</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>थीम सहेजी नहीं जा सकी। {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>नई थीम</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>थीम बनाते समय PadForge उसे तुरंत खुद पर दिखाता है।</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>नाम</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>मेरी थीम</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>आधार</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>वह ज़मीन जिस पर थीम टिकी है। डार्क थीम में हल्का टेक्स्ट होता है और लाइट थीम में गहरा टेक्स्ट।</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>चित्र</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam गेम से…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>फ़ाइल से…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>कोई चित्र नहीं</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam से चित्र लाया जा रहा है…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam पर इस गेम का कोई चौड़ा चित्र नहीं है।</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam तक नहीं पहुँचा जा सका। अपना कनेक्शन जाँचें।</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>स्थिति</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>चित्र को उसकी खिड़की में ऊपर या नीचे खिसकाता है।</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>गेम का लोगो दिखाएँ</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>रंग</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>चित्र से मिलाएँ</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>चारों रंग चित्र से लेता है।</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>पृष्ठभूमि</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>पूरा पन्ना। विंडो, साइडबार, कार्ड और रेखाएँ इसी रंग के हल्के या गहरे स्तर हैं।</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>एक्सेंट</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>जो कुछ चालू है: इंजन, मुख्य बटन, चुना हुआ आइटम।</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>द्वितीयक</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>मापे गए मान और डिवाइस के चिह्न: दरें, बैटरी स्तर, रॉ इनपुट।</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ध्यान</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>प्रतीक्षा की स्थितियाँ: डिवाइसों का इंतज़ार, कम बैटरी, बिना सहेजे बदलाव।</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>रंग चुनें</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>चित्र (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|सभी फ़ाइलें (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge उस फ़ाइल को चित्र के रूप में नहीं पढ़ सकता।</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>चित्र: {0} के लिए Steam की लाइब्रेरी आर्ट।</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>इनपुट इंजन</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>पोलिंग का व्यवहार और बैकग्राउंड प्रोसेसिंग कॉन्फ़िगर करें।</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>हार्डवेयर सपोर्ट</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>केवल ट्रेडमार्क अस्वीकरण</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>कोई शर्त नहीं बताई गई</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>कोई प्रकाशित नहीं</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>पब्लिक डोमेन</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>कॉपीराइट वाला</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian उपयोग की शर्तें</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>कई लाइसेंस</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>यूज़र-मोड वर्चुअल HID कंट्रोलर इंजन (ViGEmBus और vJoy की जगह लेता है)।</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>कोई दूसरी खुली विंडो नहीं मिली।</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} निकालें</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>इस प्रोफ़ाइल के लोड रहने पर पोलिंग रेट</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>गेम का रूप पहनें</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>इस प्रोफ़ाइल के सक्रिय रहने तक PadForge गेम का चित्र और रंग दिखाता है। किसी दूसरी प्रोफ़ाइल के सक्रिय होने पर आपकी थीम लौट आती है।</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>गेम का चित्र इस PC पर नहीं है।</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>चित्र लाएँ</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam से गेम का चित्र पाने के लिए सेटिंग में कम्युनिटी कॉन्फ़िग चालू करें।</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>से कॉपी करें</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>कम्युनिटी कॉन्फ़िग</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>समुदाय के बनाए Steam Input कंट्रोलर कॉन्फ़िगरेशन ब्राउज़ करें और उन्हें PadForge प्रोफ़ाइल में रूपांतरित करें। PadForge आपका खोज टेक्स्ट, संबंधित गेम, कॉन्फ़िग और निर्माताओं की ID, और अपना संस्करण भेजता है। अनाम Steam लॉगऑन आपका Windows संस्करण और एक मशीन ID भी भेजता है, जो आपके Windows इंस्टॉलेशन ID, नेटवर्क एडैप्टर के पतों और बूट डिस्क के सीरियल के हैश से बनती है। कोई थर्ड पार्टी सेवा शामिल नहीं है।</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam के सर्वर से तभी कनेक्ट होता है जब आप खोजते हैं, कोई कॉन्फ़िग खोलते हैं या आयात किए गए कॉन्फ़िग के अपडेट जाँचते हैं। कोई टेलीमेट्री नहीं, कोई Steam खाता नहीं।</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam के सर्वर से तभी कनेक्ट होता है जब आप खोजते हैं, कोई कॉन्फ़िग खोलते हैं, आयात किए गए कॉन्फ़िग के अपडेट जाँचते हैं या किसी गेम का चित्र पाते हैं। कोई टेलीमेट्री नहीं, कोई Steam खाता नहीं।</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>क्या भेजा जाता है</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>कम्युनिटी कॉन्फ़िग सक्षम करें</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>पुराने Workshop कॉन्फ़िग दिखाएँ</value></data>
@@ -5157,6 +5213,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD प्रोफ़ाइल फ़ॉर्मेट, hcn1z1 के shunt स्कीमा डंप (MIT), DatMoshu के reWASD-Powertools दस्तावेज़ (MIT) और reWASD की सहायता से पढ़ा गया, DS4Windows प्रोफ़ाइल फ़ॉर्मेट, Schmaldeo के DS4Windows फ़ोर्क (GPL-3.0-or-later) से पढ़ा गया, और DSX प्रोफ़ाइल फ़ॉर्मेट, winkywong1998 के DSX-profile-share की प्रोफ़ाइल, RAIZ-Zzz के DualSense प्रोजेक्ट (MIT) और Paliverse के DSX Mod System (Apache-2.0) से पढ़ा गया। केवल दस्तावेज़, कोई कोड साथ नहीं आता।</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>स्क्रीन का रंग संदर्भ</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>स्क्रीन का रंग लाइटिंग के पीछे का कैप्चर, जो Prismatik (GPL-2.0-or-later), AlkaidLab के foundation-sunshine फ़ोर्क ऑफ़ Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) और alienfx-tools (MIT) से पढ़ा गया। केवल दस्तावेज़, कोई GPL कोड साथ नहीं आता।</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>थीम चित्र: डार्थ वेडर का हेलमेट</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm की प्रमोशनल फ़ोटो, रिवेंज ऑफ़ द सिथ के लिए: स्टार वार्स थीम Dark Side का चित्र। Wookieepedia पर मिली।</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>थीम चित्र: फ़्रैंचाइज़ी के लोगो</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>सोनिक द हेजहॉग, द लॉर्ड ऑफ़ द रिंग्स, हैरी पॉटर, स्टार वार्स, स्टार ट्रेक: द ओरिजिनल सीरीज़ और स्टार ट्रेक: द नेक्स्ट जेनरेशन के लोगो, जो स्टार्टर थीमों के चित्रों पर हैं। Wikimedia Commons पर मिले, जो हर एक को सादे टेक्स्ट वाला पब्लिक डोमेन लोगो बताता है। हर लोगो अपने मालिक का ट्रेडमार्क है।</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>थीम चित्र: हॉबिटन</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>न्यूज़ीलैंड में हॉबिटन का फ़िल्म सेट, Jackie.lck की खींची फ़ोटो: द लॉर्ड ऑफ़ द रिंग्स थीम The One Ring का चित्र। Wikimedia Commons पर मिली।</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>थीम चित्र: हॉगवर्ट्स का किला</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy के ट्रेलर का एक फ़्रेम, गेम के अपने YouTube चैनल से: हैरी पॉटर थीम Gryffindor का चित्र। Wikimedia Commons पर मिला।</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>थीम चित्र: मध्य पृथ्वी का नक्शा</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>मध्य पृथ्वी का एक नक्शा: द लॉर्ड ऑफ़ द रिंग्स थीम Map of Middle-earth का चित्र। The One Wiki to Rule Them All पर मिला, जो किसी कलाकार का नाम नहीं देता।</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>थीम चित्र: मिलेनियम फ़ाल्कन</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge पर पूरे आकार का मिलेनियम फ़ाल्कन, Tomás Del Coro की खींची फ़ोटो: स्टार वार्स थीम Opening Crawl का चित्र। Wikimedia Commons पर मिली।</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>थीम चित्र: क्रोनोस आइलैंड पर Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA के अपने YouTube चैनल से Sonic Frontiers के ट्रेलर का एक फ़्रेम: सोनिक द हेजहॉग थीम Blue Blur का चित्र। Wikimedia Commons पर मिला।</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>थीम चित्र: दौड़ता Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World के लिए बनी SEGA की कलाकृति: सोनिक द हेजहॉग थीम Night Run का चित्र। Sonic Wiki Zone पर मिली।</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>थीम चित्र: चारों हाउस के प्रतीक</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>हॉगवर्ट्स के चारों हाउस के प्रतीक, Pottermore के लिए Atomhawk Design के बनाए: हैरी पॉटर थीम Four Houses का चित्र। Harry Potter Wiki पर मिले।</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>थीम चित्र: USS Enterprise स्टूडियो मॉडल</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>मूल स्टार ट्रेक श्रृंखला के लिए फ़िल्माया गया मॉडल, जिसकी फ़ोटो उसे रखने वाले Smithsonian National Air and Space Museum ने ली: स्टार ट्रेक थीम LCARS का चित्र।</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>थीम चित्र: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>स्टार ट्रेक: द नेक्स्ट जेनरेशन का एक फ़्रेम: स्टार ट्रेक थीम Starfleet का चित्र। Memory Alpha पर मिला।</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>कीबोर्ड स्क्रीन</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech के GamePanel कीबोर्ड और Mad Catz S.T.R.I.K.E. 7 की बिल्ट-इन स्क्रीन पर, और Logitech Arx Control के ज़रिए फ़ोन पर दिखाता है: प्रोफ़ाइल, घड़ी, खेलने का समय, स्टॉपवॉच, कोई चित्र, या DualShock 4 या DualSense के लाइटबार का रंग। हर स्क्रीन की डिवाइस पेज पर अपनी पंक्ति होती है, जहाँ आप तय करते हैं कि वह क्या दिखाए। स्क्रीन के बगल की कुंजियाँ उसकी पंक्ति के बटन हैं।</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>कीबोर्ड स्क्रीन चलाएँ</value></data>

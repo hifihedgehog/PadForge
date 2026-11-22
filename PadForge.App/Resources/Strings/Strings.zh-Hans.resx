@@ -415,6 +415,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>跟随系统</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>浅色</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>深色</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>新建主题…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>用你自己的颜色和图片制作主题，图片可来自 Steam 游戏或文件。</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>添加主题…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>将主题文件加入列表。PadForge 会就地读取，不复制任何内容。</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>另存副本…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>将所选主题写入文件，方便你修改或分享。</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>编辑主题</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>从列表中移除。文件保持原位。</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>找不到文件</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>无法读取</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>主题“{0}”的文件缺失或无法读取。文件恢复前，PadForge 会显示深色。</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>配置文件“{0}”正在使用其游戏的外观。切换到其他配置文件后，你的主题会恢复。</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge 主题 (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>该文件不是 PadForge 主题。</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>无法保存主题。{0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>新建主题</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>构建主题时，PadForge 会实时应用它。</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>名称</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>我的主题</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>基调</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>主题所依托的底色。深色主题使用浅色文字，浅色主题使用深色文字。</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>图片</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>从 Steam 游戏获取…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>从文件获取…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>无图片</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>正在从 Steam 获取图片…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam 没有这款游戏的宽幅图片。</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>无法连接 Steam。请检查网络连接。</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>位置</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>在图片窗口内上下移动图片。</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>显示游戏标志</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>颜色</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>匹配图片</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>从图片中提取四种颜色。</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>背景</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>页面底色。窗口、侧边栏、卡片和线条都由它递进而来。</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>强调色</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>一切运行中的内容：引擎、主按钮、所选项目。</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>次要色</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>测量值和设备标记：速率、电量、原始输入。</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>注意色</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>等待状态：等待设备、电量低、未保存的更改。</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>选取颜色</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>图片 (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|所有文件 (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge 无法将该文件作为图片读取。</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>图片：Steam 库中 {0} 的图片。</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>输入引擎</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>配置轮询行为和后台处理。</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>硬件支持</value></data>
@@ -631,6 +677,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -639,6 +687,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>仅商标免责声明</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>未列出条款</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>未公布</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>公有领域</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>受版权保护</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian 使用条款</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>多种许可证</value></data>
 
   <!-- ═══ Device Types ═══ -->
@@ -1348,6 +1399,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>未找到其他已打开的窗口。</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>移除 {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>配置文件加载期间的轮询率</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>使用游戏外观</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>此配置文件启用期间，PadForge 会显示游戏的图片和颜色。切换到其他配置文件后，你的主题会恢复。</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>游戏图片不在这台电脑上。</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>获取图片</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>在设置中启用社区配置，即可从 Steam 获取游戏图片。</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>从其他设备复制</value></data>
@@ -4014,7 +4070,7 @@
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>游戏手柄 {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>社区配置</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>浏览社区制作的 Steam Input 控制器配置，并将其转换为 PadForge 配置文件。PadForge 会发送搜索文本、相关游戏、配置和作者的 ID，以及自身的版本。匿名 Steam 登录还会发送您的 Windows 版本，以及由 Windows 安装 ID、网络适配器地址和启动磁盘序列号的哈希生成的机器 ID。不涉及任何第三方服务。</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge 仅在你搜索、打开配置或检查已导入配置的更新时才连接 Steam 服务器。无遥测，无需 Steam 账户。</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge 仅在你搜索、打开配置、检查已导入配置的更新或获取游戏图片时才连接 Steam 服务器。无遥测，无需 Steam 账户。</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>发送的内容</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>启用社区配置</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>显示旧版创意工坊配置</value></data>
@@ -5112,6 +5168,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD 配置文件格式，读自 hcn1z1 的 shunt 架构转储 (MIT)、DatMoshu 的 reWASD-Powertools 文档 (MIT) 和 reWASD 的帮助，DS4Windows 配置文件格式，读自 Schmaldeo 的 DS4Windows 分支 (GPL-3.0-or-later)，以及 DSX 配置文件格式，读自 winkywong1998 的 DSX-profile-share 中的配置文件、RAIZ-Zzz 的 DualSense 项目 (MIT) 和 Paliverse 的 DSX Mod System (Apache-2.0)。仅为文档参考，不含任何代码。</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>屏幕颜色参考来源</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>“屏幕颜色”灯光背后的屏幕捕获，读自 Prismatik (GPL-2.0-or-later)、AlkaidLab 的 foundation-sunshine (Sunshine 的分支，GPL-3.0)、ScreenCapture.NET (LGPL-2.1)、RazerAmbilight (MIT)、OpenRGBEffectsPlugin (GPL-2.0-or-later)、Aurora (MIT) 和 alienfx-tools (MIT)。仅为文档参考，不含任何 GPL 代码。</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>主题图片：达斯·维德的头盔</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm 为《星球大战：西斯的复仇》拍摄的宣传照片：星球大战主题 Dark Side 的图片。取自 Wookieepedia。</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>主题图片：系列徽标</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>刺猬索尼克、指环王、哈利·波特、星球大战、星际迷航：原初系列和星际迷航：下一代的徽标，位于入门主题的图片上。取自 Wikimedia Commons，该站将每个徽标标为公有领域的纯文字徽标。每个徽标都是其所有者的商标。</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>主题图片：霍比特屯</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>新西兰的霍比特屯电影布景，照片由 Jackie.lck 拍摄：指环王主题 The One Ring 的图片。取自 Wikimedia Commons。</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>主题图片：霍格沃茨城堡</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy 预告片的一帧，来自该游戏自己的 YouTube 频道：哈利·波特主题 Gryffindor 的图片。取自 Wikimedia Commons。</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>主题图片：中土世界地图</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>一幅中土世界的地图：指环王主题 Map of Middle-earth 的图片。取自 The One Wiki to Rule Them All，该站未注明作者。</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>主题图片：千年鹰号</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>银河边缘 Galaxy’s Edge 的全尺寸千年鹰号，照片由 Tomás Del Coro 拍摄：星球大战主题 Opening Crawl 的图片。取自 Wikimedia Commons。</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>主题图片：Sonic 在克罗诺斯岛</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA 官方 YouTube 频道上 Sonic Frontiers 预告片的一帧：刺猬索尼克主题 Blue Blur 的图片。取自 Wikimedia Commons。</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>主题图片：奔跑的 Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA 为 Sonic Lost World 制作的美术图：刺猬索尼克主题 Night Run 的图片。取自 Sonic Wiki Zone。</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>主题图片：四大学院院徽</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>霍格沃茨四个学院的院徽，由 Atomhawk Design 为 Pottermore 绘制：哈利·波特主题 Four Houses 的图片。取自 Harry Potter Wiki。</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>主题图片：USS Enterprise 摄影棚模型</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>为原版《星际迷航》系列拍摄的模型，由收藏它的 Smithsonian National Air and Space Museum 拍摄：星际迷航主题 LCARS 的图片。</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>主题图片：USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>《星际迷航：下一代》的一帧：星际迷航主题 Starfleet 的图片。取自 Memory Alpha。</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>键盘屏幕</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>在罗技 GamePanel 键盘和 Mad Catz S.T.R.I.K.E. 7 内置的屏幕上绘制内容，也可通过 Logitech Arx Control 在手机上绘制：配置文件、时钟、游戏时间、秒表、图片，或 DualShock 4、DualSense 灯条的颜色。每个屏幕在“设备”页面上都有自己的一行，可在那里设置它显示的内容。屏幕旁的按键是该行的按钮。</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>驱动键盘屏幕</value></data>

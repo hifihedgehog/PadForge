@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Zadano u sustavu</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Svijetla</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tamna</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nova tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Izradite temu od vlastitih boja i slike, sa Steam igre ili iz datoteke.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Dodaj temu…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Dodajte datoteku teme na popis. PadForge je čita na mjestu na kojem jest i ništa ne kopira.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Spremi kopiju…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Zapišite odabranu temu u datoteku koju možete mijenjati ili dijeliti.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Uredi temu</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Ukloni s popisa. Datoteka ostaje na svom mjestu.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Datoteka nije pronađena</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nije čitljivo</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Datoteka teme „{0}“ nedostaje ili se ne može pročitati. PadForge prikazuje temu Tamna dok datoteka ne bude opet dostupna.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil „{0}“ nosi izgled svoje igre. Vaša tema vraća se kad postane aktivan drugi profil.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Ulazni mehanizam</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurirajte ponašanje prozivanja i obradu u pozadini.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Podrška za hardver</value></data>
@@ -857,6 +869,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Samo odricanje za žig</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Uvjeti nisu navedeni</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Nije objavljena</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Javna domena</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Zaštićeno autorskim pravom</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Uvjeti korištenja Smithsoniana</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Više licenci</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Mehanizam virtualnih HID kontrolera u korisničkom načinu (zamjenjuje ViGEmBus i vJoy).</value></data>
@@ -2710,6 +2727,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nije pronađen nijedan drugi otvoreni prozor.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ukloni {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Brzina ispitivanja dok je ovaj profil učitan</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Nosi izgled igre</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Dok je ovaj profil aktivan, PadForge prikazuje sliku i boje igre. Vaša tema vraća se kad postane aktivan drugi profil.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Slika igre nije na ovom računalu.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Dohvati sliku</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Omogućite konfiguracije zajednice u postavkama da biste dohvatili sliku igre sa Steama.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopiraj iz</value></data>
@@ -3969,7 +3991,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfiguracije zajednice</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Pregledavajte konfiguracije kontrolera za Steam Input koje je izradila zajednica i pretvorite ih u profile programa PadForge. PadForge šalje tekst vašeg pretraživanja, ID-ove uključenih igara, konfiguracija i autora te svoju verziju. Anonimna prijava na Steam šalje i vašu verziju sustava Windows te ID računala izrađen od hash vrijednosti ID-a instalacije sustava Windows, adresa mrežnih adaptera i serijskog broja diska za pokretanje. Nije uključena nijedna usluga treće strane.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge se povezuje sa Steamovim poslužiteljima samo kad pretražujete, otvorite konfiguraciju ili provjerite ima li ažuriranja uvezenih konfiguracija. Nema telemetrije ni Steam računa.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge se povezuje sa Steamovim poslužiteljima samo kad pretražujete, otvorite konfiguraciju, provjerite ima li ažuriranja uvezenih konfiguracija ili dohvatite sliku igre. Nema telemetrije ni Steam računa.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Što se šalje</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Omogući konfiguracije zajednice</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Prikaži naslijeđene konfiguracije s Workshopa</value></data>
@@ -5239,4 +5261,59 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Prikazuje povećalo dok se ovaj makro drži, za ciljanje preko nišana. Postavite ga na stranici Povećalo.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Reference za klingonski i sindarinski</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Riječi klingonskog i sindarinskog prijevoda provjerene su prema projektu klingon-assistant-data (Apache-2.0), rječniku iza aplikacije boQwI', te projektu Eldamo (CC BY 4.0), elfskom leksikonu autora Paul Strack. Samo rječnički podaci, ništa se od njih ne isporučuje.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ta datoteka nije tema za PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nije spremljena. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nova tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge prikazuje temu dok je izrađujete.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Naziv</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Moja tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Osnova</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Podloga na kojoj tema stoji. Tamna tema ima svijetao tekst, a svijetla tema tamni tekst.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Slika</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Iz Steam igre…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Iz datoteke…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Bez slike</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Dohvaćanje slike sa Steama…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nema široku sliku za ovu igru.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nije moguće pristupiti Steamu. Provjerite vezu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Položaj</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Pomiče sliku gore ili dolje u njezinu okviru.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Prikaži logotip igre</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Boje</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Uskladi sa slikom</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Preuzima četiri boje sa slike.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Pozadina</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Stranica. Prozor, bočna traka, kartice i crte su stupnjevi od nje.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Naglasak</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Sve što je aktivno: pogon, glavni gumb, odabrana stavka.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundarna</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Izmjerene vrijednosti i oznake uređaja: učestalosti, razine baterije, sirovi ulazi.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Pozornost</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Stanja koja čekaju: uređaji na čekanju, slaba baterija, nespremljene promjene.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Odaberi boju</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Sve datoteke (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ne može pročitati tu datoteku kao sliku.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Slika: Steamova grafika iz knjižnice za {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Slika teme: kaciga Dartha Vadera</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Promotivna fotografija Lucasfilma za Osvetu Sitha: slika teme Dark Side iz Ratova zvijezda. Pronađeno na Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Slika teme: logotipi franšiza</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logotipi Sonic the Hedgehoga, Gospodara prstenova, Harryja Pottera, Ratova zvijezda, Zvjezdanih staza: Originalna serija i Zvjezdanih staza: Sljedeća generacija na slikama početnih tema. Pronađeni na Wikimedia Commons, gdje je svaki označen kao običan tekstualni logotip u javnoj domeni. Svaki je zaštitni znak svog vlasnika.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Slika teme: Hobiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Filmski set Hobiton na Novom Zelandu, fotografija autora Jackie.lck: slika teme The One Ring iz Gospodara prstenova. Pronađeno na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Slika teme: dvorac Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Kadar iz najave za Hogwarts Legacy s YouTube kanala same igre: slika teme Gryffindor iz Harryja Pottera. Pronađeno na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Slika teme: karta Međuzemlja</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Karta Međuzemlja: slika teme Map of Middle-earth iz Gospodara prstenova. Pronađeno na The One Wiki to Rule Them All, koji ne navodi autora.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Slika teme: Milenijski sokol</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Milenijski sokol u prirodnoj veličini u Galaxy’s Edgeu, fotografija autora Tomás Del Coro: slika teme Opening Crawl iz Ratova zvijezda. Pronađeno na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Slika teme: Sonic na otoku Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Kadar iz najave za Sonic Frontiers s YouTube kanala tvrtke SEGA: slika teme Blue Blur iz Sonic the Hedgehoga. Pronađeno na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Slika teme: Sonic u trku</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Grafika tvrtke SEGA izrađena za Sonic Lost World: slika teme Night Run iz Sonic the Hedgehoga. Pronađeno na Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Slika teme: grbovi četiriju domova</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Četiri grba domova Hogwartsa, koje je za Pottermore nacrtao Atomhawk Design: slika teme Four Houses iz Harryja Pottera. Pronađeno na wikiju o Harryju Potteru.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Slika teme: USS Enterprise, studijski model</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Model snimljen za originalnu seriju Zvjezdane staze, koji je fotografirao Smithsonian National Air and Space Museum, gdje se i čuva: slika teme LCARS iz Zvjezdanih staza.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Slika teme: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kadar iz serije Zvjezdane staze: Sljedeća generacija: slika teme Starfleet iz Zvjezdanih staza. Pronađeno na Memory Alpha.</value></data>
 </root>

@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>پیش‌فرض سیستم</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>روشن</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>تیره</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>تم جدید…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>با رنگ‌های خودتان و یک تصویر از یک بازی Steam یا از یک فایل، تم بسازید.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>افزودن تم…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>یک فایل تم را به فهرست اضافه کنید. PadForge آن را همان‌جا که هست می‌خواند و چیزی کپی نمی‌کند.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>ذخیره یک نسخه…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>تم انتخاب‌شده را در فایلی بنویسید که بتوانید تغییر دهید یا به اشتراک بگذارید.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>ویرایش تم</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>از فهرست برداشته می‌شود. فایل سر جای خود می‌ماند.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>فایل پیدا نشد</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>خوانده نمی‌شود</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>فایل «{0}» وجود ندارد یا خوانده نمی‌شود. PadForge تا بازگشت آن، تیره را نشان می‌دهد.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>پروفایل «{0}» ظاهر بازی خود را پوشیده است. وقتی پروفایل دیگری فعال شود، تم شما برمی‌گردد.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>تم‌های PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>آن فایل یک تم PadForge نیست.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>تم ذخیره نشد. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>تم جدید</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge همزمان با ساختن، تم را به خود می‌پوشد.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>تم من</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>پایه</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>زمینه‌ای که تم روی آن قرار دارد. تم تیره متن روشن و تم روشن متن تیره دارد.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>تصویر</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>از یک بازی Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>از یک فایل…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>بدون تصویر</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>در حال گرفتن تصویر از Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam برای این بازی تصویر عریض ندارد.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>اتصال به Steam ممکن نشد. اتصال خود را بررسی کنید.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>موقعیت</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>تصویر را در پنجره‌اش بالا یا پایین می‌برد.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>نمایش لوگوی بازی</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>رنگ‌ها</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>هماهنگ با تصویر</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>چهار رنگ را از تصویر برمی‌دارد.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>پس‌زمینه</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>صفحه. پنجره، نوار کناری، کارت‌ها و خطوط پله‌هایی از همین رنگ‌اند.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>تأکید</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>هر چیز زنده: موتور، دکمه اصلی، مورد انتخاب‌شده.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ثانویه</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>مقادیر اندازه‌گیری‌شده و نشان‌های دستگاه: نرخ‌ها، سطح باتری، ورودی‌های خام.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>توجه</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>حالت‌های در انتظار: دستگاه‌های در انتظار، باتری کم، تغییرات ذخیره‌نشده.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>انتخاب رنگ</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>تصاویر (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge نمی‌تواند آن فایل را به‌عنوان تصویر بخواند.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>تصویر: هنر کتابخانه Steam برای {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>موتور ورودی</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>رفتار نمونه‌برداری و پردازش پس‌زمینه را پیکربندی کنید.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>پشتیبانی سخت‌افزار</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>فقط سلب مسئولیت نشان تجاری</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>شرطی نام برده نشده</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>منتشر نشده</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>مالکیت عمومی</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>دارای حق نشر</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>شرایط استفاده Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>چند مجوز</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>موتور کنترلر مجازی HID در حالت کاربر (جایگزین ViGEmBus و vJoy).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>پنجره باز دیگری پیدا نشد.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>برداشتن {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>نرخ نمونه‌برداری هنگام بارگذاری این پروفایل</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>پوشیدن ظاهر بازی</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>تا وقتی این پروفایل فعال است، PadForge تصویر و رنگ‌های بازی را نشان می‌دهد. وقتی پروفایل دیگری فعال شود، تم شما برمی‌گردد.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>تصویر بازی روی این رایانه نیست.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>گرفتن تصویر</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>برای گرفتن تصویر بازی از Steam، پیکربندی‌های جامعه کاربران را در تنظیمات فعال کنید.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>کپی از</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>پیکربندی‌های جامعه کاربران</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>پیکربندی‌های کنترلر Steam Input ساخته‌شده توسط جامعه کاربران را مرور کنید و آن‌ها را به پروفایل‌های PadForge تبدیل کنید. PadForge متن جستجوی شما، شناسه‌های بازی‌ها، پیکربندی‌ها و سازندگان مربوط و نسخه خود را می‌فرستد. ورود ناشناس به Steam نیز نسخه Windows شما و یک شناسه رایانه را می‌فرستد که از هش شناسه نصب Windows، نشانی‌های آداپتورهای شبکه و شماره سریال دیسک راه‌انداز ساخته می‌شود. هیچ سرویس شخص ثالثی درگیر نیست.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge فقط وقتی جستجو می‌کنید، یک پیکربندی را باز می‌کنید یا به‌روزرسانی پیکربندی‌های واردشده را بررسی می‌کنید به سرورهای Steam وصل می‌شود. بدون تله‌متری، بدون حساب Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge فقط وقتی جستجو می‌کنید، یک پیکربندی را باز می‌کنید، به‌روزرسانی پیکربندی‌های واردشده را بررسی می‌کنید یا تصویر یک بازی را می‌گیرید به سرورهای Steam وصل می‌شود. بدون تله‌متری، بدون حساب Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>آنچه ارسال می‌شود</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>فعال کردن پیکربندی‌های جامعه کاربران</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>نمایش پیکربندی‌های قدیمی Workshop</value></data>
@@ -5157,6 +5213,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>قالب پروفایل reWASD، خوانده‌شده از دامپ طرحواره shunt اثر hcn1z1 (MIT)، مستندات reWASD-Powertools اثر DatMoshu (MIT) و راهنمای reWASD، قالب پروفایل DS4Windows، خوانده‌شده از انشعاب DS4Windows اثر Schmaldeo (GPL-3.0-or-later)، و قالب پروفایل DSX، خوانده‌شده از پروفایل‌های DSX-profile-share اثر winkywong1998، پروژه DualSense اثر RAIZ-Zzz (MIT) و Mod System برنامه DSX اثر Paliverse (Apache-2.0). فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>مراجع رنگ صفحه‌نمایش</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>روش ضبط تصویر که مبنای نورپردازی رنگ صفحه‌نمایش است، خوانده‌شده از Prismatik (GPL-2.0-or-later)، انشعاب foundation-sunshine اثر AlkaidLab از Sunshine (GPL-3.0)، ScreenCapture.NET (LGPL-2.1)، RazerAmbilight (MIT)، OpenRGBEffectsPlugin (GPL-2.0-or-later)، Aurora (MIT) و alienfx-tools (MIT). فقط مستندات، هیچ کد GPL عرضه نمی‌شود.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>تصویر تم: کلاه‌خود دارث ویدر</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>یک عکس تبلیغاتی Lucasfilm برای انتقام سیث: تصویر تم جنگ ستارگان با نام Dark Side. پیدا شده در Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>تصویر تم: لوگوهای مجموعه‌ها</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>لوگوهای سونیک خارپشت، ارباب حلقه‌ها، هری پاتر، جنگ ستارگان، پیشتازان فضا: سری اصلی و پیشتازان فضا: نسل بعد روی تصویرهای تم‌های آماده. پیدا شده در Wikimedia Commons که هر کدام را لوگوی متنی ساده در مالکیت عمومی ثبت کرده است. هر کدام علامت تجاری صاحب خود است.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>تصویر تم: هابیتون</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>لوکیشن فیلم هابیتون در نیوزیلند، عکسی از Jackie.lck: تصویر تم ارباب حلقه‌ها با نام The One Ring. پیدا شده در Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>تصویر تم: قلعه هاگوارتز</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>یک فریم از تریلر Hogwarts Legacy در کانال YouTube خود بازی: تصویر تم هری پاتر با نام Gryffindor. پیدا شده در Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>تصویر تم: نقشه سرزمین میانه</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>نقشه‌ای از سرزمین میانه: تصویر تم ارباب حلقه‌ها با نام Map of Middle-earth. پیدا شده در The One Wiki to Rule Them All که نام هیچ هنرمندی را نیاورده است.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>تصویر تم: شاهین هزاره</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>شاهین هزاره در اندازه واقعی در Galaxy’s Edge، عکسی از Tomás Del Coro: تصویر تم جنگ ستارگان با نام Opening Crawl. پیدا شده در Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>تصویر تم: Sonic در جزیره کرونوس</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>یک فریم از تریلر Sonic Frontiers در کانال YouTube خود SEGA: تصویر تم سونیک خارپشت با نام Blue Blur. پیدا شده در Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>تصویر تم: Sonic در حال دویدن</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>هنری از SEGA که برای Sonic Lost World ساخته شد: تصویر تم سونیک خارپشت با نام Night Run. پیدا شده در Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>تصویر تم: نشان چهار خانه</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>نشان چهار خانه هاگوارتز که Atomhawk Design برای Pottermore کشیده است: تصویر تم هری پاتر با نام Four Houses. پیدا شده در ویکی هری پاتر.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>تصویر تم: مدل استودیویی USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>مدلی که برای سریال اصلی پیشتازان فضا فیلم‌برداری شد، عکسی از Smithsonian National Air and Space Museum که آن را نگه می‌دارد: تصویر تم پیشتازان فضا با نام LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>تصویر تم: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>یک فریم از پیشتازان فضا: نسل بعد: تصویر تم پیشتازان فضا با نام Starfleet. پیدا شده در Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>صفحه‌نمایش‌های صفحه‌کلید</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>روی صفحه‌نمایش‌های داخلی صفحه‌کلیدهای GamePanel شرکت Logitech و Mad Catz S.T.R.I.K.E. 7 و همچنین روی تلفن همراه از طریق Logitech Arx Control نمایش می‌دهد: پروفایل، ساعت، مدت بازی، کرنومتر، یک تصویر یا رنگ نوار نوری DualShock 4 یا DualSense. هر صفحه‌نمایش در صفحه دستگاه‌ها ردیف خودش را دارد و همان‌جا تعیین می‌کنید چه چیزی نشان دهد. کلیدهای کنار هر صفحه‌نمایش، دکمه‌های ردیف آن هستند.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>کنترل صفحه‌نمایش‌های صفحه‌کلید</value></data>

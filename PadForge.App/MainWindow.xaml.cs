@@ -549,6 +549,15 @@ namespace PadForge
             };
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
+            // A look also goes on when a theme file changes on disk, when the
+            // active profile brings its game's look and while the builder is
+            // open, and any of them can change the ground (#591).
+            PadForge.Common.Themes.ThemeManager.Applied += (_, _) => { if (CheckAccess()) UpdateSteelLayer(); };
+            // The web controller's pages take the look in force (#591).
+            PadForge.Common.Themes.ThemeManager.Applied += (_, _) => PadForge.Common.Themes.WebThemeSheet.Refresh();
+            PadForge.Common.Themes.ThemeManager.ListEdited += (_, _) => _settingsService.MarkDirty();
+            // A Steam profile's game look follows the active profile (#591).
+            PadForge.Common.Themes.GameLooks.Start(Dispatcher);
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
@@ -590,6 +599,7 @@ namespace PadForge
                     _notifyIcon.Visible = _viewModel.Settings.AlwaysShowTrayIcon;
 
                 if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex)
+                     or nameof(SettingsViewModel.SelectedThemeId)
                      or nameof(SettingsViewModel.AutoStartEngine)
                      or nameof(SettingsViewModel.MinimizeToTray)
                      or nameof(SettingsViewModel.CloseToTray)
@@ -6742,6 +6752,9 @@ namespace PadForge
 
             // Swap visible page.
             HomePageView.Visibility = tag == "Home" ? Visibility.Visible : Visibility.Collapsed;
+            // Home shows a theme's whole picture through its engine card.
+            // A page of solid cards shows the header strip (#591).
+            ThemeBackdropView.IsWhole = tag == "Home";
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
             // Coming to Extras from another page lands on the catalog, as a
             // category in Windows Settings opens on its list. Only then: the
@@ -6881,7 +6894,11 @@ namespace PadForge
                 Strings.Instance.Common_Delete);
             if (!confirmed) return;
 
+            int lookAppId = SettingsManager.Profiles.Find(p => p.Id == selected.Id)?.GameLook?.AppId ?? 0;
             bool wasActive = _inputService.DeleteProfile(selected.Id);
+            // The deleted profile's game look (#591): its picture goes when
+            // no other profile wears that game's look.
+            PadForge.Common.Themes.GameLooks.Release(lookAppId);
             _viewModel.Settings.ProfileItems.Remove(selected);
             _viewModel.Settings.SelectedProfile = null;
             if (wasActive)
@@ -7238,11 +7255,18 @@ namespace PadForge
 
             var dialog = new Views.ProfileDialog { Owner = this };
             dialog.LoadForEdit(profile.Name, exePaths, profile.PollingRateOverrideHz);
+            // A profile that knows its Steam game can wear the game's look
+            // (#591): one imported from the Community tab, or one that
+            // already wears a look.
+            int lookAppId = profile.GameLook?.AppId ?? profile.WorkshopSource?.AppId ?? 0;
+            if (lookAppId > 0)
+                dialog.OfferGameLook(lookAppId, profile.GameLook?.Game ?? profile.WorkshopSource?.GameName, profile.GameLook, SteamArt);
             if (dialog.ShowDialog() != true) return;
 
             string newName = dialog.ProfileName;
             string newExePaths = string.Join("|", dialog.ExecutablePaths);
             _inputService.EditProfile(selected.Id, newName, newExePaths, dialog.PollingOverrideHz);
+            if (dialog.GameLookOffered) TakeGameLookChoice(selected.Id, dialog);
 
             selected.Name = newName;
             selected.Executables = InputService.FormatExePaths(newExePaths);
@@ -7251,6 +7275,30 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = newName;
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileUpdated_Format, newName);
+        }
+
+        private PadForge.Common.Themes.SteamGameArt _steamArt;
+
+        /// <summary>A Steam game's library art for a profile's look (#591),
+        /// behind the Community tab's own switch.</summary>
+        private PadForge.Common.Themes.SteamGameArt SteamArt
+            => _steamArt ??= new PadForge.Common.Themes.SteamGameArt(() => _viewModel.Settings.EnableCommunityConfigLookup);
+
+        /// <summary>Gives a profile the game look its dialog answered with
+        /// (#591): a look made there has its picture kept, a look turned
+        /// off lets its picture go when no other profile wears it, and the
+        /// look in force follows at once when the profile is the active
+        /// one.</summary>
+        private void TakeGameLookChoice(string profileId, Views.ProfileDialog dialog)
+        {
+            var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
+            if (profile == null) return;
+            int before = profile.GameLook?.AppId ?? 0;
+            PadForge.Common.Themes.GameLooks.Keep(dialog.MadeGameLook);
+            profile.GameLook = dialog.GameLook;
+            if (before > 0 && before != (profile.GameLook?.AppId ?? 0))
+                PadForge.Common.Themes.GameLooks.Release(before);
+            PadForge.Common.Themes.GameLooks.Refresh();
         }
 
         private void OnLoadProfile(object sender, EventArgs e)
@@ -7743,17 +7791,11 @@ namespace PadForge
 
         private void OnThemeChanged(object sender, int themeIndex)
         {
-            if (themeIndex == 1)
-                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light);
-            else if (themeIndex == 2)
-                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark);
-            else
-                Wpf.Ui.Appearance.ApplicationThemeManager.ApplySystemTheme();
-
-            // Theme applies re-derive the accent from the system color, so
-            // pin Ember again, then re-evaluate the steel ground (#175).
-            PadForge.Common.EmberTheme.ApplyAccent();
-            UpdateSteelLayer();
+            // ThemeManager is the one place a look is put on (#591):
+            // PadForge's own look of that index, or the picked theme over its
+            // own base. It pins Ember after the theme apply (#175), and its
+            // Applied event re-evaluates the steel ground.
+            PadForge.Common.Themes.ThemeManager.Apply(themeIndex, _viewModel.Settings.SelectedThemeId);
         }
 
         // Ember steel ground is a dark-theme surface. In Light the Mica

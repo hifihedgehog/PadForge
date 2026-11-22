@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>სისტემის ნაგულისხმევი</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ღია</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>მუქი</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>ახალი თემა…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>შექმენით თემა საკუთარი ფერებით და სურათით, Steam-ის თამაშიდან ან ფაილიდან.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>თემის დამატება…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>თემის ფაილის სიაში დამატება. PadForge მას იქ კითხულობს, სადაც ის არის, და არაფერს აკოპირებს.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>ასლის შენახვა…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>არჩეული თემის ჩაწერა ფაილში, რომელსაც შეგიძლიათ შეცვალოთ ან გააზიაროთ.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>თემის რედაქტირება</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>სიიდან ამოღება. ფაილი თავის ადგილას რჩება.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ფაილი ვერ მოიძებნა</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ვერ იკითხება</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>„{0}“ თემის ფაილი არ არის ან ვერ იკითხება. სანამ ის დაბრუნდება, PadForge აჩვენებს მუქ იერს.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>პროფილი „{0}“ თავისი თამაშის იერს ატარებს. თქვენი თემა დაბრუნდება, როცა სხვა პროფილი გახდება აქტიური.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>გამოკითხვის ქცევისა და ფონური დამუშავების გაწყობა.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>აპარატურის მხარდაჭერა</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>მხოლოდ სავაჭრო ნიშნის უარყოფა</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>პირობები დასახელებული არ არის</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>გამოქვეყნებული არ არის</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>საჯარო სფერო</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>დაცულია საავტორო უფლებით</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian-ის გამოყენების პირობები</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>რამდენიმე ლიცენზია</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>მომხმარებლის რეჟიმის ვირტუალური HID კონტროლერის ძრავა (ანაცვლებს ViGEmBus-სა და vJoy-ს).</value></data>
@@ -2710,6 +2727,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>სხვა ღია ფანჯარა ვერ მოიძებნა.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ამოღება: {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>გამოკითხვის სიხშირე, სანამ ეს პროფილი ჩატვირთულია</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>თამაშის იერის მორგება</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>სანამ ეს პროფილი აქტიურია, PadForge აჩვენებს თამაშის სურათსა და ფერებს. თქვენი თემა დაბრუნდება, როცა სხვა პროფილი გახდება აქტიური.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>თამაშის სურათი ამ კომპიუტერზე არ არის.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>სურათის მიღება</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>ჩართეთ პარამეტრებში საზოგადოების კონფიგურაციები, რომ თამაშის სურათი Steam-იდან მიიღოთ.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>კოპირება აქედან</value></data>
@@ -3966,7 +3988,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციები</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>დაათვალიერეთ საზოგადოების მიერ შექმნილი Steam Input-ის კონტროლერის კონფიგურაციები და გადათარგმნეთ ისინი PadForge-ის პროფილებად. PadForge აგზავნის თქვენს საძიებო ტექსტს, ჩართული თამაშების, კონფიგურაციებისა და ავტორების ID-ებს და თავის ვერსიას. ანონიმური Steam-ში შესვლა ასევე აგზავნის თქვენს Windows-ის ვერსიას და კომპიუტერის ID-ს, რომელიც შედგენილია თქვენი Windows-ის ინსტალაციის ID-ის, ქსელის ადაპტერების მისამართებისა და ჩატვირთვის დისკის სერიული ნომრის ჰეშებისგან. მესამე მხარის სერვისი არ მონაწილეობს.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ის სერვერებს უკავშირდება მხოლოდ მაშინ, როცა ეძებთ, კონფიგურაციას ხსნით ან იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ. არც ტელემეტრია, არც Steam ანგარიში.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ის სერვერებს უკავშირდება მხოლოდ მაშინ, როცა ეძებთ, კონფიგურაციას ხსნით, იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ ან თამაშის სურათს იღებთ. არც ტელემეტრია, არც Steam ანგარიში.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>რა იგზავნება</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციების ჩართვა</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ძველი Workshop-ის კონფიგურაციების ჩვენება</value></data>
@@ -5221,4 +5243,59 @@
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>ანგარიშები SInput-ის პადების მხარდაჭერისა და SInput-ის პერსონისთვის, წაკითხულია Hand Held Legend-ის SINPUT-LIB-HID-იდან (MIT-0) და HOJA-LIB-RP2040-იდან (CC BY-NC-SA 3.0), ასევე OpenPuck-ის SInput რეჟიმიდან (AGPL-3.0). მხოლოდ დოკუმენტაცია, AGPL კოდი არ შედის.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>კლინგონურისა და სინდარინის წყაროები</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>კლინგონური და სინდარინული თარგმანების სიტყვები შემოწმებულია შემდეგ წყაროებთან: klingon-assistant-data (Apache-2.0), boQwI'-ის ლექსიკონის მონაცემები, და Eldamo (CC BY 4.0), Paul Strack-ის ელფური ლექსიკონი. მხოლოდ ლექსიკონის მონაცემები, არცერთი არ შედის პროგრამაში.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ეს ფაილი PadForge-ის თემა არ არის.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>თემის შენახვა ვერ მოხერხდა. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ახალი თემა</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge თემას აჩვენებს, სანამ მას ქმნით.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>სახელი</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ჩემი თემა</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>საფუძველი</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ფონი, რომელზეც თემა დგას. მუქ თემას ღია ტექსტი აქვს, ღია თემას კი მუქი.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>სურათი</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam-ის თამაშიდან…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ფაილიდან…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>სურათის გარეშე</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>სურათის მიღება Steam-იდან…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ს ამ თამაშისთვის განიერი სურათი არ აქვს.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-თან დაკავშირება ვერ მოხერხდა. შეამოწმეთ კავშირი.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>მდებარეობა</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>სურათს თავის ფანჯარაში ზევით ან ქვევით ამოძრავებს.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>თამაშის ლოგოს ჩვენება</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ფერები</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>სურათზე მორგება</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ოთხ ფერს სურათიდან იღებს.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>ფონი</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>გვერდი. ფანჯარა, გვერდითი პანელი, ბარათები და ხაზები მისგან მიღებული ტონებია.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>აქცენტი</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ყველაფერი ცოცხალი: ძრავა, მთავარი ღილაკი, არჩეული ელემენტი.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>მეორეული</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>გაზომილი მნიშვნელობები და მოწყობილობის ნიშნები: სიხშირეები, ბატარეის დონეები, ნედლი შეყვანები.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ყურადღება</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>მოლოდინის მდგომარეობები: მოწყობილობების მოლოდინი, დაბალი ბატარეა, შეუნახავი ცვლილებები.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>აირჩიეთ ფერი</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>სურათები (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ყველა ფაილი (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge-ს ამ ფაილის სურათად წაკითხვა არ შეუძლია.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>სურათი: Steam-ის ბიბლიოთეკის ხელოვნება თამაშისთვის {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>თემის სურათი: დარტ ვეიდერის ჩაფხუტი</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm-ის სარეკლამო ფოტო ფილმისთვის „სითების შურისგება“: ვარსკვლავური ომების თემის Dark Side სურათი. ნაპოვნია Wookieepedia-ზე.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>თემის სურათი: ფრენჩაიზების ლოგოები</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>სონიკ ზღარბის, ბეჭდების მბრძანებლის, ჰარი პოტერის, ვარსკვლავური ომების, ვარსკვლავური გზის ორიგინალური სერიალისა და ვარსკვლავური გზის შემდეგი თაობის ლოგოები სტარტერი თემების სურათებზე. ნაპოვნია Wikimedia Commons-ზე, სადაც თითოეული მონიშნულია როგორც საჯარო სფეროს უბრალო ტექსტური ლოგო. თითოეული მისი მფლობელის სავაჭრო ნიშანია.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>თემის სურათი: ჰობიტონი</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ჰობიტონის გადასაღები მოედანი ახალ ზელანდიაში, Jackie.lck-ის ფოტო: ბეჭდების მბრძანებლის თემის The One Ring სურათი. ნაპოვნია Wikimedia Commons-ზე.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>თემის სურათი: ჰოგვორტსის ციხესიმაგრე</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy-ის თრეილერის კადრი თამაშის საკუთარი YouTube არხიდან: ჰარი პოტერის თემის Gryffindor სურათი. ნაპოვნია Wikimedia Commons-ზე.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>თემის სურათი: შუამიწის რუკა</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>შუამიწის რუკა: ბეჭდების მბრძანებლის თემის Map of Middle-earth სურათი. ნაპოვნია The One Wiki to Rule Them All-ზე, რომელიც ხელოვანს არ ასახელებს.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>თემის სურათი: ათასწლეულის შევარდენი</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>სრული ზომის ათასწლეულის შევარდენი Galaxy’s Edge-ზე, Tomás Del Coro-ს ფოტო: ვარსკვლავური ომების თემის Opening Crawl სურათი. ნაპოვნია Wikimedia Commons-ზე.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>თემის სურათი: Sonic კრონოსის კუნძულზე</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Sonic Frontiers-ის თრეილერის კადრი SEGA-ს საკუთარი YouTube არხიდან: სონიკ ზღარბის თემის Blue Blur სურათი. ნაპოვნია Wikimedia Commons-ზე.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>თემის სურათი: Sonic გარბის</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA-ს ხელოვნება თამაშისთვის Sonic Lost World: სონიკ ზღარბის თემის Night Run სურათი. ნაპოვნია Sonic Wiki Zone-ზე.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>თემის სურათი: ოთხი სახლის გერბი</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>ჰოგვორტსის ოთხი სახლის გერბი, დახატული Atomhawk Design-ის მიერ Pottermore-სთვის: ჰარი პოტერის თემის Four Houses სურათი. ნაპოვნია Harry Potter Wiki-ზე.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>თემის სურათი: USS Enterprise-ის სტუდიური მაკეტი</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ვარსკვლავური გზის ორიგინალური სერიალისთვის გადაღებული მაკეტი, რომელიც გადაიღო Smithsonian National Air and Space Museum-მა, სადაც ის ინახება: ვარსკვლავური გზის თემის LCARS სურათი.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>თემის სურათი: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>კადრი სერიალიდან ვარსკვლავური გზა: შემდეგი თაობა: ვარსკვლავური გზის თემის Starfleet სურათი. ნაპოვნია Memory Alpha-ზე.</value></data>
 </root>

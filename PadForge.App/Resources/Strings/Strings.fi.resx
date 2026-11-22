@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Järjestelmän oletus</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Vaalea</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tumma</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Uusi teema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Rakenna teema omista väreistäsi ja kuvasta, joka tulee Steam-pelistä tai tiedostosta.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Lisää teema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Lisää teematiedosto luetteloon. PadForge lukee sen paikaltaan eikä kopioi mitään.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Tallenna kopio…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Kirjoita valittu teema tiedostoon, jota voit muokata tai jakaa.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Muokkaa teemaa</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Poista luettelosta. Tiedosto pysyy paikallaan.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Tiedostoa ei löydy</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ei luettavissa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Teeman ”{0}” tiedosto puuttuu tai sitä ei voi lukea. PadForge käyttää asetusta Tumma, kunnes tiedosto on takaisin.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profiili ”{0}” käyttää pelinsä ulkoasua. Teemasi palaa, kun jokin toinen profiili on aktiivinen.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-teemat (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Tuo tiedosto ei ole PadForge-teema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Teemaa ei voitu tallentaa. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Uusi teema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge näyttää teeman jo sitä rakentaessasi.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nimi</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Oma teema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pohja</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Pohja, jonka päällä teema on. Tummassa teemassa teksti on vaaleaa ja vaaleassa teemassa tummaa.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Kuva</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam-pelistä…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Tiedostosta…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ei kuvaa</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Haetaan kuvaa Steamista…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steamissa ei ole tälle pelille leveää kuvaa.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steamiin ei saatu yhteyttä. Tarkista yhteytesi.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Sijainti</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Siirtää kuvaa ylös tai alas sen ikkunassa.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Näytä pelin logo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Värit</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Sovita kuvaan</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ottaa neljä väriä kuvasta.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Tausta</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Sivu. Ikkuna, sivupalkki, kortit ja viivat ovat sen sävyjä.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Korostus</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Kaikki, mikä on käynnissä: moottori, päänappi, valittu kohde.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Toissijainen</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mitatut arvot ja laitteiden merkit: taajuudet, akun varaus, raakasyötteet.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Huomio</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Odottavat tilat: laitteita odotetaan, akku on vähissä, muutoksia on tallentamatta.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Valitse väri</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Kuvat (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ei voi lukea tuota tiedostoa kuvana.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Kuva: Steamin kirjastokuva pelistä {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Syötemoottori</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Määritä kyselyn toiminta ja taustakäsittely.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Laitteistotuki</value></data>
@@ -870,6 +916,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Vain tavaramerkkihuomautus</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Ehtoja ei mainita</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Ei julkaistu</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Tekijänoikeusvapaa</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Tekijänoikeuden suojaama</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonianin käyttöehdot</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Useita lisenssejä</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Käyttäjätilassa toimiva virtuaalisten HID-ohjainten moottori (korvaa ViGEmBus- ja vJoy-ajurit).</value></data>
@@ -2901,6 +2952,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Muita avoimia ikkunoita ei löytynyt.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Poista {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Kyselytaajuus tämän profiilin ollessa ladattuna</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Käytä pelin ulkoasua</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Kun tämä profiili on aktiivinen, PadForge näyttää pelin kuvan ja värit. Teemasi palaa, kun jokin toinen profiili on aktiivinen.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Pelin kuvaa ei ole tällä tietokoneella.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Hae kuva</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ota yhteisön määritykset käyttöön asetuksissa, jotta voit hakea pelin kuvan Steamista.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopioi kohteesta</value></data>
@@ -4193,7 +4249,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Yhteisön määritykset</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Selaa yhteisön tekemiä Steam Input -ohjainmäärityksiä ja muunna ne PadForge-profiileiksi. PadForge lähettää hakutekstisi, asianomaisten pelien, määritysten ja tekijöiden tunnisteet sekä version. Anonyymi Steam-kirjautuminen lähettää lisäksi Windows-versiosi ja konetunnisteen, joka muodostetaan Windows-asennuksen tunnuksen, verkkosovittimien osoitteiden ja käynnistyslevyn sarjanumeron tiivisteistä. Mukana ei ole kolmannen osapuolen palvelua.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ottaa yhteyden Steamin palvelimiin vain, kun haet, avaat määrityksen tai tarkistat tuotujen määritysten päivitykset. Ei telemetriaa, ei Steam-tiliä.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ottaa yhteyden Steamin palvelimiin vain, kun haet, avaat määrityksen, tarkistat tuotujen määritysten päivitykset tai haet pelin kuvan. Ei telemetriaa, ei Steam-tiliä.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Mitä lähetetään</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ota yhteisön määritykset käyttöön</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Näytä vanhat Workshop-määritykset</value></data>
@@ -5157,6 +5213,28 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD-profiilin muoto, luettu hcn1z1:n shunt-skeemavedoksesta (MIT), DatMoshu:n reWASD-Powertools-dokumentaatiosta (MIT) ja reWASD:n ohjeesta, DS4Windows-profiilin muoto, luettu Schmaldeo:n DS4Windows-haarasta (GPL-3.0-or-later), sekä DSX-profiilin muoto, luettu winkywong1998:n DSX-profile-share-profiileista, RAIZ-Zzz:n DualSense-projektista (MIT) ja Paliversen DSX:n Mod Systemistä (Apache-2.0). Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Näytön värin viitteet</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Näytön väri -valaistuksen taustalla oleva kuvanotto, luettu seuraavista lähteistä: Prismatik (GPL-2.0-or-later), Sunshine-ohjelman haara foundation-sunshine (GPL-3.0), tekijä AlkaidLab, ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) ja alienfx-tools (MIT). Vain dokumentaatio, GPL-koodia ei toimiteta.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Teeman kuva: Darth Vaderin kypärä</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm-yhtiön mainoskuva elokuvaa Sithin kosto varten: Tähtien sota -teeman Dark Side kuva. Löytyi sivustolta Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Teeman kuva: Sarjojen logot</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Aloitusteemojen kuvissa olevat kuuden sarjan logot: Sonic the Hedgehog, Taru sormusten herrasta, Harry Potter, Tähtien sota, Star Trek: The Original Series ja Star Trek: The Next Generation. Löytyivät sivustolta Wikimedia Commons, joka merkitsee kunkin pelkäksi tekstilogoksi ja tekijänoikeusvapaaksi. Kukin on omistajansa tavaramerkki.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Teeman kuva: Hobittila</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Hobittilan elokuvakulissit Uudessa-Seelannissa, kuvaaja Jackie.lck: Taru sormusten herrasta -teeman The One Ring kuva. Löytyi sivustolta Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Teeman kuva: Tylypahkan linna</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Kuva Hogwarts Legacy -pelin trailerista pelin omalta YouTube-kanavalta: Harry Potter -teeman Gryffindor kuva. Löytyi sivustolta Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Teeman kuva: Keski-Maan kartta</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Kartta Keski-Maasta: Taru sormusten herrasta -teeman Map of Middle-earth kuva. Löytyi sivustolta The One Wiki to Rule Them All, joka ei mainitse tekijää.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Teeman kuva: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Täysikokoinen Millennium Falcon Galaxy’s Edge -alueella, kuvaaja Tomás Del Coro: Tähtien sota -teeman Opening Crawl kuva. Löytyi sivustolta Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Teeman kuva: Sonic Kronos Islandilla</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Kuva Sonic Frontiers -pelin trailerista SEGA-yhtiön omalta YouTube-kanavalta: Sonic the Hedgehog -teeman Blue Blur kuva. Löytyi sivustolta Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Teeman kuva: Sonic juoksemassa</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA-yhtiön Sonic Lost World -peliä varten tekemä kuva: Sonic the Hedgehog -teeman Night Run kuva. Löytyi sivustolta Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Teeman kuva: Neljän tuvan vaakunat</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Tylypahkan neljän tuvan vaakunat, jotka Atomhawk Design piirsi Pottermore-sivustolle: Harry Potter -teeman Four Houses kuva. Löytyi sivustolta Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Teeman kuva: USS Enterprisen studiomalli</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Alkuperäistä Star Trek -sarjaa varten kuvattu malli, jonka kuvasi sitä säilyttävä Smithsonian National Air and Space Museum: Star Trek -teeman LCARS kuva.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Teeman kuva: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kuva sarjasta Star Trek: The Next Generation: Star Trek -teeman Starfleet kuva. Löytyi sivustolta Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Näppäimistön näytöt</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Piirtää Logitechin GamePanel-näppäimistöjen ja Mad Catz S.T.R.I.K.E. 7:n sisäänrakennetuille näytöille sekä puhelimeen Logitech Arx Controlin kautta: profiili, kello, peliaika, sekuntikello, kuva tai DualShock 4- tai DualSense-ohjaimen valopalkin väri. Jokaisella näytöllä on oma rivinsä Laitteet-sivulla, jossa asetat, mitä se näyttää. Näytön vieressä olevat näppäimet ovat sen rivin painikkeita.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Ohjaa näppäimistön näyttöjä</value></data>

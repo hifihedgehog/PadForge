@@ -60,13 +60,12 @@ namespace PadForge.Common
         {
             if (d is not Canvas canvas || !(bool)e.NewValue) return;
 
-            var ember = new SolidColorBrush(Color.FromRgb(0xFF, 0x8C, 0x3C)); // trail OUT ember
-            ember.Freeze();
             var state = new PeakState
             {
                 Tick = new Line
                 {
-                    Stroke = ember,
+                    // The output trail's tone, the look's own (#591).
+                    Stroke = PadForge.Common.Themes.ThemeLook.TrailBrush,
                     StrokeThickness = 2,
                     Opacity = 0,
                     IsHitTestVisible = false,
@@ -87,6 +86,8 @@ namespace PadForge.Common
             };
             if (canvas.IsVisible) state.Timer.Start();
             canvas.Unloaded += (_, _) => state.Timer.Stop();
+            // A look put on while the plot shows gives the tick its tone.
+            PadForge.Common.Themes.ThemeTokens.Follow(canvas, () => state.Tick.Stroke = PadForge.Common.Themes.ThemeLook.TrailBrush);
             // Stick config change = template rebind: forget the old stick's peak.
             canvas.DataContextChanged += (_, _) => Reset(canvas, state);
         }

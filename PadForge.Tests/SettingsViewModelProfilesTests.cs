@@ -380,6 +380,7 @@ namespace PadForge.Tests
                 PollingRateOverrideHz = 250,
                 DreamcastPicture = "vmu.png",
                 KeyboardScreenPicture = "screen.png",
+                GameLook = new ProfileGameLook { AppId = 620, Game = "Portal 2", Accent = "#3399FF" },
                 SlotCreated = created,
                 SlotControllerTypes = types,
                 WorkshopSource = new SteamWorkshopSource { PublishedFileId = 42 },
@@ -405,6 +406,9 @@ namespace PadForge.Tests
             Assert.Equal(250, stored.PollingRateOverrideHz);
             Assert.Equal("vmu.png", stored.DreamcastPicture);
             Assert.Equal("screen.png", stored.KeyboardScreenPicture);
+            // The game look is the user's choice for the profile, as its pictures are (#591).
+            Assert.Equal(620, stored.GameLook.AppId);
+            Assert.Equal("#3399FF", stored.GameLook.Accent);
             Assert.Null(stored.WorkshopSource);
             // The live topology: one Xbox slot at 0, where the stored one had a MIDI slot at 3.
             Assert.True(stored.SlotCreated[0]);

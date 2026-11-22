@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Senu</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Nim</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Morn</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Cruith gîw…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Caro cruith o grui lín a em, o delias Steam egor o barlas.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Goianno cruith…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Goianno parlas cruith na i narth. PadForge henna ten mi sad în a ú-lamma parlas.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Haudho lammad…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Teitho i gruith cilen na barlas, an gwistad egor annad.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Gwisto i gruith</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Haedo o i narth. I parlas dar mi sad în.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Parlas ú-hirnen</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ú hennannen</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>I parlas o “{0}” ú-hirnen egor ú hennannen. PadForge tana Morn naden i parlas dandol.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>I phanu “{0}” cola cruith i delias în. I gruith lín dandol ir panu egel carweg.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Cruith PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>I parlas hen ú cruith PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>I gruith ú-haudhannen. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Cruith gîw</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge cola i gruith mi echad în.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Eneth</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Cruith nín</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Talath</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Talath i gruith. Cruith vorn: peth nim. Cruith nim: peth morn.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Em</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>O delias Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>O barlas…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Pen em</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gedad i em o Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Pen em iaun an i delias hen vi Steam.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ú pol iannad na Steam. Cetho i iannad lín.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Sad</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mena i em am egor dan mi henneth în.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Tano têw i delias</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Crui</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Cammo na i em</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ged i canad crui o i em.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Palt</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>I phalt. I henneth, i rib i henneth, i sam a i rib nar carnen o hen.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Gil</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ilnad cui: i naur, i sarn minui, i gilith.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Tadui</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Noth genediad a têw carf: noth cethad, raeth tund, minnad carf.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Lastad</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Sad i boe lastad: carf ú-iannen, tund dithen, gwistad ú-haudhannen.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Cilo crui</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Emath (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Pân parlas (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ú-pol henna i parlas hen sui em.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Em: em Steam an {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Noriod minnad</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Panno cethad a carthas toblannen.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Grest cerf</value></data>
@@ -870,6 +916,8 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Ero gorad eneth</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Theinas ú-estannen</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Alnad edannen</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>An bân</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Seidiannen</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Theinas Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Theinas nodui</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Curu maethas nem HID mi sad i maethron (nab i sad ViGEmBus a vJoy).</value></data>
@@ -2902,6 +2953,11 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Henneth egel edrant ú-hirant.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Haedo {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Noth cethad lo i phanu sen edrant</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Colo cruith i delias</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Lo i phanu hen carweg, PadForge tana em a chrui i delias. I gruith lín dandol ir panu egel carweg.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Pen em i delias vi PC hen.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Gedo i em</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Echuido Panui covas mi Cilith an gedad em i delias o Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Lammo o</value></data>
@@ -4207,7 +4263,7 @@ Lammad o PadForge iaur vi colch hen: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Panui covas</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Cesto panui maethas Steam Input carnen o covas, a tharcholo hain na panui PadForge. PadForge menna i peth cestad lín, i IDs o i telias, i phanui a i garon, a i noth curu în. I minnad Steam pen eneth menna eno i noth Windows lín a ID carf nediad carnen o noth thurin o i ID pannad Windows lín, i eneth cammad raew a i noth i garf haudhad iestad. Ú anna i sarth na pen egel.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ianna na pethron Steam ero mi cestad, mi edrad panu egor mi cethad panui gedannen an cŷl. Pen tirith, pen eneth Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ianna na pethron Steam ero mi cestad, mi edrad panu, mi cethad panui gedannen an cŷl egor mi gedad em telias. Pen tirith, pen eneth Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ma mennen</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Echuido Panui covas</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Tano panui Workshop iaur</value></data>
@@ -5204,6 +5260,28 @@ Dangara PadForge hain sí? Sen aníra maeth orchal a lû dithen.</value></data>
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>I panu reWASD, cennen o shunt o hcn1z1 (MIT), reWASD-Powertools o DatMoshu (MIT) a i rest reWASD, i panu DS4Windows, cennen o DS4Windows o Schmaldeo (GPL-3.0-or-later), a i panu DSX, cennen o peny mi DSX-profile-share o winkywong1998, DualSense o RAIZ-Zzz (MIT) a i Mod System o DSX o Paliverse (Apache-2.0). Sarth ero, curu ú annen.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Sarth Crui cenedril</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>I mabad cenedril nu i gelias Crui cenedril, cennen o Prismatik (GPL-2.0-or-later), foundation-sunshine o AlkaidLab, o Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) a alienfx-tools (MIT). Sarth ero, curu GPL ú annen.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Em cruith: Castol Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Em edannad o Lucasfilm an Revenge of the Sith: i em o i gruith Star Wars Dark Side. Hirnen vi Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Em cruith: Têw narn</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>I têw o Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series a Star Trek: The Next Generation or emath i gruith iestad. Hirnen vi Wikimedia Commons, i dana bân min sui têw peth ero, an bân. Pân min têw i heron în.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Em cruith: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Sad mínem Hobbiton mi New Zealand, em o Jackie.lck: i em o i gruith The Lord of the Rings The One Ring. Hirnen vi Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Em cruith: Ost Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Em o tanad Hogwarts Legacy o YouTube i delias im: i em o i gruith Harry Potter Gryffindor. Hirnen vi Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Em cruith: Teithad Ennor</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Teithad Ennor: i em o i gruith The Lord of the Rings Map of Middle-earth. Hirnen vi The One Wiki to Rule Them All, pen eneth i dân.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Em cruith: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>I Millennium Falcon na raeth în vi Galaxy’s Edge, em o Tomás Del Coro: i em o i gruith Star Wars Opening Crawl. Hirnen vi Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Em cruith: Sonic vi Kronos Island</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Em o tanad Sonic Frontiers o YouTube SEGA im: i em o i gruith Sonic the Hedgehog Blue Blur. Hirnen vi Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Em cruith: Sonic lim</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Em SEGA carnen an Sonic Lost World: i em o i gruith Sonic the Hedgehog Night Run. Hirnen vi Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Em cruith: Canad têw i mbair</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>I chanad têw bair Hogwarts, teithannen o Atomhawk Design an Pottermore: i em o i gruith Harry Potter Four Houses. Hirnen vi Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Em cruith: USS Enterprise carnen an mínem</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>I cair tithen carnen an mínem minui Star Trek, em o Smithsonian National Air and Space Museum, i haudha ten: i em o i gruith Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Em cruith: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Em o Star Trek: The Next Generation: i em o i gruith Star Trek Starfleet. Hirnen vi Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Cenedrilath pan ledil</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Teitha na genedrilath ivil pan ledil GamePanel Logitech a i Mad Catz S.T.R.I.K.E. 7, a na garf paethad gu Logitech Arx Control: i panu, nediad oreth, lû telias, nediad luig, em, egor i grui rib celias DualShock 4 egor DualSense. Ilphen cenedril ged rein în mi palt carfath, sí sestal i tana. I ledil ab cenedril sarn i rein în.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Maetho cenedrilath pan ledil</value></data>

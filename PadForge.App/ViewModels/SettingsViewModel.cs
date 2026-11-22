@@ -37,7 +37,8 @@ namespace PadForge.ViewModels
         private int _selectedThemeIndex;
 
         /// <summary>
-        /// Selected theme index: 0 = System, 1 = Light, 2 = Dark.
+        /// PadForge's own look: 0 = System, 1 = Light, 2 = Dark. It is in
+        /// force while <see cref="SelectedThemeId"/> is empty.
         /// </summary>
         public int SelectedThemeIndex
         {
@@ -49,7 +50,38 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Raised when the theme selection changes. Arg = theme index.</summary>
+        private string _selectedThemeId = string.Empty;
+
+        /// <summary>The picked theme (#591): empty for PadForge's own look
+        /// of <see cref="SelectedThemeIndex"/>, else the id of a starter or
+        /// of a listed theme file (ThemeManager).</summary>
+        public string SelectedThemeId
+        {
+            get => _selectedThemeId;
+            set
+            {
+                if (SetProperty(ref _selectedThemeId, value ?? string.Empty))
+                    ThemeChanged?.Invoke(this, _selectedThemeIndex);
+            }
+        }
+
+        /// <summary>Sets the stock look and the picked theme together and
+        /// puts the look on once, where setting the two one after the other
+        /// would put it on twice.</summary>
+        public void SetTheme(int stockIndex, string themeId)
+        {
+            themeId ??= string.Empty;
+            bool index = _selectedThemeIndex != stockIndex, id = _selectedThemeId != themeId;
+            if (!index && !id) return;
+            _selectedThemeIndex = stockIndex;
+            _selectedThemeId = themeId;
+            if (index) OnPropertyChanged(nameof(SelectedThemeIndex));
+            if (id) OnPropertyChanged(nameof(SelectedThemeId));
+            ThemeChanged?.Invoke(this, stockIndex);
+        }
+
+        /// <summary>Raised when the theme selection changes. Arg = the
+        /// stock look's index.</summary>
         public event EventHandler<int> ThemeChanged;
 
         // ─────────────────────────────────────────────

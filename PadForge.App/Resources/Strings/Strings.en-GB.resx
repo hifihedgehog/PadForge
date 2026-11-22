@@ -635,4 +635,9 @@
   <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>The Cross and its dot from Skarbo’s CSGOCrosshair (no licence published), the Circle, picture and outlined styles from Crosshair-Overlay (MIT) and the magnifier’s Lens and full-screen zoom from Microsoft’s Windows-classic-samples (MIT). Documentation only, no code ships.</value></data>
   <data name="MacroAction_ClearKeyColors_One_Format" xml:space="preserve"><value>Clear key colours on {0} light</value></data>
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>The reWASD profile format, read from hcn1z1’s shunt schema dump (MIT), DatMoshu’s reWASD-Powertools docs (MIT) and reWASD’s help, the DS4Windows profile format, read from Schmaldeo’s DS4Windows fork (GPL-3.0-or-later) and the DSX profile format, read from the profiles in winkywong1998’s DSX-profile-share, RAIZ-Zzz’s DualSense project (MIT) and the Mod System of DSX by Paliverse (Apache-2.0). Documentation only, no code ships.</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Build a theme from your own colours and a picture, from a Steam game or a file.</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Colours</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Takes the four colours from the picture.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pick a Colour</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>While this profile is active, PadForge shows the game’s picture and colours. Your theme returns when another profile is active.</value></data>
 </root>

@@ -252,6 +252,14 @@ namespace PadForge.Views
             e.Handled = true;
         }
 
+        // The Theme row's buttons (#591). The gallery holds the work, since a
+        // theme file's own tile opens the builder too.
+        private void NewTheme_Click(object sender, RoutedEventArgs e) => ThemeGalleryView.NewTheme();
+
+        private void AddTheme_Click(object sender, RoutedEventArgs e) => ThemeGalleryView.AddTheme();
+
+        private void SaveThemeCopy_Click(object sender, RoutedEventArgs e) => ThemeGalleryView.SaveCopy();
+
         // Battery Alerts test (#293): fire the notification pipeline with a
         // synthetic low-battery event.
         private void TestBatteryNotify_Click(object sender, RoutedEventArgs e)

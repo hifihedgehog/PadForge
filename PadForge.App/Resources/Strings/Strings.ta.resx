@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>கணினி இயல்புநிலை</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>வெளிர்</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>அடர்</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>புதிய தீம்…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>உங்கள் சொந்த வண்ணங்கள் மற்றும் Steam கேம் அல்லது கோப்பிலிருந்து ஒரு படத்தைக் கொண்டு தீமை உருவாக்கவும்.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>தீமைச் சேர்…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>ஒரு தீம் கோப்பைப் பட்டியலில் சேர். PadForge அதை இருக்கும் இடத்திலேயே படிக்கும், எதையும் நகலெடுக்காது.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>நகலைச் சேமி…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>தேர்ந்தெடுத்த தீமை நீங்கள் மாற்றக்கூடிய அல்லது பகிரக்கூடிய கோப்பாக எழுது.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>தீமைத் திருத்து</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>பட்டியலிலிருந்து அகற்று. கோப்பு இருக்கும் இடத்திலேயே இருக்கும்.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>கோப்பு இல்லை</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>படிக்க இயலவில்லை</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” தீமின் கோப்பு இல்லை அல்லது படிக்க முடியாது. அது திரும்பும் வரை PadForge அடர் தோற்றத்தைக் காட்டும்.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” சுயவிவரம் தன் கேமின் தோற்றத்தை அணிந்துள்ளது. வேறொரு சுயவிவரம் செயலில் இருக்கும்போது உங்கள் தீம் திரும்பும்.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge தீம்கள் (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>அந்தக் கோப்பு PadForge தீம் அல்ல.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>தீமைச் சேமிக்க முடியவில்லை. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>புதிய தீம்</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>நீங்கள் உருவாக்கும்போதே PadForge அந்த தீமை அணிந்து காட்டும்.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>பெயர்</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>என் தீம்</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>அடிப்படை</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>தீம் நிற்கும் தளம். அடர் தீமில் வெளிர் எழுத்தும், வெளிர் தீமில் அடர் எழுத்தும் இருக்கும்.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>படம்</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam கேமிலிருந்து…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>கோப்பிலிருந்து…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>படம் இல்லை</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-இலிருந்து படத்தைப் பெறுகிறது…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>இந்த கேமுக்கு Steam-இல் அகலப் படம் இல்லை.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-ஐ அணுக முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்க்கவும்.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>நிலை</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>படத்தை அதன் சாளரத்தில் மேலும் கீழும் நகர்த்தும்.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>கேமின் லோகோவைக் காட்டு</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>வண்ணங்கள்</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>படத்துக்குப் பொருத்து</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>நான்கு வண்ணங்களையும் படத்திலிருந்து எடுக்கும்.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>பின்னணி</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>பக்கம். சாளரம், பக்கப்பட்டி, அட்டைகள், கோடுகள் ஆகியவை இதிலிருந்து எடுக்கப்பட்ட படிநிலைகள்.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>அழுத்த வண்ணம்</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>இயங்குவன அனைத்தும்: எஞ்சின், முதன்மை பொத்தான், தேர்ந்தெடுத்த உருப்படி.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>இரண்டாம் நிலை</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>அளவிடப்பட்ட மதிப்புகளும் சாதனக் குறிகளும்: வீதங்கள், பேட்டரி நிலைகள், மூல உள்ளீடுகள்.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>கவனம்</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>காத்திருக்கும் நிலைகள்: சாதனங்களுக்காகக் காத்திருத்தல், குறைந்த பேட்டரி, சேமிக்காத மாற்றங்கள்.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>வண்ணத்தைத் தேர்ந்தெடு</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>படங்கள் (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>அந்தக் கோப்பை PadForge-ஆல் படமாகப் படிக்க முடியவில்லை.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>படம்: {0} கேமுக்கான Steam-இன் நூலகக் கலை.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>உள்ளீட்டு இன்ஜின்</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>போலிங் செயல்பாட்டையும் பின்னணிச் செயலாக்கத்தையும் உள்ளமைக்கவும்.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>வன்பொருள் ஆதரவு</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>வர்த்தக முத்திரைப் பொறுப்புத்துறப்பு மட்டும்</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>விதிமுறைகள் குறிப்பிடப்படவில்லை</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>எதுவும் வெளியிடப்படவில்லை</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>பொது உரிமைப் பரப்பு</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>பதிப்புரிமைக்கு உட்பட்டது</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian பயன்பாட்டு விதிமுறைகள்</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>பல உரிமங்கள்</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>பயனர்-பயன்முறை மெய்நிகர் HID கட்டுப்படுத்தி இன்ஜின் (ViGEmBus மற்றும் vJoy ஆகியவற்றுக்குப் பதிலானது).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>வேறு திறந்த சாளரம் எதுவும் காணப்படவில்லை.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0}-ஐ அகற்று</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>இந்தச் சுயவிவரம் ஏற்றப்பட்டிருக்கும்போது வாக்கெடுப்பு வீதம்</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>கேமின் தோற்றத்தை அணி</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>இந்தச் சுயவிவரம் செயலில் இருக்கும்போது PadForge கேமின் படத்தையும் வண்ணங்களையும் காட்டும். வேறொரு சுயவிவரம் செயலில் இருக்கும்போது உங்கள் தீம் திரும்பும்.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>கேமின் படம் இந்த PC-யில் இல்லை.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>படத்தைப் பெறு</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>கேமின் படத்தை Steam-இலிருந்து பெற, அமைப்புகளில் சமூக உள்ளமைவுகளை இயக்கவும்.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>இதிலிருந்து நகலெடு</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>சமூக உள்ளமைவுகள்</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>சமூகம் உருவாக்கிய Steam Input கட்டுப்படுத்தி உள்ளமைவுகளை உலாவி, அவற்றை PadForge சுயவிவரங்களாக மாற்றவும். PadForge உங்கள் தேடல் உரை, தொடர்புடைய கேம்கள், உள்ளமைவுகள், உருவாக்குநர்களின் ID-கள், தனது பதிப்பு ஆகியவற்றை அனுப்பும். அநாமதேய Steam உள்நுழைவு, உங்கள் Windows பதிப்பையும், உங்கள் Windows நிறுவல் ID, நெட்வொர்க் அடாப்டர் முகவரிகள், பூட் வட்டின் வரிசை எண் ஆகியவற்றின் ஹாஷ்களிலிருந்து உருவாக்கப்பட்ட கணினி ID-யையும் அனுப்பும். மூன்றாம் தரப்புச் சேவை எதுவும் இதில் ஈடுபடாது.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>நீங்கள் தேடும்போது, ஓர் உள்ளமைவைத் திறக்கும்போது அல்லது இறக்குமதி செய்த உள்ளமைவுகளில் புதுப்பிப்புகளைச் சரிபார்க்கும்போது மட்டுமே PadForge Steam சேவையகங்களுடன் இணைகிறது. டெலிமெட்ரி இல்லை, Steam கணக்கும் தேவையில்லை.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>நீங்கள் தேடும்போது, ஓர் உள்ளமைவைத் திறக்கும்போது, இறக்குமதி செய்த உள்ளமைவுகளில் புதுப்பிப்புகளைச் சரிபார்க்கும்போது அல்லது ஒரு கேமின் படத்தைப் பெறும்போது மட்டுமே PadForge Steam சேவையகங்களுடன் இணைகிறது. டெலிமெட்ரி இல்லை, Steam கணக்கும் தேவையில்லை.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>அனுப்பப்படுவது என்ன</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>சமூக உள்ளமைவுகளை இயக்கு</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>மரபு Workshop உள்ளமைவுகளைக் காட்டு</value></data>
@@ -5157,6 +5213,28 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD சுயவிவர வடிவம் hcn1z1-இன் shunt ஸ்கீமா டம்ப் (MIT), DatMoshu-இன் reWASD-Powertools ஆவணங்கள் (MIT) மற்றும் reWASD-இன் உதவி ஆகியவற்றிலிருந்தும், DS4Windows சுயவிவர வடிவம் Schmaldeo-இன் DS4Windows ஃபோர்க்கிலிருந்தும் (GPL-3.0-or-later), DSX சுயவிவர வடிவம் winkywong1998-இன் DSX-profile-share-இல் உள்ள சுயவிவரங்கள், RAIZ-Zzz-இன் DualSense திட்டம் (MIT) மற்றும் Paliverse-இன் DSX Mod System (Apache-2.0) ஆகியவற்றிலிருந்தும் படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>திரை நிற மேற்கோள்கள்</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>திரை நிறம் ஒளியமைப்புக்குப் பின்னால் உள்ள பிடிப்பு, இவற்றிலிருந்து படிக்கப்பட்டது: Prismatik (GPL-2.0-or-later), Sunshine-இன் AlkaidLab உருவாக்கிய foundation-sunshine ஃபோர்க் (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT), alienfx-tools (MIT). ஆவணமாக மட்டும், GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>தீம் படம்: டார்த் வேடரின் தலைக்கவசம்</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>ரிவெஞ்ச் ஆஃப் தி சித் படத்துக்கான Lucasfilm விளம்பரப் புகைப்படம்: ஸ்டார் வார்ஸ் தீம் Dark Side-இன் படம். Wookieepedia-வில் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>தீம் படம்: தொடர்களின் லோகோக்கள்</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>தொடக்க தீம்களின் படங்களில் உள்ள சோனிக் தி ஹெட்ஜ்ஹாக், தி லார்ட் ஆஃப் தி ரிங்ஸ், ஹாரி பாட்டர், ஸ்டார் வார்ஸ், ஸ்டார் ட்ரெக்: தி ஒரிஜினல் சீரிஸ், ஸ்டார் ட்ரெக்: தி நெக்ஸ்ட் ஜெனரேஷன் ஆகியவற்றின் லோகோக்கள். Wikimedia Commons-இல் கண்டறியப்பட்டவை, அது ஒவ்வொன்றையும் பொது உரிமைப் பரப்பில் உள்ள எளிய எழுத்து லோகோவாகக் குறிக்கிறது. ஒவ்வொன்றும் அதன் உரிமையாளரின் வர்த்தகக் குறி.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>தீம் படம்: ஹாபிட்டன்</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>நியூசிலாந்தில் உள்ள ஹாபிட்டன் திரைப்படத் தளம், Jackie.lck எடுத்த புகைப்படம்: தி லார்ட் ஆஃப் தி ரிங்ஸ் தீம் The One Ring-இன் படம். Wikimedia Commons-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>தீம் படம்: ஹாக்வார்ட்ஸ் கோட்டை</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy கேமின் சொந்த YouTube சேனலில் உள்ள டிரெய்லரின் ஒரு காட்சி: ஹாரி பாட்டர் தீம் Gryffindor-இன் படம். Wikimedia Commons-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>தீம் படம்: மத்திய பூமியின் வரைபடம்</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>மத்திய பூமியின் வரைபடம்: தி லார்ட் ஆஃப் தி ரிங்ஸ் தீம் Map of Middle-earth-இன் படம். எந்தக் கலைஞரையும் குறிப்பிடாத The One Wiki to Rule Them All-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>தீம் படம்: மில்லெனியம் பால்கன்</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge-இல் உள்ள முழு அளவு மில்லெனியம் பால்கன், Tomás Del Coro எடுத்த புகைப்படம்: ஸ்டார் வார்ஸ் தீம் Opening Crawl-இன் படம். Wikimedia Commons-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>தீம் படம்: க்ரோனோஸ் தீவில் Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA-வின் சொந்த YouTube சேனலில் உள்ள Sonic Frontiers டிரெய்லரின் ஒரு காட்சி: சோனிக் தி ஹெட்ஜ்ஹாக் தீம் Blue Blur-இன் படம். Wikimedia Commons-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>தீம் படம்: ஓடும் Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World-க்காக SEGA உருவாக்கிய கலை: சோனிக் தி ஹெட்ஜ்ஹாக் தீம் Night Run-இன் படம். Sonic Wiki Zone-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>தீம் படம்: நான்கு இல்லங்களின் சின்னங்கள்</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore-க்காக Atomhawk Design வரைந்த நான்கு ஹாக்வார்ட்ஸ் இல்லச் சின்னங்கள்: ஹாரி பாட்டர் தீம் Four Houses-இன் படம். Harry Potter Wiki-இல் கண்டறியப்பட்டது.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>தீம் படம்: USS Enterprise ஸ்டுடியோ மாதிரி</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>அசல் ஸ்டார் ட்ரெக் தொடருக்காகப் படமாக்கப்பட்ட மாதிரி, அதை வைத்திருக்கும் Smithsonian National Air and Space Museum எடுத்த புகைப்படம்: ஸ்டார் ட்ரெக் தீம் LCARS-இன் படம்.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>தீம் படம்: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ஸ்டார் ட்ரெக்: தி நெக்ஸ்ட் ஜெனரேஷன் தொடரின் ஒரு காட்சி: ஸ்டார் ட்ரெக் தீம் Starfleet-இன் படம். Memory Alpha-வில் கண்டறியப்பட்டது.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>விசைப்பலகைத் திரைகள்</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech-இன் GamePanel விசைப்பலகைகளிலும் Mad Catz S.T.R.I.K.E. 7-இலும் உள்ள திரைகளில், மேலும் Logitech Arx Control வழியாக ஒரு தொலைபேசியிலும் வரைகிறது: சுயவிவரம், கடிகாரம், விளையாடிய நேரம், ஸ்டாப்வாட்ச், ஒரு படம், அல்லது DualShock 4 அல்லது DualSense லைட்பாரின் நிறம். ஒவ்வொரு திரைக்கும் சாதனங்கள் பக்கத்தில் தனி வரிசை உண்டு. அங்கே அது எதைக் காட்ட வேண்டும் என்பதை அமைக்கலாம். திரைக்கு அருகிலுள்ள விசைகள் அந்த வரிசையின் பொத்தான்களாகும்.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>விசைப்பலகைத் திரைகளை இயக்கு</value></data>

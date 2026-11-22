@@ -854,4 +854,19 @@
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E vakalevutaka na wiliwili ni curu oqo ki na kaukauwa oqo ni bera ni vakayagataka na output. Na 0 kei na 1 e tiko dodonu kina. Ni sivia na 1 e berabera cake voleka ina loma.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Na web pad e buli vakataki iko e maroroya na yawa ni ilawalawa yadua ni ivakatagi mai na bati e voleka cake ni dua na sikirini e rabailevu cake, me vaka na nodra tosoi tani na rua na tikina ni overlay ni RetroArch. E wiliki ga me ivakamacala, e sega ni dua na code ni GPL e vakauta.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Maroroya e dua na kopi…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kauta tani mai na lisi. Na faile e tiko ga e na kena vanua.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Na faile ni “{0}” e sega ni tiko se sega ni rawa ni wilivi. E vakaraitaka na PadForge na Butobuto me yacova ni sa lesu tale mai.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Yaca</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Noqu irairai</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Yavu</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Na yavu e tu kina na irairai. E rarama na volavola ni irairai butobuto, ka butobuto na volavola ni irairai rarama.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Iyaloyalo</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mai na qito ni Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Sega na iyaloyalo</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Vanua</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E toso cake se toso sobu na iyaloyalo e na kena katubaleka.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Vakaraitaka na ivakatakilakila ni qito</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Vakatautauvatataka kei na iyaloyalo</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E taura na roka e va mai na iyaloyalo.</value></data>
 </root>

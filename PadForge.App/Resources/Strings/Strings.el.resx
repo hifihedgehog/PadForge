@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Προεπιλογή συστήματος</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Φωτεινό</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Σκούρο</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Νέο θέμα…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Δημιουργήστε ένα θέμα από δικά σας χρώματα και μια εικόνα, από ένα παιχνίδι του Steam ή από ένα αρχείο.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Προσθήκη θέματος…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Προσθέστε ένα αρχείο θέματος στη λίστα. Το PadForge το διαβάζει από τη θέση του και δεν αντιγράφει τίποτα.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Αποθήκευση αντιγράφου…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Γράψτε το επιλεγμένο θέμα σε ένα αρχείο που μπορείτε να αλλάξετε ή να μοιραστείτε.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Επεξεργασία θέματος</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Αφαίρεση από τη λίστα. Το αρχείο μένει όπου βρίσκεται.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Το αρχείο λείπει</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Δεν διαβάζεται</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Το αρχείο του «{0}» λείπει ή δεν διαβάζεται. Το PadForge εμφανίζει το Σκούρο μέχρι να επανέλθει.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Το προφίλ «{0}» φορά την εμφάνιση του παιχνιδιού του. Το θέμα σας επιστρέφει όταν ενεργοποιηθεί άλλο προφίλ.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Θέματα PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Αυτό το αρχείο δεν είναι θέμα του PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Δεν ήταν δυνατή η αποθήκευση του θέματος. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Νέο θέμα</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Το PadForge φορά το θέμα όσο το δημιουργείτε.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Όνομα</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Το θέμα μου</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Βάση</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Το έδαφος πάνω στο οποίο στηρίζεται το θέμα. Ένα σκούρο θέμα έχει ανοιχτό κείμενο και ένα φωτεινό θέμα έχει σκούρο κείμενο.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Εικόνα</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Από παιχνίδι του Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Από αρχείο…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Χωρίς εικόνα</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Λήψη της εικόνας από το Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Το Steam δεν έχει πλατιά εικόνα για αυτό το παιχνίδι.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Δεν ήταν δυνατή η επικοινωνία με το Steam. Ελέγξτε τη σύνδεσή σας.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Θέση</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Μετακινεί την εικόνα πάνω ή κάτω μέσα στο παράθυρό της.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Εμφάνιση του λογότυπου του παιχνιδιού</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Χρώματα</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ταίριασμα με την εικόνα</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Παίρνει τα τέσσερα χρώματα από την εικόνα.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Φόντο</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Η σελίδα. Το παράθυρο, η πλαϊνή στήλη, οι κάρτες και οι γραμμές είναι αποχρώσεις του.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Έμφαση</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ό,τι είναι ενεργό: η μηχανή, το κύριο κουμπί, το επιλεγμένο στοιχείο.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Δευτερεύον</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Μετρούμενες τιμές και σήματα συσκευών: ρυθμοί, επίπεδα μπαταρίας, ακατέργαστες είσοδοι.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Προσοχή</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Καταστάσεις αναμονής: συσκευές σε αναμονή, χαμηλή μπαταρία, μη αποθηκευμένες αλλαγές.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Επιλογή χρώματος</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Εικόνες (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Το PadForge δεν μπορεί να διαβάσει αυτό το αρχείο ως εικόνα.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Εικόνα: η εικόνα βιβλιοθήκης του Steam για το {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Μηχανή εισόδου</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Ρύθμιση της δειγματοληψίας και της επεξεργασίας στο παρασκήνιο.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Υποστήριξη υλικού</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Μόνο αποποίηση εμπορικών σημάτων</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Χωρίς δηλωμένους όρους</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Καμία δημοσιευμένη</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Κοινό κτήμα</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Με δικαιώματα δημιουργού</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Όροι χρήσης του Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Πολλές άδειες</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Μηχανή εικονικών χειριστηρίων HID σε λειτουργία χρήστη (αντικαθιστά τα ViGEmBus και vJoy).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Δεν βρέθηκε κανένα άλλο ανοιχτό παράθυρο.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Αφαίρεση του {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Ρυθμός δειγματοληψίας όσο φορτώνεται αυτό το προφίλ</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Χρήση της εμφάνισης του παιχνιδιού</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Όσο αυτό το προφίλ είναι ενεργό, το PadForge εμφανίζει την εικόνα και τα χρώματα του παιχνιδιού. Το θέμα σας επιστρέφει όταν ενεργοποιηθεί άλλο προφίλ.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Η εικόνα του παιχνιδιού δεν υπάρχει σε αυτόν τον υπολογιστή.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Λήψη της εικόνας</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ενεργοποιήστε την επιλογή «Διαμορφώσεις κοινότητας» στις Ρυθμίσεις για να λάβετε την εικόνα του παιχνιδιού από το Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Αντιγραφή από</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Διαμορφώσεις κοινότητας</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Περιηγηθείτε σε διαμορφώσεις χειριστηρίων Steam Input που έχει φτιάξει η κοινότητα και μετατρέψτε τες σε προφίλ PadForge. Το PadForge στέλνει το κείμενο της αναζήτησής σας, τα αναγνωριστικά των σχετικών παιχνιδιών, διαμορφώσεων και δημιουργών, καθώς και την έκδοσή του. Η ανώνυμη σύνδεση στο Steam στέλνει επίσης την έκδοση των Windows σας και ένα αναγνωριστικό υπολογιστή που προκύπτει από κατακερματισμούς (hash) του αναγνωριστικού εγκατάστασης των Windows, των διευθύνσεων των προσαρμογέων δικτύου και του σειριακού αριθμού του δίσκου εκκίνησης. Δεν εμπλέκεται υπηρεσία τρίτων.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Το PadForge συνδέεται με τους διακομιστές του Steam μόνο όταν κάνετε αναζήτηση, ανοίγετε μια διαμόρφωση ή ελέγχετε τις εισηγμένες διαμορφώσεις για ενημερώσεις. Χωρίς τηλεμετρία, χωρίς λογαριασμό Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Το PadForge συνδέεται με τους διακομιστές του Steam μόνο όταν κάνετε αναζήτηση, ανοίγετε μια διαμόρφωση, ελέγχετε τις εισηγμένες διαμορφώσεις για ενημερώσεις ή λαμβάνετε την εικόνα ενός παιχνιδιού. Χωρίς τηλεμετρία, χωρίς λογαριασμό Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Τι αποστέλλεται</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ενεργοποίηση διαμορφώσεων κοινότητας</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Εμφάνιση παλαιών διαμορφώσεων του Εργαστηρίου</value></data>
@@ -5157,6 +5213,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Η μορφή προφίλ του reWASD, όπως διαβάστηκε από την εξαγωγή σχήματος shunt του hcn1z1 (MIT), την τεκμηρίωση reWASD-Powertools του DatMoshu (MIT) και τη βοήθεια του reWASD, η μορφή προφίλ του DS4Windows, όπως διαβάστηκε από τη διακλάδωση του DS4Windows του Schmaldeo (GPL-3.0-or-later), και η μορφή προφίλ του DSX, όπως διαβάστηκε από τα προφίλ στο DSX-profile-share του winkywong1998, το έργο DualSense του RAIZ-Zzz (MIT) και το Mod System του DSX από την Paliverse (Apache-2.0). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Αναφορές για το Χρώμα οθόνης</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Η λήψη οθόνης πίσω από τον φωτισμό Χρώμα οθόνης, όπως διαβάστηκε από τα Prismatik (GPL-2.0-or-later), τη διακλάδωση foundation-sunshine του Sunshine από την AlkaidLab (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) και alienfx-tools (MIT). Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Εικόνα θέματος: Το κράνος του Νταρθ Βέιντερ</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Φωτογραφία προώθησης της Lucasfilm για το Η Εκδίκηση των Σιθ: η εικόνα του θέματος Dark Side του Star Wars. Βρέθηκε στο Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Εικόνα θέματος: Λογότυπα σειρών</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Τα λογότυπα που υπάρχουν στις εικόνες των αρχικών θεμάτων: Sonic the Hedgehog, Ο Άρχοντας των Δαχτυλιδιών, Χάρι Πότερ, Star Wars, Star Trek: Η Αρχική Σειρά και Star Trek: Η Επόμενη Γενιά. Βρέθηκαν στο Wikimedia Commons, που χαρακτηρίζει το καθένα απλό λογότυπο κειμένου στο κοινό κτήμα. Το καθένα είναι εμπορικό σήμα του κατόχου του.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Εικόνα θέματος: Χόμπιτον</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Το πλατό του Χόμπιτον στη Νέα Ζηλανδία, φωτογραφία του Jackie.lck: η εικόνα του θέματος The One Ring του Άρχοντα των Δαχτυλιδιών. Βρέθηκε στο Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Εικόνα θέματος: Το κάστρο του Χόγκουαρτς</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Ένα καρέ από το τρέιλερ του Hogwarts Legacy από το επίσημο κανάλι του παιχνιδιού στο YouTube: η εικόνα του θέματος Gryffindor του Χάρι Πότερ. Βρέθηκε στο Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Εικόνα θέματος: Χάρτης της Μέσης Γης</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Ένας χάρτης της Μέσης Γης: η εικόνα του θέματος Map of Middle-earth του Άρχοντα των Δαχτυλιδιών. Βρέθηκε στο The One Wiki to Rule Them All, που δεν αναφέρει καλλιτέχνη.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Εικόνα θέματος: Το Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Το Millennium Falcon σε φυσικό μέγεθος στο Galaxy’s Edge, φωτογραφία του Tomás Del Coro: η εικόνα του θέματος Opening Crawl του Star Wars. Βρέθηκε στο Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Εικόνα θέματος: Ο Sonic στο νησί Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Ένα καρέ από το τρέιλερ του Sonic Frontiers από το επίσημο κανάλι της SEGA στο YouTube: η εικόνα του θέματος Blue Blur του Sonic the Hedgehog. Βρέθηκε στο Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Εικόνα θέματος: Ο Sonic τρέχει</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Καλλιτεχνικό υλικό της SEGA για το Sonic Lost World: η εικόνα του θέματος Night Run του Sonic the Hedgehog. Βρέθηκε στο Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Εικόνα θέματος: Τα εμβλήματα των τεσσάρων οίκων</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Τα εμβλήματα των τεσσάρων οίκων του Χόγκουαρτς, σχεδιασμένα από την Atomhawk Design για το Pottermore: η εικόνα του θέματος Four Houses του Χάρι Πότερ. Βρέθηκε στο Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Εικόνα θέματος: Μακέτα στούντιο του USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Η μακέτα που γυρίστηκε για την αρχική σειρά Star Trek, φωτογραφημένη από το Smithsonian National Air and Space Museum, που την κατέχει: η εικόνα του θέματος LCARS του Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Εικόνα θέματος: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Ένα καρέ από το Star Trek: Η Επόμενη Γενιά: η εικόνα του θέματος Starfleet του Star Trek. Βρέθηκε στο Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Οθόνες πληκτρολογίου</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Σχεδιάζει στις οθόνες που είναι ενσωματωμένες στα πληκτρολόγια GamePanel της Logitech και στο Mad Catz S.T.R.I.K.E. 7, καθώς και σε τηλέφωνο μέσω του Logitech Arx Control: το προφίλ, ένα ρολόι, τον χρόνο παιχνιδιού, ένα χρονόμετρο, μια εικόνα ή το χρώμα της φωτεινής μπάρας ενός DualShock 4 ή DualSense. Κάθε οθόνη έχει τη δική της γραμμή στη σελίδα Συσκευές, όπου ορίζετε τι δείχνει. Τα πλήκτρα δίπλα σε μια οθόνη είναι τα κουμπιά της γραμμής της.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Οδήγηση οθονών πληκτρολογίου</value></data>

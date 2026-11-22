@@ -505,6 +505,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Pa defo sistèm nan</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Klè</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Fonse</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nouvo tèm…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Kreye yon tèm ak pwòp koulè ou ak yon imaj ki soti nan yon jwèt Steam oswa nan yon fichye.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Ajoute tèm…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Mete yon fichye tèm nan lis la. PadForge li l kote li ye a epi li pa kopye anyen.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Anrejistre yon kopi…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Ekri tèm ou chwazi a nan yon fichye ou ka chanje oswa pataje.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Modifye tèm</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Retire l nan lis la. Fichye a rete kote li ye a.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Pa jwenn fichye a</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Pa ka li l</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fichye tèm “{0}” la manke oswa yo pa ka li l. PadForge montre Fonse jiskaske li tounen.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Pwofil “{0}” la ap montre aparans jwèt li a. Tèm ou a ap tounen lè yon lòt pwofil aktif.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motè antre</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Demare motè a otomatikman lè pwogram nan louvri</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Kontinye li aparèy yo lè fenèt la pa aktif</value></data>
@@ -4540,6 +4552,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -4548,6 +4562,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Avètisman mak sèlman</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Pa gen kondisyon ki nonmen</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Okenn pa pibliye</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domèn piblik</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Pwoteje pa dwa otè</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Kondisyon itilizasyon Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Plizyè lisans</value></data>
   <data name="Import_NeedsALook" xml:space="preserve"><value>Bezwen yon kout je</value></data>
   <data name="Import_ImportedCleanly" xml:space="preserve"><value>Enpòte san pwoblèm</value></data>
@@ -4580,4 +4597,60 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referans Klingon ak Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Mo tradiksyon Klingon ak Sindarin yo, verifye ak klingon-assistant-data (Apache-2.0), diksyonè ki dèyè boQwI', ak Eldamo (CC BY 4.0), leksik elfik Paul Strack. Done diksyonè sèlman, okenn ladan yo pa enkli.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Fichye sa a se pa yon tèm PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Pa t kapab anrejistre tèm nan. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nouvo tèm</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge montre tèm nan sou pwòp paj li pandan w ap kreye l.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Non</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Tèm mwen</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Baz</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Fon tèm nan chita sou li. Yon tèm fonse gen tèks klè, epi yon tèm klè gen tèks fonse.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imaj</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Nan yon jwèt Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Nan yon fichye…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>San imaj</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>N ap pran imaj la sou Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam pa gen yon imaj laj pou jwèt sa a.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Pa t kapab rive jwenn Steam. Tcheke koneksyon ou.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pozisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Deplase imaj la anwo oswa anba nan fenèt li.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Montre logo jwèt la</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Koulè</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Adapte ak imaj la</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Pran kat koulè yo nan imaj la.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fon</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Paj la. Fenèt la, ba bò a, kat yo ak liy yo se nyans ki soti nan li.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aksan</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tout sa ki aktif: motè a, bouton prensipal la, eleman ou chwazi a.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Segondè</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valè ki mezire ak mak aparèy: frekans, nivo batri, antre brit.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atansyon</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Eta k ap tann: aparèy n ap tann, yon batri ki fèb, chanjman ki pa anrejistre.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Chwazi yon koulè</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imaj (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tout fichye (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge pa ka li fichye sa a kòm yon imaj.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imaj: atizay bibliyotèk Steam pou {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktive “Konfigirasyon kominote” nan Paramèt pou jwenn imaj jwèt la sou Steam.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Imaj tèm: Kas Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Yon foto pwomosyonèl Lucasfilm pou Revenge of the Sith: imaj tèm Star Wars Dark Side la. Yo jwenn li sou Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Imaj tèm: Logo franchiz yo</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logo Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series ak Star Trek: The Next Generation ki sou imaj tèm depa yo. Yo jwenn yo sou Wikimedia Commons, ki make chak kòm yon logo tèks senp nan domèn piblik. Chak se mak depoze mèt li.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Imaj tèm: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Dekò fim Hobbiton an nan Nouvèl Zelann, yon foto pa Jackie.lck: imaj tèm The Lord of the Rings The One Ring nan. Yo jwenn li sou Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Imaj tèm: Chato Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Yon imaj nan bann anons Hogwarts Legacy ki soti nan pwòp chèn YouTube jwèt la: imaj tèm Harry Potter Gryffindor nan. Yo jwenn li sou Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Imaj tèm: Kat Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Yon kat Middle-earth: imaj tèm The Lord of the Rings Map of Middle-earth la. Yo jwenn li sou The One Wiki to Rule Them All, ki pa nonmen okenn atis.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Imaj tèm: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon gwosè natirèl la nan Galaxy’s Edge, yon foto pa Tomás Del Coro: imaj tèm Star Wars Opening Crawl la. Yo jwenn li sou Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Imaj tèm: Sonic sou Zile Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Yon imaj nan bann anons Sonic Frontiers ki soti nan pwòp chèn YouTube SEGA: imaj tèm Sonic the Hedgehog Blue Blur la. Yo jwenn li sou Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Imaj tèm: Sonic k ap kouri</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Atizay SEGA te fè pou Sonic Lost World: imaj tèm Sonic the Hedgehog Night Run nan. Yo jwenn li sou Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Imaj tèm: Kat blazon kay yo</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Kat blazon kay Hogwarts yo, Atomhawk Design te desinen yo pou Pottermore: imaj tèm Harry Potter Four Houses la. Yo jwenn li sou Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Imaj tèm: Maket estidyo USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Maket yo te filme pou seri orijinal Star Trek la, nan yon foto Smithsonian National Air and Space Museum, mize ki kenbe l la: imaj tèm Star Trek LCARS la.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaj tèm: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Yon imaj nan Star Trek: The Next Generation: imaj tèm Star Trek Starfleet la. Yo jwenn li sou Memory Alpha.</value></data>
 </root>

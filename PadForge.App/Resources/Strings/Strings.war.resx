@@ -204,6 +204,18 @@
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Masanag</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Madulom</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Bag-o nga tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Paghimo hin tema tikang ha imo kalugaringon nga mga kolor ngan usa nga litrato, tikang ha dula ha Steam o ha usa nga file.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Idugang an tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Ilista an usa nga file han tema. Basahon ini han PadForge kun diin ini nahimutang ngan waray kopyahon.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Tipigi an kopya…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Isurat an napili nga tema ha usa nga file nga imo mababag-o o maipapaambit.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit an tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kuhaa ha lista. Magpapabilin an file kun diin ini nahimutang.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Waray makita an file</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Diri mabasa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nawara o diri mabasa an file han “{0}”. Ipapakita han PadForge an Madulom tubtob nga mabalik ini.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Gingagamit han profile nga “{0}” an hitsura han iya dula. Mabalik an imo tema kon iba nga profile an aktibo.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Bintana</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mga update</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>I-check yana</value></data>
@@ -1580,4 +1592,34 @@
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Diri kilala nga device</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>An custom web pad nagpapabilin han distansya han kada cluster tikang ha mas hirani nga ngilit han mas halapad nga screen, sugad han pagbalhin han mga overlay han RetroArch han ira duha nga katunga. Ginbasa la komo dokumentasyon, waray GPL nga code nga iginhahatag.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Diri tema han PadForge ito nga file.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Diri natipig an tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Bag-o nga tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Ginpapakita han PadForge an tema samtang imo ini ginhihimo.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ngaran</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Akon tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basehan</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>An tuntungan han tema. An madulom nga tema mayda masanag nga teksto, ngan an masanag nga tema mayda madulom nga teksto.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Litrato</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Tikang ha dula ha Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Waray litrato</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Waray halapad nga litrato an Steam para hini nga dula.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ginbabalhin an litrato pataas o paubos ha iya bintana.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita an logo han dula</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Mga kolor</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Iangay ha litrato</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ginkukuha an upat nga kolor tikang ha litrato.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Luyo</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>An pahina. An bintana, an sidebar, an mga card ngan an mga linya mas masanag o mas madulom nga lebel hini.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aksento</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ngatanan nga aktibo: an makina, an panguna nga button, an napili nga butang.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Ikaduha</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mga sukol nga kantidad ngan marka han device: mga rate, lebel han baterya, hilaw nga input.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atensyon</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Mga naghuhulat nga kahimtang: naghuhulat ha mga device, hinay nga baterya, mga pagliwat nga waray matipig.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pumili hin kolor</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ngatanan nga file (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Diri mabasa han PadForge ito nga file sugad nga litrato.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Litrato: an litrato ha library han Steam para ha {0}.</value></data>
 </root>

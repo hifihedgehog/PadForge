@@ -61,9 +61,25 @@ namespace PadForge.Controls
         // one (LabelBrush), and this frozen gray where it does not (a test's
         // bare host).
         private static readonly Brush LabelFallback = Frozen(new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8)));
-        private static readonly Pen CurvePen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A))), 2));
-        private static readonly Brush HandleFill = Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)));
-        private static readonly Brush HandleHot = Frozen(new SolidColorBrush(Color.FromRgb(0xFF, 0x9D, 0x5D)));
+        // The curve and its handles are in the look's own tones (#591). The
+        // pen is made once for a look and frozen, as the others are.
+        private static Pen s_curvePen;
+        private static int s_curvePenLook = -1;
+        private static Pen CurvePen
+        {
+            get
+            {
+                int look = PadForge.Common.Themes.ThemeLook.Version;
+                if (s_curvePen == null || s_curvePenLook != look)
+                {
+                    s_curvePen = Frozen(new Pen(PadForge.Common.Themes.ThemeLook.CurveBrush, 2));
+                    s_curvePenLook = look;
+                }
+                return s_curvePen;
+            }
+        }
+        private static Brush HandleFill => PadForge.Common.Themes.ThemeLook.CurveBrush;
+        private static Brush HandleHot => PadForge.Common.Themes.ThemeLook.CurveHotBrush;
         private static readonly Pen HandleRing = Frozen(new Pen(Frozen(new SolidColorBrush(Colors.White)), 1.5));
         // The labels at the 12 of a label, the frequency's above the floor.
         private const double LabelSize = 12;
@@ -92,6 +108,8 @@ namespace PadForge.Controls
             // Aurebesh included (#590).
             PadForge.Common.TextFaces.Follow(this, PadForge.Common.TextFaces.BodyKey);
             SetResourceReference(LabelBrushProperty, "TextFillColorTertiaryBrush");
+            // A look put on while the curve shows draws it again (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, InvalidateVisual);
         }
 
         private static readonly DependencyProperty LabelBrushProperty =

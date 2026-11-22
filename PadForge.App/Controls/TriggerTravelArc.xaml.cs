@@ -68,8 +68,8 @@ namespace PadForge.Controls
         // themed resources in InitVisuals.
         private static readonly SolidColorBrush SteelFallbackBrush = CreateFrozen(0x25, 0x30, 0x49);
         private static readonly SolidColorBrush TickFallbackBrush = CreateFrozen(0x5D, 0x6B, 0x85);
-        private static readonly SolidColorBrush ColdFallbackBrush = CreateFrozen(0x58, 0xB6, 0xE4);
-        private static readonly SolidColorBrush EmberFallbackBrush = CreateFrozen(0xFF, 0x6B, 0x2C);
+        private static Brush ColdFallbackBrush => PadForge.Common.Themes.ThemeLook.InputBrush;
+        private static readonly SolidColorBrush EmberFallbackBrush = CreateFrozen(PadForge.Common.EmberTheme.Accent.R, PadForge.Common.EmberTheme.Accent.G, PadForge.Common.EmberTheme.Accent.B);
 
         private static SolidColorBrush CreateFrozen(byte r, byte g, byte b)
         {
@@ -80,20 +80,8 @@ namespace PadForge.Controls
 
         // Static ember glow on the sweep, set once on the element and never
         // animated (reduced-motion rule shared with CurveEditor's live dot).
-        private static readonly System.Windows.Media.Effects.DropShadowEffect SweepGlow = CreateFrozenSweepGlow();
-
-        private static System.Windows.Media.Effects.DropShadowEffect CreateFrozenSweepGlow()
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
-                BlurRadius = 8,
-                ShadowDepth = 0,
-                Opacity = 0.5
-            };
-            fx.Freeze();
-            return fx;
-        }
+        // It is in the look's accent (#591), read when the arc is built.
+        private static System.Windows.Media.Effects.DropShadowEffect SweepGlow => PadForge.Common.Themes.ThemeLook.Glow(8, 0.5);
 
         // ── Geometry ──
 

@@ -69,8 +69,8 @@
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="9,3"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
-        <Setter Property="Background" Value="#1AFF6B2C"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Ember66Brush}"/>
+        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberHotBrush}"/>
         <Setter Property="TextElement.FontSize" Value="12"/>
         <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
@@ -1111,8 +1111,8 @@
                             <Border x:Name="Wash" CornerRadius="11" IsHitTestVisible="False" Visibility="Collapsed">
                                 <Border.Background>
                                     <RadialGradientBrush GradientOrigin="0,0" Center="0,0" RadiusX="0.9" RadiusY="1.3">
-                                        <GradientStop Color="#21FF6B2C" Offset="0"/>
-                                        <GradientStop Color="#00FF6B2C" Offset="0.6"/>
+                                        <GradientStop Color="{DynamicResource Ember21Color}" Offset="0"/>
+                                        <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.6"/>
                                     </RadialGradientBrush>
                                 </Border.Background>
                             </Border>

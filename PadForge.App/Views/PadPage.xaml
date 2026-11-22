@@ -214,7 +214,7 @@
                             <!-- After the pointer's, so the picked step keeps its rim
                                  under the pointer. -->
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#66FF6B2C"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ember66Brush}"/>
                                 <Setter TargetName="Head" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
                                 <Setter TargetName="Head" Property="CornerRadius" Value="5,5,0,0"/>
                                 <Setter TargetName="Fields" Property="ContentTemplate" Value="{DynamicResource StepFields}"/>
@@ -522,7 +522,7 @@
              5). Closed, it is a select that names the trigger's effect.
              Open, it shows the mode cards in three columns, each a steel
              tile with the effect's live graph. The selected card reads
-             ember (a tint wash and the #66FF6B2C rim the output chips
+             ember (a tint wash and the Ember66Brush rim the output chips
              use), and the card the keyboard or the pointer is on takes
              the lifted fill. Selection round-trips through SelectedValue
              and Tag. The box shows the selected card's TextSearch.Text,
@@ -552,7 +552,7 @@
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="CardBd" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
-                                <Setter TargetName="CardBd" Property="BorderBrush" Value="#66FF6B2C"/>
+                                <Setter TargetName="CardBd" Property="BorderBrush" Value="{DynamicResource Ember66Brush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -2110,11 +2110,11 @@
                                 <Setter Property="TextElement.Foreground" Value="{DynamicResource SubRowTextBrush}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DataContext.Heat, ElementName=SlotPowerButton}" Value="Forging">
-                                        <Setter Property="Background" Value="{StaticResource EmberTileBrush}"/>
+                                        <Setter Property="Background" Value="{DynamicResource EmberTileBrush}"/>
                                         <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberInkBrush}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding DataContext.Heat, ElementName=SlotPowerButton}" Value="Waiting">
-                                        <Setter Property="Background" Value="{StaticResource EmberTileBrush}"/>
+                                        <Setter Property="Background" Value="{DynamicResource EmberTileBrush}"/>
                                         <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberInkBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -3094,7 +3094,7 @@
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -3130,7 +3130,7 @@
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -3159,7 +3159,7 @@
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -3195,7 +3195,7 @@
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -3232,7 +3232,7 @@
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>
-                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
@@ -3328,8 +3328,8 @@
                     <Border IsHitTestVisible="False">
                         <Border.Background>
                             <RadialGradientBrush GradientOrigin="0.5,0.82" Center="0.5,0.82" RadiusX="0.55" RadiusY="0.45">
-                                <GradientStop Color="#20FF6B2C" Offset="0"/>
-                                <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                <GradientStop Color="{DynamicResource Ember20Color}" Offset="0"/>
+                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="1"/>
                             </RadialGradientBrush>
                         </Border.Background>
                     </Border>
@@ -3883,8 +3883,8 @@
                                                                IsHitTestVisible="False">
                                                         <Rectangle.Fill>
                                                             <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
-                                                                <GradientStop Color="#8058B6E4" Offset="0"/>
-                                                                <GradientStop Color="#99FF6B2C" Offset="1"/>
+                                                                <GradientStop Color="{DynamicResource ColdInput80Color}" Offset="0"/>
+                                                                <GradientStop Color="{DynamicResource Ember99Color}" Offset="1"/>
                                                             </LinearGradientBrush>
                                                         </Rectangle.Fill>
                                                     </Rectangle>
@@ -3985,7 +3985,7 @@
                                             <Condition Binding="{Binding IsRowRecording}" Value="True"/>
                                             <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="Background" Value="#48FF6B2C"/>
+                                        <Setter Property="Background" Value="{DynamicResource Ember48Brush}"/>
                                         <MultiDataTrigger.EnterActions>
                                             <BeginStoryboard x:Name="RecordFlash">
                                                 <Storyboard>
@@ -4006,7 +4006,7 @@
                                             <Condition Binding="{Binding IsRowRecording}" Value="True"/>
                                             <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="False"/>
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="Background" Value="#30FF6B2C"/>
+                                        <Setter Property="Background" Value="{DynamicResource Ember30Brush}"/>
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -4931,7 +4931,7 @@
                                                              collection when uncalibrated draws nothing. -->
                                                         <Polygon Points="{Binding BoundaryPolygonPoints}"
                                                                  Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.5"
-                                                                 Fill="#14FF6B2C" IsHitTestVisible="False"/>
+                                                                 Fill="{DynamicResource Ember14Brush}" IsHitTestVisible="False"/>
                                                         <!-- Legacy stock rings removed (#175 close-out item 25):
                                                              the radar keeps the #1E2739 rings + crosshair above.
                                                              Below sit the DZ steel fill, the dashed ember DZ
@@ -4946,7 +4946,7 @@
                                                              over non-radial shapes. Converters are the proven
                                                              legacy pair. -->
                                                         <!-- Axial: cross arms - snapped to axis (partial tier). -->
-                                                        <Path Fill="#18253049" Stroke="#5AC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Path Fill="#18253049" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                               IsHitTestVisible="False"
                                                               Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Path.Data>
@@ -4957,7 +4957,7 @@
                                                             </Path.Data>
                                                         </Path>
                                                         <!-- Axial: center rectangle - fully dead. -->
-                                                        <Rectangle Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Rectangle Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                                    IsHitTestVisible="False"
                                                                    Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Rectangle.Width>
@@ -4980,7 +4980,7 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Rectangle>
                                                         <!-- Radial pair + Hybrid's radial stage: ellipse - fully dead. -->
-                                                        <Ellipse Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Ellipse Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                                  IsHitTestVisible="False">
                                                             <Ellipse.Style>
                                                                 <Style TargetType="Ellipse">
@@ -5015,7 +5015,7 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
                                                         <!-- Sloped pair + Hybrid: wedges - snapped to axis (partial tier). -->
-                                                        <Path Fill="#18253049" Stroke="#5AC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                        <Path Fill="#18253049" Stroke="{DynamicResource EmberDeep5ABrush}" StrokeThickness="1" StrokeDashArray="3 4"
                                                               IsHitTestVisible="False"
                                                               Visibility="{Binding HasSlopedWedges, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Path.Data>
@@ -5029,7 +5029,7 @@
                                                              circle at the output-floor radius, same percent-to-plot
                                                              mapping as the DZ ring (rx = AntiDeadZoneX%, ry =
                                                              AntiDeadZoneY%). Collapsed while both axes sit at 0. -->
-                                                        <Ellipse Fill="Transparent" Stroke="#80FF6B2C" StrokeThickness="1"
+                                                        <Ellipse Fill="Transparent" Stroke="{DynamicResource Ember80Brush}" StrokeThickness="1"
                                                                  IsHitTestVisible="False">
                                                             <Ellipse.Style>
                                                                 <Style TargetType="Ellipse">
@@ -5074,12 +5074,12 @@
                                                                 common:StickPeakHoldBehavior.IsEnabled="True"
                                                                 common:StickPeakHoldBehavior.Readout="{Binding ElementName=PeakReadout}"
                                                                 Width="200" Height="200"/>
-                                                        <Ellipse Width="9" Height="9" Fill="#FF58B6E4"
-                                                                 Stroke="#FF2E6A8F" StrokeThickness="1" Opacity="0.9"
+                                                        <Ellipse Width="9" Height="9" Fill="{DynamicResource ColdInputBrush}"
+                                                                 Stroke="{DynamicResource ColdRuleBrush}" StrokeThickness="1" Opacity="0.9"
                                                                  Canvas.Left="{Binding RawPosX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"
                                                                  Canvas.Top="{Binding RawPosY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}">
                                                             <Ellipse.Effect>
-                                                                <DropShadowEffect Color="#58B6E4" BlurRadius="9" ShadowDepth="0" Opacity="0.9"/>
+                                                                <DropShadowEffect Color="{DynamicResource ColdInputColor}" BlurRadius="9" ShadowDepth="0" Opacity="0.9"/>
                                                             </Ellipse.Effect>
                                                         </Ellipse>
                                                         <Ellipse Width="11" Height="11" Fill="{DynamicResource EmberHotBrush}"
@@ -5087,7 +5087,7 @@
                                                                  Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
                                                                  Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}">
                                                             <Ellipse.Effect>
-                                                                <DropShadowEffect Color="#FF8228" BlurRadius="12" ShadowDepth="0" Opacity="0.95"/>
+                                                                <DropShadowEffect Color="{DynamicResource EmberDotGlowColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.95"/>
                                                             </Ellipse.Effect>
                                                         </Ellipse>
                                                     </Canvas>
@@ -5104,7 +5104,7 @@
                                                  StickPeakHoldBehavior. -->
                                             <DockPanel LastChildFill="False">
                                                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                                                    <Border Background="#1A58B6E4" BorderBrush="#5958B6E4" BorderThickness="1"
+                                                    <Border Background="{DynamicResource ColdInput1ABrush}" BorderBrush="{DynamicResource ColdInput59Brush}" BorderThickness="1"
                                                             CornerRadius="8" Padding="6,1" Margin="0,0,4,0" VerticalAlignment="Center">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Ellipse Width="5" Height="5" Fill="{DynamicResource ColdBrush}"
@@ -5113,7 +5113,7 @@
                                                                        Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                     </Border>
-                                                    <Border Background="#1AFF6B2C" BorderBrush="#66FF6B2C" BorderThickness="1"
+                                                    <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="{DynamicResource Ember66Brush}" BorderThickness="1"
                                                             CornerRadius="8" Padding="6,1" Margin="0,0,4,0" VerticalAlignment="Center">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Ellipse Width="5" Height="5" Fill="{DynamicResource EmberHotBrush}"
@@ -5127,7 +5127,7 @@
                                                         <StackPanel Orientation="Horizontal">
                                                             <!-- Swatch mirrors the plot: steel fill + ember edge. -->
                                                             <Rectangle Width="7" Height="5" RadiusX="1" RadiusY="1"
-                                                                       Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1"
+                                                                       Fill="#2E253049" Stroke="{DynamicResource EmberDeep8CBrush}" StrokeThickness="1"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" FontSize="12"
                                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>

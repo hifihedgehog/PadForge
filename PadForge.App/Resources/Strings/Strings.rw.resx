@@ -214,6 +214,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Mburabuzi ya sisitemu</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Urumuri</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Umwijima</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Insanganyamatsiko nshya…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Kora insanganyamatsiko ukoresheje amabara yawe n'ifoto ivuye ku mukino wa Steam cyangwa muri dosiye.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Ongeraho insanganyamatsiko…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Ongera dosiye y'insanganyamatsiko ku rutonde. PadForge iyisoma aho iri kandi nta na kimwe yandukura.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Bika kopi…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Andika insanganyamatsiko yatoranyijwe muri dosiye ushobora guhindura cyangwa gusangiza abandi.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hindura insanganyamatsiko</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kuraho ku rutonde. Dosiye iguma aho iri.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Dosiye ntiyabonetse</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ntishobora gusomwa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Dosiye ya “{0}” irabura cyangwa ntishobora gusomwa. PadForge irerekana Umwijima kugeza igarutse.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Umwirondoro “{0}” urimo kwerekana isura y'umukino wawo. Insanganyamatsiko yawe igaruka iyo undi mwirondoro ukora.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Idirishya</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Tangiza PadForge mu buryo bwikora iyo winjiye muri Windows.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Ivugurura</value></data>
@@ -1961,4 +1973,36 @@
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Munsi y'iki gice cy'urugendo, icyinjiza gisomwa nk'aho kiri hagati.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Pad yo kuri web yihariye igumana intera iri hagati ya buri tsinda ry'ibigenzura n'uruhande rwa ecran rurirwegereye kuri ecran yagutse kurushaho, nk'uko overlays za RetroArch zitandukanya ibice byazo byombi. Byasomwe nk'inyandiko gusa, nta code ya GPL ishyirwamo.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Iyo dosiye si insanganyamatsiko ya PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Insanganyamatsiko ntiyashoboye kubikwa. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Insanganyamatsiko nshya</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge yambara insanganyamatsiko uko uyikora.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Izina</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Insanganyamatsiko yanjye</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Ishingiro</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ishingiro insanganyamatsiko yubakiyeho. Insanganyamatsiko y'umwijima igira inyandiko zerurutse, naho iy'urumuri ikagira inyandiko zijimye.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Ifoto</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Ku mukino wa Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Muri dosiye…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Nta foto</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gukura ifoto kuri Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nta foto ngari ifite y'uyu mukino.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Umwanya</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Yimura ifoto hejuru cyangwa hasi mu idirishya ryayo.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Erekana ikirango cy'umukino</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Amabara</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Huza n'ifoto</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ifata amabara ane mu ifoto.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Inyuma</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Urupapuro. Idirishya, umurongo w'uruhande, amakarita n'imirongo ni intambwe zirukomokaho.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Ibara nyamukuru</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ibikora byose: moteri, buto nyamukuru, ikintu cyatoranyijwe.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Ibara rya kabiri</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Ibipimo n'ibimenyetso by'ibikoresho: umuvuduko, urugero rwa batiri, ibyinjira by'umwimerere.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Kwitonderwa</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Ibihe byo gutegereza: ibikoresho bitegerejwe, batiri nkeya, impinduka zitabitswe.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Hitamo ibara</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Amafoto (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Dosiye zose (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ntishobora gusoma iyo dosiye nk'ifoto.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Ifoto: ishusho y'isomero rya Steam ya {0}.</value></data>
 </root>

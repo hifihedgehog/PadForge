@@ -584,7 +584,7 @@
                  ring is the switch it always was, and the card's only one.
                  The parts wrap when the page is narrow. -->
             <Border x:Name="EngineCard" Margin="0,18,0,0" CornerRadius="12" BorderThickness="1"
-                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                    Background="{DynamicResource HomeEngineCardBrush}">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
@@ -614,8 +614,8 @@
                     <Border x:Name="EngineWash" CornerRadius="11" IsHitTestVisible="False">
                         <Border.Background>
                             <RadialGradientBrush Center="0.04,0.5" GradientOrigin="0.04,0.5" RadiusX="0.46" RadiusY="1.9">
-                                <GradientStop Color="#42FF6B2C" Offset="0"/>
-                                <GradientStop Color="#00FF6B2C" Offset="0.7"/>
+                                <GradientStop Color="{DynamicResource Ember42Color}" Offset="0"/>
+                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.7"/>
                             </RadialGradientBrush>
                         </Border.Background>
                         <Border.Style>
@@ -1059,8 +1059,8 @@
                                                         <Setter Property="Background">
                                                             <Setter.Value>
                                                                 <RadialGradientBrush Center="0.5,1.12" GradientOrigin="0.5,1.12" RadiusX="0.8" RadiusY="0.62">
-                                                                    <GradientStop Color="#99FF6B2C" Offset="0"/>
-                                                                    <GradientStop Color="#00FF6B2C" Offset="0.72"/>
+                                                                    <GradientStop Color="{DynamicResource Ember99Color}" Offset="0"/>
+                                                                    <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.72"/>
                                                                 </RadialGradientBrush>
                                                             </Setter.Value>
                                                         </Setter>
@@ -1073,8 +1073,8 @@
                                                                 <Setter Property="Background">
                                                                     <Setter.Value>
                                                                         <RadialGradientBrush Center="0.5,1.12" GradientOrigin="0.5,1.12" RadiusX="0.8" RadiusY="0.62">
-                                                                            <GradientStop Color="#4DF2B84B" Offset="0"/>
-                                                                            <GradientStop Color="#00F2B84B" Offset="0.72"/>
+                                                                            <GradientStop Color="{DynamicResource Wait4DColor}" Offset="0"/>
+                                                                            <GradientStop Color="{DynamicResource Wait00Color}" Offset="0.72"/>
                                                                         </RadialGradientBrush>
                                                                     </Setter.Value>
                                                                 </Setter>
@@ -1234,8 +1234,8 @@
                                                     <Setter Property="Background">
                                                         <Setter.Value>
                                                             <RadialGradientBrush Center="0.5,1.18" GradientOrigin="0.5,1.18" RadiusX="0.7" RadiusY="0.7">
-                                                                <GradientStop Color="#8CFF6B2C" Offset="0"/>
-                                                                <GradientStop Color="#00FF6B2C" Offset="0.72"/>
+                                                                <GradientStop Color="{DynamicResource Ember8CColor}" Offset="0"/>
+                                                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.72"/>
                                                             </RadialGradientBrush>
                                                         </Setter.Value>
                                                     </Setter>
@@ -1248,8 +1248,8 @@
                                                             <Setter Property="Background">
                                                                 <Setter.Value>
                                                                     <RadialGradientBrush Center="0.5,1.18" GradientOrigin="0.5,1.18" RadiusX="0.7" RadiusY="0.7">
-                                                                        <GradientStop Color="#47F2B84B" Offset="0"/>
-                                                                        <GradientStop Color="#00F2B84B" Offset="0.72"/>
+                                                                        <GradientStop Color="{DynamicResource Wait47Color}" Offset="0"/>
+                                                                        <GradientStop Color="{DynamicResource Wait00Color}" Offset="0.72"/>
                                                                     </RadialGradientBrush>
                                                                 </Setter.Value>
                                                             </Setter>

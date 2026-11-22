@@ -1396,4 +1396,22 @@
   <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>An output nagpopoon sa kaini kadakol pagkagalaw kan input. An 0 nangangahulugan na patay ini.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>An custom web pad nagtatagal kan distansya kan lambang grupo kan mga kontrol hale sa mas harani na gilid kan mas halapad na screen, siring kan paghiwalay kan mga overlay kan RetroArch sa saindang duwang kabanga. Binasa sana bilang dokumentasyon, mayong GPL code na kaiba.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>I-save an sarong kopya…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Hal-on sa listahan. Mamamalagi an file kun saen ini yaon.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>An file kan “{0}” nawawara o dai mabasa. Madiklom an ipapahiling kan PadForge sagkod na mabalik ini.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Pangaran</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Sakong theme</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pundasyon</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>An pundasyon na tinutugdukan kan theme. An madiklom na theme may maliwanag na teksto, asin an maliwanag na theme may madiklom na teksto.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Litrato</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Hale sa sarong Steam game…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Mayong litrato</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kinukua an litrato hale sa Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Mayong malapad na litrato an Steam para sa game na ini.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ginagalaw an litrato pataas o pababa sa saiyang bintana.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipahiling an logo kan game</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Iangay sa litrato</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kinukua an apat na kolor hale sa litrato.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gabos na file (*.*)|*.*</value></data>
 </root>

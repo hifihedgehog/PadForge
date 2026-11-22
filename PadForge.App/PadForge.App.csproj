@@ -235,6 +235,9 @@
     <Resource Include="2DModels\**\*.png" />
     <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
     <EmbeddedResource Include="WebAssets\**\*" />
+    <!-- The starter themes (#591): each is a theme file, the same file
+         Settings' Save a Copy writes (tools/gen_starter_themes.py). -->
+    <EmbeddedResource Include="Resources\Themes\*.pftheme" LogicalName="PadForge.Themes.%(Filename)%(Extension)" />
     <!-- Search (#574) builds its index from the pages' own markup, read at
          run time, so the index can never fall behind a page. An item may be
          a Page and an EmbeddedResource at once. -->

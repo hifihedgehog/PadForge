@@ -35,28 +35,16 @@ namespace PadForge.Views
         // every other device preview there lights pressed elements in the
         // cold blue (#58B6E4) with the ColdDotGlow treatment. Ember belongs
         // to the OUTPUT previews (the KBM virtual-controller view keeps it).
-        private static readonly Brush AccentBrush = F(0x58,0xB6,0xE4);
+        private static Brush AccentBrush => PadForge.Common.Themes.ThemeLook.InputBrush;
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         // Ember bloom (#175 glow sweep): pressed visuals carry a static
         // DropShadowEffect, attached alongside the brush swap and detached
         // when unlit. Frozen and shared, never animated. Small variant for
         // glyphs 14px and under (movement dot, scroll arrows, side buttons).
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
-
-        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                // Matches DevicesPage's ColdDotGlow (#58B6E4 @ 0.45).
-                Color = Color.FromRgb(0x58, 0xB6, 0xE4),
-                BlurRadius = blur,
-                ShadowDepth = 0,
-                Opacity = 0.45
-            };
-            fx.Freeze();
-            return fx;
-        }
+        // The raw input's light, as the Devices page's dots carry it: the
+        // look's input color at 0.45 (#591).
+        private static System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall => PadForge.Common.Themes.ThemeLook.InputGlow(8, 0.45);
 
         private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
         {

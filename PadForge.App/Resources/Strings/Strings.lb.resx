@@ -625,6 +625,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Systemstandard</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hell</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Donkel</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Neit Thema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Maacht en Thema aus Ären eegene Faarwen an engem Bild, vun engem Steam-Spill oder aus engem Fichier.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Thema derbäisetzen…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Setzt e Fichier mat engem Thema op d'Lëscht. PadForge liest en do, wou e läit, a kopéiert näischt.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kopie späicheren…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Schreift dat gewielte Thema an e Fichier, deen Dir ännere oder deele kënnt.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Thema änneren</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Vun der Lëscht ewechhuelen. De Fichier bleift, wou e läit.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fichier net fonnt</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Net liesbar</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>De Fichier vun „{0}“ feelt oder ka net gelies ginn. PadForge weist Donkel, bis e erëm do ass.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>D'Profil „{0}“ weist d'Ausgesinn vu sengem Spill. Äert Thema kënnt zréck, soubal en anert Profil aktiv ass.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Agab-Engine</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguréiert d'Ofroen an d'Veraarbechtung am Hannergrond.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardware-Ënnerstëtzung</value></data>
@@ -845,6 +857,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -853,6 +867,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Nëmmen Hiwäis zu Markenrechter</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Keng Bedingunge genannt</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Näischt verëffentlecht</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Ëffentlech Domän</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Urheberrechtlech geschützt</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Notzungsbedingunge vum Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Méi Lizenzen</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Engine fir virtuell HID-Controller am Benotzermodus (ersetzt ViGEmBus a vJoy).</value></data>
@@ -3940,7 +3957,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Community-Konfiguratiounen</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Duerchsicht Steam-Input-Controllerkonfiguratiounen, déi d'Community gemaach huet, a setzt se a PadForge-Profiler ëm. PadForge schéckt Äre Sichtext, d'IDe vun de betraffene Spiller, Konfiguratiounen an Auteuren, a seng Versioun. Déi anonym Steam-Umeldung schéckt och Är Windows-Versioun an eng Maschinn-ID aus Hashwäerter vun Ärer Windows-Installatiouns-ID, den Adresse vun Ären Netzwierkadapteren an der Seriennummer vun Ärer Startplack. Keen Drëttubidderdéngscht ass bedeelegt.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge verbënnt sech nëmmen dann mat de Servere vu Steam, wann Dir sicht, eng Konfiguratioun opmaacht oder importéiert Konfiguratiounen op Updates iwwerpréift. Keng Telemetrie, kee Steam-Kont.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge verbënnt sech nëmmen dann mat de Servere vu Steam, wann Dir sicht, eng Konfiguratioun opmaacht, importéiert Konfiguratiounen op Updates iwwerpréift oder d'Bild vun engem Spill eroflued. Keng Telemetrie, kee Steam-Kont.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Wat geschéckt gëtt</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Community-Konfiguratiounen aktivéieren</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Legacy-Workshop-Konfiguratiounen weisen</value></data>
@@ -5211,4 +5228,49 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_AurebeshFontDesc" xml:space="preserve"><value>D'Schrëft vum SilvinoR, déi onverännert a PadForge matgeliwwert gëtt an d'Interface zeechent, wann hir Sprooch Galactic Basic ass.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referenze fir Klingonesch a Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>D'Wierder vun der klingonescher an der Sindarin-Iwwersetzung, iwwerpréift mat klingon-assistant-data (Apache-2.0), dem Wierderbuch hannert boQwI', an Eldamo (CC BY 4.0), dem elbesche Lexikon vum Paul Strack. Nëmmen Wierderbuchdaten, näischt dovun gëtt matgeliwwert.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dëse Fichier ass kee PadForge-Thema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>D'Thema konnt net gespäichert ginn. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Neit Thema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge weist d'Thema, wärend Dir et opbaut.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Numm</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mäin Thema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basis</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>De Grond, op deem d'Thema steet. En donkelt Thema huet hellen Text, an en hellt Thema huet donklen Text.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Bild</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Vun engem Steam-Spill…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Aus engem Fichier…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Kee Bild</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Bild gëtt vu Steam geholl…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam huet kee breet Bild fir dëst Spill.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam konnt net erreecht ginn. Iwwerpréift Är Verbindung.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Positioun</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Réckelt d'Bild a senger Fënster erop oder erof.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Logo vum Spill weisen</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Faarwen</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Un d'Bild upassen</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Hëlt déi véier Faarwen aus dem Bild.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Hannergrond</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>D'Säit. D'Fënster, d'Säiteleescht, d'Kaarten an d'Linne sinn Ofstufunge vun hir.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Akzent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Alles, wat aktiv ass: d'Engine, den Haaptknäppchen, dat gewielt Element.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundär</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Gemoosse Wäerter an Apparatmarkéierungen: Raten, Batteriestänn, réi Agaben.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Opmierksamkeet</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Waardezoustänn: Apparater, op déi gewaart gëtt, eng schwaach Batterie, net gespäichert Ännerungen.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Faarf wielen</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Biller (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|All Fichieren (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge kann dëse Fichier net als Bild liesen.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Bild: Bibliothéiksbild vu Steam fir {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivéiert Community-Konfiguratiounen an den Astellungen, fir d'Bild vum Spill vu Steam ze kréien.</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>E Werbefoto vu Lucasfilm fir „Die Rache der Sith“: d'Bild vum Star-Wars-Thema Dark Side. Op Wookieepedia fonnt.</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>D'Logoe vu Sonic the Hedgehog, Der Herr der Ringe, Harry Potter, Star Wars, Raumschiff Enterprise a Raumschiff Enterprise: Das nächste Jahrhundert op de Biller vun de Starter-Themen. Op Wikimedia Commons fonnt, dat all eenzelt als einfacht Textlogo an der ëffentlecher Domän markéiert. All eenzelt ass eng Marque vu sengem Besëtzer.</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>De Filmset vun Hobbiton an Neiséiland, e Foto vum Jackie.lck: d'Bild vum „Der Herr der Ringe“-Thema The One Ring. Op Wikimedia Commons fonnt.</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>E Standbild aus dem Trailer vu Hogwarts Legacy vum eegene YouTube-Kanal vum Spill: d'Bild vum Harry-Potter-Thema Gryffindor. Op Wikimedia Commons fonnt.</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Eng Kaart vu Mëttelierd: d'Bild vum „Der Herr der Ringe“-Thema Map of Middle-earth. Op The One Wiki to Rule Them All fonnt, dee kee Kënschtler nennt.</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>De Millennium Falcon a Liewensgréisst zu Galaxy’s Edge, e Foto vum Tomás Del Coro: d'Bild vum Star-Wars-Thema Opening Crawl. Op Wikimedia Commons fonnt.</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>E Standbild aus dem Trailer vu Sonic Frontiers vum eegene YouTube-Kanal vu SEGA: d'Bild vum Sonic-the-Hedgehog-Thema Blue Blur. Op Wikimedia Commons fonnt.</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Konscht vu SEGA fir Sonic Lost World: d'Bild vum Sonic-the-Hedgehog-Thema Night Run. Op Sonic Wiki Zone fonnt.</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Déi véier Wopen vun den Hogwarts-Haiser, gezeechent vun Atomhawk Design fir Pottermore: d'Bild vum Harry-Potter-Thema Four Houses. Am Harry Potter Wiki fonnt.</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>De Modell, dee fir déi originell Star-Trek-Serie gefilmt gouf, fotograféiert vum Smithsonian National Air and Space Museum, dat en opbewaart: d'Bild vum Star-Trek-Thema LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>E Standbild aus „Raumschiff Enterprise: Das nächste Jahrhundert“: d'Bild vum Star-Trek-Thema Starfleet. Op Memory Alpha fonnt.</value></data>
 </root>

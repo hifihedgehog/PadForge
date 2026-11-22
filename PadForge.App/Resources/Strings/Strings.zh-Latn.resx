@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Gēnsuí xìtǒng</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Qiǎnsè</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Shēnsè</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Xīn zhǔtí…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Yòng nín zìjǐ de yánsè hé yì zhāng túpiàn chuàngjiàn zhǔtí, túpiàn kě láizì Steam yóuxì huò wénjiàn.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tiānjiā zhǔtí…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Jiāng zhǔtí wénjiàn jiārù lièbiǎo. PadForge zài yuán wèizhì dúqǔ gāi wénjiàn, bù fùzhì rènhé nèiróng.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Bǎocún fùběn…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Jiāng xuǎndìng de zhǔtí xiěrù yí gè kě xiūgǎi huò fēnxiǎng de wénjiàn.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Biānjí zhǔtí</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Cóng lièbiǎo zhōng yíchú. Wénjiàn réng bǎoliú zài yuán wèizhì.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Wèi zhǎodào wénjiàn</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Wúfǎ dúqǔ</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” de wénjiàn quēshī huò wúfǎ dúqǔ. Zài wénjiàn huīfù zhīqián, PadForge jiāng xiǎnshì Shēnsè wàiguān.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Pèizhì wénjiàn “{0}” zhèngzài shǐyòng qí yóuxì de wàiguān. Qítā pèizhì wénjiàn jīhuó shí, nín de zhǔtí jiāng huīfù.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Shūrù yǐnqíng</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Pèizhì lúnxún xíngwéi hé hòutái chǔlǐ.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Yìngjiàn zhīchí</value></data>
@@ -855,6 +867,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -863,6 +877,9 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Jǐn shāngbiāo miǎnzé shēngmíng</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Wèi zhùmíng tiáokuǎn</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Wèi gōngbù</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Gōngyǒu lǐngyù</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Shòu bǎnquán bǎohù</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian shǐyòng tiáokuǎn</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Duō zhǒng xǔkězhèng</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Yònghù móshì xūnǐ HID kòngzhìqì yǐnqíng (tìdài ViGEmBus hé vJoy).</value></data>
@@ -2707,6 +2724,11 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Wèi zhǎodào qítā dǎkāi de chuāngkǒu.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Yíchú {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Jiāzài cǐ pèizhì wénjiàn shí de lúnxún lǜ</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Shǐyòng yóuxì wàiguān</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Cǐ pèizhì wénjiàn jīhuó shí, PadForge xiǎnshì yóuxì de túpiàn hé yánsè. Qítā pèizhì wénjiàn jīhuó shí, nín de zhǔtí jiāng huīfù.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Běnjī shàng méiyǒu gāi yóuxì de túpiàn.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Huòqǔ túpiàn</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Qǐng zài shèzhì zhōng kāiqǐ Shèqū pèizhì, yǐ cóng Steam huòqǔ yóuxì túpiàn.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Cóng qítā kòngzhìqì fùzhì</value></data>
@@ -3941,7 +3963,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Shèqū pèizhì</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Liúlǎn shèqū zhìzuò de Steam Input kòngzhìqì pèizhì, bìng jiāng qí zhuǎnhuàn wéi PadForge pèizhì wénjiàn. PadForge fāsòng de nèiróng bāokuò nín de sōusuǒ wénběn, xiāngguān yóuxì, pèizhì hé zuòzhě de ID, yǐjí tā de bǎnběn. Nímíng Steam dēnglù hái huì fāsòng nín de Windows bǎnběn, yǐjí yóu Windows ānzhuāng ID, wǎngluò shìpèiqì dìzhǐ hé qǐdòng cípán xùliè hào de hāxī shēngchéng de jīqì ID. Bù shèjí rènhé dì-sān fāng fúwù.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge jǐn zài nín sōusuǒ, dǎkāi pèizhì huò jiǎnchá yǐ dǎorù pèizhì de gēngxīn shí cái liánjiē Steam fúwùqì. Wú yáocè, wúxū Steam zhànghù.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge jǐn zài nín sōusuǒ, dǎkāi pèizhì, jiǎnchá yǐ dǎorù pèizhì de gēngxīn huò huòqǔ yóuxì túpiàn shí cái liánjiē Steam fúwùqì. Wú yáocè, wúxū Steam zhànghù.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Fāsòng de nèiróng</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Qǐyòng shèqū pèizhì</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Xiǎnshì jiùbǎn Chuàngyì Gōngfáng pèizhì</value></data>
@@ -5135,4 +5157,59 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Àn zhù cǐ hóng shí xiǎnshì fàngdàjìng, yòngyú kāijìng miáozhǔn. Qǐng zài “Fàngdàjìng” yèmiàn shàng shèzhì.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Kèlíngòngyǔ hé Xīndálínyǔ cānkǎo láiyuán</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Kèlíngòngyǔ hé Xīndálínyǔ yìwén zhōng de cíyǔ yǐ duìzhào klingon-assistant-data (Apache-2.0), jí boQwI' suǒ yòng de cídiǎn, yǐjí Eldamo (CC BY 4.0), jí Paul Strack de Jīnglíngyǔ cíhuìkù, jìnxíng héduì. Jǐn cídiǎn shùjù, bù suí fù rènhé shùjù.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Gāi wénjiàn bú shì PadForge zhǔtí.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Wúfǎ bǎocún zhǔtí. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Xīn zhǔtí</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Nín chuàngjiàn zhǔtí shí, PadForge huì shíshí chéngxiàn gāi zhǔtí.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Míngchēng</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Wǒ de zhǔtí</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Jīdǐ</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Zhǔtí suǒ yīcún de dǐsè. Shēnsè zhǔtí shǐyòng qiǎnsè wénzì, qiǎnsè zhǔtí shǐyòng shēnsè wénzì.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Túpiàn</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Láizì Steam yóuxì…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Láizì wénjiàn…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Wú túpiàn</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Zhèngzài cóng Steam huòqǔ túpiàn…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam méiyǒu cǐ yóuxì de kuānfú túpiàn.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Wúfǎ liánjiē Steam. Qǐng jiǎnchá wǎngluò liánjiē.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Wèizhì</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Zài chuāngkǒu nèi shàngxià yídòng túpiàn.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Xiǎnshì yóuxì biāozhì</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Yánsè</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Pǐpèi túpiàn</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Cóng túpiàn zhōng qǔ chū sì zhǒng yánsè.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Bèijǐng</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Yèmiàn de yánsè. Chuāngkǒu, cèlán, kǎpiàn hé xiàntiáo de yánsè jūn yóu cǐ sè jiāshēn huò jiàngqiǎn ér lái.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Qiángdiào sè</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Suǒyǒu huódòng zhōng de yuánsù: yǐnqíng, zhǔ ànniǔ, xuǎndìng de xiàngmù.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Cìyào sè</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Cèliáng zhí hé shèbèi biāojì: lúnxún lǜ, diànchí diànliàng, yuánshǐ shūrù.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Tíxǐng sè</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Děngdài zhuàngtài: děngdài shèbèi, diànliàng dī, wèi bǎocún de gēnggǎi.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Xuǎnzé yánsè</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Túpiàn (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge wúfǎ jiāng gāi wénjiàn zuòwéi túpiàn dúqǔ.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Túpiàn: Steam wèi {0} tígōng de yóuxìkù túpiàn.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Zhǔtí túpiàn: Dásī Wéidá de tóukuī</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm wèi “Xīsī de Fùchóu” pāishè de xuānchuán zhàopiàn: Xīngqiú Dàzhàn zhǔtí Dark Side de túpiàn. Zhǎo zì Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Zhǔtí túpiàn: xìliè biāozhì</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Nèizhì zhǔtí túpiàn shàng de Cìwei Suǒníkè, Zhǐhuán Wáng, Hālì Bōtè, Xīngqiú Dàzhàn, Xīngjì Míhángjì: Yuánchū Xìliè hé Xīngjì Míhángjì: Xià Yí Dài biāozhì. Zhǎo zì Wikimedia Commons, gāi zhàn jiāng měi gè biāozhì biāo wéi gōngyǒu lǐngyù de chún wénzì biāozhì. Měi gè biāozhì jūn wéi qí suǒyǒuzhě de shāngbiāo.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Zhǔtí túpiàn: Huòbǐtún</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Xīnxīlán de Huòbǐtún diànyǐng pāishè chǎngdì, Jackie.lck shèyǐng: Zhǐhuán Wáng zhǔtí The One Ring de túpiàn. Zhǎo zì Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Zhǔtí túpiàn: Huògéwòcí chéngbǎo</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy yùgàopiàn de yì zhēn huàmiàn, láizì gāi yóuxì de guānfāng YouTube píndào: Hālì Bōtè zhǔtí Gryffindor de túpiàn. Zhǎo zì Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Zhǔtí túpiàn: Zhōngtǔ dìtú</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Yì fú Zhōngtǔ dìtú: Zhǐhuán Wáng zhǔtí Map of Middle-earth de túpiàn. Zhǎo zì The One Wiki to Rule Them All, gāi zhàn wèi zhùmíng huàjiā.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Zhǔtí túpiàn: Qiānniánsǔn hào</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge de yuán chǐcùn Qiānniánsǔn hào, Tomás Del Coro shèyǐng: Xīngqiú Dàzhàn zhǔtí Opening Crawl de túpiàn. Zhǎo zì Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Zhǔtí túpiàn: Kèluónuòsī Dǎo shàng de Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Sonic Frontiers yùgàopiàn de yì zhēn huàmiàn, láizì SEGA guānfāng YouTube píndào: Cìwei Suǒníkè zhǔtí Blue Blur de túpiàn. Zhǎo zì Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Zhǔtí túpiàn: bēnpǎo de Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA wèi Sonic Lost World zhìzuò de měishù túpiàn: Cìwei Suǒníkè zhǔtí Night Run de túpiàn. Zhǎo zì Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Zhǔtí túpiàn: sì dà xuéyuàn yuànhuī</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Atomhawk Design wèi Pottermore huìzhì de Huògéwòcí sì dà xuéyuàn yuànhuī: Hālì Bōtè zhǔtí Four Houses de túpiàn. Zhǎo zì Hālì Bōtè Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Zhǔtí túpiàn: USS Enterprise pāishè móxíng</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Wèi yuánchū Xīngjì Míhángjì xìliè pāishè de móxíng, yóu shōucáng gāi móxíng de Smithsonian National Air and Space Museum pāishè: Xīngjì Míhángjì zhǔtí LCARS de túpiàn.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Zhǔtí túpiàn: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Xīngjì Míhángjì: Xià Yí Dài de yì zhēn huàmiàn: Xīngjì Míhángjì zhǔtí Starfleet de túpiàn. Zhǎo zì Memory Alpha.</value></data>
 </root>

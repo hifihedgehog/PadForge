@@ -7,6 +7,7 @@
              xmlns:conv="clr-namespace:PadForge.Converters"
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:themes="clr-namespace:PadForge.Common.Themes"
 >
 
     <Application.Resources>
@@ -51,6 +52,73 @@
                     <SolidColorBrush x:Key="ColdBrush" Color="#7CC7EA"/>
                     <SolidColorBrush x:Key="ColdDeepBrush" Color="#2E6A8F"/>
                     <SolidColorBrush x:Key="ColdTintBrush" Color="#1A7CC7EA"/>
+                    <!-- The same three as a theme reaches them (#591). A
+                         gradient stop and a shadow take a color, so each
+                         strength a glow is drawn at is a Color of its own:
+                         the two hex digits in a name are its alpha. A setter
+                         takes a brush. Every one holds the stock look's exact
+                         value on both grounds, and ThemeEngine turns each to
+                         a theme's accent or attention color by its name. -->
+                    <Color x:Key="EmberColor">#FF6B2C</Color>
+                    <Color x:Key="EmberDeepColor">#C43D0C</Color>
+                    <Color x:Key="EmberLightColor">#FFA24D</Color>
+                    <Color x:Key="EmberPaleColor">#FFD2B8</Color>
+                    <Color x:Key="EmberFlashColor">#FFA500</Color>
+                    <Color x:Key="Ember00Color">#00FF6B2C</Color>
+                    <Color x:Key="Ember20Color">#20FF6B2C</Color>
+                    <Color x:Key="Ember21Color">#21FF6B2C</Color>
+                    <Color x:Key="Ember29Color">#29FF6B2C</Color>
+                    <Color x:Key="Ember42Color">#42FF6B2C</Color>
+                    <Color x:Key="Ember61Color">#61FF6B2C</Color>
+                    <Color x:Key="Ember8CColor">#8CFF6B2C</Color>
+                    <Color x:Key="Ember99Color">#99FF6B2C</Color>
+                    <Color x:Key="Wait00Color">#00F2B84B</Color>
+                    <Color x:Key="Wait47Color">#47F2B84B</Color>
+                    <Color x:Key="Wait4DColor">#4DF2B84B</Color>
+                    <SolidColorBrush x:Key="Ember14Brush" Color="#14FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember22Brush" Color="#22FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember30Brush" Color="#30FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember33Brush" Color="#33FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember48Brush" Color="#48FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember66Brush" Color="#66FF6B2C"/>
+                    <SolidColorBrush x:Key="Ember80Brush" Color="#80FF6B2C"/>
+                    <SolidColorBrush x:Key="EmberDeep5ABrush" Color="#5AC43D0C"/>
+                    <SolidColorBrush x:Key="EmberDeep8CBrush" Color="#8CC43D0C"/>
+                    <!-- The edge of a destructive button under the pointer,
+                         and the rule across a trigger's travel: one value
+                         on both grounds, where DangerEdgeBrush and
+                         ColdDeepBrush change with the ground. -->
+                    <SolidColorBrush x:Key="DangerEdgeDeepBrush" Color="#7A3A1A"/>
+                    <SolidColorBrush x:Key="ColdRuleBrush" Color="#2E6A8F"/>
+                    <!-- The raw input signal's blue, as a stick's raw dot, its
+                         trail and the input previews draw it, and the tones
+                         code draws an output in: the stick trail, the
+                         equalizer's curve, the curve editor's live dot and a
+                         community config's lit control. Named (#591), so a
+                         theme reaches them. One value on both grounds. -->
+                    <Color x:Key="ColdInputColor">#58B6E4</Color>
+                    <Color x:Key="ColdInput80Color">#8058B6E4</Color>
+                    <SolidColorBrush x:Key="ColdInputBrush" Color="#58B6E4"/>
+                    <SolidColorBrush x:Key="ColdInput14Brush" Color="#1458B6E4"/>
+                    <SolidColorBrush x:Key="ColdInput1ABrush" Color="#1A58B6E4"/>
+                    <SolidColorBrush x:Key="ColdInput59Brush" Color="#5958B6E4"/>
+                    <Color x:Key="EmberTrailColor">#FF8C3C</Color>
+                    <Color x:Key="EmberCurveColor">#F2652A</Color>
+                    <Color x:Key="EmberCurveHotColor">#FF9D5D</Color>
+                    <Color x:Key="EmberDotGlowColor">#FF8228</Color>
+                    <Color x:Key="EmberCalloutColor">#E87A2E</Color>
+                    <!-- An output bar's fill: deep ember running to ember
+                         and on to its light. -->
+                    <LinearGradientBrush x:Key="EmberBarBrush" StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#C43D0C" Offset="0"/>
+                        <GradientStop Color="#FF6B2C" Offset="0.5"/>
+                        <GradientStop Color="#FFA24D" Offset="1"/>
+                    </LinearGradientBrush>
+                    <!-- Home's engine card: the card's own fill, set by
+                         EmberTheme.ApplyAccent on each ground. A theme with
+                         a picture sets a translucent one over it, so the
+                         picture shows through the card. -->
+                    <SolidColorBrush x:Key="HomeEngineCardBrush" Color="#121925"/>
                     <!-- Text-safe pairs (round-3 A4): dark defaults here,
                          EmberTheme.ApplyAccent swaps both per ground.
                          EmberTextBrush = raw-ember text that deepens on
@@ -780,12 +848,16 @@
                 the action in ember or as a danger. See ConfirmDialog.
             -->
             <Style x:Key="EmberAccentButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <!-- A brush in a style's own resources takes a
+                     DynamicResource color once and keeps it, so these
+                     bind to the look's colors, which report a change
+                     (#591, ThemeTokens). -->
                 <Style.Resources>
-                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF8450"/>
-                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#E85F25"/>
-                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#160A03"/>
-                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="#FF8450"/>
-                    <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#E85F25"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{Binding [EmberLiftBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{Binding [EmberPressBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{Binding [EmberInkBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="{Binding [EmberLiftBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{Binding [EmberPressBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
                 </Style.Resources>
                 <Setter Property="MinHeight" Value="36"/>
                 <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
@@ -824,9 +896,9 @@
 
             <Style x:Key="EmberDestructiveButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                 <Style.Resources>
-                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#33FF6B2C"/>
-                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#22FF6B2C"/>
-                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="#7A3A1A"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{Binding [Ember33Brush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{Binding [Ember22Brush], Source={x:Static themes:ThemeTokens.Instance}}"/>
+                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="{Binding [DangerEdgeDeepBrush], Source={x:Static themes:ThemeTokens.Instance}}"/>
                 </Style.Resources>
                 <Setter Property="MinHeight" Value="36"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -1057,7 +1129,7 @@
                 dark text on the ember fill. Template triggers outrank
                 derived-style setters (ProfilesPage container precedent), so
                 the container is retemplated. Selection is the EmberTint
-                wash + #66FF6B2C rim the identity chip and the AT mode cards
+                wash + Ember66Brush rim the identity chip and the AT mode cards
                 wear, and the content keeps its own foregrounds (names stay
                 primary, detail lines stay secondary/tertiary). Hover
                 is the neutral subtle fill.
@@ -1080,7 +1152,7 @@
                                      even while hovered, the glow stays. -->
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter TargetName="RowBd" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
-                                    <Setter TargetName="RowBd" Property="BorderBrush" Value="#66FF6B2C"/>
+                                    <Setter TargetName="RowBd" Property="BorderBrush" Value="{DynamicResource Ember66Brush}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -1138,7 +1210,7 @@
                         Background="{TemplateBinding Foreground}"
                         CornerRadius="3">
                         <Border.Effect>
-                            <DropShadowEffect Color="#FF6B2C" BlurRadius="12" ShadowDepth="0" Opacity="0.55"/>
+                            <DropShadowEffect Color="{DynamicResource EmberColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.55"/>
                         </Border.Effect>
                     </Border>
                 </Grid>
@@ -1158,15 +1230,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
-                <Setter Property="Foreground">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                            <GradientStop Color="#C43D0C" Offset="0"/>
-                            <GradientStop Color="#FF6B2C" Offset="0.5"/>
-                            <GradientStop Color="#FFA24D" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Foreground" Value="{DynamicResource EmberBarBrush}"/>
                 <Setter Property="Template" Value="{StaticResource InstrumentBarOutTemplate}"/>
             </Style>
 

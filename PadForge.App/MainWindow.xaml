@@ -263,8 +263,8 @@
                             <Border CornerRadius="11" IsHitTestVisible="False">
                                 <Border.Background>
                                     <RadialGradientBrush Center="0,0.5" GradientOrigin="0,0.5" RadiusX="0.75" RadiusY="1.1">
-                                        <GradientStop Color="#29FF6B2C" Offset="0"/>
-                                        <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                        <GradientStop Color="{DynamicResource Ember29Color}" Offset="0"/>
+                                        <GradientStop Color="{DynamicResource Ember00Color}" Offset="1"/>
                                     </RadialGradientBrush>
                                 </Border.Background>
                                 <Border.Style>
@@ -403,6 +403,9 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextTrimming="CharacterEllipsis"/>
                     </Border>
+                    <!-- A theme's picture (#591), under every page: all of it
+                         on Home, the header strip elsewhere (NavigateToTag). -->
+                    <controls:ThemeBackdrop x:Name="ThemeBackdropView"/>
                     <!-- Home's AutomationId is the one the Dashboard had, as
                          its sidebar entry's is still Nav_Dashboard: UI tools
                          pair Nav_<tag> with <tag>PageView, and #574 keeps

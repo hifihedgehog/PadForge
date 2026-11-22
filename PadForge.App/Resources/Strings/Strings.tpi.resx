@@ -255,6 +255,7 @@
   <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Painim ol seting</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Lait</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tudak</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nupela stail…</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Haitim ol masin long ol gem</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Windo</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Kirapim PadForge otomatik taim yu sain i go insait long Windows.</value></data>
@@ -2147,4 +2148,26 @@
   <data name="Pad_Audio_NoSpeakerRoute" xml:space="preserve"><value>PadForge i nogat rot i go long spika bilong masin yu makim long dispela konek. Ol nois bilong makro bilong dispela kontrola i pilai long default bilong sistem.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Wanpela web pad yu yet i wokim i save holim wan wan grup longwe long sait i klostu long en long wanpela skrin i bikpela moa, olsem ol overlay bilong RetroArch i save muvim tupela hap bilong ol. Ol i ritim olsem dokumen tasol, i no gat GPL kod i kam wantaim.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Skruim stail…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Seivim wanpela kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Senisim stail</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Rausim long lis. Fail i stap yet long ples bilong en.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fail bilong “{0}” i lus o i no inap ritim. PadForge i soim Tudak inap fail i kam bek.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Stail bilong mi</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>As</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Graun we stail i sanap long en. Tudak stail i gat lait raiting, na lait stail i gat tudak raiting.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Piksa</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Long wanpela Steam gem…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Long wanpela fail…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Nogat piksa</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kisim piksa long Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam i no gat brait piksa bilong dispela gem.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>I no inap kisim Steam. Lukim konekson bilong yu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ples</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Muvim piksa i go antap o i go daun insait long windo bilong en.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Soim logo bilong gem</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Bihainim piksa</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kisim foapela kala long piksa.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ol piksa (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Olgeta fail (*.*)|*.*</value></data>
 </root>

@@ -215,8 +215,8 @@
                                 <Border x:Name="Wash" IsHitTestVisible="False" Opacity="0">
                                     <Border.Background>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#21FF6B2C" Offset="0"/>
-                                            <GradientStop Color="#00FF6B2C" Offset="0.62"/>
+                                            <GradientStop Color="{DynamicResource Ember21Color}" Offset="0"/>
+                                            <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.62"/>
                                         </LinearGradientBrush>
                                     </Border.Background>
                                 </Border>
@@ -907,8 +907,8 @@
                                             <Border x:Name="StageFloorLight" IsHitTestVisible="False">
                                                 <Border.Background>
                                                     <RadialGradientBrush Center="0.5,1.08" GradientOrigin="0.5,1.08" RadiusX="0.64" RadiusY="0.62">
-                                                        <GradientStop Color="#61FF6B2C" Offset="0"/>
-                                                        <GradientStop Color="#00FF6B2C" Offset="0.72"/>
+                                                        <GradientStop Color="{DynamicResource Ember61Color}" Offset="0"/>
+                                                        <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.72"/>
                                                     </RadialGradientBrush>
                                                 </Border.Background>
                                                 <Border.Style>

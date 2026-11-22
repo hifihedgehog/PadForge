@@ -27,8 +27,8 @@ namespace PadForge.Controls
         private static readonly Brush GridFallback = Frozen(new SolidColorBrush(Color.FromRgb(0x16, 0x1E, 0x2B)));
         private static readonly Brush AxisFallback = Frozen(new SolidColorBrush(Color.FromRgb(0x26, 0x31, 0x42)));
         private static readonly Brush LabelFallback = Frozen(new SolidColorBrush(Color.FromRgb(0x86, 0x93, 0xA6)));
-        private static readonly Brush EmberFallback = Frozen(new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C)));
-        private static readonly Brush ColdFallback = Frozen(new SolidColorBrush(Color.FromRgb(0x7C, 0xC7, 0xEA)));
+        private static readonly Brush EmberFallback = Frozen(new SolidColorBrush(PadForge.Common.EmberTheme.Accent));
+        private static readonly Brush ColdFallback = Frozen(new SolidColorBrush(PadForge.Common.Themes.ThemeEngine.StockSecondary(true)));
 
         protected static T Frozen<T>(T freezable) where T : Freezable
         {
@@ -318,7 +318,7 @@ namespace PadForge.Controls
             return 1.0;
         }
 
-        private static Color ColorOf(Brush brush) => brush is SolidColorBrush solid ? solid.Color : Color.FromRgb(0xFF, 0x6B, 0x2C);
+        private static Color ColorOf(Brush brush) => brush is SolidColorBrush solid ? solid.Color : PadForge.Common.EmberTheme.Accent;
     }
 
     /// <summary>

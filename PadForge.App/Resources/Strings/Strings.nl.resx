@@ -415,6 +415,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Systeemstandaard</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Licht</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Donker</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nieuw thema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Maak een thema van uw eigen kleuren en een afbeelding, uit een Steam-spel of een bestand.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Thema toevoegen…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Voeg een themabestand toe aan de lijst. PadForge leest het op de plek waar het staat en kopieert niets.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kopie opslaan…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Schrijf het gekozen thema naar een bestand dat u kunt aanpassen of delen.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Thema bewerken</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Uit de lijst verwijderen. Het bestand blijft waar het is.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Bestand niet gevonden</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Niet te lezen</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Het bestand van “{0}” ontbreekt of is niet te lezen. PadForge toont Donker totdat het weer beschikbaar is.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Het profiel “{0}” draagt het uiterlijk van zijn spel. Uw thema keert terug wanneer een ander profiel actief is.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-thema’s (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dat bestand is geen PadForge-thema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Het thema kon niet worden opgeslagen. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nieuw thema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge toont het thema terwijl u het bouwt.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mijn thema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basis</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>De ondergrond van het thema. Een donker thema heeft lichte tekst en een licht thema heeft donkere tekst.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Uit een Steam-spel…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Uit een bestand…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Geen afbeelding</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Afbeelding ophalen van Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam heeft geen brede afbeelding voor dit spel.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Kon Steam niet bereiken. Controleer uw verbinding.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Positie</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Verplaatst de afbeelding omhoog of omlaag in het venster.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Logo van het spel tonen</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Kleuren</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Afstemmen op afbeelding</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Neemt de vier kleuren over uit de afbeelding.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Achtergrond</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>De pagina. Het venster, de zijbalk, kaarten en lijnen zijn tinten daarvan.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Alles wat actief is: de engine, de hoofdknop, het gekozen item.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Secundair</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Gemeten waarden en apparaatmarkeringen: frequenties, accuniveaus, ruwe invoer.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Aandacht</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Wachtende toestanden: wachten op apparaten, een bijna lege accu, niet-opgeslagen wijzigingen.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Kies een kleur</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Afbeeldingen (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Alle bestanden (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge kan dat bestand niet als afbeelding lezen.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Afbeelding: bibliotheekafbeelding van Steam voor {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Invoer-engine</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configureer het pollinggedrag en achtergrondverwerking.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardwareondersteuning</value></data>
@@ -631,6 +677,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -639,6 +687,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Alleen handelsmerkdisclaimer</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Geen voorwaarden genoemd</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Niets gepubliceerd</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Publiek domein</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Auteursrechtelijk beschermd</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Gebruiksvoorwaarden van Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Meerdere licenties</value></data>
 
   <!-- ═══ Device Types ═══ -->
@@ -1348,6 +1399,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Er is geen ander open venster gevonden.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} verwijderen</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Pollingfrequentie terwijl dit profiel geladen is</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Het uiterlijk van het spel dragen</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Zolang dit profiel actief is, toont PadForge de afbeelding en kleuren van het spel. Uw thema keert terug wanneer een ander profiel actief is.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>De afbeelding van het spel staat niet op deze pc.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Afbeelding ophalen</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Schakel Communityconfiguraties in bij Instellingen om de afbeelding van het spel van Steam te halen.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopiëren van</value></data>
@@ -4034,7 +4090,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Communityconfiguraties</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blader door door de community gemaakte Steam Input-controllerconfiguraties en vertaal ze naar PadForge-profielen. PadForge verstuurt uw zoektekst, de ID's van de betrokken games, configuraties en makers, en zijn versie. De anonieme aanmelding bij Steam verstuurt ook uw Windows-versie en een machine-ID die is gemaakt van hashes van de ID van uw Windows-installatie, de adressen van uw netwerkadapters en het serienummer van uw opstartschijf. Er is geen externe dienst bij betrokken.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge maakt alleen verbinding met de servers van Steam wanneer je zoekt, een configuratie opent of geïmporteerde configuraties op updates controleert. Geen telemetrie, geen Steam-account.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge maakt alleen verbinding met de servers van Steam wanneer je zoekt, een configuratie opent, geïmporteerde configuraties op updates controleert of de afbeelding van een spel ophaalt. Geen telemetrie, geen Steam-account.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Wat er wordt verstuurd</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Communityconfiguraties inschakelen</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Verouderde Workshop-configuraties tonen</value></data>
@@ -5132,6 +5188,28 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Het reWASD-profielformaat, gelezen uit de schemadump van shunt van hcn1z1 (MIT), de documentatie van reWASD-Powertools van DatMoshu (MIT) en de help van reWASD, het DS4Windows-profielformaat, gelezen uit de DS4Windows-fork van Schmaldeo (GPL-3.0-or-later), en het DSX-profielformaat, gelezen uit de profielen in DSX-profile-share van winkywong1998, het DualSense-project van RAIZ-Zzz (MIT) en het Mod System van DSX door Paliverse (Apache-2.0). Alleen documentatie, er wordt geen code meegeleverd.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referenties voor Schermkleur</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>De schermopname achter de verlichting Schermkleur, gelezen uit Prismatik (GPL-2.0-or-later), de foundation-sunshine-fork van AlkaidLab van Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) en alienfx-tools (MIT). Alleen documentatie, er wordt geen GPL-code meegeleverd.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Afbeelding bij thema: helm van Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Een promotiefoto van Lucasfilm voor Revenge of the Sith: de afbeelding van het Star Wars-thema Dark Side. Gevonden op Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Afbeelding bij thema: franchiselogo’s</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>De logo’s van Sonic the Hedgehog, In de Ban van de Ring, Harry Potter, Star Wars, Star Trek: The Original Series en Star Trek: The Next Generation op de afbeeldingen van de starterthema’s. Gevonden op Wikimedia Commons, dat elk logo aanmerkt als een eenvoudig tekstlogo in het publieke domein. Elk logo is het handelsmerk van zijn eigenaar.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Afbeelding bij thema: Hobbitstee</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>De filmset van Hobbitstee in Nieuw-Zeeland, een foto van Jackie.lck: de afbeelding van het thema The One Ring uit In de Ban van de Ring. Gevonden op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Afbeelding bij thema: kasteel Zweinstein</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Een beeld uit de trailer van Hogwarts Legacy op het eigen YouTube-kanaal van het spel: de afbeelding van het Harry Potter-thema Gryffindor. Gevonden op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Afbeelding bij thema: kaart van Midden-aarde</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Een kaart van Midden-aarde: de afbeelding van het thema Map of Middle-earth uit In de Ban van de Ring. Gevonden op The One Wiki to Rule Them All, dat geen kunstenaar noemt.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Afbeelding bij thema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>De Millennium Falcon op ware grootte in Galaxy’s Edge, een foto van Tomás Del Coro: de afbeelding van het Star Wars-thema Opening Crawl. Gevonden op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Afbeelding bij thema: Sonic op Kronos Island</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Een beeld uit de trailer van Sonic Frontiers op het eigen YouTube-kanaal van SEGA: de afbeelding van het Sonic the Hedgehog-thema Blue Blur. Gevonden op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Afbeelding bij thema: rennende Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Kunstwerk van SEGA gemaakt voor Sonic Lost World: de afbeelding van het Sonic the Hedgehog-thema Night Run. Gevonden op Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Afbeelding bij thema: de wapens van de vier afdelingen</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>De wapens van de vier afdelingen van Zweinstein, getekend door Atomhawk Design voor Pottermore: de afbeelding van het Harry Potter-thema Four Houses. Gevonden op de Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Afbeelding bij thema: studiomodel van de USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Het model dat voor de oorspronkelijke Star Trek-serie werd gefilmd, gefotografeerd door het Smithsonian National Air and Space Museum, dat het bewaart: de afbeelding van het Star Trek-thema LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Afbeelding bij thema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Een beeld uit Star Trek: The Next Generation: de afbeelding van het Star Trek-thema Starfleet. Gevonden op Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Toetsenbordschermen</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Tekent op de schermen in de GamePanel-toetsenborden van Logitech en de Mad Catz S.T.R.I.K.E. 7, en via Logitech Arx Control op een telefoon: het profiel, een klok, speeltijd, een stopwatch, een afbeelding of de kleur van de lightbar van een DualShock 4 of DualSense. Elk scherm krijgt een eigen rij op de pagina Apparaten, waar wordt ingesteld wat het toont. De toetsen naast een scherm zijn de knoppen van de rij.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Toetsenbordschermen aansturen</value></data>

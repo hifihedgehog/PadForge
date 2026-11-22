@@ -1153,4 +1153,21 @@
   <data name="Common_Apply" xml:space="preserve"><value>Hoʻohana</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Mālama kēlā me kēia hui pihi o kahi pad pūnaewele i hana ʻia e ka mea hoʻohana i kona mamao mai ka lihi kokoke loa o ka pale ākea aʻe, e like me ka neʻe ʻana o nā ʻāpana ʻelua o nā overlay o RetroArch. Heluhelu ʻia ma ke ʻano palapala kuhikuhi wale nō, ʻaʻohe code GPL i hoʻouna ʻia.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Mālama i kope…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hoʻoponopono i ke kumuhana</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Wehe mai ka papa inoa. Noho mau ka faila ma kona wahi.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nalowale a hiki ʻole ke heluhelu ʻia ka faila o “{0}”. Hōʻike ʻo PadForge i ka Pōʻeleʻele a hiki i kona hoʻi ʻana mai.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Inoa</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Koʻu kumuhana</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Kahua</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ke kahua o ke kumuhana. He kikokikona mālamalama ko ke kumuhana pōʻeleʻele, a he kikokikona pōʻeleʻele ko ke kumuhana mālamalama.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Kiʻi</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mai kekahi pāʻani Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ʻAʻohe kiʻi</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ke hoʻoiho nei i ke kiʻi mai Steam…</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Kūlana</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Hoʻoneʻe i ke kiʻi i luna a i lalo i loko o kona puka makani.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Hōʻike i ka hōʻailona o ka pāʻani</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Hoʻohālike i ke kiʻi</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Lawe i nā waihoʻoluʻu ʻehā mai ke kiʻi.</value></data>
 </root>

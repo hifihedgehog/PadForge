@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:PadForge.Controls"
              xmlns:reset="clr-namespace:PadForge.Controls"
              xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:viewControls="clr-namespace:PadForge.Views.Controls"
              PreviewKeyDown="Page_PreviewKeyDown">
 
     <UserControl.Resources>
@@ -356,19 +357,32 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding Settings_Appearance, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"
                                            ToolTip="{Binding Settings_AppearanceDesc, Source={x:Static strings:Strings.Instance}}" Margin="20,16,10,16"/>
+                                <!-- The theme (#591). The gallery under the row picks
+                                     one: PadForge's own three looks, the starters, and the
+                                     theme files the user listed. The row's buttons make a
+                                     theme in the builder, list a theme file, and write the
+                                     picked theme out as a file. On a narrow card the
+                                     buttons wrap under one another before the label does.
+                                     The reset puts System back. -->
                                 <controls:SettingItem>
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" MinWidth="210"
-                                                  AutomationProperties.Name="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}">
-                                            <ComboBoxItem Content="{Binding Settings_ThemeSystem, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
-                                        </ComboBox>
+                                        <controls:FlexLinePanel Gap="12" LineGap="8" controls:SettingRow.Fills="True" Margin="0,4">
+                                            <Button Content="{Binding Settings_ThemeNew, Source={x:Static strings:Strings.Instance}}"
+                                                    ToolTip="{Binding Settings_ThemeNewTip, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="NewTheme_Click"/>
+                                            <Button Content="{Binding Settings_ThemeAdd, Source={x:Static strings:Strings.Instance}}"
+                                                    ToolTip="{Binding Settings_ThemeAddTip, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="AddTheme_Click"/>
+                                            <Button Content="{Binding Settings_ThemeSaveCopy, Source={x:Static strings:Strings.Instance}}"
+                                                    ToolTip="{Binding Settings_ThemeSaveCopyTip, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="SaveThemeCopy_Click"/>
+                                        </controls:FlexLinePanel>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SelectedThemeIndex"
                                                                   SettingLabel="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}"
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_SelectedThemeIndex_96"/>
                                     </controls:SettingRow>
+                                    <viewControls:ThemeGallery x:Name="ThemeGalleryView" Margin="16,6,8,2"/>
                                 </controls:SettingItem>
                             </StackPanel>
                         </Border>

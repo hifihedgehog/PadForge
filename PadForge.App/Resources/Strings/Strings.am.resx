@@ -630,6 +630,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>የስርዓት ነባሪ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ፈካ ያለ</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ጨለማ</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>አዲስ ገጽታ…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>ከራስዎ ቀለሞች እና ከSteam ጨዋታ ወይም ከፋይል ከሚገኝ ምስል ገጽታ ይሥሩ።</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>ገጽታ አክል…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>የገጽታ ፋይል ይዘርዝሩ። PadForge ፋይሉን ባለበት ቦታ ያነበዋል፣ ምንም አይገለብጥም።</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>ቅጂ አስቀምጥ…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>የተመረጠውን ገጽታ ሊቀይሩት ወይም ሊያጋሩት ወደሚችሉት ፋይል ይጻፉ።</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>ገጽታ አርትዕ</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>ከዝርዝሩ ያስወግዱ። ፋይሉ ባለበት ይቆያል።</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ፋይሉ አልተገኘም</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ሊነበብ አይችልም</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>የ«{0}» ፋይል ጠፍቷል ወይም ሊነበብ አይችልም። ፋይሉ እስኪመለስ ድረስ PadForge የ«ጨለማ» ገጽታን ያሳያል።</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>መገለጫው «{0}» የጨዋታውን መልክ እያሳየ ነው። ሌላ መገለጫ ንቁ ሲሆን ገጽታዎ ይመለሳል።</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>የግብዓት ሞተር</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>የንባብ ባህሪን እና የበስተጀርባ ሂደትን ያዋቅሩ።</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>የሃርድዌር ድጋፍ</value></data>
@@ -856,6 +868,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -864,6 +878,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>የንግድ ምልክት ማስተባበያ ብቻ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>ውሎች አልተጠቀሱም</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>አልታተመም</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>የሕዝብ ንብረት</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>በቅጂ መብት የተጠበቀ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>የSmithsonian የአጠቃቀም ውሎች</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>በርካታ ፈቃዶች</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>የተጠቃሚ-ሁነታ ምናባዊ HID መቆጣጠሪያ ሞተር (ViGEmBus እና vJoyን ይተካል)።</value></data>
@@ -2703,6 +2720,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ሌላ ክፍት መስኮት አልተገኘም።</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} አስወግድ</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ይህ መገለጫ ሲጫን የንባብ ድግግሞሽ</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>የጨዋታውን መልክ አሳይ</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ይህ መገለጫ ንቁ ሆኖ ሳለ PadForge የጨዋታውን ምስል እና ቀለሞች ያሳያል። ሌላ መገለጫ ንቁ ሲሆን ገጽታዎ ይመለሳል።</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>የጨዋታው ምስል በዚህ ኮምፒውተር ላይ የለም።</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ምስሉን አምጣ</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>የጨዋታውን ምስል ከSteam ለማግኘት በቅንብሮች ውስጥ የማኅበረሰብ ውቅሮችን ያብሩ።</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>ከሌላ ቅዳ</value></data>
@@ -3931,7 +3953,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>የማኅበረሰብ ውቅሮች</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>በማኅበረሰብ የተሠሩ የSteam Input መቆጣጠሪያ ውቅሮችን ያስሱ እና ወደ PadForge መገለጫዎች ይቀይሯቸው። PadForge የፍለጋ ጽሑፍዎን፣ የሚመለከታቸውን የጨዋታዎች፣ የውቅሮችና የፈጣሪዎች መለያዎች እና ስሪቱን ይልካል። ስም-አልባው የSteam መግቢያም የWindows ስሪትዎን እና ከWindows መጫኛ መለያዎ፣ ከአውታረ መረብ አስማሚ አድራሻዎች እና ከቡት ዲስክ መለያ ቁጥር ሃሾች የተሠራ የማሽን መለያ ይልካል። ምንም የሶስተኛ ወገን አገልግሎት አይሳተፍም።</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ከSteam አገልጋዮች ጋር የሚገናኘው ሲፈልጉ፣ ውቅር ሲከፍቱ ወይም ያስገቧቸውን ውቅሮች ለዝማኔዎች ሲፈትሹ ብቻ ነው። ቴሌሜትሪ የለም፣ የSteam መለያ አያስፈልግም።</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ከSteam አገልጋዮች ጋር የሚገናኘው ሲፈልጉ፣ ውቅር ሲከፍቱ፣ ያስገቧቸውን ውቅሮች ለዝማኔዎች ሲፈትሹ ወይም የጨዋታ ምስል ሲያመጡ ብቻ ነው። ቴሌሜትሪ የለም፣ የSteam መለያ አያስፈልግም።</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>የሚላከው</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>የማኅበረሰብ ውቅሮችን አንቃ</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>የቆዩ የወርክሾፕ ውቅሮችን አሳይ</value></data>
@@ -5209,4 +5231,59 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>የይለፍ ቃል</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ማጉያ (ተጭኖ ሲያዝ)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ይህ ማክሮ ተጭኖ ሲያዝ በዕይታ መነጽር ለማነጣጠር ማጉያውን ያሳያል። በ«ማጉያ» ገጽ ላይ ያዘጋጁት።</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ያ ፋይል PadForge የሚጠቀምበት ገጽታ አይደለም።</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ገጽታው ሊቀመጥ አልቻለም። {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>አዲስ ገጽታ</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>ገጽታውን እየሠሩ ሳሉ PadForge ገጽታውን ለብሶ ያሳያል።</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ስም</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>የእኔ ገጽታ</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>መሠረት</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ገጽታው የሚቆምበት መደብ። ጨለማ ገጽታ ፈካ ያለ ጽሑፍ አለው፣ ፈካ ያለ ገጽታ ደግሞ ጨለማ ጽሑፍ አለው።</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ምስል</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>ከSteam ጨዋታ…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ከፋይል…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ያለ ምስል</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>ምስሉን ከSteam በማምጣት ላይ…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ለዚህ ጨዋታ ሰፊ ምስል የለውም።</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ከSteam ጋር መገናኘት አልተቻለም። ግንኙነትዎን ይፈትሹ።</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>ቦታ</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ምስሉን በመስኮቱ ውስጥ ወደ ላይ ወይም ወደ ታች ያንቀሳቅሳል።</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>የጨዋታውን አርማ አሳይ</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ቀለሞች</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ከምስሉ ጋር አዛምድ</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>አራቱን ቀለሞች ከምስሉ ይወስዳል።</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>ዳራ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>ገጹ። መስኮቱ፣ የጎን አሞሌው፣ ካርዶቹ እና መስመሮቹ ከእሱ የሚወጡ ደረጃዎች ናቸው።</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>አጽንዖት</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ንቁ የሆነ ሁሉ፦ ሞተሩ፣ ዋናው አዝራር፣ የተመረጠው ንጥል።</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ሁለተኛ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>የሚለኩ እሴቶች እና የመሣሪያ ምልክቶች፦ ድግግሞሾች፣ የባትሪ ደረጃዎች፣ ጥሬ ግብዓቶች።</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ትኩረት</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>የመጠባበቅ ሁኔታዎች፦ መሣሪያዎችን መጠበቅ፣ ዝቅተኛ ባትሪ፣ ያልተቀመጡ ለውጦች።</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>ቀለም ምረጥ</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ምስሎች (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ሁሉም ፋይሎች (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ያንን ፋይል እንደ ምስል ሊያነበው አይችልም።</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ምስል፦ Steam ለ{0} የሚያሳየው የቤተ መጻሕፍት ምስል።</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>የገጽታ ምስል፦ የዳርት ቬይደር የራስ ቁር</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>የLucasfilm የማስተዋወቂያ ፎቶ ለRevenge of the Sith፦ የስታር ዋርስ ገጽታ Dark Side ምስል። በWookieepedia ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>የገጽታ ምስል፦ የፍራንቻይዝ አርማዎች</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>በመነሻ ገጽታዎቹ ምስሎች ላይ ያሉት የሶኒክ ዘ ሄጅሆግ፣ የቀለበቶቹ ጌታ፣ የሃሪ ፖተር፣ የስታር ዋርስ፣ የስታር ትሬክ፦ ዘ ኦሪጅናል ሲሪስ እና የስታር ትሬክ፦ ዘ ኔክስት ጀነሬሽን አርማዎች። በWikimedia Commons ላይ የተገኙ ናቸው፣ እሱም እያንዳንዳቸውን በሕዝብ ንብረትነት ያለ ቀላል የጽሑፍ አርማ ብሎ ይመድባል። እያንዳንዱ የባለቤቱ የንግድ ምልክት ነው።</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>የገጽታ ምስል፦ ሆቢተን</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>በኒው ዚላንድ የሚገኘው የሆቢተን የፊልም ቦታ፣ በJackie.lck የተነሣ ፎቶ፦ የቀለበቶቹ ጌታ ገጽታ The One Ring ምስል። በWikimedia Commons ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>የገጽታ ምስል፦ የሆግዋርትስ ቤተ መንግሥት</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ከጨዋታው የራሱ YouTube ቻናል የተወሰደ የHogwarts Legacy የማስተዋወቂያ ቪዲዮ ፍሬም፦ የሃሪ ፖተር ገጽታ Gryffindor ምስል። በWikimedia Commons ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>የገጽታ ምስል፦ የመካከለኛው ምድር ካርታ</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>የመካከለኛው ምድር ካርታ፦ የቀለበቶቹ ጌታ ገጽታ Map of Middle-earth ምስል። ሠዓሊውን በማይጠቅሰው The One Wiki to Rule Them All ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>የገጽታ ምስል፦ ሚሌኒየም ፋልከን</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>በGalaxy’s Edge የሚገኘው ሙሉ መጠን ያለው ሚሌኒየም ፋልከን፣ በTomás Del Coro የተነሣ ፎቶ፦ የስታር ዋርስ ገጽታ Opening Crawl ምስል። በWikimedia Commons ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>የገጽታ ምስል፦ Sonic በክሮኖስ ደሴት ላይ</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>ከSEGA የራሱ YouTube ቻናል የተወሰደ የSonic Frontiers የማስተዋወቂያ ቪዲዮ ፍሬም፦ የሶኒክ ዘ ሄጅሆግ ገጽታ Blue Blur ምስል። በWikimedia Commons ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>የገጽታ ምስል፦ የሚሮጥ Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA ለSonic Lost World የሠራው ሥዕል፦ የሶኒክ ዘ ሄጅሆግ ገጽታ Night Run ምስል። በSonic Wiki Zone ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>የገጽታ ምስል፦ የአራቱ ቤቶች አርማዎች</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Atomhawk Design ለPottermore የሣላቸው የአራቱ የሆግዋርትስ ቤቶች አርማዎች፦ የሃሪ ፖተር ገጽታ Four Houses ምስል። በሃሪ ፖተር ዊኪ ላይ የተገኘ።</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>የገጽታ ምስል፦ የUSS Enterprise የስቱዲዮ ሞዴል</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ለመጀመሪያው የስታር ትሬክ ተከታታይ የተቀረጸው ሞዴል፣ ሞዴሉን በያዘው Smithsonian National Air and Space Museum የተነሣ ፎቶ፦ የስታር ትሬክ ገጽታ LCARS ምስል።</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>የገጽታ ምስል፦ USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ከስታር ትሬክ፦ ዘ ኔክስት ጀነሬሽን የተወሰደ ፍሬም፦ የስታር ትሬክ ገጽታ Starfleet ምስል። በMemory Alpha ላይ የተገኘ።</value></data>
 </root>

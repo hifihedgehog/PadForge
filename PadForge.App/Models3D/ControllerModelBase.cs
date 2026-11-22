@@ -639,11 +639,11 @@ namespace PadForge.Models3D
             {
                 accentBrush = Application.Current.Resources["SystemAccentColorPrimary"] is Color c
                     ? new SolidColorBrush(c)
-                    : new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
+                    : new SolidColorBrush(PadForge.Common.EmberTheme.Accent);
             }
             catch
             {
-                accentBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
+                accentBrush = new SolidColorBrush(PadForge.Common.EmberTheme.Accent);
             }
 
             return new DiffuseMaterial(accentBrush);

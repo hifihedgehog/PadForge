@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Stelselverstek</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Lig</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Donker</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nuwe tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Bou 'n tema uit jou eie kleure en 'n prent, vanaf 'n Steam-speletjie of 'n lêer.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Voeg tema by…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Lys 'n temalêer. PadForge lees dit waar dit is en kopieer niks nie.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Stoor 'n kopie…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Skryf die gekose tema na 'n lêer wat jy kan verander of deel.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Wysig tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Verwyder van die lys. Die lêer bly waar dit is.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Lêer nie gevind nie</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Kan nie gelees word nie</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Die lêer van “{0}” ontbreek of kan nie gelees word nie. PadForge wys Donker totdat dit terug is.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Die profiel “{0}” dra sy speletjie se voorkoms. Jou tema kom terug wanneer 'n ander profiel aktief is.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Invoerenjin</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigureer peilgedrag en agtergrondverwerking.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardeware-ondersteuning</value></data>
@@ -855,6 +867,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -863,6 +877,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Slegs handelsmerkvrywaring</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Geen voorwaardes genoem nie</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Geen gepubliseer nie</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Publieke domein</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Kopieregtelik beskerm</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian-gebruiksvoorwaardes</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Verskeie lisensies</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Kasutajarežiimis töötav virtuaalsete HID-kontrollerite mootor (asendab draivereid ViGEmBus ja vJoy).</value></data>
@@ -3844,7 +3861,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Gemeenskapskonfigurasies</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blaai deur gemeenskapsgemaakte Steam Input-controllerkonfigurasies en vertaal hulle na PadForge-profiele. PadForge stuur jou soekteks, die ID’s van die betrokke speletjies, konfigurasies en skeppers, en sy weergawe. Die anonieme Steam-aanmelding stuur ook jou Windows-weergawe en ’n masjien-ID wat gemaak is van hashes van jou Windows-installasie-ID, netwerkadapteradresse en opstartskyf-reeksnommer. Geen derdepartydiens is betrokke nie.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge koppel slegs aan Steam se bedieners wanneer jy soek, 'n konfigurasie oopmaak of ingevoerde konfigurasies vir opdaterings nagaan. Geen telemetrie, geen Steam-rekening.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge koppel slegs aan Steam se bedieners wanneer jy soek, 'n konfigurasie oopmaak, ingevoerde konfigurasies vir opdaterings nagaan of 'n speletjie se prent kry. Geen telemetrie, geen Steam-rekening.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Wat word gestuur</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Skakel gemeenskapskonfigurasies aan</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Wys ou Workshop-konfigurasies</value></data>
@@ -5037,9 +5054,69 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Geen ander oop venster is gevind nie.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Verwyder {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Peilkoers terwyl hierdie profiel gelaai is</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Dra die speletjie se voorkoms</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Terwyl hierdie profiel aktief is, wys PadForge die speletjie se prent en kleure. Jou tema kom terug wanneer 'n ander profiel aktief is.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Die speletjie se prent is nie op hierdie rekenaar nie.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Kry die prent</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Skakel Gemeenskapskonfigurasies in Instellings aan om die speletjie se prent van Steam te kry.</value></data>
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Stel 'n wagwoord</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Ontsluit Afstandskakel</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Wagwoord</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Vergroter (vasgehou)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Wys die vergroter terwyl hierdie makro vasgehou word, om deur die visier te mik. Stel dit op by die Vergroter-bladsy.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Daardie lêer is nie 'n PadForge-tema nie.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Die tema kon nie gestoor word nie. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nuwe tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge dra die tema terwyl jy dit bou.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>My tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Basis</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Die grond waarop die tema staan. 'n Donker tema het ligte teks, en 'n ligte tema het donker teks.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Prent</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Vanaf 'n Steam-speletjie…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Vanaf 'n lêer…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Geen prent</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kry die prent van Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam het nie 'n breë prent vir hierdie speletjie nie.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Kon nie Steam bereik nie. Kontroleer jou verbinding.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisie</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Skuif die prent op of af in sy venster.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Wys die speletjie se logo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Kleure</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Pas by die prent</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Neem die vier kleure uit die prent.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Agtergrond</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Die bladsy. Die venster, die kantbalk, kaarte en lyne is stappe daarvandaan.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aksent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Alles wat lewendig is: die enjin, die hoofknoppie, die gekose item.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekondêr</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Gemete waardes en toestelmerke: tempo's, batteryvlakke, rou invoere.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Aandag</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Wagtoestande: toestelle wat wag, 'n lae battery, onopgeslane veranderinge.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Kies 'n kleur</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Prente (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Alle lêers (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge kan nie daardie lêer as 'n prent lees nie.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Prent: Steam se biblioteekkuns vir {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Temaprent: Darth Vader se helm</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>'n Lucasfilm-promosiefoto vir Revenge of the Sith: die prent van die tema Dark Side van Star Wars. Gevind op Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Temaprent: Logo's van die reekse</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Die logo's van Sonic the Hedgehog, Die Heer van die Ringe, Harry Potter, Star Wars, Star Trek: The Original Series en Star Trek: The Next Generation op die beginnertemas se prente. Gevind op Wikimedia Commons, wat elkeen as 'n gewone tekslogo in die publieke domein merk. Elkeen is sy eienaar se handelsmerk.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Temaprent: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Die Hobbiton-filmstel in Nieu-Seeland, 'n foto deur Jackie.lck: die prent van die tema The One Ring van Die Heer van die Ringe. Gevind op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Temaprent: Hogwarts-kasteel</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>'n Raam uit die Hogwarts Legacy-lokprent op die speletjie se eie YouTube-kanaal: die prent van die tema Gryffindor van Harry Potter. Gevind op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Temaprent: Kaart van Midde-aarde</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>'n Kaart van Midde-aarde: die prent van die tema Map of Middle-earth van Die Heer van die Ringe. Gevind op The One Wiki to Rule Them All, wat geen kunstenaar noem nie.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Temaprent: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Die Millennium Falcon op volle grootte by Galaxy’s Edge, 'n foto deur Tomás Del Coro: die prent van die tema Opening Crawl van Star Wars. Gevind op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Temaprent: Sonic op Kronos-eiland</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>'n Raam uit die Sonic Frontiers-lokprent op SEGA se eie YouTube-kanaal: die prent van die tema Blue Blur van Sonic the Hedgehog. Gevind op Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Temaprent: Sonic wat hardloop</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA se kuns wat vir Sonic Lost World gemaak is: die prent van die tema Night Run van Sonic the Hedgehog. Gevind op Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Temaprent: Die vier huiswapens</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Die vier Hogwarts-huiswapens, geteken deur Atomhawk Design vir Pottermore: die prent van die tema Four Houses van Harry Potter. Gevind op die Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Temaprent: USS Enterprise-studiomodel</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Die model wat vir die oorspronklike Star Trek-reeks gefilm is, afgeneem deur die Smithsonian National Air and Space Museum, wat dit bewaar: die prent van die tema LCARS van Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Temaprent: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>'n Raam uit Star Trek: The Next Generation: die prent van die tema Starfleet van Star Trek. Gevind op Memory Alpha.</value></data>
 </root>

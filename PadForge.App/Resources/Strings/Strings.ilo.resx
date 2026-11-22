@@ -1391,4 +1391,22 @@
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Di nailasin a device</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ti custom a web pad ket taginayonenna ti distansia ti tunggal grupo dagiti kontrol manipud iti ad-adda nga asideg a pingir ti ad-adda a nalawa a screen, kas iti panangiyakar dagiti overlay ti RetroArch kadagiti dua a paset-da. Nabasa laeng a kas dokumentasion, awan ti GPL code a mairaman.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Idulin ti kopia…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ti tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Ikkaten iti listaan. Agtalinaed ti file iti ayanna.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Awan wenno saan a mabasa ti file ti “{0}”. Ipakita ti PadForge ti Nasipnget agingga a maisubli dayta.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nagan</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ti temak</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Batayan</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ti batayan a pagtakderan ti tema. Nalawag ti teksto ti nasipnget a tema, ken nasipnget ti teksto ti nalawag a tema.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Ladawan</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Manipud iti ay-ayam ti Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Awan ti ladawan</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Al-alaen ti ladawan manipud iti Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Awan ti nalawa a ladawan ti Steam para iti daytoy nga ay-ayam.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Puesto</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Iyakar ti ladawan iti ngato wenno baba iti uneg ti tawana.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ti logo ti ay-ayam</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Itunos iti ladawan</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Alaen ti uppat a kolor manipud iti ladawan.</value></data>
 </root>

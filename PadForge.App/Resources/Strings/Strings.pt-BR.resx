@@ -415,6 +415,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Padrão do Sistema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Claro</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Escuro</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Novo Tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Crie um tema com suas próprias cores e uma imagem, de um jogo do Steam ou de um arquivo.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Adicionar Tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Inclua um arquivo de tema na lista. O PadForge lê o arquivo onde ele está e não copia nada.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Salvar uma Cópia…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Grave o tema escolhido em um arquivo que você pode alterar ou compartilhar.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Editar Tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Remover da lista. O arquivo continua onde está.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Arquivo não encontrado</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Não pode ser lido</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>O arquivo de "{0}" não foi encontrado ou não pode ser lido. O PadForge mostra Escuro até ele voltar.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>O perfil "{0}" está usando o visual do seu jogo. Seu tema volta quando outro perfil estiver ativo.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Temas do PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Esse arquivo não é um tema do PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Não foi possível salvar o tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Novo Tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>O PadForge veste o tema enquanto você o cria.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nome</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Meu Tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Base</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>O fundo em que o tema se apoia. Um tema escuro tem texto claro, e um tema claro tem texto escuro.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imagem</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>De um Jogo do Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>De um Arquivo…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Sem Imagem</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Obtendo a imagem do Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>O Steam não tem imagem panorâmica para este jogo.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Não foi possível conectar ao Steam. Verifique sua conexão.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posição</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Move a imagem para cima ou para baixo na sua janela.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mostrar o Logotipo do Jogo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Cores</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Combinar com a Imagem</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Pega as quatro cores da imagem.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fundo</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>A página. A janela, a barra lateral, os cartões e as linhas são tons derivados dela.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Destaque</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tudo o que está ativo: o motor, o botão principal, o item escolhido.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Secundária</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valores medidos e marcas de dispositivos: taxas, níveis de bateria, entradas brutas.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atenção</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Estados de espera: dispositivos aguardados, bateria fraca, alterações não salvas.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Escolher uma Cor</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imagens (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>O PadForge não consegue ler esse arquivo como imagem.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imagem: arte da biblioteca do Steam para {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor de Entrada</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure o comportamento de polling e processamento em segundo plano.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporte a Hardware</value></data>
@@ -631,6 +677,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -639,6 +687,9 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Apenas aviso de marca registrada</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Sem termos informados</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Nenhuma publicada</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domínio público</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Protegida por direitos autorais</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Termos de uso do Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Várias licenças</value></data>
 
   <!-- ═══ Device Types ═══ -->
@@ -1348,6 +1399,11 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nenhuma outra janela aberta foi encontrada.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Remover {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Taxa de polling enquanto este perfil está carregado</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Usar o Visual do Jogo</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Enquanto este perfil estiver ativo, o PadForge mostra a imagem e as cores do jogo. Seu tema volta quando outro perfil estiver ativo.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>A imagem do jogo não está neste PC.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Obter a Imagem</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ative as Configurações da Comunidade nas Configurações para obter a imagem do jogo no Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copiar De</value></data>
@@ -4008,7 +4064,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configurações da Comunidade</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Explore configurações de controle do Steam Input criadas pela comunidade e traduza-as em perfis do PadForge. O PadForge envia seu texto de pesquisa, os IDs dos jogos, configurações e criadores envolvidos e a sua versão. O login anônimo no Steam também envia sua versão do Windows e um ID de máquina formado por hashes do ID da sua instalação do Windows, dos endereços dos adaptadores de rede e do número de série do disco de inicialização. Nenhum serviço de terceiros está envolvido.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>O PadForge só se conecta aos servidores do Steam quando você pesquisa, abre uma configuração ou verifica atualizações das configurações importadas. Sem telemetria, sem conta Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>O PadForge só se conecta aos servidores do Steam quando você pesquisa, abre uma configuração, verifica atualizações das configurações importadas ou obtém a imagem de um jogo. Sem telemetria, sem conta Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>O Que É Enviado</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ativar Configurações da Comunidade</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Mostrar Configurações Antigas do Workshop</value></data>
@@ -5106,6 +5162,28 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>O formato de perfil do reWASD, lido do dump de esquema shunt de hcn1z1 (MIT), da documentação do reWASD-Powertools de DatMoshu (MIT) e da ajuda do reWASD, o formato de perfil do DS4Windows, lido do fork do DS4Windows de Schmaldeo (GPL-3.0-or-later), e o formato de perfil do DSX, lido dos perfis do DSX-profile-share de winkywong1998, do projeto DualSense de RAIZ-Zzz (MIT) e do Mod System do DSX de Paliverse (Apache-2.0). Somente documentação, nenhum código é distribuído.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referências de Cor da Tela</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>A captura por trás da iluminação Cor da Tela, lida de Prismatik (GPL-2.0-or-later), do fork foundation-sunshine do Sunshine feito por AlkaidLab (GPL-3.0), de ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) e alienfx-tools (MIT). Somente documentação, nenhum código GPL é distribuído.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Imagem do Tema: Capacete de Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Uma foto promocional da Lucasfilm para Star Wars: A Vingança dos Sith: a imagem do tema Dark Side de Star Wars. Encontrada na Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Imagem do Tema: Logotipos das Franquias</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Os logotipos de Sonic the Hedgehog, O Senhor dos Anéis, Harry Potter, Star Wars, Star Trek: A Série Clássica e Star Trek: A Nova Geração nas imagens dos temas iniciais. Encontrados no Wikimedia Commons, que marca cada um como logotipo de texto simples em domínio público. Cada um é marca registrada de seu dono.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Imagem do Tema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>O cenário de Hobbiton na Nova Zelândia, uma foto de Jackie.lck: a imagem do tema The One Ring de O Senhor dos Anéis. Encontrada no Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Imagem do Tema: Castelo de Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Um quadro do trailer de Hogwarts Legacy no canal do YouTube do próprio jogo: a imagem do tema Gryffindor de Harry Potter. Encontrada no Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Imagem do Tema: Mapa da Terra Média</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Um mapa da Terra Média: a imagem do tema Map of Middle-earth de O Senhor dos Anéis. Encontrado no The One Wiki to Rule Them All, que não cita nenhum artista.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Imagem do Tema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>O Millennium Falcon em tamanho real no Galaxy's Edge, uma foto de Tomás Del Coro: a imagem do tema Opening Crawl de Star Wars. Encontrada no Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Imagem do Tema: Sonic na Ilha Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Um quadro do trailer de Sonic Frontiers no canal do YouTube da própria SEGA: a imagem do tema Blue Blur de Sonic the Hedgehog. Encontrada no Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Imagem do Tema: Sonic Correndo</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Arte da SEGA feita para Sonic Lost World: a imagem do tema Night Run de Sonic the Hedgehog. Encontrada no Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Imagem do Tema: Os Brasões das Quatro Casas</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Os brasões das quatro casas de Hogwarts, desenhados pela Atomhawk Design para o Pottermore: a imagem do tema Four Houses de Harry Potter. Encontrados na Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Imagem do Tema: Modelo de Estúdio da USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>O modelo filmado para a série original de Star Trek, fotografado pelo Smithsonian National Air and Space Museum, que o guarda: a imagem do tema LCARS de Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imagem do Tema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Um quadro de Star Trek: A Nova Geração: a imagem do tema Starfleet de Star Trek. Encontrada no Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Telas do Teclado</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Desenha nas telas embutidas nos teclados GamePanel da Logitech e no Mad Catz S.T.R.I.K.E. 7, e em um celular por meio do Logitech Arx Control: o perfil, um relógio, o tempo de jogo, um cronômetro, uma imagem ou a cor da barra de luz de um DualShock 4 ou DualSense. Cada tela tem sua própria linha na página Dispositivos, onde você define o que ela mostra. As teclas ao lado de uma tela são os botões da linha dela.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Controlar as Telas do Teclado</value></data>

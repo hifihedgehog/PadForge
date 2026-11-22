@@ -86,7 +86,15 @@ namespace PadForge.Tests
             ("About_License_Lgpl3", new[] { "OpenTabletDriver" }),
             ("About_License_Lgpl3OrLater", new[] { "Libwdi" }),
             ("About_License_CcByNcSa4", new[] { "HandheldCompanion", "ValveCad" }),
-            ("About_License_CcBy3", new[] { "ZackslyIcons" }),
+            ("About_License_CcBy3", new[] { "ZackslyIcons", "ThemeArtSonicKronos", "ThemeArtHogwarts" }),
+            ("About_License_CcBy2", new[] { "ThemeArtHobbiton" }),
+            ("About_License_CcBySa2", new[] { "ThemeArtFalcon" }),
+            ("About_License_PublicDomain", new[] { "ThemeArtLogos" }),
+            ("About_License_Copyrighted", new[]
+            {
+                "ThemeArtSonicRunning", "ThemeArtMiddleEarthMap", "ThemeArtHouseCrests", "ThemeArtVaderHelmet", "ThemeArtEnterpriseD",
+            }),
+            ("About_License_SmithsonianTerms", new[] { "ThemeArtEnterpriseModel" }),
             ("About_License_Ofl", new[] { "AurebeshFont" }),
             ("About_License_CgTrader", new[] { "3doverstock", "Hado" }),
             ("About_License_WyvrnEula", new[] { "Interhaptics" }),

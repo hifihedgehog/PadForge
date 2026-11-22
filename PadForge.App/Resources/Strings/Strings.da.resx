@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Systemstandard</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Lyst</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Mørkt</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nyt tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Lav et tema af dine egne farver og et billede fra et Steam-spil eller en fil.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tilføj tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Føj en temafil til listen. PadForge læser den, hvor den ligger, og kopierer intet.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Gem en kopi…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Skriv det valgte tema til en fil, du kan ændre eller dele.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Rediger tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Fjern fra listen. Filen bliver liggende, hvor den er.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Filen blev ikke fundet</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Kan ikke læses</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Filen til ”{0}” mangler eller kan ikke læses. PadForge viser Mørkt, indtil den er tilbage.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilen ”{0}” bruger sit spils udseende. Dit tema vender tilbage, når en anden profil er aktiv.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-temaer (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Den fil er ikke et PadForge-tema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Temaet kunne ikke gemmes. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nyt tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge viser temaet, mens du bygger det.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Navn</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mit tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Grundtone</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Det underlag, temaet bygger på. Et mørkt tema har lys tekst, og et lyst tema har mørk tekst.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Billede</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Fra et Steam-spil…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Fra en fil…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Intet billede</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Henter billedet fra Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam har intet bredt billede til dette spil.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Kunne ikke nå Steam. Tjek din forbindelse.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Placering</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Flytter billedet op eller ned i sit vindue.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Vis spillets logo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Farver</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tilpas til billedet</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Henter de fire farver fra billedet.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Baggrund</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Selve siden. Vinduet, sidepanelet, kortene og stregerne er trin ud fra den.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Alt, der er i gang: motoren, hovedknappen og det valgte element.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundær</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Målte værdier og enhedsmærker: frekvenser, batteriniveauer og rå input.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Opmærksomhed</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Ventende tilstande: enheder, der afventes, lavt batteri og ugemte ændringer.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Vælg en farve</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Billeder (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Alle filer (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge kan ikke læse den fil som et billede.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Billede: Steams biblioteksgrafik til {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Inputmotor</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurer aflæsning og baggrundsbehandling.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardwareunderstøttelse</value></data>
@@ -870,6 +916,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Kun varemærkeansvarsfraskrivelse</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Ingen vilkår angivet</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Ingen offentliggjort</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Offentligt domæne</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Ophavsretligt beskyttet</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonians brugsvilkår</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Flere licenser</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor til virtuelle HID-controllere i brugertilstand (erstatter ViGEmBus og vJoy).</value></data>
@@ -2901,6 +2952,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Der blev ikke fundet andre åbne vinduer.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Fjern {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Pollingrate, mens denne profil er indlæst</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Brug spillets udseende</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Mens denne profil er aktiv, viser PadForge spillets billede og farver. Dit tema vender tilbage, når en anden profil er aktiv.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Spillets billede findes ikke på denne pc.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Hent billedet</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Slå Fællesskabskonfigurationer til i Indstillinger for at hente spillets billede fra Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopier fra</value></data>
@@ -4193,7 +4249,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Fællesskabskonfigurationer</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Gennemse Steam Input-controllerkonfigurationer lavet af fællesskabet, og omsæt dem til PadForge-profiler. PadForge sender din søgetekst, ID'erne for de berørte spil, konfigurationer og skabere samt sin version. Det anonyme Steam-logon sender også din Windows-version og et maskine-ID, der er dannet ud fra hashværdier af dit Windows-installations-ID, adresserne på dine netværksadaptere og serienummeret på din startdisk. Ingen tredjepartstjeneste er involveret.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge forbinder kun til Steams servere, når du søger, åbner en konfiguration eller tjekker importerede konfigurationer for opdateringer. Ingen telemetri, ingen Steam-konto.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge forbinder kun til Steams servere, når du søger, åbner en konfiguration, tjekker importerede konfigurationer for opdateringer eller henter et spils billede. Ingen telemetri, ingen Steam-konto.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Hvad der sendes</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktiver fællesskabskonfigurationer</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Vis ældre Workshop-konfigurationer</value></data>
@@ -5157,6 +5213,28 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Profilformatet fra reWASD, læst fra hcn1z1s shunt-skemadump (MIT), dokumentationen til reWASD-Powertools af DatMoshu (MIT) og reWASD’s hjælp, profilformatet fra DS4Windows, læst fra DS4Windows-forken fra Schmaldeo (GPL-3.0-or-later), og profilformatet fra DSX, læst fra profilerne i DSX-profile-share fra winkywong1998, projektet DualSense fra RAIZ-Zzz (MIT) og Mod System i DSX fra Paliverse (Apache-2.0). Kun dokumentation, ingen kode følger med.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referencer til Skærmfarve</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Skærmoptagelsen bag lyset Skærmfarve, læst fra Prismatik (GPL-2.0-or-later), foundation-sunshine-forken af Sunshine fra AlkaidLab (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) og alienfx-tools (MIT). Kun dokumentation, ingen GPL-kode følger med.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Temabillede: Darth Vaders hjelm</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Et reklamefoto fra Lucasfilm til Sith’ens hævn: billedet til Star Wars-temaet Dark Side. Fundet på Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Temabillede: Franchiselogoer</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logoerne for Sonic the Hedgehog, Ringenes Herre, Harry Potter, Star Wars, Star Trek: Den originale serie og Star Trek: Næste generation på starttemaernes billeder. Fundet på Wikimedia Commons, som markerer hvert af dem som et rent tekstlogo i det offentlige domæne. Hvert af dem er ejerens varemærke.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Temabillede: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Filmkulissen Hobbiton i New Zealand, et foto af Jackie.lck: billedet til Ringenes Herre-temaet The One Ring. Fundet på Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Temabillede: Hogwarts-slottet</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Et billede fra traileren til Hogwarts Legacy fra spillets egen YouTube-kanal: billedet til Harry Potter-temaet Gryffindor. Fundet på Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Temabillede: Kort over Midgård</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Et kort over Midgård: billedet til Ringenes Herre-temaet Map of Middle-earth. Fundet på The One Wiki to Rule Them All, som ikke nævner nogen kunstner.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Temabillede: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Den fuldt store Millennium Falcon i Galaxy’s Edge, et foto af Tomás Del Coro: billedet til Star Wars-temaet Opening Crawl. Fundet på Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Temabillede: Sonic på Kronos-øen</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Et billede fra traileren til Sonic Frontiers fra SEGAs egen YouTube-kanal: billedet til Sonic the Hedgehog-temaet Blue Blur. Fundet på Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Temabillede: Sonic løber</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Grafik fra SEGA lavet til Sonic Lost World: billedet til Sonic the Hedgehog-temaet Night Run. Fundet på Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Temabillede: De fire husvåbener</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>De fire husvåbener fra Hogwarts, tegnet af Atomhawk Design til Pottermore: billedet til Harry Potter-temaet Four Houses. Fundet på Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Temabillede: USS Enterprise som studiemodel</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Modellen, der blev filmet til den oprindelige Star Trek-serie, fotograferet af Smithsonian National Air and Space Museum, som har den: billedet til Star Trek-temaet LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Temabillede: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Et billede fra Star Trek: Næste generation: billedet til Star Trek-temaet Starfleet. Fundet på Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Tastaturskærme</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Tegner på skærmene, der er indbygget i Logitechs GamePanel-tastaturer og Mad Catz S.T.R.I.K.E. 7, og på en telefon via Logitech Arx Control: profilen, et ur, spilletid, et stopur, et billede eller farven på lysbjælken på en DualShock 4 eller DualSense. Hver skærm får sin egen række på siden Enheder, hvor du vælger, hvad den viser. Tasterne ved siden af en skærm er rækkens knapper.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Styr tastaturskærme</value></data>

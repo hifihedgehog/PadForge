@@ -85,7 +85,8 @@ namespace PadForge.ViewModels
             {
                 case nameof(SelectedThemeIndex):
                 {
-                    SelectedThemeIndex = 0;
+                    // System, and no picked theme (#591).
+                    SetTheme(0, null);
                     break;
                 }
                 case nameof(SelectedLanguage):

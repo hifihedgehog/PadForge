@@ -48,7 +48,7 @@ namespace PadForge.Controls
 
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             nameof(Color), typeof(Color), typeof(Halo),
-            new FrameworkPropertyMetadata(Color.FromRgb(0xFF, 0x6B, 0x2C), (d, _) => ((Halo)d).Redraw()));
+            new FrameworkPropertyMetadata(PadForge.Common.EmberTheme.Accent, (d, _) => ((Halo)d).Redraw()));
 
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             nameof(Radius), typeof(double), typeof(Halo),
@@ -145,6 +145,10 @@ namespace PadForge.Controls
         {
             _light = new Light(this) { IsHitTestVisible = false, Opacity = 0 };
             AddVisualChild(_light);
+            // The light is the look's accent (#591): ember under PadForge's
+            // own look, a theme's accent under a theme, followed live. A
+            // Color set in markup stands over this.
+            SetResourceReference(ColorProperty, "EmberColor");
             // Loaded can come again with no Unloaded between, so the probe
             // is let go before it is taken.
             Loaded += (_, _) =>

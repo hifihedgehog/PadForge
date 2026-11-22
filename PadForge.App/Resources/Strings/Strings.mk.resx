@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Според системот</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Светла</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Темна</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Нова тема…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Направете тема од свои бои и слика, од игра на Steam или од датотека.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Додај тема…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Додајте датотека со тема на списокот. PadForge ја чита каде што е и не копира ништо.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Зачувај копија…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Запишете ја избраната тема во датотека што можете да ја менувате или да ја споделувате.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Уреди тема</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Отстрани од списокот. Датотеката останува каде што е.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Датотеката не е пронајдена</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Не може да се прочита</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Датотеката на „{0}“ ја нема или не може да се прочита. PadForge ја прикажува темата Темна додека не се врати.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Профилот „{0}“ го носи изгледот на својата игра. Вашата тема се враќа кога ќе стане активен друг профил.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Теми на PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Таа датотека не е тема на PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Темата не можеше да се зачува. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Нова тема</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ја носи темата додека ја градите.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Име</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Мојата тема</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Основа</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Подлогата на која стои темата. Темната тема има светол текст, а светлата тема има темен текст.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Слика</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Од игра на Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Од датотека…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Без слика</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Сликата се презема од Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam нема широка слика за оваа игра.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Не може да се пристапи до Steam. Проверете ја врската.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Положба</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ја поместува сликата нагоре или надолу во нејзиниот прозорец.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Прикажи го логото на играта</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Бои</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Усогласи со сликата</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ги презема четирите бои од сликата.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Позадина</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Страницата. Прозорецот, страничната лента, картичките и линиите се нијанси од неа.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Акцент</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Сè што е активно: моторот, главното копче, избраната ставка.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Споредна</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Измерени вредности и ознаки на уреди: фреквенции, нивоа на батерија, сурови влезови.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Внимание</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Состојби на чекање: уреди во исчекување, слаба батерија, незачувани промени.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Избери боја</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Слики (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Сите датотеки (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge не може да ја прочита таа датотека како слика.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Слика: библиотечната уметност на Steam за {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Мотор за влез</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Конфигурирајте го читањето на влезовите и обработката во заднина.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Поддршка за хардвер</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Само одрекување за заштитен знак</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Без наведени услови</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Нема објавено</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Јавен домен</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Заштитено со авторски права</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Услови за користење на Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Повеќе лиценци</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Мотор за виртуелни HID-контролери во кориснички режим (ги заменува ViGEmBus и vJoy).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Не е пронајден друг отворен прозорец.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Отстрани {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Брзина на анкетирање додека овој профил е вчитан</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Носи го изгледот на играта</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Додека овој профил е активен, PadForge ги прикажува сликата и боите на играта. Вашата тема се враќа кога е активен друг профил.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Сликата на играта не е на овој компјутер.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Преземи ја сликата</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Вклучете ги Конфигурациите од заедницата во Поставки за да ја добиете сликата на играта од Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Копирај од</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Конфигурации од заедницата</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Прелистувајте конфигурации на контролери за Steam Input направени од заедницата и преведете ги во профили на PadForge. PadForge го испраќа текстот на пребарувањето, идентификаторите на вклучените игри, конфигурации и автори и својата верзија. Анонимното најавување на Steam исто така ја испраќа вашата верзија на Windows и идентификатор на компјутерот направен од хешови на идентификаторот на инсталацијата на Windows, адресите на мрежните адаптери и серискиот број на дискот за подигање. Не е вклучена услуга од трета страна.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge се поврзува со серверите на Steam само кога пребарувате, отворате конфигурација или проверувате дали увезените конфигурации имаат ажурирања. Без телеметрија, без сметка на Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge се поврзува со серверите на Steam само кога пребарувате, отворате конфигурација, проверувате дали увезените конфигурации имаат ажурирања или преземате слика на игра. Без телеметрија, без сметка на Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Што се испраќа</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Овозможи конфигурации од заедницата</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Прикажи застарени конфигурации од Работилницата</value></data>
@@ -5157,6 +5213,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Форматот на профилите на reWASD, прочитан од дампот на шемата shunt на hcn1z1 (MIT), документацијата reWASD-Powertools на DatMoshu (MIT) и помошта на reWASD, форматот на профилите на DS4Windows, прочитан од форкот DS4Windows на Schmaldeo (GPL-3.0-or-later), и форматот на профилите на DSX, прочитан од профилите во DSX-profile-share на winkywong1998, проектот DualSense на RAIZ-Zzz (MIT) и Mod System на DSX од Paliverse (Apache-2.0). Само документација, не се испорачува код.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Референци за „Боја од екранот“</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Снимањето на екранот зад осветлувањето „Боја од екранот“, прочитано од Prismatik (GPL-2.0-or-later), форкот foundation-sunshine на Sunshine од AlkaidLab (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) и alienfx-tools (MIT). Само документација, не се испорачува GPL-код.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Слика на тема: Шлемот на Дарт Вејдер</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Промотивна фотографија на Lucasfilm за Одмаздата на Ситите: сликата на темата Dark Side од Војна на ѕвездите. Пронајдена на Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Слика на тема: Логоа на франшизи</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Логоата на Sonic the Hedgehog, Господарот на прстените, Хари Потер, Војна на ѕвездите, Star Trek: Оригиналната серија и Star Trek: Следната генерација на сликите од почетните теми. Пронајдени на Wikimedia Commons, што секое го означува како обично текстуално лого во јавен домен. Секое е заштитен знак на својот сопственик.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Слика на тема: Хобитон</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Филмската сцена Хобитон во Нов Зеланд, фотографија од Jackie.lck: сликата на темата The One Ring од Господарот на прстените. Пронајдена на Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Слика на тема: Замокот Хогвортс</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Кадар од трејлерот на Hogwarts Legacy од сопствениот канал на играта на YouTube: сликата на темата Gryffindor од Хари Потер. Пронајдена на Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Слика на тема: Карта на Средна земја</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Карта на Средна земја: сликата на темата Map of Middle-earth од Господарот на прстените. Пронајдена на The One Wiki to Rule Them All, што не именува уметник.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Слика на тема: Милениумскиот сокол</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Милениумскиот сокол во природна големина во Galaxy’s Edge, фотографија од Tomás Del Coro: сликата на темата Opening Crawl од Војна на ѕвездите. Пронајдена на Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Слика на тема: Sonic на Островот Кронос</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Кадар од трејлерот на Sonic Frontiers од сопствениот канал на SEGA на YouTube: сликата на темата Blue Blur од Sonic the Hedgehog. Пронајдена на Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Слика на тема: Sonic трча</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Уметност на SEGA направена за Sonic Lost World: сликата на темата Night Run од Sonic the Hedgehog. Пронајдена на Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Слика на тема: Грбовите на четирите домови</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Грбовите на четирите домови на Хогвортс, нацртани од Atomhawk Design за Pottermore: сликата на темата Four Houses од Хари Потер. Пронајдени на викито за Хари Потер.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Слика на тема: Студиски модел на USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Моделот снимен за оригиналната серија Star Trek, фотографиран од Smithsonian National Air and Space Museum, кој го чува: сликата на темата LCARS од Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Слика на тема: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Кадар од Star Trek: Следната генерација: сликата на темата Starfleet од Star Trek. Пронајдена на Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Екрани на тастатурата</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Црта на екраните вградени во тастатурите GamePanel на Logitech и во Mad Catz S.T.R.I.K.E. 7, како и на телефон преку Logitech Arx Control: профилот, часовник, време на играње, штоперица, слика или бојата на светлосната лента на DualShock 4 или DualSense. Секој екран добива свој ред на страницата Уреди, каде што поставуваш што прикажува. Тастерите покрај екранот се копчиња на неговиот ред.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Управувај со екраните на тастатурата</value></data>

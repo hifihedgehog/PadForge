@@ -1360,4 +1360,22 @@
   <data name="Mapping_SourceCurve_Tooltip" xml:space="preserve"><value>E godiša palo ya tsenyo ye ka maatla a pele e laola setšweletšwa. 0 le 1 di e tlogela e otlologile. Godimo ga 1 e nanya kgauswi le bogare.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Phedi ya wepe yeo e itirilwego e boloka sehlopha se sengwe le se sengwe sa ditaolo kgole yeo e swanago le ntlha ya kgauswi ya sekirini se se phatlalletšego, bjalo ka ge di-overlay tša RetroArch di šuthiša dikarolo tša tšona tše pedi. E badilwe bjalo ka ditokumente fela, ga go khoutu ya GPL yeo e romelwago.</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Thimi ye mpsha…</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Oketša thimi…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Boloka khophi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Lokiša thimi</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tloša lenaneong. Faele e dula moo e lego gona.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Leina</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Thimi ya ka</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Seswantšho</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Go tšwa papading ya Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Go tšwa faeleng…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ntle le seswantšho</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ga e na seswantšho se se phatlalalago sa papadi ye.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Maemo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E šuthišetša seswantšho godimo goba fase lefasetereng la sona.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Bontšha logo ya papadi</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Swantšhanya le seswantšho</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E tšea mebala ye mene go tšwa seswantšhong.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Diswantšho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele ka moka (*.*)|*.*</value></data>
 </root>

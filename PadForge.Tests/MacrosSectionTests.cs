@@ -1240,7 +1240,7 @@ namespace PadForge.Tests
             var picked = Assert.Single(step.Descendants(), e => e.Name.LocalName == "Trigger" && (string)e.Attribute("Property") == "IsSelected");
             Assert.Equal(new[]
                 {
-                    "Bd.BorderBrush=#66FF6B2C", "Head.Background={DynamicResource EmberCardPickBrush}", "Head.CornerRadius=5,5,0,0",
+                    "Bd.BorderBrush={DynamicResource Ember66Brush}", "Head.Background={DynamicResource EmberCardPickBrush}", "Head.CornerRadius=5,5,0,0",
                     "Fields.ContentTemplate={DynamicResource StepFields}", "Fields.Visibility=Visible",
                 },
                 picked.Elements().Select(s => (string)s.Attribute("TargetName") + "." + (string)s.Attribute("Property") + "=" + (string)s.Attribute("Value")));

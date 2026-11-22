@@ -625,6 +625,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Per defecte del sistema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Clar</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Fosc</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema nou…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Crea un tema amb els teus colors i una imatge, d'un joc de Steam o d'un fitxer.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Afegeix un tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Afegeix un fitxer de tema a la llista. PadForge el llegeix allà on és i no en copia res.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Desa una còpia…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Escriu el tema triat en un fitxer que puguis canviar o compartir.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Edita el tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Treu-lo de la llista. El fitxer es queda on és.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>No s'ha trobat el fitxer</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>No es pot llegir</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>El fitxer de «{0}» no hi és o no es pot llegir. PadForge mostra Fosc fins que torni.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>El perfil «{0}» porta l'aspecte del seu joc. El teu tema torna quan hi ha un altre perfil actiu.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor d'entrada</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configura el comportament del sondeig i el processament en segon pla.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suport de maquinari</value></data>
@@ -851,6 +863,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -859,6 +873,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Només avís de marca registrada</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Sense condicions indicades</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Cap publicada</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domini públic</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Amb drets d'autor</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Condicions d'ús del Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Diverses llicències</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de comandaments HID virtuals en mode d'usuari (substitueix ViGEmBus i vJoy).</value></data>
@@ -2704,6 +2721,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>No s'ha trobat cap altra finestra oberta.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Elimina {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Freqüència de sondeig mentre aquest perfil és carregat</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Porta l'aspecte del joc</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Mentre aquest perfil està actiu, PadForge mostra la imatge i els colors del joc. El teu tema torna quan hi ha un altre perfil actiu.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>La imatge del joc no és en aquest PC.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Obtén la imatge</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Activa «Configuracions de la comunitat» a Configuració per obtenir la imatge del joc de Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copia de</value></data>
@@ -3964,7 +3986,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configuracions de la comunitat</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Explora configuracions de comandament de Steam Input creades per la comunitat i converteix-les en perfils de PadForge. PadForge envia el text de la cerca, els ID dels jocs, les configuracions i els creadors implicats, i la seva versió. L'inici de sessió anònim a Steam també envia la teva versió de Windows i un ID d'equip creat a partir de resums (hash) de l'ID de la instal·lació de Windows, de les adreces dels adaptadors de xarxa i del número de sèrie del disc d'arrencada. No hi intervé cap servei de tercers.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge només es connecta als servidors de Steam quan fas una cerca, obres una configuració o comproves si hi ha actualitzacions de les configuracions importades. Sense telemetria, sense compte de Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge només es connecta als servidors de Steam quan fas una cerca, obres una configuració, comproves si hi ha actualitzacions de les configuracions importades o obtens la imatge d'un joc. Sense telemetria, sense compte de Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Què s'envia</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Activa les configuracions de la comunitat</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Mostra les configuracions antigues del Workshop</value></data>
@@ -5247,4 +5269,59 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Capes de canvi</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertit</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Pic</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Aquest fitxer no és un tema de PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>No s'ha pogut desar el tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema nou</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge porta el tema mentre el crees.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nom</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>El meu tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Base</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>La base sobre la qual es recolza el tema. Un tema fosc té el text clar i un tema clar té el text fosc.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imatge</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>D'un joc de Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>D'un fitxer…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Sense imatge</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>S'està obtenint la imatge de Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam no té cap imatge ampla d'aquest joc.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>No s'ha pogut accedir a Steam. Comprova la connexió.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posició</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mou la imatge amunt o avall dins de la seva finestra.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mostra el logotip del joc</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Colors</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ajusta a la imatge</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Pren els quatre colors de la imatge.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fons</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>La pàgina. La finestra, la barra lateral, les targetes i les línies en són gradacions.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tot el que és actiu: el motor, el botó principal, l'element triat.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Secundari</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valors mesurats i marques de dispositius: freqüències, nivells de bateria, entrades en brut.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atenció</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Estats d'espera: dispositius pendents, bateria baixa, canvis sense desar.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Tria un color</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imatges (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tots els fitxers (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge no pot llegir aquest fitxer com a imatge.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imatge: l'art de la biblioteca de Steam per a {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Imatge del tema: El casc de Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Una foto promocional de Lucasfilm per a La venjança dels Sith: la imatge del tema de Star Wars Dark Side. Trobada a Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Imatge del tema: Logotips de les franquícies</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Els logotips de Sonic the Hedgehog, El Senyor dels Anells, Harry Potter, Star Wars, Star Trek: La sèrie original i Star Trek: La nova generació a les imatges dels temes inicials. Trobats a Wikimedia Commons, que marca cadascun com a logotip de text simple de domini públic. Cadascun és marca registrada del seu propietari.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Imatge del tema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>El plató de cinema de Hobbiton a Nova Zelanda, una foto de Jackie.lck: la imatge del tema d'El Senyor dels Anells The One Ring. Trobada a Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Imatge del tema: El castell de Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Un fotograma del tràiler de Hogwarts Legacy del canal de YouTube del mateix joc: la imatge del tema de Harry Potter Gryffindor. Trobat a Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Imatge del tema: Mapa de la Terra Mitjana</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Un mapa de la Terra Mitjana: la imatge del tema d'El Senyor dels Anells Map of Middle-earth. Trobat a The One Wiki to Rule Them All, que no esmenta cap artista.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Imatge del tema: Falcó Mil·lenari</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>El Falcó Mil·lenari a mida real a Galaxy's Edge, una foto de Tomás Del Coro: la imatge del tema de Star Wars Opening Crawl. Trobada a Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Imatge del tema: Sonic a l'illa de Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Un fotograma del tràiler de Sonic Frontiers del canal de YouTube de SEGA: la imatge del tema de Sonic the Hedgehog Blue Blur. Trobat a Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Imatge del tema: Sonic corrent</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Art de SEGA creat per a Sonic Lost World: la imatge del tema de Sonic the Hedgehog Night Run. Trobada a Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Imatge del tema: Els escuts de les quatre cases</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Els escuts de les quatre cases de Hogwarts, dibuixats per Atomhawk Design per a Pottermore: la imatge del tema de Harry Potter Four Houses. Trobats a la Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Imatge del tema: Maqueta d'estudi de l'USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>La maqueta filmada per a la sèrie original de Star Trek, fotografiada pel Smithsonian National Air and Space Museum, que la conserva: la imatge del tema de Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imatge del tema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Un fotograma de Star Trek: La nova generació: la imatge del tema de Star Trek Starfleet. Trobat a Memory Alpha.</value></data>
 </root>

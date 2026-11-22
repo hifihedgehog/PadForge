@@ -110,7 +110,7 @@ namespace PadForge.Controls
         // light mode gets its own values; these frozen statics are fallbacks only.
         private static readonly SolidColorBrush CurveStrokeFallbackBrush = CreateFrozen(0x94, 0xA3, 0xBD);
         private static readonly SolidColorBrush HandleFallbackBrush = CreateFrozen(0x5D, 0x6B, 0x85);
-        private static readonly SolidColorBrush EmberHotBrush = CreateFrozen(0xFF, 0xA2, 0x4D);
+        private static Brush EmberHotBrush => PadForge.Common.Themes.ThemeLook.AccentLightBrush;
         // Steel fallbacks for full-width mode (SteelLineBrush / SteelCardBrush values).
         private static readonly SolidColorBrush SteelLineFallbackBrush = CreateFrozen(0x25, 0x30, 0x49);
         private static readonly SolidColorBrush ReadoutBackBrush = CreateFrozenChip();
@@ -135,21 +135,9 @@ namespace PadForge.Controls
         // Hover glow (#175): handles flip ember-hot under the cursor (the
         // same hue they hold while dragged), so the bloom is ember. Small
         // glyph, so BlurRadius 8. Shared + frozen, set directly on the
-        // element, never animated.
-        private static readonly System.Windows.Media.Effects.DropShadowEffect HandleHoverGlow = CreateFrozenHandleGlow();
-
-        private static System.Windows.Media.Effects.DropShadowEffect CreateFrozenHandleGlow()
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
-                BlurRadius = 8,
-                ShadowDepth = 0,
-                Opacity = 0.45
-            };
-            fx.Freeze();
-            return fx;
-        }
+        // element, never animated. A theme's accent takes ember's place
+        // (#591), and the glow is made again when the look changes.
+        private static System.Windows.Media.Effects.DropShadowEffect HandleHoverGlow => PadForge.Common.Themes.ThemeLook.Glow(8, 0.45);
 
         private const double PointRadius = 5;
         private const double HitRadius = 8;
@@ -158,7 +146,9 @@ namespace PadForge.Controls
         {
             InitializeComponent();
             ChartCanvas.LostMouseCapture += Canvas_LostMouseCapture;
-            Loaded += (_, _) => InitVisuals();
+            // The parts are built when the editor loads, and again in the
+            // look's tones when a look is put on while it shows (#591).
+            PadForge.Common.Themes.ThemeTokens.Follow(this, InitVisuals);
             // Full-width mode: the plot width follows the parent, so any
             // resize redraws by value change (no animation loop involved).
             ChartCanvas.SizeChanged += (_, _) => { if (IsFullWidth && IsLoaded) DrawAll(); };
@@ -231,7 +221,7 @@ namespace PadForge.Controls
             _liveDot.Fill = EmberHotBrush;
             _liveDot.Effect = new System.Windows.Media.Effects.DropShadowEffect
             {
-                Color = Color.FromRgb(0xFF, 0x82, 0x28),
+                Color = PadForge.Common.Themes.ThemeLook.DotGlow,
                 BlurRadius = 8,
                 ShadowDepth = 0,
                 Opacity = 0.9

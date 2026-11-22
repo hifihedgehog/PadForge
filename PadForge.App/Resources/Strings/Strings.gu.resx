@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>સિસ્ટમ ડિફોલ્ટ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>હળવી</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ઘેરી</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>નવી થીમ…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>તમારા પોતાના રંગોથી અને Steam રમતમાંથી અથવા ફાઇલમાંથી લીધેલા ચિત્રથી થીમ બનાવો.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>થીમ ઉમેરો…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>થીમ ફાઇલને યાદીમાં મૂકો. PadForge તેને જ્યાં છે ત્યાંથી વાંચે છે અને કંઈ કૉપિ કરતું નથી.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>નકલ સાચવો…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>પસંદ કરેલી થીમને એવી ફાઇલમાં લખો જેને તમે બદલી શકો અથવા શેર કરી શકો.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>થીમ સંપાદિત કરો</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>યાદીમાંથી દૂર કરો. ફાઇલ જ્યાં છે ત્યાં જ રહે છે.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ફાઇલ મળી નથી</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>વાંચી શકાતી નથી</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ની ફાઇલ ખૂટે છે અથવા વાંચી શકાતી નથી. તે પાછી ન આવે ત્યાં સુધી PadForge ઘેરી થીમ બતાવે છે.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” તેની રમતનો દેખાવ ધારણ કરી રહી છે. બીજી પ્રોફાઇલ સક્રિય થાય ત્યારે તમારી થીમ પાછી આવશે.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ઇનપુટ એન્જિન</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>પોલિંગ વર્તન અને બૅકગ્રાઉન્ડ પ્રોસેસિંગ ગોઠવો.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>હાર્ડવેર સપોર્ટ</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ફક્ત ટ્રેડમાર્ક અસ્વીકરણ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>કોઈ શરતો જણાવી નથી</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>કંઈ પ્રકાશિત નથી</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>સાર્વજનિક ક્ષેત્ર</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>કૉપિરાઇટ હેઠળ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian ઉપયોગની શરતો</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>અનેક લાઇસન્સ</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>યુઝર-મોડ વર્ચ્યુઅલ HID કંટ્રોલર એન્જિન (ViGEmBus અને vJoy ની જગ્યા લે છે).</value></data>
@@ -2707,6 +2724,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>બીજી કોઈ ખુલ્લી વિન્ડો મળી નથી.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} દૂર કરો</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>આ પ્રોફાઇલ લોડ હોય ત્યારે પોલિંગ રેટ</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>રમતનો દેખાવ ધારણ કરો</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>આ પ્રોફાઇલ સક્રિય હોય ત્યારે PadForge રમતનું ચિત્ર અને રંગો બતાવે છે. બીજી પ્રોફાઇલ સક્રિય થાય ત્યારે તમારી થીમ પાછી આવે છે.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>રમતનું ચિત્ર આ PC પર નથી.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ચિત્ર મેળવો</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam પરથી રમતનું ચિત્ર મેળવવા માટે સેટિંગ્સમાં કમ્યુનિટી કોન્ફિગ ચાલુ કરો.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>આમાંથી કૉપિ કરો</value></data>
@@ -3958,7 +3980,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>સમુદાયે બનાવેલા Steam Input કંટ્રોલર કોન્ફિગરેશન બ્રાઉઝ કરો અને તેમને PadForge પ્રોફાઇલમાં ફેરવો. PadForge તમારો શોધ લખાણ, સંબંધિત રમતો, કોન્ફિગ અને સર્જકોના ID, અને પોતાનું વર્ઝન મોકલે છે. અનામી Steam લૉગોન તમારું Windows વર્ઝન અને તમારા Windows ઇન્સ્ટોલેશન ID, નેટવર્ક એડેપ્ટર સરનામાં અને બૂટ ડિસ્ક સિરિયલના હેશમાંથી બનેલું મશીન ID પણ મોકલે છે. કોઈ તૃતીય પક્ષની સેવા સામેલ નથી.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam ના સર્વર સાથે ફક્ત ત્યારે જ જોડાય છે જ્યારે તમે શોધો, કોઈ કોન્ફિગ ખોલો અથવા આયાત કરેલા કોન્ફિગના અપડેટ તપાસો. કોઈ ટેલિમેટ્રી નથી, કોઈ Steam એકાઉન્ટ નથી.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam ના સર્વર સાથે ફક્ત ત્યારે જ જોડાય છે જ્યારે તમે શોધો, કોઈ કોન્ફિગ ખોલો, આયાત કરેલા કોન્ફિગના અપડેટ તપાસો અથવા રમતનું ચિત્ર મેળવો. કોઈ ટેલિમેટ્રી નથી, કોઈ Steam એકાઉન્ટ નથી.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>શું મોકલાય છે</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ સક્ષમ કરો</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>જૂના Workshop કોન્ફિગ બતાવો</value></data>
@@ -5230,4 +5252,59 @@
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>આ મેક્રો પકડી રાખો ત્યાં સુધી મેગ્નિફાયર બતાવે છે, સાઇટ્સ ઉપર લઈને નિશાન લેવા માટે. તેને મેગ્નિફાયર પેજ પર સેટ કરો.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ક્લિંગોન અને સિન્ડારિન સંદર્ભો</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ક્લિંગોન અને સિન્ડારિન અનુવાદોના શબ્દો klingon-assistant-data (Apache-2.0), boQwI' પાછળનો શબ્દકોશ, અને Eldamo (CC BY 4.0), Paul Strack નો એલ્વિશ શબ્દકોશ સાથે ચકાસેલા છે. માત્ર શબ્દકોશ ડેટા, તેમાંનું કંઈ આવતું નથી.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>તે ફાઇલ PadForge થીમ નથી.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>થીમ સાચવી શકાઈ નહીં. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>નવી થીમ</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>તમે થીમ બનાવો છો ત્યારે PadForge પોતે તે થીમ બતાવે છે.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>નામ</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>મારી થીમ</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>આધાર</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>થીમ જેના પર ઊભી છે તે જમીન. ઘેરી થીમમાં લખાણ હળવું અને હળવી થીમમાં લખાણ ઘેરું હોય છે.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ચિત્ર</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam રમતમાંથી…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ફાઇલમાંથી…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ચિત્ર નહીં</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam પરથી ચિત્ર મેળવી રહ્યું છે…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam પર આ રમત માટે પહોળું ચિત્ર નથી.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam સુધી પહોંચી શકાયું નહીં. તમારું કનેક્શન તપાસો.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>સ્થાન</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ચિત્રને તેની વિંડોમાં ઉપર અથવા નીચે ખસેડે છે.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>રમતનો લોગો બતાવો</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>રંગો</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ચિત્ર સાથે મેળ કરો</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ચિત્રમાંથી ચાર રંગો લે છે.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>પૃષ્ઠભૂમિ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>પાનું. વિંડો, સાઇડબાર, કાર્ડ અને રેખાઓ તેના જ હળવા કે ઘેરા સ્તર છે.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>એક્સેન્ટ</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>જે કંઈ ચાલુ છે તે બધું: એન્જિન, મુખ્ય બટન, પસંદ કરેલી વસ્તુ.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ગૌણ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>માપેલા મૂલ્યો અને ઉપકરણના ચિહ્નો: દર, બેટરી સ્તર, કાચા ઇનપુટ.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ધ્યાન</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>રાહ જોતી સ્થિતિઓ: ઉપકરણોની રાહ, ઓછી બેટરી, સાચવ્યા વગરના ફેરફારો.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>રંગ પસંદ કરો</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ચિત્રો (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|બધી ફાઇલો (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge તે ફાઇલને ચિત્ર તરીકે વાંચી શકતું નથી.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ચિત્ર: {0} માટે Steam ની લાઇબ્રેરી આર્ટ.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>થીમ ચિત્ર: ડાર્થ વેડરનું હેલ્મેટ</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>રિવેન્જ ઓફ ધ સિથ માટેનો Lucasfilm નો પ્રચાર ફોટો: સ્ટાર વોર્સ થીમ Dark Side નું ચિત્ર. Wookieepedia પર મળ્યો.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>થીમ ચિત્ર: ફ્રેન્ચાઇઝીના લોગો</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>સોનિક ધ હેજહોગ, ધ લોર્ડ ઓફ ધ રિંગ્સ, હેરી પોટર, સ્ટાર વોર્સ, સ્ટાર ટ્રેક: ધ ઓરિજિનલ સિરીઝ અને સ્ટાર ટ્રેક: ધ નેક્સ્ટ જનરેશનના લોગો, જે શરૂઆતની થીમના ચિત્રો પર છે. Wikimedia Commons પર મળ્યા, જે દરેકને સાદા લખાણના સાર્વજનિક ક્ષેત્રના લોગો તરીકે દર્શાવે છે. દરેક તેના માલિકનો ટ્રેડમાર્ક છે.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>થીમ ચિત્ર: હોબિટન</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ન્યૂઝીલેન્ડમાં આવેલો હોબિટનનો ફિલ્મ સેટ, Jackie.lck નો ફોટો: ધ લોર્ડ ઓફ ધ રિંગ્સ થીમ The One Ring નું ચિત્ર. Wikimedia Commons પર મળ્યો.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>થીમ ચિત્ર: હોગવર્ટ્સ કેસલ</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>રમતની પોતાની YouTube ચેનલ પરના Hogwarts Legacy ટ્રેલરની એક ફ્રેમ: હેરી પોટર થીમ Gryffindor નું ચિત્ર. Wikimedia Commons પર મળી.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>થીમ ચિત્ર: મધ્ય પૃથ્વીનો નકશો</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>મધ્ય પૃથ્વીનો નકશો: ધ લોર્ડ ઓફ ધ રિંગ્સ થીમ Map of Middle-earth નું ચિત્ર. The One Wiki to Rule Them All પર મળ્યો, જે કોઈ કલાકારનું નામ આપતી નથી.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>થીમ ચિત્ર: મિલેનિયમ ફાલ્કન</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge ખાતેનું પૂર્ણ કદનું મિલેનિયમ ફાલ્કન, Tomás Del Coro નો ફોટો: સ્ટાર વોર્સ થીમ Opening Crawl નું ચિત્ર. Wikimedia Commons પર મળ્યો.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>થીમ ચિત્ર: ક્રોનોસ ટાપુ પર Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA ની પોતાની YouTube ચેનલ પરના Sonic Frontiers ટ્રેલરની એક ફ્રેમ: સોનિક ધ હેજહોગ થીમ Blue Blur નું ચિત્ર. Wikimedia Commons પર મળી.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>થીમ ચિત્ર: દોડતો Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World માટે બનાવેલી SEGA ની આર્ટ: સોનિક ધ હેજહોગ થીમ Night Run નું ચિત્ર. Sonic Wiki Zone પર મળી.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>થીમ ચિત્ર: ચારેય હાઉસના ક્રેસ્ટ</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore માટે Atomhawk Design એ દોરેલા હોગવર્ટ્સના ચાર હાઉસના ક્રેસ્ટ: હેરી પોટર થીમ Four Houses નું ચિત્ર. હેરી પોટર વિકી પર મળ્યા.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>થીમ ચિત્ર: USS Enterprise સ્ટુડિયો મોડેલ</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>મૂળ સ્ટાર ટ્રેક શ્રેણી માટે ફિલ્માવેલું મોડેલ, જેને સાચવનાર Smithsonian National Air and Space Museum એ તેનો ફોટો પાડ્યો: સ્ટાર ટ્રેક થીમ LCARS નું ચિત્ર.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>થીમ ચિત્ર: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>સ્ટાર ટ્રેક: ધ નેક્સ્ટ જનરેશનની એક ફ્રેમ: સ્ટાર ટ્રેક થીમ Starfleet નું ચિત્ર. Memory Alpha પર મળી.</value></data>
 </root>

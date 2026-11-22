@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>පද්ධති පෙරනිමිය</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ආලෝකමත්</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>අඳුරු</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>නව තේමාව…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>ඔබේම වර්ණ සහ Steam ක්‍රීඩාවකින් හෝ ගොනුවකින් ගත් පින්තූරයකින් තේමාවක් සාදන්න.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>තේමාව එක් කරන්න…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>තේමා ගොනුවක් ලැයිස්තුගත කරන්න. PadForge එය ඇති තැනින්ම කියවන අතර කිසිවක් පිටපත් නොකරයි.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>පිටපතක් සුරකින්න…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>තෝරාගත් තේමාව ඔබට වෙනස් කිරීමට හෝ බෙදා ගැනීමට හැකි ගොනුවකට ලියන්න.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>තේමාව සංස්කරණය කරන්න</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>ලැයිස්තුවෙන් ඉවත් කරන්න. ගොනුව එය ඇති තැනම පවතී.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ගොනුව හමු නොවීය</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>කියවිය නොහැක</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” හි ගොනුව නැත හෝ කියවිය නොහැක. එය නැවත ලැබෙන තුරු PadForge අඳුරු පෙනුම පෙන්වයි.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” පැතිකඩ එහි ක්‍රීඩාවේ පෙනුම පෙන්වයි. වෙනත් පැතිකඩක් සක්‍රිය වූ විට ඔබේ තේමාව නැවත පැමිණේ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>විමසීම් හැසිරීම සහ පසුබිම් සැකසීම වින්‍යාස කරන්න.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>දෘඪාංග සහාය</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>වෙළඳ ලකුණු වියාචනය පමණි</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>නියම සඳහන් කර නැත</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>කිසිවක් ප්‍රකාශිත නැත</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>පොදු වසම</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>ප්‍රකාශන හිමිකම සහිත</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian භාවිත නියම</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>බලපත්‍ර කිහිපයක්</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>පරිශීලක ප්‍රකාරයේ අතථ්‍ය HID පාලක එන්ජිම (ViGEmBus සහ vJoy ප්‍රතිස්ථාපනය කරයි).</value></data>
@@ -2705,6 +2722,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>වෙනත් විවෘත කවුළුවක් හමු නොවීය.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ඉවත් කරන්න</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>මෙම පැතිකඩ පූරණය කර ඇති අතරතුර විමසීම් අනුපාතය</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ක්‍රීඩාවේ පෙනුම භාවිත කරන්න</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>මෙම පැතිකඩ සක්‍රිය අතරතුර PadForge ක්‍රීඩාවේ පින්තූරය සහ වර්ණ පෙන්වයි. වෙනත් පැතිකඩක් සක්‍රිය වූ විට ඔබේ තේමාව නැවත පැමිණේ.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ක්‍රීඩාවේ පින්තූරය මෙම PC එකේ නැත.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>පින්තූරය ලබා ගන්න</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam වෙතින් ක්‍රීඩාවේ පින්තූරය ලබා ගැනීමට සැකසීම් තුළ ප්‍රජා වින්‍යාස ක්‍රියාත්මක කරන්න.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>වෙතින් පිටපත් කරන්න</value></data>
@@ -3928,7 +3950,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ප්‍රජා වින්‍යාස</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ප්‍රජාව විසින් සාදන ලද Steam Input පාලක වින්‍යාස පිරික්සා ඒවා PadForge පැතිකඩ බවට පරිවර්තනය කරන්න. PadForge ඔබේ සෙවුම් පාඨය, අදාළ ක්‍රීඩා, වින්‍යාස සහ නිර්මාණකරුවන්ගේ ID, සහ එහි අනුවාදය යවයි. නිර්නාමික Steam පිවිසුම ඔබේ Windows අනුවාදය සහ ඔබේ Windows ස්ථාපන ID, ජාල ඇඩැප්ටර ලිපින සහ ආරම්භක තැටියේ අනුක්‍රමික අංකයේ හෑෂ්වලින් සාදන ලද යන්ත්‍ර ID එකක් ද යවයි. තෙවන පාර්ශ්ව සේවාවක් සම්බන්ධ නොවේ.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam සේවාදායකවලට සම්බන්ධ වන්නේ ඔබ සොයන විට, වින්‍යාසයක් විවෘත කරන විට, හෝ ආනයනය කළ වින්‍යාස යාවත්කාලීන සඳහා පරීක්ෂා කරන විට පමණි. ටෙලිමෙට්‍රි නැත, Steam ගිණුමක් නැත.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam සේවාදායකවලට සම්බන්ධ වන්නේ ඔබ සොයන විට, වින්‍යාසයක් විවෘත කරන විට, ආනයනය කළ වින්‍යාස යාවත්කාලීන සඳහා පරීක්ෂා කරන විට හෝ ක්‍රීඩාවක පින්තූරයක් ලබා ගන්නා විට පමණි. ටෙලිමෙට්‍රි නැත, Steam ගිණුමක් නැත.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>යවන දේ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ප්‍රජා වින්‍යාස සබල කරන්න</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>පැරණි Workshop වින්‍යාස පෙන්වන්න</value></data>
@@ -5196,4 +5218,59 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>දසුන් හරහා ඉලක්ක කිරීම සඳහා, මෙම මැක්‍රෝව ඔබාගෙන සිටින අතරතුර විශාලකය පෙන්වයි. එය විශාලකය පිටුවේ සකසන්න.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් මූලාශ්‍ර</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ක්ලින්ගොන් සහ සින්ඩරින් පරිවර්තනවල වචන, boQwI' පිටුපස ඇති ශබ්දකෝෂය වන klingon-assistant-data (Apache-2.0) සහ Paul Strack ගේ එල්ෆ් ශබ්දකෝෂය වන Eldamo (CC BY 4.0) සමඟ සසඳා පරීක්ෂා කර ඇත. ශබ්දකෝෂ දත්ත පමණි, ඉන් කිසිවක් ඇතුළත් නොවේ.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>එම ගොනුව PadForge තේමාවක් නොවේ.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>තේමාව සුරැකිය නොහැකි විය. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>නව තේමාව</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>ඔබ තේමාව සාදන අතරතුරම PadForge එය පෙන්වයි.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>නම</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>මගේ තේමාව</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>පදනම</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>තේමාව පිහිටන පසුබිම. අඳුරු තේමාවක ආලෝකමත් පෙළ ඇති අතර ආලෝකමත් තේමාවක අඳුරු පෙළ ඇත.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>පින්තූරය</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ක්‍රීඩාවකින්…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ගොනුවකින්…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>පින්තූරයක් නැත</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam වෙතින් පින්තූරය ලබා ගනිමින්…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam සතුව මෙම ක්‍රීඩාව සඳහා පළල් පින්තූරයක් නැත.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam වෙත ළඟා විය නොහැකි විය. ඔබේ සම්බන්ධතාවය පරීක්ෂා කරන්න.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>පිහිටීම</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>පින්තූරය එහි කවුළුව තුළ ඉහළට හෝ පහළට ගෙන යයි.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ක්‍රීඩාවේ ලාංඡනය පෙන්වන්න</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>වර්ණ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>පින්තූරයට ගළපන්න</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>පින්තූරයෙන් වර්ණ හතර ගනී.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>පසුබිම</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>පිටුව. කවුළුව, පැති තීරුව, කාඩ්පත් සහ රේඛා එයින් ගත් ලා හෝ තද පියවර වේ.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>අවධාරණය</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>සජීවී සියල්ල: එන්ජිම, ප්‍රධාන බොත්තම, තෝරාගත් අයිතමය.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ද්විතීයික</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>මනින ලද අගයන් සහ උපාංග සලකුණු: අනුපාත, බැටරි මට්ටම්, අමු ආදාන.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>අවධානය</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>රැඳී සිටින තත්ත්ව: උපාංග බලාපොරොත්තුවෙන් සිටීම, අඩු බැටරිය, නොසුරකින ලද වෙනස්කම්.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>වර්ණයක් තෝරන්න</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>පින්තූර (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|සියලු ගොනු (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge හට එම ගොනුව පින්තූරයක් ලෙස කියවිය නොහැක.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>පින්තූරය: {0} සඳහා Steam පුස්තකාල කලාකෘතිය.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>තේමා පින්තූරය: ඩාර්ත් වේඩර්ගේ හිස්වැස්ම</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Revenge of the Sith සඳහා Lucasfilm ප්‍රවර්ධන ඡායාරූපයක්: Star Wars තේමාව Dark Side හි පින්තූරය. Wookieepedia හි හමු විය.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>තේමා පින්තූරය: ෆ්‍රැන්චයිස් ලාංඡන</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>ආරම්භක තේමාවල පින්තූර මත ඇති Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series සහ Star Trek: The Next Generation හි ලාංඡන. Wikimedia Commons හි හමු විය, එය එක් එක් ලාංඡනය පොදු වසමේ ඇති සරල පෙළ ලාංඡනයක් ලෙස සලකුණු කරයි. එක් එක් ලාංඡනය එහි හිමිකරුගේ වෙළඳ ලකුණකි.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>තේමා පින්තූරය: හොබිටන්</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>නවසීලන්තයේ හොබිටන් රූගත කිරීම් භූමිය, Jackie.lck ගත් ඡායාරූපයක්: The Lord of the Rings තේමාව The One Ring හි පින්තූරය. Wikimedia Commons හි හමු විය.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>තේමා පින්තූරය: හොග්වෝට්ස් මාලිගාව</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ක්‍රීඩාවේම YouTube නාලිකාවෙන් ලබාගත් Hogwarts Legacy ට්‍රේලරයේ රාමුවක්: Harry Potter තේමාව Gryffindor හි පින්තූරය. Wikimedia Commons හි හමු විය.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>තේමා පින්තූරය: මිඩ්ල් අර්ත්හි සිතියම</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>මිඩ්ල් අර්ත්හි සිතියමක්: The Lord of the Rings තේමාව Map of Middle-earth හි පින්තූරය. The One Wiki to Rule Them All හි හමු විය, එය කිසිදු චිත්‍ර ශිල්පියෙකු නම් නොකරයි.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>තේමා පින්තූරය: මිලේනියම් ෆැල්කන්</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge හි ඇති පූර්ණ ප්‍රමාණයේ මිලේනියම් ෆැල්කන්, Tomás Del Coro ගත් ඡායාරූපයක්: Star Wars තේමාව Opening Crawl හි පින්තූරය. Wikimedia Commons හි හමු විය.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>තේමා පින්තූරය: ක්‍රොනොස් දූපතේ Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA හි YouTube නාලිකාවෙන් ලබාගත් Sonic Frontiers ට්‍රේලරයේ රාමුවක්: Sonic the Hedgehog තේමාව Blue Blur හි පින්තූරය. Wikimedia Commons හි හමු විය.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>තේමා පින්තූරය: දුවන Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World සඳහා SEGA නිර්මාණය කළ කලාකෘතිය: Sonic the Hedgehog තේමාව Night Run හි පින්තූරය. Sonic Wiki Zone හි හමු විය.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>තේමා පින්තූරය: නිවාස හතරේ ලාංඡන</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore සඳහා Atomhawk Design විසින් ඇඳි හොග්වෝට්ස් නිවාස හතරේ ලාංඡන: Harry Potter තේමාව Four Houses හි පින්තූරය. Harry Potter Wiki හි හමු විය.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>තේමා පින්තූරය: USS Enterprise ස්ටුඩියෝ ආකෘතිය</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>මුල් Star Trek කතා මාලාව සඳහා රූගත කළ ආකෘතිය, එය සතු Smithsonian National Air and Space Museum විසින් ඡායාරූපගත කළ: Star Trek තේමාව LCARS හි පින්තූරය.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>තේමා පින්තූරය: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation හි රාමුවක්: Star Trek තේමාව Starfleet හි පින්තූරය. Memory Alpha හි හමු විය.</value></data>
 </root>

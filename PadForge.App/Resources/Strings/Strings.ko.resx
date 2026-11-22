@@ -415,6 +415,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>시스템 기본값</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>밝게</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>어둡게</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>새 테마…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>내 색상과 그림으로, Steam 게임이나 파일의 그림으로 테마를 만듭니다.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>테마 추가…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>테마 파일을 목록에 올립니다. PadForge는 파일을 있는 그대로 읽고 아무것도 복사하지 않습니다.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>사본 저장…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>선택한 테마를 수정하거나 공유할 수 있는 파일로 저장합니다.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>테마 편집</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>목록에서 제거합니다. 파일은 그대로 남습니다.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>파일을 찾을 수 없음</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>읽을 수 없음</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” 테마 파일이 없거나 읽을 수 없습니다. 파일이 다시 생길 때까지 PadForge는 어둡게로 표시합니다.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>프로필 “{0}”이(가) 게임의 모습을 입고 있습니다. 다른 프로필이 활성화되면 내 테마로 돌아갑니다.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge 테마 (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>이 파일은 PadForge 테마가 아닙니다.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>테마를 저장하지 못했습니다. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>새 테마</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>테마를 만드는 동안 PadForge에 바로 적용됩니다.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>이름</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>내 테마</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>기본 바탕</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>테마가 놓이는 바탕입니다. 어두운 테마는 밝은 글자를, 밝은 테마는 어두운 글자를 사용합니다.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>그림</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam 게임에서…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>파일에서…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>그림 없음</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam에서 그림을 가져오는 중…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam에 이 게임의 와이드 그림이 없습니다.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam에 연결하지 못했습니다. 연결 상태를 확인하십시오.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>위치</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>창 안에서 그림을 위나 아래로 옮깁니다.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>게임 로고 표시</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>색상</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>그림에 맞추기</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>그림에서 네 가지 색상을 가져옵니다.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>배경</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>페이지 색입니다. 창, 사이드바, 카드, 선은 이 색에서 단계를 달리해 만듭니다.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>강조</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>작동 중인 모든 것: 엔진, 주요 버튼, 선택한 항목.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>보조</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>측정값과 장치 표시: 속도, 배터리 잔량, 원시 입력.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>주의</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>대기 상태: 장치 대기 중, 배터리 부족, 저장하지 않은 변경 사항.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>색상 선택</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>그림 (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|모든 파일 (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge에서 이 파일을 그림으로 읽을 수 없습니다.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>그림: {0}의 Steam 라이브러리 아트.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>입력 엔진</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>폴링 동작 및 백그라운드 처리를 구성합니다.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>하드웨어 지원</value></data>
@@ -631,6 +677,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -639,6 +687,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>상표 면책 조항만</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>명시된 조건 없음</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>게시된 라이선스 없음</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>퍼블릭 도메인</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>저작권 보호</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian 이용 약관</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>여러 라이선스</value></data>
 
   <!-- ═══ Device Types ═══ -->
@@ -1348,6 +1399,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>열려 있는 다른 창을 찾지 못했습니다.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} 제거</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>이 프로필이 로드된 동안의 폴링 레이트</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>게임의 모습 입기</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>이 프로필이 활성화된 동안 PadForge가 게임의 그림과 색상을 표시합니다. 다른 프로필이 활성화되면 내 테마로 돌아갑니다.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>게임 그림이 이 PC에 없습니다.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>그림 가져오기</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam에서 게임 그림을 가져오려면 설정에서 커뮤니티 구성을 켜십시오.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>복사 원본</value></data>
@@ -4014,7 +4070,7 @@
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>게임패드 {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>커뮤니티 구성</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>커뮤니티가 만든 Steam Input 컨트롤러 구성을 둘러보고 PadForge 프로필로 변환합니다. PadForge는 검색어, 관련된 게임, 구성, 제작자의 ID, 그리고 PadForge 버전을 전송합니다. 익명 Steam 로그온은 Windows 버전과, Windows 설치 ID, 네트워크 어댑터 주소, 부팅 디스크 일련번호의 해시로 만든 머신 ID도 전송합니다. 서드파티 서비스는 관여하지 않습니다.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge는 검색할 때, 구성을 열 때, 가져온 구성의 업데이트를 확인할 때만 Steam 서버에 연결합니다. 텔레메트리 없음, Steam 계정 불필요.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge는 검색할 때, 구성을 열 때, 가져온 구성의 업데이트를 확인할 때, 게임 그림을 가져올 때만 Steam 서버에 연결합니다. 텔레메트리 없음, Steam 계정 불필요.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>전송되는 내용</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>커뮤니티 구성 사용</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>레거시 창작마당 구성 표시</value></data>
@@ -5112,6 +5168,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD 프로필 형식은 hcn1z1의 shunt 스키마 덤프(MIT), DatMoshu의 reWASD-Powertools 문서(MIT), reWASD 도움말에서 읽었고, DS4Windows 프로필 형식은 Schmaldeo의 DS4Windows 포크(GPL-3.0-or-later)에서 읽었으며, DSX 프로필 형식은 winkywong1998의 DSX-profile-share에 있는 프로필, RAIZ-Zzz의 DualSense 프로젝트(MIT), Paliverse의 DSX Mod System(Apache-2.0)에서 읽었습니다. 문서만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>화면 색상 참조</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>화면 색상 조명의 캡처 방식은 Prismatik(GPL-2.0-or-later), AlkaidLab의 Sunshine 포크인 foundation-sunshine(GPL-3.0), ScreenCapture.NET(LGPL-2.1), RazerAmbilight(MIT), OpenRGBEffectsPlugin(GPL-2.0-or-later), Aurora(MIT), alienfx-tools(MIT)에서 읽었습니다. 문서만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>테마 그림: 다스 베이더의 헬멧</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>시스의 복수의 Lucasfilm 홍보 사진으로, 스타워즈 테마 Dark Side의 그림입니다. Wookieepedia에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>테마 그림: 프랜차이즈 로고</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>스타터 테마 그림에 쓰인 소닉 더 헤지혹, 반지의 제왕, 해리 포터, 스타워즈, 스타 트렉: 오리지널 시리즈, 스타 트렉: 더 넥스트 제너레이션의 로고입니다. Wikimedia Commons에서 찾았으며, 각 로고는 퍼블릭 도메인의 단순 문자 로고로 표시되어 있습니다. 각 로고는 소유자의 상표입니다.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>테마 그림: 호빗골</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>뉴질랜드의 호빗골 영화 세트장을 Jackie.lck가 찍은 사진으로, 반지의 제왕 테마 The One Ring의 그림입니다. Wikimedia Commons에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>테마 그림: 호그와트 성</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>게임 공식 YouTube 채널에 올라온 Hogwarts Legacy 트레일러의 한 장면으로, 해리 포터 테마 Gryffindor의 그림입니다. Wikimedia Commons에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>테마 그림: 가운데땅 지도</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>가운데땅의 지도로, 반지의 제왕 테마 Map of Middle-earth의 그림입니다. The One Wiki to Rule Them All에서 찾았으며, 작가는 밝혀져 있지 않습니다.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>테마 그림: 밀레니엄 팔콘</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>갤럭시 엣지의 실물 크기 밀레니엄 팔콘을 Tomás Del Coro가 찍은 사진으로, 스타워즈 테마 Opening Crawl의 그림입니다. Wikimedia Commons에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>테마 그림: 크로노스 섬의 Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA 공식 YouTube 채널에 올라온 Sonic Frontiers 트레일러의 한 장면으로, 소닉 더 헤지혹 테마 Blue Blur의 그림입니다. Wikimedia Commons에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>테마 그림: 달리는 Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World를 위해 SEGA가 만든 아트로, 소닉 더 헤지혹 테마 Night Run의 그림입니다. Sonic Wiki Zone에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>테마 그림: 네 기숙사의 문장</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore를 위해 Atomhawk Design이 그린 호그와트 네 기숙사의 문장으로, 해리 포터 테마 Four Houses의 그림입니다. 해리 포터 위키에서 찾았습니다.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>테마 그림: USS Enterprise 스튜디오 모델</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>오리지널 스타 트렉 시리즈를 위해 촬영한 모델을 이 모델을 소장한 Smithsonian National Air and Space Museum에서 촬영한 사진으로, 스타 트렉 테마 LCARS의 그림입니다.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>테마 그림: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>스타 트렉: 더 넥스트 제너레이션의 한 장면으로, 스타 트렉 테마 Starfleet의 그림입니다. Memory Alpha에서 찾았습니다.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>키보드 화면</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech GamePanel 키보드와 Mad Catz S.T.R.I.K.E. 7에 내장된 화면, 그리고 Logitech Arx Control을 통해 휴대폰에 프로필, 시계, 플레이 시간, 스톱워치, 그림, DualShock 4 또는 DualSense 라이트바의 색을 표시합니다. 각 화면은 장치 페이지에 자체 행이 있으며, 여기서 표시할 내용을 설정합니다. 화면 옆의 키는 해당 행의 버튼입니다.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>키보드 화면 구동</value></data>

@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Rendszer alapértelmezése</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Világos</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Sötét</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Új téma…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Készítsen témát saját színeiből és egy képből, amely egy Steam-játékból vagy egy fájlból származik.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Téma hozzáadása…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Egy témafájl felvétele a listára. A PadForge ott olvassa, ahol van, és nem másol semmit.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Másolat mentése…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>A kiválasztott téma kiírása egy fájlba, amelyet módosíthat vagy megoszthat.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Téma szerkesztése</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Eltávolítás a listáról. A fájl a helyén marad.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>A fájl nem található</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nem olvasható</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>A(z) „{0}” téma fájlja hiányzik, vagy nem olvasható. A PadForge addig a Sötét megjelenést mutatja, amíg a fájl vissza nem kerül.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>A(z) „{0}” profil a játéka megjelenését viseli. A saját témája visszatér, amint másik profil lesz aktív.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge-témák (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ez a fájl nem PadForge-téma.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>A témát nem sikerült menteni. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Új téma</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>A PadForge viseli a témát, amíg Ön készíti.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Név</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Saját témám</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Alap</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Az alap, amelyen a téma áll. A sötét témának világos, a világos témának sötét a szövege.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Kép</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam-játékból…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Fájlból…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Nincs kép</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>A kép lekérése a Steamről…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>A Steamnek nincs széles képe ehhez a játékhoz.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nem sikerült elérni a Steamet. Ellenőrizze a kapcsolatot.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Helyzet</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>A képet felfelé vagy lefelé mozgatja az ablakában.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>A játék logójának megjelenítése</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Színek</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Igazítás a képhez</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>A négy színt a képből veszi.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Háttér</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Az oldal. Az ablak, az oldalsáv, a kártyák és a vonalak ennek árnyalatai.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Kiemelés</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Minden, ami élő: a motor, a fő gomb, a kijelölt elem.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Másodlagos</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mért értékek és eszközjelzések: gyakoriságok, akkumulátorszintek, nyers bemenetek.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Figyelem</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Várakozó állapotok: eszközökre várakozás, alacsony akkumulátorszint, mentetlen módosítások.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Szín választása</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Képek (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Minden fájl (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>A PadForge nem tudja képként olvasni ezt a fájlt.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Kép: a Steam könyvtári képe ehhez: {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Bemeneti motor</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>A lekérdezés és a háttérben végzett feldolgozás beállítása.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardvertámogatás</value></data>
@@ -870,6 +916,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Csak védjegyi nyilatkozat</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Nincs megnevezett feltétel</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Nincs közzétéve</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Közkincs</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Szerzői jogvédett</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian felhasználási feltételek</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Több licenc</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Felhasználói módban futó virtuális HID-kontrollermotor (a ViGEmBus és a vJoy helyébe lép).</value></data>
@@ -2901,6 +2952,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nem található más nyitott ablak.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} eltávolítása</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Lekérdezési gyakoriság a profil betöltése alatt</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>A játék megjelenésének viselése</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Amíg ez a profil aktív, a PadForge a játék képét és színeit mutatja. A témája visszatér, amint másik profil lesz aktív.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>A játék képe nincs ezen a számítógépen.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Kép lekérése</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Kapcsolja be a Közösségi konfigurációkat a Beállításokban, hogy lekérje a játék képét a Steamről.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Másolás innen</value></data>
@@ -4193,7 +4249,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Közösségi konfigurációk</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Böngésszen a közösség által készített Steam Input kontrollerkonfigurációk között, és alakítsa át őket PadForge-profilokká. A PadForge elküldi a keresett szöveget, az érintett játékok, konfigurációk és készítők azonosítóit, valamint a saját verzióját. A névtelen Steam-bejelentkezés emellett elküldi a Windows verzióját és egy gépazonosítót, amely a Windows-telepítés azonosítójának, a hálózati adapterek címeinek és a rendszerlemez sorozatszámának hashértékeiből készül. Külső szolgáltatás nem vesz részt.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>A PadForge csak akkor kapcsolódik a Steam kiszolgálóihoz, amikor Ön keres, megnyit egy konfigurációt, vagy frissítéseket keres az importált konfigurációihoz. Nincs telemetria, nincs szükség Steam-fiókra.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>A PadForge csak akkor kapcsolódik a Steam kiszolgálóihoz, amikor Ön keres, megnyit egy konfigurációt, frissítéseket keres az importált konfigurációihoz, vagy lekér egy játékhoz tartozó képet. Nincs telemetria, nincs szükség Steam-fiókra.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Mit küld el</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Közösségi konfigurációk engedélyezése</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Régi Műhely-konfigurációk megjelenítése</value></data>
@@ -5157,6 +5213,28 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>A reWASD profilformátuma hcn1z1 shunt sémakimentéséből (MIT), DatMoshu reWASD-Powertools dokumentációjából (MIT) és a reWASD súgójából kiolvasva, a DS4Windows profilformátuma Schmaldeo DS4Windows forkjából (GPL-3.0-or-later), a DSX profilformátuma pedig winkywong1998 DSX-profile-share profiljaiból, RAIZ-Zzz DualSense projektjéből (MIT) és a Paliverse által készített DSX Mod Systemjéből (Apache-2.0) kiolvasva. Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Képernyőszín-referenciák</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>A Képernyőszín világítás mögötti képernyőrögzítés a Prismatik (GPL-2.0-or-later), AlkaidLab foundation-sunshine forkja a Sunshine-ból (GPL-3.0), a ScreenCapture.NET (LGPL-2.1), a RazerAmbilight (MIT), az OpenRGBEffectsPlugin (GPL-2.0-or-later), az Aurora (MIT) és az alienfx-tools (MIT) alapján kiolvasva. Csak dokumentációként, a program nem tartalmaz GPL-kódot.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Téma képe: Darth Vader sisakja</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>A Lucasfilm reklámfotója A Sith visszatér című filmhez: a Star Wars téma, a Dark Side képe. A Wookieepedia oldalán található.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Téma képe: Franchise-logók</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>A Sonic the Hedgehog, A Gyűrűk Ura, Harry Potter, Star Wars, Star Trek: Az eredeti sorozat és Star Trek: Az új nemzedék logói a kezdő témák képein. A Wikimedia Commons oldalán találhatók, amely mindegyiket egyszerű szöveges logóként, közkincsként jelöli. Mindegyik a tulajdonosának védjegye.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Téma képe: Hobbitfalva</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Az új-zélandi Hobbitfalva forgatási díszlete, Jackie.lck fotója: A Gyűrűk Ura téma, a The One Ring képe. A Wikimedia Commons oldalán található.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Téma képe: Roxfort kastély</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Képkocka a Hogwarts Legacy előzetesből, a játék saját YouTube-csatornájáról: a Harry Potter téma, a Gryffindor képe. A Wikimedia Commons oldalán található.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Téma képe: Középfölde térképe</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Középfölde térképe: A Gyűrűk Ura téma, a Map of Middle-earth képe. A The One Wiki to Rule Them All oldalán található, amely nem nevez meg alkotót.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Téma képe: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Az életnagyságú Millennium Falcon a Galaxy’s Edge parkban, Tomás Del Coro fotója: a Star Wars téma, az Opening Crawl képe. A Wikimedia Commons oldalán található.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Téma képe: Sonic a Kronos-szigeten</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Képkocka a Sonic Frontiers előzetesből, a SEGA saját YouTube-csatornájáról: a Sonic the Hedgehog téma, a Blue Blur képe. A Wikimedia Commons oldalán található.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Téma képe: Futó Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>A SEGA grafikája a Sonic Lost World játékhoz: a Sonic the Hedgehog téma, a Night Run képe. A Sonic Wiki Zone oldalán található.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Téma képe: A négy ház címere</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>A négy roxforti ház címere, amelyet az Atomhawk Design rajzolt a Pottermore számára: a Harry Potter téma, a Four Houses képe. A Harry Potter Wiki oldalán található.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Téma képe: USS Enterprise stúdiómodell</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Az eredeti Star Trek sorozathoz forgatott modell, amelyet a Smithsonian National Air and Space Museum fényképezett le, és amely a gyűjteményében található: a Star Trek téma, az LCARS képe.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Téma képe: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Képkocka a Star Trek: Az új nemzedék sorozatból: a Star Trek téma, a Starfleet képe. A Memory Alpha oldalán található.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Billentyűzetképernyők</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Rajzol a Logitech GamePanel billentyűzeteibe és a Mad Catz S.T.R.I.K.E. 7 beépített képernyőire, valamint egy telefonra a Logitech Arx Control segítségével: a profilt, egy órát, a játékidőt, egy stopperórát, egy képet vagy egy DualShock 4 vagy DualSense fénysáv színét. Minden képernyő külön sort kap az Eszközök oldalon, ahol beállíthatja, mit mutasson. A képernyő melletti billentyűk a sorának gombjai.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Billentyűzetképernyők vezérlése</value></data>

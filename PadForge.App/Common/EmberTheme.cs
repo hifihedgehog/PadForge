@@ -12,6 +12,12 @@ namespace PadForge.Common
     {
         public static readonly Color Accent = Color.FromRgb(0xFF, 0x6B, 0x2C);
 
+        /// <summary>The fill of Home's engine card (#591). It is the
+        /// card's own fill on either ground, under a key of its own: a
+        /// theme with a picture sets a translucent fill there, so the
+        /// picture shows through the card (ThemeManager).</summary>
+        internal const string HomeEngineCardKey = "HomeEngineCardBrush";
+
         // Dark-ground text colors.
         private static readonly Color ColdDark = Color.FromRgb(0x7C, 0xC7, 0xEA);
         private static readonly Color ColdDeepDark = Color.FromRgb(0x2E, 0x6A, 0x8F);
@@ -245,6 +251,9 @@ namespace PadForge.Common
                 foreach (var key in EmberChromeKeys)
                     Application.Current.Resources.Remove(key);
             }
+
+            if (Application.Current.TryFindResource("CardBackgroundFillColorDefaultBrush") is Brush cardFill)
+                Application.Current.Resources[HomeEngineCardKey] = cardFill;
         }
 
         // Chrome unification (#175 control spec §§1-8, route a): every stock

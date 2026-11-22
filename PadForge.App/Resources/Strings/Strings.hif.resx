@@ -1181,4 +1181,16 @@
   <data name="Common_Apply" xml:space="preserve"><value>Lagao</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ek custom web pad chauda screen pe har cluster ke uske nagich wala kinara se same duri pe rakhta hai, jaise RetroArch ke overlay apan dui aadha ke alag karta hai. Khaali documentation ke rakam padha gaya, koi GPL code saath me nai jaata hai.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Ek copy save karo…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Theme edit karo</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>List se hatao. File jahan hai wahin rehta.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Hamar theme</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Picture</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Koi picture nahi</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Jagah</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Picture ke uske window me upar ya niche karta hai.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Game ke logo dikhao</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Picture se milao</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Picture se chaar color leta hai.</value></data>
 </root>

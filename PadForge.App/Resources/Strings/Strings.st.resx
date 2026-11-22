@@ -1210,4 +1210,31 @@
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad e iketselitsweng e boloka sehlopha ka seng bohole ba sona ho tswa moeling o haufi wa skrine se sephara, jwalo ka ha di-overlay tsa RetroArch di arohanya dihalofo tsa tsona tse pedi. E badilwe e le ditokomane feela, ha ho khoutu ya GPL e romelwang.</value></data>
   <data name="About_AurebeshFont" xml:space="preserve"><value>Fonte ya Aurebesh</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Boloka kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Fetola thimi</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tlosa lenaneng. Faele e sala moo e leng teng.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Lebitso</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Thimi ya ka</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Setshwantsho</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Ho tswa papading ya Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ntle le setshwantsho</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>E fumana setshwantsho ho Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ha e na setshwantsho se sephara sa papadi ena.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Boemo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E tsamaisa setshwantsho holimo kapa tlase fensetereng ya sona.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Bontsha logo ya papadi</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tsamaisana le setshwantsho</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E nka mebala e mene setshwantshong.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele tsohle (*.*)|*.*</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Setshwantsho sa thimi: Helmete ya Darth Vader</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Setshwantsho sa thimi: Dilogo tsa dipale</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Setshwantsho sa thimi: Hobbiton</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Setshwantsho sa thimi: Qhobosheane ya Hogwarts</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Setshwantsho sa thimi: Mmapa wa Middle-earth</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Setshwantsho sa thimi: Millennium Falcon</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Setshwantsho sa thimi: Sonic sehlekehlekeng sa Kronos</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Setshwantsho sa thimi: Sonic a matha</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Setshwantsho sa thimi: Matshwao a mane a matlo</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Setshwantsho sa thimi: Mohlala wa studio wa USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Setshwantsho sa thimi: USS Enterprise-D</value></data>
 </root>

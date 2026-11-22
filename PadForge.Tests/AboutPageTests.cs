@@ -44,7 +44,8 @@ namespace PadForge.Tests
             "About_License_Isc", "About_License_Mpl2", "About_License_Unlicense", "About_License_Zlib", "About_License_Gpl2",
             "About_License_Gpl2OrLater", "About_License_Gpl3", "About_License_Gpl3OrLater", "About_License_Agpl3",
             "About_License_Lgpl21OrLater", "About_License_Lgpl3", "About_License_Lgpl3OrLater", "About_License_CcByNcSa4",
-            "About_License_CcBy3", "About_License_Ofl", "About_License_CgTrader", "About_License_WyvrnEula",
+            "About_License_CcBy3", "About_License_CcBy2", "About_License_CcBySa2", "About_License_Ofl",
+            "About_License_CgTrader", "About_License_WyvrnEula",
         };
 
         /// <summary>Title, PadForge, An Invitation, Overview, Built With,
@@ -148,20 +149,20 @@ namespace PadForge.Tests
         }
 
         /// <summary>Every chip names a license key the string table holds,
-        /// and the page uses each of the thirty.</summary>
+        /// and the page uses each of the thirty-five.</summary>
         [Fact]
         public void EveryChipNamesALicenseTheStringTableHolds()
         {
             string resx = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx");
             var inTable = Regex.Matches(resx, "<data name=\"(About_License_[A-Za-z0-9]+)\"").Select(m => m.Groups[1].Value).ToHashSet();
-            Assert.Equal(30, inTable.Count);
+            Assert.Equal(35, inTable.Count);
             Assert.All(IdentifierChips, key => Assert.Contains(key, inTable));
 
             var chips = Page().Descendants()
                 .Where(e => e.Name.LocalName == "Border" && Attr(e, "Style") == "{StaticResource CreditChip}")
                 .Select(e => Regex.Match(Attr(e.Elements().Single(), "BidiText.Text") ?? string.Empty, @"^\{Binding (\w+),").Groups[1].Value)
                 .ToList();
-            Assert.Equal(157, chips.Count);
+            Assert.Equal(168, chips.Count);
             Assert.All(chips, key => Assert.Contains(key, inTable));
             Assert.Equal(inTable.OrderBy(k => k, StringComparer.Ordinal), chips.Distinct().OrderBy(k => k, StringComparer.Ordinal));
         }
@@ -261,7 +262,7 @@ namespace PadForge.Tests
                 bool Holds(UIElement row, string query) => Texts(row).Any(t => TextMatch.Contains(t, query));
 
                 // Folded: the first five, over the button.
-                Assert.Equal(158, rows.Count);
+                Assert.Equal(169, rows.Count);
                 Assert.Equal(rows.Take(AboutPage.FirstCredits), Shown());
                 Assert.Equal(Visibility.Visible, buttonRow.Visibility);
                 Assert.Equal(Strings.Instance.About_ShowAllCredits, button.Content);

@@ -756,4 +756,32 @@
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Eú custom web pad a isoni ttamen iteiten mwichen button seni ewe kkan mi arap ngeni lón eú screen mi kon lapalap, usun ekkewe overlay an RetroArch ra mwékút ar ruu kinikin. Sia chok álleni usun documentation, esor GPL code a nóm lón.</value></data>
   <data name="About_AurebeshFont" xml:space="preserve"><value>Sókkun mak Aurebesh</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Isoni eú kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Siwili ewe theme</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ewe file an “{0}” a mwalechelo ika ese tongeni álleani. PadForge epwe pwáraaló Roch tori an epwe liwiniti.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Iit</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ai theme</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Longolong</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ewe longolong ewe theme a útá wóón. Eú theme mi roch a wor an mak mi saram, nge eú theme mi saram a wor an mak mi roch.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Sasing</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Seni eú urumwot lón Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Esor sasing</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>A angei ewe sasing seni Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Esor lón Steam eú sasing mi ttam ren ei urumwot.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Leni</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>A mwékút ewe sasing asan ika fan lón an asamwalo.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Pwáraaló an ewe urumwot logo</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fiti ewe sasing</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>A angei ekkewe rúánú kala seni ewe sasing.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Sasingen theme: Ewe helmet an Darth Vader</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Sasingen theme: Logoon ekkewe franchise</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Sasingen theme: Hobbiton</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Sasingen theme: Ewe imwen king Hogwarts</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Sasingen theme: Mapen Middle-earth</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Sasingen theme: Millennium Falcon</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Sasingen theme: Sonic wóón Kronos Island</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Sasingen theme: Sonic a sú</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Sasingen theme: Ekkewe rúánú crest an ekkewe imw</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Sasingen theme: Ewe studio model an USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Sasingen theme: USS Enterprise-D</value></data>
 </root>

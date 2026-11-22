@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Sjálfgefið í kerfinu</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Ljóst</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Dökkt</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nýtt þema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Búðu til þema úr þínum eigin litum og mynd, úr Steam leik eða skrá.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Bæta við þema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Bættu þemaskrá á listann. PadForge les hana þar sem hún er og afritar ekkert.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Vista afrit…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Skrifaðu valda þemað í skrá sem þú getur breytt eða deilt.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Breyta þema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Fjarlægja af listanum. Skráin helst þar sem hún er.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Skrá fannst ekki</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ekki læsileg</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Skráin fyrir „{0}“ vantar eða er ólæsileg. PadForge sýnir Dökkt þar til hún er komin aftur.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Sniðið „{0}“ klæðist útliti leiksins síns. Þemað þitt kemur aftur þegar annað snið er virkt.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge þemu (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Þessi skrá er ekki PadForge þema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ekki tókst að vista þemað. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nýtt þema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge klæðist þemanu á meðan þú býrð það til.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Heiti</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mitt þema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Grunnur</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Undirlagið sem þemað stendur á. Dökkt þema er með ljósan texta og ljóst þema með dökkan texta.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Mynd</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Úr Steam leik…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Úr skrá…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Engin mynd</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Sæki myndina frá Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam á enga breiða mynd fyrir þennan leik.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ekki náðist í Steam. Athugaðu tenginguna.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Staðsetning</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Færir myndina upp eða niður í glugganum sínum.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Sýna merki leiksins</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Litir</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Laga að myndinni</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Tekur litina fjóra úr myndinni.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Bakgrunnur</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Síðan sjálf. Gluggi, hliðarstika, spjöld og línur eru tónar út frá henni.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Áhersla</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Allt sem er virkt: vélin, aðalhnappurinn og valinn hlutur.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Aukalitur</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mæld gildi og merki tækja: tíðni, rafhlöðustaða og hrá inntök.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Athygli</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Biðstöður: tæki sem er beðið eftir, lág rafhlaða og óvistaðar breytingar.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Velja lit</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Myndir (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Allar skrár (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge getur ekki lesið þessa skrá sem mynd.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Mynd: bókasafnsmynd Steam fyrir {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Inntaksvél</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Stilla hegðun könnunar og vinnslu í bakgrunni.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Stuðningur við vélbúnað</value></data>
@@ -870,6 +916,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Aðeins vörumerkjafyrirvari</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Engir skilmálar nefndir</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Ekkert birt</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Almenningseign</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Höfundarréttarvarið</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Notkunarskilmálar Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Nokkur leyfi</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Sýndar-HID-stýringarvél í notandaham (kemur í stað ViGEmBus og vJoy).</value></data>
@@ -2901,6 +2952,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Enginn annar opinn gluggi fannst.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Fjarlægja {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Könnunartíðni á meðan þetta snið er hlaðið</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Klæðast útliti leiksins</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Á meðan þetta snið er virkt sýnir PadForge mynd og liti leiksins. Þemað þitt kemur aftur þegar annað snið er virkt.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Mynd leiksins er ekki á þessari tölvu.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Sækja myndina</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Kveiktu á stillingum frá samfélaginu í stillingunum til að sækja mynd leiksins frá Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Afrita frá</value></data>
@@ -4193,7 +4249,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Stillingar frá samfélaginu</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Skoðaðu Steam Input-stillingar fyrir leikjastýringar sem samfélagið hefur búið til og breyttu þeim í PadForge-snið. PadForge sendir leitartextann þinn, auðkenni leikjanna, stillinganna og höfundanna sem um ræðir og útgáfu sína. Nafnlaus innskráning í Steam sendir einnig útgáfu Windows og vélarauðkenni sem búið er til úr tætigildum af uppsetningarauðkenni Windows, vistföngum netkorta og raðnúmeri ræsidisks. Engin þjónusta þriðja aðila kemur við sögu.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge tengist netþjónum Steam aðeins þegar þú leitar, opnar stillingu eða athugar hvort innfluttar stillingar eigi uppfærslur. Engin fjarmæling og enginn Steam-aðgangur.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge tengist netþjónum Steam aðeins þegar þú leitar, opnar stillingu, athugar hvort innfluttar stillingar eigi uppfærslur eða sækir mynd leiks. Engin fjarmæling og enginn Steam-aðgangur.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Hvað er sent</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Virkja stillingar frá samfélaginu</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Sýna eldri Workshop-stillingar</value></data>
@@ -5157,6 +5213,28 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Skráarsnið reWASD-sniða, lesið úr skemaafriti shunt frá hcn1z1 (MIT), reWASD-Powertools-skjölum frá DatMoshu (MIT) og hjálp reWASD, skráarsnið DS4Windows-sniða, lesið úr kvísl Schmaldeo af DS4Windows (GPL-3.0-or-later), og skráarsnið DSX-sniða, lesið úr sniðunum í DSX-profile-share frá winkywong1998, DualSense-verkefni RAIZ-Zzz (MIT) og Mod System í DSX frá Paliverse (Apache-2.0). Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Viðmiðanir fyrir lýsinguna Skjálitur</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Skjátakan á bak við lýsinguna Skjálitur, lesin úr Prismatik (GPL-2.0-or-later), kvíslinni foundation-sunshine frá AlkaidLab af Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) og alienfx-tools (MIT). Aðeins skjölun, enginn GPL-kóði fylgir.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Mynd þema: hjálmur Svarthöfða</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Kynningarljósmynd frá Lucasfilm fyrir Hefnd Sithanna: mynd Stjörnustríðsþemans Dark Side. Fannst á Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Mynd þema: merki söguheima</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Merki Sonic the Hedgehog, Hringadróttinssögu, Harry Potter, Stjörnustríðs, Star Trek: The Original Series og Star Trek: The Next Generation á myndum upphafsþemanna. Fundust á Wikimedia Commons, sem merkir hvert þeirra sem einfalt textamerki í almenningseign. Hvert þeirra er vörumerki eiganda síns.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Mynd þema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Kvikmyndasviðið Hobbiton á Nýja Sjálandi, ljósmynd eftir Jackie.lck: mynd Hringadróttinssöguþemans The One Ring. Fannst á Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Mynd þema: kastalinn Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Ramminn úr kynningarstiklu Hogwarts Legacy frá YouTube rás leiksins sjálfs: mynd Harry Potter þemans Gryffindor. Fannst á Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Mynd þema: kort af Miðgarði</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Kort af Miðgarði: mynd Hringadróttinssöguþemans Map of Middle-earth. Fannst á The One Wiki to Rule Them All, sem nefnir engan listamann.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Mynd þema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon í fullri stærð í Galaxy’s Edge, ljósmynd eftir Tomás Del Coro: mynd Stjörnustríðsþemans Opening Crawl. Fannst á Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Mynd þema: Sonic á eyjunni Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Rammi úr kynningarstiklu Sonic Frontiers frá YouTube rás SEGA sjálfs: mynd Sonic the Hedgehog þemans Blue Blur. Fannst á Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Mynd þema: Sonic á hlaupum</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Myndefni SEGA gert fyrir Sonic Lost World: mynd Sonic the Hedgehog þemans Night Run. Fannst á Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Mynd þema: skjaldarmerki húsanna fjögurra</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Skjaldarmerki húsanna fjögurra í Hogwarts, teiknuð af Atomhawk Design fyrir Pottermore: mynd Harry Potter þemans Four Houses. Fundust á Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Mynd þema: líkan af USS Enterprise úr kvikmyndaveri</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Líkanið sem var kvikmyndað fyrir upprunalegu Star Trek þættina, ljósmyndað af Smithsonian National Air and Space Museum, sem varðveitir það: mynd Star Trek þemans LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Mynd þema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Rammi úr Star Trek: The Next Generation: mynd Star Trek þemans Starfleet. Fannst á Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Skjáir lyklaborðs</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Teiknar á skjáina sem eru innbyggðir í GamePanel-lyklaborð frá Logitech og Mad Catz S.T.R.I.K.E. 7, og á síma í gegnum Logitech Arx Control: sniðið, klukku, spilatíma, skeiðklukku, mynd eða lit ljósrandar á DualShock 4 eða DualSense. Hver skjár fær sína eigin röð á síðunni Tæki, þar sem þú stillir hvað hann sýnir. Lyklarnir við hlið skjás eru hnappar raðarinnar hans.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Stjórna skjáum lyklaborðs</value></data>

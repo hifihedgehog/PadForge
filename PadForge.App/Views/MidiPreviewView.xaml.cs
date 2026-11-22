@@ -52,7 +52,7 @@ namespace PadForge.Views
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
         // Ember (#175): output preview surface, pressed states light ember.
-        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
+        private static Brush AccentBrush => PadForge.Common.Themes.ThemeLook.AccentBrush;
         private static readonly Brush _dimD = F(0x60,0x60,0x60), _dimL = F(0xA0,0xA0,0xA0);
         private static readonly Brush _bgD = F(0x2D,0x2D,0x2D), _bgL = F(0xE0,0xE0,0xE0);
         private static readonly Brush _lblD = F(0xBB,0xBB,0xBB), _lblL = F(0x50,0x50,0x50);
@@ -64,12 +64,12 @@ namespace PadForge.Views
         private static Brush BgBrush => IsDarkTheme ? _bgD : _bgL;
         private static Brush LabelBrush => IsDarkTheme ? _lblD : _lblL;
         private static Brush WhiteKeyBrush => IsDarkTheme ? _wkD : _wkL;
-        private static readonly Brush WhiteKeyPressedBrush = F(0xFF,0xA2,0x4D);
+        private static Brush WhiteKeyPressedBrush => PadForge.Common.Themes.ThemeLook.AccentLightBrush;
         private static Brush BlackKeyBrush => IsDarkTheme ? _bkD : _bkL;
-        private static readonly Brush BlackKeyPressedBrush = F(0xC4,0x3D,0x0C);
+        private static Brush BlackKeyPressedBrush => PadForge.Common.Themes.ThemeLook.AccentDeepBrush;
         private static Brush KeyBorderBrush => IsDarkTheme ? _kbD : _kbL;
-        private static readonly Brush HoverBrush = F(0xFF,0xA2,0x4D);
-        private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
+        private static Brush HoverBrush => PadForge.Common.Themes.ThemeLook.AccentLightBrush;
+        private static Brush FlashBrush => PadForge.Common.Themes.ThemeLook.AccentFlashBrush;
         // Relative-encoder pulse flash (input mode): the whole CC bar lights
         // green on an up detent, orange on a down detent (issue #128).
         private static readonly Brush CcUpPulseBrush = F(0x33,0xC0,0x55);
@@ -79,20 +79,7 @@ namespace PadForge.Views
         // a static DropShadowEffect, attached alongside the brush swap and
         // detached when unlit. Frozen and shared, never animated. Encoder
         // pulse floods keep their own colors and stay glowless.
-        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow();
-
-        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow()
-        {
-            var fx = new System.Windows.Media.Effects.DropShadowEffect
-            {
-                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
-                BlurRadius = 12,
-                ShadowDepth = 0,
-                Opacity = 0.5
-            };
-            fx.Freeze();
-            return fx;
-        }
+        private static System.Windows.Media.Effects.DropShadowEffect EmberGlow => PadForge.Common.Themes.ThemeLook.Glow(12, 0.5);
 
         private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
         {

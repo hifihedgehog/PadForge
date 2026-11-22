@@ -415,6 +415,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>システムの既定</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ライト</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ダーク</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>新規テーマ…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>自分の色と、Steam のゲームまたはファイルの画像からテーマを作成します。</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>テーマを追加…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>テーマファイルを一覧に追加します。PadForge はファイルを元の場所から読み込み、コピーはしません。</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>コピーを保存…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>選択中のテーマを、編集や共有ができるファイルに書き出します。</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>テーマを編集</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>一覧から削除します。ファイルはそのまま残ります。</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ファイルが見つかりません</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>読み取れません</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>「{0}」のファイルが見つからないか、読み取れません。ファイルが戻るまで PadForge はダークを表示します。</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>プロファイル「{0}」はゲームの外観を表示しています。別のプロファイルが有効になると、あなたのテーマに戻ります。</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge テーマ (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>そのファイルは PadForge のテーマではありません。</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>テーマを保存できませんでした。{0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>新規テーマ</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>作成中のテーマは PadForge にそのまま反映されます。</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>名前</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>マイテーマ</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>ベース</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>テーマの土台です。ダークのテーマでは文字が明るく、ライトのテーマでは文字が暗くなります。</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>画像</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ゲームから…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ファイルから…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>画像なし</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam から画像を取得しています…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam にこのゲームの横長画像はありません。</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam に到達できませんでした。接続を確認してください。</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>位置</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>枠の中で画像を上下に動かします。</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ゲームのロゴを表示</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>色</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>画像に合わせる</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>画像から4色を取り出します。</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>背景</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>ページの色です。ウィンドウ、サイドバー、カード、線はこの色を基に明暗を変えて決まります。</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>アクセント</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>動作中のものすべて: エンジン、メインボタン、選択中の項目。</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>セカンダリ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>計測値とデバイスの表示: レート、バッテリー残量、生の入力。</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>注意</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>待機中の状態: デバイス待ち、バッテリー残量低下、未保存の変更。</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>色を選択</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>画像 (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|すべてのファイル (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge はそのファイルを画像として読み取れません。</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>画像: {0} の Steam ライブラリアート。</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ポーリング動作とバックグラウンド処理を設定します。</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ハードウェア対応</value></data>
@@ -631,6 +677,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -639,6 +687,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>商標の免責事項のみ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>条件の記載なし</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>公開なし</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>パブリックドメイン</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>著作権あり</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian 利用規約</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>複数のライセンス</value></data>
 
   <!-- ═══ Device Types ═══ -->
@@ -1348,6 +1399,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ほかに開いているウィンドウは見つかりませんでした。</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} を削除</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>このプロファイルの読み込み中のポーリングレート</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ゲームの外観を適用</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>このプロファイルが有効な間、PadForge はゲームの画像と色を表示します。別のプロファイルが有効になると、あなたのテーマに戻ります。</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ゲームの画像はこの PC にありません。</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>画像を取得</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam からゲームの画像を取得するには、設定でコミュニティコンフィグをオンにしてください。</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>コピー元</value></data>
@@ -4014,7 +4070,7 @@
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。送信されるのは検索テキスト、関係するゲーム・コンフィグ・作成者の ID、PadForge のバージョンです。匿名の Steam ログオンでは、Windows のバージョンと、Windows のインストール ID、ネットワークアダプターのアドレス、起動ディスクのシリアル番号のハッシュから作られるマシン ID も送信されます。サードパーティのサービスは関与しません。</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge が Steam のサーバーに接続するのは、検索したとき、コンフィグを開いたとき、インポートしたコンフィグの更新を確認したときだけです。テレメトリーなし、Steam アカウント不要です。</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge が Steam のサーバーに接続するのは、検索したとき、コンフィグを開いたとき、インポートしたコンフィグの更新を確認したとき、ゲームの画像を取得したときだけです。テレメトリーなし、Steam アカウント不要です。</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>送信される内容</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>レガシーワークショップコンフィグを表示</value></data>
@@ -5112,6 +5168,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD のプロファイル形式は hcn1z1 の shunt スキーマダンプ (MIT)、DatMoshu の reWASD-Powertools ドキュメント (MIT)、reWASD のヘルプから、DS4Windows のプロファイル形式は Schmaldeo の DS4Windows フォーク (GPL-3.0-or-later) から、DSX のプロファイル形式は winkywong1998 の DSX-profile-share にあるプロファイル、RAIZ-Zzz の DualSense プロジェクト (MIT)、Paliverse による DSX の Mod System (Apache-2.0) から読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>画面の色の参照元</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>画面の色ライティングのキャプチャーは、Prismatik (GPL-2.0-or-later)、AlkaidLab の Sunshine のフォーク foundation-sunshine (GPL-3.0)、ScreenCapture.NET (LGPL-2.1)、RazerAmbilight (MIT)、OpenRGBEffectsPlugin (GPL-2.0-or-later)、Aurora (MIT)、alienfx-tools (MIT) から読み取りました。資料のみで、GPL コードは同梱していません。</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>テーマ画像: ダース・ベイダーのヘルメット</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>「シスの復讐」の Lucasfilm 宣伝写真で、スター・ウォーズのテーマ Dark Side の画像です。Wookieepedia で見つけました。</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>テーマ画像: シリーズのロゴ</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>スターターテーマの画像に使われている、ソニック・ザ・ヘッジホッグ、ロード・オブ・ザ・リング、ハリー・ポッター、スター・ウォーズ、スター・トレック: オリジナル・シリーズ、スター・トレック: ネクスト・ジェネレーションのロゴです。Wikimedia Commons で見つけました。同サイトはそれぞれを、パブリックドメインの文字だけのロゴとしています。いずれも権利者の商標です。</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>テーマ画像: ホビット村</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ニュージーランドにあるホビット村の撮影セットで、Jackie.lck による写真です。ロード・オブ・ザ・リングのテーマ The One Ring の画像です。Wikimedia Commons で見つけました。</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>テーマ画像: ホグワーツ城</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy の公式 YouTube チャンネルにあるトレーラーの1コマで、ハリー・ポッターのテーマ Gryffindor の画像です。Wikimedia Commons で見つけました。</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>テーマ画像: 中つ国の地図</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>中つ国の地図で、ロード・オブ・ザ・リングのテーマ Map of Middle-earth の画像です。The One Wiki to Rule Them All で見つけました。作者名の記載はありません。</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>テーマ画像: ミレニアム・ファルコン</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>ギャラクシーズ・エッジにある実物大のミレニアム・ファルコンで、Tomás Del Coro による写真です。スター・ウォーズのテーマ Opening Crawl の画像です。Wikimedia Commons で見つけました。</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>テーマ画像: クロノス島の Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA の公式 YouTube チャンネルにある Sonic Frontiers のトレーラーの1コマで、ソニック・ザ・ヘッジホッグのテーマ Blue Blur の画像です。Wikimedia Commons で見つけました。</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>テーマ画像: 走る Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA が Sonic Lost World のために作成したアートで、ソニック・ザ・ヘッジホッグのテーマ Night Run の画像です。Sonic Wiki Zone で見つけました。</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>テーマ画像: 四つの寮の紋章</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Atomhawk Design が Pottermore のために描いたホグワーツの四つの寮の紋章で、ハリー・ポッターのテーマ Four Houses の画像です。Harry Potter Wiki で見つけました。</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>テーマ画像: USS Enterprise 撮影用モデル</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>オリジナルのスター・トレック・シリーズのために撮影されたモデルで、所蔵する Smithsonian National Air and Space Museum が撮影した写真です。スター・トレックのテーマ LCARS の画像です。</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>テーマ画像: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>スター・トレック: ネクスト・ジェネレーションの1コマで、スター・トレックのテーマ Starfleet の画像です。Memory Alpha で見つけました。</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>キーボード画面</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech の GamePanel キーボードと Mad Catz S.T.R.I.K.E. 7 に内蔵された画面、およびスマートフォン上の Logitech Arx Control に、プロファイル、時計、プレイ時間、ストップウォッチ、画像、DualShock 4 または DualSense のライトバーの色を表示します。各画面にはデバイスページに専用の行があり、そこで表示内容を設定します。画面の横にあるキーは、その行のボタンになります。</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>キーボード画面を制御する</value></data>

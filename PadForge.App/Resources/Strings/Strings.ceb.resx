@@ -293,6 +293,18 @@
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hayag</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Ngitngit</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Bag-ong tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Paghimo og tema gikan sa imong kaugalingong mga kolor ug usa ka hulagway, gikan sa usa ka dula sa Steam o usa ka file.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Idugang ang tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Ilista ang usa ka file sa tema. Basahon kini sa PadForge diin kini nahimutang ug walay kopyahon.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>I-save ang kopya…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Isulat ang napiling tema sa usa ka file nga mahimo nimong usbon o ipaambit.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ang tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tangtanga sa lista. Ang file magpabilin diin kini nahimutang.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Wala makit-i ang file</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Dili mabasa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ang file sa “{0}” nawala o dili mabasa. Ipakita sa PadForge ang Ngitngit hangtod mobalik kini.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Ang profile nga “{0}” nagsul-ob sa panagway sa dula niini. Mobalik ang imong tema kung laing profile na ang aktibo.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Itago ang mga device gikan sa mga dula</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Bintana</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>I-minimize ngadto sa system tray</value></data>
@@ -4150,4 +4162,38 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ang usa ka custom web pad nagtipig sa gilay-on sa matag cluster gikan sa mas duol nga ngilit sa mas lapad nga screen, sama sa paglihok sa mga overlay sa RetroArch sa ilang duha ka katunga. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_CrosshairRefs" xml:space="preserve"><value>Mga reperensya sa crosshair ug pampadako</value></data>
   <data name="About_CrosshairRefsDesc" xml:space="preserve"><value>Ang Krus ug ang tuldok niini gikan sa CSGOCrosshair ni Skarbo (walay gipatik nga lisensya), ang Lingin, picture ug outlined nga mga estilo gikan sa Crosshair-Overlay (MIT), ug ang Lente ug tibuok screen nga zoom sa pampadako gikan sa Windows-classic-samples sa Microsoft (MIT). Dokumentasyon lang, walay code nga gilakip.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Kana nga file dili tema sa PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Dili ma-save ang tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Bag-ong tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Gisul-ob sa PadForge ang tema samtang imo kining gihimo.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Akong tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Sukaranan</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ang sukaranan nga gibarugan sa tema. Ang ngitngit nga tema adunay hayag nga teksto, ug ang hayag nga tema adunay ngitngit nga teksto.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Hulagway</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Gikan sa dula sa Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Gikan sa file…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Walay hulagway</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gikuha ang hulagway gikan sa Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Walay lapad nga hulagway ang Steam alang niini nga dula.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Dili maabot ang Steam. Susiha ang imong koneksyon.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Nagbalhin sa hulagway pataas o paubos sulod sa bintana niini.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ang logo sa dula</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Mga kolor</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Iparehas sa hulagway</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kuhaon ang upat ka kolor gikan sa hulagway.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Likoran</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Ang panid. Ang bintana, ang sidebar, ang mga card ug ang mga linya mga ang-ang gikan niini.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Tampok</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tanang aktibo: ang engine, ang nag-unang buton, ang napiling butang.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Ikaduha</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mga gisukod nga bili ug marka sa device: mga rate, lebel sa baterya, hilaw nga input.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Pagtagad</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Mga kahimtang nga naghulat: naghulat og mga device, ubos nga baterya, wala ma-save nga mga kausaban.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pili og kolor</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga hulagway (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tanang file (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Dili mabasa sa PadForge kana nga file isip hulagway.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Hulagway: ang hulagway sa library sa Steam alang sa {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>I-on ang Mga config sa komunidad sa Settings aron makuha ang hulagway sa dula gikan sa Steam.</value></data>
 </root>

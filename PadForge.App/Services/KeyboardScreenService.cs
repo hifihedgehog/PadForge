@@ -1282,8 +1282,9 @@ namespace PadForge.Services
             var visual = new DrawingVisual();
             using (var dc = visual.RenderOpen())
             {
-                // App.xaml's EmberBrush.
-                dc.DrawRectangle(new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C)), null, new System.Windows.Rect(0, 0, width, height));
+                // PadForge's own ember, whatever theme the window wears: this
+                // picture goes to a keyboard's screen.
+                dc.DrawRectangle(new SolidColorBrush(PadForge.Common.EmberTheme.Accent), null, new System.Windows.Rect(0, 0, width, height));
                 var text = new FormattedText("PadForge", CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight,
                     new Typeface(new FontFamily("Segoe UI"), System.Windows.FontStyles.Normal, System.Windows.FontWeights.Bold,
                         System.Windows.FontStretches.Normal), 18, Brushes.White, 1.0);

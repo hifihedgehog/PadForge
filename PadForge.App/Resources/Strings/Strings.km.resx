@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>លំនាំដើមប្រព័ន្ធ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ភ្លឺ</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ងងឹត</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>រចនាប័ទ្មថ្មី…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>បង្កើតរចនាប័ទ្មពីពណ៌ផ្ទាល់ខ្លួនរបស់អ្នក និងរូបភាពមួយ ពីហ្គេម Steam ឬពីឯកសារ។</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>បន្ថែមរចនាប័ទ្ម…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>បញ្ចូលឯកសាររចនាប័ទ្មទៅក្នុងបញ្ជី។ PadForge អានវាពីទីតាំងដើមរបស់វា ហើយមិនចម្លងអ្វីទេ។</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>រក្សាទុកច្បាប់ចម្លង…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>សរសេររចនាប័ទ្មដែលបានជ្រើសទៅក្នុងឯកសារដែលអ្នកអាចកែ ឬចែករំលែកបាន។</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>កែសម្រួលរចនាប័ទ្ម</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>ដកចេញពីបញ្ជី។ ឯកសារនៅតែស្ថិតនៅកន្លែងដដែល។</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>រកមិនឃើញឯកសារ</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>មិនអាចអានបាន</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ឯកសាររបស់ «{0}» បាត់ ឬមិនអាចអានបាន។ PadForge បង្ហាញ «ងងឹត» រហូតដល់ឯកសារនោះត្រឡប់មកវិញ។</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» កំពុងប្រើរូបរាងហ្គេមរបស់វា។ រចនាប័ទ្មរបស់អ្នកនឹងត្រឡប់មកវិញ នៅពេលប្រូហ្វាល់ផ្សេងទៀតសកម្ម។</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>កំណត់រចនាសម្ព័ន្ធឥរិយាបថស្ទង់ និងដំណើរការនៅផ្ទៃខាងក្រោយ។</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ការគាំទ្រផ្នែករឹង</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>តែសេចក្ដីបដិសេធពាណិជ្ជសញ្ញា</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>មិនបានដាក់ឈ្មោះលក្ខខណ្ឌ</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>មិនបានបោះពុម្ពផ្សាយ</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>ដែនសាធារណៈ</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>រក្សាសិទ្ធិ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>លក្ខខណ្ឌប្រើប្រាស់ Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>អាជ្ញាប័ណ្ណច្រើន</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ម៉ាស៊ីនឧបករណ៍បញ្ជា HID និម្មិតក្នុងរបៀបអ្នកប្រើ (ជំនួស ViGEmBus និង vJoy)។</value></data>
@@ -2707,6 +2724,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>រកមិនឃើញផ្ទាំងវីនដូផ្សេងទៀតដែលកំពុងបើកទេ។</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ដកចេញ {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>អត្រាស្ទង់ ខណៈប្រូហ្វាល់នេះត្រូវបានផ្ទុក</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ប្រើរូបរាងរបស់ហ្គេម</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ខណៈពេលប្រូហ្វាល់នេះសកម្ម PadForge បង្ហាញរូបភាព និងពណ៌របស់ហ្គេម។ រចនាប័ទ្មរបស់អ្នកនឹងត្រឡប់មកវិញ នៅពេលប្រូហ្វាល់ផ្សេងទៀតសកម្ម។</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>រូបភាពរបស់ហ្គេមមិនមាននៅលើ PC នេះទេ។</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ទាញយករូបភាព</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>បើក «ការកំណត់រចនាសម្ព័ន្ធសហគមន៍» នៅក្នុងការកំណត់ ដើម្បីទាញយករូបភាពរបស់ហ្គេមពី Steam។</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>ចម្លងពី</value></data>
@@ -3964,7 +3986,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>រុករកការកំណត់រចនាសម្ព័ន្ធឧបករណ៍បញ្ជា Steam Input ដែលសហគមន៍បង្កើត ហើយបកប្រែពួកវាទៅជាប្រូហ្វាល់ PadForge។ PadForge ផ្ញើអត្ថបទស្វែងរករបស់អ្នក ID នៃហ្គេម ការកំណត់រចនាសម្ព័ន្ធ និងអ្នកបង្កើតដែលពាក់ព័ន្ធ និងកំណែរបស់វា។ ការចូល Steam ជាអនាមិកក៏ផ្ញើកំណែ Windows របស់អ្នក និង ID ម៉ាស៊ីនដែលបង្កើតពីតម្លៃ hash នៃ Installation ID របស់ Windows អាសយដ្ឋានអាដាប់ទ័របណ្ដាញ និងលេខស៊េរីថាសចាប់ផ្ដើម។ គ្មានសេវាភាគីទីបីពាក់ព័ន្ធទេ។</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ភ្ជាប់ទៅម៉ាស៊ីនមេរបស់ Steam តែនៅពេលអ្នកស្វែងរក បើកការកំណត់រចនាសម្ព័ន្ធ ឬពិនិត្យការកំណត់រចនាសម្ព័ន្ធដែលបាននាំចូលរកកំណែថ្មីប៉ុណ្ណោះ។ គ្មានការប្រមូលទិន្នន័យតេឡេម៉ែត្រ គ្មានគណនី Steam។</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ភ្ជាប់ទៅម៉ាស៊ីនមេរបស់ Steam តែនៅពេលអ្នកស្វែងរក បើកការកំណត់រចនាសម្ព័ន្ធ ពិនិត្យការកំណត់រចនាសម្ព័ន្ធដែលបាននាំចូលរកកំណែថ្មី ឬទាញយករូបភាពរបស់ហ្គេមប៉ុណ្ណោះ។ គ្មានការប្រមូលទិន្នន័យតេឡេម៉ែត្រ គ្មានគណនី Steam។</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>អ្វីដែលត្រូវបានផ្ញើ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>បើកការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>បង្ហាញការកំណត់រចនាសម្ព័ន្ធវើកស៊បចាស់ៗ</value></data>
@@ -5234,4 +5256,59 @@
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>បង្ហាញកែវពង្រីកខណៈម៉ាក្រូនេះត្រូវបានសង្កត់ជាប់ សម្រាប់ការតម្រង់មើលតាមកែវយឹត។ កំណត់វានៅលើទំព័រ «កែវពង្រីក»។</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ឯកសារយោងភាសាក្លីងហ្គុន និងស៊ីនដារីន</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ពាក្យនៃការបកប្រែជាភាសាក្លីងហ្គុន និងស៊ីនដារីន ត្រូវបានពិនិត្យធៀបនឹង klingon-assistant-data (Apache-2.0) ដែលជាវចនានុក្រមនៅពីក្រោយ boQwI' និង Eldamo (CC BY 4.0) ដែលជាសទ្ទានុក្រមភាសាអែលហ្វរបស់ Paul Strack។ ប្រើជាទិន្នន័យវចនានុក្រមតែប៉ុណ្ណោះ មិនមានទិន្នន័យណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ឯកសារនោះមិនមែនជារចនាប័ទ្ម PadForge ទេ។</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>មិនអាចរក្សាទុករចនាប័ទ្មបានទេ។ {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>រចនាប័ទ្មថ្មី</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ប្រើរចនាប័ទ្មនេះផ្ទាល់ ខណៈពេលអ្នកកំពុងបង្កើតវា។</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ឈ្មោះ</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>រចនាប័ទ្មរបស់ខ្ញុំ</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>មូលដ្ឋាន</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ផ្ទៃមូលដ្ឋានដែលរចនាប័ទ្មឈរលើ។ រចនាប័ទ្មងងឹតមានអក្សរភ្លឺ ហើយរចនាប័ទ្មភ្លឺមានអក្សរងងឹត។</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>រូបភាព</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>ពីហ្គេម Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ពីឯកសារ…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>គ្មានរូបភាព</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>កំពុងទាញយករូបភាពពី Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam គ្មានរូបភាពទទឹងសម្រាប់ហ្គេមនេះទេ។</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>មិនអាចភ្ជាប់ទៅ Steam បានទេ។ សូមពិនិត្យការតភ្ជាប់របស់អ្នក។</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>ទីតាំង</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ផ្លាស់ទីរូបភាពឡើងលើ ឬចុះក្រោមក្នុងបង្អួចរបស់វា។</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>បង្ហាញឡូហ្គោរបស់ហ្គេម</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ពណ៌</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ផ្គូផ្គងនឹងរូបភាព</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>យកពណ៌ទាំងបួនពីរូបភាព។</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>ផ្ទៃខាងក្រោយ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>ទំព័រ។ បង្អួច របារចំហៀង កាត និងបន្ទាត់ គឺជាកម្រិតភ្លឺជាង ឬងងឹតជាងនៃពណ៌នេះ។</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ពណ៌សង្កត់</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>អ្វីៗដែលកំពុងដំណើរការ៖ ម៉ាស៊ីនបញ្ចូល ប៊ូតុងមេ ធាតុដែលបានជ្រើស។</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ពណ៌បន្ទាប់បន្សំ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>តម្លៃដែលបានវាស់ និងសញ្ញាឧបករណ៍៖ អត្រា កម្រិតថ្ម ការបញ្ចូលដើម។</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ការយកចិត្តទុកដាក់</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>ស្ថានភាពរង់ចាំ៖ ការរង់ចាំឧបករណ៍ ថ្មខ្សោយ ការផ្លាស់ប្ដូរដែលមិនទាន់រក្សាទុក។</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>ជ្រើសពណ៌</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>រូបភាព (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge មិនអាចអានឯកសារនោះជារូបភាពបានទេ។</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>រូបភាព៖ រូបភាពបណ្ណាល័យរបស់ Steam សម្រាប់ {0}។</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ មួករបស់ Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>រូបថតផ្សព្វផ្សាយរបស់ Lucasfilm សម្រាប់ Revenge of the Sith៖ រូបភាពនៃរចនាប័ទ្ម Star Wars «Dark Side»។ រកឃើញនៅលើ Wookieepedia។</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ ឡូហ្គោស៊េរីរឿង</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>ឡូហ្គោរបស់ Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series និង Star Trek: The Next Generation នៅលើរូបភាពនៃរចនាប័ទ្មចាប់ផ្ដើម។ រកឃើញនៅលើ Wikimedia Commons ដែលកំណត់ឡូហ្គោនីមួយៗថាជាឡូហ្គោអក្សរធម្មតាក្នុងដែនសាធារណៈ។ ឡូហ្គោនីមួយៗជាពាណិជ្ជសញ្ញារបស់ម្ចាស់វា។</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ឈុតថតភាពយន្ត Hobbiton នៅប្រទេសនូវែលសេឡង់ ជារូបថតដោយ Jackie.lck៖ រូបភាពនៃរចនាប័ទ្ម The Lord of the Rings «The One Ring»។ រកឃើញនៅលើ Wikimedia Commons។</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ ប្រាសាទ Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>រូបភាពមួយពីវីដេអូណែនាំ Hogwarts Legacy ពីឆានែល YouTube ផ្ទាល់របស់ហ្គេម៖ រូបភាពនៃរចនាប័ទ្ម Harry Potter «Gryffindor»។ រកឃើញនៅលើ Wikimedia Commons។</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ ផែនទី Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>ផែនទី Middle-earth៖ រូបភាពនៃរចនាប័ទ្ម The Lord of the Rings «Map of Middle-earth»។ រកឃើញនៅលើ The One Wiki to Rule Them All ដែលមិនបានបញ្ជាក់ឈ្មោះវិចិត្រករ។</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon ទំហំពេញនៅ Galaxy’s Edge ជារូបថតដោយ Tomás Del Coro៖ រូបភាពនៃរចនាប័ទ្ម Star Wars «Opening Crawl»។ រកឃើញនៅលើ Wikimedia Commons។</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ Sonic នៅលើកោះ Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>រូបភាពមួយពីវីដេអូណែនាំ Sonic Frontiers ពីឆានែល YouTube ផ្ទាល់របស់ SEGA៖ រូបភាពនៃរចនាប័ទ្ម Sonic the Hedgehog «Blue Blur»។ រកឃើញនៅលើ Wikimedia Commons។</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ Sonic កំពុងរត់</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>គំនូររបស់ SEGA ដែលធ្វើឡើងសម្រាប់ Sonic Lost World៖ រូបភាពនៃរចនាប័ទ្ម Sonic the Hedgehog «Night Run»។ រកឃើញនៅលើ Sonic Wiki Zone។</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ និមិត្តសញ្ញាផ្ទះទាំងបួន</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>និមិត្តសញ្ញាផ្ទះទាំងបួនរបស់ Hogwarts គូរដោយ Atomhawk Design សម្រាប់ Pottermore៖ រូបភាពនៃរចនាប័ទ្ម Harry Potter «Four Houses»។ រកឃើញនៅលើ Harry Potter Wiki។</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ ម៉ូដែលស្ទូឌីយោ USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ម៉ូដែលដែលបានថតសម្រាប់ស៊េរី Star Trek ដើម ថតរូបដោយ Smithsonian National Air and Space Museum ដែលរក្សាទុកវា៖ រូបភាពនៃរចនាប័ទ្ម Star Trek «LCARS»។</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>រូបភាពរចនាប័ទ្ម៖ USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>រូបភាពមួយពី Star Trek: The Next Generation៖ រូបភាពនៃរចនាប័ទ្ម Star Trek «Starfleet»។ រកឃើញនៅលើ Memory Alpha។</value></data>
 </root>

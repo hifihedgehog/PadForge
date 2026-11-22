@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Жүйелік әдепкі</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Ашық</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Қараңғы</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Жаңа тақырып…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Өз түстеріңізден және Steam ойынынан немесе файлдан алынған суреттен тақырып жасаңыз.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Тақырып қосу…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Тақырып файлын тізімге қосу. PadForge оны тұрған орнынан оқиды, ештеңе көшірмейді.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Көшірмесін сақтау…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Таңдалған тақырыпты өзгертуге немесе бөлісуге болатын файлға жазу.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Тақырыпты өңдеу</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Тізімнен алып тастау. Файл өз орнында қалады.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Файл табылмады</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Оқу мүмкін емес</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}» тақырыбының файлы жоқ немесе оны оқу мүмкін емес. Ол қайта пайда болғанша PadForge Қараңғы тақырыпты көрсетеді.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» профилі өз ойынының келбетін киіп тұр. Басқа профиль белсенді болғанда тақырыбыңыз қайтады.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Сұрау әрекеті мен фондық өңдеуді баптау.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Жабдықты қолдау</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Тек сауда белгісі туралы ескерту</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Шарттар көрсетілмеген</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Жарияланбаған</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Қоғамдық игілік</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Авторлық құқықпен қорғалған</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian пайдалану шарттары</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Бірнеше лицензия</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Пайдаланушы режиміндегі виртуалды HID контроллер қозғалтқышы (ViGEmBus пен vJoy орнын басады).</value></data>
@@ -2710,6 +2727,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Басқа ашық терезе табылмады.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} алып тастау</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Осы профиль жүктелгендегі сұрау жиілігі</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Ойын келбетін киіп жүру</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Бұл профиль белсенді болғанда PadForge ойынның суреті мен түстерін көрсетеді. Басқа профиль белсенді болғанда тақырыбыңыз қайтады.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Ойынның суреті осы компьютерде жоқ.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Суретті алу</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ойынның суретін Steam жүйесінен алу үшін Параметрлерде қауымдастық конфигурацияларын қосыңыз.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Мынадан көшіру</value></data>
@@ -3965,7 +3987,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Қауымдастық конфигурациялары</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Қауымдастық жасаған Steam Input контроллер конфигурацияларын шолып, оларды PadForge профильдеріне түрлендіріңіз. PadForge іздеу мәтініңізді, қатысты ойындардың, конфигурациялардың және авторлардың ID мәндерін және өз нұсқасын жібереді. Steam жүйесіне анонимді кіру сондай-ақ Windows нұсқаңызды және Windows орнату ID, желі адаптерінің мекенжайлары мен жүктеу дискісінің сериялық нөмірінің хэштерінен жасалған компьютер ID мәнін жібереді. Үшінші тарап қызметі қатыспайды.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam серверлеріне тек іздегенде, конфигурацияны ашқанда немесе импортталған конфигурациялардың жаңартуларын тексергенде қосылады. Телеметрия жоқ, Steam тіркелгісі қажет емес.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam серверлеріне тек іздегенде, конфигурацияны ашқанда, импортталған конфигурациялардың жаңартуларын тексергенде немесе ойынның суретін алғанда қосылады. Телеметрия жоқ, Steam тіркелгісі қажет емес.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Не жіберіледі</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Қауымдастық конфигурацияларын қосу</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Ескі шеберхана конфигурацияларын көрсету</value></data>
@@ -5235,4 +5257,59 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Осы макрос ұсталып тұрғанда лупаны көрсетеді, көздеп атуға арналған. Оны Лупа бетінде баптаңыз.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Клингон және синдарин тілдерінің сілтемелері</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Клингон және синдарин аудармаларындағы сөздер klingon-assistant-data (Apache-2.0) жобасымен, яғни boQwI' сөздігінің деректерімен, және Paul Strack құрастырған эльф тілдерінің лексиконы Eldamo (CC BY 4.0) жобасымен салыстырылып тексерілді. Тек сөздік деректері, ешқайсысы жеткізілмейді.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Бұл файл PadForge тақырыбы емес.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Тақырыпты сақтау мүмкін болмады. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Жаңа тақырып</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Тақырыпты жасап жатқанда PadForge оны киіп тұрады.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Атауы</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Менің тақырыбым</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Негіз</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Тақырып тұратын негіз. Қараңғы тақырыптың мәтіні ашық, ашық тақырыптың мәтіні қараңғы болады.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Сурет</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ойынынан…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Файлдан…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Суретсіз</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Сурет Steam жүйесінен алынуда…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam жүйесінде бұл ойынның кең суреті жоқ.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam жүйесіне қосылу мүмкін болмады. Қосылымыңызды тексеріңіз.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Орны</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Суретті терезесінде жоғары немесе төмен жылжытады.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ойын логотипін көрсету</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Түстер</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Суретке сәйкестендіру</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Төрт түсті суреттен алады.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Фон</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Бет. Терезе, бүйір панелі, карточкалар мен сызықтар осы түстің сатылары болып табылады.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Екпін</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Барлық белсенді нәрсе: қозғалтқыш, негізгі түйме, таңдалған элемент.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Қосымша</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Өлшенген мәндер мен құрылғы белгілері: жиіліктер, батарея деңгейлері, шикі кірістер.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Назар</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Күту күйлері: құрылғыларды күту, батарея аз, сақталмаған өзгерістер.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Түс таңдау</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Суреттер (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Барлық файлдар (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge бұл файлды сурет ретінде оқи алмайды.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Сурет: Steam кітапханасындағы {0} ойынының суреті.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Тақырып суреті: Дарт Вейдердің дулығасы</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm жарнамалық фотосы «Ситхтардың кегі» фильміне арналған: «Жұлдызды соғыстар» тақырыбының Dark Side суреті. Wookieepedia сайтынан табылған.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Тақырып суреті: Франшиза логотиптері</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Бастапқы тақырыптар суреттеріндегі Sonic the Hedgehog, «Сақиналар әміршісі», «Гарри Поттер», «Жұлдызды соғыстар», «Star Trek: The Original Series» және «Star Trek: The Next Generation» логотиптері. Wikimedia Commons сайтынан табылған, онда әрқайсысы қоғамдық игілікке жататын қарапайым мәтіндік логотип ретінде белгіленген. Әрқайсысы өз иесінің сауда белгісі.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Тақырып суреті: Хоббитон</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Жаңа Зеландиядағы Хоббитон киноалаңы, Jackie.lck фотосы: «Сақиналар әміршісі» тақырыбының The One Ring суреті. Wikimedia Commons сайтынан табылған.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Тақырып суреті: Хогвартс қамалы</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy ойынының өз YouTube арнасындағы трейлерінен кадр: «Гарри Поттер» тақырыбының Gryffindor суреті. Wikimedia Commons сайтынан табылған.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Тақырып суреті: Орта Жер картасы</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Орта Жердің картасы: «Сақиналар әміршісі» тақырыбының Map of Middle-earth суреті. The One Wiki to Rule Them All сайтынан табылған, онда суретші көрсетілмеген.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Тақырып суреті: «Мың жылдық сұңқар»</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge ішіндегі толық өлшемді «Мың жылдық сұңқар», Tomás Del Coro фотосы: «Жұлдызды соғыстар» тақырыбының Opening Crawl суреті. Wikimedia Commons сайтынан табылған.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Тақырып суреті: Кронос аралындағы Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA компаниясының өз YouTube арнасындағы Sonic Frontiers трейлерінен кадр: Sonic the Hedgehog тақырыбының Blue Blur суреті. Wikimedia Commons сайтынан табылған.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Тақырып суреті: Жүгіріп бара жатқан Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA компаниясы Sonic Lost World ойыны үшін жасаған сурет: Sonic the Hedgehog тақырыбының Night Run суреті. Sonic Wiki Zone сайтынан табылған.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Тақырып суреті: Төрт факультеттің елтаңбалары</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore үшін Atomhawk Design салған Хогвартстың төрт факультетінің елтаңбалары: «Гарри Поттер» тақырыбының Four Houses суреті. Harry Potter Wiki сайтынан табылған.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Тақырып суреті: USS Enterprise студиялық макеті</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek түпнұсқа сериалы үшін түсірілген макет, оны Smithsonian National Air and Space Museum суретке түсірген, макет сонда сақтаулы: Star Trek тақырыбының LCARS суреті.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Тақырып суреті: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>«Star Trek: The Next Generation» сериалынан кадр: Star Trek тақырыбының Starfleet суреті. Memory Alpha сайтынан табылған.</value></data>
 </root>

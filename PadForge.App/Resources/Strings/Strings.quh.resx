@@ -1673,4 +1673,16 @@
   <data name="Workshop_EngageMacroName_Format" xml:space="preserve"><value>{0} (qallarichiy)</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Kikiykichasqa web pad sapa qutu kontrolkunataqa aswan hatun pantallapi aswan qayllan patanmanta kaq karullapi waqaychan, RetroArch-pa overlaykunan iskaynin chawpinkunata kuyuchisqanman hina. Documentación hinallam ñawirisqa, mana ima GPL códigotapas apachinchu.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Huk kaqninta waqaychay…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Listamanta urquy. Archivoqa maypichus kashan chaypi qhepan.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Suti</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ñuqaq temay</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Rikch'ay</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam pukllaymanta…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Mana rikch'ayniyuq</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Maypi kasqan</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Rikch'ayta ventananpi hanaqman utaq uraman kuyuchin.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Pukllaypa logonta rikuchiy</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Rikch'aywan tupachiy</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Tawa llimp'ikunata rikch'aymanta hap'in.</value></data>
 </root>

@@ -2114,4 +2114,24 @@
   <data name="Common_Apply" xml:space="preserve"><value>Lò ó</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Pádì wẹ́ẹ̀bù àdáni máa ń pa ìjìnnà ẹgbẹ́ àwọn ìdarí kọ̀ọ̀kan mọ́ sí etí tí ó súnmọ́ ọ jù lọ lórí ìbòjú tí ó fẹ̀ jù, bí àwọn overlay RetroArch ṣe ń sún ìdajì wọn méjèèjì. A kà á gẹ́gẹ́ bí ìwé àlàyé nìkan, kò sí kóòdù GPL kankan tí a fi sínú rẹ̀.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Fi ẹ̀dà kan pamọ́…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Ṣàtúnṣe àwòṣe</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Yọ kúrò nínú àkójọ. Fáìlì náà ṣì wà níbi tí ó wà.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fáìlì “{0}” kò sí tàbí a kò lè kà á. PadForge yóò fi Òkùnkùn hàn títí yóò fi padà.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Orúkọ</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Àwòṣe mi</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Ìpìlẹ̀</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ilẹ̀ tí àwòṣe náà dúró lé. Àwòṣe òkùnkùn ní ọ̀rọ̀ aláwọ̀ mímọ́lẹ̀, àwòṣe ìmọ́lẹ̀ sì ní ọ̀rọ̀ aláwọ̀ dúdú.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Àwòrán</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Láti inú eré Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Kò sí àwòrán</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ń gba àwòrán láti Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam kò ní àwòrán gbígbòòrò fún eré yìí.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>A kò lè dé Steam. Ṣàyẹ̀wò àsopọ̀ íntánẹ́ẹ̀tì rẹ.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ipò</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ó ń gbé àwòrán náà sókè tàbí sísàlẹ̀ nínú fèrèsé rẹ̀.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Fi àmì eré náà hàn</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Bá àwòrán mu</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ó ń mú àwọ̀ mẹ́rẹ̀ẹ̀rin náà láti inú àwòrán.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Gbogbo fáìlì (*.*)|*.*</value></data>
 </root>

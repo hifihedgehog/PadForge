@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Default sistem</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Terang</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Gelap</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema baru…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Buat tema dari warna Anda sendiri dan sebuah gambar, dari game Steam atau dari file.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tambah tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Daftarkan file tema. PadForge membacanya di tempatnya dan tidak menyalin apa pun.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Simpan salinan…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Tulis tema yang dipilih ke file yang bisa Anda ubah atau bagikan.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Edit tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Hapus dari daftar. File tetap berada di tempatnya.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>File tidak ditemukan</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Tidak dapat dibaca</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>File tema “{0}” hilang atau tidak dapat dibaca. PadForge menampilkan Gelap sampai file itu kembali.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil “{0}” sedang memakai tampilan game-nya. Tema Anda kembali saat profil lain aktif.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Tema PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>File itu bukan tema PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema tidak dapat disimpan. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema baru</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge memakai tema itu selagi Anda membuatnya.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nama</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Tema saya</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Dasar</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Latar tempat tema berdiri. Tema gelap memakai teks terang, dan tema terang memakai teks gelap.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Gambar</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Dari game Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Dari file…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Tanpa gambar</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Mengambil gambar dari Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam tidak punya gambar lebar untuk game ini.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Tidak dapat menjangkau Steam. Periksa koneksi Anda.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisi</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Menggeser gambar ke atas atau ke bawah di dalam jendelanya.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Tampilkan logo game</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Warna</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Samakan dengan gambar</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Mengambil keempat warna dari gambar.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Latar belakang</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Halamannya. Jendela, bilah samping, kartu, dan garis adalah tingkatan dari warna ini.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aksen</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Semua yang aktif: mesin, tombol utama, item yang dipilih.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekunder</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Nilai terukur dan tanda perangkat: laju, tingkat baterai, input mentah.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Perhatian</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Status yang menunggu: perangkat yang ditunggu, baterai lemah, perubahan belum disimpan.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pilih warna</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Semua File (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge tidak dapat membaca file itu sebagai gambar.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Gambar: seni pustaka Steam untuk {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Mesin input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurasikan perilaku polling dan pemrosesan latar belakang.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Dukungan perangkat keras</value></data>
@@ -870,6 +916,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Hanya penafian merek dagang</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Tanpa ketentuan disebutkan</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Belum dipublikasikan</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domain publik</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Berhak cipta</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Ketentuan penggunaan Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Beberapa lisensi</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Mesin kontroler HID virtual mode pengguna (menggantikan ViGEmBus dan vJoy).</value></data>
@@ -2901,6 +2952,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tidak ditemukan jendela terbuka lainnya.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Hapus {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Laju polling saat profil ini dimuat</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Pakai tampilan game</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Selama profil ini aktif, PadForge menampilkan gambar dan warna game. Tema Anda kembali saat profil lain aktif.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Gambar game tidak ada di PC ini.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Ambil gambar</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktifkan konfigurasi komunitas di Pengaturan untuk mengambil gambar game dari Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Salin dari</value></data>
@@ -4193,7 +4249,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurasi komunitas</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Jelajahi konfigurasi kontroler Steam Input buatan komunitas dan terjemahkan menjadi profil PadForge. PadForge mengirim teks pencarian Anda, ID game, konfigurasi, dan pembuat yang terlibat, serta versinya. Logon Steam anonim juga mengirim versi Windows Anda dan ID mesin yang dibuat dari hash ID instalasi Windows, alamat adaptor jaringan, dan nomor seri disk boot. Tidak ada layanan pihak ketiga yang terlibat.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge tersambung ke server Steam hanya saat Anda mencari, membuka konfigurasi, atau memeriksa pembaruan konfigurasi yang diimpor. Tanpa telemetri, tanpa akun Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge tersambung ke server Steam hanya saat Anda mencari, membuka konfigurasi, memeriksa pembaruan konfigurasi yang diimpor, atau mengambil gambar sebuah game. Tanpa telemetri, tanpa akun Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Yang dikirim</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktifkan konfigurasi komunitas</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Tampilkan konfigurasi Workshop lama</value></data>
@@ -5157,6 +5213,28 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Format profil reWASD, dibaca dari dump skema shunt milik hcn1z1 (MIT), dokumen reWASD-Powertools milik DatMoshu (MIT), dan bantuan reWASD, format profil DS4Windows, dibaca dari fork DS4Windows milik Schmaldeo (GPL-3.0-or-later), serta format profil DSX, dibaca dari profil di DSX-profile-share milik winkywong1998, proyek DualSense milik RAIZ-Zzz (MIT), dan Mod System of DSX oleh Paliverse (Apache-2.0). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referensi Warna layar</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Penangkapan layar di balik pencahayaan Warna layar, dibaca dari Prismatik (GPL-2.0-or-later), fork foundation-sunshine milik AlkaidLab dari Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT), dan alienfx-tools (MIT). Hanya dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Gambar tema: Helm Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Foto promosi Lucasfilm untuk Revenge of the Sith: gambar tema Star Wars Dark Side. Ditemukan di Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Gambar tema: Logo waralaba</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logo Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series, dan Star Trek: The Next Generation pada gambar tema bawaan. Ditemukan di Wikimedia Commons, yang menandai tiap logo sebagai logo teks biasa di domain publik. Masing-masing adalah merek dagang pemiliknya.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Gambar tema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Lokasi syuting Hobbiton di Selandia Baru, foto oleh Jackie.lck: gambar tema The Lord of the Rings The One Ring. Ditemukan di Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Gambar tema: Kastil Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Cuplikan trailer Hogwarts Legacy dari kanal YouTube resmi game itu: gambar tema Harry Potter Gryffindor. Ditemukan di Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Gambar tema: Peta Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Peta Middle-earth: gambar tema The Lord of the Rings Map of Middle-earth. Ditemukan di The One Wiki to Rule Them All, yang tidak menyebut nama senimannya.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Gambar tema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon ukuran penuh di Galaxy’s Edge, foto oleh Tomás Del Coro: gambar tema Star Wars Opening Crawl. Ditemukan di Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Gambar tema: Sonic di Pulau Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Cuplikan trailer Sonic Frontiers dari kanal YouTube resmi SEGA: gambar tema Sonic the Hedgehog Blue Blur. Ditemukan di Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Gambar tema: Sonic berlari</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Seni buatan SEGA untuk Sonic Lost World: gambar tema Sonic the Hedgehog Night Run. Ditemukan di Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Gambar tema: Empat lambang asrama</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Empat lambang asrama Hogwarts, digambar oleh Atomhawk Design untuk Pottermore: gambar tema Harry Potter Four Houses. Ditemukan di Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Gambar tema: Model studio USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Model yang difilmkan untuk serial Star Trek orisinal, difoto oleh Smithsonian National Air and Space Museum yang menyimpannya: gambar tema Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Gambar tema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Cuplikan Star Trek: The Next Generation: gambar tema Star Trek Starfleet. Ditemukan di Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Layar Keyboard</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Menggambar di layar bawaan keyboard GamePanel Logitech dan Mad Catz S.T.R.I.K.E. 7, serta di ponsel melalui Logitech Arx Control: profil, jam, waktu bermain, stopwatch, gambar, atau warna bilah lampu DualShock 4 atau DualSense. Setiap layar memiliki barisnya sendiri di halaman Perangkat, tempat Anda mengatur apa yang ditampilkannya. Tombol di samping layar adalah tombol pada barisnya.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Kendalikan Layar Keyboard</value></data>

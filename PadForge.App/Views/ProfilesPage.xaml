@@ -75,8 +75,8 @@
                             <Border x:Name="FloorLight" IsHitTestVisible="False" Visibility="Collapsed">
                                 <Border.Background>
                                     <RadialGradientBrush Center="0.5,1.12" GradientOrigin="0.5,1.12" RadiusX="0.8" RadiusY="0.62">
-                                        <GradientStop Color="#8CFF6B2C" Offset="0"/>
-                                        <GradientStop Color="#00FF6B2C" Offset="0.72"/>
+                                        <GradientStop Color="{DynamicResource Ember8CColor}" Offset="0"/>
+                                        <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.72"/>
                                     </RadialGradientBrush>
                                 </Border.Background>
                             </Border>
@@ -409,8 +409,8 @@
                                             Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <Border.Background>
                                             <RadialGradientBrush GradientOrigin="0,0" Center="0,0" RadiusX="0.9" RadiusY="1.2">
-                                                <GradientStop Color="#21FF6B2C" Offset="0"/>
-                                                <GradientStop Color="#00FF6B2C" Offset="0.62"/>
+                                                <GradientStop Color="{DynamicResource Ember21Color}" Offset="0"/>
+                                                <GradientStop Color="{DynamicResource Ember00Color}" Offset="0.62"/>
                                             </RadialGradientBrush>
                                         </Border.Background>
                                     </Border>
@@ -583,7 +583,7 @@
                      from code (DragEnter/DragLeave), hit-test invisible so
                      drag events keep flowing underneath. -->
                 <Grid x:Name="ProfileDropOverlay" Visibility="Collapsed" IsHitTestVisible="False">
-                    <Rectangle RadiusX="12" RadiusY="12" Fill="#1458B6E4"
+                    <Rectangle RadiusX="12" RadiusY="12" Fill="{DynamicResource ColdInput14Brush}"
                                Stroke="{DynamicResource ColdBrush}" StrokeThickness="1.5"
                                StrokeDashArray="4 3"/>
                     <TextBlock Text="{Binding Profiles_DropToImport, Source={x:Static strings:Strings.Instance}}"

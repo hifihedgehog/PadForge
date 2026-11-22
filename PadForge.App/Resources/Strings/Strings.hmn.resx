@@ -187,6 +187,7 @@
   <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Nrhiav kev teeb tsa</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Kaj</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tsaus</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Theme tshiab…</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Kev hloov tshiab</value></data>
   <data name="Settings_CheckForUpdatesTip" xml:space="preserve"><value>Kuaj thaum PadForge pib thiab txhua 12 teev tom qab ntawd.</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Kuaj tam sim no</value></data>
@@ -1605,4 +1606,25 @@
   <data name="Mapping_SourceAntiDeadzone_Tooltip" xml:space="preserve"><value>Output pib ntawm qhov no thaum input pib txav. 0 yog kaw.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ib lub web pad uas koj kos khaws txhua pawg tswj nws qhov deb ntawm ntug uas ze nws dua ntawm lub vijtsam uas dav dua, ib yam li RetroArch cov overlay txav lawv ob sab sib nrug. Tsuas nyeem ua cov ntaub ntawv qhia xwb, tsis muaj GPL code xa nrog.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Ntxiv theme…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Khaws ib daim theej…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Kho theme</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tshem tawm ntawm daim ntawv teev npe. Cov ntaub ntawv tseem nyob qhov chaw qub.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Cov ntaub ntawv ntawm “{0}” ploj lawm los sis nyeem tsis tau. PadForge qhia Tsaus mus txog thaum nws rov muaj.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Npe</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Kuv theme</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Hauv paus</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Xim hauv paus ntawm theme. Theme tsaus muaj cov ntawv kaj, thiab theme kaj muaj cov ntawv tsaus.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Duab</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Los ntawm Steam game…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Los ntawm cov ntaub ntawv…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Tsis muaj duab</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Tab tom rub duab los ntawm Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam tsis muaj duab dav rau game no.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Qhov chaw</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Txav tus duab nce los sis nqis hauv nws lub qhov rais.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Qhia game lub logo</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ua kom phim duab</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Siv plaub xim los ntawm tus duab.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Duab (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Txhua cov ntaub ntawv (*.*)|*.*</value></data>
 </root>

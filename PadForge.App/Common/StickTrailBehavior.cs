@@ -51,10 +51,8 @@ namespace PadForge.Common
             public Signal Out;
         }
 
-        private static Signal MakeSignal(Canvas canvas, Color color)
+        private static Signal MakeSignal(Canvas canvas, Brush brush)
         {
-            var brush = new SolidColorBrush(color);
-            brush.Freeze();
             var sig = new Signal
             {
                 Dots = new Ellipse[MaxDots],
@@ -88,9 +86,17 @@ namespace PadForge.Common
 
             var state = new TrailState
             {
-                Raw = MakeSignal(canvas, Color.FromRgb(0x58, 0xB6, 0xE4)),
-                Out = MakeSignal(canvas, Color.FromRgb(0xFF, 0x8C, 0x3C)),
+                // The raw signal in the look's input color and the output in
+                // its trail tone (#591).
+                Raw = MakeSignal(canvas, PadForge.Common.Themes.ThemeLook.InputBrush),
+                Out = MakeSignal(canvas, PadForge.Common.Themes.ThemeLook.TrailBrush),
             };
+            // A look put on while the plot shows gives the dots their tones.
+            PadForge.Common.Themes.ThemeTokens.Follow(canvas, () =>
+            {
+                foreach (var dot in state.Raw.Dots) dot.Fill = PadForge.Common.Themes.ThemeLook.InputBrush;
+                foreach (var dot in state.Out.Dots) dot.Fill = PadForge.Common.Themes.ThemeLook.TrailBrush;
+            });
 
             state.Timer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(16) };
             state.Timer.Tick += (_, _) =>

@@ -239,7 +239,7 @@
                         <GeometryDrawing.Pen><Pen Brush="#3A475A" Thickness="9"/></GeometryDrawing.Pen>
                     </GeometryDrawing>
                     <GeometryDrawing Geometry="M42,9 A15,15 0 0 1 57,24">
-                        <GeometryDrawing.Pen><Pen Brush="#FF6B2C" Thickness="9"/></GeometryDrawing.Pen>
+                        <GeometryDrawing.Pen><Pen Brush="{DynamicResource EmberBrush}" Thickness="9"/></GeometryDrawing.Pen>
                     </GeometryDrawing>
                 </DrawingGroup>
             </DrawingImage.Drawing>
@@ -269,7 +269,7 @@
                         <GeometryDrawing.Geometry><RectangleGeometry Rect="10,14,64,20" RadiusX="6" RadiusY="6"/></GeometryDrawing.Geometry>
                         <GeometryDrawing.Pen><Pen Brush="#3A475A" Thickness="1"/></GeometryDrawing.Pen>
                     </GeometryDrawing>
-                    <GeometryDrawing Brush="#FF6B2C" Geometry="M22,19 C22.5,20.8 24.8,21.8 24.8,24.3 A2.8,2.8 0 0 1 19.2,24.3 C19.2,21.8 21.5,20.8 22,19 Z"/>
+                    <GeometryDrawing Brush="{DynamicResource EmberBrush}" Geometry="M22,19 C22.5,20.8 24.8,21.8 24.8,24.3 A2.8,2.8 0 0 1 19.2,24.3 C19.2,21.8 21.5,20.8 22,19 Z"/>
                     <GeometryDrawing Brush="#A9B4C4">
                         <GeometryDrawing.Geometry><RectangleGeometry Rect="32,21.5,34,5" RadiusX="2.5" RadiusY="2.5"/></GeometryDrawing.Geometry>
                     </GeometryDrawing>

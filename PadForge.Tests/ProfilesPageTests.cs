@@ -342,7 +342,7 @@ namespace PadForge.Tests
             Assert.Equal("0,0", (string)brush.Attribute("Center"));
             Assert.Equal("0.9", (string)brush.Attribute("RadiusX"));
             Assert.Equal("1.2", (string)brush.Attribute("RadiusY"));
-            Assert.Equal(new[] { "#21FF6B2C|0", "#00FF6B2C|0.62" },
+            Assert.Equal(new[] { "{DynamicResource Ember21Color}|0", "{DynamicResource Ember00Color}|0.62" },
                 brush.Elements().Select(s => (string)s.Attribute("Color") + "|" + (string)s.Attribute("Offset")));
         }
 

@@ -2880,4 +2880,47 @@
   <data name="Common_Apply" xml:space="preserve"><value>Aplicá</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Un kontrol web personalisá ta warda e distansia di kada grupo di kontrolnan for di e rant mas serka di un pantaya mas hanchu, manera e overlay-nan di RetroArch ta move nan dos mitar. Lesá solamente komo dokumentashon, no ta distribuí niun kódigo GPL.</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema nobo…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Traha un tema ku bo mes kolónan i un potrèt, di un wega di Steam òf di un archivo.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Añadí tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Añadí un archivo di tema na e lista. PadForge ta lesa e archivo kaminda e ta i no ta kopia nada.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Wardá un kopia…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Skirbi e tema skohí den un archivo ku bo por kambia òf kompartí.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Editá tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kita for di e lista. E archivo ta keda kaminda e ta.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>No a haña archivo</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>No por lesa</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>E perfil “{0}” ta mustra e aparensia di su wega. Bo tema ta bolbe ora otro perfil ta aktivo.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>E archivo ei no ta un tema di PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>No por a wardá e tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema nobo</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ta mustra e tema miéntras bo ta trah'é.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nòmber</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mi tema</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Potrèt</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Di un wega di Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Di un archivo…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Sin potrèt</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ta buska e potrèt for di Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam no tin un potrèt hanchu pa e wega aki.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>No por a konektá ku Steam. Kontrolá bo konekshon.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posishon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ta move e potrèt pa ariba òf pa abou den su bentana.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mustra e logo di e wega</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Kolónan</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Adaptá na e potrèt</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ta saka e kuater kolónan for di e potrèt.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fondo</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>E página. E bentana, e bara lateral, e kartanan i e liñanan ta grado mas kla òf mas skur di e kolo aki.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aksento</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tur loke ta aktivo: e motor, e boton prinsipal, e elemento skohí.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundario</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Balornan midí i markanan di aparato: frekuensianan, nivel di bateria, entradanan kru.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atenshon</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Estadonan di spera: ta spera aparatonan, bateria abou, kambionan ku no a wòrdu wardá.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Skohe un kolo</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Potrètnan (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tur archivo (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge no por lesa e archivo ei komo potrèt.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Potrèt: arte di biblioteka di Steam pa {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Aktivá Konfigurashon di komunidat den Konfigurashon pa haña e potrèt di e wega for di Steam.</value></data>
 </root>

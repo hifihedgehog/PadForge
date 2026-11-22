@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Sistemaren lehenetsia</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Argia</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Iluna</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Gai berria…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Sortu gai bat zure koloreekin eta irudi batekin, Steam joko batetik edo fitxategi batetik.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Gehitu gaia…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Gehitu gai-fitxategi bat zerrendara. PadForge-k dagoen lekuan irakurtzen du eta ez du ezer kopiatzen.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Gorde kopia bat…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Idatzi hautatutako gaia aldatu edo partekatu dezakezun fitxategi batean.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Editatu gaia</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Kendu zerrendatik. Fitxategia dagoen lekuan geratzen da.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fitxategia ez da aurkitu</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ezin da irakurri</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>«{0}» gaiaren fitxategia falta da edo ezin da irakurri. PadForge-k Iluna erakusten du berriro agertu arte.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>«{0}» profilak bere jokoaren itxura darama. Zure gaia itzultzen da beste profil bat aktibo dagoenean.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Sarrera-motorra</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguratu galdeketaren portaera eta atzeko planoko prozesamendua.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardware-euskarria</value></data>
@@ -857,6 +869,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Marka-oharra soilik</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Baldintzarik ez</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Argitaratu gabe</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Jabari publikoa</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Copyrightdun</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian erabilera-baldintzak</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Lizentzia batzuk</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Erabiltzaile-moduko HID kontrolagailu birtualen motorra (ViGEmBus eta vJoy ordezten ditu).</value></data>
@@ -2705,6 +2722,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ez da beste leiho irekirik aurkitu.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kendu {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Galdeketa-maiztasuna profil hau kargatuta dagoenean</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Jantzi jokoaren itxura</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Profil hau aktibo dagoen bitartean, PadForge-k jokoaren irudia eta koloreak erakusten ditu. Zure gaia itzultzen da beste profil bat aktibo dagoenean.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Jokoaren irudia ez dago PC honetan.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Lortu irudia</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Gaitu Komunitatearen konfigurazioak Ezarpenetan jokoaren irudia Steam-etik lortzeko.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopiatu hemendik</value></data>
@@ -3960,7 +3982,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Komunitatearen konfigurazioak</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Arakatu komunitateak egindako Steam Input kontrolagailu-konfigurazioak, eta itzuli PadForge profiletara. PadForge-k bilaketa-testua, inplikatutako jokoen, konfigurazioen eta sortzaileen IDak eta bere bertsioa bidaltzen ditu. Steam-en saio-hasiera anonimoak zure Windows bertsioa eta makina-ID bat ere bidaltzen ditu. ID hori zure Windows instalazioaren IDaren, sare-egokigailuen helbideen eta abio-diskoaren serie-zenbakiaren hashetatik sortzen da. Ez dago hirugarrenen zerbitzurik tartean.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-en zerbitzarietara konektatzen da bilatzen duzunean, konfigurazio bat irekitzen duzunean edo inportatutako konfigurazioen eguneratzeak egiaztatzen dituzunean soilik. Telemetriarik ez, Steam konturik ez.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-en zerbitzarietara konektatzen da bilatzen duzunean, konfigurazio bat irekitzen duzunean, inportatutako konfigurazioen eguneratzeak egiaztatzen dituzunean edo joko baten irudia lortzen duzunean soilik. Telemetriarik ez, Steam konturik ez.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Zer bidaltzen den</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Gaitu komunitatearen konfigurazioak</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Erakutsi Workshop-eko konfigurazio zaharrak</value></data>
@@ -5232,4 +5254,59 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Lupa erakusten du makro honi eutsita dagoen bitartean, ikuskailuarekin apuntatzeko. Ezarri Lupa orrian.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingon eta Sindarin erreferentziak</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingon eta Sindarin itzulpenen hitzak hauen aurka egiaztatu dira: klingon-assistant-data (Apache-2.0), boQwI'-ren atzean dagoen hiztegia, eta Eldamo (CC BY 4.0), Paul Strack-en lexiko elfikoa. Hiztegiko datuak soilik, ez da bat ere banatzen.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Fitxategi hori ez da PadForge gai bat.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ezin izan da gaia gorde. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Gai berria</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge-k gaia janzten du eraikitzen duzun bitartean.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Izena</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Nire gaia</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Oinarria</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Gaiak zeren gainean dagoen. Gai ilun batek testu argia du, eta gai argi batek testu iluna.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Irudia</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam joko batetik…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Fitxategi batetik…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Irudirik ez</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Irudia Steam-etik lortzen…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam-ek ez dauka irudi zabalik joko honetarako.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ezin izan da Steam-era iritsi. Egiaztatu zure konexioa.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Kokapena</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Irudia gora edo behera mugitzen du bere leihoan.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Erakutsi jokoaren logotipoa</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Koloreak</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Egokitu irudira</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Lau koloreak irudiatik hartzen ditu.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Atzeko planoa</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Orria. Leihoa, alboko barra, txartelak eta lerroak bere urratsak dira.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Nabarmena</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Bizirik dagoen guztia: motorra, botoi nagusia, hautatutako elementua.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Bigarrena</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Neurritako balioak eta gailuen markak: maiztasunak, bateria-mailak, sarrera gordinak.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Arreta</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Itxaroteko egoerak: gailuen zain, bateria baxua, gorde gabeko aldaketak.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Aukeratu kolore bat</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Irudiak (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Fitxategi guztiak (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge-k ezin du fitxategi hori irudi gisa irakurri.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Irudia: Steam-en liburutegiko artea, {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Gaiaren irudia: Darth Vader-en kaskoa</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm-en argazki promozional bat Sithen mendekua filmerako: Star Wars gaiaren irudia, Dark Side. Wookieepedia-n aurkitua.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Gaiaren irudia: Frankizien logotipoak</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Sonic the Hedgehog, Eraztunen Jauna, Harry Potter, Star Wars, Star Trek: The Original Series eta Star Trek: The Next Generation frankizien logotipoak hasierako gaien irudietan. Wikimedia Commons-en aurkituak, eta guztiak jabari publikoko testu-logotipo soil gisa markatuta daude. Bakoitza bere jabearen marka erregistratua da.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Gaiaren irudia: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Zeelanda Berriko Hobbiton filmaren dekoratua, Jackie.lck-en argazkia: Eraztunen Jauna gaiaren irudia, The One Ring. Wikimedia Commons-en aurkitua.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Gaiaren irudia: Hogwarts gaztelua</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy tráilerreko fotograma bat, jokoaren YouTube kanal propiotik: Harry Potter gaiaren irudia, Gryffindor. Wikimedia Commons-en aurkitua.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Gaiaren irudia: Erdi Lurraren mapa</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Erdi Lurraren mapa bat: Eraztunen Jauna gaiaren irudia, Map of Middle-earth. The One Wiki to Rule Them All-en aurkitua, artistarik izendatzen ez duena.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Gaiaren irudia: Mila Urteko Falkoia</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge-eko Mila Urteko Falkoia tamaina errealean, Tomás Del Coro-ren argazkia: Star Wars gaiaren irudia, Opening Crawl. Wikimedia Commons-en aurkitua.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Gaiaren irudia: Sonic Kronos uhartean</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Sonic Frontiers tráilerreko fotograma bat, SEGA-ren YouTube kanal propiotik: Sonic the Hedgehog gaiaren irudia, Blue Blur. Wikimedia Commons-en aurkitua.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Gaiaren irudia: Sonic korrika</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA-k Sonic Lost World jokorako egindako artea: Sonic the Hedgehog gaiaren irudia, Night Run. Sonic Wiki Zone-n aurkitua.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Gaiaren irudia: Lau etxeen ezkutuak</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Hogwarts-eko lau etxeen ezkutuak, Atomhawk Design-ek marraztuak Pottermore-rako: Harry Potter gaiaren irudia, Four Houses. Harry Potter Wiki-n aurkitua.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Gaiaren irudia: USS Enterprise estudioko maketa</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Star Trek serie originalerako filmatutako maketa, Smithsonian National Air and Space Museum-ek argazkitua, berak gordetzen baitu: Star Trek gaiaren irudia, LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Gaiaren irudia: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation serieko fotograma bat: Star Trek gaiaren irudia, Starfleet. Memory Alpha-n aurkitua.</value></data>
 </root>

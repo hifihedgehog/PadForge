@@ -336,6 +336,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Okuzenzakalelayo kwesistimu</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Kukhanyayo</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Kumnyama</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Itimu entsha…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Yakha itimu ngemibala yakho nesithombe, esivela emdlalweni we-Steam noma efayeleni.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Engeza itimu…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Faka ifayela letimu ohlwini. I-PadForge ilifunda lapho likhona futhi ayikopishi lutho.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Londoloza ikhophi…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Bhala itimu ekhethiwe efayeleni ongalishintsha noma wabelane ngalo.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Hlela itimu</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Susa ohlwini. Ifayela lihlala lapho likhona.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Ifayela alitholakalanga</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Alifundeki</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Ifayela letimu “{0}” alikho noma alifundeki. I-PadForge ibonisa “Kumnyama” kuze libuye.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Iphrofayela “{0}” isebenzisa ukubukeka komdlalo wayo. Itimu yakho iyabuya uma kusebenza enye iphrofayela.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fihla amadivayisi kumageyimu</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Iwindi</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Nciphisa uye kuthreyi yesistimu</value></data>
@@ -2805,4 +2817,36 @@
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Ngaphansi kwalobu bungako bokuhamba okufakwayo kufundeka njengokuphakathi nendawo.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Isilawuli sewebhu esenziwe ngokwakho sigcina ibanga leqembu ngalinye lezilawuli ukusuka emaphethelweni aseduze esikrini esibanzi, njengoba izembozo ze-RetroArch zihambisa izingxenye zazo ezimbili. Kufundwe njengemibhalo kuphela, ayikho ikhodi ye-GPL efakiwe.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Lelo fayela akuyona itimu ye-PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Itimu ayikwazanga ukulondolozwa. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Itimu entsha</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>I-PadForge ibonisa itimu ngesikhathi uyakha.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Igama</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Itimu yami</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Isisekelo</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Isisekelo setimu. Itimu emnyama inombhalo okhanyayo, kanti itimu ekhanyayo inombhalo omnyama.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Isithombe</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Kusuka emdlalweni we-Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Kusuka efayeleni…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ngaphandle kwesithombe</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kulandwa isithombe ku-Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>I-Steam ayinaso isithombe esibanzi salo mdlalo.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Indawo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ihambisa isithombe phezulu noma phansi ewindini laso.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Bonisa ilogo yomdlalo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Imibala</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Fanisa nesithombe</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ithatha imibala emine esithombeni.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Ingemuva</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Ikhasi. Iwindi, ibha eseceleni, amakhadi nemigqa kuyizinyathelo ezisuka kulo.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Umbala wokugqamisa</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Konke okusebenzayo: injini, inkinobho eyinhloko, into ekhethiwe.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Okwesibili</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Amanani alinganisiwe nezimpawu zamadivayisi: amazinga okuvota, amazinga ebhethri, okokufaka okungacutshungulwanga.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Ukunaka</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Izimo zokulinda: amadivayisi alindelwe, ibhethri eliphansi, izinguquko ezingalondolozwanga.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Khetha umbala</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Izithombe (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Wonke amafayela (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>I-PadForge ayikwazi ukufunda lelo fayela njengesithombe.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Isithombe: ubuciko bomtapo we-Steam bomdlalo {0}.</value></data>
 </root>

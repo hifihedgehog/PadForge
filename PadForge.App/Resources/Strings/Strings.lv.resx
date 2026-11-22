@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Sistēmas noklusējums</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Gaišs</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tumšs</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Jauns motīvs…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Izveidojiet motīvu no savām krāsām un attēla, no Steam spēles vai faila.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Pievienot motīvu…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Pievienojiet sarakstam motīva failu. PadForge to nolasa tā atrašanās vietā un neko nekopē.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Saglabāt kopiju…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Ierakstīt izvēlēto motīvu failā, ko varat mainīt vai kopīgot.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Rediģēt motīvu</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Noņemt no saraksta. Fails paliek, kur bija.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fails nav atrasts</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nevar nolasīt</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Motīva „{0}” fails ir pazudis vai nav nolasāms. PadForge rāda motīvu Tumšs, līdz fails atgriežas.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profils „{0}” valkā savas spēles izskatu. Jūsu motīvs atgriežas, kad ir aktīvs cits profils.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge motīvi (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Šis fails nav PadForge motīvs.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Motīvu nevarēja saglabāt. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Jauns motīvs</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge valkā motīvu, kamēr to veidojat.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nosaukums</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mans motīvs</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pamats</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Pamats, uz kura motīvs balstās. Tumšam motīvam ir gaišs teksts, gaišam motīvam tumšs teksts.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Attēls</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>No Steam spēles…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>No faila…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Bez attēla</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Notiek attēla iegūšana no Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nav plata attēla šai spēlei.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nevarēja sasniegt Steam. Pārbaudiet savienojumu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Novietojums</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Pārvieto attēlu augšup vai lejup tā logā.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Rādīt spēles logotipu</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Krāsas</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Saskaņot ar attēlu</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ņem četras krāsas no attēla.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fons</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Lapa. Logs, sānjosla, kartes un līnijas ir tās toņi.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Akcents</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Viss aktīvais: dzinējs, galvenā poga, izvēlētais vienums.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundārā</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Izmērītās vērtības un ierīču zīmes: biežumi, akumulatoru līmeņi, neapstrādātas ievades.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Uzmanība</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Gaidīšanas stāvokļi: gaidāmas ierīces, zems akumulatora līmenis, nesaglabātas izmaiņas.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Izvēlēties krāsu</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Attēli (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Visi faili (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge nevar nolasīt šo failu kā attēlu.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Attēls: Steam bibliotēkas materiāls spēlei {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Ievades dzinējs</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurējiet aptaujas darbību un fona apstrādi.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Aparatūras atbalsts</value></data>
@@ -870,6 +916,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Tikai preču zīmes atruna</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Noteikumi nav minēti</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Nav publicēta</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Publiskais īpašums</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Aizsargāts ar autortiesībām</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian lietošanas noteikumi</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Vairākas licences</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Lietotāja režīma virtuālo HID kontrolleru dzinējs (aizstāj ViGEmBus un vJoy).</value></data>
@@ -2901,6 +2952,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nav atrasts neviens cits atvērts logs.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Noņemt {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Aptaujas biežums, kamēr šis profils ir ielādēts</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Valkāt spēles izskatu</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Kamēr šis profils ir aktīvs, PadForge rāda spēles attēlu un krāsas. Jūsu motīvs atgriežas, kad ir aktīvs cits profils.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Spēles attēla šajā datorā nav.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Iegūt attēlu</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Iestatījumos ieslēdziet kopienas konfigurācijas, lai iegūtu spēles attēlu no Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopēt no</value></data>
@@ -4193,7 +4249,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Kopienas konfigurācijas</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Pārlūkojiet kopienas veidotās Steam Input kontrolleru konfigurācijas un pārvērtiet tās PadForge profilos. PadForge sūta jūsu meklēšanas tekstu, iesaistīto spēļu, konfigurāciju un autoru ID, kā arī savu versiju. Anonīmā Steam pieteikšanās sūta arī jūsu Windows versiju un datora ID, kas izveidots no jūsu Windows instalācijas ID, tīkla adapteru adrešu un sāknēšanas diska sērijas numura jaucējvērtībām. Netiek izmantots neviens trešās puses pakalpojums.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge savienojas ar Steam serveriem tikai tad, kad meklējat, atverat konfigurāciju vai pārbaudāt importēto konfigurāciju atjauninājumus. Bez telemetrijas, bez Steam konta.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge savienojas ar Steam serveriem tikai tad, kad meklējat, atverat konfigurāciju, pārbaudāt importēto konfigurāciju atjauninājumus vai saņemat spēles attēlu. Bez telemetrijas, bez Steam konta.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Kas tiek sūtīts</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Iespējot kopienas konfigurācijas</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Rādīt mantotās darbnīcas konfigurācijas</value></data>
@@ -5157,6 +5213,28 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profila formāts, iegūts no hcn1z1 shunt shēmas izrakstiem (MIT), DatMoshu reWASD-Powertools dokumentācijas (MIT) un reWASD palīdzības, DS4Windows profila formāts, iegūts no Schmaldeo DS4Windows atzarojuma (GPL-3.0-or-later), un DSX profila formāts, iegūts no winkywong1998 DSX-profile-share profiliem, RAIZ-Zzz DualSense projekta (MIT) un Paliverse veidotās DSX sistēmas Mod System (Apache-2.0). Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Ekrāna krāsas atsauces</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Ekrāna tveršana, uz kuras balstās ekrāna krāsas apgaismojums, iegūta no Prismatik (GPL-2.0-or-later), AlkaidLab foundation-sunshine atzarojuma no Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) un alienfx-tools (MIT). Tikai dokumentācija, GPL kods netiek izplatīts.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Motīva attēls: Darta Veidera ķivere</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm reklāmas foto filmai „Zvaigžņu kari: Situ atriebība”: Zvaigžņu karu motīva Dark Side attēls. Atrasts vietnē Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Motīva attēls: franšīžu logotipi</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Sonic the Hedgehog, Gredzenu pavēlnieka, Harija Potera, Zvaigžņu karu, Star Trek: Oriģinālā sērija un Star Trek: Nākamā paaudze logotipi uz sākuma motīvu attēliem. Atrasti vietnē Wikimedia Commons, kas katru atzīmē kā vienkāršu teksta logotipu publiskajā īpašumā. Katrs ir sava īpašnieka preču zīme.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Motīva attēls: Hobitona</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Hobitona filmēšanas laukums Jaunzēlandē, Jackie.lck foto: Gredzenu pavēlnieka motīva The One Ring attēls. Atrasts vietnē Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Motīva attēls: Cūkkārpas pils</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy treilera kadrs no spēles oficiālā YouTube kanāla: Harija Potera motīva Gryffindor attēls. Atrasts vietnē Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Motīva attēls: Viduszemes karte</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Viduszemes karte: Gredzenu pavēlnieka motīva Map of Middle-earth attēls. Atrasts vietnē The One Wiki to Rule Them All, kas nenosauc mākslinieku.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Motīva attēls: Tūkstošgades piekūns</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Pilna izmēra Tūkstošgades piekūns parkā Galaxy’s Edge, Tomás Del Coro foto: Zvaigžņu karu motīva Opening Crawl attēls. Atrasts vietnē Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Motīva attēls: Sonic Kronosa salā</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Sonic Frontiers treilera kadrs no SEGA oficiālā YouTube kanāla: Sonic the Hedgehog motīva Blue Blur attēls. Atrasts vietnē Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Motīva attēls: Sonic skrien</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA veidota māksla spēlei Sonic Lost World: Sonic the Hedgehog motīva Night Run attēls. Atrasts vietnē Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Motīva attēls: četru namu ģerboņi</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Četru Cūkkārpas namu ģerboņi, ko vietnei Pottermore uzzīmējis Atomhawk Design: Harija Potera motīva Four Houses attēls. Atrasts vietnē Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Motīva attēls: USS Enterprise studijas modelis</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Oriģinālajam seriālam Star Trek filmētais modelis, ko nofotografējis Smithsonian National Air and Space Museum, kur tas glabājas: Star Trek motīva LCARS attēls.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Motīva attēls: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Seriāla Star Trek: Nākamā paaudze kadrs: Star Trek motīva Starfleet attēls. Atrasts vietnē Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Tastatūras ekrāni</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Zīmē uz ekrāniem, kas iebūvēti Logitech GamePanel tastatūrās un Mad Catz S.T.R.I.K.E. 7, kā arī tālrunī, izmantojot Logitech Arx Control: profils, pulkstenis, spēles laiks, hronometrs, attēls vai DualShock 4 vai DualSense gaismas joslas krāsa. Katram ekrānam ir sava rinda lapā Ierīces, kur iestata, ko tas rāda. Taustiņi pie ekrāna ir tās rindas pogas.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Vadīt tastatūras ekrānus</value></data>

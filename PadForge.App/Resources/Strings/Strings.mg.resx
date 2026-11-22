@@ -2285,4 +2285,24 @@
   <data name="Mapping_SourceDeadZoneShape_Off" xml:space="preserve"><value>Tsy miasa</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ny takelaka web namboarina dia mitazona ny elanelan'ny vondrona tsirairay amin'ny sisiny akaiky indrindra amin'ny efijery malalaka kokoa, toy ny fanalavitan'ny overlay an'ny RetroArch ny tapany roa. Novakiana ho antontan-taratasy fotsiny, tsy misy kaody GPL ampidirina.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Tehirizo dika mitovy…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Ovay ny endrika</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Esory ao amin'ny lisitra. Mijanona eo amin'ny toerany ny rakitra.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Tsy hita na tsy azo vakiana ny rakitry ny “{0}”. Maizina no asehon'ny PadForge mandra-piverin'ilay rakitra.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Anarana</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Ny endrikako</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Fototra</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ny fototra iorenan'ny endrika. Manana soratra mazava ny endrika maizina, ary manana soratra maizina ny endrika mazava.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Sary</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Avy amin'ny lalao Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Tsy misy sary</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Maka ny sary avy amin'ny Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Tsy manana sary malalaka ho an'ity lalao ity ny Steam.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Tsy tratra ny Steam. Hamarino ny fifandraisanao.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Toerana</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Mampiakatra na mampidina ny sary ao anatin'ny varavarankeliny.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Asehoy ny logon'ny lalao</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ampifanaraho amin'ny sary</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Maka ny loko efatra avy amin'ny sary.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Sary (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Rakitra rehetra (*.*)|*.*</value></data>
 </root>

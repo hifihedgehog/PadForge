@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>ค่าเริ่มต้นของระบบ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>สว่าง</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>มืด</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>ธีมใหม่…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>สร้างธีมจากสีของคุณเองและรูปภาพ จากเกมใน Steam หรือจากไฟล์</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>เพิ่มธีม…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>เพิ่มไฟล์ธีมลงในรายการ PadForge จะอ่านไฟล์จากที่เดิมและไม่คัดลอกอะไรเลย</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>บันทึกสำเนา…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>เขียนธีมที่เลือกไว้ลงในไฟล์ที่คุณแก้ไขหรือแชร์ได้</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>แก้ไขธีม</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>นำออกจากรายการ ไฟล์ยังอยู่ที่เดิม</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ไม่พบไฟล์</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>อ่านไม่ได้</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ไฟล์ของ "{0}" หายไปหรืออ่านไม่ได้ PadForge จะแสดงธีมมืดจนกว่าไฟล์จะกลับมา</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>โปรไฟล์ "{0}" กำลังใช้รูปลักษณ์ของเกม ธีมของคุณจะกลับมาเมื่อใช้โปรไฟล์อื่น</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>ธีม PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่ธีมของ PadForge</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ไม่สามารถบันทึกธีมได้ {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ธีมใหม่</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge จะแสดงธีมให้เห็นทันทีระหว่างที่คุณสร้าง</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ชื่อ</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ธีมของฉัน</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>พื้นฐาน</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>พื้นที่ที่ธีมวางอยู่ ธีมมืดใช้ตัวอักษรสีสว่าง และธีมสว่างใช้ตัวอักษรสีเข้ม</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>รูปภาพ</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>จากเกมใน Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>จากไฟล์…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ไม่มีรูปภาพ</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>กำลังดึงรูปภาพจาก Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ไม่มีรูปภาพแนวกว้างสำหรับเกมนี้</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ติดต่อ Steam ไม่ได้ ตรวจสอบการเชื่อมต่อของคุณ</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>ตำแหน่ง</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>เลื่อนรูปภาพขึ้นหรือลงภายในกรอบ</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>แสดงโลโก้ของเกม</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>สี</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ใช้สีตามรูปภาพ</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ดึงสีทั้งสี่จากรูปภาพ</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>พื้นหลัง</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>สีของหน้า หน้าต่าง แถบด้านข้าง การ์ด และเส้น เป็นสีไล่ระดับจากสีนี้</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>สีเน้น</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ทุกอย่างที่กำลังทำงาน ได้แก่ เอนจิน ปุ่มหลัก และรายการที่เลือก</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>สีรอง</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>ค่าที่วัดได้และเครื่องหมายของอุปกรณ์ ได้แก่ อัตรา ระดับแบตเตอรี่ และอินพุตดิบ</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>สีเตือน</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>สถานะที่รอคุณ ได้แก่ กำลังรออุปกรณ์ แบตเตอรี่ต่ำ และการเปลี่ยนแปลงที่ยังไม่บันทึก</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>เลือกสี</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>รูปภาพ (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge อ่านไฟล์นั้นเป็นรูปภาพไม่ได้</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>รูปภาพ: ภาพไลบรารีของ Steam สำหรับ {0}</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>เอนจินอินพุต</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>กำหนดค่าลักษณะการโพลและการประมวลผลในเบื้องหลัง</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>การรองรับฮาร์ดแวร์</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ข้อความปฏิเสธเครื่องหมายการค้าเท่านั้น</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>ไม่ได้ระบุข้อกำหนด</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ไม่มีการเผยแพร่</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>สาธารณสมบัติ</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>มีลิขสิทธิ์</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>ข้อกำหนดการใช้งานของ Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>หลายสัญญาอนุญาต</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>เอนจินคอนโทรลเลอร์ HID เสมือนแบบโหมดผู้ใช้ (ใช้แทน ViGEmBus และ vJoy)</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ไม่พบหน้าต่างอื่นที่เปิดอยู่</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>นำ {0} ออก</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>อัตราการโพลขณะโหลดโปรไฟล์นี้</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ใช้รูปลักษณ์ของเกม</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ขณะที่โปรไฟล์นี้ใช้งานอยู่ PadForge จะแสดงรูปภาพและสีของเกม ธีมของคุณจะกลับมาเมื่อใช้โปรไฟล์อื่น</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ไม่มีรูปภาพของเกมบนพีซีเครื่องนี้</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ดึงรูปภาพ</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>เปิดใช้คอนฟิกจากชุมชนในการตั้งค่าเพื่อดึงรูปภาพของเกมจาก Steam</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>คัดลอกจาก</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>คอนฟิกจากชุมชน</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>เรียกดูคอนฟิกคอนโทรลเลอร์ Steam Input ที่ชุมชนสร้าง แล้วแปลงเป็นโปรไฟล์ PadForge PadForge จะส่งข้อความค้นหาของคุณ ID ของเกม คอนฟิก และผู้สร้างที่เกี่ยวข้อง และเวอร์ชันของตัวเอง การเข้าสู่ระบบ Steam แบบไม่ระบุตัวตนยังส่งเวอร์ชัน Windows ของคุณ และ ID เครื่องที่สร้างจากค่าแฮชของ ID การติดตั้ง Windows ที่อยู่ของอะแดปเตอร์เครือข่าย และหมายเลขซีเรียลของดิสก์บูต ไม่มีบริการของบุคคลที่สามเข้ามาเกี่ยวข้อง</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge จะเชื่อมต่อกับเซิร์ฟเวอร์ของ Steam เฉพาะเมื่อคุณค้นหา เปิดคอนฟิก หรือตรวจหาการอัปเดตของคอนฟิกที่นำเข้าไว้ ไม่มีการเก็บข้อมูลการใช้งาน ไม่ต้องใช้บัญชี Steam</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge จะเชื่อมต่อกับเซิร์ฟเวอร์ของ Steam เฉพาะเมื่อคุณค้นหา เปิดคอนฟิก ตรวจหาการอัปเดตของคอนฟิกที่นำเข้าไว้ หรือดึงรูปภาพของเกม ไม่มีการเก็บข้อมูลการใช้งาน ไม่ต้องใช้บัญชี Steam</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>สิ่งที่ถูกส่ง</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>เปิดใช้คอนฟิกจากชุมชน</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>แสดงคอนฟิกเวิร์กชอปรุ่นเก่า</value></data>
@@ -5157,6 +5213,28 @@
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>รูปแบบโปรไฟล์ reWASD อ่านจากการดัมพ์สคีมา shunt ของ hcn1z1 (MIT) เอกสาร reWASD-Powertools ของ DatMoshu (MIT) และวิธีใช้ของ reWASD รูปแบบโปรไฟล์ DS4Windows อ่านจาก DS4Windows ฉบับฟอร์กของ Schmaldeo (GPL-3.0-or-later) และรูปแบบโปรไฟล์ DSX อ่านจากโปรไฟล์ใน DSX-profile-share ของ winkywong1998 โปรเจกต์ DualSense ของ RAIZ-Zzz (MIT) และ Mod System ของ DSX โดย Paliverse (Apache-2.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>แหล่งอ้างอิงสีหน้าจอ</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>การจับภาพที่อยู่เบื้องหลังไฟแบบสีหน้าจอ อ่านจาก Prismatik (GPL-2.0-or-later) foundation-sunshine ฉบับฟอร์กของ AlkaidLab จาก Sunshine (GPL-3.0) ScreenCapture.NET (LGPL-2.1) RazerAmbilight (MIT) OpenRGBEffectsPlugin (GPL-2.0-or-later) Aurora (MIT) และ alienfx-tools (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>ภาพธีม: หมวกของดาร์ธ เวเดอร์</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>ภาพโปรโมตของ Lucasfilm สำหรับ ซิธชำระแค้น เป็นภาพของธีมสตาร์ วอร์ส Dark Side พบใน Wookieepedia</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>ภาพธีม: โลโก้แฟรนไชส์</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>โลโก้ของโซนิค เดอะ เฮดจ์ฮ็อก ลอร์ด ออฟ เดอะ ริงส์ แฮร์รี่ พอตเตอร์ สตาร์ วอร์ส สตาร์ เทรค: ดิ ออริจินัล ซีรีส์ และสตาร์ เทรค: เดอะ เน็กซ์ เจเนอเรชัน บนภาพของธีมเริ่มต้น พบใน Wikimedia Commons ซึ่งระบุว่าแต่ละอันเป็นโลโก้ข้อความธรรมดาที่เป็นสาธารณสมบัติ แต่ละอันเป็นเครื่องหมายการค้าของเจ้าของ</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>ภาพธีม: ฮอบบิตตัน</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ฉากถ่ายทำฮอบบิตตันในนิวซีแลนด์ ภาพถ่ายโดย Jackie.lck เป็นภาพของธีมลอร์ด ออฟ เดอะ ริงส์ The One Ring พบใน Wikimedia Commons</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>ภาพธีม: ปราสาทฮอกวอตส์</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>เฟรมจากตัวอย่างเกม Hogwarts Legacy ในช่อง YouTube ของเกมเอง เป็นภาพของธีมแฮร์รี่ พอตเตอร์ Gryffindor พบใน Wikimedia Commons</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>ภาพธีม: แผนที่มิดเดิลเอิร์ธ</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>แผนที่มิดเดิลเอิร์ธ เป็นภาพของธีมลอร์ด ออฟ เดอะ ริงส์ Map of Middle-earth พบใน The One Wiki to Rule Them All ซึ่งไม่ระบุชื่อศิลปิน</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>ภาพธีม: มิลเลนเนียม ฟอลคอน</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>มิลเลนเนียม ฟอลคอนขนาดเท่าของจริงที่ Galaxy's Edge ภาพถ่ายโดย Tomás Del Coro เป็นภาพของธีมสตาร์ วอร์ส Opening Crawl พบใน Wikimedia Commons</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>ภาพธีม: Sonic บนเกาะโครนอส</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>เฟรมจากตัวอย่างเกม Sonic Frontiers ในช่อง YouTube ของ SEGA เอง เป็นภาพของธีมโซนิค เดอะ เฮดจ์ฮ็อก Blue Blur พบใน Wikimedia Commons</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>ภาพธีม: Sonic กำลังวิ่ง</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>ภาพที่ SEGA สร้างสำหรับ Sonic Lost World เป็นภาพของธีมโซนิค เดอะ เฮดจ์ฮ็อก Night Run พบใน Sonic Wiki Zone</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>ภาพธีม: ตราประจำสี่บ้าน</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>ตราประจำสี่บ้านของฮอกวอตส์ วาดโดย Atomhawk Design สำหรับ Pottermore เป็นภาพของธีมแฮร์รี่ พอตเตอร์ Four Houses พบใน Harry Potter Wiki</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>ภาพธีม: โมเดลสตูดิโอ USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>โมเดลที่ใช้ถ่ายทำซีรีส์สตาร์ เทรค ภาคดั้งเดิม ถ่ายภาพโดย Smithsonian National Air and Space Museum ผู้เก็บรักษาโมเดลนี้ เป็นภาพของธีมสตาร์ เทรค LCARS</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>ภาพธีม: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>เฟรมจากสตาร์ เทรค: เดอะ เน็กซ์ เจเนอเรชัน เป็นภาพของธีมสตาร์ เทรค Starfleet พบใน Memory Alpha</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>หน้าจอคีย์บอร์ด</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>วาดบนหน้าจอที่ติดมากับคีย์บอร์ด GamePanel ของ Logitech และ Mad Catz S.T.R.I.K.E. 7 รวมถึงบนโทรศัพท์ผ่าน Logitech Arx Control ได้แก่ โปรไฟล์ นาฬิกา เวลาเล่น นาฬิกาจับเวลา รูปภาพ หรือสีของแถบไฟบน DualShock 4 หรือ DualSense แต่ละหน้าจอมีแถวของตัวเองในหน้าอุปกรณ์ ซึ่งคุณใช้ตั้งค่าว่าจะแสดงอะไร คีย์ข้างหน้าจอคือปุ่มของแถวนั้น</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>ควบคุมหน้าจอคีย์บอร์ด</value></data>

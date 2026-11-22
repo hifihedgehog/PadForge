@@ -217,6 +217,7 @@
   <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Qindaa'ina barbaadi</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Ifaa</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Dukkana</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Teemii haaraa…</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Foddaa</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Haaromsa</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Haaromsa barbaadaa jira…</value></data>
@@ -2142,4 +2143,25 @@
   <data name="Common_Apply" xml:space="preserve"><value>Hojiirra oolchi</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Paadiin weebii dhuunfaa tokko garee tokkoon tokkoo isaa fageenya qarqara iskiriinii bal’aa isatti dhihaate irraa qabu ni eega, akkuma overlay RetroArch walakkaa isaanii lamaan sochoosan. Sanada qofa ta’ee dubbifame, koodiin GPL tokkollee hin ergamu.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Teemii dabali…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Garagalcha olkaa'i…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Teemii gulaali</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tarree irraa balleessi. Faayilli bakka jirutti hafa.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faayilli “{0}” hin jiru ykn dubbifamuu hin danda'u. PadForge hanga inni deebi'utti Dukkana agarsiisa.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Maqaa</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Teemii koo</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Bu'uura</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Bu'uura teemiin irra dhaabatu. Teemiin dukkanaa barreeffama ifaa qaba, teemiin ifaa immoo barreeffama dukkanaa qaba.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Suuraa</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Tapha Steam irraa…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Faayila irraa…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Suuraa malee</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Suuraa Steam irraa fidaa jira…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam tapha kanaaf suuraa bal'aa hin qabu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Bakka</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Suuraa foddaa isaa keessatti ol ykn gadi socho'sa.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mallattoo taphichaa agarsiisi</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Suuraa wajjin walsimsiisi</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Halluu afran suuraa irraa fudhata.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Fakkiiwwan (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Faayiloota hunda (*.*)|*.*</value></data>
 </root>

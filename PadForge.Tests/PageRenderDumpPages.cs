@@ -357,6 +357,137 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The themes (#591): Settings' General group with the
+        /// gallery under Dark, at the window's least width, under a dark and
+        /// a light starter and under Light, each on a page built under that
+        /// look. Then the builder as it opens, with a picture and a color's
+        /// picker open, and with the Steam search while its switch is off,
+        /// and the profile dialog with the game look's switch and with a
+        /// look whose picture is not on this PC. The dark look comes back
+        /// after.</summary>
+        [Fact]
+        public void DrawThemes()
+        {
+            Run("themes", drawing =>
+            {
+                string looks = Path.Combine(drawing.Folder, "looks-" + Guid.NewGuid().ToString("N"));
+                var storeBefore = PadForge.Common.Themes.GameLooks.Store;
+                try
+                {
+                    double width = 1440 - 264, height = 1000 - 52, narrow = 900 - 264;
+                    void Settings(string file, int index, string id, double across, double down)
+                    {
+                        PadForge.Common.Themes.ThemeManager.Apply(index, id);
+                        var vm = new SettingsViewModel
+                        {
+                            SettingsFilePath = @"D:\Tools\PadForge\PadForge.xml",
+                            ApplicationVersion = "6.0.0", RuntimeVersion = "10.0.13", SdlVersion = "3.5.0",
+                        };
+                        vm.VersionNumber = "6.0.0";
+                        vm.SetUpdateStatus(() => "PadForge 6.0.0 is up to date.", upToDate: true);
+                        vm.SetTheme(index, id);
+                        vm.SelectedSettingsGroup = SettingsGroup.General;
+                        var host = new Grid();
+                        host.Children.Add(new PadForge.Controls.ThemeBackdrop { IsWhole = false, Source = PadForge.Common.Themes.ThemeManager.Picture });
+                        var page = new SettingsPage { DataContext = vm };
+                        host.Children.Add(page);
+                        // The gallery lists its tiles when it loads, which a page
+                        // outside a window never does: it is told here, and let go after.
+                        var gallery = (PadForge.Views.Controls.ThemeGallery)page.FindName("ThemeGalleryView");
+                        gallery.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+                        try { drawing.Picture(drawing.Ground(host), file, across, down); }
+                        finally { gallery.RaiseEvent(new RoutedEventArgs(FrameworkElement.UnloadedEvent)); }
+                    }
+                    Settings("themes-settings-dark.png", 2, null, width, height);
+                    Settings("themes-settings-dark-900.png", 2, null, narrow, 1400 - TitleBar);
+                    Settings("themes-settings-night-run.png", 2, "Starter:sonic-night-run", width, height);
+                    Settings("themes-settings-map.png", 2, "Starter:rings-map-of-middle-earth", width, height);
+                    Settings("themes-settings-light.png", 1, null, width, height);
+                    PadForge.Common.Themes.ThemeManager.Apply(2, null);
+
+                    // A wide picture and a logo, made here: a dusk sky over a dark hill, and a white wordmark's bar.
+                    BitmapSource Made(int across, int down, Func<double, double, Color> paint)
+                    {
+                        var pixels = new byte[across * down * 4];
+                        for (int y = 0; y < down; y++)
+                        {
+                            for (int x = 0; x < across; x++)
+                            {
+                                Color c = paint((x + 0.5) / across, (y + 0.5) / down);
+                                int i = (y * across + x) * 4;
+                                pixels[i] = c.B;
+                                pixels[i + 1] = c.G;
+                                pixels[i + 2] = c.R;
+                                pixels[i + 3] = c.A;
+                            }
+                        }
+                        var made = BitmapSource.Create(across, down, 96, 96, PixelFormats.Bgra32, null, pixels, across * 4);
+                        made.Freeze();
+                        return made;
+                    }
+                    var photo = Made(960, 310, (x, y) => y > 0.62 + 0.12 * Math.Sin(x * 9)
+                        ? Color.FromRgb(0x14, 0x10, 0x24)
+                        : Color.FromRgb((byte)(40 + 200 * y), (byte)(30 + 90 * y), (byte)(120 - 60 * y)));
+                    var logo = Made(300, 80, (x, y) => y > 0.3 && y < 0.7 ? Colors.White : Colors.Transparent);
+
+                    var off = new SettingsViewModel { EnableCommunityConfigLookup = false };
+                    drawing.PictureWindow(new ThemeBuilderDialog(null, off), "themes-builder-new.png");
+                    var withPicture = new ThemeBuilderDialog(null, off);
+                    drawing.PictureWindow(withPicture, "themes-builder-picture.png", () =>
+                    {
+                        withPicture.NameBox.Text = "Dusk";
+                        withPicture.TakePicture(photo, logo, "Picture: made for this drawing.");
+                        // The accent's swatch opens the picker.
+                        withPicture.ColorRows.Children.OfType<PadForge.Controls.SettingRow>().ElementAt(1)
+                            .Children.OfType<StackPanel>().Single().Children.OfType<System.Windows.Controls.Primitives.ToggleButton>().Single().IsChecked = true;
+                        // The look follows a change a moment after it, so a drag of a slider puts on one look.
+                        PageRenderDump.Settle(withPicture.Dispatcher);
+                    });
+                    var search = new ThemeBuilderDialog(null, off);
+                    drawing.PictureWindow(search, "themes-builder-game-off.png", () =>
+                        search.FromGameButton.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent)));
+                    PadForge.Common.Themes.ThemeManager.SetPreview(null);
+
+                    // The Community tab's result pane with the game look's switch. Its real states reach the
+                    // network, so the pane is put in that state by hand.
+                    const System.Reflection.BindingFlags hidden = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+                    var panel = new CommunityConfigsPanel { Width = 1100, Height = 560 };
+                    typeof(CommunityConfigsPanel).GetField("_selectedGame", hidden).SetValue(panel, new WorkshopGameItem { AppId = 620, Name = "Portal 2" });
+                    var states = typeof(CommunityConfigsPanel).GetNestedType("WsState", System.Reflection.BindingFlags.NonPublic);
+                    typeof(CommunityConfigsPanel).GetMethod("SetState", hidden).Invoke(panel, new[] { Enum.Parse(states, "Browse") });
+                    typeof(CommunityConfigsPanel).GetMethod("SetManifestPanel", hidden).Invoke(panel, new object[] { panel.FindName("ManifestResultPanel") });
+                    drawing.PictureControl(panel, "themes-import-look.png");
+
+                    // The profile dialog: the look offered, and a look worn whose picture is not on this PC.
+                    PadForge.Common.Themes.GameLooks.Store = new PadForge.Common.Themes.GameLookStore(looks);
+                    var art = new PadForge.Common.Themes.SteamGameArt(() => false,
+                        new PadForge.SteamWorkshop.Cache.SteamWorkshopCache(Path.Combine(looks, "cache")));
+                    var offered = new ProfileDialog();
+                    offered.LoadForEdit("Portal 2 (Workshop)", new[] { @"D:\SteamLibrary\steamapps\common\Portal 2\portal2.exe" });
+                    offered.OfferGameLook(620, "Portal 2", null, art);
+                    drawing.PictureWindow(offered, "themes-profile-look.png");
+                    var worn = new ProfileDialog();
+                    worn.LoadForEdit("Portal 2 (Workshop)", new[] { @"D:\SteamLibrary\steamapps\common\Portal 2\portal2.exe" });
+                    worn.OfferGameLook(620, "Portal 2", new ProfileGameLook
+                    {
+                        AppId = 620, Game = "Portal 2", Background = "#0A1020", Accent = "#3399FF", Secondary = "#FFAA33", Attention = "#FFE066",
+                    }, art);
+                    drawing.PictureWindow(worn, "themes-profile-look-missing.png");
+                }
+                finally
+                {
+                    PadForge.Common.Themes.GameLooks.Store = storeBefore;
+                    PadForge.Common.Themes.ThemeManager.SetPreview(null);
+                    PadForge.Common.Themes.ThemeManager.Apply(2, null);
+                    PageRenderDump.ApplyTheme(ApplicationTheme.Dark);
+                    PadForge.Common.EmberTheme.ApplyAccent();
+                    try { if (Directory.Exists(looks)) Directory.Delete(looks, recursive: true); }
+                    catch (IOException) { }
+                    catch (UnauthorizedAccessException) { }
+                }
+            });
+        }
+
         /// <summary>The About board's page: PadForge 6.0.0 up to date over the
         /// first five credits. Then what the board does not draw: the
         /// credits opened, found by a query and matching none, an update

@@ -246,6 +246,7 @@
   <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Lukaotem seting</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Laet</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tudak</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Niu stael…</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Windo</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Jekem naoia</value></data>
   <data name="Update_DownloadStalled" xml:space="preserve"><value>Daonlod i stop.</value></data>
@@ -1849,4 +1850,25 @@
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Ol ripot biaen long sapot blong SInput ped mo SInput persona, we PadForge i ridim long SINPUT-LIB-HID (MIT-0) mo HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) blong Hand Held Legend mo SInput mod blong OpenPuck (AGPL-3.0). Dokumentesen nomo, i no gat kod blong AGPL i stap insaed.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Ol referens blong lanwis Klingon mo Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Ol wod blong tranlesen long lanwis Klingon mo Sindarin oli sekem long klingon-assistant-data (Apache-2.0), diksonari we i stap biaen long boQwI', mo long Eldamo (CC BY 4.0), diksonari blong ol lanwis blong Elf we Paul Strack i mekem. Data blong diksonari nomo, i no gat wan samting blong hem i stap insaed.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Putum stael…</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Sevem wan kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Jenisim stael</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tekemaot long lis. Fael i stap yet long ples blong hem.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fael blong “{0}” i lus o i no save ridim. PadForge i soem Tudak kasem we fael i kambak.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Stael blong mi</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Graon</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Graon we stael i stanap long hem. Wan tudak stael i gat laet raeting, mo wan laet stael i gat tudak raeting.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Pikja</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Long wan gem blong Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Long wan fael…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>No gat pikja</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Stap tekem pikja long Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam i no gat wan waed pikja blong gem ia.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Ples</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>I muvum pikja i go antap o daon long windo blong hem.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Soem logo blong gem</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Folem pikja</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>I tekem ol 4 kala long pikja.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ol pikja (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Evri fael (*.*)|*.*</value></data>
 </root>

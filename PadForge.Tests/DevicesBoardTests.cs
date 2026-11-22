@@ -955,7 +955,7 @@ namespace PadForge.Tests
             Assert.Equal("3", Attr(bar, "Width"));
             Assert.Equal("{DynamicResource EmberBrush}", Attr(bar, "Background"));
             var wash = container.Descendants().Single(e => (string)e.Attribute(Xaml + "Name") == "Wash");
-            Assert.Equal(new[] { "#21FF6B2C/0", "#00FF6B2C/0.62" },
+            Assert.Equal(new[] { "{DynamicResource Ember21Color}/0", "{DynamicResource Ember00Color}/0.62" },
                 wash.Descendants().Where(e => e.Name.LocalName == "GradientStop").Select(g => Attr(g, "Color") + "/" + Attr(g, "Offset")).ToArray());
             var selected = container.Descendants().Single(e => e.Name.LocalName == "Trigger" && Attr(e, "Property") == "IsSelected");
             Assert.Contains(selected.Elements(), s => Attr(s, "TargetName") == "Bar" && Attr(s, "Value") == "Visible");

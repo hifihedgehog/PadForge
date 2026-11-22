@@ -375,6 +375,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Padron di sistema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Klaru</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Sukuru</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema nobu…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Kria un tema ku bus kor y un imajen, di un jogu di Steam o di un fixeru.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Djunta tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Pon un fixeru di tema na lista. PadForge ta lé-l na lugar undi el sta y e ka ta kopia nada.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Guarda un kópia…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Skrebe tema skodjidu na un fixeru ki bu pode muda o partilha.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Edita tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tira di lista. Fixeru ta fika undi el sta.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Ka atxa fixeru</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ka ta da pa lé</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fixeru di “{0}” ka sta la o ka ta da pa lé. PadForge ta mostra Sukuru ti ki el volta.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Perfil “{0}” sta ku aparénsia di se jogu. Bu tema ta volta oras ki otu perfil fika ativu.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skondi dispozitivus di jogus</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
@@ -3215,4 +3227,36 @@
   <data name="About_SInputRefsDesc" xml:space="preserve"><value>Relatórius pa suporti di komandus SInput i pa persona SInput, lidu di SINPUT-LIB-HID (MIT-0) i HOJA-LIB-RP2040 (CC BY-NC-SA 3.0) di Hand Held Legend i di modu SInput di OpenPuck (AGPL-3.0). Só dokumentason, nenhun kódigu AGPL ka ta bai djuntu.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referénsias di Klingon i di Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Palavras di tradusons di Klingon i di Sindarin, konferidu ku klingon-assistant-data (Apache-2.0), disionáriu ki sta pa trás di boQwI', i ku Eldamo (CC BY 4.0), léxiku élfiku di Paul Strack. Só dadus di disionáriu, nenhun di es ka ta bai djuntu.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Es fixeru ka é un tema di PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Ka konsigi guarda tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema nobu</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ta mostra tema enkuantu bu ta kria-l.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nómi</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Nha tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Bazi</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Fundu riba di kel tema ta sta. Un tema sukuru ten testu klaru, y un tema klaru ten testu sukuru.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imajen</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Di un jogu di Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Sen imajen</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ta pega imajen di Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ka ten imajen largu pa es jogu.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ka konsigi kontata Steam. Verifika bu konekson.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posison</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ta move imajen pa riba o pa baxu dentu se janela.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Mostra logotipu di jogu</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Kor</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Kombina ku imajen</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ta tira kuatu kor di imajen.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fundu</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Pájina. Janela, barra lateral, kartons y linhas é tons más klaru o más sukuru di el.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Destaki</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tudu kuza ativu: mutor, boton prinsipal, elementu skodjidu.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekundáriu</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valor midi y marka di aparelhu: taxa, nível di bateria, entrada brutu.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atenson</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Stadu di spera: ta spera aparelhu, bateria fraku, mudansa ki ka guardadu.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Skodji un kor</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ka ta konsigi lé es fixeru komu imajen.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imajen: arti di biblioteka di Steam pa {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Ativa Konfigurason di komunidadi na Definisons pa pega imajen di jogu na Steam.</value></data>
 </root>

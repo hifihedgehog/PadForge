@@ -1195,4 +1195,21 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>E tlhopha tsenyo e nngwe e e emelwang.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad e o e itiretseng e boloka sekgala sa setlhopha sengwe le sengwe go tswa mo moseleng o o gaufi wa sekirini se se atlhameng go feta, jaaka di-overlay tsa RetroArch di tsamaisa dikarolo tsa tsone tse pedi. E badilwe fela jaaka tshedimosetso, ga go na khoutu ya GPL e e romelwang.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Boloka khopi…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tlosa mo lenaneong. Faele e sala fa e leng gone.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Faele ya “{0}” ga e yo kgotsa ga e kgone go balwa. PadForge e bontsha Lefifi go fitlha e boa.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Leina</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Thimi ya me</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Motheo</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Motheo o thimi e theilweng mo go one. Thimi ya lefifi e na le mokwalo o o phatsimang, mme thimi ya lesedi e na le mokwalo o o lefifi.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Setshwantsho</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Go tswa mo motshamekong wa Steam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ga go setshwantsho</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ga e na setshwantsho se se namileng sa motshameko o.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Maemo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>E tsamaisa setshwantsho kwa godimo kgotsa kwa tlase mo fensetereng ya sone.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Bontsha logo ya motshameko</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Tsamaisana le setshwantsho</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>E tsaya mebala e mene mo setshwantshong.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Difaele tsotlhe (*.*)|*.*</value></data>
 </root>

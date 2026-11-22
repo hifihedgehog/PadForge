@@ -2278,6 +2278,9 @@ namespace PadForge.Services
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.IconPackageManager.LoadRegistry(
                 appSettings.IconPackages?.Select(p => (p.Name, p.Path)));
+            // Before the picked theme is set below, which looks its file up here.
+            PadForge.Common.Themes.ThemeManager.LoadRegistry(
+                appSettings.ThemeFiles?.Select(t => (t.Name, t.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
@@ -2379,7 +2382,7 @@ namespace PadForge.Services
                 ? appSettings.PollingRateHz
                 : PadForge.Common.Input.InputManager.DefaultPollingRateHz;
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
-            vm.SelectedThemeIndex = appSettings.ThemeIndex;
+            vm.SetTheme(appSettings.ThemeIndex, appSettings.ThemeId);
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
             vm.FlydigiEnhancedProtocol = appSettings.FlydigiEnhancedProtocol;
@@ -4362,6 +4365,9 @@ namespace PadForge.Services
             string activeId = appSettings?.ActiveProfileId;
             var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
             _mainVm.Settings.ActiveProfileInfo = active?.Name ?? Strings.Instance.Profile_Default;
+            // The profiles may hold another game look than they did, with
+            // the same profile active (#591).
+            PadForge.Common.Themes.GameLooks.RefreshSoon();
 
             // If a named profile was active at shutdown, snapshot the default
             // profile's state (loaded by LoadAppSettings) before overwriting with
@@ -4946,6 +4952,9 @@ namespace PadForge.Services
             var iconPackages = PadForge.Common.IconPackageManager.SaveRegistry()
                 .Select(p => new IconPackageData { Name = p.Name, Path = p.Path })
                 .ToArray();
+            var themeFiles = PadForge.Common.Themes.ThemeManager.SaveRegistry()
+                .Select(t => new ThemeFileData { Name = t.Name, Path = t.Path })
+                .ToArray();
             var nfcTags = PadForge.Common.Input.NfcTagRegistry.SaveRegistry()
                 .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name, Button = t.Button })
                 .ToArray();
@@ -5100,6 +5109,8 @@ namespace PadForge.Services
                 PollingRateHz = vm.PollingRateHz,
                 HmInactivityDestroyTimeoutSeconds = vm.HmInactivityDestroyTimeoutSeconds,
                 ThemeIndex = vm.SelectedThemeIndex,
+                ThemeId = string.IsNullOrEmpty(vm.SelectedThemeId) ? null : vm.SelectedThemeId,
+                ThemeFiles = themeFiles.Length > 0 ? themeFiles : null,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
                 EnableExternalControl = vm.EnableExternalControl,
@@ -6634,6 +6645,18 @@ namespace PadForge.Services
     //  Serialization data classes
     // ─────────────────────────────────────────────────────────────────
 
+    /// <summary>One listed theme file (#591): the name it last gave and
+    /// its stored path.</summary>
+    public class ThemeFileData
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        /// <summary>Exe-relative when under the application directory.</summary>
+        [XmlAttribute]
+        public string Path { get; set; }
+    }
+
     /// <summary>One registered sound package (issue #83 follow-up).</summary>
     public class SoundPackageData
     {
@@ -7203,8 +7226,22 @@ namespace PadForge.Services
         [XmlElement]
         public int HmInactivityDestroyTimeoutSeconds { get; set; } = 60;
 
+        /// <summary>PadForge's own look: 0 System, 1 Light, 2 Dark. In
+        /// force while <see cref="ThemeId"/> is absent.</summary>
         [XmlElement]
         public int ThemeIndex { get; set; }
+
+        /// <summary>The picked theme (#591): a starter's or a listed theme
+        /// file's id. Absent for PadForge's own look.</summary>
+        [XmlElement]
+        public string ThemeId { get; set; }
+
+        /// <summary>The listed theme files (#591): the name each last gave
+        /// and its stored path, exe-relative when the file is in the
+        /// application directory, as a sound package's is.</summary>
+        [XmlArray("ThemeFiles")]
+        [XmlArrayItem("Theme")]
+        public ThemeFileData[] ThemeFiles { get; set; }
 
         [XmlElement]
         public string Language { get; set; } = "";
@@ -8250,6 +8287,32 @@ namespace PadForge.Services
     }
 
     /// <summary>
+    /// A profile's game look (#591): the Steam game whose picture and colors
+    /// PadForge wears while the profile is the active one. The four colors
+    /// were taken from the game's library picture when the option was
+    /// turned on, as #RRGGBB. The picture is kept in the GameLooks folder
+    /// beside PadForge (PadForge.Common.Themes.GameLookStore), so the
+    /// profile holds a few short values, and the colors still apply where
+    /// the picture is not to be had.
+    /// </summary>
+    public class ProfileGameLook
+    {
+        /// <summary>The game's Steam app id, which names its picture.</summary>
+        [XmlAttribute] public int AppId { get; set; }
+
+        /// <summary>The game's name when the look was made.</summary>
+        [XmlAttribute] public string Game { get; set; }
+
+        [XmlAttribute] public string Background { get; set; }
+        [XmlAttribute] public string Accent { get; set; }
+        [XmlAttribute] public string Secondary { get; set; }
+        [XmlAttribute] public string Attention { get; set; }
+
+        /// <summary>A look of its own for another profile of the same game.</summary>
+        public ProfileGameLook Clone() => (ProfileGameLook)MemberwiseClone();
+    }
+
+    /// <summary>
     /// A named profile that stores per-device PadSettings and macros.
     /// When auto-switching is enabled, profiles activate when a matching
     /// executable's window comes to the foreground.
@@ -8300,6 +8363,11 @@ namespace PadForge.Services
         /// like the Dreamcast picture: no state save copies it.</summary>
         [XmlElement]
         public string KeyboardScreenPicture { get; set; }
+
+        /// <summary>The profile's game look (#591), or null when it wears
+        /// none. AUTHORED like the pictures: no state save copies it.</summary>
+        [XmlElement]
+        public ProfileGameLook GameLook { get; set; }
 
         [XmlArray("Entries")]
         [XmlArrayItem("Entry")]

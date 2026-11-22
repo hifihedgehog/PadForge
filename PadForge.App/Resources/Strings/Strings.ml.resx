@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>സിസ്റ്റം സ്ഥിരസ്ഥിതി</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ലൈറ്റ്</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ഡാർക്ക്</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>പുതിയ തീം…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>നിങ്ങളുടെ സ്വന്തം നിറങ്ങളും ഒരു Steam ഗെയിമിൽ നിന്നോ ഫയലിൽ നിന്നോ ഉള്ള ചിത്രവും ഉപയോഗിച്ച് ഒരു തീം നിർമ്മിക്കുക.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>തീം ചേർക്കുക…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>ഒരു തീം ഫയൽ പട്ടികയിൽ ചേർക്കുക. PadForge അത് ഉള്ളിടത്തുനിന്നുതന്നെ വായിക്കുന്നു, ഒന്നും പകർത്തുന്നില്ല.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>പകർപ്പ് സേവ് ചെയ്യുക…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത തീം, നിങ്ങൾക്ക് മാറ്റാനോ പങ്കിടാനോ കഴിയുന്ന ഒരു ഫയലിലേക്ക് എഴുതുക.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>തീം എഡിറ്റ് ചെയ്യുക</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>പട്ടികയിൽ നിന്ന് നീക്കം ചെയ്യുക. ഫയൽ ഉള്ളിടത്തുതന്നെ തുടരും.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ഫയൽ കണ്ടെത്തിയില്ല</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>വായിക്കാൻ കഴിയില്ല</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” എന്നതിന്റെ ഫയൽ കാണുന്നില്ല അല്ലെങ്കിൽ വായിക്കാൻ കഴിയുന്നില്ല. അത് തിരികെ വരുന്നതുവരെ PadForge ഡാർക്ക് കാണിക്കും.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” എന്ന പ്രൊഫൈൽ അതിന്റെ ഗെയിമിന്റെ രൂപം സ്വീകരിച്ചിരിക്കുന്നു. മറ്റൊരു പ്രൊഫൈൽ സജീവമാകുമ്പോൾ നിങ്ങളുടെ തീം തിരികെ വരും.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ഇൻപുട്ട് എഞ്ചിൻ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>പോളിംഗ് സ്വഭാവവും പശ്ചാത്തല പ്രോസസ്സിംഗും ക്രമീകരിക്കുക.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ഹാർഡ്വെയർ പിന്തുണ</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ട്രേഡ്മാർക്ക് നിരാകരണം മാത്രം</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>നിബന്ധനകളൊന്നും പറഞ്ഞിട്ടില്ല</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ഒന്നും പ്രസിദ്ധീകരിച്ചിട്ടില്ല</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>പൊതുസഞ്ചയം</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>പകർപ്പവകാശമുള്ളത്</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian ഉപയോഗ നിബന്ധനകൾ</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>ഒന്നിലധികം ലൈസൻസുകൾ</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>യൂസർ-മോഡ് വെർച്വൽ HID കൺട്രോളർ എഞ്ചിൻ (ViGEmBus, vJoy എന്നിവയ്ക്ക് പകരം).</value></data>
@@ -2703,6 +2720,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>മറ്റൊരു തുറന്ന വിൻഡോയും കണ്ടെത്തിയില്ല.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} നീക്കം ചെയ്യുക</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ഈ പ്രൊഫൈൽ ലോഡ് ആയിരിക്കുമ്പോഴുള്ള പോളിംഗ് റേറ്റ്</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ഗെയിമിന്റെ രൂപം അണിയുക</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ഈ പ്രൊഫൈൽ സജീവമായിരിക്കുമ്പോൾ PadForge ഗെയിമിന്റെ ചിത്രവും നിറങ്ങളും കാണിക്കുന്നു. മറ്റൊരു പ്രൊഫൈൽ സജീവമാകുമ്പോൾ നിങ്ങളുടെ തീം തിരികെ വരും.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ഗെയിമിന്റെ ചിത്രം ഈ PC-യിൽ ഇല്ല.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ചിത്രം എടുക്കുക</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>ഗെയിമിന്റെ ചിത്രം Steam-ൽ നിന്ന് എടുക്കാൻ ക്രമീകരണങ്ങളിൽ കമ്മ്യൂണിറ്റി കോൺഫിഗുകൾ ഓണാക്കുക.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>ഇതിൽ നിന്ന് പകർത്തുക</value></data>
@@ -3933,7 +3955,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>കമ്മ്യൂണിറ്റി കോൺഫിഗുകൾ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>സമൂഹം നിർമ്മിച്ച Steam Input കൺട്രോളർ കോൺഫിഗറേഷനുകൾ ബ്രൗസ് ചെയ്ത് അവയെ PadForge പ്രൊഫൈലുകളാക്കി മാറ്റുക. PadForge നിങ്ങളുടെ തിരയൽ വാചകം, ഉൾപ്പെട്ട ഗെയിമുകളുടെയും കോൺഫിഗുകളുടെയും ക്രിയേറ്റർമാരുടെയും ഐഡികൾ, അതിന്റെ പതിപ്പ് എന്നിവ അയയ്ക്കുന്നു. അജ്ഞാത Steam ലോഗോൺ നിങ്ങളുടെ Windows പതിപ്പും, Windows ഇൻസ്റ്റാളേഷൻ ഐഡി, നെറ്റ്വർക്ക് അഡാപ്റ്റർ വിലാസങ്ങൾ, ബൂട്ട് ഡിസ്ക് സീരിയൽ എന്നിവയുടെ ഹാഷുകളിൽ നിന്ന് ഉണ്ടാക്കിയ ഒരു മെഷീൻ ഐഡിയും കൂടി അയയ്ക്കുന്നു. മൂന്നാം കക്ഷി സേവനങ്ങളൊന്നും ഉൾപ്പെടുന്നില്ല.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>നിങ്ങൾ തിരയുമ്പോഴോ ഒരു കോൺഫിഗ് തുറക്കുമ്പോഴോ ഇമ്പോർട്ട് ചെയ്ത കോൺഫിഗുകളുടെ അപ്ഡേറ്റുകൾ പരിശോധിക്കുമ്പോഴോ മാത്രമേ PadForge Steam സെർവറുകളുമായി ബന്ധപ്പെടൂ. ടെലിമെട്രി ഇല്ല, Steam അക്കൗണ്ടില്ല.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>നിങ്ങൾ തിരയുമ്പോഴോ ഒരു കോൺഫിഗ് തുറക്കുമ്പോഴോ ഇമ്പോർട്ട് ചെയ്ത കോൺഫിഗുകളുടെ അപ്ഡേറ്റുകൾ പരിശോധിക്കുമ്പോഴോ ഒരു ഗെയിമിന്റെ ചിത്രം എടുക്കുമ്പോഴോ മാത്രമേ PadForge Steam സെർവറുകളുമായി ബന്ധപ്പെടൂ. ടെലിമെട്രി ഇല്ല, Steam അക്കൗണ്ടില്ല.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>അയയ്ക്കുന്നത് എന്ത്</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>കമ്മ്യൂണിറ്റി കോൺഫിഗുകൾ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ലെഗസി Workshop കോൺഫിഗുകൾ കാണിക്കുക</value></data>
@@ -5205,4 +5227,59 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ഈ മാക്രോ അമർത്തിപ്പിടിച്ചിരിക്കുമ്പോൾ മാഗ്നിഫയർ കാണിക്കുന്നു, സൈറ്റ് ഉപയോഗിച്ച് ലക്ഷ്യമിടാൻ. മാഗ്നിഫയർ പേജിൽ ഇത് സജ്ജമാക്കുക.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ റഫറൻസുകൾ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ക്ലിംഗൺ, സിൻഡാരിൻ വിവർത്തനങ്ങളിലെ വാക്കുകൾ boQwI'-യുടെ പിന്നിലെ നിഘണ്ടുവായ klingon-assistant-data (Apache-2.0), Paul Strack-ന്റെ എൽവിഷ് ലെക്സിക്കണായ Eldamo (CC BY 4.0) എന്നിവയുമായി ഒത്തുനോക്കി. നിഘണ്ടു ഡാറ്റ മാത്രം, അതിൽ ഒന്നും ഉൾപ്പെടുന്നില്ല.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ആ ഫയൽ ഒരു PadForge തീം അല്ല.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>തീം സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>പുതിയ തീം</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>നിങ്ങൾ നിർമ്മിക്കുമ്പോൾ PadForge ആ തീം അണിയുന്നു.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>പേര്</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>എന്റെ തീം</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>അടിസ്ഥാനം</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>തീം നിലകൊള്ളുന്ന പശ്ചാത്തലം. ഡാർക്ക് തീമിന് ഇളം നിറത്തിലുള്ള എഴുത്തും ലൈറ്റ് തീമിന് ഇരുണ്ട എഴുത്തുമാണ്.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ചിത്രം</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>ഒരു Steam ഗെയിമിൽ നിന്ന്…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ഒരു ഫയലിൽ നിന്ന്…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ചിത്രം വേണ്ട</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam-ൽ നിന്ന് ചിത്രം എടുക്കുന്നു…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>ഈ ഗെയിമിന് Steam-ൽ വീതിയുള്ള ചിത്രമില്ല.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam-നെ ബന്ധപ്പെടാൻ കഴിഞ്ഞില്ല. നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>സ്ഥാനം</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ചിത്രത്തെ അതിന്റെ ജാലകത്തിൽ മുകളിലേക്കോ താഴേക്കോ നീക്കുന്നു.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ഗെയിമിന്റെ ലോഗോ കാണിക്കുക</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>നിറങ്ങൾ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ചിത്രത്തിനൊത്ത് ആക്കുക</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ചിത്രത്തിൽ നിന്ന് നാല് നിറങ്ങൾ എടുക്കുന്നു.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>പശ്ചാത്തലം</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>പേജ്. ജാലകം, സൈഡ്ബാർ, കാർഡുകൾ, വരകൾ എന്നിവ ഇതിൽ നിന്നുള്ള പടികളാണ്.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ആക്സന്റ്</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>സജീവമായതെല്ലാം: എൻജിൻ, പ്രധാന ബട്ടൺ, തിരഞ്ഞെടുത്ത ഇനം.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ദ്വിതീയം</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>അളന്ന മൂല്യങ്ങളും ഉപകരണ അടയാളങ്ങളും: നിരക്കുകൾ, ബാറ്ററി നിലകൾ, റോ ഇൻപുട്ടുകൾ.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ശ്രദ്ധ</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>കാത്തിരിക്കുന്ന അവസ്ഥകൾ: ഉപകരണങ്ങൾക്കായി കാത്തിരിക്കൽ, കുറഞ്ഞ ബാറ്ററി, സേവ് ചെയ്യാത്ത മാറ്റങ്ങൾ.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>ഒരു നിറം തിരഞ്ഞെടുക്കുക</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ചിത്രങ്ങൾ (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge-ന് ആ ഫയൽ ഒരു ചിത്രമായി വായിക്കാൻ കഴിയില്ല.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ചിത്രം: {0} എന്ന ഗെയിമിനുള്ള Steam-ന്റെ ലൈബ്രറി ആർട്ട്.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>തീം ചിത്രം: ഡാർത്ത് വേഡറിന്റെ ഹെൽമെറ്റ്</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm പുറത്തിറക്കിയ റിവെഞ്ച് ഓഫ് ദ സിത്തിന്റെ പ്രചാരണ ഫോട്ടോ: സ്റ്റാർ വാർസ് തീം Dark Side-ന്റെ ചിത്രം. Wookieepedia-യിൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>തീം ചിത്രം: ഫ്രാഞ്ചൈസി ലോഗോകൾ</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>സ്റ്റാർട്ടർ തീമുകളുടെ ചിത്രങ്ങളിലെ സോണിക് ദ ഹെഡ്ജ്ഹോഗ്, ദ ലോർഡ് ഓഫ് ദ റിംഗ്സ്, ഹാരി പോട്ടർ, സ്റ്റാർ വാർസ്, സ്റ്റാർ ട്രെക്ക്: ദ ഒറിജിനൽ സീരീസ്, സ്റ്റാർ ട്രെക്ക്: ദ നെക്സ്റ്റ് ജനറേഷൻ എന്നിവയുടെ ലോഗോകൾ. ഓരോന്നും പൊതുസഞ്ചയത്തിലുള്ള ലളിതമായ ടെക്സ്റ്റ് ലോഗോ ആണെന്ന് അടയാളപ്പെടുത്തിയ Wikimedia Commons-ൽ കണ്ടെത്തി. ഓരോന്നും അതിന്റെ ഉടമയുടെ വ്യാപാരമുദ്രയാണ്.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>തീം ചിത്രം: ഹോബിറ്റൺ</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ന്യൂസിലൻഡിലെ ഹോബിറ്റൺ ഫിലിം സെറ്റ്, Jackie.lck എടുത്ത ഫോട്ടോ: ദ ലോർഡ് ഓഫ് ദ റിംഗ്സ് തീം The One Ring-ന്റെ ചിത്രം. Wikimedia Commons-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>തീം ചിത്രം: ഹോഗ്വാർട്സ് കോട്ട</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ഗെയിമിന്റെ സ്വന്തം YouTube ചാനലിലെ Hogwarts Legacy ട്രെയിലറിലെ ഒരു ഫ്രെയിം: ഹാരി പോട്ടർ തീം Gryffindor-ന്റെ ചിത്രം. Wikimedia Commons-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>തീം ചിത്രം: മിഡിൽ എർത്തിന്റെ ഭൂപടം</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>മിഡിൽ എർത്തിന്റെ ഒരു ഭൂപടം: ദ ലോർഡ് ഓഫ് ദ റിംഗ്സ് തീം Map of Middle-earth-ന്റെ ചിത്രം. കലാകാരന്റെ പേര് പറയാത്ത The One Wiki to Rule Them All-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>തീം ചിത്രം: മില്ലേനിയം ഫാൽക്കൺ</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge-ലെ പൂർണ്ണ വലുപ്പമുള്ള മില്ലേനിയം ഫാൽക്കൺ, Tomás Del Coro എടുത്ത ഫോട്ടോ: സ്റ്റാർ വാർസ് തീം Opening Crawl-ന്റെ ചിത്രം. Wikimedia Commons-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>തീം ചിത്രം: ക്രോണോസ് ദ്വീപിലെ Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA-യുടെ സ്വന്തം YouTube ചാനലിലെ Sonic Frontiers ട്രെയിലറിലെ ഒരു ഫ്രെയിം: സോണിക് ദ ഹെഡ്ജ്ഹോഗ് തീം Blue Blur-ന്റെ ചിത്രം. Wikimedia Commons-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>തീം ചിത്രം: ഓടുന്ന Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World-നായി SEGA നിർമ്മിച്ച ചിത്രം: സോണിക് ദ ഹെഡ്ജ്ഹോഗ് തീം Night Run-ന്റെ ചിത്രം. Sonic Wiki Zone-ൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>തീം ചിത്രം: നാല് ഹൗസ് ചിഹ്നങ്ങൾ</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore-നായി Atomhawk Design വരച്ച നാല് ഹോഗ്വാർട്സ് ഹൗസ് ചിഹ്നങ്ങൾ: ഹാരി പോട്ടർ തീം Four Houses-ന്റെ ചിത്രം. ഹാരി പോട്ടർ വിക്കിയിൽ കണ്ടെത്തി.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>തീം ചിത്രം: USS Enterprise സ്റ്റുഡിയോ മോഡൽ</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>യഥാർത്ഥ സ്റ്റാർ ട്രെക്ക് പരമ്പരയ്ക്കായി ചിത്രീകരിച്ച മോഡൽ, അത് സൂക്ഷിക്കുന്ന Smithsonian National Air and Space Museum എടുത്ത ഫോട്ടോ: സ്റ്റാർ ട്രെക്ക് തീം LCARS-ന്റെ ചിത്രം.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>തീം ചിത്രം: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>സ്റ്റാർ ട്രെക്ക്: ദ നെക്സ്റ്റ് ജനറേഷനിലെ ഒരു ഫ്രെയിം: സ്റ്റാർ ട്രെക്ക് തീം Starfleet-ന്റെ ചിത്രം. Memory Alpha-യിൽ കണ്ടെത്തി.</value></data>
 </root>

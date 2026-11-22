@@ -831,4 +831,18 @@
   <data name="Mapping_Gate_Pick_Tooltip" xml:space="preserve"><value>Paw input foforo a ɛbɛtwɛn no.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Web pad a wo ankasa ayɛ no ma kuw biara kura ne kwan ntam ne screen ano a ɛbɛn no wɔ screen a ɛtrɛw sen no so, sɛnea RetroArch overlays no twe wɔn fã abien no. Yɛkenkan no sɛ nkyerɛkyerɛmu nko ara, GPL code biara nni mu.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kora sɛso bi…</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Yi fi nhyehyɛe no mu. Fael no tena baabi a ɛwɔ.</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” fael no ayera anaa wontumi nkenkan. PadForge kyerɛ Esum kosi sɛ ɛbɛsan aba.</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Fapem</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Fam a ahosu nhyehyɛe no gyina so. Ahosu nhyehyɛe a ɛyɛ esum wɔ nkyerɛwee a ɛyɛ hann, na nea ɛyɛ hann wɔ nkyerɛwee a ɛyɛ esum.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Mfonini</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Fi Steam agodie bi mu…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Mfonini biara nni</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Ɛregye mfonini no afi Steam…</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Gyinabea</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ɛtu mfonini no kɔ soro anaa fam wɔ ne mfɛnsere mu.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Kyerɛ agodie no agyiraehyɛde</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Ma ɛne mfonini no nhyia</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ɛfa ahosu anan no fi mfonini no mu.</value></data>
 </root>

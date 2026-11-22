@@ -52,8 +52,25 @@ namespace PadForge.Common.Input
             return unique;
         }
 
+        private static string _activeProfileId;
+
         /// <summary>The ID of the currently active profile, or null for the default (root) profile.</summary>
-        public static string ActiveProfileId { get; set; }
+        public static string ActiveProfileId
+        {
+            get => _activeProfileId;
+            set
+            {
+                if (_activeProfileId == value) return;
+                _activeProfileId = value;
+                ActiveProfileChanged?.Invoke();
+            }
+        }
+
+        /// <summary>Raised when another profile becomes the active one
+        /// (#591), on the thread that made the change and while that change
+        /// is still under way: a listener that reads the profile waits for
+        /// the change to finish.</summary>
+        public static event System.Action ActiveProfileChanged;
 
         /// <summary>
         /// Snapshot of the default profile's state captured during settings load,

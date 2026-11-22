@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>စနစ် မူလ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>အလင်း</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>အမှောင်</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>သီမ်အသစ်…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>သင့်ကိုယ်ပိုင် အရောင်များနှင့် Steam ဂိမ်း သို့မဟုတ် ဖိုင်တစ်ခုမှ ပုံဖြင့် သီမ်တစ်ခု ဖန်တီးပါ။</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>သီမ် ထည့်ရန်…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>သီမ်ဖိုင်တစ်ခုကို စာရင်းသွင်းပါ။ PadForge သည် ၎င်းကို ရှိရာနေရာမှ ဖတ်ပြီး မည်သည့်အရာကိုမျှ မကူးယူပါ။</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>မိတ္တူ သိမ်းရန်…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>ရွေးထားသော သီမ်ကို သင် ပြင်ဆင်နိုင် သို့မဟုတ် မျှဝေနိုင်သော ဖိုင်တစ်ခုသို့ ရေးသွင်းပါ။</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>သီမ် တည်းဖြတ်</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>စာရင်းမှ ဖယ်ရှားပါ။ ဖိုင်သည် ရှိရာနေရာတွင် ဆက်ရှိနေမည်။</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ဖိုင် မတွေ့ပါ</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ဖတ်၍ မရပါ</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” ၏ ဖိုင် ပျောက်နေသည် သို့မဟုတ် ဖတ်၍ မရပါ။ ၎င်း ပြန်ရှိလာသည်အထိ PadForge သည် အမှောင် ကို ပြသမည်။</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” သည် ၎င်း၏ ဂိမ်း၏ အသွင်ကို ပြသနေသည်။ အခြား ပရိုဖိုင်တစ်ခု အသက်ဝင်သည့်အခါ သင့်သီမ် ပြန်လာမည်။</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>အဝင် အင်ဂျင်</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ဖတ်ယူခြင်း အပြုအမူနှင့် နောက်ခံ လုပ်ဆောင်ခြင်းကို စီစဉ်သတ်မှတ်ပါ။</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ဟာ့ဒ်ဝဲ ပံ့ပိုးမှု</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ကုန်အမှတ်တံဆိပ် ရှင်းလင်းချက်သာ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>စည်းကမ်း ဖော်ပြမထားပါ</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ထုတ်ပြန်ထားခြင်း မရှိပါ</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>အများပိုင်</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>မူပိုင်ခွင့်ရှိ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian အသုံးပြုမှု စည်းကမ်းများ</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>လိုင်စင် အမျိုးမျိုး</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>အသုံးပြုသူမုဒ် ဗာချွယ် HID ကွန်ထရိုလာ အင်ဂျင် (ViGEmBus နှင့် vJoy ကို အစားထိုးသည်)။</value></data>
@@ -2707,6 +2724,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ဖွင့်ထားသော အခြားဝင်းဒိုး မတွေ့ပါ။</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ကို ဖယ်ရှားရန်</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ဤပရိုဖိုင် ဖွင့်ထားစဉ် ပိုလင်နှုန်း</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ဂိမ်း၏ အသွင်ကို ပြသရန်</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ဤပရိုဖိုင် အသက်ဝင်နေစဉ် PadForge သည် ဂိမ်း၏ ပုံနှင့် အရောင်များကို ပြသည်။ အခြား ပရိုဖိုင်တစ်ခု အသက်ဝင်သည့်အခါ သင့်သီမ် ပြန်လာမည်။</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ဂိမ်း၏ ပုံသည် ဤ PC ပေါ်တွင် မရှိပါ။</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ပုံကို ရယူရန်</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Steam မှ ဂိမ်း၏ ပုံကို ရယူရန် ဆက်တင်များတွင် အသိုင်းအဝိုင်း ဖွဲ့စည်းပုံများ ကို ဖွင့်ပါ။</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>မှ ကူးယူရန်</value></data>
@@ -3962,7 +3984,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>အသိုင်းအဝိုင်း ဖွဲ့စည်းပုံများ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>အသိုင်းအဝိုင်းက ပြုလုပ်ထားသော Steam Input ကွန်ထရိုလာ ဖွဲ့စည်းပုံများကို ရှာဖွေကြည့်ရှုပြီး PadForge ပရိုဖိုင်များအဖြစ် ဘာသာပြန်ပါ။ PadForge သည် သင် ရှာဖွေသည့် စာသား၊ ပါဝင်သော ဂိမ်းများ၊ ဖွဲ့စည်းပုံများနှင့် ဖန်တီးသူများ၏ ID များနှင့် ၎င်း၏ ဗားရှင်းကို ပို့သည်။ အမည်မသိ Steam ဝင်ရောက်မှုသည် သင့် Windows ဗားရှင်းနှင့် သင့် Windows ထည့်သွင်းမှု ID၊ ကွန်ရက် အဒက်ပ်တာ လိပ်စာများနှင့် စနစ်ဒစ်ခ် အမှတ်စဉ်တို့၏ ဟက်ရှ်များမှ ပြုလုပ်ထားသော စက် ID တစ်ခုကိုလည်း ပို့သည်။ ပြင်ပ ဝန်ဆောင်မှု မပါဝင်ပါ။</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge သည် သင် ရှာဖွေသည့်အခါ၊ ဖွဲ့စည်းပုံတစ်ခု ဖွင့်သည့်အခါ သို့မဟုတ် တင်သွင်းထားသော ဖွဲ့စည်းပုံများ၏ အပ်ဒိတ်ကို စစ်သည့်အခါမှသာ Steam ၏ ဆာဗာများသို့ ချိတ်ဆက်သည်။ တယ်လီမီထရီ မရှိ၊ Steam အကောင့် မလိုပါ။</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge သည် သင် ရှာဖွေသည့်အခါ၊ ဖွဲ့စည်းပုံတစ်ခု ဖွင့်သည့်အခါ၊ တင်သွင်းထားသော ဖွဲ့စည်းပုံများ၏ အပ်ဒိတ်ကို စစ်သည့်အခါ သို့မဟုတ် ဂိမ်းတစ်ခု၏ ပုံကို ရယူသည့်အခါမှသာ Steam ၏ ဆာဗာများသို့ ချိတ်ဆက်သည်။ တယ်လီမီထရီ မရှိ၊ Steam အကောင့် မလိုပါ။</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ပို့သည့်အရာ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>အသိုင်းအဝိုင်း ဖွဲ့စည်းပုံများကို ဖွင့်ရန်</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Workshop ဖွဲ့စည်းပုံ အဟောင်းများကို ပြရန်</value></data>
@@ -5228,4 +5250,59 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ပစ်မှတ်ချိန်ရန် ဤမက်ခရိုကို ဖိထားစဉ် ချဲ့ကြည့်ကိရိယာကို ပြသည်။ “ချဲ့ကြည့်ကိရိယာ” စာမျက်နှာတွင် သတ်မှတ်ပါ။</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ကိုးကားချက်များ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ကလင်ဂွန်နှင့် စင်ဒါရင် ဘာသာပြန်ချက်များ၏ စကားလုံးများကို boQwI' ၏ နောက်ကွယ်ရှိ အဘိဓာန် klingon-assistant-data (Apache-2.0) နှင့် Paul Strack ၏ အဲလ်ဗ် ဝေါဟာရစာရင်း Eldamo (CC BY 4.0) တို့နှင့် တိုက်ဆိုင်စစ်ဆေးထားသည်။ အဘိဓာန်ဒေတာအဖြစ်သာ၊ မည်သည့်အပိုင်းမျှ မပါဝင်ပါ။</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ထိုဖိုင်သည် PadForge သီမ် မဟုတ်ပါ။</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>သီမ်ကို သိမ်းဆည်း၍ မရပါ။ {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>သီမ်အသစ်</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>သင် ဖန်တီးနေစဉ် PadForge သည် ထိုသီမ်ဖြင့် ပြသနေသည်။</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>အမည်</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ကျွန်ုပ်၏ သီမ်</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>အခြေခံ</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>သီမ်၏ အခြေခံ နောက်ခံ။ အမှောင် သီမ်တွင် အလင်းရောင် စာသားရှိပြီး အလင်း သီမ်တွင် အမှောင်ရောင် စာသား ရှိသည်။</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ပုံ</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam ဂိမ်းမှ…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ဖိုင်မှ…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ပုံ မပါ</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Steam မှ ပုံကို ရယူနေသည်…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam တွင် ဤဂိမ်းအတွက် အကျယ်ပုံ မရှိပါ။</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam ကို ဆက်သွယ်၍ မရပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ဆေးပါ။</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>နေရာ</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ပုံကို ၎င်း၏ ဘောင်အတွင်း အပေါ် သို့မဟုတ် အောက်သို့ ရွှေ့သည်။</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ဂိမ်း၏ လိုဂိုကို ပြရန်</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>အရောင်များ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ပုံနှင့် ကိုက်ညီစေရန်</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>အရောင် လေးရောင်ကို ပုံမှ ယူသည်။</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>နောက်ခံ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>စာမျက်နှာ။ ဝင်းဒိုး၊ ဘေးဘား၊ ကတ်များနှင့် မျဉ်းများသည် ၎င်းမှ အဆင့်ဆင့် ပိုလင်း သို့မဟုတ် ပိုမှောင်သော အရောင်များ ဖြစ်သည်။</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ထင်ရှားရောင်</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>အသက်ဝင်နေသော အရာအားလုံး: အင်ဂျင်၊ အဓိက ခလုတ်၊ ရွေးထားသော အရာ။</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ဒုတိယရောင်</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>တိုင်းတာထားသော တန်ဖိုးများနှင့် စက်ပစ္စည်း အမှတ်အသားများ: နှုန်းများ၊ ဘက်ထရီ အဆင့်များ၊ မူရင်း ထည့်သွင်းမှုများ။</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>သတိပေးရောင်</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>စောင့်ဆိုင်းနေသော အခြေအနေများ: စက်ပစ္စည်းများကို စောင့်နေခြင်း၊ ဘက်ထရီ နည်းခြင်း၊ မသိမ်းရသေးသော ပြောင်းလဲမှုများ။</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>အရောင် ရွေးရန်</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ပုံများ (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ဖိုင်အားလုံး (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge သည် ထိုဖိုင်ကို ပုံအဖြစ် ဖတ်၍ မရပါ။</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ပုံ: {0} အတွက် Steam ၏ စာကြည့်တိုက်ပုံ။</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>သီမ် ပုံ: ဒါ့သ် ဗေဒါ၏ သံခမောက်</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Revenge of the Sith အတွက် Lucasfilm ၏ ကြော်ငြာ ဓာတ်ပုံ: Star Wars သီမ် Dark Side ၏ ပုံ။ Wookieepedia တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>သီမ် ပုံ: ဇာတ်လမ်းတွဲ လိုဂိုများ</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>အစပြု သီမ်များ၏ ပုံများပေါ်ရှိ Sonic the Hedgehog၊ The Lord of the Rings၊ Harry Potter၊ Star Wars၊ Star Trek: The Original Series နှင့် Star Trek: The Next Generation ၏ လိုဂိုများ။ Wikimedia Commons တွင် တွေ့ရှိပြီး ၎င်းက တစ်ခုချင်းစီကို အများပိုင် ရိုးရိုးစာသား လိုဂိုအဖြစ် မှတ်သားထားသည်။ တစ်ခုချင်းစီသည် ၎င်း၏ ပိုင်ရှင်၏ ကုန်အမှတ်တံဆိပ် ဖြစ်သည်။</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>သီမ် ပုံ: ဟော့ဘစ်တန်</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>နယူးဇီလန်ရှိ ဟော့ဘစ်တန် ရုပ်ရှင်ရိုက်ကွင်း၊ Jackie.lck ရိုက်ကူးသော ဓာတ်ပုံ: The Lord of the Rings သီမ် The One Ring ၏ ပုံ။ Wikimedia Commons တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>သီမ် ပုံ: ဟော့ဂ်ဝါ့တ်စ် ရဲတိုက်</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ဂိမ်း၏ ကိုယ်ပိုင် YouTube ချန်နယ်မှ Hogwarts Legacy ကြော်ငြာဗီဒီယို၏ ရုပ်ကွက်တစ်ကွက်: Harry Potter သီမ် Gryffindor ၏ ပုံ။ Wikimedia Commons တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>သီမ် ပုံ: မစ်ဒယ်အတ် မြေပုံ</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>မစ်ဒယ်အတ် မြေပုံ: The Lord of the Rings သီမ် Map of Middle-earth ၏ ပုံ။ အနုပညာရှင် အမည် မဖော်ပြထားသော The One Wiki to Rule Them All တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>သီမ် ပုံ: မီလီနီယမ် ဖော်လ်ကွန်</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy’s Edge ရှိ အရွယ်အစားအပြည့် မီလီနီယမ် ဖော်လ်ကွန်၊ Tomás Del Coro ရိုက်ကူးသော ဓာတ်ပုံ: Star Wars သီမ် Opening Crawl ၏ ပုံ။ Wikimedia Commons တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>သီမ် ပုံ: Kronos ကျွန်းပေါ်ရှိ Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA ၏ ကိုယ်ပိုင် YouTube ချန်နယ်မှ Sonic Frontiers ကြော်ငြာဗီဒီယို၏ ရုပ်ကွက်တစ်ကွက်: Sonic the Hedgehog သီမ် Blue Blur ၏ ပုံ။ Wikimedia Commons တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>သီမ် ပုံ: ပြေးနေသော Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Sonic Lost World အတွက် SEGA ဖန်တီးသော အနုပညာ ပုံ: Sonic the Hedgehog သီမ် Night Run ၏ ပုံ။ Sonic Wiki Zone တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>သီမ် ပုံ: အိမ်တော် လေးခု၏ အမှတ်တံဆိပ်များ</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pottermore အတွက် Atomhawk Design ရေးဆွဲသော ဟော့ဂ်ဝါ့တ်စ် အိမ်တော် အမှတ်တံဆိပ် လေးခု: Harry Potter သီမ် Four Houses ၏ ပုံ။ Harry Potter Wiki တွင် တွေ့ရှိသည်။</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>သီမ် ပုံ: USS Enterprise စတူဒီယို မော်ဒယ်</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>မူလ Star Trek ဇာတ်လမ်းတွဲအတွက် ရိုက်ကူးခဲ့သော မော်ဒယ်၊ ၎င်းကို ထိန်းသိမ်းထားသည့် Smithsonian National Air and Space Museum က ရိုက်ကူးသော ဓာတ်ပုံ: Star Trek သီမ် LCARS ၏ ပုံ။</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>သီမ် ပုံ: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation မှ ရုပ်ကွက်တစ်ကွက်: Star Trek သီမ် Starfleet ၏ ပုံ။ Memory Alpha တွင် တွေ့ရှိသည်။</value></data>
 </root>

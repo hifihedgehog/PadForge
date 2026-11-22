@@ -209,11 +209,31 @@ namespace PadForge.Views
         //  Community
         // ─────────────────────────────────────────────
 
-        private void SaveCommunity(bool applyAfter)
+        private bool _savingCommunity;
+
+        private async void SaveCommunity(bool applyAfter)
         {
-            if (!CommunityPanel.TrySave(applyAfter, out string status)) return;
-            StatusText = status;
-            DialogResult = true;
+            if (_savingCommunity) return;
+            _savingCommunity = true;
+            try
+            {
+                // A game's look that is still being fetched is part of the
+                // save (#591). With none under way this returns at once.
+                var look = CommunityPanel.PrepareSaveAsync();
+                if (!look.IsCompleted)
+                {
+                    await look;
+                    // Closed while the picture was fetched: nothing to save into.
+                    if (!IsVisible) return;
+                }
+                if (!CommunityPanel.TrySave(applyAfter, out string status)) return;
+                StatusText = status;
+                DialogResult = true;
+            }
+            finally
+            {
+                _savingCommunity = false;
+            }
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)

@@ -200,6 +200,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Taunoa a te pūnaha</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Mārama</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Pōuri</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Kaupapa hou…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Hangaia he kaupapa mai i ōu ake tae me tētahi pikitia, mai i tētahi kēmu Steam, i tētahi kōnae rānei.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tāpiri kaupapa…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Whakarārangitia tētahi kōnae kaupapa. Ka pānuitia e PadForge i tōna wāhi tonu, kāore he mea e tāruatia.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Tiaki tārua…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Tuhia te kaupapa kua kōwhiria ki tētahi kōnae ka taea e koe te whakarerekē, te tuku rānei.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Whakatika kaupapa</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tangohia i te rārangi. Ka noho tonu te kōnae ki tōna wāhi.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Kāore i kitea te kōnae</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Kāore e taea te pānui</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Kei te ngaro te kōnae o “{0}”, kāore rānei e taea te pānui. Ka whakaatu a PadForge i te Pōuri kia hoki mai rā anō te kōnae.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Kei te mau te kōtaha “{0}” i te āhua o tōna kēmu. Ka hoki mai tō kaupapa ina hohe tētahi atu kōtaha.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Matapihi</value></data>
   <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Ka tīmata aunoa a PadForge ina takiuru koe ki Windows.</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Whakahōunga</value></data>
@@ -2095,4 +2107,36 @@
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>I raro i tēnei rahi o te nekehanga ka pānuitia te tāuru kei waenganui.</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Ka pupuri tētahi papa tukutuku ritenga i te tawhiti o ia kāhui mai i te taha tata ake o tētahi mata whānui ake, pērā i te neke a ngā whakakikorua a RetroArch i ō rātou haurua e rua. I pānuitia hei tuhinga anake, kāore he waehere GPL e tukuna ana.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Ehara tēnā kōnae i te kaupapa PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Kāore i taea te tiaki i te kaupapa. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Kaupapa hou</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Ka mau a PadForge i te kaupapa i a koe e hanga ana.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ingoa</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Taku kaupapa</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pūtake</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Te papa e tū ai te kaupapa. He tuhinga mārama tō te kaupapa pōuri, he tuhinga pōuri tō te kaupapa mārama.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Pikitia</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mai i tētahi kēmu Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Mai i tētahi kōnae…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Kāore he pikitia</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>E tiki ana i te pikitia mai i Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Kāore he pikitia whānui a Steam mō tēnei kēmu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Tūnga</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Ka neke i te pikitia ki runga, ki raro rānei i tōna matapihi.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Whakaatu i te waitohu o te kēmu</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Ngā tae</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Whakaōrite ki te pikitia</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Ka tango i ngā tae e whā mai i te pikitia.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Papamuri</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Te whārangi. Ko te matapihi, te pae taha, ngā kāri me ngā rārangi he taumata o tēnei tae.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Arotahi</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Ngā mea katoa e ora ana: te pūkaha, te pātene matua, te mea kua kōwhiria.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Tuarua</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Ngā uara ine me ngā tohu pūrere: ngā auau, ngā taumata pūhiko, ngā tāurunga mata.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Aronga</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Ngā āhua tatari: ngā pūrere e tatari ana, he pūhiko iti, ngā panoni kāore anō kia tiakina.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Kōwhiri tae</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Ngā pikitia (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Ngā kōnae katoa (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Kāore e taea e PadForge te pānui i tēnā kōnae hei pikitia.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Pikitia: te toi whare pukapuka a Steam mō {0}.</value></data>
 </root>

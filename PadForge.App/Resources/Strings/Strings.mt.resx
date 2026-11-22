@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Default tas-sistema</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Dawl</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Dalma</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Tema ġdida…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Ibni tema mill-kuluri tiegħek u stampa, minn logħba ta' Steam jew minn fajl.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Żid tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Elenka fajl ta' tema. PadForge jaqrah fejn inhu u ma jikkopja xejn.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Salva kopja…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Ikteb it-tema magħżula f'fajl li tista' tbiddel jew taqsam.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Editja t-tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Neħħi mil-lista. Il-fajl jibqa' fejn inhu.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Il-fajl ma nstabx</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ma jistax jinqara</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Il-fajl ta' “{0}” ma jinstabx jew ma jistax jinqara. PadForge juri Dalma sakemm jerġa' jidher.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Il-profil “{0}” qed jilbes id-dehra tal-logħba tiegħu. It-tema tiegħek terġa' lura meta profil ieħor ikun attiv.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Magna tal-input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Ikkonfigura l-imġiba tal-polling u l-ipproċessar fl-isfond.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Appoġġ tal-hardware</value></data>
@@ -857,6 +869,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Disclaimer tat-trademark biss</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>L-ebda termini msemmija</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>L-ebda waħda ppubblikata</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Dominju pubbliku</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Bid-drittijiet tal-awtur</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Termini ta' użu tal-Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Diversi liċenzji</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Engine ta' kontrolluri HID virtwali f'user mode (jieħu post ViGEmBus u vJoy).</value></data>
@@ -2685,6 +2702,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ma nstabet l-ebda tieqa miftuħa oħra.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Neħħi {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Rata tal-polling waqt li dan il-profil ikun mgħobbi</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Ilbes id-dehra tal-logħba</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Waqt li dan il-profil ikun attiv, PadForge juri l-istampa u l-kuluri tal-logħba. It-tema tiegħek terġa' lura meta profil ieħor ikun attiv.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>L-istampa tal-logħba mhijiex fuq dan il-PC.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Ikseb l-istampa</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Attiva l-konfigurazzjonijiet tal-komunità fl-Issettjar biex tikseb l-istampa tal-logħba minn Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Ikkopja minn</value></data>
@@ -3908,7 +3930,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurazzjonijiet tal-komunità</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Ibbrawżja konfigurazzjonijiet tal-kontrollur ta' Steam Input magħmula mill-komunità u ttraduċihom fi profili ta' PadForge. PadForge jibgħat it-test tat-tfittxija tiegħek, l-ID tal-logħob, tal-konfigurazzjonijiet u tal-ħallieqa involuti, u l-verżjoni tiegħu. Il-logon anonimu ta' Steam jibgħat ukoll il-verżjoni tal-Windows tiegħek u ID tal-magna magħmul minn hashes tal-ID tal-installazzjoni tal-Windows, tal-indirizzi tal-adapters tan-netwerk u tas-serial tad-diska tal-boot. Ebda servizz ta' parti terza ma huwa involut.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge jikkonnettja mas-servers ta' Steam biss meta tfittex, tiftaħ konfigurazzjoni jew tiċċekkja l-konfigurazzjonijiet importati għal aġġornamenti. L-ebda telemetrija, l-ebda kont ta' Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge jikkonnettja mas-servers ta' Steam biss meta tfittex, tiftaħ konfigurazzjoni, tiċċekkja l-konfigurazzjonijiet importati għal aġġornamenti jew tikseb l-istampa ta' logħba. L-ebda telemetrija, l-ebda kont ta' Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>X'jintbagħat</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Attiva l-konfigurazzjonijiet tal-komunità</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Uri l-konfigurazzjonijiet antiki tal-Workshop</value></data>
@@ -5169,4 +5191,59 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Juri t-tkabbir waqt li dan il-makro jinżamm, biex timmira mill-vista tal-arma. Issettjah fil-paġna Tkabbir.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Referenzi tal-Klingon u tas-Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Il-kliem tat-traduzzjonijiet bil-Klingon u bis-Sindarin, ivverifikat ma' klingon-assistant-data (Apache-2.0), id-dizzjunarju wara boQwI', u Eldamo (CC BY 4.0), il-lessiku Elfiku ta' Paul Strack. Dejta tad-dizzjunarju biss, l-ebda waħda minnha ma tiġi inkluża.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Dak il-fajl mhuwiex tema ta' PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>It-tema ma setgħetx tiġi ssalvata. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Tema ġdida</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge jilbes it-tema waqt li tibnieha.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Isem</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>It-tema tiegħi</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Bażi</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>L-art li fuqha tqum it-tema. Tema skura għandha test ċar, u tema ċara għandha test skur.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Stampa</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Minn logħba ta' Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Minn fajl…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Ebda stampa</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Qed tinkiseb l-istampa minn Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam m'għandux stampa wiesgħa għal din il-logħba.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Ma setax isir kuntatt ma' Steam. Iċċekkja l-konnessjoni tiegħek.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Pożizzjoni</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Iċċaqlaq l-istampa 'l fuq jew 'l isfel fit-tieqa tagħha.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Uri l-logo tal-logħba</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Kuluri</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Qabbel mal-istampa</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Teħu l-erba' kuluri mill-istampa.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Sfond</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Il-paġna. It-tieqa, il-bar tal-ġenb, il-kards u l-linji huma stadji minnha.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Aċċent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Kull ma hu ħaj: il-magna, il-buttuna ewlenija, l-element magħżul.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Sekondarju</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valuri mkejla u marki tal-apparat: rati, livelli tal-batterija, inputs mhux ipproċessati.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Attenzjoni</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Stati li jistennew: apparati fl-istennija, batterija baxxa, bidliet mhux salvati.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Agħżel kulur</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Stampi (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Il-fajls kollha (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ma jistax jaqra dak il-fajl bħala stampa.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Stampa: l-arti tal-librerija ta' Steam għal {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Stampa tat-tema: Il-Ħelmet ta' Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Ritratt promozzjonali ta' Lucasfilm għal Revenge of the Sith: l-istampa tat-tema Dark Side ta' Star Wars. Misjub fuq Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Stampa tat-tema: Logos tal-franchises</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Il-logos ta' Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series u Star Trek: The Next Generation fuq l-istampi tat-temi tal-bidu. Misjubin fuq Wikimedia Commons, li jmarka kull wieħed bħala logo ta' test sempliċi fid-dominju pubbliku. Kull wieħed huwa trademark tas-sid tiegħu.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Stampa tat-tema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Is-set tal-films ta' Hobbiton fi New Zealand, ritratt ta' Jackie.lck: l-istampa tat-tema The One Ring ta' The Lord of the Rings. Misjub fuq Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Stampa tat-tema: Il-Kastell ta' Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Frejm mit-trailer ta' Hogwarts Legacy mill-kanal YouTube tal-logħba stess: l-istampa tat-tema Gryffindor ta' Harry Potter. Misjub fuq Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Stampa tat-tema: Mappa ta' Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Mappa ta' Middle-earth: l-istampa tat-tema Map of Middle-earth ta' The Lord of the Rings. Misjuba fuq The One Wiki to Rule Them All, li ma jsemmi l-ebda artist.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Stampa tat-tema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Il-Millennium Falcon ta' daqs naturali f'Galaxy's Edge, ritratt ta' Tomás Del Coro: l-istampa tat-tema Opening Crawl ta' Star Wars. Misjub fuq Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Stampa tat-tema: Sonic fil-Gżira Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Frejm mit-trailer ta' Sonic Frontiers mill-kanal YouTube ta' SEGA stess: l-istampa tat-tema Blue Blur ta' Sonic the Hedgehog. Misjub fuq Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Stampa tat-tema: Sonic Jiġri</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>L-arti ta' SEGA magħmula għal Sonic Lost World: l-istampa tat-tema Night Run ta' Sonic the Hedgehog. Misjuba fuq Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Stampa tat-tema: L-Erba' Stemmi tad-Djar</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>L-erba' stemmi tad-djar ta' Hogwarts, imfassla minn Atomhawk Design għal Pottermore: l-istampa tat-tema Four Houses ta' Harry Potter. Misjuba fuq il-Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Stampa tat-tema: Mudell tal-Istudjo tal-USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Il-mudell iffilmjat għas-serje oriġinali ta' Star Trek, ippotografat mis-Smithsonian National Air and Space Museum, li jżommu: l-istampa tat-tema LCARS ta' Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Stampa tat-tema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Frejm minn Star Trek: The Next Generation: l-istampa tat-tema Starfleet ta' Star Trek. Misjub fuq Memory Alpha.</value></data>
 </root>

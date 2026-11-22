@@ -47,6 +47,30 @@
                     Click="BrowseButton_Click"/>
         </controls:FlexLinePanel>
 
+        <!-- A Steam profile's look (#591): while the profile is the active
+             one, PadForge wears its game's picture and colors. Shown for a
+             profile that knows its game. Turning it on gets the picture
+             once. The line under it speaks while the picture is fetched,
+             when it cannot be had, and when it is not on this PC. -->
+        <StackPanel x:Name="GameLookPanel" Visibility="Collapsed" Margin="0,10,0,0">
+            <controls:SettingRow MinHeight="44">
+                <TextBlock Style="{StaticResource DialogLabel}"
+                           Text="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}"
+                           ToolTip="{Binding Profile_GameLook_Tip, Source={x:Static strings:Strings.Instance}}"/>
+                <CheckBox x:Name="GameLookSwitch" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                          ToolTip="{Binding Profile_GameLook_Tip, Source={x:Static strings:Strings.Instance}}"
+                          AutomationProperties.Name="{Binding Profile_GameLook, Source={x:Static strings:Strings.Instance}}"
+                          Checked="GameLookSwitch_Changed" Unchecked="GameLookSwitch_Changed"/>
+            </controls:SettingRow>
+            <controls:FlexLinePanel x:Name="GameLookLine" Gap="10" LineGap="6" MinLineHeight="30" Visibility="Collapsed">
+                <TextBlock x:Name="GameLookStatus" Style="{StaticResource DialogNote}" VerticalAlignment="Center"
+                           AutomationProperties.LiveSetting="Polite"/>
+                <Button x:Name="GameLookGetButton" Style="{StaticResource DialogSmallQuietButton}" Visibility="Collapsed"
+                        Content="{Binding Profile_GameLook_GetPicture, Source={x:Static strings:Strings.Instance}}"
+                        Click="GameLookGet_Click"/>
+            </controls:FlexLinePanel>
+        </StackPanel>
+
         <!-- Polling rate override (#365, discussion #362): the loop stays
              global, and this profile retunes it while it is loaded. The
              first choice follows the Settings page's rate. -->

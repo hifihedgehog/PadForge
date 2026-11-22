@@ -1507,4 +1507,20 @@
   <data name="Mapping_UnknownDevice" xml:space="preserve"><value>Mudziyo usingazivikanwe</value></data>
   <data name="About_RetroArch" xml:space="preserve"><value>RetroArch</value></data>
   <data name="About_RetroArchDesc" xml:space="preserve"><value>Pedhi yewebhu yakagadzirwa nemushandisi inochengeta chinhambwe chechikwata chimwe nechimwe kubva kumucheto wechidzitiro uri pedyo nacho pachidzitiro chakafara, sezvinoita ma-overlay e-RetroArch achiparadzanisa hafu dzawo mbiri. Yakaverengwa sezvinyorwa chete, hapana kodhi ye-GPL inotumirwa.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Chengetedza kopi…</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Gadzirisa dingindira</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Bvisa parondedzero. Faira rinoramba riri paro.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Zita</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Dingindira rangu</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Mufananidzo</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Kubva kumutambo weSteam…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Hapana mufananidzo</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kutora mufananidzo paSteam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam haina mufananidzo wakafara wemutambo uyu.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Nzvimbo</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Inofambisa mufananidzo kumusoro kana pasi muhwindo rawo.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ratidza logo yemutambo</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Enzanisa nemufananidzo</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Inotora mavara mana kubva pamufananidzo.</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Mafaira ese (*.*)|*.*</value></data>
 </root>

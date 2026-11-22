@@ -105,21 +105,23 @@ namespace PadForge.Controls
 
         /// <summary>The glow: a pale ember heart, ember around it, and
         /// nothing at its edge.</summary>
-        private static readonly Brush s_glow = MakeGlow();
+        private static Brush s_glow => PadForge.Common.Themes.ThemeLook.Brush("HeldGlow", MakeGlow);
 
+        // The two tones are the look's (#591): a theme's accent and its
+        // pale tone take ember's place.
         private static Brush MakeGlow()
         {
-            var brush = new RadialGradientBrush
+            Color pale = PadForge.Common.Themes.ThemeLook.AccentPale;
+            Color accent = PadForge.Common.Themes.ThemeLook.Accent;
+            return new RadialGradientBrush
             {
                 GradientStops =
                 {
-                    new GradientStop(Color.FromArgb(0xF2, 0xFF, 0xD2, 0xB8), 0),
-                    new GradientStop(Color.FromArgb(0xBF, 0xFF, 0x6B, 0x2C), 0.53),
-                    new GradientStop(Color.FromArgb(0x00, 0xFF, 0x6B, 0x2C), 1),
+                    new GradientStop(Color.FromArgb(0xF2, pale.R, pale.G, pale.B), 0),
+                    new GradientStop(Color.FromArgb(0xBF, accent.R, accent.G, accent.B), 0.53),
+                    new GradientStop(Color.FromArgb(0x00, accent.R, accent.G, accent.B), 1),
                 },
             };
-            brush.Freeze();
-            return brush;
         }
     }
 }

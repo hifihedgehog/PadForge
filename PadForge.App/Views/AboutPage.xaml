@@ -1397,6 +1397,105 @@
                         <Border Style="{StaticResource CreditRow}">
                             <DockPanel>
                                 <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Copyrighted, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtVaderHelmet, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtVaderHelmetDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_PublicDomain, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtLogos, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtLogosDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_CcBy2, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtHobbiton, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtHobbitonDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_CcBy3, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtHogwarts, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtHogwartsDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Copyrighted, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtMiddleEarthMap, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtMiddleEarthMapDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_CcBySa2, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtFalcon, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtFalconDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_CcBy3, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtSonicKronos, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtSonicKronosDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Copyrighted, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtSonicRunning, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtSonicRunningDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Copyrighted, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtHouseCrests, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtHouseCrestsDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_SmithsonianTerms, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtEnterpriseModel, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtEnterpriseModelDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Copyrighted, Source={x:Static strings:Strings.Instance}}"/>
+                                </Border>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThemeArtEnterpriseD, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_ThemeArtEnterpriseDDesc, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource CreditRow}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
                                     <TextBlock common:BidiText.Text="{Binding About_License_Several, Source={x:Static strings:Strings.Instance}}"/>
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_ThumbstickDeadzones, Source={x:Static strings:Strings.Instance}}"/>

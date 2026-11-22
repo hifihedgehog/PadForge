@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Rhagosodiad y System</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Golau</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tywyll</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Thema Newydd…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Adeiladu thema o'ch lliwiau eich hun a llun, o gêm Steam neu o ffeil.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Ychwanegu Thema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Rhestru ffeil thema. Mae PadForge yn ei darllen lle mae hi ac nid yw'n copïo dim.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Cadw Copi…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Ysgrifennu'r thema a ddewiswyd i ffeil y gallwch ei newid neu ei rhannu.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Golygu Thema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Tynnu o'r rhestr. Mae'r ffeil yn aros lle mae hi.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Ffeil heb ei chanfod</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Methu ei darllen</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Mae ffeil “{0}” ar goll neu'n annarllenadwy. Mae PadForge yn dangos Tywyll nes iddi ddychwelyd.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Mae'r proffil “{0}” yn gwisgo golwg ei gêm. Daw eich thema yn ôl pan fydd proffil arall yn weithredol.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Injan Mewnbwn</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Ffurfweddu ymddygiad holi a phrosesu cefndir.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Cymorth Caledwedd</value></data>
@@ -857,6 +869,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Ymwadiad nod masnach yn unig</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Dim telerau wedi'u henwi</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Heb eu cyhoeddi</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Parth cyhoeddus</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>O dan hawlfraint</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Telerau defnyddio Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Sawl trwydded</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Peiriant rheolydd HID rhithwir modd defnyddiwr (yn cymryd lle ViGEmBus a vJoy).</value></data>
@@ -2706,6 +2723,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ni chanfuwyd unrhyw ffenestr agored arall.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tynnu {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Cyfradd pleidleisio tra bydd y proffil hwn wedi'i lwytho</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Gwisgo Golwg y Gêm</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Tra bydd y proffil hwn yn weithredol, mae PadForge yn dangos llun a lliwiau'r gêm. Daw eich thema yn ôl pan fydd proffil arall yn weithredol.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Nid yw llun y gêm ar y PC hwn.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Cael y Llun</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Trowch Ffurfweddiadau cymunedol ymlaen yn Gosodiadau i gael llun y gêm o Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copïo Oddi Wrth</value></data>
@@ -3962,7 +3984,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Ffurfweddiadau cymunedol</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Pori ffurfweddiadau rheolydd Steam Input a wnaed gan y gymuned a'u cyfieithu'n broffiliau PadForge. Mae PadForge yn anfon eich testun chwilio, ID y gemau, y ffurfweddiadau a'r crewyr dan sylw, a'i fersiwn. Mae mewngofnodi dienw Steam hefyd yn anfon eich fersiwn Windows ac ID peiriant a wnaed o hashiau o ID gosodiad Windows, cyfeiriadau addasyddion rhwydwaith a rhif cyfresol y ddisg cychwyn. Nid oes gwasanaeth trydydd parti yn rhan o hyn.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Mae PadForge yn cysylltu â gweinyddion Steam dim ond pan fyddwch yn chwilio, yn agor ffurfweddiad neu'n gwirio ffurfweddiadau a fewnforiwyd am ddiweddariadau. Dim telemetreg, dim cyfrif Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Mae PadForge yn cysylltu â gweinyddion Steam dim ond pan fyddwch yn chwilio, yn agor ffurfweddiad, yn gwirio ffurfweddiadau a fewnforiwyd am ddiweddariadau neu'n cael llun gêm. Dim telemetreg, dim cyfrif Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Yr Hyn a Anfonir</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Galluogi ffurfweddiadau cymunedol</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Dangos ffurfweddiadau etifeddol y Gweithdy</value></data>
@@ -5203,4 +5225,59 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Chwyddwr (Tra'n Cael ei Ddal)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Yn dangos y chwyddwr tra bydd y macro hwn yn cael ei ddal, ar gyfer anelu drwy'r cwmpas. Gosodwch ef ar dudalen y Chwyddwr.</value></data>
   <data name="About_SteeringRefs" xml:space="preserve"><value>Cyfeiriadau teimlad llywio</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Nid yw'r ffeil honno'n thema PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Nid oedd modd cadw'r thema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Thema Newydd</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Mae PadForge yn gwisgo'r thema wrth i chi ei hadeiladu.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Enw</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Fy Thema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Sail</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Y tir y mae'r thema'n sefyll arno. Mae gan thema dywyll destun golau, ac mae gan thema olau destun tywyll.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Llun</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>O Gêm Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>O Ffeil…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Dim Llun</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Yn cael y llun o Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Nid oes gan Steam lun llydan ar gyfer y gêm hon.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Methu cyrraedd Steam. Gwiriwch eich cysylltiad.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Safle</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Symud y llun i fyny neu i lawr yn ei ffenestr.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Dangos Logo'r Gêm</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Lliwiau</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Cyfateb i'r Llun</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Cymryd y pedwar lliw o'r llun.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Cefndir</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Y dudalen. Mae'r ffenestr, y bar ochr, y cardiau a'r llinellau yn gamau oddi wrthi.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Acen</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Popeth byw: yr injan, y prif fotwm, yr eitem a ddewiswyd.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Eilaidd</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Gwerthoedd a fesurwyd a marciau dyfeisiau: cyfraddau, lefelau batri, mewnbynnau crai.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Sylw</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Cyflyrau aros: dyfeisiau'n aros, batri isel, newidiadau heb eu cadw.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Dewis Lliw</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Lluniau (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Pob Ffeil (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Ni all PadForge ddarllen y ffeil honno fel llun.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Llun: celf llyfrgell Steam ar gyfer {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Llun Thema: Helmed Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Llun hyrwyddo gan Lucasfilm ar gyfer Revenge of the Sith: llun thema Dark Side yn Star Wars. Wedi'i ganfod ar Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Llun Thema: Logos Masnachfreintiau</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logos Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series a Star Trek: The Next Generation ar luniau'r themâu cychwynnol. Wedi'u canfod ar Wikimedia Commons, sy'n marcio pob un yn logo testun plaen yn y parth cyhoeddus. Mae pob un yn nod masnach i'w berchennog.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Llun Thema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Set ffilm Hobbiton yn Seland Newydd, llun gan Jackie.lck: llun thema The One Ring yn The Lord of the Rings. Wedi'i ganfod ar Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Llun Thema: Castell Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Ffrâm o drelar Hogwarts Legacy o sianel YouTube y gêm ei hun: llun thema Gryffindor yn Harry Potter. Wedi'i ganfod ar Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Llun Thema: Map o Ganol y Ddaear</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Map o Middle-earth: llun thema Map of Middle-earth yn The Lord of the Rings. Wedi'i ganfod ar The One Wiki to Rule Them All, nad yw'n enwi unrhyw arlunydd.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Llun Thema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Y Millennium Falcon maint llawn yn Galaxy’s Edge, llun gan Tomás Del Coro: llun thema Opening Crawl yn Star Wars. Wedi'i ganfod ar Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Llun Thema: Sonic ar Ynys Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Ffrâm o drelar Sonic Frontiers o sianel YouTube SEGA ei hun: llun thema Blue Blur yn Sonic the Hedgehog. Wedi'i ganfod ar Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Llun Thema: Sonic yn Rhedeg</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Celf SEGA a wnaed ar gyfer Sonic Lost World: llun thema Night Run yn Sonic the Hedgehog. Wedi'i ganfod ar Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Llun Thema: Pedair Arfbais y Tai</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Pedair arfbais tai Hogwarts, a dynnwyd gan Atomhawk Design ar gyfer Pottermore: llun thema Four Houses yn Harry Potter. Wedi'u canfod ar y Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Llun Thema: Model Stiwdio USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Y model a ffilmiwyd ar gyfer y gyfres Star Trek wreiddiol, a ffotograffwyd gan y Smithsonian National Air and Space Museum, sy'n ei gadw: llun thema LCARS yn Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Llun Thema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Ffrâm o Star Trek: The Next Generation: llun thema Starfleet yn Star Trek. Wedi'i ganfod ar Memory Alpha.</value></data>
 </root>

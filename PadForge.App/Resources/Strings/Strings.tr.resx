@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Sistem varsayılanı</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Açık</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Koyu</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Yeni tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Kendi renklerinizden ve bir Steam oyunundan ya da bir dosyadan alınan resimden tema oluşturun.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Tema ekle…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Bir tema dosyasını listeye ekleyin. PadForge dosyayı bulunduğu yerden okur, hiçbir şeyi kopyalamaz.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Kopyasını kaydet…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Seçili temayı değiştirebileceğiniz ya da paylaşabileceğiniz bir dosyaya yazın.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Temayı düzenle</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Listeden kaldırın. Dosya olduğu yerde kalır.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Dosya bulunamadı</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Okunamıyor</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>“{0}” temasının dosyası eksik veya okunamıyor. Dosya geri gelene kadar PadForge Koyu görünümü gösterir.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>“{0}” profili oyununun görünümünü giyiyor. Başka bir profil etkin olunca temanız geri gelir.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>PadForge Temaları (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Bu dosya bir PadForge teması değil.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema kaydedilemedi. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Yeni tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Siz tema oluştururken PadForge temayı giyer.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Temam</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Taban</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Temanın üzerinde durduğu zemin. Koyu temanın yazısı açık, açık temanın yazısı koyu renklidir.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Resim</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steam oyunundan…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Dosyadan…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Resim yok</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Resim Steam'den alınıyor…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam'de bu oyun için geniş bir resim yok.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam'e ulaşılamadı. Bağlantınızı denetleyin.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Konum</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Resmi penceresinde yukarı ya da aşağı kaydırır.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Oyunun logosunu göster</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Renkler</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Resme uydur</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Dört rengi resimden alır.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Arka plan</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Sayfa rengi. Pencere, kenar çubuğu, kartlar ve çizgiler bu rengin tonlarıdır.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Vurgu</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Canlı olan her şey: motor, ana düğme, seçili öğe.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>İkincil</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Ölçülen değerler ve aygıt işaretleri: hızlar, pil düzeyleri, ham girdiler.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Dikkat</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Bekleyen durumlar: aygıt bekleniyor, düşük pil, kaydedilmemiş değişiklikler.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Renk seç</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Resimler (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Tüm Dosyalar (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge bu dosyayı resim olarak okuyamıyor.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Resim: Steam'in {0} için kütüphane görseli.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Giriş motoru</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Yoklama davranışını ve arka plan işlemeyi yapılandırın.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Donanım desteği</value></data>
@@ -870,6 +916,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Yalnızca ticari marka uyarısı</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Koşul belirtilmemiş</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Yayımlanmamış</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Kamu malı</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Telif hakkı saklıdır</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian kullanım koşulları</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Birden çok lisans</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Kullanıcı modunda çalışan sanal HID kontrolcü motoru (ViGEmBus ve vJoy'un yerini alır).</value></data>
@@ -2901,6 +2952,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Başka açık pencere bulunamadı.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} öğesini kaldır</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Bu profil yüklüyken yoklama hızı</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Oyunun görünümünü giy</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Bu profil etkinken PadForge oyunun resmini ve renklerini gösterir. Başka bir profil etkin olunca temanız geri gelir.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Oyunun resmi bu bilgisayarda yok.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Resmi al</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Oyunun resmini Steam'den almak için Ayarlar'da Topluluk yapılandırmalarını açın.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Şuradan kopyala</value></data>
@@ -4193,7 +4249,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Topluluk yapılandırmaları</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Topluluğun hazırladığı Steam Input kontrolcü yapılandırmalarına göz atın ve bunları PadForge profillerine çevirin. PadForge arama metninizi, ilgili oyunların, yapılandırmaların ve hazırlayanların kimliklerini ve kendi sürümünü gönderir. Anonim Steam oturumu ayrıca Windows sürümünüzü ve Windows kurulum kimliğinizin, ağ bağdaştırıcısı adreslerinizin ve önyükleme diski seri numaranızın karmalarından oluşturulan bir makine kimliğini gönderir. Üçüncü taraf hizmet devreye girmez.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge, Steam'in sunucularına yalnızca siz arama yaptığınızda, bir yapılandırma açtığınızda veya içe aktarılan yapılandırmaların güncellemelerini denetlediğinizde bağlanır. Telemetri yok, Steam hesabı yok.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge, Steam'in sunucularına yalnızca siz arama yaptığınızda, bir yapılandırma açtığınızda, içe aktarılan yapılandırmaların güncellemelerini denetlediğinizde veya bir oyunun resmini aldığınızda bağlanır. Telemetri yok, Steam hesabı yok.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Neler gönderilir</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Topluluk yapılandırmalarını etkinleştir</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Eski Atölye yapılandırmalarını göster</value></data>
@@ -5157,6 +5213,28 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profil biçimi hcn1z1'in shunt şema dökümünden (MIT), DatMoshu'nun reWASD-Powertools belgelerinden (MIT) ve reWASD'nin yardımından, DS4Windows profil biçimi Schmaldeo'nun DS4Windows çatalından (GPL-3.0-or-later), DSX profil biçimi ise winkywong1998'in DSX-profile-share içindeki profillerden, RAIZ-Zzz'nin DualSense projesinden (MIT) ve Paliverse'in DSX Mod System'inden (Apache-2.0) okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Ekran rengi referansları</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Ekran rengi aydınlatmasının arkasındaki yakalama, Prismatik (GPL-2.0-or-later), AlkaidLab'ın Sunshine çatalı foundation-sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) ve alienfx-tools (MIT) kaynaklarından okundu. Yalnızca belge, hiçbir GPL kodu dağıtılmıyor.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Tema resmi: Darth Vader'ın miğferi</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm'in Sith'in İntikamı için yayımladığı tanıtım fotoğrafı: Yıldız Savaşları temasının Dark Side görünümünün resmi. Wookieepedia'da bulundu.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Tema resmi: Seri logoları</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Sonic the Hedgehog, Yüzüklerin Efendisi, Harry Potter, Yıldız Savaşları, Star Trek: The Original Series ve Star Trek: The Next Generation logoları, hazır temaların resimlerinde yer alır. Wikimedia Commons'ta bulundu, orada her biri kamu malı düz yazı logosu olarak işaretlenmiş. Her biri sahibinin ticari markasıdır.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Tema resmi: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Yeni Zelanda'daki Hobbiton film platosu, fotoğraf Jackie.lck: Yüzüklerin Efendisi temasının The One Ring görünümünün resmi. Wikimedia Commons'ta bulundu.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Tema resmi: Hogwarts Şatosu</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Hogwarts Legacy fragmanından oyunun kendi YouTube kanalından alınmış bir kare: Harry Potter temasının Gryffindor görünümünün resmi. Wikimedia Commons'ta bulundu.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Tema resmi: Orta Dünya haritası</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Orta Dünya'nın bir haritası: Yüzüklerin Efendisi temasının Map of Middle-earth görünümünün resmi. The One Wiki to Rule Them All'da bulundu, hiçbir sanatçı belirtilmemiş.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Tema resmi: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Galaxy's Edge'deki tam boyutlu Millennium Falcon, fotoğraf Tomás Del Coro: Yıldız Savaşları temasının Opening Crawl görünümünün resmi. Wikimedia Commons'ta bulundu.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Tema resmi: Kronos Adası'nda Sonic</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>SEGA'nın kendi YouTube kanalındaki Sonic Frontiers fragmanından bir kare: Sonic the Hedgehog temasının Blue Blur görünümünün resmi. Wikimedia Commons'ta bulundu.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Tema resmi: Koşan Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA'nın Sonic Lost World için hazırladığı çizim: Sonic the Hedgehog temasının Night Run görünümünün resmi. Sonic Wiki Zone'da bulundu.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Tema resmi: Dört binanın armaları</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Atomhawk Design'ın Pottermore için çizdiği dört Hogwarts binası arması: Harry Potter temasının Four Houses görünümünün resmi. Harry Potter Wiki'de bulundu.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Tema resmi: USS Enterprise stüdyo maketi</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>İlk Star Trek dizisi için çekilen maket, onu koleksiyonunda tutan Smithsonian National Air and Space Museum tarafından fotoğraflandı: Star Trek temasının LCARS görünümünün resmi.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Tema resmi: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Star Trek: The Next Generation dizisinden bir kare: Star Trek temasının Starfleet görünümünün resmi. Memory Alpha'da bulundu.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Klavye Ekranları</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech'in GamePanel klavyelerinin ve Mad Catz S.T.R.I.K.E. 7'nin yerleşik ekranlarına ve Logitech Arx Control üzerinden bir telefona çizim yapar: profil, saat, oyun süresi, kronometre, bir resim ya da bir DualShock 4 veya DualSense ışık çubuğunun rengi. Her ekranın Cihazlar sayfasında kendi satırı vardır. Ne göstereceğini orada ayarlarsınız. Ekranın yanındaki tuşlar, satırının düğmeleridir.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Klavye ekranlarına çiz</value></data>

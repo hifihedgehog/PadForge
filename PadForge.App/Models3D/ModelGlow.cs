@@ -121,7 +121,7 @@ namespace PadForge.Models3D
         {
             SolidColorBrush s => s.Color,
             GradientBrush g when g.GradientStops.Count > 0 => g.GradientStops[0].Color,
-            _ => Color.FromRgb(0xFF, 0x6B, 0x2C),
+            _ => PadForge.Common.EmberTheme.Accent,
         };
 
         // White-masked twins of rider atlas brushes (RGB forced white,

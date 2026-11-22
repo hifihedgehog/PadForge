@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Süsteemi vaikesäte</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hele</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tume</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Uus kujundus…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Koostage kujundus oma värvidest ja pildist, mis pärineb Steami mängust või failist.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Lisa kujundus…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Lisage kujundusfail loendisse. PadForge loeb seda sealt, kus see asub, ega kopeeri midagi.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Salvesta koopia…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Kirjutage valitud kujundus faili, mida saate muuta või jagada.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Muuda kujundust</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Eemalda loendist. Fail jääb oma kohale.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Faili ei leitud</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Ei saa lugeda</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Kujunduse „{0}“ fail puudub või seda ei saa lugeda. PadForge kasutab kujundust Tume, kuni fail on tagasi.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profiil „{0}“ kasutab oma mängu kujundust. Teie kujundus naaseb, kui aktiivne on mõni teine profiil.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Sisendimootor</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Seadistage küsitlemise käitumine ja taustatöötlus.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Riistvara tugi</value></data>
@@ -857,6 +869,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Ainult kaubamärgi lahtiütlus</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Tingimusi pole nimetatud</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Avaldamata</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Avalik omand</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Autoriõigusega kaitstud</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian kasutustingimused</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Mitu litsentsi</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Kasutajarežiimis töötav virtuaalsete HID-kontrollerite mootor (asendab draivereid ViGEmBus ja vJoy).</value></data>
@@ -2710,6 +2727,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Muid avatud aknaid ei leitud.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Eemalda {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Küsitlussagedus, kui see profiil on laaditud</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Kasuta mängu kujundust</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Kui see profiil on aktiivne, näitab PadForge mängu pilti ja värve. Teie kujundus naaseb, kui aktiivne on mõni teine profiil.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Mängu pilti ei ole selles arvutis.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Hangi pilt</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Mängu pildi hankimiseks Steamist lülitage Seadetes sisse Kogukonna konfiguratsioonid.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopeeri allikast</value></data>
@@ -3969,7 +3991,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Kogukonna konfiguratsioonid</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Sirvige kogukonna loodud Steam Inputi kontrollerikonfiguratsioone ja teisendage need PadForge'i profiilideks. PadForge saadab teie otsinguteksti, asjassepuutuvate mängude, konfiguratsioonide ja autorite ID-d ning oma versiooni. Anonüümne Steami sisselogimine saadab ka teie Windowsi versiooni ja arvuti ID, mis on tehtud teie Windowsi installi ID, võrguadapterite aadresside ja alglaadimisketta seerianumbri räsidest. Kolmanda osapoole teenust ei kasutata.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge loob Steami serveritega ühenduse ainult siis, kui otsite, avate konfiguratsiooni või kontrollite imporditud konfiguratsioonide värskendusi. Telemeetriat pole, Steami kontot pole vaja.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge loob Steami serveritega ühenduse ainult siis, kui otsite, avate konfiguratsiooni, kontrollite imporditud konfiguratsioonide värskendusi või hangite mängu pildi. Telemeetriat pole, Steami kontot pole vaja.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Mida saadetakse</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Luba kogukonna konfiguratsioonid</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Kuva vanemad Workshopi konfiguratsioonid</value></data>
@@ -5238,4 +5260,59 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Näitab suurendit, kuni seda makrot hoitakse all, sihtimiseks sihikust läbi. Seadistage see suurendi lehel.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingoni ja sindarini viited</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingoni ja sindarini tõlgete sõnu on kontrollitud allikatega klingon-assistant-data (Apache-2.0), boQwI' sõnastiku andmed, ja Eldamo (CC BY 4.0), elfi keelte leksikon, autor Paul Strack. Ainult sõnastikuandmed, midagi ei levitata.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>See fail ei ole PadForge'i kujundus.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Kujundust ei õnnestunud salvestada. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Uus kujundus</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge kasutab kujundust juba selle koostamise ajal.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nimi</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Minu kujundus</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Alus</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Alus, millel kujundus seisab. Tumedal kujundusel on hele tekst ja heledal kujundusel tume tekst.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Pilt</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Steami mängust…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Failist…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Pildita</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Pildi hankimine Steamist…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steamil pole sellele mängule laia pilti.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steamiga ei õnnestunud ühendust saada. Kontrollige ühendust.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Asukoht</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Liigutab pilti selle aknas üles või alla.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Näita mängu logo</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Värvid</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Sobita pildiga</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Võtab neli värvi pildist.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Taust</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Leht. Aken, külgriba, kaardid ja jooned on selle heledamad ja tumedamad toonid.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Rõhuvärv</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Kõik töötav: mootor, põhinupp, valitud üksus.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Teisene</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mõõdetud väärtused ja seadme tähised: sagedused, akutase, toorsisendid.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Tähelepanu</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Ootel olekud: ootel seadmed, tühi aku, salvestamata muudatused.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Vali värv</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Pildid (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Kõik failid (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ei saa seda faili pildina lugeda.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Pilt: Steami teegi pilt mängule {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Kujunduse pilt: Darth Vaderi kiiver</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilmi reklaamfoto filmile „Sithide kättemaks“: Tähesõdade kujunduse Dark Side pilt. Leitud Wookieepediast.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Kujunduse pilt: Frantsiiside logod</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Sonic the Hedgehogi, Sõrmuste isanda, Harry Potteri, Tähesõdade, Star Trek: Algsarja ja Star Trek: Uue põlvkonna logod algkujunduste piltidel. Leitud Wikimedia Commonsist, mis märgib iga logo lihttekstlogoks avalikus omandis. Iga logo on omaniku kaubamärk.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Kujunduse pilt: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Hobbitoni filmivõtteplats Uus-Meremaal, foto autor Jackie.lck: Sõrmuste isanda kujunduse The One Ring pilt. Leitud Wikimedia Commonsist.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Kujunduse pilt: Sigatüüka loss</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Kaader mängu Hogwarts Legacy treilerist mängu enda YouTube'i kanalilt: Harry Potteri kujunduse Gryffindor pilt. Leitud Wikimedia Commonsist.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Kujunduse pilt: Keskmaa kaart</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Keskmaa kaart: Sõrmuste isanda kujunduse Map of Middle-earth pilt. Leitud saidilt The One Wiki to Rule Them All, mis ei nimeta kunstnikku.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Kujunduse pilt: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Täismõõdus Millennium Falcon pargis Galaxy’s Edge, foto autor Tomás Del Coro: Tähesõdade kujunduse Opening Crawl pilt. Leitud Wikimedia Commonsist.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Kujunduse pilt: Sonic Kronose saarel</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Kaader mängu Sonic Frontiers treilerist SEGA enda YouTube'i kanalilt: Sonic the Hedgehogi kujunduse Blue Blur pilt. Leitud Wikimedia Commonsist.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Kujunduse pilt: Jooksev Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA mängu Sonic Lost World jaoks tehtud kunst: Sonic the Hedgehogi kujunduse Night Run pilt. Leitud saidilt Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Kujunduse pilt: Nelja koja vapid</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Sigatüüka nelja koja vapid, joonistanud Atomhawk Design Pottermore'i jaoks: Harry Potteri kujunduse Four Houses pilt. Leitud saidilt Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Kujunduse pilt: USS Enterprise'i stuudiomudel</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Sarja Star Trek algse versiooni jaoks filmitud mudel, pildistanud Smithsonian National Air and Space Museum, kus seda hoitakse: sarja Star Trek kujunduse LCARS pilt.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Kujunduse pilt: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Kaader sarjast Star Trek: Uus põlvkond: sarja Star Trek kujunduse Starfleet pilt. Leitud saidilt Memory Alpha.</value></data>
 </root>

@@ -52,14 +52,12 @@ namespace PadForge.Views
         /// <summary>Hover tint. Deliberately a wash rather than a solid, so
         /// hovering reads as "this is pickable" without impersonating the
         /// pressed state the render loop paints.</summary>
-        private static readonly Brush HoverWash = MakeWash();
-
-        private static Brush MakeWash()
+        private static Brush HoverWash => PadForge.Common.Themes.ThemeLook.Brush("CalloutWash", () =>
         {
-            var b = new SolidColorBrush(Color.FromArgb(0x66, 0xE8, 0x7A, 0x2E));
-            b.Freeze();
-            return b;
-        }
+            // The look's callout tone at 40 in 100 (#591).
+            Color tone = PadForge.Common.Themes.ThemeLook.Callout;
+            return new SolidColorBrush(Color.FromArgb(0x66, tone.R, tone.G, tone.B));
+        });
         /// <summary>Sits in the lower palm, clear of both the button seam and
         /// the shell vents, which are the only busy areas of the artwork.</summary>
         internal const double MoveTop =

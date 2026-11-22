@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Implicit de sistem</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Luminoasă</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Întunecată</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Temă nouă…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Creați o temă din propriile culori și o imagine, dintr-un joc Steam sau dintr-un fișier.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Adăugare temă…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Adăugați un fișier de temă în listă. PadForge îl citește de unde se află și nu copiază nimic.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Salvare copie…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Scrie tema aleasă într-un fișier pe care îl puteți modifica sau distribui.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Editare temă</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Eliminați din listă. Fișierul rămâne unde este.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Fișier negăsit</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nu poate fi citită</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Fișierul temei „{0}” lipsește sau nu poate fi citit. PadForge afișează varianta Întunecată până când fișierul revine.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilul „{0}” afișează aspectul jocului său. Tema dumneavoastră revine când este activ alt profil.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Teme PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Acest fișier nu este o temă PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Tema nu a putut fi salvată. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Temă nouă</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge afișează tema chiar în timp ce o creați.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Nume</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Tema mea</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Bază</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Fundalul pe care se sprijină tema. O temă întunecată are text deschis, iar o temă luminoasă are text închis.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Imagine</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Dintr-un joc Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Dintr-un fișier…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Fără imagine</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Se obține imaginea de la Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nu are o imagine lată pentru acest joc.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Steam nu a putut fi accesat. Verificați conexiunea.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Poziție</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Deplasează imaginea în sus sau în jos în cadrul ei.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Afișare logo joc</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Culori</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Potrivire cu imaginea</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Preia cele patru culori din imagine.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fundal</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Pagina. Fereastra, bara laterală, cardurile și liniile sunt trepte derivate din ea.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Tot ce este activ: motorul, butonul principal, elementul ales.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Secundară</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Valorile măsurate și marcajele dispozitivelor: rate, niveluri de baterie, intrări brute.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atenție</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Stările de așteptare: dispozitive în așteptare, baterie slabă, modificări nesalvate.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Alegere culoare</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Imagini (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Toate fișierele (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge nu poate citi acest fișier ca imagine.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Imagine: grafica din biblioteca Steam pentru {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor de intrare</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configurați comportamentul interogării și procesarea în fundal.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suport hardware</value></data>
@@ -870,6 +916,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Doar declinare privind mărcile</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Fără termeni menționați</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Niciuna publicată</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Domeniu public</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Protejată de drepturi de autor</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Termenii de utilizare Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Mai multe licențe</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de controlere HID virtuale în mod utilizator (înlocuiește ViGEmBus și vJoy).</value></data>
@@ -2901,6 +2952,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nu s-a găsit nicio altă fereastră deschisă.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Eliminare {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Rata de interogare cât timp acest profil este încărcat</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Afișare aspect joc</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Cât timp acest profil este activ, PadForge afișează imaginea și culorile jocului. Tema dumneavoastră revine când este activ alt profil.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Imaginea jocului nu se află pe acest PC.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Obținere imagine</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Activați configurațiile comunitare în Setări pentru a obține imaginea jocului de la Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copiere din</value></data>
@@ -4193,7 +4249,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configurații comunitare</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Răsfoiți configurațiile de controler Steam Input create de comunitate și convertiți-le în profiluri PadForge. PadForge trimite textul căutării, ID-urile jocurilor, configurațiilor și creatorilor implicați și versiunea sa. Conectarea anonimă la Steam trimite și versiunea Windows și un ID de computer obținut din hashurile ID-ului de instalare Windows, ale adreselor adaptoarelor de rețea și ale numărului de serie al discului de pornire. Nu este implicat niciun serviciu terț.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge se conectează la serverele Steam doar când căutați, deschideți o configurație sau verificați dacă există actualizări pentru configurațiile importate. Fără telemetrie, fără cont Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge se conectează la serverele Steam doar când căutați, deschideți o configurație, verificați dacă există actualizări pentru configurațiile importate sau obțineți imaginea unui joc. Fără telemetrie, fără cont Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ce se trimite</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Activare configurații comunitare</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Afișare configurații vechi din Atelier</value></data>
@@ -5157,6 +5213,28 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Formatul profilurilor reWASD, citit din dump-ul de schemă shunt al lui hcn1z1 (MIT), din documentația reWASD-Powertools a lui DatMoshu (MIT) și din ajutorul reWASD, formatul profilurilor DS4Windows, citit din forkul DS4Windows al lui Schmaldeo (GPL-3.0-or-later), și formatul profilurilor DSX, citit din profilurile din DSX-profile-share al lui winkywong1998, din proiectul DualSense al lui RAIZ-Zzz (MIT) și din Mod System al DSX de la Paliverse (Apache-2.0). Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referințe pentru Culoarea ecranului</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Captura din spatele iluminării Culoarea ecranului, citită din Prismatik (GPL-2.0-or-later), forkul foundation-sunshine al lui AlkaidLab pentru Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) și alienfx-tools (MIT). Doar documentație, nu este inclus niciun cod GPL.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Imaginea temei: casca lui Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>O fotografie promoțională Lucasfilm pentru Răzbunarea Sithilor: imaginea temei Războiul stelelor Dark Side. Găsită pe Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Imaginea temei: logourile francizelor</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logourile Sonic the Hedgehog, Stăpânul Inelelor, Harry Potter, Războiul stelelor, Star Trek: Seria originală și Star Trek: Generația următoare de pe imaginile temelor de pornire. Găsite pe Wikimedia Commons, care marchează fiecare logo ca simplu text, în domeniul public. Fiecare este marcă comercială a proprietarului său.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Imaginea temei: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Platoul de filmare Hobbiton din Noua Zeelandă, fotografie de Jackie.lck: imaginea temei Stăpânul Inelelor The One Ring. Găsită pe Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Imaginea temei: Castelul Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Un cadru din trailerul Hogwarts Legacy de pe canalul YouTube al jocului: imaginea temei Harry Potter Gryffindor. Găsită pe Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Imaginea temei: harta Pământului de Mijloc</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>O hartă a Pământului de Mijloc: imaginea temei Stăpânul Inelelor Map of Middle-earth. Găsită pe The One Wiki to Rule Them All, care nu numește niciun artist.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Imaginea temei: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon la dimensiune reală din Galaxy’s Edge, fotografie de Tomás Del Coro: imaginea temei Războiul stelelor Opening Crawl. Găsită pe Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Imaginea temei: Sonic pe Insula Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Un cadru din trailerul Sonic Frontiers de pe canalul YouTube al SEGA: imaginea temei Sonic the Hedgehog Blue Blur. Găsită pe Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Imaginea temei: Sonic alergând</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Grafica SEGA realizată pentru Sonic Lost World: imaginea temei Sonic the Hedgehog Night Run. Găsită pe Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Imaginea temei: Blazoanele celor patru case</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Cele patru blazoane ale caselor Hogwarts, desenate de Atomhawk Design pentru Pottermore: imaginea temei Harry Potter Four Houses. Găsite pe Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Imaginea temei: macheta de studio USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Macheta filmată pentru serialul Star Trek original, fotografiată de Smithsonian National Air and Space Museum, care o deține: imaginea temei Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaginea temei: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Un cadru din Star Trek: Generația următoare: imaginea temei Star Trek Starfleet. Găsită pe Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Ecrane de tastatură</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Desenează pe ecranele integrate în tastaturile GamePanel de la Logitech și în Mad Catz S.T.R.I.K.E. 7, precum și pe un telefon prin Logitech Arx Control: profilul, un ceas, timpul de joc, un cronometru, o imagine sau culoarea barei luminoase a unui DualShock 4 sau DualSense. Fiecare ecran are propriul rând pe pagina Dispozitive, unde setați ce afișează. Tastele de lângă un ecran sunt butoanele rândului său.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Controlare ecrane de tastatură</value></data>

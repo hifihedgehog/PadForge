@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Default ng system</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Maliwanag</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Madilim</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Bagong Tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Gumawa ng tema mula sa sarili mong mga kulay at isang larawan, mula sa isang laro sa Steam o mula sa isang file.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Magdagdag ng Tema…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Ilista ang isang theme file. Binabasa ito ng PadForge kung nasaan ito at walang kinokopya.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Mag-save ng Kopya…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Isulat ang napiling tema sa isang file na maaari mong baguhin o ibahagi.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>I-edit ang Tema</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Alisin sa listahan. Nananatili ang file kung nasaan ito.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Hindi nakita ang file</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Hindi mabasa</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Nawawala o hindi mabasa ang file ng “{0}”. Ipinapakita ng PadForge ang Madilim hangga’t hindi ito bumabalik.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Suot ng profile na “{0}” ang itsura ng laro nito. Babalik ang tema mo kapag may ibang profile na aktibo.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Input engine</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>I-configure ang polling at ang pagpoproseso sa background.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporta sa Hardware</value></data>
@@ -857,6 +869,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Disclaimer sa trademark lang</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Walang binanggit na tuntunin</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Walang inilathala</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Public domain</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>May copyright</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Mga tuntunin ng paggamit ng Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Ilang lisensya</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Engine ng virtual HID controller sa user mode (pumapalit sa ViGEmBus at vJoy).</value></data>
@@ -3768,7 +3785,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Community Configs</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Mag-browse ng mga controller configuration ng Steam Input na gawa ng komunidad at isalin ang mga ito sa mga profile ng PadForge. Ipinapadala ng PadForge ang search text mo, ang mga ID ng mga laro, config at creator na kasangkot, at ang bersyon nito. Ipinapadala rin ng anonymous na Steam logon ang bersyon ng Windows mo at isang machine ID na gawa sa mga hash ng Windows installation ID, mga address ng network adapter at serial ng boot disk. Walang third-party na serbisyong kasangkot.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Kumokonekta lang ang PadForge sa mga server ng Steam kapag naghahanap ka, nagbubukas ng config o nagsusuri ng mga na-import na config para sa update. Walang telemetry, walang Steam account.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Kumokonekta lang ang PadForge sa mga server ng Steam kapag naghahanap ka, nagbubukas ng config, nagsusuri ng mga na-import na config para sa update o kumukuha ng larawan ng laro. Walang telemetry, walang Steam account.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ano ang Ipinapadala</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>I-enable ang Community Configs</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Ipakita ang mga Legacy Workshop Config</value></data>
@@ -5050,4 +5067,60 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Mapping_SourceInnerDeadzone_Tooltip" xml:space="preserve"><value>Sa ibaba ng bahaging ito ng galaw, nababasa ang input na nasa gitna.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Mga sanggunian sa Klingon at Sindarin</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Ang mga salita ng mga salin sa Klingon at Sindarin, na sinuri laban sa klingon-assistant-data (Apache-2.0), ang diksyunaryo sa likod ng boQwI', at Eldamo (CC BY 4.0), ang leksikon ng Elvish ni Paul Strack. Data ng diksyunaryo lamang, walang kasama sa PadForge.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Hindi theme ng PadForge ang file na iyon.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Hindi na-save ang tema. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Bagong Tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>Suot ng PadForge ang tema habang binubuo mo ito.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Pangalan</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Aking Tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Base</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Ang batayang kinatatayuan ng tema. Maliwanag ang teksto ng madilim na tema, at madilim ang teksto ng maliwanag na tema.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Larawan</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Mula sa Laro sa Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Mula sa File…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Walang Larawan</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Kinukuha ang larawan mula sa Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Walang malapad na larawan ang Steam para sa larong ito.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Hindi maabot ang Steam. Suriin ang koneksyon mo.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Posisyon</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Inililipat pataas o pababa ang larawan sa bintana nito.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Ipakita ang Logo ng Laro</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Mga Kulay</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Itugma sa Larawan</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Kinukuha ang apat na kulay mula sa larawan.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Background</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Ang pahina. Ang bintana, sidebar, mga card at mga linya ay mga hakbang mula rito.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Accent</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Lahat ng aktibo: ang engine, ang pangunahing button, ang napiling item.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Pangalawa</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Mga nasukat na halaga at marka ng device: mga rate, antas ng baterya, mga raw input.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Atensyon</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Mga estadong naghihintay: mga device na hinihintay, mahinang baterya, mga hindi pa na-save na pagbabago.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pumili ng Kulay</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Mga Larawan (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Lahat ng File (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>Hindi mabasa ng PadForge ang file na iyon bilang larawan.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Larawan: library art ng Steam para sa {0}.</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>I-on ang Community Configs sa Settings para makuha ang larawan ng laro mula sa Steam.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Larawan ng Tema: Helmet ni Darth Vader</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Isang promotional na larawan ng Lucasfilm para sa Revenge of the Sith: ang larawan ng temang Dark Side ng Star Wars. Nakita sa Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Larawan ng Tema: Mga Logo ng Franchise</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Ang mga logo ng Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series at Star Trek: The Next Generation sa mga larawan ng mga starter na tema. Nakita sa Wikimedia Commons, na nagmamarka sa bawat isa bilang simpleng text logo sa public domain. Trademark ng may-ari nito ang bawat isa.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Larawan ng Tema: Hobbiton</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Ang film set ng Hobbiton sa New Zealand, larawang kuha ni Jackie.lck: ang larawan ng temang The One Ring ng The Lord of the Rings. Nakita sa Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Larawan ng Tema: Kastilyo ng Hogwarts</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Isang frame mula sa trailer ng Hogwarts Legacy sa sariling YouTube channel ng laro: ang larawan ng temang Gryffindor ng Harry Potter. Nakita sa Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Larawan ng Tema: Mapa ng Middle-earth</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Isang mapa ng Middle-earth: ang larawan ng temang Map of Middle-earth ng The Lord of the Rings. Nakita sa The One Wiki to Rule Them All, na walang pinangalanang artista.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Larawan ng Tema: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Ang buong laki na Millennium Falcon sa Galaxy’s Edge, larawang kuha ni Tomás Del Coro: ang larawan ng temang Opening Crawl ng Star Wars. Nakita sa Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Larawan ng Tema: Si Sonic sa Isla ng Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Isang frame mula sa trailer ng Sonic Frontiers sa sariling YouTube channel ng SEGA: ang larawan ng temang Blue Blur ng Sonic the Hedgehog. Nakita sa Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Larawan ng Tema: Tumatakbong Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Art ng SEGA na ginawa para sa Sonic Lost World: ang larawan ng temang Night Run ng Sonic the Hedgehog. Nakita sa Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Larawan ng Tema: Ang Apat na House Crest</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Ang apat na house crest ng Hogwarts, iginuhit ng Atomhawk Design para sa Pottermore: ang larawan ng temang Four Houses ng Harry Potter. Nakita sa Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Larawan ng Tema: Studio Model ng USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Ang modelong kinunan para sa orihinal na seryeng Star Trek, kinunan ng larawan ng Smithsonian National Air and Space Museum na nag-iingat nito: ang larawan ng temang LCARS ng Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Larawan ng Tema: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Isang frame ng Star Trek: The Next Generation: ang larawan ng temang Starfleet ng Star Trek. Nakita sa Memory Alpha.</value></data>
 </root>

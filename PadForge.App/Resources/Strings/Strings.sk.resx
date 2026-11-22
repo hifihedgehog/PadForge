@@ -644,6 +644,52 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Podľa systému</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Svetlý</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tmavý</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nový motív…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Vytvorte motív z vlastných farieb a obrázka, z hry na Steame alebo zo súboru.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Pridať motív…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Zaradiť súbor motívu do zoznamu. PadForge ho číta tam, kde je, a nič nekopíruje.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Uložiť kópiu…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Zapísať vybraný motív do súboru, ktorý môžete upraviť alebo zdieľať.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Upraviť motív</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Odobrať zo zoznamu. Súbor zostane na svojom mieste.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Súbor sa nenašiel</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Nedá sa prečítať</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Súbor motívu „{0}“ chýba alebo sa nedá prečítať. PadForge zobrazuje Tmavý, kým sa súbor nevráti.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profil „{0}“ nosí vzhľad svojej hry. Váš motív sa vráti, keď bude aktívny iný profil.</value></data>
+  <data name="Settings_ThemeFileFilter" xml:space="preserve"><value>Motívy PadForge (*.pftheme)|*.pftheme</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Tento súbor nie je motív PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Motív sa nepodarilo uložiť. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nový motív</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge nosí motív už počas jeho tvorby.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Názov</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Môj motív</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Základ</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Podklad, na ktorom motív stojí. Tmavý motív má svetlý text a svetlý motív má tmavý text.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Obrázok</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Z hry na Steame…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Zo súboru…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Bez obrázka</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Získava sa obrázok zo Steamu…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam nemá pre túto hru široký obrázok.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nepodarilo sa spojiť so Steamom. Skontrolujte pripojenie.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Poloha</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Posúva obrázok v jeho okne nahor alebo nadol.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Zobraziť logo hry</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Farby</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Prispôsobiť obrázku</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Prevezme štyri farby z obrázka.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Pozadie</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Stránka. Okno, bočný panel, karty a čiary sú jej odtiene.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Zvýraznenie</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Všetko živé: engine, hlavné tlačidlo, vybraná položka.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Vedľajšia</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Namerané hodnoty a značky zariadení: frekvencie, stav batérie, surové vstupy.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Pozornosť</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Stavy čakania: čakanie na zariadenia, slabá batéria, neuložené zmeny.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Vybrať farbu</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Obrázky (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Všetky súbory (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge nedokáže prečítať tento súbor ako obrázok.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Obrázok: knižničná grafika Steamu pre hru {0}.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Vstupné jadro</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Nastavte správanie dotazovania a spracovanie na pozadí.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Podpora hardvéru</value></data>
@@ -870,6 +916,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -878,6 +926,9 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Iba vyhlásenie o ochranných známkach</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Žiadne uvedené podmienky</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Žiadne zverejnené</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Verejná doména</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Chránené autorským právom</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Podmienky používania Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Viacero licencií</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Jadro virtuálnych ovládačov HID v používateľskom režime (nahrádza ViGEmBus a vJoy).</value></data>
@@ -2901,6 +2952,11 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nenašlo sa žiadne iné otvorené okno.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Odstrániť {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Frekvencia dotazovania, kým je tento profil načítaný</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Nosiť vzhľad hry</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Kým je tento profil aktívny, PadForge zobrazuje obrázok a farby hry. Váš motív sa vráti, keď bude aktívny iný profil.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Obrázok hry nie je v tomto počítači.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Získať obrázok</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Zapnite komunitné konfigurácie v Nastaveniach, aby ste získali obrázok hry zo Steamu.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopírovať z</value></data>
@@ -4193,7 +4249,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Komunitné konfigurácie</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Prehliadajte konfigurácie ovládačov Steam Input vytvorené komunitou a prevádzajte ich na profily PadForge. PadForge odosiela text vyhľadávania, ID hier, konfigurácií a tvorcov a svoju verziu. Anonymné prihlásenie do Steamu odosiela aj vašu verziu Windows a ID počítača vytvorené z hashov ID inštalácie Windows, adries sieťových adaptérov a sériového čísla zavádzacieho disku. Nie je zapojená žiadna služba tretej strany.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge sa pripája k serverom Steamu, iba keď vyhľadávate, otvoríte konfiguráciu alebo kontrolujete aktualizácie importovaných konfigurácií. Žiadna telemetria, žiadny účet Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge sa pripája k serverom Steamu, iba keď vyhľadávate, otvoríte konfiguráciu, kontrolujete aktualizácie importovaných konfigurácií alebo získavate obrázok hry. Žiadna telemetria, žiadny účet Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Čo sa odosiela</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Povoliť komunitné konfigurácie</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Zobraziť staršie konfigurácie z Workshopu</value></data>
@@ -5157,6 +5213,28 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Formát profilov reWASD, prevzatý z výpisu schémy shunt od hcn1z1 (MIT), z dokumentácie reWASD-Powertools od DatMoshu (MIT) a z pomocníka reWASD, formát profilov DS4Windows, prevzatý z forku DS4Windows od Schmaldeo (GPL-3.0-or-later), a formát profilov DSX, prevzatý z profilov v DSX-profile-share od winkywong1998, z projektu DualSense od RAIZ-Zzz (MIT) a z Mod System programu DSX od Paliverse (Apache-2.0). Iba dokumentácia, nedodáva sa žiadny kód.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referencie pre Farbu obrazovky</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Snímanie obrazovky, na ktorom stojí osvetlenie Farba obrazovky, prevzaté z Prismatik (GPL-2.0-or-later), forku foundation-sunshine od AlkaidLab z projektu Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) a alienfx-tools (MIT). Iba dokumentácia, nedodáva sa žiadny kód GPL.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Obrázok motívu: Helma Dartha Vadera</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Propagačná fotografia Lucasfilm k filmu Star Wars: Pomsta Sithov: obrázok motívu Hviezdnych vojen Dark Side. Nájdené na Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Obrázok motívu: Logá sérií</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Logá Sonic the Hedgehog, Pána prsteňov, Harryho Pottera, Hviezdnych vojen, Star Trek: Pôvodný seriál a Star Trek: Nová generácia na obrázkoch štartovacích motívov. Nájdené na Wikimedia Commons, kde je každé označené ako obyčajné textové logo vo verejnej doméne. Každé je ochrannou známkou svojho vlastníka.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Obrázok motívu: Hobitín</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Filmové kulisy Hobitína na Novom Zélande, fotografia od Jackie.lck: obrázok motívu Pána prsteňov The One Ring. Nájdené na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Obrázok motívu: Rokfortský hrad</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Záber z upútavky Hogwarts Legacy z vlastného kanála hry na YouTube: obrázok motívu Harryho Pottera Gryffindor. Nájdené na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Obrázok motívu: Mapa Stredozeme</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Mapa Stredozeme: obrázok motívu Pána prsteňov Map of Middle-earth. Nájdené na The One Wiki to Rule Them All, ktorá neuvádza žiadneho autora.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Obrázok motívu: Millennium Falcon</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Millennium Falcon v životnej veľkosti v Galaxy’s Edge, fotografia od Tomás Del Coro: obrázok motívu Hviezdnych vojen Opening Crawl. Nájdené na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Obrázok motívu: Sonic na ostrove Kronos</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Záber z upútavky Sonic Frontiers z vlastného kanála SEGA na YouTube: obrázok motívu Sonic the Hedgehog Blue Blur. Nájdené na Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Obrázok motívu: Bežiaci Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>Grafika SEGA vytvorená pre Sonic Lost World: obrázok motívu Sonic the Hedgehog Night Run. Nájdené na Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Obrázok motívu: Štyri erby fakúlt</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Štyri erby rokfortských fakúlt, ktoré nakreslilo štúdio Atomhawk Design pre Pottermore: obrázok motívu Harryho Pottera Four Houses. Nájdené na Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Obrázok motívu: Štúdiový model USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Model nakrúcaný pre pôvodný seriál Star Trek, ktorý odfotografovalo Smithsonian National Air and Space Museum, kde je uložený: obrázok motívu Star Trek LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Obrázok motívu: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Záber zo seriálu Star Trek: Nová generácia: obrázok motívu Star Trek Starfleet. Nájdené na Memory Alpha.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Obrazovky klávesnice</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Kreslí na obrazovky vstavané do klávesníc Logitech GamePanel a Mad Catz S.T.R.I.K.E. 7 a cez Logitech Arx Control aj na telefón: profil, hodiny, čas hrania, stopky, obrázok alebo farbu svetelnej lišty ovládača DualShock 4 či DualSense. Každá obrazovka má na stránke Zariadenia vlastný riadok, kde nastavíte, čo zobrazuje. Klávesy vedľa obrazovky sú tlačidlá jej riadka.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Ovládať obrazovky klávesnice</value></data>

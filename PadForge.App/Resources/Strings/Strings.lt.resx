@@ -625,6 +625,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Sistemos numatytoji</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Šviesi</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tamsi</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>Nauja tema…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>Sukurkite temą iš savo spalvų ir paveikslėlio, paimto iš „Steam“ žaidimo arba iš failo.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>Pridėti temą…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>Įtraukite temos failą į sąrašą. „PadForge“ skaito jį ten, kur jis yra, ir nieko nekopijuoja.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>Išsaugoti kopiją…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>Įrašykite pasirinktą temą į failą, kurį galėsite keisti arba kam nors perduoti.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>Redaguoti temą</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>Pašalinti iš sąrašo. Failas lieka savo vietoje.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>Failas nerastas</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>Neįskaitoma</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>Temos „{0}“ failo nėra arba jo nepavyksta perskaityti. „PadForge“ rodo temą Tamsi, kol failas negrįš.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>Profilis „{0}“ rodo savo žaidimo išvaizdą. Jūsų tema sugrįš, kai bus aktyvus kitas profilis.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Įvesties variklis</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigūruokite apklausą ir apdorojimą fone.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Aparatinės įrangos palaikymas</value></data>
@@ -851,6 +863,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -859,6 +873,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Tik prekių ženklo atsakomybės apribojimas</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Sąlygos nenurodytos</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>Nepaskelbta</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>Viešasis domenas</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>Saugoma autorių teisių</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>Smithsonian naudojimo sąlygos</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>Kelios licencijos</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Naudotojo režimo virtualių HID valdiklių variklis (pakeičia ViGEmBus ir vJoy).</value></data>
@@ -2704,6 +2721,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nerasta kitų atidarytų langų.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Šalinti {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Apklausos dažnis, kol šis profilis įkeltas</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>Rodyti žaidimo išvaizdą</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>Kol šis profilis aktyvus, „PadForge“ rodo žaidimo paveikslėlį ir spalvas. Jūsų tema sugrįš, kai bus aktyvus kitas profilis.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>Žaidimo paveikslėlio šiame kompiuteryje nėra.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>Gauti paveikslėlį</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>Įjunkite bendruomenės konfigūracijas nustatymuose, kad gautumėte žaidimo paveikslėlį iš „Steam“.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopijuoti iš</value></data>
@@ -3959,7 +3981,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Bendruomenės konfigūracijos</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Naršykite bendruomenės sukurtas „Steam Input“ valdiklių konfigūracijas ir paverskite jas „PadForge“ profiliais. „PadForge“ siunčia jūsų paieškos tekstą, susijusių žaidimų, konfigūracijų ir kūrėjų ID bei savo versiją. Anoniminis prisijungimas prie „Steam“ taip pat siunčia jūsų „Windows“ versiją ir kompiuterio ID, sudarytą iš „Windows“ diegimo ID, tinklo adapterių adresų ir paleidimo disko serijos numerio maišos reikšmių. Nenaudojama jokia trečiosios šalies paslauga.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>„PadForge“ jungiasi prie „Steam“ serverių tik tada, kai ieškote, atidarote konfigūraciją arba tikrinate, ar importuotos konfigūracijos turi naujinimų. Jokios telemetrijos, jokios „Steam“ paskyros.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>„PadForge“ jungiasi prie „Steam“ serverių tik tada, kai ieškote, atidarote konfigūraciją, tikrinate, ar importuotos konfigūracijos turi naujinimų, arba gaunate žaidimo paveikslėlį. Jokios telemetrijos, jokios „Steam“ paskyros.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Kas siunčiama</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Įjungti bendruomenės konfigūracijas</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Rodyti senąsias dirbtuvių konfigūracijas</value></data>
@@ -5235,4 +5257,59 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Viršūnė</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>Klingonų ir sindarinų kalbų nuorodos</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>Klingonų ir sindarinų kalbų vertimų žodžiai patikrinti pagal klingon-assistant-data (Apache-2.0), žodyną, kuriuo remiasi boQwI', ir Eldamo (CC BY 4.0), Paul Strack sudarytą elfų kalbų žodyną. Tik žodyno duomenys, nė vienas neįtraukiamas.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>Šis failas nėra „PadForge“ tema.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>Temos nepavyko išsaugoti. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>Nauja tema</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>„PadForge“ rodo temą, kol ją kuriate.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>Pavadinimas</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>Mano tema</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>Pagrindas</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>Pagrindas, ant kurio laikosi tema. Tamsi tema turi šviesų tekstą, o šviesi tema tamsų.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>Paveikslėlis</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>Iš „Steam“ žaidimo…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>Iš failo…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>Be paveikslėlio</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>Gaunamas paveikslėlis iš „Steam“…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>„Steam“ neturi plataus paveikslėlio šiam žaidimui.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>Nepavyko pasiekti „Steam“. Patikrinkite ryšį.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>Padėtis</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>Perkelia paveikslėlį aukštyn arba žemyn jo lange.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>Rodyti žaidimo logotipą</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>Spalvos</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>Suderinti su paveikslėliu</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>Paima keturias spalvas iš paveikslėlio.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>Fonas</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>Puslapis. Langas, šoninė juosta, kortelės ir linijos yra jo atspalviai.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>Akcentas</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>Viskas, kas gyva: variklis, pagrindinis mygtukas, pasirinktas elementas.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>Antrinė</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>Išmatuotos vertės ir įrenginių žymos: dažniai, baterijos lygiai, neapdoroti įvesties duomenys.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>Dėmesys</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>Laukimo būsenos: laukiama įrenginių, senka baterija, neišsaugoti pakeitimai.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>Pasirinkti spalvą</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>Paveikslėliai (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|Visi failai (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>„PadForge“ negali perskaityti šio failo kaip paveikslėlio.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>Paveikslėlis: „Steam“ bibliotekos iliustracija žaidimui {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>Temos paveikslėlis: Darto Veiderio šalmas</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>Lucasfilm reklaminė nuotrauka filmui „Sitų kerštas“: Žvaigždžių karų temos Dark Side paveikslėlis. Rasta „Wookieepedia“.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>Temos paveikslėlis: franšizių logotipai</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>Filmų ir žaidimų „Sonic the Hedgehog“, „Žiedų valdovas“, „Haris Poteris“, „Žvaigždžių karai“, „Žvaigždžių kelias: originalusis serialas“ ir „Žvaigždžių kelias: Naujoji karta“ logotipai ant pradinių temų paveikslėlių. Rasta „Wikimedia Commons“, kur kiekvienas pažymėtas kaip paprastas tekstinis logotipas viešajame domene. Kiekvienas yra savo savininko prekių ženklas.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>Temos paveikslėlis: Hobitonas</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>Hobitono filmavimo aikštelė Naujojoje Zelandijoje, Jackie.lck nuotrauka: Žiedų valdovo temos The One Ring paveikslėlis. Rasta „Wikimedia Commons“.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>Temos paveikslėlis: Hogvartso pilis</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>Žaidimo „Hogwarts Legacy“ anonso kadras iš paties žaidimo „YouTube“ kanalo: Hario Poterio temos Gryffindor paveikslėlis. Rasta „Wikimedia Commons“.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>Temos paveikslėlis: Viduržemės žemėlapis</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>Viduržemės žemėlapis: Žiedų valdovo temos Map of Middle-earth paveikslėlis. Rasta „The One Wiki to Rule Them All“, kuri nenurodo dailininko.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>Temos paveikslėlis: Tūkstantmečio sakalas</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>Natūralaus dydžio Tūkstantmečio sakalas parke Galaxy’s Edge, Tomás Del Coro nuotrauka: Žvaigždžių karų temos Opening Crawl paveikslėlis. Rasta „Wikimedia Commons“.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>Temos paveikslėlis: Sonic Kronoso saloje</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>Žaidimo „Sonic Frontiers“ anonso kadras iš paties SEGA „YouTube“ kanalo: Sonic the Hedgehog temos Blue Blur paveikslėlis. Rasta „Wikimedia Commons“.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>Temos paveikslėlis: bėgantis Sonic</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>SEGA iliustracija, sukurta žaidimui „Sonic Lost World“: Sonic the Hedgehog temos Night Run paveikslėlis. Rasta „Sonic Wiki Zone“.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>Temos paveikslėlis: keturi namų ženklai</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>Keturi Hogvartso namų ženklai, nupiešti Atomhawk Design svetainei Pottermore: Hario Poterio temos Four Houses paveikslėlis. Rasta „Harry Potter Wiki“.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>Temos paveikslėlis: USS Enterprise studijos modelis</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>Originaliam serialui „Žvaigždžių kelias“ nufilmuotas modelis, kurį nufotografavo jį saugantis Smithsonian National Air and Space Museum: Žvaigždžių kelio temos LCARS paveikslėlis.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Temos paveikslėlis: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Serialo „Žvaigždžių kelias: Naujoji karta“ kadras: Žvaigždžių kelio temos Starfleet paveikslėlis. Rasta „Memory Alpha“.</value></data>
 </root>

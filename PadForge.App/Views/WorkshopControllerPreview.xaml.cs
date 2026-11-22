@@ -39,7 +39,7 @@ namespace PadForge.Views
         private const double LeaderRun = 14;
         private const double TickSize = 5;
 
-        private static readonly Brush Ember = Frozen(0xE8, 0x7A, 0x2E);
+        private static Brush Ember => PadForge.Common.Themes.ThemeLook.CalloutBrush;
         private static readonly Brush Leader = Frozen(0x6E, 0x7A, 0x88);
 
         private static Brush Frozen(byte r, byte g, byte b)
@@ -227,7 +227,7 @@ namespace PadForge.Views
                 IsHitTestVisible = false,
                 Effect = new DropShadowEffect
                 {
-                    Color = Color.FromRgb(0xE8, 0x7A, 0x2E),
+                    Color = PadForge.Common.Themes.ThemeLook.Callout,
                     BlurRadius = 26,
                     ShadowDepth = 0,
                     Opacity = 0.8,

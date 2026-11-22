@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>افتراضي النظام</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>فاتح</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>داكن</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>سمة جديدة…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>أنشئ سمة من ألوانك الخاصة وصورة من لعبة على Steam أو من ملف.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>إضافة سمة…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>أدرج ملف سمة. يقرأه PadForge من مكانه ولا ينسخ شيئا.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>حفظ نسخة…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>اكتب السمة المحددة في ملف يمكنك تعديله أو مشاركته.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>تعديل السمة</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>إزالة من القائمة. يبقى الملف في مكانه.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>الملف غير موجود</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>تعذرت قراءته</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ملف «{0}» مفقود أو تعذرت قراءته. يعرض PadForge المظهر داكن إلى أن يعود.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ملف التعريف «{0}» يرتدي مظهر لعبته. تعود سمتك عندما يصبح ملف تعريف آخر نشطا.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>محرك الإدخال</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>إعداد سلوك الاستقصاء والمعالجة في الخلفية.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>دعم العتاد</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>إخلاء مسؤولية عن العلامة التجارية فقط</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>لا شروط مذكورة</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>لا شيء منشور</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>ملكية عامة</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>محمي بحقوق النشر</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>شروط استخدام Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>عدة تراخيص</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>محرك وحدات تحكم HID ظاهرية يعمل في وضع المستخدم (يحل محل ViGEmBus وvJoy).</value></data>
@@ -2709,6 +2726,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>لم يتم العثور على نافذة مفتوحة أخرى.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>إزالة {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>معدل الاستطلاع أثناء تحميل ملف التعريف هذا</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ارتداء مظهر اللعبة</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ما دام ملف التعريف هذا نشطا يعرض PadForge صورة اللعبة وألوانها. تعود سمتك عندما يكون ملف تعريف آخر نشطا.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>صورة اللعبة غير موجودة على هذا الكمبيوتر.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>جلب الصورة</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>فعّل تكوينات المجتمع في الإعدادات لجلب صورة اللعبة من Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>نسخ من</value></data>
@@ -3969,7 +3991,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>تكوينات المجتمع</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>تصفح تكوينات وحدات التحكم في Steam Input التي أعدها المجتمع وحوّلها إلى ملفات تعريف PadForge. يرسل PadForge نص بحثك، ومعرّفات الألعاب والتكوينات والمنشئين المعنيين، وإصداره. تسجيل الدخول المجهول إلى Steam يرسل كذلك إصدار Windows لديك ومعرّف جهاز مكوّنا من تجزئات معرّف تثبيت Windows وعناوين محولات الشبكة والرقم التسلسلي لقرص الإقلاع. لا تشارك أي خدمة من طرف ثالث.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>يتصل PadForge بخوادم Steam فقط عندما تبحث أو تفتح تكوينا أو تتحقق من تحديثات التكوينات المستوردة. بلا قياس عن بعد، بلا حساب Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>يتصل PadForge بخوادم Steam فقط عندما تبحث أو تفتح تكوينا أو تتحقق من تحديثات التكوينات المستوردة أو تجلب صورة لعبة. بلا قياس عن بعد، بلا حساب Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ما الذي يُرسل</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>تفعيل تكوينات المجتمع</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>إظهار تكوينات ورشة العمل القديمة</value></data>
@@ -5248,4 +5270,59 @@
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>كلمة المرور</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>المكبر (أثناء الضغط المستمر)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>يُظهر المكبر ما دام هذا الماكرو مضغوطا، للتصويب عبر المنظار. اضبطه في صفحة المكبر.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>هذا الملف ليس سمة PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>تعذر حفظ السمة. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>سمة جديدة</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>يرتدي PadForge السمة أثناء إنشائك لها.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>الاسم</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>سمتي</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>الأساس</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>الأرضية التي تقوم عليها السمة. للسمة الداكنة نص فاتح وللسمة الفاتحة نص داكن.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>الصورة</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>من لعبة على Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>من ملف…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>بلا صورة</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>جارٍ جلب الصورة من Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>لا توفر Steam صورة عريضة لهذه اللعبة.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>تعذر الوصول إلى Steam. تحقق من اتصالك.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>الموضع</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>يحرك الصورة لأعلى أو لأسفل داخل إطارها.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>إظهار شعار اللعبة</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>الألوان</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>مطابقة الصورة</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>يأخذ الألوان الأربعة من الصورة.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>الخلفية</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>الصفحة. النافذة والشريط الجانبي والبطاقات والخطوط درجات منها.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>التمييز</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>كل ما هو حي: المحرك والزر الرئيسي والعنصر المحدد.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>الثانوي</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>القيم المقيسة وعلامات الأجهزة: المعدلات ومستويات البطارية والمدخلات الخام.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>الانتباه</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>حالات الانتظار: أجهزة قيد الانتظار وبطارية منخفضة وتغييرات غير محفوظة.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>اختيار لون</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>الصور (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|جميع الملفات (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>لا يستطيع PadForge قراءة هذا الملف كصورة.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>الصورة: فن مكتبة Steam للعبة {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>صورة السمة: خوذة دارث فيدر</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>صورة ترويجية من Lucasfilm لفيلم انتقام السيث: صورة سمة حرب النجوم Dark Side. وُجدت على Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>صورة السمة: شعارات السلاسل</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>شعارات سونيك القنفذ وسيد الخواتم وهاري بوتر وحرب النجوم وستار تريك: السلسلة الأصلية وستار تريك: الجيل التالي على صور السمات الأولية. وُجدت على Wikimedia Commons التي تصنف كلا منها شعارا نصيا بسيطا في الملكية العامة. كل شعار علامة تجارية لمالكه.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>صورة السمة: هوبيتون</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>موقع تصوير هوبيتون في نيوزيلندا، صورة التقطها Jackie.lck: صورة سمة سيد الخواتم The One Ring. وُجدت على Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>صورة السمة: قلعة هوجورتس</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>لقطة من إعلان Hogwarts Legacy على قناة اللعبة الرسمية في YouTube: صورة سمة هاري بوتر Gryffindor. وُجدت على Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>صورة السمة: خريطة الأرض الوسطى</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>خريطة الأرض الوسطى: صورة سمة سيد الخواتم Map of Middle-earth. وُجدت على The One Wiki to Rule Them All التي لا تذكر اسم فنان.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>صورة السمة: ميلينيوم فالكون</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>ميلينيوم فالكون بالحجم الكامل في Galaxy’s Edge، صورة التقطها Tomás Del Coro: صورة سمة حرب النجوم Opening Crawl. وُجدت على Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>صورة السمة: Sonic في جزيرة كرونوس</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>لقطة من إعلان Sonic Frontiers على قناة SEGA الرسمية في YouTube: صورة سمة سونيك القنفذ Blue Blur. وُجدت على Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>صورة السمة: Sonic يركض</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>فن من SEGA صُنع للعبة Sonic Lost World: صورة سمة سونيك القنفذ Night Run. وُجد على Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>صورة السمة: شعارات البيوت الأربعة</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>شعارات بيوت هوجورتس الأربعة، رسمتها Atomhawk Design لموقع Pottermore: صورة سمة هاري بوتر Four Houses. وُجدت على ويكي هاري بوتر.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>صورة السمة: نموذج استوديو USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>النموذج الذي صُوّر لسلسلة ستار تريك الأصلية، التقطت صورته Smithsonian National Air and Space Museum التي تحتفظ به: صورة سمة ستار تريك LCARS.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>صورة السمة: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>لقطة من ستار تريك: الجيل التالي: صورة سمة ستار تريك Starfleet. وُجدت على Memory Alpha.</value></data>
 </root>

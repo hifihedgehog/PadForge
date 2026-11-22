@@ -631,6 +631,18 @@
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>ສະຫວ່າງ</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ມືດ</value></data>
+  <data name="Settings_ThemeNew" xml:space="preserve"><value>ທີມໃໝ່…</value></data>
+  <data name="Settings_ThemeNewTip" xml:space="preserve"><value>ສ້າງທີມຈາກສີຂອງທ່ານເອງ ແລະ ຮູບຈາກເກມ Steam ຫຼື ຈາກໄຟລ໌.</value></data>
+  <data name="Settings_ThemeAdd" xml:space="preserve"><value>ເພີ່ມທີມ…</value></data>
+  <data name="Settings_ThemeAddTip" xml:space="preserve"><value>ເພີ່ມໄຟລ໌ທີມເຂົ້າໃນລາຍການ. PadForge ອ່ານມັນຢູ່ບ່ອນເດີມ ແລະ ບໍ່ສຳເນົາຫຍັງເລີຍ.</value></data>
+  <data name="Settings_ThemeSaveCopy" xml:space="preserve"><value>ບັນທຶກສຳເນົາ…</value></data>
+  <data name="Settings_ThemeSaveCopyTip" xml:space="preserve"><value>ຂຽນທີມທີ່ເລືອກໄວ້ລົງໄຟລ໌ທີ່ທ່ານສາມາດແກ້ໄຂ ຫຼື ແບ່ງປັນໄດ້.</value></data>
+  <data name="Settings_ThemeEdit" xml:space="preserve"><value>ແກ້ໄຂທີມ</value></data>
+  <data name="Settings_ThemeRemoveTip" xml:space="preserve"><value>ເອົາອອກຈາກລາຍການ. ໄຟລ໌ຍັງຢູ່ບ່ອນເດີມ.</value></data>
+  <data name="Settings_ThemeMissing" xml:space="preserve"><value>ບໍ່ພົບໄຟລ໌</value></data>
+  <data name="Settings_ThemeUnreadable" xml:space="preserve"><value>ອ່ານບໍ່ໄດ້</value></data>
+  <data name="Settings_ThemeFaultNote_Format" xml:space="preserve"><value>ໄຟລ໌ຂອງ “{0}” ຫາຍໄປ ຫຼື ອ່ານບໍ່ໄດ້. PadForge ຈະສະແດງ “ມືດ” ຈົນກວ່າໄຟລ໌ຈະກັບມາ.</value></data>
+  <data name="Settings_ThemeProfileNote_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ “{0}” ກຳລັງໃຊ້ຮູບລັກສະນະຂອງເກມຂອງມັນ. ທີມຂອງທ່ານຈະກັບມາເມື່ອໂປຣໄຟລ໌ອື່ນເປີດໃຊ້ງານ.</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ຕັ້ງຄ່າພຶດຕິກຳການອ່ານ ແລະ ການປະມວນຜົນໃນພື້ນຫຼັງ.</value></data>
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ການຮອງຮັບຮາດແວ</value></data>
@@ -857,6 +869,8 @@
   <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CcBy2" xml:space="preserve"><value>CC BY 2.0</value></data>
+  <data name="About_License_CcBySa2" xml:space="preserve"><value>CC BY-SA 2.0</value></data>
   <data name="About_License_Ofl" xml:space="preserve"><value>OFL-1.1</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
@@ -865,6 +879,9 @@
   <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ຂໍ້ປະຕິເສດເຄື່ອງໝາຍການຄ້າເທົ່ານັ້ນ</value></data>
   <data name="About_License_NoTermsNamed" xml:space="preserve"><value>ບໍ່ໄດ້ລະບຸເງື່ອນໄຂ</value></data>
   <data name="About_License_NonePublished" xml:space="preserve"><value>ບໍ່ໄດ້ເຜີຍແຜ່</value></data>
+  <data name="About_License_PublicDomain" xml:space="preserve"><value>ສາທາລະນະສົມບັດ</value></data>
+  <data name="About_License_Copyrighted" xml:space="preserve"><value>ມີລິຂະສິດ</value></data>
+  <data name="About_License_SmithsonianTerms" xml:space="preserve"><value>ເງື່ອນໄຂການນຳໃຊ້ຂອງ Smithsonian</value></data>
   <data name="About_License_Several" xml:space="preserve"><value>ຫຼາຍໃບອະນຸຍາດ</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ເອັນຈິນຕົວຄວບຄຸມ HID ສະເໝືອນໃນໂໝດຜູ້ໃຊ້ (ແທນທີ່ ViGEmBus ແລະ vJoy).</value></data>
@@ -2703,6 +2720,11 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ບໍ່ພົບໜ້າຕ່າງອື່ນທີ່ເປີດຢູ່.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ເອົາ {0} ອອກ</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນໃນຂະນະທີ່ໂຫຼດໂປຣໄຟລ໌ນີ້</value></data>
+  <data name="Profile_GameLook" xml:space="preserve"><value>ໃຊ້ຮູບລັກສະນະຂອງເກມ</value></data>
+  <data name="Profile_GameLook_Tip" xml:space="preserve"><value>ໃນຂະນະທີ່ໂປຣໄຟລ໌ນີ້ເປີດໃຊ້ງານ, PadForge ຈະສະແດງຮູບ ແລະ ສີຂອງເກມ. ທີມຂອງທ່ານຈະກັບມາເມື່ອໂປຣໄຟລ໌ອື່ນເປີດໃຊ້ງານ.</value></data>
+  <data name="Profile_GameLook_NoPicture" xml:space="preserve"><value>ຮູບຂອງເກມບໍ່ມີຢູ່ໃນ PC ນີ້.</value></data>
+  <data name="Profile_GameLook_GetPicture" xml:space="preserve"><value>ດຶງຮູບ</value></data>
+  <data name="Profile_GameLook_LookupOff" xml:space="preserve"><value>ເປີດ “ຄອນຟິກຈາກຊຸມຊົນ” ໃນການຕັ້ງຄ່າ ເພື່ອດຶງຮູບຂອງເກມຈາກ Steam.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>ສຳເນົາຈາກ</value></data>
@@ -3949,7 +3971,7 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ທ່ອງເບິ່ງຄອນຟິກຕົວຄວບຄຸມ Steam Input ທີ່ຊຸມຊົນສ້າງ ແລະ ແປງພວກມັນເປັນໂປຣໄຟລ໌ PadForge. PadForge ສົ່ງຂໍ້ຄວາມຄົ້ນຫາຂອງທ່ານ, ID ຂອງເກມ, ຄອນຟິກ ແລະ ຜູ້ສ້າງທີ່ກ່ຽວຂ້ອງ, ແລະ ເວີຊັນຂອງມັນ. ການເຂົ້າສູ່ລະບົບ Steam ແບບບໍ່ລະບຸຕົວຕົນຍັງສົ່ງເວີຊັນ Windows ຂອງທ່ານ ແລະ ID ເຄື່ອງທີ່ສ້າງຈາກແຮຊຂອງ ID ການຕິດຕັ້ງ Windows, ທີ່ຢູ່ຂອງອະແດັບເຕີເຄືອຂ່າຍ ແລະ ໝາຍເລກຊີຣຽວຂອງດິສບູດ. ບໍ່ມີບໍລິການຂອງບຸກຄົນທີສາມມາກ່ຽວຂ້ອງ.</value></data>
-  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ເຊື່ອມຕໍ່ກັບເຊີບເວີຂອງ Steam ສະເພາະເມື່ອທ່ານຄົ້ນຫາ, ເປີດຄອນຟິກ ຫຼື ກວດຄອນຟິກທີ່ນຳເຂົ້າເພື່ອຫາອັບເດດ. ບໍ່ມີເທເລເມທຣີ, ບໍ່ຕ້ອງມີບັນຊີ Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ເຊື່ອມຕໍ່ກັບເຊີບເວີຂອງ Steam ສະເພາະເມື່ອທ່ານຄົ້ນຫາ, ເປີດຄອນຟິກ, ກວດຄອນຟິກທີ່ນຳເຂົ້າເພື່ອຫາອັບເດດ ຫຼື ດຶງຮູບຂອງເກມ. ບໍ່ມີເທເລເມທຣີ, ບໍ່ຕ້ອງມີບັນຊີ Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ສິ່ງທີ່ຖືກສົ່ງ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ເປີດໃຊ້ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ສະແດງຄອນຟິກເວີກຊັອບລຸ້ນເກົ່າ</value></data>
@@ -5220,4 +5242,59 @@
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ສະແດງແວ່ນຂະຫຍາຍຂະນະກົດຄ້າງມາໂຄຣນີ້, ສຳລັບການເລັງຜ່ານສູນເລັງຂອງປືນ. ຕັ້ງຄ່າມັນໃນໜ້າແວ່ນຂະຫຍາຍ.</value></data>
   <data name="About_LanguageRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ</value></data>
   <data name="About_LanguageRefsDesc" xml:space="preserve"><value>ຄຳສັບຂອງການແປພາສາຄລິງກອນ ແລະ ຊິນດາຣິນ, ກວດສອບກັບ klingon-assistant-data (Apache-2.0), ວັດຈະນານຸກົມເບື້ອງຫຼັງ boQwI', ແລະ Eldamo (CC BY 4.0), ພົດຈະນານຸກົມພາສາເອວຟ໌ຂອງ Paul Strack. ເປັນຂໍ້ມູນວັດຈະນານຸກົມເທົ່ານັ້ນ, ບໍ່ມີສ່ວນໃດຖືກລວມມາ.</value></data>
+  <data name="Settings_ThemeAddFailed" xml:space="preserve"><value>ໄຟລ໌ນັ້ນບໍ່ແມ່ນທີມ PadForge.</value></data>
+  <data name="Settings_ThemeSaveFailed_Format" xml:space="preserve"><value>ບໍ່ສາມາດບັນທຶກທີມໄດ້. {0}</value></data>
+  <data name="ThemeBuilder_NewTitle" xml:space="preserve"><value>ທີມໃໝ່</value></data>
+  <data name="ThemeBuilder_Subtitle" xml:space="preserve"><value>PadForge ສະແດງທີມນີ້ທັນທີໃນຂະນະທີ່ທ່ານສ້າງມັນ.</value></data>
+  <data name="ThemeBuilder_Name" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="ThemeBuilder_DefaultName" xml:space="preserve"><value>ທີມຂອງຂ້ອຍ</value></data>
+  <data name="ThemeBuilder_Base" xml:space="preserve"><value>ພື້ນ</value></data>
+  <data name="ThemeBuilder_BaseTip" xml:space="preserve"><value>ພື້ນທີ່ທີມຕັ້ງຢູ່. ທີມມືດມີຕົວອັກສອນສີອ່ອນ ແລະ ທີມສະຫວ່າງມີຕົວອັກສອນສີເຂັ້ມ.</value></data>
+  <data name="ThemeBuilder_Picture" xml:space="preserve"><value>ຮູບ</value></data>
+  <data name="ThemeBuilder_FromGame" xml:space="preserve"><value>ຈາກເກມ Steam…</value></data>
+  <data name="ThemeBuilder_FromFile" xml:space="preserve"><value>ຈາກໄຟລ໌…</value></data>
+  <data name="ThemeBuilder_NoPicture" xml:space="preserve"><value>ບໍ່ມີຮູບ</value></data>
+  <data name="ThemeBuilder_Fetching" xml:space="preserve"><value>ກຳລັງດຶງຮູບຈາກ Steam…</value></data>
+  <data name="ThemeBuilder_NoArt" xml:space="preserve"><value>Steam ບໍ່ມີຮູບກວ້າງສຳລັບເກມນີ້.</value></data>
+  <data name="ThemeBuilder_SearchFailed" xml:space="preserve"><value>ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ Steam. ກວດເບິ່ງການເຊື່ອມຕໍ່ຂອງທ່ານ.</value></data>
+  <data name="ThemeBuilder_Position" xml:space="preserve"><value>ຕຳແໜ່ງ</value></data>
+  <data name="ThemeBuilder_PositionTip" xml:space="preserve"><value>ເລື່ອນຮູບຂຶ້ນ ຫຼື ລົງພາຍໃນກອບຂອງມັນ.</value></data>
+  <data name="ThemeBuilder_ShowLogo" xml:space="preserve"><value>ສະແດງໂລໂກ້ຂອງເກມ</value></data>
+  <data name="ThemeBuilder_Colors" xml:space="preserve"><value>ສີ</value></data>
+  <data name="ThemeBuilder_MatchPicture" xml:space="preserve"><value>ໃຊ້ສີຕາມຮູບ</value></data>
+  <data name="ThemeBuilder_MatchPictureTip" xml:space="preserve"><value>ເອົາສີທັງສີ່ມາຈາກຮູບ.</value></data>
+  <data name="ThemeBuilder_Background" xml:space="preserve"><value>ສີພື້ນຫຼັງ</value></data>
+  <data name="ThemeBuilder_BackgroundTip" xml:space="preserve"><value>ສີຂອງໜ້າ. ສີຂອງໜ້າຕ່າງ, ແຖບຂ້າງ, ບັດ ແລະ ເສັ້ນ ແມ່ນລະດັບທີ່ອ່ອນ ຫຼື ເຂັ້ມກວ່າຂອງສີນີ້.</value></data>
+  <data name="ThemeBuilder_Accent" xml:space="preserve"><value>ສີເນັ້ນ</value></data>
+  <data name="ThemeBuilder_AccentTip" xml:space="preserve"><value>ທຸກສິ່ງທີ່ກຳລັງເຮັດວຽກ: ເອັນຈິນ, ປຸ່ມຫຼັກ, ລາຍການທີ່ເລືອກ.</value></data>
+  <data name="ThemeBuilder_Secondary" xml:space="preserve"><value>ສີຮອງ</value></data>
+  <data name="ThemeBuilder_SecondaryTip" xml:space="preserve"><value>ຄ່າທີ່ວັດໄດ້ ແລະ ເຄື່ອງໝາຍອຸປະກອນ: ອັດຕາ, ລະດັບແບັດເຕີຣີ, ອິນພຸດດິບ.</value></data>
+  <data name="ThemeBuilder_Attention" xml:space="preserve"><value>ສີແຈ້ງເຕືອນ</value></data>
+  <data name="ThemeBuilder_AttentionTip" xml:space="preserve"><value>ສະຖານະທີ່ລໍຖ້າ: ກຳລັງລໍຖ້າອຸປະກອນ, ແບັດເຕີຣີຕ່ຳ, ການປ່ຽນແປງທີ່ຍັງບໍ່ໄດ້ບັນທຶກ.</value></data>
+  <data name="ThemeBuilder_PickColor" xml:space="preserve"><value>ເລືອກສີ</value></data>
+  <data name="ThemeBuilder_PictureFilter" xml:space="preserve"><value>ຮູບ (*.png, *.jpg, *.bmp, *.gif, *.webp)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp|ໄຟລ໌ທັງໝົດ (*.*)|*.*</value></data>
+  <data name="ThemeBuilder_PictureFailed" xml:space="preserve"><value>PadForge ບໍ່ສາມາດອ່ານໄຟລ໌ນັ້ນເປັນຮູບໄດ້.</value></data>
+  <data name="ThemeBuilder_GameCredits_Format" xml:space="preserve"><value>ຮູບ: ພາບໃນຄັງເກມຂອງ Steam ສຳລັບ {0}.</value></data>
+  <data name="About_ThemeArtVaderHelmet" xml:space="preserve"><value>ຮູບທີມ: ໝວກເຫຼັກຂອງ ດາດ ເວເດີ</value></data>
+  <data name="About_ThemeArtVaderHelmetDesc" xml:space="preserve"><value>ຮູບໂປຣໂມດຂອງ Lucasfilm ສຳລັບ Revenge of the Sith: ຮູບຂອງທີມ Dark Side ຂອງ Star Wars. ພົບໃນ Wookieepedia.</value></data>
+  <data name="About_ThemeArtLogos" xml:space="preserve"><value>ຮູບທີມ: ໂລໂກ້ແຟຣນໄຊສ໌</value></data>
+  <data name="About_ThemeArtLogosDesc" xml:space="preserve"><value>ໂລໂກ້ຂອງ Sonic the Hedgehog, The Lord of the Rings, Harry Potter, Star Wars, Star Trek: The Original Series ແລະ Star Trek: The Next Generation ເທິງຮູບຂອງທີມເລີ່ມຕົ້ນ. ພົບໃນ Wikimedia Commons ເຊິ່ງລະບຸວ່າແຕ່ລະອັນເປັນໂລໂກ້ຕົວອັກສອນທຳມະດາທີ່ເປັນສາທາລະນະສົມບັດ. ແຕ່ລະອັນເປັນເຄື່ອງໝາຍການຄ້າຂອງເຈົ້າຂອງ.</value></data>
+  <data name="About_ThemeArtHobbiton" xml:space="preserve"><value>ຮູບທີມ: ຮອບບິຕັນ</value></data>
+  <data name="About_ThemeArtHobbitonDesc" xml:space="preserve"><value>ສະຖານທີ່ຖ່າຍທຳຮອບບິຕັນໃນນິວຊີແລນ, ຮູບຖ່າຍໂດຍ Jackie.lck: ຮູບຂອງທີມ The One Ring ຂອງ The Lord of the Rings. ພົບໃນ Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtHogwarts" xml:space="preserve"><value>ຮູບທີມ: ປາສາດຮອກວອດ</value></data>
+  <data name="About_ThemeArtHogwartsDesc" xml:space="preserve"><value>ເຟຣມໜຶ່ງຈາກຕົວຢ່າງ Hogwarts Legacy ຈາກຊ່ອງ YouTube ຂອງເກມເອງ: ຮູບຂອງທີມ Gryffindor ຂອງ Harry Potter. ພົບໃນ Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtMiddleEarthMap" xml:space="preserve"><value>ຮູບທີມ: ແຜນທີ່ມິດເດິນເອີດ</value></data>
+  <data name="About_ThemeArtMiddleEarthMapDesc" xml:space="preserve"><value>ແຜນທີ່ມິດເດິນເອີດ: ຮູບຂອງທີມ Map of Middle-earth ຂອງ The Lord of the Rings. ພົບໃນ The One Wiki to Rule Them All ເຊິ່ງບໍ່ໄດ້ລະບຸຊື່ສິລະປິນ.</value></data>
+  <data name="About_ThemeArtFalcon" xml:space="preserve"><value>ຮູບທີມ: ມິລເລນນຽມ ຟາລຄອນ</value></data>
+  <data name="About_ThemeArtFalconDesc" xml:space="preserve"><value>ມິລເລນນຽມ ຟາລຄອນ ຂະໜາດເທົ່າຂອງຈິງທີ່ Galaxy’s Edge, ຮູບຖ່າຍໂດຍ Tomás Del Coro: ຮູບຂອງທີມ Opening Crawl ຂອງ Star Wars. ພົບໃນ Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicKronos" xml:space="preserve"><value>ຮູບທີມ: Sonic ເທິງເກາະໂຄຣໂນສ</value></data>
+  <data name="About_ThemeArtSonicKronosDesc" xml:space="preserve"><value>ເຟຣມໜຶ່ງຈາກຕົວຢ່າງ Sonic Frontiers ຈາກຊ່ອງ YouTube ຂອງ SEGA ເອງ: ຮູບຂອງທີມ Blue Blur ຂອງ Sonic the Hedgehog. ພົບໃນ Wikimedia Commons.</value></data>
+  <data name="About_ThemeArtSonicRunning" xml:space="preserve"><value>ຮູບທີມ: Sonic ກຳລັງແລ່ນ</value></data>
+  <data name="About_ThemeArtSonicRunningDesc" xml:space="preserve"><value>ພາບທີ່ SEGA ສ້າງສຳລັບ Sonic Lost World: ຮູບຂອງທີມ Night Run ຂອງ Sonic the Hedgehog. ພົບໃນ Sonic Wiki Zone.</value></data>
+  <data name="About_ThemeArtHouseCrests" xml:space="preserve"><value>ຮູບທີມ: ຕາປະຈຳບ້ານທັງສີ່</value></data>
+  <data name="About_ThemeArtHouseCrestsDesc" xml:space="preserve"><value>ຕາປະຈຳບ້ານທັງສີ່ຂອງຮອກວອດ ແຕ້ມໂດຍ Atomhawk Design ສຳລັບ Pottermore: ຮູບຂອງທີມ Four Houses ຂອງ Harry Potter. ພົບໃນ Harry Potter Wiki.</value></data>
+  <data name="About_ThemeArtEnterpriseModel" xml:space="preserve"><value>ຮູບທີມ: ໂມເດວສະຕູດິໂອ USS Enterprise</value></data>
+  <data name="About_ThemeArtEnterpriseModelDesc" xml:space="preserve"><value>ໂມເດວທີ່ໃຊ້ຖ່າຍທຳຊີຣີ Star Trek ຕົ້ນສະບັບ, ຖ່າຍຮູບໂດຍ Smithsonian National Air and Space Museum ເຊິ່ງເກັບຮັກສາມັນໄວ້: ຮູບຂອງທີມ LCARS ຂອງ Star Trek.</value></data>
+  <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>ຮູບທີມ: USS Enterprise-D</value></data>
+  <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>ເຟຣມໜຶ່ງຈາກ Star Trek: The Next Generation: ຮູບຂອງທີມ Starfleet ຂອງ Star Trek. ພົບໃນ Memory Alpha.</value></data>
 </root>

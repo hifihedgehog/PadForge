@@ -12,6 +12,8 @@ namespace PadForge.Common.ConfigImport
         Unknown = 0,
         Rewasd = 1,
         Ds4Windows = 2,
+        /// <summary>A DSX (Paliverse) 3.1+ <c>.dsx</c> profile, JSON.</summary>
+        Dsx = 3,
     }
 
     /// <summary>
@@ -35,7 +37,8 @@ namespace PadForge.Common.ConfigImport
         {
             string ext = Path.GetExtension(path ?? string.Empty);
             return ext.Equals(".rewasd", StringComparison.OrdinalIgnoreCase)
-                || ext.Equals(".xml", StringComparison.OrdinalIgnoreCase);
+                || ext.Equals(".xml", StringComparison.OrdinalIgnoreCase)
+                || ext.Equals(".dsx", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>Reads a file off disk, refusing one over the cap before
@@ -66,15 +69,29 @@ namespace PadForge.Common.ConfigImport
         }
 
         /// <summary>Decides what a file holds from what it starts with: a
-        /// <c>{</c> is JSON, and XML has to name its root.</summary>
+        /// <c>{</c> is JSON, DSX's when its root names DSX's sections and
+        /// reWASD's otherwise, and XML has to name its root.</summary>
         public static ForeignConfigKind Detect(byte[] bytes)
         {
             int i = SkipPreamble(bytes);
             if (i >= bytes.Length) return ForeignConfigKind.Unknown;
-            if (bytes[i] == (byte)'{') return ForeignConfigKind.Rewasd;
+            if (bytes[i] == (byte)'{') return IsDsxProfile(bytes) ? ForeignConfigKind.Dsx : ForeignConfigKind.Rewasd;
             // Anything else may be XML in any encoding its preamble names.
             var root = TryParseXml(bytes, out _);
             return root?.Root?.Name.LocalName == "DS4Windows" ? ForeignConfigKind.Ds4Windows : ForeignConfigKind.Unknown;
+        }
+
+        /// <summary>True for a DSX 3.1+ profile: its root names its kind,
+        /// <c>profile_type</c>, and holds the <c>controller_general</c>
+        /// section, as every published <c>.dsx</c> file does. A reWASD config
+        /// has neither.</summary>
+        private static bool IsDsxProfile(byte[] bytes)
+        {
+            using var doc = TryParseJson(bytes);
+            if (doc == null || doc.RootElement.ValueKind != JsonValueKind.Object) return false;
+            return doc.RootElement.TryGetProperty("profile_type", out _)
+                && doc.RootElement.TryGetProperty("controller_general", out var general)
+                && general.ValueKind == JsonValueKind.Object;
         }
 
         /// <summary>Parses JSON with the comments and trailing commas hand

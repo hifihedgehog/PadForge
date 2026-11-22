@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Нема контролера</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Отпустите да бисте увезли профил</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Овде отпустите датотеку профила</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD или DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows или DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Нови профил</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Сачувај као…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Сачувај тренутно подешавање овде</value></data>
@@ -5149,7 +5149,7 @@
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Прегледач програма OBS отказује страницу чијем сертификату не верује, па се страница са сликом контролера за извор прегледача у програму OBS служи на обичној адреси. Коришћено само као документација, не испоручује се GPL код.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Референце за увоз профила</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Формат профила reWASD, прочитан из shunt шеме дампа аутора hcn1z1 (MIT), документације reWASD-Powertools аутора DatMoshu (MIT) и помоћи за reWASD, и формат профила DS4Windows, прочитан из огранка DS4Windows аутора Schmaldeo (GPL-3.0-or-later). Само документација, не испоручује се код.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Формат профила reWASD, прочитан из shunt шеме дампа аутора hcn1z1 (MIT), документације reWASD-Powertools аутора DatMoshu (MIT) и помоћи за reWASD, формат профила DS4Windows, прочитан из огранка DS4Windows аутора Schmaldeo (GPL-3.0-or-later), и формат профила DSX, прочитан из профила у пројекту DSX-profile-share аутора winkywong1998, пројекту DualSense аутора RAIZ-Zzz (MIT) и систему модова програма DSX аутора Paliverse (Apache-2.0). Само документација, не испоручује се код.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Референце за осветљење Боја екрана</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Снимање екрана иза осветљења Боја екрана, прочитано из Prismatik (GPL-2.0-or-later), огранка foundation-sunshine аутора AlkaidLab програма Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) и alienfx-tools (MIT). Само документација, не испоручује се GPL код.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Екрани тастатуре</value></data>
@@ -5604,7 +5604,7 @@
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>На {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge није могао да прочита ту датотеку.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Та датотека је превелика да би била профил.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Та датотека није PadForge, reWASD или DS4Windows профил.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Та датотека није PadForge, reWASD, DS4Windows или DSX профил.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Та датотека садржи декларацију типа документа, која профилу никада није потребна, па је PadForge није прочитао.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Та датотека није у reWASD формату који PadForge чита, шема 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge не препознаје овај улаз: {0}</value></data>
@@ -5891,7 +5891,7 @@
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Боје се шаљу директно на {0}. Променљиве боје, као што су циклус боја или боје које прате звук, не стижу до њега. Боја која се не мења стиже.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Све датотеке (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge профил (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Програми (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Све датотеке (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Звучне датотеке и звучни пакети|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Звучни пакети (*.pfsounds)|*.pfsounds|Све датотеке (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Звучне датотеке|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Све датотеке (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows обликује {0} радијалног штапића према углу гурања. Картица штапића у програму PadForge једнако изводи право гурање, а дијагонално другачије.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows умањује мртву зону жироскопа на свакој оси сразмерно углу покрета. PadForge одузима целу мртву зону на свакој оси, па се прав покрет понаша једнако, а спор дијагонални почиње касније.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Слојеви различито подешавају {0}, па сваки задржава своје подешавање, а крива се преноси као најближа степена крива.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX ово чува као {0} и не објављује шта његови бројеви значе.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX не даје јединицу за ово, па PadForge користи своју.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX не објављује како функционише његово подешавање {0}, па PadForge користи своје.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX не објављује своје бројеве улаза. Објављени DSX профили користе 41 до 44 за D-pad, па их PadForge тако чита.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX не пише овакво повезивање, па је датотека измењена изван програма DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX прелази на ову шему помоћу пречице. Њен макро је на страници Макрои, спреман да се веже за дугме.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ниједан објављени DSX профил не користи {0}, па PadForge не може да утврди шта то ради.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX допушта игри да ово подеси док је његов прекидач пропуштања укључен, па и PadForge то препушта игри.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>У режиму Native Mode са искљученом опцијом Send Data to Device, DSX не шаље контролеру ништа своје, па и PadForge ово препушта игри.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX не објављује како његов турбо мери сваки притисак, па PadForge чека {0} мс између притисака.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Ниједан објављени DSX профил не приказује прилагођени тастер, па PadForge чита {0} као називе тастера у систему Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX не објављује у ком смеру се окрећу његове осе покрета. PadForge чита X као нагиб, Y као скретање и Z као ваљање, што су сопствене осе контролера DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge хаптичке ефекте игре за DualSense, када може, репродукује на сопственим актуаторима контролера, а када не може, као вибрацију.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge чува {0} у својим подешавањима програма, ван сваког профила.</value></data>
 </root>

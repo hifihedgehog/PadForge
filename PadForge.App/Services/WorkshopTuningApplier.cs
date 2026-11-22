@@ -268,6 +268,82 @@ namespace PadForge.Services
             return changed;
         }
 
+        /// <summary>The PC's default microphone, which Follow Device Mute
+        /// follows when an import sets it. A test sets its own.</summary>
+        internal static Func<string> DefaultMicrophone = AudioMuteService.DefaultCaptureId;
+
+        /// <summary>True when the slot holds a stamp
+        /// <see cref="ApplyDeviceStamps"/> spends.</summary>
+        public static bool HasDeviceStamps(MappingSet set)
+            => set != null && (!string.IsNullOrEmpty(set.WorkshopBatteryColors)
+                               || !string.IsNullOrEmpty(set.WorkshopPlayerLedMode)
+                               || !string.IsNullOrEmpty(set.WorkshopPlayerLedBrightness)
+                               || !string.IsNullOrEmpty(set.WorkshopMicLedMode)
+                               || !string.IsNullOrEmpty(set.WorkshopHeadphoneVolume));
+
+        /// <summary>What an import set on the device's own Lighting and Audio
+        /// cards (#561, #589): the battery light colors, the player LEDs and
+        /// their brightness, the mic LED and the headset volume. Each lands
+        /// where the card still holds its default, and every stamp is spent
+        /// on the first device that takes it, as the other stamps are.</summary>
+        public static bool ApplyDeviceStamps(int slotIndex, ViewModels.DeviceSlotConfig cfg)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (cfg == null || sets == null || slotIndex < 0 || slotIndex >= sets.Length) return false;
+            var set = sets[slotIndex];
+            if (set == null) return false;
+            bool changed = ApplyBatteryColors(slotIndex, cfg);
+
+            if (!string.IsNullOrEmpty(set.WorkshopPlayerLedMode))
+            {
+                if (Enum.TryParse(set.WorkshopPlayerLedMode, out ViewModels.PlayerLedMode mode) && Enum.IsDefined(mode)
+                    && cfg.PlayerLedMode == ViewModels.PlayerLedMode.PlayerNumber && mode != cfg.PlayerLedMode)
+                {
+                    cfg.PlayerLedMode = mode;
+                    changed = true;
+                }
+                set.WorkshopPlayerLedMode = "";
+            }
+
+            if (!string.IsNullOrEmpty(set.WorkshopPlayerLedBrightness))
+            {
+                if (Enum.TryParse(set.WorkshopPlayerLedBrightness, out ViewModels.PlayerLedBrightness level) && Enum.IsDefined(level)
+                    && cfg.PlayerLedBrightness == ViewModels.PlayerLedBrightness.High && level != cfg.PlayerLedBrightness)
+                {
+                    cfg.PlayerLedBrightness = level;
+                    changed = true;
+                }
+                set.WorkshopPlayerLedBrightness = "";
+            }
+
+            if (!string.IsNullOrEmpty(set.WorkshopMicLedMode))
+            {
+                if (Enum.TryParse(set.WorkshopMicLedMode, out ViewModels.MicLedMode mic) && Enum.IsDefined(mic)
+                    && cfg.MicLedMode == ViewModels.MicLedMode.Off && mic != ViewModels.MicLedMode.Off)
+                {
+                    // Follow Device Mute with no microphone picked follows
+                    // nothing, so it takes the PC's default one.
+                    if (mic == ViewModels.MicLedMode.FollowDeviceMute && string.IsNullOrEmpty(cfg.MicLedFollowDeviceId))
+                        cfg.MicLedFollowDeviceId = DefaultMicrophone?.Invoke() ?? "";
+                    cfg.MicLedMode = mic;
+                    changed = true;
+                }
+                set.WorkshopMicLedMode = "";
+            }
+
+            if (!string.IsNullOrEmpty(set.WorkshopHeadphoneVolume))
+            {
+                if (int.TryParse(set.WorkshopHeadphoneVolume, NumberStyles.Integer, CultureInfo.InvariantCulture, out int volume)
+                    && volume is >= 0 and < 100 && cfg.HeadphoneVolume == 100)
+                {
+                    cfg.HeadphoneVolume = volume;
+                    changed = true;
+                }
+                set.WorkshopHeadphoneVolume = "";
+            }
+            return changed;
+        }
+
         private static bool TryColor(string text, out (byte R, byte G, byte B) color)
         {
             color = default;

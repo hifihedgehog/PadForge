@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Няма кантролераў</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Адпусціце, каб імпартаваць профіль</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Перацягніце сюды файл профілю</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD або DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows або DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Новы профіль</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Захаваць як…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Захаваць бягучую наладу сюды</value></data>
@@ -5149,7 +5149,7 @@
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Браўзер OBS адхіляе старонку, сертыфікату якой ён не давярае, таму старонка з выявай кантролера для крыніцы браўзера OBS аддаецца па звычайным адрасе. Чытаецца толькі як дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Матэрыялы па імпарце профіляў</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Фармат профіляў reWASD, прачытаны з дампа схемы shunt ад hcn1z1 (MIT), дакументацыі reWASD-Powertools ад DatMoshu (MIT) і даведкі reWASD, а фармат профіляў DS4Windows, прачытаны з форка DS4Windows ад Schmaldeo (GPL-3.0-or-later). Толькі дакументацыя, код не пастаўляецца.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Фармат профіляў reWASD, прачытаны з дампа схемы shunt ад hcn1z1 (MIT), дакументацыі reWASD-Powertools ад DatMoshu (MIT) і даведкі reWASD, фармат профіляў DS4Windows, прачытаны з форка DS4Windows ад Schmaldeo (GPL-3.0-or-later), і фармат профіляў DSX, прачытаны з профіляў у DSX-profile-share ад winkywong1998, праекта DualSense ад RAIZ-Zzz (MIT) і Mod System of DSX ад Paliverse (Apache-2.0). Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Матэрыялы па «Колеры экрана»</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Захоп экрана, на якім трымаецца падсветка «Колер экрана», прачытаны з Prismatik (GPL-2.0-or-later), форка foundation-sunshine ад AlkaidLab на аснове Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) і alienfx-tools (MIT). Толькі дакументацыя, код GPL не пастаўляецца.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Экраны клавіятуры</value></data>
@@ -5604,7 +5604,7 @@
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>На {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge не змог прачытаць гэты файл.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Гэты файл занадта вялікі для профілю.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Гэты файл не з'яўляецца профілем PadForge, reWASD або DS4Windows.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Гэты файл не з'яўляецца профілем PadForge, reWASD, DS4Windows або DSX.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Гэты файл абвяшчае тып дакумента, які профілю ніколі не патрэбны, таму PadForge яго не чытаў.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Гэты файл не ў фармаце reWASD, які чытае PadForge: схема 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge не распазнае гэты ўвод: {0}</value></data>
@@ -5891,7 +5891,7 @@
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Зменлівыя колеры, напрыклад цыкл колераў або колеры, што залежаць ад гуку, на яго не трапляюць. Колер, які не змяняецца, трапляе.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Усе файлы (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Профіль PadForge (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Праграмы (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Усе файлы (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Аўдыяфайлы і гукавыя пакеты|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Гукавыя пакеты (*.pfsounds)|*.pfsounds|Усе файлы (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Аўдыяфайлы|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Усе файлы (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows фармуе {0} радыяльнага стыка па вуглу націску. Картка налад стыка ў PadForge прамы націск праводзіць аднолькава, а дыяганальны па-іншаму.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows памяншае мёртвую зону гіраскопа на кожнай восі ў залежнасці ад вугла руху. PadForge здымае мёртвую зону на кожнай восі цалкам, таму прамы рух працуе аднолькава, а павольны дыяганальны пачынаецца пазней.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Пласты па-рознаму наладжваюць {0}, таму кожны захоўвае ўласную наладу, а крывая пераносіцца як бліжэйшая ступенная крывая.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX захоўвае гэта як {0} і не публікуе, што азначаюць яго лічбы.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX не дае адзінкі для гэтага, таму PadForge выкарыстоўвае ўласную.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX не публікуе, як працуе яго налада «{0}», таму PadForge выкарыстоўвае ўласную.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX не публікуе свае ўваходныя лічбы. Апублікаваныя профілі DSX выкарыстоўваюць ад 41 да 44 для крыжавіны, таму PadForge чытае іх так.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX не запісвае такой прывязкі, таму файл змянілі па-за DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX пераключаецца на гэты прэсет па скарачэнні. Яго макрас ляжыць на старонцы «Макрасы», гатовы да прывязкі да кнопкі.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ніводны апублікаваны профіль DSX не выкарыстоўвае {0}, таму PadForge не можа вызначыць, што гэта робіць.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX дазваляе гульні задаваць гэта, пакуль уключаны яго пераключальнік скразной перадачы, таму PadForge таксама пакідае гэта гульні.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>У Native Mode пры выключаным Send Data to Device DSX не адпраўляе кантролеру нічога ад сябе, таму PadForge таксама пакідае гэта гульні.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX не публікуе, як яго турба вымярае час кожнага націску, таму PadForge чакае {0} мс паміж націскамі.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Ніводны апублікаваны профіль DSX не паказвае ўласнай клявішы, таму PadForge чытае {0} як назвы клавіш Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX не публікуе, у які бок круцяцца яго восі руху. PadForge чытае X як тангаж, Y як рысканне і Z як крэн, гэта ўласныя восі DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge прайграе тактыльны гук DualSense з гульні на ўласных актуатарах кантролера, калі можа, а калі не можа, то як вібрацыю.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge захоўвае {0} у наладах праграмы, па-за любым профілем.</value></data>
 </root>

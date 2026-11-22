@@ -2865,7 +2865,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Žádné ovladače</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Přetažením sem importujete profil</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Přetáhněte sem soubor profilu</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD nebo DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows nebo DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nový profil</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Uložit jako…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Uložit aktuální nastavení sem</value></data>
@@ -5149,7 +5149,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Prohlížeč OBS ruší stránku, jejímuž certifikátu nedůvěřuje, proto se stránka s obrázkem ovladače pro zdroj prohlížeče v OBS poskytuje na prosté adrese. Čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Reference k importu profilů</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Formát profilů reWASD, čtený z výpisu schématu shunt od hcn1z1 (MIT), z dokumentace reWASD-Powertools od DatMoshu (MIT) a z nápovědy reWASD, a formát profilů DS4Windows, čtený z forku DS4Windows od Schmaldeo (GPL-3.0-or-later). Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Formát profilů reWASD, čtený z výpisu schématu shunt od hcn1z1 (MIT), z dokumentace reWASD-Powertools od DatMoshu (MIT) a z nápovědy reWASD, formát profilů DS4Windows, čtený z forku DS4Windows od Schmaldeo (GPL-3.0-or-later), a formát profilů DSX, čtený z profilů v DSX-profile-share od winkywong1998, z projektu DualSense od RAIZ-Zzz (MIT) a z Mod System programu DSX od Paliverse (Apache-2.0). Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Reference k Barvě obrazovky</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Snímání obrazovky za osvětlením Barva obrazovky, čtené z Prismatik (GPL-2.0-or-later), forku foundation-sunshine od AlkaidLab z projektu Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) a alienfx-tools (MIT). Jen dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Obrazovky klávesnice</value></data>
@@ -5604,7 +5604,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Do: {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>Program PadForge tento soubor nedokázal přečíst.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Tento soubor je příliš velký na to, aby byl profilem.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tento soubor není profil programu PadForge, reWASD ani DS4Windows.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tento soubor není profil programu PadForge, reWASD, DS4Windows ani DSX.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Tento soubor deklaruje typ dokumentu, který profil nikdy nepotřebuje, a proto ho program PadForge nepřečetl.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Tento soubor není ve formátu reWASD, který program PadForge čte, schéma 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>Program PadForge tento vstup nezná: {0}</value></data>
@@ -5891,7 +5891,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Měnící se barvy, například cyklus barev nebo barvy reagující na zvuk, se k němu nedostanou. Barva, která se nemění, ano.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Všechny soubory (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programy (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Všechny soubory (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Zvukové soubory a zvukové balíčky|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Zvukové balíčky (*.pfsounds)|*.pfsounds|Všechny soubory (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Zvukové soubory|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Všechny soubory (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows tvaruje {0} radiální páčky podle úhlu vychýlení. Karta páčky v PadForge přímé vychýlení přehraje stejně a úhlopříčné jinak.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows upravuje mrtvou zónu gyroskopu na každé ose podle úhlu pohybu. PadForge odečítá celou mrtvou zónu na každé ose, takže přímý pohyb se přehraje stejně a pomalý úhlopříčný začne později.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Vrstvy ladí {0} různě, proto si každá ponechává vlastní ladění a křivka se přenese jako nejbližší mocninná křivka.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX ukládá toto jako {0} a nezveřejňuje, co jeho čísla znamenají.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX pro toto neuvádí žádnou jednotku, proto PadForge používá vlastní.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX nezveřejňuje, jak funguje jeho nastavení {0}, proto PadForge používá vlastní postup.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX nezveřejňuje svá čísla vstupů. Zveřejněné profily DSX používají 41 až 44 pro směrový kříž, proto je PadForge tak čte.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX takovou vazbu nezapisuje, proto byl soubor změněn mimo DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX na tuto předvolbu přepíná zkratkou. Její makro je na stránce Makra, připravené k přiřazení tlačítku.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Žádný zveřejněný profil DSX nepoužívá {0}, proto PadForge nemůže poznat, co to dělá.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX nechává toto nastavit hru, dokud je zapnutý jeho přepínač předávání, proto to PadForge také přenechává hře.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>V režimu Native Mode s vypnutou volbou Send Data to Device DSX do ovladače sám nic neposílá, proto PadForge toto také přenechává hře.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX nezveřejňuje, jak jeho turbo načasuje každé stisknutí, proto PadForge čeká mezi stisky {0} ms.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Žádný zveřejněný profil DSX nezobrazuje vlastní klávesu, proto PadForge čte {0} jako názvy kláves Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX nezveřejňuje, kterým směrem se jeho osy pohybu otáčejí. PadForge čte X jako Pitch, Y jako Yaw a Z jako Roll, vlastní osy ovladače DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge přehrává haptiku hry pro DualSense na vlastních aktuátorech ovladače, když to jde, a jinak jako vibrace.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge si {0} ukládá ve svém nastavení aplikace, mimo jakýkoli profil.</value></data>
 </root>

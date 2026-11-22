@@ -64,6 +64,22 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>The PC's default microphone, Windows' default capture
+        /// endpoint, as its endpoint id. Empty when there is none or the
+        /// audio stack cannot say.</summary>
+        public static string DefaultCaptureId()
+        {
+            try
+            {
+                using var device = GetEnumerator().GetDefaultAudioEndpoint(DataFlow.Capture, Role.Console);
+                return device?.ID ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         /// <summary>Resolve a device-id string to its current mute state.
         /// Returns null when the id is empty, the device is gone, or the
         /// COM call fails. The first call for a new id reads synchronously

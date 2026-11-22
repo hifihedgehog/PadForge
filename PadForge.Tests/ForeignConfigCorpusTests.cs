@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace PadForge.Tests
 {
-    /// <summary>Reads every public reWASD and DS4Windows config beside the
+    /// <summary>Reads every public reWASD, DS4Windows and DSX config beside the
     /// repository, when those clones are on disk. Their repositories carry no
     /// license, so they are never committed as fixtures, and a machine without
     /// them runs nothing here.</summary>
@@ -113,6 +113,46 @@ namespace PadForge.Tests
             foreach (var kv in reasons.OrderByDescending(k => k.Value))
                 _output.WriteLine($"  {kv.Value,5} {kv.Key}");
             Assert.True(imported >= 46, "imported " + imported);
+        }
+
+        /// <summary>#589: every published DSX profile (winkywong1998's
+        /// DSX-profile-share) imports, each binding whose inputs DSX's
+        /// profiles show is lowered, and every line names its reason.</summary>
+        [Fact]
+        public void EveryPublicDsxProfileImports()
+        {
+            string root = ClonesRoot();
+            if (root == null) return;
+            var files = Collect(root, "*.dsx", "DSX-profile-share");
+            if (files.Count == 0) return;
+
+            int imported = 0, clean = 0, partial = 0, skipped = 0, arrows = 0;
+            var reasons = new Dictionary<string, int>();
+            foreach (string file in files)
+            {
+                var result = ForeignConfigImporter.Translate(file);
+                Assert.False(result.Refused, Path.GetFileName(file) + " " + result.RefusedKey);
+                Assert.Equal(ForeignConfigKind.Dsx, result.Kind);
+                imported++;
+                clean += result.Report.CleanCount;
+                partial += result.Report.PartialCount;
+                skipped += result.Report.SkippedCount;
+                Tally(reasons, result.Report);
+                AssertWellFormed(result, file);
+                Assert.All(result.Report.Entries.Where(e => e.Status != TranslationStatus.Clean),
+                    e => Assert.False(string.IsNullOrEmpty(e.ReasonKey), Path.GetFileName(file) + ": " + e.SourcePath + " has no reason"));
+                // The one profile that sends the D-pad as the arrow keys, on
+                // turbo.
+                arrows += result.Profile.Macros.Count(m => m.TriggerMode == ViewModels.MacroTriggerMode.Turbo
+                    && m.Name.StartsWith("Button Mapping D-pad", StringComparison.Ordinal));
+                foreach (var e in result.Report.Entries)
+                    _output.WriteLine($"{Path.GetFileName(file)} | {e.Status} | {e.SourcePath} | {e.Binding} | {e.Emitted} | {e.ReasonKey} {string.Join(",", e.ReasonArgs)}");
+            }
+            _output.WriteLine($"DSX files {files.Count} imported {imported} clean {clean} partial {partial} skipped {skipped}");
+            foreach (var kv in reasons.OrderByDescending(k => k.Value))
+                _output.WriteLine($"  {kv.Value,5} {kv.Key}");
+            Assert.Equal(files.Count, imported);
+            Assert.True(arrows > 0, "no published binding came across");
         }
 
         /// <summary>Holds the import against the file itself, since a fixture
@@ -304,7 +344,10 @@ namespace PadForge.Tests
                 // An empty macro is only ever a block: it consumes the one key
                 // the file stops reaching Windows.
                 Assert.True(m.Actions.Length > 0 || m.ConsumeTriggerButtons, $"{name}: macro {m.Name} does nothing");
-                Assert.True(m.TriggerMode == ViewModels.MacroTriggerMode.Always || !string.IsNullOrEmpty(m.TriggerInputs),
+                // A DSX preset ships unbound, for the user to bind, and its
+                // line says so.
+                bool preset = result.Report.Entries.Any(e => e.ReasonKey == ImportReasons.DsxPreset && m.Name == "Triggers: " + e.Binding);
+                Assert.True(m.TriggerMode == ViewModels.MacroTriggerMode.Always || !string.IsNullOrEmpty(m.TriggerInputs) || preset,
                     $"{name}: macro {m.Name} has no trigger");
             }
         }

@@ -2865,7 +2865,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Engar stýringar</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Slepptu hér til að flytja inn snið</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Slepptu sniðskrá hér</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD eða DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows eða DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nýtt snið</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Vista sem…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Vista núverandi uppsetningu hér</value></data>
@@ -5149,7 +5149,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Vafri OBS hættir við síðu ef hann treystir ekki skilríki hennar, svo síðan með mynd stýripinnans fyrir OBS-vafragjafa er birt á venjulegu vistfangi. Lesið eingöngu sem skjölun, enginn GPL-kóði fylgir.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Viðmiðanir fyrir innflutning sniða</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Skráarsnið reWASD-sniða, lesið úr skemaafriti shunt frá hcn1z1 (MIT), reWASD-Powertools-skjölum frá DatMoshu (MIT) og hjálp reWASD, og skráarsnið DS4Windows-sniða, lesið úr kvísl Schmaldeo af DS4Windows (GPL-3.0-or-later). Aðeins skjölun, enginn kóði fylgir.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Skráarsnið reWASD-sniða, lesið úr skemaafriti shunt frá hcn1z1 (MIT), reWASD-Powertools-skjölum frá DatMoshu (MIT) og hjálp reWASD, skráarsnið DS4Windows-sniða, lesið úr kvísl Schmaldeo af DS4Windows (GPL-3.0-or-later), og skráarsnið DSX-sniða, lesið úr sniðunum í DSX-profile-share frá winkywong1998, DualSense-verkefni RAIZ-Zzz (MIT) og Mod System í DSX frá Paliverse (Apache-2.0). Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Viðmiðanir fyrir lýsinguna Skjálitur</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Skjátakan á bak við lýsinguna Skjálitur, lesin úr Prismatik (GPL-2.0-or-later), kvíslinni foundation-sunshine frá AlkaidLab af Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) og alienfx-tools (MIT). Aðeins skjölun, enginn GPL-kóði fylgir.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Skjáir lyklaborðs</value></data>
@@ -5604,7 +5604,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Í {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge gat ekki lesið þessa skrá.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Þessi skrá er of stór til að vera snið.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Þessi skrá er ekki PadForge-, reWASD- eða DS4Windows-snið.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Þessi skrá er ekki PadForge-, reWASD-, DS4Windows- eða DSX-snið.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Þessi skrá lýsir skjalagerð, sem snið þarf aldrei, svo PadForge las hana ekki.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Þessi skrá er ekki á reWASD-sniðinu sem PadForge les, skema 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge þekkir ekki þetta inntak: {0}</value></data>
@@ -5891,7 +5891,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Litir fara beint til {0}. Breytilegir litir, eins og litahringrás eða litir sem fylgja hljóði, berast ekki til þess. Litur sem helst óbreyttur gerir það.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Allar skrár (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-snið (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Forrit (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Allar skrár (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Hljóðskrár og hljóðpakkar|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Hljóðpakkar (*.pfsounds)|*.pfsounds|Allar skrár (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Hljóðskrár|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Allar skrár (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows mótar {0} hringlaga stýripinna eftir horni hreyfingarinnar. Stillingaspjald stýripinna í PadForge spilar beina hreyfingu eins en skáhreyfingu á annan hátt.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mótar dautt svæði snúningsskynjarans á hverjum ási eftir horni hreyfingarinnar. PadForge tekur allt dauða svæðið af hverjum ási, svo bein hreyfing spilar eins en hæg skáhreyfing byrjar síðar.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lögin stilla {0} á mismunandi hátt, svo hvert þeirra heldur sínum stillingum og ferillinn fluttist yfir sem næsti veldisferill.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX geymir þetta sem {0} og birtir ekki hvað tölurnar standa fyrir.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX gefur enga einingu fyrir þetta, svo PadForge notar sína eigin.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX birtir ekki hvernig stillingin {0} virkar, svo PadForge notar sína eigin aðferð.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX birtir ekki inntaksnúmer sín. Útgefin DSX-snið nota 41 til 44 fyrir stefnuhnappa, svo PadForge les þau þannig.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX skrifar ekki bindingu sem þessa, svo skránni var breytt utan DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX skiptir yfir í þessa forstillingu með flýtileið. Fjölvi hennar er á síðunni Fjölvar, tilbúinn til að binda við hnapp.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Ekkert útgefið DSX-snið notar {0}, svo PadForge getur ekki sagt til um hvað það gerir.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX lætur leikinn stilla þetta á meðan gegnumstreymisrofi þess er á, svo PadForge lætur leikinn um það líka.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Í Native Mode með Send Data to Device slökkt sendir DSX ekkert frá sér til leikjastýringarinnar, svo PadForge lætur leikinn um þetta líka.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX birtir ekki hvernig túrbóið tímasetur hverja ýtingu, svo PadForge bíður í {0} ms milli ýtinga.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Ekkert útgefið DSX-snið sýnir sérsniðinn lykil, svo PadForge les {0} sem lyklanöfn Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX birtir ekki í hvaða átt hreyfiásar þess snúast. PadForge les X sem halla, Y sem snúning og Z sem veltu, eigin ása DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge spilar snertisvörun DualSense í leik á eigin búnaði leikjastýringarinnar þegar það getur, og sem titring þegar það getur það ekki.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge geymir {0} í forritsstillingum sínum, utan allra sniða.</value></data>
 </root>

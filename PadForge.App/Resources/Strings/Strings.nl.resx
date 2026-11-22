@@ -1312,7 +1312,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Geen controllers</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Neerzetten om profiel te importeren</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Zet hier een profielbestand neer</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD of DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows of DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nieuw profiel</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Opslaan als…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Huidige opstelling hier opslaan</value></data>
@@ -5124,7 +5124,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Браузер OBS отменяет страницу, сертификату которой не доверяет, поэтому страница с изображением контроллера для источника браузера OBS отдается по обычному адресу. Использована только как документация, код под GPL не поставляется.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Referenties voor profielimport</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Het reWASD-profielformaat, gelezen uit de schemadump van shunt van hcn1z1 (MIT), de documentatie van reWASD-Powertools van DatMoshu (MIT) en de help van reWASD, en het DS4Windows-profielformaat, gelezen uit de DS4Windows-fork van Schmaldeo (GPL-3.0-or-later). Alleen documentatie, er wordt geen code meegeleverd.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Het reWASD-profielformaat, gelezen uit de schemadump van shunt van hcn1z1 (MIT), de documentatie van reWASD-Powertools van DatMoshu (MIT) en de help van reWASD, het DS4Windows-profielformaat, gelezen uit de DS4Windows-fork van Schmaldeo (GPL-3.0-or-later), en het DSX-profielformaat, gelezen uit de profielen in DSX-profile-share van winkywong1998, het DualSense-project van RAIZ-Zzz (MIT) en het Mod System van DSX door Paliverse (Apache-2.0). Alleen documentatie, er wordt geen code meegeleverd.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referenties voor Schermkleur</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>De schermopname achter de verlichting Schermkleur, gelezen uit Prismatik (GPL-2.0-or-later), de foundation-sunshine-fork van AlkaidLab van Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) en alienfx-tools (MIT). Alleen documentatie, er wordt geen GPL-code meegeleverd.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Toetsenbordschermen</value></data>
@@ -5579,7 +5579,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Naar {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge kon dat bestand niet lezen.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Dat bestand is te groot voor een profiel.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Dat bestand is geen PadForge-, reWASD- of DS4Windows-profiel.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Dat bestand is geen PadForge-, reWASD-, DS4Windows- of DSX-profiel.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Dat bestand declareert een documenttype, wat een profiel nooit nodig heeft, dus PadForge heeft het niet gelezen.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Dat bestand heeft niet het reWASD-formaat dat PadForge leest, schema 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge herkent deze invoer niet: {0}</value></data>
@@ -5866,7 +5866,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>De kleuren gaan rechtstreeks naar {0}. Wisselende kleuren, zoals een kleurencyclus of kleuren die het geluid volgen, komen er niet aan. Een kleur die gelijk blijft wel.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Alle bestanden (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profiel (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programma's (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Alle bestanden (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Audiobestanden en geluidspakketten|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Geluidspakketten (*.pfsounds)|*.pfsounds|Alle bestanden (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Audiobestanden|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Alle bestanden (*.*)|*.*</value></data>
@@ -5899,4 +5899,18 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows vormt de {0} van een radiale stick naar de hoek van de duw. De stickkaart van PadForge behandelt een rechte duw gelijk en een diagonale duw anders.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows past de dode zone van de gyro per as aan naar de hoek van de beweging. PadForge haalt de hele dode zone van elke as af, dus een rechte beweging werkt gelijk en een trage diagonale begint later.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>De lagen stemmen {0} verschillend af, dus elke laag houdt zijn eigen afstelling, en de curve is overgenomen als de dichtstbijzijnde machtscurve.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX slaat dit op als {0} en publiceert niet wat zijn nummers betekenen.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX geeft hiervoor geen eenheid, dus PadForge gebruikt een eigen eenheid.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX publiceert niet hoe zijn instelling {0} werkt, dus PadForge gebruikt een eigen werkwijze.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX publiceert zijn invoernummers niet. Gepubliceerde DSX-profielen gebruiken 41 tot 44 voor de D-pad, dus PadForge leest ze zo.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX schrijft geen koppeling zoals deze, dus het bestand is buiten DSX om gewijzigd.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX schakelt vanaf een sneltoets over naar deze preset. De macro staat op de pagina Macro's, klaar om aan een knop te koppelen.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Geen enkel gepubliceerd DSX-profiel gebruikt {0}, dus PadForge kan niet bepalen wat het doet.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX laat de game dit instellen zolang de doorgifteschakelaar aan staat, dus PadForge laat het ook aan de game over.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>In Native Mode met Send Data to Device uit stuurt DSX zelf niets naar de controller, dus PadForge laat dit ook aan de game over.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX publiceert niet hoe zijn turbo elke druk timet, dus PadForge wacht {0} ms tussen de drukken.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Geen enkel gepubliceerd DSX-profiel toont een eigen toets, dus PadForge leest {0} als Windows-toetsnamen.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX publiceert niet welke kant zijn bewegingsassen op draaien. PadForge leest X als stampen, Y als gieren en Z als rollen, de eigen assen van de DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge speelt de DualSense-haptiek van een game af op de eigen actuatoren van de controller als dat kan, en als trilling als dat niet kan.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge bewaart {0} in zijn app-instellingen, buiten elk profiel.</value></data>
 </root>

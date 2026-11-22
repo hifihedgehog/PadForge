@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>கட்டுப்படுத்திகள் இல்லை</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>சுயவிவரத்தை இறக்குமதி செய்ய இங்கே விடவும்</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>சுயவிவரக் கோப்பை இங்கே விடவும்</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD அல்லது DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows அல்லது DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>புதிய சுயவிவரம்</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>இவ்வாறு சேமி…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>தற்போதைய அமைப்பை இங்கே சேமி</value></data>
@@ -5149,7 +5149,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS-இன் உலாவி தான் நம்பாத சான்றிதழைக் கொண்ட பக்கத்தை ரத்து செய்கிறது, எனவே OBS உலாவி மூலத்துக்கான கட்டுப்படுத்திப் படப் பக்கம் சாதாரண முகவரியில் வழங்கப்படுகிறது. ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>சுயவிவர இறக்குமதி மேற்கோள்கள்</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD சுயவிவர வடிவம் hcn1z1-இன் shunt ஸ்கீமா டம்ப் (MIT), DatMoshu-இன் reWASD-Powertools ஆவணங்கள் (MIT) மற்றும் reWASD-இன் உதவி ஆகியவற்றிலிருந்தும், DS4Windows சுயவிவர வடிவம் Schmaldeo-இன் DS4Windows ஃபோர்க்கிலிருந்தும் (GPL-3.0-or-later) படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD சுயவிவர வடிவம் hcn1z1-இன் shunt ஸ்கீமா டம்ப் (MIT), DatMoshu-இன் reWASD-Powertools ஆவணங்கள் (MIT) மற்றும் reWASD-இன் உதவி ஆகியவற்றிலிருந்தும், DS4Windows சுயவிவர வடிவம் Schmaldeo-இன் DS4Windows ஃபோர்க்கிலிருந்தும் (GPL-3.0-or-later), DSX சுயவிவர வடிவம் winkywong1998-இன் DSX-profile-share-இல் உள்ள சுயவிவரங்கள், RAIZ-Zzz-இன் DualSense திட்டம் (MIT) மற்றும் Paliverse-இன் DSX Mod System (Apache-2.0) ஆகியவற்றிலிருந்தும் படிக்கப்பட்டன. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>திரை நிற மேற்கோள்கள்</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>திரை நிறம் ஒளியமைப்புக்குப் பின்னால் உள்ள பிடிப்பு, இவற்றிலிருந்து படிக்கப்பட்டது: Prismatik (GPL-2.0-or-later), Sunshine-இன் AlkaidLab உருவாக்கிய foundation-sunshine ஃபோர்க் (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT), alienfx-tools (MIT). ஆவணமாக மட்டும், GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>விசைப்பலகைத் திரைகள்</value></data>
@@ -5604,7 +5604,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0} க்கு</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge-ஆல் அந்தக் கோப்பைப் படிக்க முடியவில்லை.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>அந்தக் கோப்பு சுயவிவரமாக இருக்க முடியாத அளவுக்குப் பெரியது.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>அந்தக் கோப்பு PadForge, reWASD அல்லது DS4Windows சுயவிவரம் அல்ல.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>அந்தக் கோப்பு PadForge, reWASD, DS4Windows அல்லது DSX சுயவிவரம் அல்ல.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>அந்தக் கோப்பு ஆவண வகையை அறிவிக்கிறது. சுயவிவரத்துக்கு அது தேவையில்லை, எனவே PadForge அதைப் படிக்கவில்லை.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>அந்தக் கோப்பு PadForge படிக்கும் reWASD வடிவத்தில் இல்லை (திட்டம் 3).</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>இந்த உள்ளீட்டை PadForge அறியவில்லை: {0}</value></data>
@@ -5891,7 +5891,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்கள் அதைச் சென்றடையாது. மாறாத நிறம் சென்றடையும்.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge சுயவிவரம் (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>நிரல்கள் (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>ஒலிக் கோப்புகளும் ஒலித் தொகுப்புகளும்|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|ஒலித் தொகுப்புகள் (*.pfsounds)|*.pfsounds|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>ஒலிக் கோப்புகள்|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ஒரு வட்ட ஸ்டிக்கின் {0}-ஐத் தள்ளும் கோணத்தைக் கொண்டு வடிவமைக்கிறது. PadForge-இன் ஸ்டிக் அட்டை நேர்த் தள்ளலை ஒரே மாதிரியாகவும் மூலைவிட்டத் தள்ளலை வேறுவிதமாகவும் இயக்கும்.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows கைரோ டெட்ஜோனை ஒவ்வொரு அச்சிலும் இயக்கத்தின் கோணத்துக்கு ஏற்ப அளவிடுகிறது. PadForge ஒவ்வொரு அச்சிலிருந்தும் முழு டெட்ஜோனையும் நீக்கும், எனவே நேர் இயக்கம் ஒரே மாதிரியாகவும், மெதுவான மூலைவிட்ட இயக்கம் தாமதமாகவும் தொடங்கும்.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>அடுக்குகள் {0}-ஐ வெவ்வேறு விதமாக அமைப்பதால், ஒவ்வொன்றும் தனக்கான அமைப்பை வைத்திருக்கும். வளைவு மிக அருகிலுள்ள அடுக்கு வளைவாக மாற்றப்பட்டது.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX இதை {0} ஆகச் சேமிக்கிறது, அந்த எண்கள் எதைக் குறிக்கின்றன என்பதை வெளியிடுவதில்லை.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX இதற்கு எந்த அலகும் தருவதில்லை, எனவே PadForge தனது சொந்த அலகைப் பயன்படுத்துகிறது.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX-இன் {0} அமைப்பு எப்படிச் செயல்படுகிறது என்பதை DSX வெளியிடுவதில்லை, எனவே PadForge தனது சொந்த முறையைப் பயன்படுத்துகிறது.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX தனது உள்ளீட்டு எண்களை வெளியிடுவதில்லை. வெளியிடப்பட்ட DSX சுயவிவரங்கள் 41 முதல் 44 வரையிலானவற்றை டி-பேட் ஆகப் பயன்படுத்துகின்றன, எனவே PadForge அவற்றை அவ்வாறே படிக்கிறது.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>இதைப் போன்ற பிணைப்பை DSX எழுதுவதில்லை, எனவே இந்தக் கோப்பு DSX-க்கு வெளியே மாற்றப்பட்டுள்ளது.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX ஒரு குறுக்குவழி மூலம் இந்த முன்னமைவுக்கு மாறுகிறது. அதன் மேக்ரோ மேக்ரோக்கள் பக்கத்தில் உள்ளது, ஒரு பொத்தானுடன் பிணைக்கத் தயாராக உள்ளது.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>வெளியிடப்பட்ட எந்த DSX சுயவிவரமும் {0}-ஐப் பயன்படுத்துவதில்லை, எனவே அது என்ன செய்கிறது என்பதை PadForge அறிய முடியாது.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX-இன் பாஸ்த்ரூ சுவிட்ச் இயக்கத்தில் இருக்கும்போது இதை கேம் அமைக்க DSX அனுமதிக்கிறது, எனவே PadForge-உம் இதை கேமுக்கே விட்டுவிடுகிறது.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode இயக்கத்தில் Send Data to Device அணைக்கப்பட்டிருந்தால், DSX தனது சொந்தமாக எதையும் கட்டுப்படுத்திக்கு அனுப்புவதில்லை, எனவே PadForge-உம் இதை கேமுக்கே விட்டுவிடுகிறது.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX-இன் டர்போ ஒவ்வொரு அழுத்தத்தையும் எப்படி நேரப்படுத்துகிறது என்பதை DSX வெளியிடுவதில்லை, எனவே PadForge அழுத்தங்களுக்கு இடையே {0} மி.வி காத்திருக்கிறது.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>வெளியிடப்பட்ட எந்த DSX சுயவிவரமும் தனிப்பயன் விசையைக் காட்டுவதில்லை, எனவே PadForge {0}-ஐ Windows விசைப் பெயர்களாகப் படிக்கிறது.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX-இன் இயக்க அச்சுகள் எந்தத் திசையில் திரும்புகின்றன என்பதை DSX வெளியிடுவதில்லை. PadForge X-ஐ பிட்ச் ஆகவும், Y-ஐ யா ஆகவும், Z-ஐ ரோல் ஆகவும் படிக்கிறது, இவை DualSense-இன் சொந்த அச்சுகள்.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge ஒரு கேமின் DualSense ஹாப்டிக்ஸை முடிந்தால் கட்டுப்படுத்தியின் சொந்த ஆக்சுவேட்டர்களிலும், முடியாவிட்டால் அதிர்வாகவும் இயக்குகிறது.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge {0}-ஐ எந்தச் சுயவிவரத்திற்கும் வெளியே, தனது செயலி அமைப்புகளில் வைத்திருக்கிறது.</value></data>
 </root>

@@ -1312,7 +1312,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>没有控制器</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>拖放以导入配置文件</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>在此放入配置文件</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge、reWASD 或 DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge、reWASD、DS4Windows 或 DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>新建配置文件</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>另存为…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>在此保存当前设置</value></data>
@@ -5104,7 +5104,7 @@
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS 的浏览器会取消加载其不信任证书的页面，因此 OBS 浏览器源所用的手柄图片页面通过普通地址提供。仅作文档参考，不随附任何 GPL 代码。</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>配置文件导入参考来源</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD 配置文件格式，读自 hcn1z1 的 shunt 架构转储 (MIT)、DatMoshu 的 reWASD-Powertools 文档 (MIT) 和 reWASD 的帮助，DS4Windows 配置文件格式，读自 Schmaldeo 的 DS4Windows 分支 (GPL-3.0-or-later)。仅为文档参考，不含任何代码。</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD 配置文件格式，读自 hcn1z1 的 shunt 架构转储 (MIT)、DatMoshu 的 reWASD-Powertools 文档 (MIT) 和 reWASD 的帮助，DS4Windows 配置文件格式，读自 Schmaldeo 的 DS4Windows 分支 (GPL-3.0-or-later)，以及 DSX 配置文件格式，读自 winkywong1998 的 DSX-profile-share 中的配置文件、RAIZ-Zzz 的 DualSense 项目 (MIT) 和 Paliverse 的 DSX Mod System (Apache-2.0)。仅为文档参考，不含任何代码。</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>屏幕颜色参考来源</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>“屏幕颜色”灯光背后的屏幕捕获，读自 Prismatik (GPL-2.0-or-later)、AlkaidLab 的 foundation-sunshine (Sunshine 的分支，GPL-3.0)、ScreenCapture.NET (LGPL-2.1)、RazerAmbilight (MIT)、OpenRGBEffectsPlugin (GPL-2.0-or-later)、Aurora (MIT) 和 alienfx-tools (MIT)。仅为文档参考，不含任何 GPL 代码。</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>键盘屏幕</value></data>
@@ -5559,7 +5559,7 @@
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>至 {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge 无法读取该文件。</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>该文件过大，不可能是配置文件。</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>该文件不是 PadForge、reWASD 或 DS4Windows 的配置文件。</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>该文件不是 PadForge、reWASD、DS4Windows 或 DSX 的配置文件。</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>该文件声明了文档类型，而配置文件从不需要它，因此 PadForge 未读取该文件。</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>该文件不是 PadForge 可读取的 reWASD 格式（架构 3）。</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge 无法识别此输入：{0}</value></data>
@@ -5846,7 +5846,7 @@
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>颜色直接发送到 {0}。颜色循环、随声音变化的颜色等动态颜色无法送达。固定不变的颜色可以。</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>所有文件 (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge 配置文件 (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>程序 (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|所有文件 (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>音频文件和声音包|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|声音包 (*.pfsounds)|*.pfsounds|所有文件 (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>音频文件|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|所有文件 (*.*)|*.*</value></data>
@@ -5879,4 +5879,18 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows 按推动的角度来调整放射状摇杆的 {0}。PadForge 的摇杆卡片对笔直推动的处理一致，对斜向推动的处理则不同。</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows 按移动的角度来调整每个轴上的陀螺仪死区。PadForge 会在每个轴上去掉整个死区，因此笔直的移动表现一致，缓慢的斜向移动则开始得更晚。</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>各层对 {0} 的调节不同，因此每层保留各自的调节设置，曲线则导入为最接近的幂曲线。</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX 将此项存储为 {0}，且未公布这些数字的含义。</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX 没有给出此项的单位，因此 PadForge 使用自己的单位。</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX 未公布其 {0} 设置的作用，因此 PadForge 使用自己的处理方式。</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX 未公布其输入编号。已公布的 DSX 配置文件用 41 到 44 表示十字键，因此 PadForge 按此读取。</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX 不会写出这样的绑定，因此该文件曾在 DSX 之外被修改。</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX 通过快捷方式切换到此预设。其宏位于“宏”页面，可随时绑定到按键。</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>没有任何已公布的 DSX 配置文件使用 {0}，因此 PadForge 无法判断它的作用。</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX 的透传开关开启时，由游戏来设置此项，因此 PadForge 也将其交给游戏。</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>在 Native Mode 下关闭 Send Data to Device 时，DSX 不会向控制器发送任何自己的数据，因此 PadForge 也将此项交给游戏。</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX 未公布其 Turbo 如何为每次按下计时，因此 PadForge 在两次按下之间等待 {0} 毫秒。</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>没有任何已公布的 DSX 配置文件显示自定义按键，因此 PadForge 按 Windows 命名按键的方式读取 {0}。</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX 未公布其体感轴的转动方向。PadForge 将 X 读作俯仰，Y 读作偏航，Z 读作翻滚，即 DualSense 自身的轴。</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge 会尽可能在手柄自身的致动器上播放游戏的 DualSense 触觉反馈，无法做到时则以震动播放。</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge 将 {0} 保存在应用设置中，不属于任何配置文件。</value></data>
 </root>

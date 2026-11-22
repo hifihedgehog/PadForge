@@ -181,7 +181,7 @@ def check(english, translated, script):
         agree("Workshop_UpdatesBody", "must contain the exact text of GetProfiles_Title")
     if shown("ControllerType_KeyboardMouse") not in shown("Workshop_Becomes_Tip"):
         agree("Workshop_Becomes_Tip", "must name the type with the exact text of ControllerType_KeyboardMouse")
-    for name in ("PadForge", "reWASD", "DS4Windows"):
+    for name in ("PadForge", "reWASD", "DS4Windows", "DSX"):
         if name not in shown("Profiles_DropTileFormats"):
             agree("Profiles_DropTileFormats", "must keep " + name + " as written")
     for option in ("Pad_Lighting_ClaimLevel_Colors", "Pad_Lighting_ClaimLevel_Power"):

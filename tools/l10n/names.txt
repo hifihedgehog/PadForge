@@ -140,6 +140,7 @@ DS5
 DS5Dongle
 DsHidMini
 DSU
+DSX
 duaLib
 DualSense
 DualSense Edge

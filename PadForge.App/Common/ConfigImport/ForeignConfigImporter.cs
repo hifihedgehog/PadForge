@@ -57,6 +57,23 @@ namespace PadForge.Common.ConfigImport
         public const string StickByAngle = "Import_Tr_StickByAngle";
         public const string GyroByAngle = "Import_Tr_GyroByAngle";
         public const string CurveOnRows = "Import_Tr_CurveOnRows";
+
+        // DSX. Each names the fact behind its line: what DSX publishes, and
+        // where PadForge keeps a setting a profile does not hold.
+        public const string DsxNumber = "Import_Tr_DsxNumber";
+        public const string DsxUnit = "Import_Tr_DsxUnit";
+        public const string DsxShaping = "Import_Tr_DsxShaping";
+        public const string DsxDpad = "Import_Tr_DsxDpad";
+        public const string DsxEdited = "Import_Tr_DsxEdited";
+        public const string DsxPreset = "Import_Tr_DsxPreset";
+        public const string DsxModeName = "Import_Tr_DsxModeName";
+        public const string DsxPassthrough = "Import_Tr_DsxPassthrough";
+        public const string DsxNoData = "Import_Tr_DsxNoData";
+        public const string DsxTurbo = "Import_Tr_DsxTurbo";
+        public const string DsxKeyName = "Import_Tr_DsxKeyName";
+        public const string DsxMotionAxes = "Import_Tr_DsxMotionAxes";
+        public const string DsxHaptics = "Import_Tr_DsxHaptics";
+        public const string AppSetting = "Import_Tr_AppSetting";
     }
 
     /// <summary>What an import came to: a profile and its report, or the
@@ -87,6 +104,7 @@ namespace PadForge.Common.ConfigImport
         {
             ForeignConfigKind.Rewasd => "reWASD",
             ForeignConfigKind.Ds4Windows => "DS4Windows",
+            ForeignConfigKind.Dsx => "DSX",
             _ => string.Empty,
         };
 
@@ -103,7 +121,8 @@ namespace PadForge.Common.ConfigImport
     public static class ForeignConfigImporter
     {
         /// <summary>The file picker's places, when they exist on this PC:
-        /// reWASD's shared profile folder and DS4Windows' per-user one.</summary>
+        /// reWASD's shared profile folder, DS4Windows' per-user one and DSX's
+        /// in each Steam library.</summary>
         public static IEnumerable<string> ProfileFolders()
         {
             string rewasd = System.IO.Path.Combine(
@@ -115,10 +134,79 @@ namespace PadForge.Common.ConfigImport
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "DS4Windows", "Profiles");
             if (System.IO.Directory.Exists(ds4)) yield return ds4;
+
+            foreach (string dsx in DsxProfileFolders(SteamLibraries())) yield return dsx;
         }
 
-        /// <summary>True when the file's extension is one of the two this
-        /// importer takes. The content still decides.</summary>
+        /// <summary>DSX 3.1 keeps its profiles in
+        /// <c>DSX_Savefile\Configuration Files\Controller Profiles</c> under its
+        /// folder, which is Steam's <c>steamapps\common\DSX</c> or a folder one
+        /// level inside it (a beta build's <c>Main_v3_Beta</c>).</summary>
+        internal static IEnumerable<string> DsxProfileFolders(IEnumerable<string> libraries)
+        {
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string library in libraries)
+            {
+                string dsx = System.IO.Path.Combine(library, "steamapps", "common", "DSX");
+                var roots = new List<string> { dsx };
+                try
+                {
+                    if (System.IO.Directory.Exists(dsx))
+                        roots.AddRange(System.IO.Directory.EnumerateDirectories(dsx));
+                }
+                catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException)
+                {
+                }
+                foreach (string root in roots)
+                {
+                    string profiles = System.IO.Path.Combine(root, "DSX_Savefile", "Configuration Files", "Controller Profiles");
+                    if (System.IO.Directory.Exists(profiles) && seen.Add(profiles)) yield return profiles;
+                }
+            }
+        }
+
+        /// <summary>Steam's library folders: its own install, from the
+        /// registry or its default place, and every path its
+        /// <c>steamapps\libraryfolders.vdf</c> lists.</summary>
+        internal static IEnumerable<string> SteamLibraries()
+        {
+            var steam = new List<string>();
+            try
+            {
+                using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+                if (key?.GetValue("SteamPath") is string path && path.Length > 0)
+                    steam.Add(path.Replace('/', '\\'));
+            }
+            catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or System.IO.IOException)
+            {
+            }
+            steam.Add(System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam"));
+
+            var libraries = new List<string>();
+            foreach (string root in steam.Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                if (!System.IO.Directory.Exists(root)) continue;
+                libraries.Add(root);
+                byte[] vdf = ForeignConfigReader.ReadCapped(
+                    System.IO.Path.Combine(root, "steamapps", "libraryfolders.vdf"), out _);
+                if (vdf == null) continue;
+                libraries.AddRange(LibraryPaths(System.Text.Encoding.UTF8.GetString(vdf)));
+            }
+            return libraries.Distinct(StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>The <c>"path"</c> values of a <c>libraryfolders.vdf</c>,
+        /// whose backslashes the file doubles.</summary>
+        internal static IEnumerable<string> LibraryPaths(string vdf)
+        {
+            foreach (System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(
+                         vdf ?? "", "\"path\"\\s+\"([^\"]+)\""))
+                yield return m.Groups[1].Value.Replace(@"\\", @"\");
+        }
+
+        /// <summary>True when the file's extension is one this importer
+        /// takes. The content still decides.</summary>
         public static bool HandlesFile(string path) => ForeignConfigReader.HasForeignExtension(path);
 
         public static ForeignImportResult Translate(string path)
@@ -160,6 +248,12 @@ namespace PadForge.Common.ConfigImport
                     var xml = ForeignConfigReader.TryParseXml(bytes, out _);
                     if (xml == null) return ForeignImportResult.Refuse(kind, ImportReasons.FileNotConfig);
                     return Ds4WindowsTranslator.Translate(xml, path);
+                case ForeignConfigKind.Dsx:
+                    using (var dsx = ForeignConfigReader.TryParseJson(bytes))
+                    {
+                        if (dsx == null) return ForeignImportResult.Refuse(kind, ImportReasons.FileNotConfig);
+                        return DsxTranslator.Translate(dsx.RootElement, path);
+                    }
                 default:
                     // Say why when the reason is the safety rule, so a
                     // hostile file is not reported as merely unrecognized.

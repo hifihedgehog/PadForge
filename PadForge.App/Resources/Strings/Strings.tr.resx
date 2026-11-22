@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Kontrolcü yok</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Profili içe aktarmak için bırakın</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Buraya bir profil dosyası bırakın</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD veya DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows veya DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Yeni profil</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Farklı kaydet…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Geçerli kurulumu buraya kaydet</value></data>
@@ -5149,7 +5149,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS'nin tarayıcısı sertifikasına güvenmediği bir sayfayı iptal ettiği için, bir OBS tarayıcı kaynağının kumanda resmi sayfası düz adresten sunuluyor. Yalnızca belge olarak okundu, hiçbir GPL kodu dağıtılmıyor.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Profil içe aktarma referansları</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profil biçimi hcn1z1'in shunt şema dökümünden (MIT), DatMoshu'nun reWASD-Powertools belgelerinden (MIT) ve reWASD'nin yardımından, DS4Windows profil biçimi ise Schmaldeo'nun DS4Windows çatalından (GPL-3.0-or-later) okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profil biçimi hcn1z1'in shunt şema dökümünden (MIT), DatMoshu'nun reWASD-Powertools belgelerinden (MIT) ve reWASD'nin yardımından, DS4Windows profil biçimi Schmaldeo'nun DS4Windows çatalından (GPL-3.0-or-later), DSX profil biçimi ise winkywong1998'in DSX-profile-share içindeki profillerden, RAIZ-Zzz'nin DualSense projesinden (MIT) ve Paliverse'in DSX Mod System'inden (Apache-2.0) okundu. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Ekran rengi referansları</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Ekran rengi aydınlatmasının arkasındaki yakalama, Prismatik (GPL-2.0-or-later), AlkaidLab'ın Sunshine çatalı foundation-sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) ve alienfx-tools (MIT) kaynaklarından okundu. Yalnızca belge, hiçbir GPL kodu dağıtılmıyor.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Klavye Ekranları</value></data>
@@ -5604,7 +5604,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0} katmanına</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge bu dosyayı okuyamadı.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Bu dosya bir profil olamayacak kadar büyük.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Bu dosya bir PadForge, reWASD veya DS4Windows profili değil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Bu dosya bir PadForge, reWASD, DS4Windows veya DSX profili değil.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Bu dosya bir belge türü bildiriyor, bir profilin buna hiç ihtiyacı olmaz, bu yüzden PadForge dosyayı okumadı.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Bu dosya, PadForge'un okuduğu reWASD biçiminde (şema 3) değil.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge bu girişi tanımıyor: {0}</value></data>
@@ -5891,7 +5891,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Renk döngüsü veya sese uyan renkler gibi değişen renkler ona ulaşmaz. Sabit kalan bir renk ulaşır.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tüm dosyalar (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profili (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programlar (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Ses dosyaları ve ses paketleri|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Ses paketleri (*.pfsounds)|*.pfsounds|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Ses dosyaları|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Tüm dosyalar (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows radyal bir çubuğun {0} ayarını itmenin açısına göre şekillendirir. PadForge'un çubuk ayarları düz bir itmeyi aynı, çapraz bir itmeyi farklı oynatır.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows jiroskop ölü bölgesini her eksende hareketin açısına göre ölçekler. PadForge ölü bölgenin tamamını her eksenden düşer, bu yüzden düz bir hareket aynı oynar, yavaş çapraz bir hareket ise daha geç başlar.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Katmanlar {0} ayarını farklı yapıyor, bu yüzden her biri kendi ayarını korur ve eğri en yakın üstel eğri olarak aktarılır.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX bunu {0} olarak saklar ve sayıların neyi ifade ettiğini yayımlamaz.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX bunun için birim vermez, bu yüzden PadForge kendi birimini kullanır.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX {0} ayarının nasıl çalıştığını yayımlamaz, bu yüzden PadForge kendi yöntemini kullanır.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX giriş numaralarını yayımlamaz. Yayımlanmış DSX profilleri 41 ile 44 arasını yön tuşları olarak kullanır, bu yüzden PadForge onları öyle okur.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX buna benzer bir atama yazmaz, bu yüzden dosya DSX dışında değiştirilmiş.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX bu ön ayara bir kısayolla geçer. Makrosu Makrolar sayfasında, bir düğmeye atanmaya hazır.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Yayımlanmış hiçbir DSX profili {0} kullanmıyor, bu yüzden PadForge ne yaptığını anlayamaz.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX doğrudan aktarma anahtarı açıkken bunu oyunun ayarlamasına bırakır, bu yüzden PadForge da bunu oyuna bırakır.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode açıkken ve Send Data to Device kapalıyken DSX kontrolcüye kendinden hiçbir şey göndermez, bu yüzden PadForge da bunu oyuna bırakır.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX turbosunun her basışı nasıl zamanladığını yayımlamaz, bu yüzden PadForge basışlar arasında {0} ms bekler.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Yayımlanmış hiçbir DSX profilinde özel tuş görünmüyor, bu yüzden PadForge {0} değerini Windows tuş adları olarak okur.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX hareket eksenlerinin hangi yöne döndüğünü yayımlamaz. PadForge X'i yunuslama, Y'yi sapma, Z'yi yuvarlanma olarak okur, bunlar DualSense'in kendi eksenleridir.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge bir oyunun DualSense haptiğini mümkün olduğunda kontrolcünün kendi aktüatörlerinde, mümkün olmadığında titreşim olarak çalar.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge {0} ayarını hiçbir profile bağlı olmadan, uygulama ayarlarında tutar.</value></data>
 </root>

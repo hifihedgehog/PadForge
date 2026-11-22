@@ -401,9 +401,9 @@ Search for a game under **Community** in Get Profiles and PadForge browses the c
 
 ![Steam Workshop config browser](screenshots/workshop-configs.jpg)
 
-### Bring your reWASD or DS4Windows profile.
+### Bring your reWASD, DS4Windows or DSX profile.
 
-Open a reWASD config or a DS4Windows profile under **Import a File** in Get Profiles, or drop the file on the Profiles page. Before anything changes, the preview lists every binding as Clean, Partial or Skipped, each with its reason, and names any program the profile would run. One click makes it an ordinary PadForge profile. reWASD's shifts become shift layers, its single, double, triple and long presses become macros that keep the file's wait times, and turbo, toggles, radial menus and the lightbar on each layer come across. A DS4Windows profile brings its shift modifiers, the special actions in its Actions.xml, its gyro and touchpad output modes, its lightbar, its adaptive trigger effects and its two-stage triggers. Keyboard and mouse inputs read the merged keyboard and mouse rows, so they work the moment the profile loads.
+Open a reWASD config, a DS4Windows profile or a DSX profile under **Import a File** in Get Profiles, or drop the file on the Profiles page. Before anything changes, the preview lists every binding as Clean, Partial or Skipped, each with its reason, and names any program the profile would run. One click makes it an ordinary PadForge profile. reWASD's shifts become shift layers, its single, double, triple and long presses become macros that keep the file's wait times, and turbo, toggles, radial menus and the lightbar on each layer come across. A DS4Windows profile brings its shift modifiers, the special actions in its Actions.xml, its gyro and touchpad output modes, its lightbar, its adaptive trigger effects and its two-stage triggers. A DSX profile brings the controller DSX emulated, its dead zones, its adaptive trigger modes, its stick, motion and touchpad modes, its lightbar, player LEDs and mic LED, and its D-pad bindings. Keyboard and mouse inputs read the merged keyboard and mouse rows, so they work the moment the profile loads.
 
 ![The import preview for a reWASD config](screenshots/import-preview.jpg)
 
@@ -961,7 +961,7 @@ Each profile holds its own mappings, deadzones, force feedback, lighting, and ma
 
 ### Get Profiles
 ![Get Profiles on Import a File](screenshots/profiles-get-file.jpg)
-One window for a new profile from elsewhere: Starters, Community for Steam Workshop configs, and Import a File for PadForge, reWASD and DS4Windows files.
+One window for a new profile from elsewhere: Starters, Community for Steam Workshop configs, and Import a File for PadForge, reWASD, DS4Windows and DSX files.
 
 ### External profile control
 ![Allow External Control by Launchers and Scripts on the Profiles page](screenshots/profiles-external-control.jpg)
@@ -975,7 +975,7 @@ A profile can override the Settings polling rate: 10000, 8000, 4000, 2000, 1000,
 ![Steam Workshop config browser](screenshots/workshop-search.jpg)
 Browse community controller configs from the Steam Workshop over an anonymous Steam connection with no account, and translate the one you pick into a PadForge profile. A per-import report lists what came across clean, what was approximated, and what was skipped. Off by default until you turn on Enable Community Configs in Settings, under Data & Privacy.
 
-### reWASD and DS4Windows import
+### reWASD, DS4Windows and DSX import
 ![The import preview for a reWASD config](screenshots/import-preview.jpg)
 Every binding of the file, Clean, Partial or Skipped with its reason, before you click Import.
 

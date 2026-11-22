@@ -2865,7 +2865,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Ei ohjaimia</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Tuo profiili pudottamalla</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Pudota profiilitiedosto tähän</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD tai DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows tai DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Uusi profiili</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Tallenna nimellä…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Tallenna nykyinen kokoonpano tähän</value></data>
@@ -5149,7 +5149,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS:n selain keskeyttää sivun, jonka varmennetta se ei luota, joten OBS-selainlähteen ohjainkuvasivu tarjotaan tavallisessa osoitteessa. Luettu vain dokumentaationa, GPL-koodia ei toimiteta.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Profiilin tuonnin viitteet</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD-profiilin muoto, luettu hcn1z1:n shunt-skeemavedoksesta (MIT), DatMoshu:n reWASD-Powertools-dokumentaatiosta (MIT) ja reWASD:n ohjeesta, sekä DS4Windows-profiilin muoto, luettu Schmaldeo:n DS4Windows-haarasta (GPL-3.0-or-later). Vain dokumentaatio, koodia ei toimiteta.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD-profiilin muoto, luettu hcn1z1:n shunt-skeemavedoksesta (MIT), DatMoshu:n reWASD-Powertools-dokumentaatiosta (MIT) ja reWASD:n ohjeesta, DS4Windows-profiilin muoto, luettu Schmaldeo:n DS4Windows-haarasta (GPL-3.0-or-later), sekä DSX-profiilin muoto, luettu winkywong1998:n DSX-profile-share-profiileista, RAIZ-Zzz:n DualSense-projektista (MIT) ja Paliversen DSX:n Mod Systemistä (Apache-2.0). Vain dokumentaatio, koodia ei toimiteta.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Näytön värin viitteet</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Näytön väri -valaistuksen taustalla oleva kuvanotto, luettu seuraavista lähteistä: Prismatik (GPL-2.0-or-later), Sunshine-ohjelman haara foundation-sunshine (GPL-3.0), tekijä AlkaidLab, ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) ja alienfx-tools (MIT). Vain dokumentaatio, GPL-koodia ei toimiteta.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Näppäimistön näytöt</value></data>
@@ -5604,7 +5604,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Tasolle {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge ei voinut lukea tuota tiedostoa.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Tuo tiedosto on liian suuri ollakseen profiili.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tuo tiedosto ei ole PadForge-, reWASD- tai DS4Windows-profiili.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Tuo tiedosto ei ole PadForge-, reWASD-, DS4Windows- tai DSX-profiili.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Tuo tiedosto ilmoittaa asiakirjatyypin, jota profiili ei koskaan tarvitse, joten PadForge ei lukenut sitä.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Tuo tiedosto ei ole siinä reWASD-muodossa, jota PadForge lukee, skeema 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ei tunnista tätä syötettä: {0}</value></data>
@@ -5891,7 +5891,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Värit lähetetään suoraan laitteeseen {0}. Muuttuvat värit, kuten värikierto tai ääntä seuraavat värit, eivät pääse perille. Muuttumaton väri pääsee.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profiili (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Ohjelmat (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Äänitiedostot ja äänipaketit|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Äänipaketit (*.pfsounds)|*.pfsounds|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Äänitiedostot|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Kaikki tiedostot (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows muotoilee säteittäisen sauvan asetuksia {0} työnnön kulman mukaan. PadForge-n sauvakortti toistaa suoran työnnön samoin ja vinon eri tavalla.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows skaalaa gyron kuolleen alueen kullakin akselilla liikkeen kulman mukaan. PadForge poistaa koko kuolleen alueen jokaiselta akselilta, joten suora liike toistuu samoin ja hidas vino liike alkaa myöhemmin.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Tasot säätävät kohdetta {0} eri tavoin, joten kullakin on omat säätönsä, ja käyrä tulee mukaan lähimpänä potenssikäyränä.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX tallentaa tämän muodossa {0}, eikä se julkaise, mitä sen numerot tarkoittavat.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX ei anna tälle yksikköä, joten PadForge käyttää omaansa.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ei julkaise, miten sen asetus {0} toimii, joten PadForge käyttää omaansa.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ei julkaise syötenumeroitaan. Julkaistut DSX-profiilit käyttävät numeroita 41:stä 44:ään ristiohjaimena, joten PadForge lukee ne niin.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ei kirjoita tällaista kytkentää, joten tiedostoa on muutettu DSX:n ulkopuolella.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX vaihtaa tähän esiasetukseen pikanäppäimestä. Sen makro on Makrot-sivulla valmiina sidottavaksi painikkeeseen.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Mikään julkaistu DSX-profiili ei käytä arvoa {0}, joten PadForge ei voi tietää, mitä se tekee.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX antaa pelin määrittää tämän, kun sen läpivientikytkin on päällä, joten PadForge jättää tämänkin pelin hoidettavaksi.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Kun Native Mode on käytössä ja Send Data to Device on pois päältä, DSX ei lähetä ohjaimelle mitään omaa, joten PadForge jättää tämänkin pelin hoidettavaksi.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX ei julkaise, miten sen turbo ajoittaa jokaisen painalluksen, joten PadForge odottaa painallusten välillä {0} ms.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Mikään julkaistu DSX-profiili ei näytä mukautettua näppäintä, joten PadForge lukee arvon {0} Windowsin näppäinnimiksi.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX ei julkaise, mihin suuntaan sen liikeakselit kääntyvät. PadForge lukee X:n nyökkäyksenä, Y:n kiertymänä ja Z:n kallistuksena, eli DualSense-ohjaimen omina akseleina.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge toistaa pelin DualSense-haptiikan ohjaimen omilla toimilaitteilla, kun se on mahdollista, ja tärinänä, kun se ei ole.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge säilyttää asetuksen {0} sovelluksen omissa asetuksissa, profiilien ulkopuolella.</value></data>
 </root>

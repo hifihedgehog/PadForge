@@ -36,14 +36,15 @@ namespace PadForge.Services
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         }
 
-        /// <summary>An import's battery light colors (#561) live on the
-        /// device's Lighting card, which only the slot's view model holds.</summary>
-        private void FoldBatteryColors(int slotIndex, Guid deviceGuid)
+        /// <summary>An import's lighting and audio settings for the device
+        /// (#561, #589) live on its Lighting and Audio cards, which only the
+        /// slot's view model holds.</summary>
+        private void FoldDeviceStamps(int slotIndex, Guid deviceGuid)
         {
             var sets = SettingsManager.SlotMappingSets;
             if (sets == null || slotIndex < 0 || slotIndex >= sets.Length || slotIndex >= _mainVm.Pads.Count) return;
-            if (string.IsNullOrEmpty(sets[slotIndex]?.WorkshopBatteryColors)) return;
-            WorkshopTuningApplier.ApplyBatteryColors(slotIndex, _mainVm.Pads[slotIndex].GetOrCreateDeviceConfig(deviceGuid));
+            if (!WorkshopTuningApplier.HasDeviceStamps(sets[slotIndex])) return;
+            WorkshopTuningApplier.ApplyDeviceStamps(slotIndex, _mainVm.Pads[slotIndex].GetOrCreateDeviceConfig(deviceGuid));
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace PadForge.Services
             // the existing cards show and edit them, and the engine has
             // one place to read instead of an invisible override.
             WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
-            FoldBatteryColors(slotIndex, us.InstanceGuid);
+            FoldDeviceStamps(slotIndex, us.InstanceGuid);
 
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
 

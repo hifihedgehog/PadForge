@@ -2865,7 +2865,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Tidak ada kontroler</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Jatuhkan untuk mengimpor profil</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Jatuhkan file profil di sini</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, atau DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows, atau DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profil baru</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Simpan sebagai…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Simpan setelan saat ini di sini</value></data>
@@ -5149,7 +5149,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Browser OBS membatalkan halaman yang sertifikatnya tidak dipercaya, sehingga halaman gambar controller untuk sumber browser OBS disajikan pada alamat biasa. Dibaca hanya sebagai dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Referensi impor profil</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Format profil reWASD, dibaca dari dump skema shunt milik hcn1z1 (MIT), dokumen reWASD-Powertools milik DatMoshu (MIT), dan bantuan reWASD, serta format profil DS4Windows, dibaca dari fork DS4Windows milik Schmaldeo (GPL-3.0-or-later). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Format profil reWASD, dibaca dari dump skema shunt milik hcn1z1 (MIT), dokumen reWASD-Powertools milik DatMoshu (MIT), dan bantuan reWASD, format profil DS4Windows, dibaca dari fork DS4Windows milik Schmaldeo (GPL-3.0-or-later), serta format profil DSX, dibaca dari profil di DSX-profile-share milik winkywong1998, proyek DualSense milik RAIZ-Zzz (MIT), dan Mod System of DSX oleh Paliverse (Apache-2.0). Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Referensi Warna layar</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Penangkapan layar di balik pencahayaan Warna layar, dibaca dari Prismatik (GPL-2.0-or-later), fork foundation-sunshine milik AlkaidLab dari Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT), dan alienfx-tools (MIT). Hanya dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Layar Keyboard</value></data>
@@ -5604,7 +5604,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Ke {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge tidak dapat membaca file itu.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>File itu terlalu besar untuk menjadi profil.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>File itu bukan profil PadForge, reWASD, atau DS4Windows.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>File itu bukan profil PadForge, reWASD, DS4Windows, atau DSX.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>File itu mendeklarasikan tipe dokumen, yang tidak pernah dibutuhkan profil, sehingga PadForge tidak membacanya.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>File itu bukan dalam format reWASD yang dibaca PadForge, yaitu skema 3.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge tidak mengenali input ini: {0}</value></data>
@@ -5891,7 +5891,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Warna dikirim langsung ke {0}. Warna yang berubah, seperti siklus warna atau warna yang mengikuti suara, tidak sampai ke sana. Warna yang tetap sama sampai.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Semua file (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Program (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Semua file (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>File audio dan paket suara|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Paket suara (*.pfsounds)|*.pfsounds|Semua file (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>File audio|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Semua file (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows membentuk {0} stik radial menurut sudut dorongan. Kartu stik PadForge memperlakukan dorongan lurus dengan cara yang sama dan dorongan diagonal dengan cara berbeda.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows menyesuaikan zona mati giroskop pada tiap sumbu menurut sudut gerakan. PadForge mengurangi seluruh zona mati pada tiap sumbu, jadi gerakan lurus berperilaku sama dan gerakan diagonal yang lambat mulai bergerak lebih lambat.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Lapisan menyetel {0} secara berbeda, sehingga masing-masing mempertahankan penyetelannya sendiri, dan kurvanya diterapkan sebagai kurva pangkat terdekat.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX menyimpan ini sebagai {0} dan tidak mempublikasikan arti angka-angkanya.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX tidak memberi satuan untuk ini, sehingga PadForge memakai satuannya sendiri.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX tidak mempublikasikan cara kerja pengaturan {0}, sehingga PadForge memakai caranya sendiri.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX tidak mempublikasikan nomor inputnya. Profil DSX yang dipublikasikan memakai 41 sampai 44 sebagai D-pad, sehingga PadForge membacanya seperti itu.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX tidak menulis pengikatan seperti ini, sehingga file ini diubah di luar DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX beralih ke preset ini lewat pintasan. Makronya ada di halaman Makro, siap diikat ke tombol.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Tidak ada profil DSX yang dipublikasikan memakai {0}, sehingga PadForge tidak dapat mengetahui fungsinya.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX membiarkan game mengatur ini saat sakelar passthrough aktif, sehingga PadForge juga menyerahkannya kepada game.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Pada Native Mode dengan Send Data to Device nonaktif, DSX tidak mengirim apa pun miliknya ke kontroler, sehingga PadForge juga menyerahkan ini kepada game.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX tidak mempublikasikan cara turbonya menentukan waktu tiap penekanan, sehingga PadForge menunggu {0} ms di antara penekanan.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Tidak ada profil DSX yang dipublikasikan menampilkan tombol kustom, sehingga PadForge membaca {0} sebagai nama tombol Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX tidak mempublikasikan arah putar sumbu geraknya. PadForge membaca X sebagai pitch, Y sebagai yaw, dan Z sebagai roll, yaitu sumbu bawaan DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge memutar haptik DualSense dari game pada aktuator kontroler itu sendiri bila bisa, dan sebagai getaran bila tidak bisa.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge menyimpan {0} di pengaturan aplikasinya, di luar profil mana pun.</value></data>
 </root>

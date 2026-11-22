@@ -2865,7 +2865,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Nav kontrolleru</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Nometiet, lai importētu profilu</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Nometiet profila failu šeit</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD vai DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows vai DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Jauns profils</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Saglabāt kā…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Saglabāt pašreizējo iestatījumu šeit</value></data>
@@ -5149,7 +5149,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS pārlūks atceļ lapu, kuras sertifikātam neuzticas, tāpēc kontroliera attēla lapa OBS pārlūka avotam tiek pasniegta parastajā adresē. Izmantots tikai kā dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Profilu importēšanas atsauces</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profila formāts, iegūts no hcn1z1 shunt shēmas izrakstiem (MIT), DatMoshu reWASD-Powertools dokumentācijas (MIT) un reWASD palīdzības, bet DS4Windows profila formāts, iegūts no Schmaldeo DS4Windows atzarojuma (GPL-3.0-or-later). Tikai dokumentācija, kods netiek izplatīts.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD profila formāts, iegūts no hcn1z1 shunt shēmas izrakstiem (MIT), DatMoshu reWASD-Powertools dokumentācijas (MIT) un reWASD palīdzības, DS4Windows profila formāts, iegūts no Schmaldeo DS4Windows atzarojuma (GPL-3.0-or-later), un DSX profila formāts, iegūts no winkywong1998 DSX-profile-share profiliem, RAIZ-Zzz DualSense projekta (MIT) un Paliverse veidotās DSX sistēmas Mod System (Apache-2.0). Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Ekrāna krāsas atsauces</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Ekrāna tveršana, uz kuras balstās ekrāna krāsas apgaismojums, iegūta no Prismatik (GPL-2.0-or-later), AlkaidLab foundation-sunshine atzarojuma no Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) un alienfx-tools (MIT). Tikai dokumentācija, GPL kods netiek izplatīts.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Tastatūras ekrāni</value></data>
@@ -5604,7 +5604,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Uz {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge nevarēja nolasīt šo failu.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Šis fails ir pārāk liels, lai būtu profils.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Šis fails nav PadForge, reWASD vai DS4Windows profils.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Šis fails nav PadForge, reWASD, DS4Windows vai DSX profils.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Šis fails deklarē dokumenta tipu, kas profilam nekad nav vajadzīgs, tāpēc PadForge to nenolasīja.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Šis fails nav reWASD formātā, ko PadForge nolasa (shēma 3).</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge neatpazīst šo ievadi: {0}</value></data>
@@ -5891,7 +5891,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Krāsas tiek sūtītas tieši uz {0}. Mainīgas krāsas, piemēram, krāsu cikls vai skaņai sekojošas krāsas, tai nenonāk. Nemainīga krāsa nonāk.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Visi faili (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profils (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programmas (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Visi faili (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Audio faili un skaņu pakotnes|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Skaņu pakotnes (*.pfsounds)|*.pfsounds|Visi faili (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Audio faili|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Visi faili (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows veido radiālās kursorsviras {0} pēc grūdiena leņķa. PadForge kursorsviras iestatījumi taisnu grūdienu atskaņo vienādi, bet diagonālu citādi.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows žiroskopa nejutības zonu katrai asij pielāgo pēc kustības leņķa. PadForge no katras ass atņem visu nejutības zonu, tāpēc taisna kustība darbojas vienādi, bet lēna diagonāla sākas vēlāk.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Slāņi {0} noregulē atšķirīgi, tāpēc katrs saglabā savus iestatījumus, un līkne tiek pārnesta kā tuvākā pakāpes līkne.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX šo saglabā kā {0} un nepublicē, ko tās skaitļi nozīmē.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX šim nenorāda mērvienību, tāpēc PadForge izmanto savu.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX nepublicē, kā darbojas tā iestatījums {0}, tāpēc PadForge izmanto savu.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX nepublicē savus ievades numurus. Publicētie DSX profili izmanto 41 līdz 44 kā D-pad, tāpēc PadForge tos nolasa šādi.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX šādu piesaisti neraksta, tāpēc fails ir mainīts ārpus DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX uz šo sagatavi pārslēdzas ar saīsni. Tās makross ir lapā Makrosi, gatavs piesaistei pogai.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Neviens publicētais DSX profils neizmanto {0}, tāpēc PadForge nevar noteikt, ko tas dara.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX ļauj spēlei to iestatīt, kamēr tā tiešās pārsūtīšanas slēdzis ir ieslēgts, tāpēc PadForge to arī atstāj spēlei.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Režīmā Native Mode ar izslēgtu Send Data to Device DSX kontrolleram nesūta neko savu, tāpēc PadForge to arī atstāj spēlei.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX nepublicē, kā tā turbo laiko katru nospiedienu, tāpēc PadForge starp nospiedieniem gaida {0} ms.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Neviens publicētais DSX profils nerāda pielāgotu taustiņu, tāpēc PadForge {0} nolasa kā Windows taustiņu nosaukumus.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX nepublicē, uz kuru pusi griežas tā kustības asis. PadForge nolasa X kā slīpumu, Y kā pagriezienu un Z kā sānsveri, kā DualSense paša asis.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge spēles DualSense haptiku atskaņo kontrollera paša izpildmehānismos, kad var, bet kā vibrāciju, kad nevar.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge glabā {0} savos lietotnes iestatījumos, ārpus jebkura profila.</value></data>
 </root>

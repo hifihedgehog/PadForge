@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ไม่มีคอนโทรลเลอร์</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>วางเพื่อนำเข้าโปรไฟล์</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>วางไฟล์โปรไฟล์ที่นี่</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD หรือ DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows หรือ DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>โปรไฟล์ใหม่</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>บันทึกเป็น…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>บันทึกการตั้งค่าปัจจุบันที่นี่</value></data>
@@ -5149,7 +5149,7 @@
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>เบราว์เซอร์ของ OBS จะยกเลิกหน้าเว็บที่ตนไม่เชื่อถือใบรับรอง หน้าภาพคอนโทรลเลอร์สำหรับแหล่งเบราว์เซอร์ของ OBS จึงให้บริการผ่านที่อยู่แบบธรรมดา ใช้อ่านเป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>แหล่งอ้างอิงการนำเข้าโปรไฟล์</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>รูปแบบโปรไฟล์ reWASD อ่านจากการดัมพ์สคีมา shunt ของ hcn1z1 (MIT) เอกสาร reWASD-Powertools ของ DatMoshu (MIT) และวิธีใช้ของ reWASD และรูปแบบโปรไฟล์ DS4Windows อ่านจาก DS4Windows ฉบับฟอร์กของ Schmaldeo (GPL-3.0-or-later) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>รูปแบบโปรไฟล์ reWASD อ่านจากการดัมพ์สคีมา shunt ของ hcn1z1 (MIT) เอกสาร reWASD-Powertools ของ DatMoshu (MIT) และวิธีใช้ของ reWASD รูปแบบโปรไฟล์ DS4Windows อ่านจาก DS4Windows ฉบับฟอร์กของ Schmaldeo (GPL-3.0-or-later) และรูปแบบโปรไฟล์ DSX อ่านจากโปรไฟล์ใน DSX-profile-share ของ winkywong1998 โปรเจกต์ DualSense ของ RAIZ-Zzz (MIT) และ Mod System ของ DSX โดย Paliverse (Apache-2.0) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>แหล่งอ้างอิงสีหน้าจอ</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>การจับภาพที่อยู่เบื้องหลังไฟแบบสีหน้าจอ อ่านจาก Prismatik (GPL-2.0-or-later) foundation-sunshine ฉบับฟอร์กของ AlkaidLab จาก Sunshine (GPL-3.0) ScreenCapture.NET (LGPL-2.1) RazerAmbilight (MIT) OpenRGBEffectsPlugin (GPL-2.0-or-later) Aurora (MIT) และ alienfx-tools (MIT) ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ด GPL รวมอยู่ในโปรแกรม</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>หน้าจอคีย์บอร์ด</value></data>
@@ -5604,7 +5604,7 @@
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>ไปยัง {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge อ่านไฟล์นั้นไม่ได้</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>ไฟล์นั้นใหญ่เกินกว่าจะเป็นโปรไฟล์</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่โปรไฟล์ของ PadForge, reWASD หรือ DS4Windows</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่โปรไฟล์ของ PadForge, reWASD, DS4Windows หรือ DSX</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>ไฟล์นั้นประกาศประเภทเอกสาร ซึ่งโปรไฟล์ไม่เคยต้องใช้ PadForge จึงไม่อ่านไฟล์นี้</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>ไฟล์นั้นไม่ใช่รูปแบบ reWASD ที่ PadForge อ่านได้ คือสคีมา 3</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge ไม่รู้จักอินพุตนี้: {0}</value></data>
@@ -5891,7 +5891,7 @@
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>สีจะส่งตรงไปยัง {0} สีที่เปลี่ยนไปเรื่อย ๆ เช่น สีวนรอบหรือสีที่ตามเสียงจะไม่ไปถึงอุปกรณ์ สีที่คงที่จะไปถึง</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>ไฟล์ทั้งหมด (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>โปรไฟล์ PadForge (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>โปรแกรม (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>ไฟล์เสียงและชุดเสียง|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|ชุดเสียง (*.pfsounds)|*.pfsounds|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>ไฟล์เสียง|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows ปรับ {0} ของสติ๊กแบบรัศมีตามมุมที่ดัน การ์ดสติ๊กของ PadForge ถือว่าการดันตรงเหมือนกัน และการดันทแยงต่างออกไป</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows ปรับเดดโซนของไจโรในแต่ละแกนตามมุมของการเคลื่อนไหว PadForge หักเดดโซนทั้งหมดออกจากแต่ละแกน การเคลื่อนไหวตรงจึงเหมือนกัน ส่วนการเคลื่อนไหวทแยงช้าๆ จะเริ่มขยับช้ากว่า</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>เลเยอร์ต่างๆ ปรับแต่ง {0} ไม่เหมือนกัน แต่ละเลเยอร์จึงเก็บการปรับแต่งของตัวเองไว้ และเส้นโค้งถูกนำมาเป็นเส้นโค้งยกกำลังที่ใกล้เคียงที่สุด</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX จัดเก็บค่านี้เป็น {0} และไม่เปิดเผยว่าตัวเลขเหล่านี้หมายถึงอะไร</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX ไม่ระบุหน่วยของค่านี้ PadForge จึงใช้หน่วยของตัวเอง</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ไม่เปิดเผยว่าการตั้งค่า {0} ทำงานอย่างไร PadForge จึงใช้วิธีของตัวเอง</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ไม่เปิดเผยหมายเลขอินพุตของตัวเอง โปรไฟล์ DSX ที่เผยแพร่กันใช้ 41 ถึง 44 เป็น D-pad PadForge จึงอ่านตามนั้น</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ไม่เขียนการผูกปุ่มแบบนี้ ไฟล์นี้จึงถูกแก้ไขนอก DSX</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX สลับมาใช้พรีเซ็ตนี้จากปุ่มลัด แมโครของพรีเซ็ตอยู่ในหน้าแมโคร พร้อมให้ผูกกับปุ่ม</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>ไม่มีโปรไฟล์ DSX ที่เผยแพร่กันใช้ {0} PadForge จึงบอกไม่ได้ว่าทำหน้าที่อะไร</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX ปล่อยให้เกมกำหนดค่านี้เองขณะที่สวิตช์ส่งผ่านเปิดอยู่ PadForge จึงปล่อยให้เกมกำหนดเช่นกัน</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>เมื่ออยู่ใน Native Mode และปิด Send Data to Device ไว้ DSX จะไม่ส่งสิ่งใดของตัวเองไปยังคอนโทรลเลอร์ PadForge จึงปล่อยค่านี้ให้เกมกำหนดเช่นกัน</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX ไม่เปิดเผยว่าเทอร์โบจับเวลาการกดแต่ละครั้งอย่างไร PadForge จึงรอ {0} ms ระหว่างการกดแต่ละครั้ง</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>ไม่มีโปรไฟล์ DSX ที่เผยแพร่กันแสดงปุ่มกำหนดเอง PadForge จึงอ่าน {0} เป็นชื่อปุ่มของ Windows</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX ไม่เปิดเผยว่าแกนการเคลื่อนไหวหมุนไปทางใด PadForge อ่าน X เป็นพิตช์ Y เป็นยอว์ และ Z เป็นโรล ซึ่งเป็นแกนของ DualSense เอง</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge เล่นแฮปติกของ DualSense จากเกมบนแอคชูเอเตอร์ของคอนโทรลเลอร์เองเมื่อทำได้ และเล่นเป็นการสั่นเมื่อทำไม่ได้</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge เก็บ {0} ไว้ในการตั้งค่าแอป แยกจากโปรไฟล์ทุกโปรไฟล์</value></data>
 </root>

@@ -243,7 +243,7 @@ namespace PadForge.Views
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 Title = Strings.Instance.Profiles_Import,
-                Filter = $"{Strings.Instance.Profiles_ImportFilterAll} (*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml)|*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml"
+                Filter = $"{Strings.Instance.Profiles_ImportFilterAll} (*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml;*.dsx)|*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml;*.dsx"
                     + "|" + string.Format(Strings.Instance.FileDialog_ProfileFilter_Format, PadForge.Common.ProfileTransfer.FileExtension)
                     + "|" + Strings.Instance.FileDialog_ForeignProfileFilter
                     + "|" + Strings.Instance.FileDialog_AllFilesFilter,

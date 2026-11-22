@@ -2865,7 +2865,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Nincs kontroller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ejtse ide a profil importálásához</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Húzzon ide egy profilfájlt</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD vagy DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows vagy DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Új profil</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Mentés másként…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Jelenlegi beállítás mentése ide</value></data>
@@ -5149,7 +5149,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Az OBS böngészője megszakít minden oldalt, amelynek a tanúsítványában nem bízik, ezért az OBS böngészőforrás vezérlőképes oldala sima címen érhető el. Kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Profilimport-referenciák</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>A reWASD profilformátuma hcn1z1 shunt sémakimentéséből (MIT), DatMoshu reWASD-Powertools dokumentációjából (MIT) és a reWASD súgójából kiolvasva, a DS4Windows profilformátuma pedig Schmaldeo DS4Windows forkjából (GPL-3.0-or-later). Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>A reWASD profilformátuma hcn1z1 shunt sémakimentéséből (MIT), DatMoshu reWASD-Powertools dokumentációjából (MIT) és a reWASD súgójából kiolvasva, a DS4Windows profilformátuma Schmaldeo DS4Windows forkjából (GPL-3.0-or-later), a DSX profilformátuma pedig winkywong1998 DSX-profile-share profiljaiból, RAIZ-Zzz DualSense projektjéből (MIT) és a Paliverse által készített DSX Mod Systemjéből (Apache-2.0) kiolvasva. Csak dokumentációként, a program nem tartalmaz belőlük kódot.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Képernyőszín-referenciák</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>A Képernyőszín világítás mögötti képernyőrögzítés a Prismatik (GPL-2.0-or-later), AlkaidLab foundation-sunshine forkja a Sunshine-ból (GPL-3.0), a ScreenCapture.NET (LGPL-2.1), a RazerAmbilight (MIT), az OpenRGBEffectsPlugin (GPL-2.0-or-later), az Aurora (MIT) és az alienfx-tools (MIT) alapján kiolvasva. Csak dokumentációként, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Billentyűzetképernyők</value></data>
@@ -5604,7 +5604,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Ide: {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>A PadForge nem tudta beolvasni a fájlt.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>A fájl túl nagy ahhoz, hogy profil legyen.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>A fájl nem PadForge-, reWASD- vagy DS4Windows-profil.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>A fájl nem PadForge-, reWASD-, DS4Windows- vagy DSX-profil.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>A fájl dokumentumtípust deklarál, amelyre egy profilnak sosem lenne szüksége, ezért a PadForge nem olvasta be.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>A fájl nem abban a reWASD-formátumban van, amelyet a PadForge olvas, azaz a 3-as sémában.</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>A PadForge nem ismeri fel ezt a bemenetet: {0}</value></data>
@@ -5891,7 +5891,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. A változó színek, például a színváltás vagy a hangot követő színek nem jutnak el hozzá. Az állandó szín igen.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Minden fájl (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profil (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programok (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Minden fájl (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Hangfájlok és hangcsomagok|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Hangcsomagok (*.pfsounds)|*.pfsounds|Minden fájl (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Hangfájlok|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Minden fájl (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>A DS4Windows a radiális kar {0} beállítását a kitérítés szöge szerint alakítja. A PadForge kar kártyája az egyenes kitérítést ugyanúgy, az átlósat másképp játssza le.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>A DS4Windows a giroszkóp holtzónáját tengelyenként a mozgás szöge szerint méretezi. A PadForge a teljes holtzónát levonja minden tengelyről, ezért az egyenes mozgást ugyanúgy játssza le, a lassú átlós mozgás viszont később indul.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>A rétegek eltérően hangolják ezt: {0}, ezért mindegyik megtartja a saját hangolását, a görbe pedig a legközelebbi hatványgörbeként került át.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>A DSX ezt a következő számokként tárolja: {0}, és nem közli, mit jelentenek a számai.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>A DSX nem ad meg mértékegységet ehhez, ezért a PadForge a sajátját használja.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>A DSX nem közli, hogyan működik a(z) {0} beállítása, ezért a PadForge a saját módszerét használja.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>A DSX nem közli a bemeneti számait. A közzétett DSX-profilok a 41 és 44 közötti számokat használják D-padként, ezért a PadForge így olvassa őket.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>A DSX nem ír ilyen hozzárendelést, ezért a fájlt a DSX-en kívül módosították.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>A DSX egy gyorsbillentyűvel vált erre az előbeállításra. A makrója a Makrók oldalon van, készen áll arra, hogy egy gombhoz rendelje.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Egyetlen közzétett DSX-profil sem használja ezt: {0}, ezért a PadForge nem tudja megállapítani, mit csinál.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>A DSX a játékra bízza ennek beállítását, amíg az átengedési kapcsolója be van kapcsolva, ezért a PadForge is a játékra bízza.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Ha a Native Mode be van kapcsolva, a Send Data to Device pedig ki, a DSX semmit sem küld a saját részéről a kontrollernek, ezért a PadForge ezt is a játékra bízza.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>A DSX nem közli, hogyan időzíti a turbója az egyes lenyomásokat, ezért a PadForge {0} ms-ot vár a lenyomások között.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Egyetlen közzétett DSX-profil sem mutat egyéni billentyűt, ezért a PadForge ezt: {0} Windows-billentyűnevekként olvassa.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>A DSX nem közli, merre fordulnak a mozgástengelyei. A PadForge az X tengelyt bólintásként, az Y tengelyt legyezésként, a Z tengelyt pedig orsózásként olvassa, ahogy a DualSense saját tengelyei vannak.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>A PadForge a játék DualSense-haptikáját a kontroller saját aktuátorain játssza le, ha tudja, és rezgésként, ha nem.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>A PadForge ezt a saját alkalmazásbeállításai között tartja, bármely profilon kívül: {0}.</value></data>
 </root>

@@ -227,6 +227,23 @@ namespace PadForge.Engine.Data
         /// empty then full, written <c>r,g,b;r,g,b</c>. Empty means none.</summary>
         [XmlAttribute] public string WorkshopBatteryColors { get; set; } = "";
 
+        /// <summary>The device's player LEDs from an import (#589), a
+        /// PlayerLedMode name. Empty means none.</summary>
+        [XmlAttribute] public string WorkshopPlayerLedMode { get; set; } = "";
+
+        /// <summary>The player LEDs' brightness from an import (#589), a
+        /// PlayerLedBrightness name. Empty means none.</summary>
+        [XmlAttribute] public string WorkshopPlayerLedBrightness { get; set; } = "";
+
+        /// <summary>The device's mic LED from an import (#589), a MicLedMode
+        /// name. Follow Device Mute follows the PC's default microphone.
+        /// Empty means none.</summary>
+        [XmlAttribute] public string WorkshopMicLedMode { get; set; } = "";
+
+        /// <summary>The device's headset volume in percent, as text, from an
+        /// import (#589). Empty means none.</summary>
+        [XmlAttribute] public string WorkshopHeadphoneVolume { get; set; } = "";
+
         /// <summary>A gyro dead zone in degrees per second, as text (#561),
         /// for the Gyro group of whichever device lands on the slot. Empty
         /// means none.</summary>
@@ -299,6 +316,10 @@ namespace PadForge.Engine.Data
             dst.WorkshopRumblePercent = WorkshopRumblePercent ?? "";
             dst.WorkshopIdleDisconnectSeconds = WorkshopIdleDisconnectSeconds ?? "";
             dst.WorkshopBatteryColors = WorkshopBatteryColors ?? "";
+            dst.WorkshopPlayerLedMode = WorkshopPlayerLedMode ?? "";
+            dst.WorkshopPlayerLedBrightness = WorkshopPlayerLedBrightness ?? "";
+            dst.WorkshopMicLedMode = WorkshopMicLedMode ?? "";
+            dst.WorkshopHeadphoneVolume = WorkshopHeadphoneVolume ?? "";
             dst.WorkshopGyroDeadZone = WorkshopGyroDeadZone ?? "";
             dst.WorkshopTouchpadGlide = WorkshopTouchpadGlide ?? "";
             dst.WorkshopGyroSpace = WorkshopGyroSpace ?? "";

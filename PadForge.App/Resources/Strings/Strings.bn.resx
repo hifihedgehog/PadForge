@@ -2865,7 +2865,7 @@
   <data name="Profiles_NoSlots" xml:space="preserve"><value>কোনো কন্ট্রোলার নেই</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>প্রোফাইল ইমপোর্ট করতে এখানে ছাড়ুন</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>এখানে একটি প্রোফাইল ফাইল ছাড়ুন</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD বা DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows বা DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>নতুন প্রোফাইল</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>নতুন নামে সংরক্ষণ করুন…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>বর্তমান সেটআপ এখানে সংরক্ষণ করুন</value></data>
@@ -5149,7 +5149,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS-এর ব্রাউজার যে পেজের সার্টিফিকেটে আস্থা রাখে না সেটি বাতিল করে, তাই OBS ব্রাউজার সোর্সের জন্য কন্ট্রোলারের ছবির পেজটি সাধারণ ঠিকানায় পরিবেশন করা হয়। কেবল ডকুমেন্টেশন হিসেবে পড়া হয়েছে, কোনো GPL কোড সঙ্গে আসে না।</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>প্রোফাইল ইমপোর্ট রেফারেন্স</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD প্রোফাইল ফরম্যাট, যা hcn1z1-এর shunt স্কিমা ডাম্প (MIT), DatMoshu-এর reWASD-Powertools ডকুমেন্টেশন (MIT) ও reWASD-এর সহায়িকা থেকে পড়া হয়েছে, এবং DS4Windows প্রোফাইল ফরম্যাট, যা Schmaldeo-এর DS4Windows ফর্ক (GPL-3.0-or-later) থেকে পড়া হয়েছে। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD প্রোফাইল ফরম্যাট, যা hcn1z1-এর shunt স্কিমা ডাম্প (MIT), DatMoshu-এর reWASD-Powertools ডকুমেন্টেশন (MIT) ও reWASD-এর সহায়িকা থেকে পড়া হয়েছে, DS4Windows প্রোফাইল ফরম্যাট, যা Schmaldeo-এর DS4Windows ফর্ক (GPL-3.0-or-later) থেকে পড়া হয়েছে, এবং DSX প্রোফাইল ফরম্যাট, যা winkywong1998-এর DSX-profile-share-এর প্রোফাইল, RAIZ-Zzz-এর DualSense প্রজেক্ট (MIT) ও Paliverse-এর তৈরি DSX-এর Mod System (Apache-2.0) থেকে পড়া হয়েছে। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>স্ক্রিনের রং রেফারেন্স</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>স্ক্রিনের রং আলোকসজ্জার পেছনের ক্যাপচার, যা Prismatik (GPL-2.0-or-later), AlkaidLab-এর Sunshine-এর foundation-sunshine ফর্ক (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) ও alienfx-tools (MIT) থেকে পড়া হয়েছে। কেবল ডকুমেন্টেশন, কোনো GPL কোড সঙ্গে আসে না।</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>কীবোর্ড স্ক্রিন</value></data>
@@ -5604,7 +5604,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>{0}-এ</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge ওই ফাইলটি পড়তে পারেনি।</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>ওই ফাইলটি প্রোফাইল হওয়ার জন্য অতিরিক্ত বড়।</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ওই ফাইলটি PadForge, reWASD বা DS4Windows প্রোফাইল নয়।</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>ওই ফাইলটি PadForge, reWASD, DS4Windows বা DSX প্রোফাইল নয়।</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>ওই ফাইলে একটি ডকুমেন্ট টাইপ ঘোষণা আছে, যা প্রোফাইলে কখনও লাগে না, তাই PadForge সেটি পড়েনি।</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>ওই ফাইলটি PadForge-এর পড়তে পারা reWASD ফরম্যাটে (স্কিমা 3) নেই।</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge এই ইনপুটটি চিনতে পারে না: {0}</value></data>
@@ -5891,7 +5891,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>রং সরাসরি {0}-এ যায়। বদলাতে থাকা রং, যেমন রঙের চক্র বা শব্দ অনুসরণ করা রং, সেখানে পৌঁছায় না। যে রং একই থাকে তা পৌঁছায়।</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>সব ফাইল (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge প্রোফাইল (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>প্রোগ্রাম (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|সব ফাইল (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>অডিও ফাইল ও সাউন্ড প্যাকেজ|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|সাউন্ড প্যাকেজ (*.pfsounds)|*.pfsounds|সব ফাইল (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>অডিও ফাইল|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|সব ফাইল (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows রেডিয়াল স্টিকের {0} ঠেলার কোণ অনুযায়ী গড়ে। PadForge-এর স্টিক কার্ডে সোজা ঠেলা একরকম আর কোনাকুনি ঠেলা অন্যরকম চলে।</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows জাইরোর ডেডজোন প্রতিটি অক্ষে নড়াচড়ার কোণ অনুযায়ী কমায়। PadForge প্রতিটি অক্ষ থেকে পুরো ডেডজোন বাদ দেয়, তাই সোজা নড়াচড়া একইরকম চলে আর ধীর কোনাকুনি নড়াচড়া দেরিতে শুরু হয়।</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>লেয়ারগুলি {0} আলাদাভাবে টিউন করে, তাই প্রতিটি লেয়ার নিজের টিউনিং রাখে, আর কার্ভটি সবচেয়ে কাছের পাওয়ার কার্ভ হিসেবে আনা হয়েছে।</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX এটি {0} হিসেবে সংরক্ষণ করে, আর সংখ্যাগুলির অর্থ কী তা প্রকাশ করে না।</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX এর জন্য কোনো একক দেয় না, তাই PadForge নিজের একক ব্যবহার করে।</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX তার {0} সেটিং কীভাবে কাজ করে তা প্রকাশ করে না, তাই PadForge নিজের পদ্ধতি ব্যবহার করে।</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX তার ইনপুট নম্বর প্রকাশ করে না। প্রকাশিত DSX প্রোফাইলে 41 থেকে 44 ডি-প্যাড হিসেবে ব্যবহার হয়, তাই PadForge সেগুলি সেভাবেই পড়ে।</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX এ ধরনের বাইন্ডিং লেখে না, তাই ফাইলটি DSX-এর বাইরে বদলানো হয়েছে।</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX একটি শর্টকাট থেকে এই প্রিসেটে বদলায়। এর ম্যাক্রো “ম্যাক্রো” পাতায় আছে, কোনো বোতামে বাইন্ড করার জন্য তৈরি।</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>প্রকাশিত কোনো DSX প্রোফাইল {0} ব্যবহার করে না, তাই PadForge বুঝতে পারে না এটি কী করে।</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX-এর পাসথ্রু সুইচ চালু থাকলে DSX এটি গেমকে ঠিক করতে দেয়, তাই PadForge-ও এটি গেমের হাতে ছেড়ে দেয়।</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>Native Mode-এ Send Data to Device বন্ধ থাকলে DSX কন্ট্রোলারে নিজের কিছুই পাঠায় না, তাই PadForge-ও এটি গেমের হাতে ছেড়ে দেয়।</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX তার টার্বো প্রতিটি চাপের সময় কীভাবে ঠিক করে তা প্রকাশ করে না, তাই PadForge দুই চাপের মাঝে {0} মি.সে. অপেক্ষা করে।</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>প্রকাশিত কোনো DSX প্রোফাইলে কাস্টম কী দেখা যায় না, তাই PadForge {0} কে Windows-এর কী নাম হিসেবে পড়ে।</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX তার মোশন অক্ষ কোন দিকে ঘোরে তা প্রকাশ করে না। PadForge X কে পিচ, Y কে ইয়ো আর Z কে রোল হিসেবে পড়ে, যা DualSense-এর নিজস্ব অক্ষ।</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge পারলে গেমের DualSense হ্যাপটিক্স কন্ট্রোলারের নিজস্ব অ্যাকচুয়েটরে চালায়, না পারলে রাম্বল হিসেবে চালায়।</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge {0} নিজের অ্যাপ সেটিংসে রাখে, কোনো প্রোফাইলের বাইরে।</value></data>
 </root>

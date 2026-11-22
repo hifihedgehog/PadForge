@@ -2865,7 +2865,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Ni krmilnikov</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Spustite za uvoz profila</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Spustite datoteko profila sem</value></data>
-  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD ali DS4Windows</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, DS4Windows ali DSX</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nov profil</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Shrani kot …</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Shrani trenutno nastavitev sem</value></data>
@@ -5149,7 +5149,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
   <data name="About_ObsBrowserDesc" xml:space="preserve"><value>Brskalnik OBS prekliče stran, ki ji potrdilo ni zaupanja vredno, zato je stran s sliko krmilnika za brskalniški vir OBS postrežena na navadnem naslovu. Prebrano le kot dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>Reference za uvoz profilov</value></data>
-  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Format profilov reWASD, prebran iz izpisa sheme shunt avtorja hcn1z1 (MIT), dokumentacije reWASD-Powertools avtorja DatMoshu (MIT) in pomoči za reWASD, ter format profilov DS4Windows, prebran iz izpeljanke DS4Windows avtorja Schmaldeo (GPL-3.0-or-later). Samo dokumentacija, nobena koda ni vključena.</value></data>
+  <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>Format profilov reWASD, prebran iz izpisa sheme shunt avtorja hcn1z1 (MIT), dokumentacije reWASD-Powertools avtorja DatMoshu (MIT) in pomoči za reWASD, format profilov DS4Windows, prebran iz izpeljanke DS4Windows avtorja Schmaldeo (GPL-3.0-or-later), ter format profilov DSX, prebran iz profilov v zbirki DSX-profile-share avtorja winkywong1998, projekta DualSense avtorja RAIZ-Zzz (MIT) in sistema Mod System of DSX avtorja Paliverse (Apache-2.0). Samo dokumentacija, nobena koda ni vključena.</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>Reference za Barva zaslona</value></data>
   <data name="About_ScreenColorRefsDesc" xml:space="preserve"><value>Zajem za osvetlitev Barva zaslona, prebran iz Prismatik (GPL-2.0-or-later), izpeljanke foundation-sunshine avtorja AlkaidLab za Sunshine (GPL-3.0), ScreenCapture.NET (LGPL-2.1), RazerAmbilight (MIT), OpenRGBEffectsPlugin (GPL-2.0-or-later), Aurora (MIT) in alienfx-tools (MIT). Samo dokumentacija, nobena koda GPL ni vključena.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Zasloni tipkovnice</value></data>
@@ -5604,7 +5604,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Line_ToLayer_Format" xml:space="preserve"><value>Na {0}</value></data>
   <data name="Import_Tr_FileUnreadable" xml:space="preserve"><value>PadForge te datoteke ni mogel prebrati.</value></data>
   <data name="Import_Tr_FileTooLarge" xml:space="preserve"><value>Ta datoteka je prevelika, da bi bila profil.</value></data>
-  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Ta datoteka ni profil PadForge, reWASD ali DS4Windows.</value></data>
+  <data name="Import_Tr_FileNotConfig" xml:space="preserve"><value>Ta datoteka ni profil PadForge, reWASD, DS4Windows ali DSX.</value></data>
   <data name="Import_Tr_FileHasDtd" xml:space="preserve"><value>Ta datoteka vsebuje deklaracijo vrste dokumenta, ki je profil nikoli ne potrebuje, zato je PadForge ni prebral.</value></data>
   <data name="Import_Tr_RewasdOtherVersion" xml:space="preserve"><value>Ta datoteka ni v zapisu reWASD, ki ga PadForge bere (shema 3).</value></data>
   <data name="Import_Tr_UnknownInput" xml:space="preserve"><value>PadForge tega vnosa ne prepozna: {0}</value></data>
@@ -5891,7 +5891,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Barve gredo neposredno na {0}. Spreminjajoče se barve, na primer kroženje barv ali barve, ki sledijo zvoku, ne dosežejo naprave. Barva, ki ostane enaka, jo doseže.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Vse datoteke (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>
-  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml</value></data>
+  <data name="FileDialog_ForeignProfileFilter" xml:space="preserve"><value>reWASD (*.rewasd)|*.rewasd|DS4Windows (*.xml)|*.xml|DSX (*.dsx)|*.dsx</value></data>
   <data name="FileDialog_ProgramFilter" xml:space="preserve"><value>Programi (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|Vse datoteke (*.*)|*.*</value></data>
   <data name="FileDialog_SoundFileFilter" xml:space="preserve"><value>Zvočne datoteke in zvočni paketi|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.pfsounds|Zvočni paketi (*.pfsounds)|*.pfsounds|Vse datoteke (*.*)|*.*</value></data>
   <data name="FileDialog_AudioFilter" xml:space="preserve"><value>Zvočne datoteke|*.wav;*.mp3;*.m4a;*.aac;*.wma;*.flac;*.ogg|Vse datoteke (*.*)|*.*</value></data>
@@ -5924,4 +5924,18 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_StickByAngle" xml:space="preserve"><value>DS4Windows oblikuje {0} radialne palčke glede na kot potiska. Kartica nastavitev palčke v PadForge raven potisk odigra enako, diagonalnega pa drugače.</value></data>
   <data name="Import_Tr_GyroByAngle" xml:space="preserve"><value>DS4Windows mrtvo območje žiroskopa na vsaki osi prilagodi glede na kot gibanja. PadForge na vsaki osi odvzame celotno mrtvo območje, zato raven premik odigra enako, počasen diagonalen pa se začne pozneje.</value></data>
   <data name="Import_Tr_CurveOnRows" xml:space="preserve"><value>Plasti {0} nastavijo različno, zato vsaka obdrži svoje nastavitve, krivulja pa se prenese kot najbližja potenčna krivulja.</value></data>
+  <data name="Import_Tr_DsxNumber" xml:space="preserve"><value>DSX to shranjuje kot {0} in ne objavlja, kaj te številke pomenijo.</value></data>
+  <data name="Import_Tr_DsxUnit" xml:space="preserve"><value>DSX za to ne podaja enote, zato PadForge uporabi svojo.</value></data>
+  <data name="Import_Tr_DsxShaping" xml:space="preserve"><value>DSX ne objavlja, kako deluje njegova nastavitev {0}, zato PadForge uporabi svojo.</value></data>
+  <data name="Import_Tr_DsxDpad" xml:space="preserve"><value>DSX ne objavlja svojih številk vhodov. Objavljeni profili DSX uporabljajo 41 do 44 za smerni križ, zato jih PadForge tako prebere.</value></data>
+  <data name="Import_Tr_DsxEdited" xml:space="preserve"><value>DSX ne zapiše takšne vezave, zato je bila datoteka spremenjena zunaj DSX.</value></data>
+  <data name="Import_Tr_DsxPreset" xml:space="preserve"><value>DSX se na to prednastavitev preklopi s bližnjico. Njen makro je na strani Makri, pripravljen za vezavo na gumb.</value></data>
+  <data name="Import_Tr_DsxModeName" xml:space="preserve"><value>Noben objavljeni profil DSX ne uporablja {0}, zato PadForge ne more ugotoviti, kaj počne.</value></data>
+  <data name="Import_Tr_DsxPassthrough" xml:space="preserve"><value>DSX pusti to nastaviti igri, medtem ko je njegovo stikalo za prepuščanje vklopljeno, zato PadForge to prepusti tudi igri.</value></data>
+  <data name="Import_Tr_DsxNoData" xml:space="preserve"><value>V načinu Native Mode z izklopljenim Send Data to Device DSX krmilniku ne pošilja ničesar svojega, zato PadForge to prepusti tudi igri.</value></data>
+  <data name="Import_Tr_DsxTurbo" xml:space="preserve"><value>DSX ne objavlja, kako njegov turbo odmeri vsak pritisk, zato PadForge med pritiski počaka {0} ms.</value></data>
+  <data name="Import_Tr_DsxKeyName" xml:space="preserve"><value>Noben objavljeni profil DSX ne prikazuje po meri nastavljene tipke, zato PadForge {0} prebere kot imena tipk v sistemu Windows.</value></data>
+  <data name="Import_Tr_DsxMotionAxes" xml:space="preserve"><value>DSX ne objavlja, v katero smer se vrtijo njegove osi gibanja. PadForge prebere X kot naklon, Y kot zasuk in Z kot nagib, kar so lastne osi krmilnika DualSense.</value></data>
+  <data name="Import_Tr_DsxHaptics" xml:space="preserve"><value>PadForge haptiko DualSense iz igre predvaja na krmilnikovih lastnih aktuatorjih, kadar lahko, in kot vibriranje, kadar ne more.</value></data>
+  <data name="Import_Tr_AppSetting" xml:space="preserve"><value>PadForge hrani {0} v nastavitvah aplikacije, zunaj vseh profilov.</value></data>
 </root>

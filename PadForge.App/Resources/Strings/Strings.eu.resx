@@ -544,12 +544,12 @@
   <data name="Dashboard_MotionServerPort" xml:space="preserve"><value>Mugimendu-zerbitzariaren ataka</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Giroskopio- eta azelerometro-datuak ematen dizkie Cemu, Dolphin, Yuzu eta abarrei.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Joko-modak</value></data>
-  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSXrako egindako joko-modei zure PlayStation kontrolagailuen katu moldagarriak, argi-barra, jokalari-argiak eta mutu-argia ezartzen uzten die.</value></data>
+  <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>DSX-rako egindako joko-modei zure PlayStation kontrolagailuen katu moldagarriak, argi-barra, jokalari-argiak eta mutu-argia ezartzen uzten die.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Onartu DSX joko-modak</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Joko-moden ataka</value></data>
   <data name="Dashboard_GameModStandIn" xml:space="preserve"><value>Exekutatu DSX.exe ordezkoa</value></data>
   <data name="Dashboard_GameModStandIn_Tooltip" xml:space="preserve"><value>DualSense4GTAV bezalako mod batzuk beren burua desaktibatzen dute DSX izeneko programa bat martxan ez badago. Honek izen horretako ordezko txiki bat exekutatzen du zerbitzariak entzuten duen bitartean.</value></data>
-  <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSXrako egindako modekin dabil, hala nola GTA V, Red Dead Redemption 2, Skyrim eta Forza jokoetarakoekin. Zerbitzariak entzuten duen bitartean, PadForge-k bere ataka mod horiek bilatzen duten tokian idazten du.</value></data>
+  <data name="Dashboard_GameModsFooter" xml:space="preserve"><value>DSX-rako egindako modekin dabil, hala nola GTA V, Red Dead Redemption 2, Skyrim eta Forza jokoetarakoekin. Zerbitzariak entzuten duen bitartean, PadForge-k bere ataka mod horiek bilatzen duten tokian idazten du.</value></data>
   <data name="GameMods_Sending_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu birtualera bidaltzen ari da.</value></data>
   <data name="GameMods_SendingNoController_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} bidaltzen ari da, baina ez dago PlayStation kontrolagailurik duen kontrolagailu birtualik.</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Entzuten (:{0}). {1} {2}. kontrolagailu-indizera bidaltzen ari da, eta PlayStation kontrolagailu bat duen kontrolagailu birtualik ez dago indize horrekin.</value></data>

@@ -407,6 +407,11 @@ namespace PadForge.Common.ConfigImport
         /// <summary>True for a block: an empty macro whose trigger is the
         /// one key or button it holds back from Windows.</summary>
         public bool ConsumesTrigger;
+
+        /// <summary>True for a macro the file keeps but triggers from nothing
+        /// a profile holds, such as a DSX preset its shortcuts switch to. It
+        /// ships with no trigger, for the user to bind.</summary>
+        public bool Unbound;
     }
 
     /// <summary>
@@ -536,6 +541,14 @@ namespace PadForge.Common.ConfigImport
         /// <summary>The battery light's empty and full colors,
         /// "r,g,b;r,g,b", or empty.</summary>
         public string BatteryColors { get; set; } = "";
+
+        /// <summary>The device's player LEDs and their brightness, its mic
+        /// LED, and its headset volume in percent, as text, for whichever
+        /// device lands on the slot. Empty means none.</summary>
+        public string PlayerLedMode { get; set; } = "";
+        public string PlayerLedBrightness { get; set; } = "";
+        public string MicLedMode { get; set; } = "";
+        public string HeadphoneVolume { get; set; } = "";
 
         /// <summary>What the profile starts by itself when it loads.</summary>
         public List<string> Starts { get; } = new();
@@ -1277,6 +1290,10 @@ namespace PadForge.Common.ConfigImport
                 sets[i].WorkshopRumblePercent = RumblePercent ?? "";
                 sets[i].WorkshopIdleDisconnectSeconds = IdleDisconnectSeconds ?? "";
                 sets[i].WorkshopBatteryColors = BatteryColors ?? "";
+                sets[i].WorkshopPlayerLedMode = PlayerLedMode ?? "";
+                sets[i].WorkshopPlayerLedBrightness = PlayerLedBrightness ?? "";
+                sets[i].WorkshopMicLedMode = MicLedMode ?? "";
+                sets[i].WorkshopHeadphoneVolume = HeadphoneVolume ?? "";
                 sets[i].WorkshopGyroDeadZone = GyroDeadZone ?? "";
                 sets[i].WorkshopTouchpadGlide = TouchpadGlide ?? "";
             }
@@ -1490,7 +1507,7 @@ namespace PadForge.Common.ConfigImport
                     specs.Add(new MacroItem.TriggerInputEntry { SourceDescriptor = input.Gate }.Spec);
             }
             bool always = m.Mode == MacroTriggerMode.Always;
-            if (specs.Count == 0 && !always) return null;
+            if (specs.Count == 0 && !always && !m.Unbound) return null;
 
             return new MacroData
             {

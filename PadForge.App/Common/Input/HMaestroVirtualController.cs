@@ -332,9 +332,18 @@ namespace PadForge.Common.Input
             // same reason, HMController.cs "audit 1n"), and the raw submit
             // path read both per 1 kHz tick (~115 KB/s in the allocation
             // trace). Layout is immutable per profile.
+            // A Sony packer's frame is the 63 data bytes of report 0x01, the
+            // form HIDMaestro's SubmitRawReport documents, so it never
+            // carries its id. HIDMaestro 2.3.0 made the USB Sony profiles
+            // always armed, and its SubmitRawReport heads a frame one byte
+            // short of the declared report with the declared id and lays the
+            // profile's fixed bytes over it (the DualSense Edge's bytes 49
+            // to 52). Sent verbatim instead, the frame went out headed by the
+            // left stick's X, and Windows took none of it (PadForge 6.0.0).
             var extSpec = _profile.ExtendedReport;
             _extendedFrameCarriesItsOwnId =
-                extSpec != null && extSpec.AlwaysArmed && extSpec.ReportIdByte != 0;
+                extSpec != null && extSpec.AlwaysArmed && extSpec.ReportIdByte != 0
+                && SonyReportPackers.ForProfile(_profile.Id) == null;
 
             _cachedProfileSticks = _profile.Sticks;
             _cachedProfileTriggers = _profile.Triggers;
@@ -773,7 +782,8 @@ namespace PadForge.Common.Input
         /// skips SubmitGamepadState on those slots, so this is their only
         /// submit. A profile whose frames carry their own report id goes
         /// through SubmitRawExtendedReport, the rest through
-        /// HMController.SubmitRawReport.</summary>
+        /// HMController.SubmitRawReport. A Sony packer's frame is data
+        /// bytes only, so it takes the second.</summary>
         public void SubmitRawReport(ReadOnlySpan<byte> report)
         {
             if (_target == null) return;
@@ -784,16 +794,20 @@ namespace PadForge.Common.Input
             TickFfb();
 
             // A profile that declares its own input report id and is always
-            // armed is never in legacy mode, so its frames carry that id and
-            // must go out verbatim. HM v1.7.1 (HIDMaestro#58) infers that
-            // from LENGTH on SubmitRawReport, a frame the size of the
-            // declared report passing through untouched and one byte shorter
-            // taking the prepend. Say it outright instead. The inference is
+            // armed is never in legacy mode, so a frame built with that id
+            // must go out verbatim. A Sony packer's frame is data only and
+            // takes SubmitRawReport, which puts the id back (see where
+            // _extendedFrameCarriesItsOwnId is set). HM v1.7.1
+            // (HIDMaestro#58) infers the form from LENGTH on
+            // SubmitRawReport, a frame the size of the declared report
+            // passing through untouched and one byte shorter taking the
+            // prepend. Say it outright instead. The inference is
             // correct today and would flip silently the day a packer size or
             // a declared size moved by one, and on the 2026 Steam Controller
             // the prepend branch means the descriptor's FIRST report, which
             // is that pad's lizard-mode mouse: every frame became cursor
-            // motion. PackerFramesCarryTheirOwnReportId pins the pairing.
+            // motion. PackerFramesCarryTheirOwnReportId pins the pairing for
+            // the Valve packers, and SonyRawFrameWireTests for the Sony ones.
             if (_extendedFrameCarriesItsOwnId)
                 _target.SubmitRawExtendedReport(report);
             else
@@ -841,7 +855,8 @@ namespace PadForge.Common.Input
 
         /// <summary>True when this profile declares a non-zero input report
         /// id and is always armed, which is HIDMaestro's definition of a
-        /// frame that already carries its own id.</summary>
+        /// frame that already carries its own id, and no Sony packer builds
+        /// its frames: those are data bytes only.</summary>
         private readonly bool _extendedFrameCarriesItsOwnId;
 
         /// <summary>Whether <see cref="SubmitRawReport"/> takes this profile's

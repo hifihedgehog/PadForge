@@ -35,7 +35,9 @@ namespace PadForge.Tests
                 && key.EndsWith("Style", StringComparison.Ordinal))
                || LibraryKeys.Contains(key);
 
-        private static readonly HashSet<string> LibraryKeys = new(StringComparer.Ordinal) { "TitleTextBlockStyle" };
+        // UiContextMenu: the library's keyed menu style, which its own implicit
+        // ContextMenu style is based on (wpfui src/Wpf.Ui/Controls/ContextMenu/ContextMenu.xaml:13 and :80).
+        private static readonly HashSet<string> LibraryKeys = new(StringComparer.Ordinal) { "TitleTextBlockStyle", "UiContextMenu" };
 
         /// <summary>Strips XML comments before scanning. Prose inside them
         /// mentions resources in passing ("the StaticResource font is only

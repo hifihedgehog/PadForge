@@ -1540,8 +1540,12 @@
                  WPF-UI's UiContextMenu sets no FontFamily
                  (wpfui src/Wpf.Ui/Controls/ContextMenu/ContextMenu.xaml:13),
                  so menus drew in classic Segoe UI. The face set here reaches
-                 every item, the tray menu's too. -->
-            <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+                 every item, the tray menu's too. It is based on WPF-UI's keyed
+                 style, as WPF-UI's own implicit style is (ContextMenu.xaml:80).
+                 Based on {x:Type ContextMenu}, this dictionary's lookup found
+                 this style's own key, the base came out empty, and every menu
+                 drew WPF's classic light template on any theme. -->
+            <Style TargetType="ContextMenu" BasedOn="{StaticResource UiContextMenu}">
                 <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
             </Style>
 

@@ -237,6 +237,20 @@
         <Style x:Key="SlotPictureGray" TargetType="Image">
             <Setter Property="Stretch" Value="Uniform"/>
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+            <Style.Triggers>
+                <!-- While the controller forges, its picture stands here and
+                     moves (CardLiveStage, CardLiveArt). Both pictures under
+                     it, the gray one and the color one based on this style,
+                     would show the controller at rest past a tilted stick or
+                     a held trigger. -->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Heat}" Value="Forging"/>
+                        <Condition Binding="{Binding PictureMoves}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="SlotPictureColor" TargetType="Image" BasedOn="{StaticResource SlotPictureGray}">
@@ -248,16 +262,6 @@
                 <DataTrigger Binding="{Binding Heat}" Value="Waiting">
                     <Setter Property="Opacity" Value="0.6"/>
                 </DataTrigger>
-                <!-- While the controller forges, its picture stands here and
-                     moves (CardLiveStage, CardLiveArt). The picture under it
-                     would show past a tilted stick. -->
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Heat}" Value="Forging"/>
-                        <Condition Binding="{Binding PictureMoves}" Value="True"/>
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Visibility" Value="Hidden"/>
-                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 

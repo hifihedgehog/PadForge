@@ -175,6 +175,15 @@ namespace PadForge.Tests
                     var under = Under<Image>(ground).Where(i => ReferenceEquals(i.Style, colorStyle)).ToList();
                     Assert.NotEmpty(under);
                     Assert.All(under, i => Assert.Equal(Visibility.Hidden, i.Visibility));
+                    // The gray still lies under the color one. Left showing,
+                    // it drew the controller at rest wherever a held trigger
+                    // or a tilted stick no longer covered it: with the left
+                    // stick and trigger held, 84 gray pixels of the 3D card's
+                    // picture and 583 of the 2D card's (2026-11-23).
+                    var grayStyle = (Style)page.FindResource("SlotPictureGray");
+                    var grays = Under<Image>(ground).Where(i => ReferenceEquals(i.Style, grayStyle)).ToList();
+                    Assert.NotEmpty(grays);
+                    Assert.All(grays, i => Assert.Equal(Visibility.Hidden, i.Visibility));
                     var glows = Under<HeldGlow>(ground).ToList();
                     Assert.NotEmpty(glows);
                     Assert.All(glows, g => Assert.True(g.Visibility != Visibility.Visible, kind + ": the ember marks show over a moving picture"));

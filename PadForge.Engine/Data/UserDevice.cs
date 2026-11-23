@@ -581,10 +581,6 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool IsEnabled { get; set; } = true;
 
-        /// <summary>Whether this device is currently hidden from the UI.</summary>
-        [XmlElement]
-        public bool IsHidden { get; set; }
-
         /// <summary>User-assigned display name (overrides InstanceName in the UI if set).</summary>
         [XmlElement]
         public string DisplayName { get; set; } = string.Empty;

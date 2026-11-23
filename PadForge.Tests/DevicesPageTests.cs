@@ -188,8 +188,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>The rows the Devices page builds none for are not in
-        /// Home's count either: a row PadForge.xml marks hidden, and a row
-        /// whose name or path names a virtual controller. A WinMM port
+        /// Home's count either: a row whose name or path names a virtual
+        /// controller. A WinMM port
         /// the user named "Virtual 1" is PadForge's own MIDI row, read
         /// through the MIDI wrapper PadForge built, so it has a row and
         /// counts on both pages.</summary>
@@ -202,20 +202,37 @@ namespace PadForge.Tests
                 CapType = InputDeviceType.Midi, IsOnline = true,
                 Device = new PadForge.Common.Input.MidiInputDevice("winmm:Virtual 1", "Virtual 1"),
             };
-            var hidden = new PadForge.Engine.Data.UserDevice
-            {
-                DevicePath = @"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000",
-                CapType = InputDeviceType.Gamepad, IsOnline = true, IsHidden = true,
-            };
             var virtualPad = new PadForge.Engine.Data.UserDevice
             {
                 DevicePath = @"\\?\HID#VIRTUAL_GAMEPAD&Col01#1&2&0&0000",
                 CapType = InputDeviceType.Gamepad, IsOnline = true,
             };
             Assert.False(PadForge.Services.InputService.IsVirtualOrShadowDevice(midi));
-            Assert.True(PadForge.Services.InputService.IsVirtualOrShadowDevice(hidden));
             Assert.True(PadForge.Services.InputService.IsVirtualOrShadowDevice(virtualPad));
-            Assert.Equal(1, PadForge.Services.InputService.CountConnectedDevices(new[] { midi, hidden, virtualPad }));
+            Assert.Equal(1, PadForge.Services.InputService.CountConnectedDevices(new[] { midi, virtualPad }));
+        }
+
+        /// <summary>A settings file written while devices had a hidden
+        /// flag still loads: its IsHidden element is skipped, and a device
+        /// it marked is listed and counted like any other. No version could
+        /// set the flag (its command was bound to no control from the first
+        /// commit until the PadForge 6 rebuild deleted it), so only a file
+        /// edited by hand carries true.</summary>
+        [Fact]
+        public void AnOldFilesHiddenFlagIsSkipped_AndItsDeviceIsListed()
+        {
+            const string xml = "<PadForgeSettings><Devices><Device>"
+                + "<InstanceGuid>5a1f7c3e-0000-4000-8000-000000000001</InstanceGuid>"
+                + "<DevicePath>\\\\?\\HID#VID_054C&amp;PID_0CE6&amp;MI_03#8&amp;1&amp;0&amp;0000</DevicePath>"
+                + "<CapType>21</CapType><IsEnabled>true</IsEnabled><IsHidden>true</IsHidden>"
+                + "</Device></Devices></PadForgeSettings>";
+            var data = (PadForge.Services.SettingsFileData)new System.Xml.Serialization.XmlSerializer(
+                typeof(PadForge.Services.SettingsFileData)).Deserialize(new System.IO.StringReader(xml));
+            var device = Assert.Single(data.Devices);
+            Assert.Equal(InputDeviceType.Gamepad, device.CapType);
+            device.IsOnline = true;
+            Assert.False(PadForge.Services.InputService.IsVirtualOrShadowDevice(device));
+            Assert.Equal(1, PadForge.Services.InputService.CountConnectedDevices(new[] { device }));
         }
 
         [Fact]

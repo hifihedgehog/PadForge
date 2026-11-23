@@ -92,13 +92,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void HiddenWebAndPeerSourcesRemainExcludedUntilTheFlagIsCleared()
+        public void TrustedWebAndPeerSourcesNamedLikeAVirtualPadAreListed()
         {
             var previousRefreshHook = SettingsService.AfterMappingSetsRefreshed;
             try
             {
                 var (vm, svc, _) = Arrange();
-                var web = AddProvenanceRow(new WebControllerDevice("hidden-" + Guid.NewGuid().ToString("N"),
+                var web = AddProvenanceRow(new WebControllerDevice("web-" + Guid.NewGuid().ToString("N"),
                     "Virtual Gamepad 1", false, "gamepad"));
                 var peer = AddProvenanceRow(new RemotePeerDevice(new RemotePeerDeviceInfo
                 {
@@ -107,18 +107,8 @@ namespace PadForge.Tests
                     Name = "Virtual Gamepad 1 (Streaming PC)",
                     InputDeviceType = InputDeviceType.Gamepad
                 }));
-                web.IsHidden = true;
-                peer.IsHidden = true;
                 svc.RefreshDeviceList();
-                Assert.Null(vm.Devices.FindByGuid(web.InstanceGuid));
-                Assert.Null(vm.Devices.FindByGuid(peer.InstanceGuid));
-                Assert.False(InputService.IsAssignOfferEligible(web));
-                Assert.False(InputService.IsAssignOfferEligible(peer));
                 Assert.NotNull(vm.Devices.FindByGuid(PadGuid));
-
-                web.IsHidden = false;
-                peer.IsHidden = false;
-                svc.RefreshDeviceList();
                 Assert.NotNull(vm.Devices.FindByGuid(web.InstanceGuid));
                 Assert.NotNull(vm.Devices.FindByGuid(peer.InstanceGuid));
                 Assert.True(InputService.IsAssignOfferEligible(web));

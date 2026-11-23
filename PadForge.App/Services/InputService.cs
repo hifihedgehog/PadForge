@@ -17041,9 +17041,6 @@ namespace PadForge.Services
             if (!ud.IsOnline)
                 return false;
 
-            if (ud.IsHidden)
-                return true;
-
             // A row read through a wrapper PadForge built for one of its own
             // schemes is that wrapper's source: a web or peer controller, or
             // a WinMM MIDI port the user named "Virtual 1", which reads

@@ -1975,7 +1975,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> SetBySyntheticClone = new(StringComparer.Ordinal)
         {
             "InstanceGuid", "InstanceName", "ProductGuid", "ProductName", "VendorId", "ProdId",
-            "DevicePath", "CapType", "IsEnabled", "IsHidden", "HasGyro", "HasAccel", "HasTouchpad",
+            "DevicePath", "CapType", "IsEnabled", "HasGyro", "HasAccel", "HasTouchpad",
             "HasRumbleTriggers", "DateCreated", "DateUpdated",
             "CapAxeCount", "CapButtonCount", "RawButtonCount", "CapPovCount", "RawAxisCount",
         };
@@ -1985,7 +1985,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> KeptByGamepadClone = new(StringComparer.Ordinal)
         {
             "InstanceGuid", "InstanceName", "ProductGuid", "ProductName", "VendorId", "ProdId",
-            "DevicePath", "CapType", "IsEnabled", "IsHidden", "HasGyro", "HasAccel", "HasTouchpad",
+            "DevicePath", "CapType", "IsEnabled", "HasGyro", "HasAccel", "HasTouchpad",
             "HasRumbleTriggers", "DateCreated", "DateUpdated",
             "CapAxeCount", "CapButtonCount", "CapButtonIndices", "CapAxisIndices", "RawButtonCount",
             "RawAxisCount", "HasExtraGenericAxes", "CapPovCount", "DeviceObjects",
@@ -2060,7 +2060,6 @@ namespace PadForge.Tests
             d.SdlGuid = sdlGuid;
             d.CapType = InputDeviceType.Gamepad;
             d.IsEnabled = true;
-            d.IsHidden = false;
             return d;
         }
 

@@ -4110,7 +4110,7 @@ try {
             & $set "RawAxisCount" $axes; & $set "HasExtraGenericAxes" "false"
             & $set "CapType" $capType
             & $set "HasGyro" "false"; & $set "HasAccel" "false"; & $set "HasTouchpad" "false"
-            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"; & $set "IsHidden" "false"
+            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"
             Clear-SyntheticDeviceRecord $d
             # The template's button and axis positions and its object list
             # describe its own hardware. Emptied, the Devices preview and the
@@ -4151,7 +4151,7 @@ try {
             & $set "VendorId" $vid;      & $set "ProdId" $prodId
             & $set "DevicePath" $path;   & $set "CapType" 21
             & $set "HasGyro" "false"; & $set "HasAccel" "false"; & $set "HasTouchpad" "false"
-            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"; & $set "IsHidden" "false"
+            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"
             Clear-SyntheticDeviceRecord $d
             return $d
         }

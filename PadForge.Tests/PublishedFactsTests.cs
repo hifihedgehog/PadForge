@@ -347,6 +347,7 @@ namespace PadForge.Tests
 
         private static readonly (string Version, string Sha256)[] RecordedNewInBlocks =
         {
+            ("6.0.1", "5cde89b549cf95da16d5417030795b1c062c16b14131196c39c0b4be7426398c"),
             ("6.0.0", "dd85e4d0e4133580f478443b0720bb5a04ebe2c17b677c276b897f8073a07972"),
             ("5.3.0", "d91993bdf93bbaaca8ed7e012a5255d7b4f9ebed189a1bfa160ad3c6b0be8ef3"),
             ("5.2.0", "9c5cd026ac4106c58c7ca644d7c0303e160f95e4f3cfd0dd456bc3db86334b00"),

@@ -53,6 +53,17 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
+<summary><b>New in 6.0.1:</b> USB DualSense and DualShock 4 virtual controllers work again, DSX profile import, three new languages, and themes of your own</summary>
+
+- USB DualSense, DualSense Edge and DualShock 4 virtual controllers send input again. In 6.0.0 they showed as active, but Windows got nothing from them. Xbox controllers were not affected ([#595](https://github.com/hifihedgehog/PadForge/issues/595)).
+- DSX profiles import beside reWASD configs and DS4Windows profiles: the controller DSX emulated, its dead zones, adaptive trigger modes, stick, motion and touchpad modes, lights and D-pad bindings. Files from DSX 3.1 or later only ([#589](https://github.com/hifihedgehog/PadForge/issues/589)).
+- Three new languages: Klingon, Sindarin, and Galactic Basic, which draws the interface in the Aurebesh alphabet. That makes 112. Windows draws PadForge's name on the taskbar, in Alt+Tab and in the tray in its own font, so those show Latin letters under Galactic Basic. The Klingon and Sindarin words were checked against boQwI' and Eldamo, not by a speaker ([#590](https://github.com/hifihedgehog/PadForge/issues/590)).
+- Themes: ten starters, a builder with four colors and a picture, `.pftheme` files to keep or share, and a Steam profile that wears its game's look while it is active. Windows high contrast stands over every theme ([#591](https://github.com/hifihedgehog/PadForge/issues/591)).
+- Fixes. The tray icon's menu and every right-click menu follow the theme, where 6.0.0 drew Windows' light menu on every look, Dark included. A Home card's controller no longer shows a gray copy of itself behind a held trigger or a tilted stick. Engine errors show in the status bar in the interface language. An imported controller preset keeps its device's own name.
+
+</details>
+
+<details>
 <summary><b>New in 6.0.0:</b> a rebuilt interface with Home, Extras and search, virtual controllers that work on Windows on ARM, a wheel that centers the way a car's steering does, crosshairs and a magnifier over your game, Flydigi Apex triggers, lights and screens, SInput pads, and polling up to 10,000 Hz</summary>
 
 - PadForge 6 rebuilds the interface around what most people do first, and removes no setting. Home replaces the Dashboard. One switch starts the engine, and each virtual controller has a card with a picture of its controller that lights as you press. On a first run, one click makes the first controller for the connected device, mapped 1:1, and from then on Home offers a virtual controller to each new game controller it meets. The services that stood on the Dashboard are tiles on the new Extras page, and each opens a page of its own. A controller's page trades up to fourteen tabs for six sections: Mappings, Sticks & Triggers, Rumble & Haptics, Motion & Touch, Lights & Sound, and Macros & Menus. Ctrl+K finds pages, controllers, devices, profiles, settings and actions, and Settings has five groups and a search box of its own. The interface was checked in page renders and with the NVDA screen reader, and no controller was put through every page by hand ([#574](https://github.com/hifihedgehog/PadForge/issues/574)).
